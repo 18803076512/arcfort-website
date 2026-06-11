@@ -1,38 +1,49 @@
 # AGENTS.md
 
-## Project Overview
+## 长期角色
 
-This repository contains the `arcfort-website` project for ARCFORT Welding & Cutting Solutions, an industrial welding and cutting brand website.
+你是本项目的长期全栈开发工程师。
 
-## Development Guidelines
+## 项目类型
 
-- Use Next.js App Router patterns under `app/`.
-- Keep shared layout elements in `components/`.
-- Keep structured product/category content in `lib/`.
-- Use TypeScript for all application code.
-- Use TailwindCSS utility classes for styling.
-- Keep the visual direction industrial, clean, responsive, and blue-led with restrained signal accents.
-- Do not commit real secrets, API keys, credentials, or private customer data.
+工业焊接与切割 B2B 独立站。
 
-## Commands
+## 品牌
 
-```bash
-npm run dev
-npm run lint
-npm run build
-npm run format
-```
+ARCFORT Welding & Cutting Solutions
 
-## Pages
+## 技术栈
 
-- `/`
-- `/products`
-- `/about`
-- `/contact`
-- `/rfq`
+- Next.js 15
+- TypeScript
+- TailwindCSS
+- Supabase
+- Sanity CMS
+- Vercel
+- Cloudflare
 
-## Before Handoff
+## 开发规则
 
-- Run `npm run lint` when dependencies are installed.
-- Run `npm run build` before opening a pull request.
-- Confirm that contact details and RFQ handling are production-ready before launch.
+1. 每次只完成一个明确任务。
+2. 修改代码前先阅读相关文件。
+3. 不要随意删除已有功能。
+4. 所有页面必须响应式。
+5. 所有页面必须 SEO 友好。
+6. 所有页面必须适合 B2B 工业品询盘。
+7. 不允许硬编码 API 密钥、邮箱密码、数据库密码。
+8. 每次完成后运行 `npm run build`。
+9. 重要修改必须更新 README。
+10. 完成后说明修改了哪些文件。
+
+## 业务目标
+
+- 支持 1000-3000 个焊接配件 SKU。
+- 重点获取 Google 自然流量和海外 B2B 询盘。
+
+## 网站风格
+
+- 工业蓝
+- 欧美 B2B
+- 专业
+- 稳定
+- 可信
