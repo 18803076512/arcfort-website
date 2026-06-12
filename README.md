@@ -26,6 +26,7 @@ ARCFORT Welding & Cutting Solutions independent website project.
 - `/about` - About
 - `/contact` - Contact
 - `/rfq` - Request for quotation
+- `/api/rfq` - RFQ submission endpoint prepared for Supabase
 
 ## Content Architecture
 
@@ -38,6 +39,44 @@ ARCFORT Welding & Cutting Solutions independent website project.
 - `lib/content/jsonld.ts` - JSON-LD helpers for Product, BreadcrumbList, Organization, and FAQ
 
 The current mock content includes 3 product categories and 5 products only. Missing product data is marked as `To be confirmed` instead of inventing specifications, certifications, prices, stock status, factory capacity, or customer cases.
+
+## RFQ System
+
+The `/rfq` page includes a responsive inquiry form with:
+
+- Name, company, email, WhatsApp, country, product requirements, quantity, and message fields
+- Required-field validation
+- Business email format validation
+- Drawing, product list, PDF, Excel, Word, JPG, and PNG upload selection
+- Server-side validation through `/api/rfq`
+- Success state after validation
+
+Supabase storage is optional and must be configured through environment variables. No real API keys,
+email passwords, database passwords, or private tokens are committed.
+
+Environment variables:
+
+```bash
+SUPABASE_URL=
+SUPABASE_SERVICE_ROLE_KEY=
+SUPABASE_RFQ_TABLE=rfq_inquiries
+SUPABASE_RFQ_BUCKET=rfq-attachments
+```
+
+Suggested Supabase table fields:
+
+- `name`
+- `company`
+- `email`
+- `whatsapp`
+- `country`
+- `product_requirements`
+- `quantity`
+- `message`
+- `attachments` as JSON
+- `source_path`
+- `status`
+- `created_at`
 
 ## About Page
 
@@ -80,7 +119,7 @@ npm run build
 ## Notes
 
 - No real API keys or secrets are included.
-- The RFQ page currently contains a static form prepared for future backend or CRM integration.
+- The RFQ page validates submissions and can store them in Supabase after environment variables are configured.
 - Replace placeholder contact details before production launch.
 - `app/sitemap.ts` and `app/robots.ts` are included for search engine discovery.
 - Product and category pages include SEO metadata and JSON-LD structured data where appropriate.
