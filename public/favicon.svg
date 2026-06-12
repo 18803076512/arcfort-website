@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="ARCFORT">
+  <rect width="64" height="64" fill="#071524"/>
+  <path d="M12 46 27 14h10l15 32h-9l-3-7H24l-3 7h-9Z" fill="#f6b445"/>
+  <path d="M27 31h10l-5-12-5 12Z" fill="#071524"/>
+  <path d="M15 52h34" stroke="#d9e6f2" stroke-width="4" stroke-linecap="square"/>
+</svg>

@@ -1,0 +1,16 @@
+{
+  "name": "ARCFORT Welding & Cutting Solutions",
+  "short_name": "ARCFORT",
+  "description": "Industrial welding and cutting solutions for global B2B buyers.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#f4f7fb",
+  "theme_color": "#071524",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "64x64",
+      "type": "image/svg+xml"
+    }
+  ]
+}

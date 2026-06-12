@@ -6,7 +6,16 @@ import { getAllProducts } from "@/lib/content/products";
 import { absoluteUrl } from "@/lib/content/site";
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const staticRoutes = ["/", "/products", "/applications", "/guides", "/about", "/contact", "/rfq"];
+  const staticRoutes = [
+    "/",
+    "/products",
+    "/applications",
+    "/guides",
+    "/about",
+    "/contact",
+    "/privacy",
+    "/rfq",
+  ];
   const categoryRoutes = getAllProductCategories().map((category) => `/products/${category.slug}`);
   const productRoutes = getAllProducts().map(
     (product) => `/products/${product.categorySlug}/${product.slug}`,

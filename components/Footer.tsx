@@ -10,6 +10,7 @@ const links = [
   { href: "/products/plasma-cutting-consumables", label: "Plasma Consumables" },
   { href: "/about", label: "About" },
   { href: "/contact", label: "Contact" },
+  { href: "/privacy", label: "Privacy" },
   { href: "/rfq", label: "RFQ" },
 ];
 

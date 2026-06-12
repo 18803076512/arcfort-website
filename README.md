@@ -29,6 +29,7 @@ ARCFORT Welding & Cutting Solutions independent website project.
 - `/guides/[slug]` - Buyer guide article
 - `/about` - About
 - `/contact` - Contact
+- `/privacy` - Privacy notice
 - `/rfq` - Request for quotation
 - `/api/rfq` - RFQ submission endpoint prepared for Supabase
 
@@ -59,6 +60,8 @@ Supabase setup files:
 
 - `supabase/rfq-schema.sql` - RFQ table and private attachment bucket setup
 - `docs/supabase-rfq-setup.md` - Supabase, Vercel and testing instructions
+- `docs/launch-checklist.md` - production launch checklist
+- `docs/product-sku-template.csv` - SKU import planning template
 
 Supabase storage is optional and must be configured through environment variables. No real API keys,
 email passwords, database passwords, or private tokens are committed.
@@ -136,5 +139,6 @@ npm run build
 - No real API keys or secrets are included.
 - The RFQ page validates submissions and can store them in Supabase after environment variables are configured.
 - Replace placeholder contact details before production launch.
+- The privacy notice uses placeholder contact information and should be reviewed before production launch.
 - `app/sitemap.ts` and `app/robots.ts` are included for search engine discovery.
 - Product and category pages include SEO metadata and JSON-LD structured data where appropriate.

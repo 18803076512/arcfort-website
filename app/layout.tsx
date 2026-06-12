@@ -23,6 +23,10 @@ export const metadata: Metadata = {
     "TIG torch parts",
     "plasma cutting parts",
   ],
+  icons: {
+    icon: "/favicon.svg",
+  },
+  manifest: "/site.webmanifest",
   alternates: {
     canonical: "/",
   },
