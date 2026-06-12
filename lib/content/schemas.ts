@@ -78,17 +78,30 @@ export type Product = WeldingConsumableProduct | WeldingEquipmentProduct;
 export type ApplicationPage = {
   slug: string;
   title: string;
+  seoTitle: string;
   description: string;
+  seoDescription: string;
+  overview: string;
+  industries: string[];
+  buyerNeeds: string[];
   relatedCategorySlugs: string[];
   relatedProductSlugs: string[];
   faq: FaqItem[];
+  keywords: string[];
 };
 
 export type GuideArticle = {
   slug: string;
   title: string;
+  seoTitle: string;
   description: string;
+  seoDescription: string;
+  sections: Array<{
+    title: string;
+    body: string;
+  }>;
   categorySlugs: string[];
   productSlugs: string[];
   faq: FaqItem[];
+  keywords: string[];
 };

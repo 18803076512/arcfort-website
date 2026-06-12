@@ -23,6 +23,10 @@ ARCFORT Welding & Cutting Solutions independent website project.
 - `/products` - Product center
 - `/products/[category]` - SEO category page
 - `/products/[category]/[slug]` - Product detail page
+- `/applications` - Application center
+- `/applications/[slug]` - Application detail page
+- `/guides` - Buyer guide center
+- `/guides/[slug]` - Buyer guide article
 - `/about` - About
 - `/contact` - Contact
 - `/rfq` - Request for quotation
@@ -32,13 +36,13 @@ ARCFORT Welding & Cutting Solutions independent website project.
 
 - `content/categories.ts` - sample product category content
 - `content/products.ts` - sample product detail content
-- `content/applications.ts` - future application page content entry
-- `content/guides.ts` - future guide and blog article content entry
+- `content/applications.ts` - application page content
+- `content/guides.ts` - buyer guide and article content
 - `lib/content/schemas.ts` - reusable TypeScript content schema
 - `lib/content/seo.ts` - metadata helper
 - `lib/content/jsonld.ts` - JSON-LD helpers for Product, BreadcrumbList, Organization, and FAQ
 
-The current mock content includes 3 product categories and 5 products only. Missing product data is marked as `To be confirmed` instead of inventing specifications, certifications, prices, stock status, factory capacity, or customer cases.
+The current mock content includes 6 product categories, 8 sample products, 6 application pages and 3 buyer guides. Missing product data is marked as `To be confirmed` instead of inventing specifications, certifications, prices, stock status, factory capacity, or customer cases.
 
 ## RFQ System
 

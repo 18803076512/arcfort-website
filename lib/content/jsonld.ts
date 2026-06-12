@@ -1,6 +1,7 @@
 import {
   TO_BE_CONFIRMED,
   type FaqItem,
+  type GuideArticle,
   type Product,
   type ProductCategory,
 } from "@/lib/content/schemas";
@@ -79,5 +80,23 @@ export function productJsonLd(product: Product, category: ProductCategory) {
       name: siteConfig.shortName,
     },
     ...(additionalProperty.length > 0 ? { additionalProperty } : {}),
+  };
+}
+
+export function articleJsonLd(article: GuideArticle) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    headline: article.title,
+    description: article.description,
+    url: absoluteUrl(`/guides/${article.slug}`),
+    author: {
+      "@type": "Organization",
+      name: siteConfig.name,
+    },
+    publisher: {
+      "@type": "Organization",
+      name: siteConfig.name,
+    },
   };
 }

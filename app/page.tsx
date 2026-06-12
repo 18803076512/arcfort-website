@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { ProductCard } from "@/components/content/ProductCard";
 import { RfqCta } from "@/components/content/RfqCta";
+import { getAllApplications } from "@/lib/content/applications";
 import { getAllProductCategories } from "@/lib/content/categories";
 import { getAllProducts } from "@/lib/content/products";
 
@@ -10,15 +11,6 @@ const advantages = [
   "Stable quality control workflow",
   "Fast RFQ communication",
   "Global distributor support",
-];
-
-const applications = [
-  "Shipbuilding",
-  "Automotive",
-  "Pipeline",
-  "Metal Fabrication",
-  "Construction",
-  "Repair Workshop",
 ];
 
 const supplyScope = [
@@ -33,6 +25,7 @@ const supplyScope = [
 export default function Home() {
   const categories = getAllProductCategories();
   const products = getAllProducts();
+  const applications = getAllApplications();
   const categoryMap = new Map(categories.map((category) => [category.slug, category]));
 
   return (
@@ -206,10 +199,18 @@ export default function Home() {
           </h2>
           <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {applications.map((application) => (
-              <div key={application} className="bg-arc-midnight p-5 text-white">
+              <Link
+                key={application.slug}
+                href={`/applications/${application.slug}`}
+                className="group bg-arc-midnight p-5 text-white transition hover:-translate-y-1 hover:shadow-industrial"
+              >
                 <div className="h-1 w-16 bg-arc-signal" />
-                <h3 className="mt-5 font-display text-xl font-black">{application}</h3>
-              </div>
+                <h3 className="mt-5 font-display text-xl font-black">{application.title}</h3>
+                <p className="mt-3 text-sm leading-6 text-slate-300">{application.description}</p>
+                <span className="mt-5 inline-flex text-sm font-bold uppercase tracking-[0.14em] text-arc-signal group-hover:text-white">
+                  View Application
+                </span>
+              </Link>
             ))}
           </div>
         </div>

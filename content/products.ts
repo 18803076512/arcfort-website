@@ -12,6 +12,18 @@ const coreMissingFields = [
   "Lead Time",
 ];
 
+const equipmentMissingFields = [
+  "SKU",
+  "Input Voltage",
+  "Output Current",
+  "Duty Cycle",
+  "Cooling",
+  "Compatible Accessories",
+  "Package",
+  "MOQ",
+  "Lead Time",
+];
+
 function createCoreSpecifications(): SpecRow[] {
   return [
     { label: "Material", value: TO_BE_CONFIRMED },
@@ -19,6 +31,19 @@ function createCoreSpecifications(): SpecRow[] {
     { label: "Thread", value: TO_BE_CONFIRMED },
     { label: "Compatible Brand", value: TO_BE_CONFIRMED },
     { label: "OEM Number", value: TO_BE_CONFIRMED },
+    { label: "Package", value: TO_BE_CONFIRMED },
+    { label: "MOQ", value: TO_BE_CONFIRMED },
+    { label: "Lead Time", value: TO_BE_CONFIRMED },
+  ];
+}
+
+function createEquipmentSpecifications(): SpecRow[] {
+  return [
+    { label: "Input Voltage", value: TO_BE_CONFIRMED },
+    { label: "Output Current", value: TO_BE_CONFIRMED },
+    { label: "Duty Cycle", value: TO_BE_CONFIRMED },
+    { label: "Cooling", value: TO_BE_CONFIRMED },
+    { label: "Compatible Accessories", value: TO_BE_CONFIRMED },
     { label: "Package", value: TO_BE_CONFIRMED },
     { label: "MOQ", value: TO_BE_CONFIRMED },
     { label: "Lead Time", value: TO_BE_CONFIRMED },
@@ -244,6 +269,138 @@ export const products: Product[] = [
       },
     ],
     relatedProductSlugs: ["plasma-electrode", "mig-gas-nozzle", "tig-ceramic-cup"],
+    missingFields: coreMissingFields,
+  },
+  {
+    slug: "welding-wire",
+    title: "Welding Wire",
+    sku: TO_BE_CONFIRMED,
+    categorySlug: "welding-consumables",
+    kind: "welding-consumable",
+    process: "MIG/MAG",
+    consumableFamily: "Welding wire",
+    shortDescription:
+      "Welding wire product page template for distributor consumable lists and industrial RFQ programs.",
+    description:
+      "This welding wire entry is prepared for scalable B2B content and future SKU expansion. Wire material, diameter, spool package, application and delivery details must be confirmed before quotation.",
+    imageLabel: "CON",
+    keywords: ["welding wire", "MIG wire", "welding consumables"],
+    specifications: createCoreSpecifications(),
+    compatibility: [
+      { label: "Welding Process", value: TO_BE_CONFIRMED },
+      { label: "Material Grade", value: TO_BE_CONFIRMED },
+      { label: "Package Type", value: TO_BE_CONFIRMED },
+    ],
+    applications: ["Fabrication shops", "Repair workshops", "Industrial welding supply"],
+    features: [
+      "Prepared for consumable category expansion",
+      "Suitable for mixed distributor RFQ lists",
+      "Material and package details must be confirmed",
+    ],
+    packaging: TO_BE_CONFIRMED,
+    moq: TO_BE_CONFIRMED,
+    leadTime: TO_BE_CONFIRMED,
+    faq: [
+      {
+        question: "What details are needed for welding wire quotation?",
+        answer:
+          "Please provide material, diameter, package type, quantity, destination country and any existing reference.",
+      },
+      {
+        question: "Can welding wire be quoted with torch consumables?",
+        answer:
+          "Yes. Buyers can send a combined RFQ list for welding wire, torch parts and accessories.",
+      },
+    ],
+    relatedProductSlugs: ["mig-contact-tip", "mig-gas-nozzle", "ground-clamp"],
+    missingFields: coreMissingFields,
+  },
+  {
+    slug: "mig-welding-machine",
+    title: "MIG Welding Machine",
+    sku: TO_BE_CONFIRMED,
+    categorySlug: "welding-machines",
+    kind: "welding-equipment",
+    equipmentFamily: "MIG welding machine",
+    supportedProcesses: ["MIG/MAG"],
+    shortDescription:
+      "MIG welding machine template for industrial equipment sourcing and distributor RFQ discussions.",
+    description:
+      "This MIG welding machine page provides the structure for future equipment content. Electrical parameters, duty cycle, accessory configuration, packaging and compliance information must be confirmed from official documents before quotation.",
+    imageLabel: "MAC",
+    keywords: ["MIG welding machine", "welding equipment", "industrial welding machine"],
+    specifications: createEquipmentSpecifications(),
+    compatibility: [
+      { label: "Supported Process", value: TO_BE_CONFIRMED },
+      { label: "Compatible Accessories", value: TO_BE_CONFIRMED },
+      { label: "Target Application", value: TO_BE_CONFIRMED },
+    ],
+    applications: ["Metal fabrication", "Repair workshops", "Industrial production"],
+    features: [
+      "Equipment template prepared for confirmed specifications",
+      "Supports distributor machine RFQ discussions",
+      "No performance data is listed until confirmed",
+    ],
+    packaging: TO_BE_CONFIRMED,
+    moq: TO_BE_CONFIRMED,
+    leadTime: TO_BE_CONFIRMED,
+    faq: [
+      {
+        question: "Are welding machine specifications confirmed?",
+        answer:
+          "No. Machine parameters remain To be confirmed until official specification documents are available.",
+      },
+      {
+        question: "Can accessories be included with a machine RFQ?",
+        answer:
+          "Yes. Buyers can include torch, cable, clamp, holder and spare part requirements in the RFQ.",
+      },
+    ],
+    relatedProductSlugs: ["welding-wire", "ground-clamp", "mig-contact-tip"],
+    missingFields: equipmentMissingFields,
+  },
+  {
+    slug: "ground-clamp",
+    title: "Ground Clamp",
+    sku: TO_BE_CONFIRMED,
+    categorySlug: "welding-accessories",
+    kind: "welding-consumable",
+    process: "MMA",
+    consumableFamily: "Welding accessory",
+    shortDescription:
+      "Ground clamp template for workshop accessory sourcing, welding supply lists and RFQ programs.",
+    description:
+      "This ground clamp page is designed for welding accessory sourcing. Material, current requirement, cable connection, package and MOQ should be confirmed by drawing, sample, photo or product list.",
+    imageLabel: "ACC",
+    keywords: ["ground clamp", "welding clamp", "welding accessories"],
+    specifications: createCoreSpecifications(),
+    compatibility: [
+      { label: "Cable Connection", value: TO_BE_CONFIRMED },
+      { label: "Machine Compatibility", value: TO_BE_CONFIRMED },
+      { label: "Reference Number", value: TO_BE_CONFIRMED },
+    ],
+    applications: ["Repair workshops", "Construction welding", "Fabrication shops"],
+    features: [
+      "Useful for accessory and workshop supply programs",
+      "Prepared for mixed RFQ lists",
+      "Connection and current requirements must be confirmed",
+    ],
+    packaging: TO_BE_CONFIRMED,
+    moq: TO_BE_CONFIRMED,
+    leadTime: TO_BE_CONFIRMED,
+    faq: [
+      {
+        question: "What information is needed for ground clamp quotation?",
+        answer:
+          "Please provide clamp type, cable connection, quantity, package requirement, photo or drawing when available.",
+      },
+      {
+        question: "Can ground clamps be quoted with welding machines?",
+        answer:
+          "Yes. Ground clamps can be included in machine or accessory RFQ lists.",
+      },
+    ],
+    relatedProductSlugs: ["mig-welding-machine", "welding-wire", "mig-contact-tip"],
     missingFields: coreMissingFields,
   },
 ];

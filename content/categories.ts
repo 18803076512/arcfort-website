@@ -130,4 +130,133 @@ export const productCategories: ProductCategory[] = [
       "plasma cutting parts",
     ],
   },
+  {
+    slug: "welding-consumables",
+    code: "CON",
+    title: "Welding Consumables",
+    shortTitle: "Consumables",
+    description:
+      "Welding wires, electrodes, holders, clamps and general consumables for industrial welding supply programs.",
+    seoTitle: "Welding Consumables for Industrial B2B Sourcing",
+    seoDescription:
+      "Source welding consumables including welding wires, electrodes, holders, clamps and related items for distributors, importers and repair workshops.",
+    seoIntro:
+      "ARCFORT structures welding consumables for buyers who need practical product lists, repeat purchasing programs and RFQ-ready information. Exact specifications, packaging, MOQ and lead time should be confirmed before quotation.",
+    buyerGuide: [
+      "Confirm welding process, material requirement, size and packaging before requesting quotation.",
+      "Send product list, reference photos or existing item numbers when replacing current consumables.",
+      "Group fast-moving consumables by workshop use, distributor carton packing or target market demand.",
+    ],
+    features: [
+      "Prepared for repeat consumable sourcing",
+      "Suitable for distributors and repair workshops",
+      "Supports mixed RFQ product lists",
+    ],
+    relatedCategorySlugs: ["mig-mag-torch-parts", "tig-torch-parts", "welding-accessories"],
+    faq: [
+      {
+        question: "Can welding consumables be quoted as a mixed list?",
+        answer:
+          "Yes. Buyers can send a mixed product list with quantities, packaging needs and destination country for review.",
+      },
+      {
+        question: "Are consumable specifications confirmed on this site?",
+        answer:
+          "Only confirmed fields should be used for quotation. Unknown fields remain marked as To be confirmed.",
+      },
+    ],
+    keywords: [
+      "welding consumables",
+      "welding wire",
+      "welding electrodes",
+      "welding holder",
+      "ground clamp",
+    ],
+  },
+  {
+    slug: "welding-machines",
+    code: "MAC",
+    title: "Welding Machines",
+    shortTitle: "Machines",
+    description:
+      "MIG, TIG, MMA and plasma cutting machines for industrial applications and distributor sourcing programs.",
+    seoTitle: "Welding Machines for Industrial Buyers and Distributors",
+    seoDescription:
+      "Explore welding machine sourcing categories including MIG, TIG, MMA and plasma cutting machines for industrial B2B RFQs.",
+    seoIntro:
+      "ARCFORT organizes welding machine content for buyers who compare process type, input requirements, application scenarios, accessory needs and delivery options. Machine parameters should be confirmed by official specification sheets before quotation.",
+    buyerGuide: [
+      "Confirm welding process, input voltage, output range and target application before RFQ.",
+      "Send required accessory list, destination market standards and packaging requirements.",
+      "Do not assume certifications or performance data unless official documents are provided.",
+    ],
+    features: [
+      "Supports machine sourcing discussions",
+      "Prepared for OEM and distributor inquiry workflows",
+      "Keeps unconfirmed parameters explicit",
+    ],
+    relatedCategorySlugs: ["welding-consumables", "welding-accessories", "plasma-cutting-consumables"],
+    faq: [
+      {
+        question: "Can ARCFORT quote welding machines by target process?",
+        answer:
+          "Yes. Buyers can provide MIG, TIG, MMA or plasma cutting requirements, but technical parameters must be confirmed before quotation.",
+      },
+      {
+        question: "Are machine certifications listed?",
+        answer:
+          "Certifications are not invented. Certification fields should only be added after official documents are confirmed.",
+      },
+    ],
+    keywords: [
+      "welding machines",
+      "MIG welding machine",
+      "TIG welding machine",
+      "MMA welding machine",
+      "plasma cutting machine",
+    ],
+  },
+  {
+    slug: "welding-accessories",
+    code: "ACC",
+    title: "Welding Accessories",
+    shortTitle: "Accessories",
+    description:
+      "Cables, connectors, clamps, holders and workshop welding accessories for industrial repair and fabrication users.",
+    seoTitle: "Welding Accessories for Workshops and Industrial Buyers",
+    seoDescription:
+      "Browse welding accessories such as cables, connectors, clamps and holders for B2B welding supply and repair workshop sourcing.",
+    seoIntro:
+      "ARCFORT welding accessories pages help buyers organize workshop support items, accessory kits and replacement product lists. Dimensions, material, compatible equipment and packaging details should be confirmed by RFQ.",
+    buyerGuide: [
+      "Confirm accessory size, cable connection, current rating requirement or compatible machine model when available.",
+      "Send photos or sample details for clamps, holders and connectors that must match existing products.",
+      "Use the RFQ form for mixed accessory lists and packaging requirements.",
+    ],
+    features: [
+      "Useful for workshop supply programs",
+      "Supports mixed accessory RFQs",
+      "Prepared for future SKU expansion",
+    ],
+    relatedCategorySlugs: ["welding-consumables", "welding-machines", "mig-mag-torch-parts"],
+    faq: [
+      {
+        question: "Can accessories be sourced together with consumables?",
+        answer:
+          "Yes. Buyers can combine accessories and consumables in one RFQ list with quantities and package details.",
+      },
+      {
+        question: "What details are needed for welding accessory quotation?",
+        answer:
+          "Please provide product name, size, connection type, quantity, photos, drawings or samples when available.",
+      },
+    ],
+    keywords: [
+      "welding accessories",
+      "welding cable",
+      "ground clamp",
+      "welding holder",
+      "welding connector",
+    ],
+  },
 ];

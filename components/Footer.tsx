@@ -4,6 +4,8 @@ import { productCategories } from "@/lib/product-categories";
 
 const links = [
   { href: "/products", label: "Products" },
+  { href: "/applications", label: "Applications" },
+  { href: "/guides", label: "Guides" },
   { href: "/products/mig-mag-torch-parts", label: "MIG/MAG Parts" },
   { href: "/products/plasma-cutting-consumables", label: "Plasma Consumables" },
   { href: "/about", label: "About" },
