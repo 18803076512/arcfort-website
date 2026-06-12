@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { productCategories } from "@/lib/product-categories";
+import { applications } from "@/lib/site-content";
 
 export const metadata: Metadata = {
   title: "Industrial Welding & Cutting Solutions",
@@ -18,62 +19,53 @@ const whyChooseItems = [
 
 const hotProducts = [
   {
-    name: "MIG Contact Tip M6",
+    name: "MIG Contact Tip",
     category: "MIG Torch Parts",
     sku: "AF-MIG-CT-M6",
     detail: "Copper alloy tip for common MIG torch replacement programs.",
   },
   {
-    name: "MIG Gas Nozzle 15AK",
+    name: "MIG Gas Nozzle",
     category: "MIG Torch Parts",
     sku: "AF-MIG-NZ-15AK",
     detail: "Durable nozzle option for distributor stock and repair kits.",
   },
   {
-    name: "TIG Ceramic Cup No. 6",
+    name: "TIG Ceramic Cup",
     category: "TIG Torch Parts",
     sku: "AF-TIG-CUP-06",
     detail: "Standard TIG cup for fabrication, maintenance, and workshop use.",
   },
   {
-    name: "TIG Collet Body 2.4 mm",
+    name: "TIG Collet Body",
     category: "TIG Torch Parts",
     sku: "AF-TIG-CB-24",
     detail: "Precision consumable for stable tungsten holding and repeat orders.",
   },
   {
-    name: "Plasma Cutting Electrode",
+    name: "Plasma Electrode",
     category: "Plasma Cutting Parts",
     sku: "AF-PLA-EL-100",
     detail: "High-demand plasma consumable for cutting service channels.",
   },
   {
-    name: "Plasma Nozzle 1.1 mm",
+    name: "Plasma Nozzle",
     category: "Plasma Cutting Parts",
     sku: "AF-PLA-NZ-11",
     detail: "Replacement nozzle for clean cutting and regular maintenance.",
   },
   {
-    name: "Welding Ground Clamp",
+    name: "Welding Holder",
     category: "Welding Accessories",
-    sku: "AF-ACC-GC-300",
-    detail: "Workshop-ready accessory for industrial welding setups.",
+    sku: "AF-ACC-WH-500",
+    detail: "Reliable holder option for repair workshops and industrial use.",
   },
   {
-    name: "Inverter Welding Machine",
-    category: "Welding Machines",
-    sku: "AF-MAC-INV-200",
-    detail: "Compact machine option for channel development and light industry.",
+    name: "Ground Clamp",
+    category: "Welding Accessories",
+    sku: "AF-ACC-GC-300",
+    detail: "Workshop-ready clamp for stable grounding and daily welding setups.",
   },
-] as const;
-
-const applications = [
-  "Shipbuilding",
-  "Automotive",
-  "Pipeline",
-  "Metal Fabrication",
-  "Construction",
-  "Repair Workshop",
 ] as const;
 
 export default function Home() {
@@ -287,7 +279,8 @@ export default function Home() {
               Need a Reliable Welding Parts Supplier?
             </h2>
             <p className="mt-4 text-base leading-7 text-slate-300">
-              Send your target parts, torch models, drawings, quantity plan, and destination market.
+              Send your product list, drawing or sample details. Our team will respond with
+              quotation and delivery options.
             </p>
           </div>
           <Link

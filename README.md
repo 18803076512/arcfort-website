@@ -38,7 +38,7 @@ ARCFORT Welding & Cutting Solutions independent website project.
 - Hot Products with mock product data
 - Applications
 - RFQ conversion section
-- Shared footer
+- Shared footer with Products, Applications, Company, Contact, Email, and WhatsApp links
 
 ## Product Lines
 
