@@ -25,6 +25,16 @@ ARCFORT Welding & Cutting Solutions independent website project.
 - `/contact` - Contact
 - `/rfq` - Request for quotation
 
+## Home Page Modules
+
+- Hero Banner
+- Product Categories
+- Why Choose ARCFORT
+- Hot Products with mock product data
+- Applications
+- RFQ conversion section
+- Shared footer
+
 ## Product Lines
 
 - MIG Torch Parts

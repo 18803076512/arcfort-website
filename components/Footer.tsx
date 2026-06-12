@@ -25,7 +25,11 @@ export function Footer() {
           </h2>
           <div className="mt-4 grid gap-2">
             {links.map((link) => (
-              <Link key={link.href} href={link.href} className="text-sm text-slate-300 hover:text-white">
+              <Link
+                key={link.href}
+                href={link.href}
+                className="text-sm text-slate-300 hover:text-white"
+              >
                 {link.label}
               </Link>
             ))}
@@ -37,7 +41,11 @@ export function Footer() {
           </h2>
           <div className="mt-4 grid gap-2">
             {productCategories.map((category) => (
-              <Link key={category.name} href="/products" className="text-sm text-slate-300 hover:text-white">
+              <Link
+                key={category.name}
+                href="/products"
+                className="text-sm text-slate-300 hover:text-white"
+              >
                 {category.name}
               </Link>
             ))}
@@ -45,7 +53,7 @@ export function Footer() {
         </div>
       </div>
       <div className="border-t border-white/10 px-4 py-5 text-center text-xs uppercase tracking-[0.16em] text-slate-400">
-        © 2026 ARCFORT Welding & Cutting Solutions
+        (c) 2026 ARCFORT Welding & Cutting Solutions
       </div>
     </footer>
   );
