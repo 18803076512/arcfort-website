@@ -1,44 +1,46 @@
 export const productCategories = [
   {
     code: "MIG",
+    slug: "mig-torch-parts",
     name: "MIG Torch Parts",
     description:
-      "Contact tips, nozzles, diffusers, liners, necks, and common torch replacement parts.",
+      "Contact tips, nozzles, diffusers, liners and torch consumables for MIG welding applications.",
     items: ["Contact tips and nozzles", "Gas diffusers and insulators", "Liners and neck parts"],
   },
   {
     code: "TIG",
+    slug: "tig-torch-parts",
     name: "TIG Torch Parts",
-    description:
-      "TIG torch consumables and replacement parts for industrial welding and repair channels.",
+    description: "Ceramic cups, collets, collet bodies, gas lenses and TIG torch accessories.",
     items: ["Collets and collet bodies", "Ceramic cups and back caps", "Torch heads and cables"],
   },
   {
     code: "CUT",
+    slug: "plasma-cutting-parts",
     name: "Plasma Cutting Parts",
     description:
-      "Plasma cutting consumables and torch parts for fabrication, maintenance, and distribution.",
+      "Electrodes, nozzles, swirl rings, shields and consumables for plasma cutting systems.",
     items: ["Electrodes and nozzles", "Swirl rings and shields", "Torch repair components"],
   },
   {
     code: "CON",
+    slug: "welding-consumables",
     name: "Welding Consumables",
-    description:
-      "Consumable products that support welding operations, maintenance, and repeat purchasing.",
+    description: "Welding wires, electrodes, holders, clamps and general welding consumables.",
     items: ["Welding wire and rods", "Electrodes and flux products", "General consumable kits"],
   },
   {
     code: "MAC",
+    slug: "welding-machines",
     name: "Welding Machines",
-    description:
-      "Machine supply categories for buyers building welding equipment programs and channels.",
+    description: "MIG, TIG, MMA and plasma cutting machines for industrial applications.",
     items: ["MIG welding machines", "TIG welding machines", "Plasma cutting machines"],
   },
   {
     code: "ACC",
+    slug: "welding-accessories",
     name: "Welding Accessories",
-    description:
-      "Accessories that complete industrial welding, cutting, repair, and workshop workflows.",
+    description: "Cables, connectors, clamps, holders and workshop welding accessories.",
     items: ["Ground clamps and holders", "Cables and connectors", "Safety and setup accessories"],
   },
 ] as const;
