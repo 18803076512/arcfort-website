@@ -21,9 +21,17 @@ ARCFORT Welding & Cutting Solutions independent website project.
 
 - `/` - Home
 - `/products` - Product center
+- `/products/[category]/[slug]` - Product detail template
 - `/about` - About
 - `/contact` - Contact
 - `/rfq` - Request for quotation
+
+## Product Detail Template
+
+- Uses mock product data from `lib/mock-products.ts`
+- Supports category and slug based routing
+- Includes SEO metadata, Product Schema, specifications, FAQ, related products, and RFQ CTAs
+- Structured so the mock data layer can later be replaced with Supabase or Sanity CMS
 
 ## Product Lines
 
