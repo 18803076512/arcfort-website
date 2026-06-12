@@ -25,6 +25,14 @@ ARCFORT Welding & Cutting Solutions independent website project.
 - `/contact` - Contact
 - `/rfq` - Request for quotation
 
+## RFQ Page
+
+- Front-end RFQ form with basic required-field validation
+- Email format validation
+- Upload field for drawings, product lists and PDFs
+- Success thank-you message without real backend submission
+- `/RFQ` redirects to `/rfq`
+
 ## Product Lines
 
 - MIG Torch Parts

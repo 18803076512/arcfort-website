@@ -1,68 +1,83 @@
 import type { Metadata } from "next";
-
-const fields = [
-  { label: "Company Name", type: "text", placeholder: "Your company" },
-  { label: "Contact Email", type: "email", placeholder: "name@company.com" },
-  { label: "Country / Region", type: "text", placeholder: "Destination market" },
-  { label: "Product Category", type: "text", placeholder: "MIG, TIG, Plasma, Machines..." },
-];
+import Link from "next/link";
+import { RfqForm } from "./RfqForm";
 
 export const metadata: Metadata = {
-  title: "RFQ",
+  title: "Request a Quote",
   description:
-    "Send an RFQ to ARCFORT for welding and cutting parts, consumables, machines, and accessories.",
+    "Send ARCFORT your product list, drawings or sample details for welding and cutting parts quotation, MOQ and delivery options.",
 };
+
+const rfqHighlights = [
+  "MIG, TIG and plasma cutting parts",
+  "OEM and distributor inquiry support",
+  "Quotation, MOQ and lead time review",
+] as const;
 
 export default function RfqPage() {
   return (
-    <section className="py-14 sm:py-20">
-      <div className="mx-auto grid max-w-7xl gap-10 px-4 sm:px-6 lg:grid-cols-[0.8fr_1.2fr] lg:px-8">
-        <div>
-          <p className="text-sm font-bold uppercase tracking-[0.2em] text-arc-blue">RFQ</p>
-          <h1 className="mt-3 font-display text-4xl font-black text-arc-midnight sm:text-5xl">
-            Request a quotation from ARCFORT.
-          </h1>
-          <p className="mt-5 text-lg leading-8 text-slate-600">
-            Provide product references, quantities, target market, and any technical requirements.
-            This static form is ready for future integration with your preferred CRM or email
-            workflow.
-          </p>
-          <div className="mt-8 border-l-4 border-arc-signal bg-white p-5 shadow-sm">
-            <p className="text-sm font-semibold leading-6 text-slate-700">
-              No real API keys or submission secrets are included in this project.
+    <>
+      <section className="bg-arc-midnight py-14 text-white sm:py-20">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <nav aria-label="Breadcrumb" className="text-sm font-semibold text-slate-300">
+            <ol className="flex flex-wrap items-center gap-2">
+              <li>
+                <Link href="/" className="hover:text-white">
+                  Home
+                </Link>
+              </li>
+              <li className="text-arc-signal">/</li>
+              <li aria-current="page" className="text-white">
+                RFQ
+              </li>
+            </ol>
+          </nav>
+
+          <div className="mt-10 max-w-4xl">
+            <p className="text-sm font-bold uppercase tracking-[0.2em] text-arc-signal">
+              ARCFORT RFQ
+            </p>
+            <h1 className="mt-3 font-display text-4xl font-black leading-tight sm:text-5xl">
+              Request a Quote
+            </h1>
+            <p className="mt-5 max-w-3xl text-lg leading-8 text-slate-300">
+              Send us your product list, drawings or sample details. ARCFORT will provide
+              quotation, MOQ and delivery options.
             </p>
           </div>
         </div>
+      </section>
 
-        <form className="border border-slate-200 bg-white p-6 shadow-sm sm:p-8">
-          <div className="grid gap-5 sm:grid-cols-2">
-            {fields.map((field) => (
-              <label key={field.label} className="block">
-                <span className="text-sm font-bold text-arc-midnight">{field.label}</span>
-                <input
-                  type={field.type}
-                  placeholder={field.placeholder}
-                  className="mt-2 w-full border-slate-300 bg-slate-50 text-slate-900 placeholder:text-slate-400 focus:border-arc-blue focus:ring-arc-blue"
-                />
-              </label>
-            ))}
-          </div>
-          <label className="mt-5 block">
-            <span className="text-sm font-bold text-arc-midnight">RFQ Details</span>
-            <textarea
-              rows={7}
-              placeholder="Part numbers, drawings, torch models, annual volume, packaging needs, and timeline."
-              className="mt-2 w-full border-slate-300 bg-slate-50 text-slate-900 placeholder:text-slate-400 focus:border-arc-blue focus:ring-arc-blue"
-            />
-          </label>
-          <button
-            type="button"
-            className="mt-6 w-full bg-arc-blue px-6 py-3 text-sm font-bold uppercase tracking-[0.16em] text-white transition hover:bg-arc-midnight sm:w-auto"
-          >
-            Submit RFQ
-          </button>
-        </form>
-      </div>
-    </section>
+      <section className="bg-arc-frost py-14 sm:py-20">
+        <div className="mx-auto grid max-w-7xl gap-10 px-4 sm:px-6 lg:grid-cols-[0.78fr_1.22fr] lg:px-8">
+          <aside>
+            <div className="border border-slate-200 bg-white p-6 shadow-sm">
+              <h2 className="font-display text-2xl font-black text-arc-midnight">
+                Inquiry Details Help Us Quote Faster
+              </h2>
+              <p className="mt-4 text-sm leading-6 text-slate-600">
+                Share part numbers, drawings, samples, target quantity and destination country. The
+                current form shows a front-end success message only and does not send data to a real
+                backend yet.
+              </p>
+              <div className="mt-6 grid gap-3">
+                {rfqHighlights.map((item) => (
+                  <div key={item} className="border-l-4 border-arc-signal bg-arc-frost p-4">
+                    <p className="text-sm font-bold text-arc-midnight">{item}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+            <div className="mt-6 border-l-4 border-arc-signal bg-arc-midnight p-5 text-white">
+              <p className="text-sm font-semibold leading-6">
+                No real email password, API key, database password or submission secret is included.
+              </p>
+            </div>
+          </aside>
+
+          <RfqForm />
+        </div>
+      </section>
+    </>
   );
 }
