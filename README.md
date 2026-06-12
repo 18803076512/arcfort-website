@@ -21,9 +21,23 @@ ARCFORT Welding & Cutting Solutions independent website project.
 
 - `/` - Home
 - `/products` - Product center
+- `/products/[category]` - SEO category page
+- `/products/[category]/[slug]` - Product detail page
 - `/about` - About
 - `/contact` - Contact
 - `/rfq` - Request for quotation
+
+## Content Architecture
+
+- `content/categories.ts` - sample product category content
+- `content/products.ts` - sample product detail content
+- `content/applications.ts` - future application page content entry
+- `content/guides.ts` - future guide and blog article content entry
+- `lib/content/schemas.ts` - reusable TypeScript content schema
+- `lib/content/seo.ts` - metadata helper
+- `lib/content/jsonld.ts` - JSON-LD helpers for Product, BreadcrumbList, Organization, and FAQ
+
+The current mock content includes 3 product categories and 5 products only. Missing product data is marked as `To be confirmed` instead of inventing specifications, certifications, prices, stock status, factory capacity, or customer cases.
 
 ## About Page
 
@@ -68,3 +82,5 @@ npm run build
 - No real API keys or secrets are included.
 - The RFQ page currently contains a static form prepared for future backend or CRM integration.
 - Replace placeholder contact details before production launch.
+- `app/sitemap.ts` and `app/robots.ts` are included for search engine discovery.
+- Product and category pages include SEO metadata and JSON-LD structured data where appropriate.

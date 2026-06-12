@@ -1,36 +1,56 @@
 import Link from "next/link";
-import { productCategories } from "@/lib/product-categories";
+import { ProductCard } from "@/components/content/ProductCard";
+import { RfqCta } from "@/components/content/RfqCta";
+import { getAllProductCategories } from "@/lib/content/categories";
+import { getAllProducts } from "@/lib/content/products";
 
-const stats = [
-  { value: "6", label: "Core product lines" },
-  { value: "OEM", label: "Buyer-ready supply" },
-  { value: "Global", label: "Distributor focus" },
+const advantages = [
+  "Factory direct supply discussion",
+  "OEM and private label support",
+  "Stable quality control workflow",
+  "Fast RFQ communication",
+  "Global distributor support",
 ];
 
-const capabilities = [
-  "Stable consumable sourcing for repeat orders",
-  "Parts coverage for welding and plasma systems",
-  "Export-ready communication and RFQ workflow",
-  "Support for distributors, importers, and repair channels",
+const applications = [
+  "Shipbuilding",
+  "Automotive",
+  "Pipeline",
+  "Metal Fabrication",
+  "Construction",
+  "Repair Workshop",
+];
+
+const supplyScope = [
+  "MIG/MAG Torch Parts",
+  "TIG Torch Parts",
+  "Plasma Cutting Consumables",
+  "Welding Consumables",
+  "Welding Machines",
+  "Welding Accessories",
 ];
 
 export default function Home() {
+  const categories = getAllProductCategories();
+  const products = getAllProducts();
+  const categoryMap = new Map(categories.map((category) => [category.slug, category]));
+
   return (
     <>
       <section className="relative overflow-hidden bg-arc-midnight text-white">
-        <div className="absolute inset-0 bg-[linear-gradient(115deg,rgba(7,21,36,0.95)_0%,rgba(11,35,65,0.88)_44%,rgba(15,76,129,0.82)_100%)]" />
+        <div className="absolute inset-0 bg-[linear-gradient(115deg,rgba(7,21,36,0.98)_0%,rgba(11,35,65,0.92)_45%,rgba(15,76,129,0.84)_100%)]" />
         <div className="absolute inset-0 opacity-30 [background-image:linear-gradient(90deg,rgba(255,255,255,0.08)_1px,transparent_1px),linear-gradient(rgba(255,255,255,0.08)_1px,transparent_1px)] [background-size:48px_48px]" />
-        <div className="relative mx-auto grid min-h-[calc(100vh-5rem)] max-w-7xl items-center gap-12 px-4 py-16 sm:px-6 lg:grid-cols-[1.08fr_0.92fr] lg:px-8">
+        <div className="relative mx-auto grid min-h-[calc(100vh-5rem)] max-w-7xl items-center gap-12 px-4 py-16 sm:px-6 lg:grid-cols-[1.03fr_0.97fr] lg:px-8">
           <div className="max-w-3xl">
-            <p className="mb-5 inline-flex border-l-4 border-arc-signal bg-white/10 px-4 py-2 text-sm font-semibold uppercase tracking-[0.22em] text-arc-signal">
-              Industrial Welding & Cutting Solutions
-            </p>
-            <h1 className="font-display text-5xl font-black leading-[0.95] sm:text-6xl lg:text-7xl">
+            <p className="mb-5 inline-flex border-l-4 border-arc-signal bg-white/10 px-4 py-2 text-sm font-semibold uppercase tracking-[0.2em] text-arc-signal">
               ARCFORT Welding & Cutting Solutions
+            </p>
+            <h1 className="font-display text-5xl font-black leading-[0.98] sm:text-6xl lg:text-7xl">
+              Industrial Welding & Cutting Solutions
             </h1>
             <p className="mt-7 max-w-2xl text-lg leading-8 text-slate-200">
-              Built for global distributors, importers, OEM buyers, industrial users, and repair
-              workshops that need dependable welding and cutting product supply.
+              Reliable MIG, TIG and plasma cutting parts for global distributors, importers, OEM
+              buyers, industrial users and repair workshops.
             </p>
             <div className="mt-9 flex flex-col gap-3 sm:flex-row">
               <Link
@@ -43,7 +63,7 @@ export default function Home() {
                 href="/rfq"
                 className="inline-flex items-center justify-center border border-white/40 px-6 py-3 text-sm font-bold uppercase tracking-[0.16em] text-white transition hover:border-white hover:bg-white/10"
               >
-                Send RFQ
+                Request a Quote
               </Link>
             </div>
           </div>
@@ -52,17 +72,17 @@ export default function Home() {
             <div className="border border-white/15 bg-white/10 p-5 shadow-industrial backdrop-blur">
               <div className="grid aspect-[4/3] grid-cols-6 grid-rows-6 overflow-hidden border border-white/10 bg-arc-navy">
                 <div className="col-span-4 row-span-4 bg-[linear-gradient(135deg,#d9e6f2_0%,#69839c_48%,#132b46_100%)]" />
-                <div className="col-span-2 row-span-2 border-l border-b border-white/10 bg-arc-signal" />
+                <div className="col-span-2 row-span-2 border-b border-l border-white/10 bg-arc-signal" />
                 <div className="col-span-2 row-span-2 border-l border-white/10 bg-[#1f5f95]" />
                 <div className="col-span-2 row-span-2 border-t border-white/10 bg-[#203952]" />
                 <div className="col-span-4 row-span-2 border-t border-white/10 bg-[repeating-linear-gradient(135deg,rgba(255,255,255,0.18)_0,rgba(255,255,255,0.18)_1px,transparent_1px,transparent_12px)]" />
               </div>
               <div className="mt-5 grid grid-cols-3 gap-3">
-                {stats.map((stat) => (
-                  <div key={stat.label} className="border border-white/10 bg-white/10 p-4">
-                    <div className="font-display text-2xl font-black text-white">{stat.value}</div>
+                {["RFQ", "OEM", "B2B"].map((item) => (
+                  <div key={item} className="border border-white/10 bg-white/10 p-4">
+                    <div className="font-display text-2xl font-black text-white">{item}</div>
                     <div className="mt-1 text-xs uppercase tracking-[0.14em] text-slate-300">
-                      {stat.label}
+                      Supply ready
                     </div>
                   </div>
                 ))}
@@ -76,27 +96,56 @@ export default function Home() {
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="max-w-2xl">
             <p className="text-sm font-bold uppercase tracking-[0.2em] text-arc-blue">
-              Product Center
+              Product Scope
             </p>
             <h2 className="mt-3 font-display text-3xl font-black text-arc-midnight sm:text-4xl">
-              A focused range for welding and cutting channels.
+              A focused range for welding and cutting supply channels.
             </h2>
           </div>
           <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {productCategories.map((category) => (
+            {supplyScope.map((item) => (
+              <div key={item} className="border border-slate-200 bg-slate-50 p-5">
+                <div className="h-1 w-16 bg-arc-signal" />
+                <h3 className="mt-4 font-display text-xl font-black text-arc-midnight">{item}</h3>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="bg-arc-frost py-16 sm:py-20">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+            <div>
+              <p className="text-sm font-bold uppercase tracking-[0.2em] text-arc-blue">
+                SEO Category Pages
+              </p>
+              <h2 className="mt-3 font-display text-3xl font-black text-arc-midnight sm:text-4xl">
+                Category structure ready for organic search.
+              </h2>
+            </div>
+            <Link
+              href="/products"
+              className="inline-flex items-center justify-center bg-arc-blue px-5 py-3 text-sm font-bold uppercase tracking-[0.14em] text-white transition hover:bg-arc-midnight"
+            >
+              Product Center
+            </Link>
+          </div>
+          <div className="mt-10 grid gap-5 md:grid-cols-3">
+            {categories.map((category) => (
               <Link
-                href="/products"
-                key={category.name}
-                className="group border border-slate-200 bg-slate-50 p-6 transition hover:-translate-y-1 hover:border-arc-blue hover:bg-white hover:shadow-industrial"
+                href={`/products/${category.slug}`}
+                key={category.slug}
+                className="group border border-slate-200 bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:border-arc-blue hover:shadow-industrial"
               >
-                <div className="flex h-12 w-12 items-center justify-center bg-arc-navy text-lg font-black text-arc-signal">
+                <span className="flex h-12 w-12 items-center justify-center bg-arc-navy font-display text-lg font-black text-arc-signal">
                   {category.code}
-                </div>
+                </span>
                 <h3 className="mt-5 font-display text-2xl font-black text-arc-midnight">
-                  {category.name}
+                  {category.title}
                 </h3>
                 <p className="mt-3 text-sm leading-6 text-slate-600">{category.description}</p>
-                <span className="mt-5 inline-flex text-sm font-bold uppercase tracking-[0.16em] text-arc-blue group-hover:text-arc-copper">
+                <span className="mt-5 inline-flex text-sm font-bold uppercase tracking-[0.14em] text-arc-blue group-hover:text-arc-copper">
                   Explore
                 </span>
               </Link>
@@ -105,23 +154,73 @@ export default function Home() {
         </div>
       </section>
 
+      <section className="bg-white py-16 sm:py-20">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <p className="text-sm font-bold uppercase tracking-[0.2em] text-arc-blue">
+            Hot Products
+          </p>
+          <h2 className="mt-3 font-display text-3xl font-black text-arc-midnight sm:text-4xl">
+            Sample RFQ-ready product pages.
+          </h2>
+          <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+            {products.map((product) => {
+              const category = categoryMap.get(product.categorySlug);
+
+              if (!category) {
+                return null;
+              }
+
+              return <ProductCard key={product.slug} product={product} category={category} />;
+            })}
+          </div>
+        </div>
+      </section>
+
       <section className="bg-arc-frost py-16 sm:py-20">
-        <div className="mx-auto grid max-w-7xl gap-10 px-4 sm:px-6 lg:grid-cols-[0.9fr_1.1fr] lg:px-8">
+        <div className="mx-auto grid max-w-7xl gap-10 px-4 sm:px-6 lg:grid-cols-[0.85fr_1.15fr] lg:px-8">
           <div>
             <p className="text-sm font-bold uppercase tracking-[0.2em] text-arc-blue">
-              Supply Capability
+              Why Choose ARCFORT
             </p>
             <h2 className="mt-3 font-display text-3xl font-black text-arc-midnight sm:text-4xl">
-              Prepared for industrial buyers who compare, qualify, and reorder.
+              Built for buyers who compare, qualify and reorder.
             </h2>
           </div>
           <div className="grid gap-4 sm:grid-cols-2">
-            {capabilities.map((item) => (
+            {advantages.map((item) => (
               <div key={item} className="border-l-4 border-arc-signal bg-white p-5 shadow-sm">
                 <p className="font-semibold leading-7 text-slate-800">{item}</p>
               </div>
             ))}
           </div>
+        </div>
+      </section>
+
+      <section className="bg-white py-16 sm:py-20">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <p className="text-sm font-bold uppercase tracking-[0.2em] text-arc-blue">
+            Applications
+          </p>
+          <h2 className="mt-3 font-display text-3xl font-black text-arc-midnight sm:text-4xl">
+            Industrial use cases for welding and cutting supply.
+          </h2>
+          <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {applications.map((application) => (
+              <div key={application} className="bg-arc-midnight p-5 text-white">
+                <div className="h-1 w-16 bg-arc-signal" />
+                <h3 className="mt-5 font-display text-xl font-black">{application}</h3>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="bg-arc-frost py-16 sm:py-20">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <RfqCta
+            title="Need a reliable welding parts supplier?"
+            description="Send your product list, drawing or sample details. ARCFORT will respond with quotation, MOQ and delivery options after technical confirmation."
+          />
         </div>
       </section>
     </>
