@@ -92,6 +92,12 @@ Suggested Supabase table fields:
 - Quality Control
 - Contact and RFQ CTA
 
+## Contact Page
+
+- Uses B2B inquiry-focused content for welding and cutting sourcing
+- Uses `To be confirmed` for email and WhatsApp until official contact details are confirmed
+- Links buyers to `/rfq` for product lists, drawings, quantities and packaging requirements
+
 ## Product Lines
 
 - MIG Torch Parts
