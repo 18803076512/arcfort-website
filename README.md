@@ -9,6 +9,11 @@ ARCFORT Welding & Cutting Solutions independent website project.
 - Positioning: Industrial Welding & Cutting Solutions
 - Audience: Global distributors, importers, OEM buyers, industrial users, and repair workshops
 
+## Production Domains
+
+- Primary domain: `arcfortweld.com`
+- WWW domain: `www.arcfortweld.com`
+
 ## Tech Stack
 
 - Next.js 15 App Router
@@ -24,6 +29,16 @@ ARCFORT Welding & Cutting Solutions independent website project.
 - `/about` - About
 - `/contact` - Contact
 - `/rfq` - Request for quotation
+
+## Home Page Modules
+
+- Hero Banner
+- Product Categories
+- Why Choose ARCFORT
+- Hot Products with mock product data
+- Applications
+- RFQ conversion section
+- Shared footer with Products, Applications, Company, Contact, Email, and WhatsApp links
 
 ## Product Lines
 
