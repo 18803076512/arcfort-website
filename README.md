@@ -51,6 +51,11 @@ The `/rfq` page includes a responsive inquiry form with:
 - Server-side validation through `/api/rfq`
 - Success state after validation
 
+Supabase setup files:
+
+- `supabase/rfq-schema.sql` - RFQ table and private attachment bucket setup
+- `docs/supabase-rfq-setup.md` - Supabase, Vercel and testing instructions
+
 Supabase storage is optional and must be configured through environment variables. No real API keys,
 email passwords, database passwords, or private tokens are committed.
 
