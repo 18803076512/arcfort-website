@@ -13,6 +13,8 @@ later be migrated to Supabase or Sanity CMS.
 - `scripts/validate-product-csv.mjs` - CSV validation script
 - `content/products.ts` - current mock product data used by the website
 - `content/categories.ts` - current product category data
+- `supabase/product-catalog-schema.sql` - future product database schema
+- `docs/supabase-product-catalog-setup.md` - product database setup instructions
 
 ## Validate Product CSV
 
@@ -120,3 +122,19 @@ After real SKU data is confirmed, create an importer that converts the CSV into 
 - Generated TypeScript content for static builds
 
 Do not connect a live importer until the data owner confirms field accuracy.
+
+## Supabase Product Catalog
+
+The product catalog database schema is prepared in:
+
+```txt
+supabase/product-catalog-schema.sql
+```
+
+Setup guide:
+
+```txt
+docs/supabase-product-catalog-setup.md
+```
+
+Run the SQL only after reviewing the field model and confirming the target Supabase project.

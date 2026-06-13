@@ -63,6 +63,8 @@ Supabase setup files:
 - `docs/launch-checklist.md` - production launch checklist
 - `docs/product-sku-template.csv` - SKU import planning template
 - `docs/product-data-workflow.md` - product CSV workflow and validation rules
+- `supabase/product-catalog-schema.sql` - future product catalog database schema
+- `docs/supabase-product-catalog-setup.md` - product catalog database setup instructions
 
 Supabase storage is optional and must be configured through environment variables. No real API keys,
 email passwords, database passwords, or private tokens are committed.
