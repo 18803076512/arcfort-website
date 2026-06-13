@@ -62,6 +62,7 @@ Supabase setup files:
 - `docs/supabase-rfq-setup.md` - Supabase, Vercel and testing instructions
 - `docs/launch-checklist.md` - production launch checklist
 - `docs/product-sku-template.csv` - SKU import planning template
+- `docs/product-data-workflow.md` - product CSV workflow and validation rules
 
 Supabase storage is optional and must be configured through environment variables. No real API keys,
 email passwords, database passwords, or private tokens are committed.
@@ -132,6 +133,12 @@ Build for production:
 
 ```bash
 npm run build
+```
+
+Validate product CSV data:
+
+```bash
+npm run validate:products
 ```
 
 ## Notes
