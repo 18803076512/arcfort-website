@@ -141,6 +141,12 @@ Validate product CSV data:
 npm run validate:products
 ```
 
+Preview generated product content:
+
+```bash
+npm run generate:products
+```
+
 ## Notes
 
 - No real API keys or secrets are included.

@@ -8,6 +8,8 @@
     "start": "next start",
     "lint": "eslint . --max-warnings=0",
     "validate:products": "node scripts/validate-product-csv.mjs docs/product-sku-template.csv",
+    "generate:products": "node scripts/generate-products-from-csv.mjs docs/product-sku-template.csv",
+    "generate:products:write": "node scripts/generate-products-from-csv.mjs docs/product-sku-template.csv --write",
     "format": "prettier --write ."
   },
   "dependencies": {

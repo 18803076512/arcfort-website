@@ -39,6 +39,38 @@ The validator checks:
 - Valid welding process
 - Fields marked `To be confirmed`
 
+## Preview Generated Product Content
+
+Run:
+
+```bash
+npm run generate:products
+```
+
+This converts the CSV into a TypeScript product content preview and prints it in the terminal. It
+does not write files by default.
+
+## Write Generated Product Content
+
+After real product data is confirmed, run:
+
+```bash
+npm run generate:products:write
+```
+
+This writes:
+
+```txt
+content/generated-products.ts
+```
+
+Safety behavior:
+
+- The write command refuses rows where `product_slug` is `to-be-confirmed`.
+- The write command refuses rows where `title` is `to-be-confirmed`.
+- The write command refuses rows where `process` is `To be confirmed`.
+- Generated content should be reviewed before importing it into live pages.
+
 ## Required Product Rules
 
 - Do not invent product specifications.
@@ -59,7 +91,9 @@ The validator checks:
 5. Run `npm run validate:products`.
 6. Fix validation errors.
 7. Review warnings for missing data.
-8. Import the validated data into Supabase, Sanity CMS or generated TypeScript content.
+8. Preview generated content with `npm run generate:products`.
+9. Write generated content only after real product data is confirmed.
+10. Import the reviewed data into Supabase, Sanity CMS or generated TypeScript content.
 
 ## Field Notes
 
