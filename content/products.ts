@@ -84,7 +84,7 @@ export const products: Product[] = [
       {
         question: "How should I confirm the correct MIG contact tip?",
         answer:
-          "Send the wire size, thread, torch model, reference number, drawing or sample details so ARCFORT can confirm the requested item.",
+          "Send the wire size, thread, torch model, reference number, drawing or sample details so ArcFort Weld can confirm the requested item.",
       },
       {
         question: "Can this product be added to an RFQ list?",
@@ -119,7 +119,7 @@ export const products: Product[] = [
     features: [
       "Prepared for product grid and catalog expansion",
       "Useful for distributor and repair channel RFQs",
-      "Specific fit information remains To be confirmed",
+      "Specific fit information is confirmed by torch model, sample or reference number",
     ],
     packaging: TO_BE_CONFIRMED,
     moq: TO_BE_CONFIRMED,
@@ -131,7 +131,7 @@ export const products: Product[] = [
           "Please provide torch model, nozzle shape, size, reference number, quantity and packaging requirement.",
       },
       {
-        question: "Can ARCFORT quote by product photo?",
+        question: "Can ArcFort Weld quote by product photo?",
         answer:
           "A product photo can help initial checking, but drawings, samples or confirmed reference numbers are recommended for accurate quotation.",
       },
@@ -265,7 +265,7 @@ export const products: Product[] = [
       {
         question: "Is compatible brand information confirmed?",
         answer:
-          "Compatible brand information is shown only when confirmed. Otherwise the field remains To be confirmed.",
+          "Compatible brand information is shown only when confirmed by reference number, drawing, sample or buyer product list.",
       },
     ],
     relatedProductSlugs: ["plasma-electrode", "mig-gas-nozzle", "tig-ceramic-cup"],
@@ -348,7 +348,7 @@ export const products: Product[] = [
       {
         question: "Are welding machine specifications confirmed?",
         answer:
-          "No. Machine parameters remain To be confirmed until official specification documents are available.",
+          "Machine parameters are added only after official specification documents are available.",
       },
       {
         question: "Can accessories be included with a machine RFQ?",

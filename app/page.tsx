@@ -36,7 +36,7 @@ export default function Home() {
         <div className="relative mx-auto grid min-h-[calc(100vh-5rem)] max-w-7xl items-center gap-12 px-4 py-16 sm:px-6 lg:grid-cols-[1.03fr_0.97fr] lg:px-8">
           <div className="max-w-3xl">
             <p className="mb-5 inline-flex border-l-4 border-arc-signal bg-white/10 px-4 py-2 text-sm font-semibold uppercase tracking-[0.2em] text-arc-signal">
-              ARCFORT Welding & Cutting Solutions
+              ArcFort Weld | Welding & Cutting Solutions
             </p>
             <h1 className="font-display text-5xl font-black leading-[0.98] sm:text-6xl lg:text-7xl">
               Industrial Welding & Cutting Solutions
@@ -173,7 +173,7 @@ export default function Home() {
         <div className="mx-auto grid max-w-7xl gap-10 px-4 sm:px-6 lg:grid-cols-[0.85fr_1.15fr] lg:px-8">
           <div>
             <p className="text-sm font-bold uppercase tracking-[0.2em] text-arc-blue">
-              Why Choose ARCFORT
+              Why Choose ArcFort Weld
             </p>
             <h2 className="mt-3 font-display text-3xl font-black text-arc-midnight sm:text-4xl">
               Built for buyers who compare, qualify and reorder.
@@ -220,7 +220,7 @@ export default function Home() {
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <RfqCta
             title="Need a reliable welding parts supplier?"
-            description="Send your product list, drawing or sample details. ARCFORT will respond with quotation, MOQ and delivery options after technical confirmation."
+            description="Send your product list, drawing or sample details. ArcFort Weld will respond with quotation, MOQ and delivery options after technical confirmation."
           />
         </div>
       </section>

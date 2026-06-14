@@ -10,9 +10,9 @@ export const productCategories: ProductCategory[] = [
       "Contact tips, gas nozzles, diffusers, liners and torch consumables for MIG/MAG welding applications.",
     seoTitle: "MIG/MAG Torch Parts for Industrial Welding Buyers",
     seoDescription:
-      "Explore ARCFORT MIG/MAG torch parts including contact tips, gas nozzles, diffusers, liners and related welding consumables for B2B RFQ programs.",
+      "Explore ArcFort Weld MIG/MAG torch parts including contact tips, gas nozzles, diffusers, liners and related welding consumables for B2B RFQ programs.",
     seoIntro:
-      "ARCFORT supplies MIG/MAG torch parts for distributors, importers, OEM buyers and repair workshops that need organized product references for repeat purchasing. Product specifications should be confirmed against torch model, drawing or sample before quotation.",
+      "ArcFort Weld supplies MIG/MAG torch parts for distributors, importers, OEM buyers and repair workshops that need organized product references for repeat purchasing. Product specifications should be confirmed against torch model, drawing or sample before quotation.",
     buyerGuide: [
       "Confirm the torch model, thread, diameter and material before ordering contact tips or gas nozzles.",
       "Send existing part numbers, drawings or samples when compatible brand information is required.",
@@ -26,14 +26,14 @@ export const productCategories: ProductCategory[] = [
     relatedCategorySlugs: ["tig-torch-parts", "plasma-cutting-consumables"],
     faq: [
       {
-        question: "Can ARCFORT quote MIG/MAG torch parts by sample or drawing?",
+        question: "Can ArcFort Weld quote MIG/MAG torch parts by sample or drawing?",
         answer:
           "Yes. Buyers can send samples, drawings, product lists or reference numbers so the technical details can be confirmed before quotation.",
       },
       {
         question: "Are compatible brands listed on every MIG/MAG part page?",
         answer:
-          "Compatibility data is added when confirmed. Missing compatibility fields are marked as To be confirmed.",
+          "Compatibility data is added only after it is confirmed by torch model, reference number, drawing or sample.",
       },
     ],
     keywords: [
@@ -55,7 +55,7 @@ export const productCategories: ProductCategory[] = [
     seoDescription:
       "Browse TIG torch parts such as ceramic cups, collets, collet bodies, gas lenses and TIG welding accessories for industrial sourcing and RFQ.",
     seoIntro:
-      "ARCFORT organizes TIG torch parts for buyers who compare product fit, packaging, MOQ and delivery requirements before placing repeat orders. Unknown technical fields are kept as To be confirmed until validated by drawing, sample or model reference.",
+      "ArcFort Weld organizes TIG torch parts for buyers who compare product fit, packaging, MOQ and delivery requirements before placing repeat orders. Unknown technical fields are confirmed by drawing, sample or model reference during RFQ review.",
     buyerGuide: [
       "Check torch series and cup size before selecting ceramic cups or gas lens parts.",
       "Confirm collet and collet body dimensions for the required tungsten size.",
@@ -71,7 +71,7 @@ export const productCategories: ProductCategory[] = [
       {
         question: "What TIG torch information should buyers send?",
         answer:
-          "Please send torch series, tungsten size, cup size, reference number or drawings so ARCFORT can confirm the requested item.",
+          "Please send torch series, tungsten size, cup size, reference number or drawings so ArcFort Weld can confirm the requested item.",
       },
       {
         question: "Can TIG parts be prepared for OEM packaging?",
@@ -98,7 +98,7 @@ export const productCategories: ProductCategory[] = [
     seoDescription:
       "Source plasma cutting consumables including electrodes, nozzles, swirl rings and shields for distributors, OEM buyers and industrial users.",
     seoIntro:
-      "ARCFORT structures plasma cutting consumables by product family, compatibility and RFQ requirements so global buyers can prepare clear sourcing lists. Technical compatibility should be confirmed before production or quotation.",
+      "ArcFort Weld structures plasma cutting consumables by product family, compatibility and RFQ requirements so global buyers can prepare clear sourcing lists. Technical compatibility should be confirmed before production or quotation.",
     buyerGuide: [
       "Confirm cutting torch model, amperage range and consumable stack before selecting electrodes or nozzles.",
       "Check whether the buyer needs nozzles, electrodes, swirl rings and shields as individual items or kits.",
@@ -119,7 +119,7 @@ export const productCategories: ProductCategory[] = [
       {
         question: "Are plasma consumables sold as kits?",
         answer:
-          "Kit structure, packaging and quantity should be confirmed during RFQ. Missing details are marked as To be confirmed.",
+          "Kit structure, packaging and quantity should be confirmed during RFQ based on the buyer's item list and target market.",
       },
     ],
     keywords: [
@@ -141,7 +141,7 @@ export const productCategories: ProductCategory[] = [
     seoDescription:
       "Source welding consumables including welding wires, electrodes, holders, clamps and related items for distributors, importers and repair workshops.",
     seoIntro:
-      "ARCFORT structures welding consumables for buyers who need practical product lists, repeat purchasing programs and RFQ-ready information. Exact specifications, packaging, MOQ and lead time should be confirmed before quotation.",
+      "ArcFort Weld structures welding consumables for buyers who need practical product lists, repeat purchasing programs and RFQ-ready information. Exact specifications, packaging, MOQ and lead time should be confirmed before quotation.",
     buyerGuide: [
       "Confirm welding process, material requirement, size and packaging before requesting quotation.",
       "Send product list, reference photos or existing item numbers when replacing current consumables.",
@@ -162,7 +162,7 @@ export const productCategories: ProductCategory[] = [
       {
         question: "Are consumable specifications confirmed on this site?",
         answer:
-          "Only confirmed fields should be used for quotation. Unknown fields remain marked as To be confirmed.",
+          "Only confirmed fields should be used for quotation. Unknown fields are reviewed during RFQ confirmation before final offer.",
       },
     ],
     keywords: [
@@ -184,7 +184,7 @@ export const productCategories: ProductCategory[] = [
     seoDescription:
       "Explore welding machine sourcing categories including MIG, TIG, MMA and plasma cutting machines for industrial B2B RFQs.",
     seoIntro:
-      "ARCFORT organizes welding machine content for buyers who compare process type, input requirements, application scenarios, accessory needs and delivery options. Machine parameters should be confirmed by official specification sheets before quotation.",
+      "ArcFort Weld organizes welding machine content for buyers who compare process type, input requirements, application scenarios, accessory needs and delivery options. Machine parameters should be confirmed by official specification sheets before quotation.",
     buyerGuide: [
       "Confirm welding process, input voltage, output range and target application before RFQ.",
       "Send required accessory list, destination market standards and packaging requirements.",
@@ -198,7 +198,7 @@ export const productCategories: ProductCategory[] = [
     relatedCategorySlugs: ["welding-consumables", "welding-accessories", "plasma-cutting-consumables"],
     faq: [
       {
-        question: "Can ARCFORT quote welding machines by target process?",
+        question: "Can ArcFort Weld quote welding machines by target process?",
         answer:
           "Yes. Buyers can provide MIG, TIG, MMA or plasma cutting requirements, but technical parameters must be confirmed before quotation.",
       },
@@ -227,7 +227,7 @@ export const productCategories: ProductCategory[] = [
     seoDescription:
       "Browse welding accessories such as cables, connectors, clamps and holders for B2B welding supply and repair workshop sourcing.",
     seoIntro:
-      "ARCFORT welding accessories pages help buyers organize workshop support items, accessory kits and replacement product lists. Dimensions, material, compatible equipment and packaging details should be confirmed by RFQ.",
+      "ArcFort Weld welding accessories pages help buyers organize workshop support items, accessory kits and replacement product lists. Dimensions, material, compatible equipment and packaging details should be confirmed by RFQ.",
     buyerGuide: [
       "Confirm accessory size, cable connection, current rating requirement or compatible machine model when available.",
       "Send photos or sample details for clamps, holders and connectors that must match existing products.",

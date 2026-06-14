@@ -29,7 +29,7 @@ export const guides: GuideArticle[] = [
       {
         question: "Can I submit an RFQ with incomplete information?",
         answer:
-          "Yes. Missing details can be marked as To be confirmed, but final quotation depends on confirmed product requirements.",
+          "Yes. Missing details can be clearly listed for review, but final quotation depends on confirmed product requirements.",
       },
       {
         question: "Should I include target quantity?",
@@ -96,7 +96,7 @@ export const guides: GuideArticle[] = [
       },
       {
         title: "Keep unknown data visible",
-        body: "If compatibility or OEM number is missing, mark it as To be confirmed until drawings, samples or references are reviewed.",
+        body: "If compatibility or OEM number is missing, list it clearly so drawings, samples or references can be reviewed before quotation.",
       },
     ],
     categorySlugs: ["plasma-cutting-consumables", "welding-accessories"],

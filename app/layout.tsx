@@ -11,12 +11,12 @@ export const metadata: Metadata = {
   metadataBase: new URL(siteConfig.url),
   title: {
     default: siteConfig.name,
-    template: "%s | ARCFORT",
+    template: "%s | ArcFort Weld",
   },
   description:
-    "ARCFORT provides industrial welding and cutting solutions for global distributors, importers, OEM buyers, industrial users, and repair workshops.",
+    "ArcFort Weld provides industrial welding and cutting solutions for global distributors, importers, OEM buyers, industrial users, and repair workshops.",
   keywords: [
-    "ARCFORT",
+    "ArcFort Weld",
     "welding torch parts",
     "cutting consumables",
     "MIG torch parts",

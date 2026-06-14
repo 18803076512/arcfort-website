@@ -19,11 +19,12 @@ export function Footer() {
     <footer className="bg-arc-midnight text-white">
       <div className="mx-auto grid max-w-7xl gap-10 px-4 py-12 sm:px-6 md:grid-cols-[1.1fr_0.75fr_0.9fr_0.8fr] lg:px-8">
         <div>
-          <div className="font-display text-3xl font-black">ARCFORT</div>
+          <div className="font-display text-3xl font-black">{siteConfig.shortName}</div>
           <p className="mt-4 max-w-sm text-sm leading-6 text-slate-300">
-            Industrial Welding & Cutting Solutions for distributors, importers, OEM buyers,
+            {siteConfig.tagline} for distributors, importers, OEM buyers,
             industrial users, and repair workshops.
           </p>
+          <p className="mt-4 text-xs leading-5 text-slate-400">{siteConfig.legalName}</p>
         </div>
         <div>
           <h2 className="text-sm font-bold uppercase tracking-[0.18em] text-arc-signal">
@@ -62,8 +63,14 @@ export function Footer() {
             Contact
           </h2>
           <div className="mt-4 grid gap-2 text-sm text-slate-300">
-            <p>Email: {siteConfig.email}</p>
-            <p>WhatsApp: {siteConfig.whatsapp}</p>
+            <a href={siteConfig.emailHref} className="hover:text-white">
+              Email: {siteConfig.email}
+            </a>
+            <a href={siteConfig.whatsappHref} className="hover:text-white">
+              WhatsApp: {siteConfig.whatsapp}
+            </a>
+            <p>Address: {siteConfig.address}</p>
+            <p>Main Port: {siteConfig.mainPort}</p>
             <Link href="/rfq" className="font-semibold text-white hover:text-arc-signal">
               Send Inquiry
             </Link>
@@ -71,7 +78,7 @@ export function Footer() {
         </div>
       </div>
       <div className="border-t border-white/10 px-4 py-5 text-center text-xs uppercase tracking-[0.16em] text-slate-400">
-        (c) 2026 ARCFORT Welding & Cutting Solutions
+        (c) 2026 {siteConfig.name}
       </div>
     </footer>
   );

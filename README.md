@@ -1,11 +1,12 @@
 # arcfort-website
 
-ARCFORT Welding & Cutting Solutions independent website project.
+ArcFort Weld independent website project for Renqiu Ailesen Welding Technology Co., Ltd.
 
 ## Brand
 
-- Brand name: ARCFORT
-- Full brand: ARCFORT Welding & Cutting Solutions
+- Brand name: ArcFort Weld
+- Company English name: Renqiu Ailesen Welding Technology Co., Ltd.
+- Company Chinese name: 任丘市埃勒森焊接科技有限公司
 - Positioning: Industrial Welding & Cutting Solutions
 - Audience: Global distributors, importers, OEM buyers, industrial users, and repair workshops
 
@@ -43,7 +44,7 @@ ARCFORT Welding & Cutting Solutions independent website project.
 - `lib/content/seo.ts` - metadata helper
 - `lib/content/jsonld.ts` - JSON-LD helpers for Product, BreadcrumbList, Organization, and FAQ
 
-The current mock content includes 6 product categories, 8 sample products, 6 application pages and 3 buyer guides. Missing product data is marked as `To be confirmed` instead of inventing specifications, certifications, prices, stock status, factory capacity, or customer cases.
+The current mock content includes 6 product categories, 8 sample products, 6 application pages and 3 buyer guides. Missing product data must remain explicit instead of inventing specifications, certifications, prices, stock status, factory capacity, or customer cases.
 
 ## RFQ System
 
@@ -79,6 +80,14 @@ SUPABASE_RFQ_TABLE=rfq_inquiries
 SUPABASE_RFQ_BUCKET=rfq-attachments
 ```
 
+Confirmed business information:
+
+- Business email: `arcfortweld@outlook.com`
+- WhatsApp: `+86-18803076512`
+- Address: Renqiu City, Cangzhou, Hebei Province, China
+- Main port: Tianjin Xingang Port / Tianjin Port, China
+- Alternative ports: Qingdao Port or Ningbo Port are available upon request
+
 Suggested Supabase table fields:
 
 - `name`
@@ -106,7 +115,7 @@ Suggested Supabase table fields:
 ## Contact Page
 
 - Uses B2B inquiry-focused content for welding and cutting sourcing
-- Uses `To be confirmed` for email and WhatsApp until official contact details are confirmed
+- Uses confirmed email, WhatsApp, company address and export inquiry information
 - Links buyers to `/rfq` for product lists, drawings, quantities and packaging requirements
 
 ## Product Lines

@@ -8,7 +8,7 @@ export const applications: ApplicationPage[] = [
     description:
       "Welding and plasma cutting consumables for shipbuilding repair, fabrication and maintenance sourcing programs.",
     seoDescription:
-      "Explore ARCFORT welding torch parts, plasma cutting consumables and accessories for shipbuilding-related sourcing and RFQ preparation.",
+      "Explore ArcFort Weld welding torch parts, plasma cutting consumables and accessories for shipbuilding-related sourcing and RFQ preparation.",
     overview:
       "Shipbuilding buyers often need organized consumable lists for welding, repair and cutting workflows. Product fit, packaging, MOQ and delivery must be confirmed before quotation.",
     industries: ["Ship repair", "Marine fabrication", "Steel structure workshops"],
@@ -58,7 +58,7 @@ export const applications: ApplicationPage[] = [
           "Yes. Mixed product lists can be submitted through the RFQ form with quantity and packaging requirements.",
       },
       {
-        question: "Can ARCFORT confirm compatibility by torch model?",
+        question: "Can ArcFort Weld confirm compatibility by torch model?",
         answer:
           "Compatibility can be reviewed when buyers provide torch model, reference number, drawing or sample details.",
       },
@@ -74,7 +74,7 @@ export const applications: ApplicationPage[] = [
     seoDescription:
       "Prepare pipeline welding RFQs with welding consumables, accessories and confirmed technical requirements for B2B sourcing.",
     overview:
-      "Pipeline-related inquiries should be based on confirmed process, material, quantity, application and project requirements. Unconfirmed values remain To be confirmed.",
+      "Pipeline-related inquiries should be based on confirmed process, material, quantity, application and project requirements. Missing technical values should be confirmed during RFQ review.",
     industries: ["Pipeline construction", "Field repair", "Industrial maintenance"],
     buyerNeeds: [
       "Consumable sourcing by process and application",
@@ -156,7 +156,7 @@ export const applications: ApplicationPage[] = [
       {
         question: "Are delivery times listed?",
         answer:
-          "Lead time is marked To be confirmed until product details and order quantity are confirmed.",
+          "Lead time depends on product details, order quantity, packaging requirements and current production schedule.",
       },
     ],
     keywords: ["construction welding accessories", "welding clamps", "welding consumables"],
@@ -170,7 +170,7 @@ export const applications: ApplicationPage[] = [
     seoDescription:
       "Source repair workshop welding supplies including MIG/MAG parts, TIG parts, accessories and plasma cutting consumables.",
     overview:
-      "Repair workshops often need broad but practical product coverage. ARCFORT pages are structured so buyers can prepare mixed RFQ lists with confirmed details.",
+      "Repair workshops often need broad but practical product coverage. ArcFort Weld pages are structured so buyers can prepare mixed RFQ lists with confirmed details.",
     industries: ["Repair workshops", "Maintenance teams", "Distributor counters"],
     buyerNeeds: [
       "Mixed consumable and accessory product lists",

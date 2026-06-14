@@ -1,6 +1,5 @@
 import Link from "next/link";
 import type { Product, ProductCategory } from "@/lib/content/schemas";
-import { TO_BE_CONFIRMED } from "@/lib/content/schemas";
 import { Breadcrumbs } from "@/components/content/Breadcrumbs";
 import { CompatibilityTable } from "@/components/content/CompatibilityTable";
 import { FaqSection } from "@/components/content/FaqSection";
@@ -8,6 +7,8 @@ import { ProductCard } from "@/components/content/ProductCard";
 import { ProductVisual } from "@/components/content/ProductVisual";
 import { RfqCta } from "@/components/content/RfqCta";
 import { SpecificationTable } from "@/components/content/SpecificationTable";
+import { displayConfirmedValue } from "@/lib/content/display";
+import { siteConfig } from "@/lib/content/site";
 
 type RelatedProduct = {
   product: Product;
@@ -57,7 +58,9 @@ export function ProductDetailTemplate({
                   <div className="text-xs font-bold uppercase tracking-[0.16em] text-slate-500">
                     SKU
                   </div>
-                  <div className="mt-1 font-semibold text-arc-midnight">{product.sku}</div>
+                  <div className="mt-1 font-semibold text-arc-midnight">
+                    {displayConfirmedValue(product.sku, "Confirm with product details")}
+                  </div>
                 </div>
                 <div>
                   <div className="text-xs font-bold uppercase tracking-[0.16em] text-slate-500">
@@ -81,7 +84,7 @@ export function ProductDetailTemplate({
                   Add to RFQ
                 </Link>
                 <Link
-                  href="/contact"
+                  href={siteConfig.whatsappHref}
                   className="inline-flex items-center justify-center border border-slate-300 px-5 py-3 text-sm font-bold uppercase tracking-[0.14em] text-slate-700 transition hover:border-arc-midnight hover:bg-arc-midnight hover:text-white"
                 >
                   WhatsApp
@@ -91,8 +94,8 @@ export function ProductDetailTemplate({
               {product.missingFields.length > 0 ? (
                 <div className="mt-6 border-l-4 border-arc-signal bg-white p-4 shadow-sm">
                   <p className="text-sm font-semibold leading-6 text-slate-700">
-                    Missing data: {product.missingFields.join(", ")}. These fields are marked as{" "}
-                    {TO_BE_CONFIRMED} until confirmed by drawing, sample or model reference.
+                    RFQ confirmation needed: {product.missingFields.join(", ")}. These fields will
+                    be confirmed by drawing, sample, product list or model reference.
                   </p>
                 </div>
               ) : null}
@@ -138,7 +141,7 @@ export function ProductDetailTemplate({
                   Package
                 </div>
                 <div className="mt-1 text-sm font-semibold text-arc-midnight">
-                  {product.packaging}
+                  {displayConfirmedValue(product.packaging)}
                 </div>
               </div>
               <div className="grid gap-3 sm:grid-cols-2">
@@ -146,14 +149,16 @@ export function ProductDetailTemplate({
                   <div className="text-xs font-bold uppercase tracking-[0.16em] text-slate-500">
                     MOQ
                   </div>
-                  <div className="mt-1 text-sm font-semibold text-arc-midnight">{product.moq}</div>
+                  <div className="mt-1 text-sm font-semibold text-arc-midnight">
+                    {displayConfirmedValue(product.moq)}
+                  </div>
                 </div>
                 <div className="border border-slate-100 bg-slate-50 p-4">
                   <div className="text-xs font-bold uppercase tracking-[0.16em] text-slate-500">
                     Lead Time
                   </div>
                   <div className="mt-1 text-sm font-semibold text-arc-midnight">
-                    {product.leadTime}
+                    {displayConfirmedValue(product.leadTime)}
                   </div>
                 </div>
               </div>
@@ -164,7 +169,7 @@ export function ProductDetailTemplate({
               disabled
               className="mt-6 inline-flex cursor-not-allowed items-center justify-center bg-slate-200 px-5 py-3 text-sm font-bold uppercase tracking-[0.14em] text-slate-500"
             >
-              PDF Catalog To be confirmed
+              PDF Catalog Available by RFQ
             </button>
           </article>
         </div>

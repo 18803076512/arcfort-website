@@ -1,4 +1,5 @@
 import type { SpecRow } from "@/lib/content/schemas";
+import { displayConfirmedValue } from "@/lib/content/display";
 
 type SpecificationTableProps = {
   rows: SpecRow[];
@@ -18,7 +19,7 @@ export function SpecificationTable({ rows, title = "Specification Table" }: Spec
                   {row.label}
                 </th>
                 <td className="px-4 py-3 text-slate-700">
-                  {row.value}
+                  {displayConfirmedValue(row.value)}
                   {row.note ? <span className="ml-2 text-slate-400">{row.note}</span> : null}
                 </td>
               </tr>

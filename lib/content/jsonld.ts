@@ -22,8 +22,27 @@ export function organizationJsonLd() {
     "@type": "Organization",
     name: siteConfig.name,
     legalName: siteConfig.legalName,
+    alternateName: [siteConfig.shortName, siteConfig.chineseName],
     url: siteConfig.url,
+    email: siteConfig.email,
+    telephone: siteConfig.whatsapp,
     description: siteConfig.description,
+    address: {
+      "@type": "PostalAddress",
+      streetAddress: siteConfig.address,
+      addressLocality: "Renqiu City",
+      addressRegion: "Hebei Province",
+      addressCountry: "CN",
+    },
+    contactPoint: [
+      {
+        "@type": "ContactPoint",
+        contactType: "sales",
+        email: siteConfig.email,
+        telephone: siteConfig.whatsapp,
+        availableLanguage: ["English", "Chinese"],
+      },
+    ],
     brand: {
       "@type": "Brand",
       name: siteConfig.shortName,

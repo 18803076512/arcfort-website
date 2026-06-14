@@ -2,6 +2,7 @@ import { Breadcrumbs } from "@/components/content/Breadcrumbs";
 import { StructuredData } from "@/components/content/StructuredData";
 import { breadcrumbJsonLd } from "@/lib/content/jsonld";
 import { buildMetadata } from "@/lib/content/seo";
+import { siteConfig } from "@/lib/content/site";
 import { RfqForm } from "./RfqForm";
 
 type RfqPageProps = {
@@ -24,10 +25,19 @@ const processSteps = [
   "Discuss MOQ and delivery",
 ];
 
+const rfqBusinessInfo = [
+  { label: "Business Email", value: siteConfig.email, href: siteConfig.emailHref },
+  { label: "WhatsApp", value: siteConfig.whatsapp, href: siteConfig.whatsappHref },
+  { label: "Main Port", value: siteConfig.mainPort },
+  { label: "MOQ Policy", value: siteConfig.moqPolicy },
+  { label: "Lead Time", value: siteConfig.leadTime },
+  { label: "Payment Terms", value: siteConfig.paymentTerms },
+];
+
 export const metadata = buildMetadata({
   title: "Request a Quote",
   description:
-    "Submit an RFQ to ARCFORT for MIG/MAG torch parts, TIG torch parts, plasma cutting consumables, welding accessories and industrial sourcing programs.",
+    "Submit an RFQ to ArcFort Weld for MIG/MAG torch parts, TIG torch parts, plasma cutting consumables, welding accessories and industrial sourcing programs.",
   path: "/rfq",
   keywords: [
     "welding RFQ",
@@ -62,7 +72,7 @@ export default async function RfqPage({ searchParams }: RfqPageProps) {
                 Request a Quote
               </h1>
               <p className="mt-5 text-lg leading-8 text-slate-600">
-                Send us your product list, drawings or sample details. ARCFORT will provide
+                Send us your product list, drawings or sample details. ArcFort Weld will provide
                 quotation, MOQ and delivery options after technical confirmation.
               </p>
 
@@ -89,6 +99,31 @@ export default async function RfqPage({ searchParams }: RfqPageProps) {
                     <div className="mt-2 font-semibold text-arc-midnight">{step}</div>
                   </div>
                 ))}
+              </div>
+
+              <div className="mt-6 border border-slate-200 bg-white p-5 shadow-sm">
+                <h2 className="font-display text-2xl font-black text-arc-midnight">
+                  Business Information
+                </h2>
+                <div className="mt-5 grid gap-4">
+                  {rfqBusinessInfo.map((item) => (
+                    <div key={item.label} className="border-l-4 border-arc-signal bg-arc-frost p-4">
+                      <div className="text-xs font-bold uppercase tracking-[0.16em] text-arc-blue">
+                        {item.label}
+                      </div>
+                      {item.href ? (
+                        <a
+                          href={item.href}
+                          className="mt-2 block text-sm font-semibold leading-6 text-arc-midnight hover:text-arc-blue"
+                        >
+                          {item.value}
+                        </a>
+                      ) : (
+                        <p className="mt-2 text-sm leading-6 text-slate-700">{item.value}</p>
+                      )}
+                    </div>
+                  ))}
+                </div>
               </div>
             </div>
 

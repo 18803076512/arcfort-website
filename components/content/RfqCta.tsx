@@ -8,7 +8,7 @@ type RfqCtaProps = {
 
 export function RfqCta({
   title = "Need a reliable welding parts supplier?",
-  description = "Send your product list, drawings or sample details. ARCFORT will respond with quotation, MOQ and delivery options after confirmation.",
+  description = "Send your product list, drawings or sample details. ArcFort Weld will respond with quotation, MOQ and delivery options after confirmation.",
   productName,
 }: RfqCtaProps) {
   const rfqHref = productName ? `/rfq?product=${encodeURIComponent(productName)}` : "/rfq";

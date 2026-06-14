@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { siteConfig } from "@/lib/content/site";
 
 const supplyItems = [
   "MIG Torch Parts",
@@ -16,6 +17,21 @@ const advantages = [
   "OEM & Customization",
   "Fast Delivery",
   "Global Support",
+] as const;
+
+const companyFacts = [
+  { label: "English Name", value: siteConfig.legalName },
+  { label: "Chinese Name", value: siteConfig.chineseName },
+  { label: "Website Brand", value: siteConfig.name },
+  { label: "Address", value: siteConfig.address },
+] as const;
+
+const exportServiceItems = [
+  { title: "Main Port", description: `${siteConfig.mainPort}. ${siteConfig.alternativePorts}` },
+  { title: "Payment Terms", description: siteConfig.paymentTerms },
+  { title: "MOQ Policy", description: siteConfig.moqPolicy },
+  { title: "Lead Time", description: siteConfig.leadTime },
+  { title: "OEM Service", description: siteConfig.oemService },
 ] as const;
 
 const qualitySteps = [
@@ -42,9 +58,9 @@ const qualitySteps = [
 ] as const;
 
 export const metadata: Metadata = {
-  title: "About ARCFORT",
+  title: "About ArcFort Weld",
   description:
-    "Learn about ARCFORT Welding & Cutting Solutions, a reliable supplier of industrial welding and cutting solutions for global distributors and industrial users.",
+    "Learn about ArcFort Weld and Renqiu Ailesen Welding Technology Co., Ltd., a supplier of industrial welding and cutting solutions for global distributors and industrial users.",
 };
 
 export default function AboutPage() {
@@ -54,10 +70,10 @@ export default function AboutPage() {
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="max-w-4xl">
             <p className="text-sm font-bold uppercase tracking-[0.2em] text-arc-signal">
-              ARCFORT Welding & Cutting Solutions
+              {siteConfig.name}
             </p>
             <h1 className="mt-3 font-display text-4xl font-black leading-tight sm:text-5xl">
-              About ARCFORT
+              About ArcFort Weld
             </h1>
             <p className="mt-5 max-w-3xl text-lg leading-8 text-slate-300">
               A reliable supplier of industrial welding and cutting solutions for global
@@ -82,14 +98,25 @@ export default function AboutPage() {
           </div>
           <div className="space-y-5 text-base leading-8 text-slate-600">
             <p>
-              ARCFORT Welding & Cutting Solutions focuses on industrial welding and cutting product
-              supply, including MIG, TIG, Plasma, welding consumables and industrial accessories.
+              {siteConfig.legalName} operates the {siteConfig.name} website brand for industrial
+              welding and cutting product supply, including MIG, TIG, Plasma, welding consumables
+              and industrial accessories.
             </p>
             <p>
               The brand is built for global distributors, importers, OEM buyers, industrial users
               and repair workshops that need reliable product categories, clear inquiry handling and
               repeatable supply support.
             </p>
+            <div className="grid gap-3 sm:grid-cols-2">
+              {companyFacts.map((fact) => (
+                <div key={fact.label} className="border border-slate-200 bg-slate-50 p-4">
+                  <div className="text-xs font-bold uppercase tracking-[0.16em] text-arc-blue">
+                    {fact.label}
+                  </div>
+                  <div className="mt-2 text-sm font-semibold text-arc-midnight">{fact.value}</div>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </section>
@@ -172,11 +199,35 @@ export default function AboutPage() {
         </div>
       </section>
 
+      <section className="bg-white py-16 sm:py-20" aria-labelledby="export-service">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="max-w-2xl">
+            <p className="text-sm font-bold uppercase tracking-[0.2em] text-arc-blue">
+              Export Service
+            </p>
+            <h2
+              id="export-service"
+              className="mt-3 font-display text-3xl font-black text-arc-midnight sm:text-4xl"
+            >
+              Clear trade terms for overseas B2B buyers.
+            </h2>
+          </div>
+          <div className="mt-10 grid gap-5 md:grid-cols-2">
+            {exportServiceItems.map((item) => (
+              <article key={item.title} className="border border-slate-200 bg-white p-6 shadow-sm">
+                <h3 className="font-display text-xl font-black text-arc-midnight">{item.title}</h3>
+                <p className="mt-3 text-sm leading-7 text-slate-600">{item.description}</p>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+
       <section className="bg-arc-midnight py-16 text-white sm:py-20">
         <div className="mx-auto flex max-w-7xl flex-col gap-8 px-4 sm:px-6 md:flex-row md:items-center md:justify-between lg:px-8">
           <div>
             <p className="text-sm font-bold uppercase tracking-[0.2em] text-arc-signal">
-              Work With ARCFORT
+              Work With {siteConfig.name}
             </p>
             <h2 className="mt-3 font-display text-3xl font-black sm:text-4xl">
               Need a welding parts supplier?
