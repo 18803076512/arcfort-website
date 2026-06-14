@@ -1,6 +1,10 @@
 import { TO_BE_CONFIRMED, type Product, type SpecRow } from "@/lib/content/schemas";
 
-const coreMissingFields = [
+const moqPolicy = "Small trial orders accepted for standard torch parts and welding consumables.";
+const leadTimePolicy = "Usually 7-20 working days after deposit confirmation for regular orders.";
+
+const packagingMissingFields = ["SKU", "Material", "Compatible Brand", "OEM Number", "Package"];
+const fullMissingFields = [
   "SKU",
   "Material",
   "Size",
@@ -8,180 +12,409 @@ const coreMissingFields = [
   "Compatible Brand",
   "OEM Number",
   "Package",
-  "MOQ",
-  "Lead Time",
 ];
 
-const equipmentMissingFields = [
-  "SKU",
-  "Input Voltage",
-  "Output Current",
-  "Duty Cycle",
-  "Cooling",
-  "Compatible Accessories",
-  "Package",
-  "MOQ",
-  "Lead Time",
-];
-
-function createCoreSpecifications(): SpecRow[] {
+function createConsumableSpecifications({
+  size = TO_BE_CONFIRMED,
+  thread = TO_BE_CONFIRMED,
+  compatibleBrand = TO_BE_CONFIRMED,
+}: {
+  size?: string;
+  thread?: string;
+  compatibleBrand?: string;
+} = {}): SpecRow[] {
   return [
     { label: "Material", value: TO_BE_CONFIRMED },
-    { label: "Size", value: TO_BE_CONFIRMED },
-    { label: "Thread", value: TO_BE_CONFIRMED },
-    { label: "Compatible Brand", value: TO_BE_CONFIRMED },
+    { label: "Size", value: size },
+    { label: "Thread", value: thread },
+    { label: "Compatible Brand", value: compatibleBrand },
     { label: "OEM Number", value: TO_BE_CONFIRMED },
     { label: "Package", value: TO_BE_CONFIRMED },
-    { label: "MOQ", value: TO_BE_CONFIRMED },
-    { label: "Lead Time", value: TO_BE_CONFIRMED },
-  ];
-}
-
-function createEquipmentSpecifications(): SpecRow[] {
-  return [
-    { label: "Input Voltage", value: TO_BE_CONFIRMED },
-    { label: "Output Current", value: TO_BE_CONFIRMED },
-    { label: "Duty Cycle", value: TO_BE_CONFIRMED },
-    { label: "Cooling", value: TO_BE_CONFIRMED },
-    { label: "Compatible Accessories", value: TO_BE_CONFIRMED },
-    { label: "Package", value: TO_BE_CONFIRMED },
-    { label: "MOQ", value: TO_BE_CONFIRMED },
-    { label: "Lead Time", value: TO_BE_CONFIRMED },
+    { label: "MOQ", value: moqPolicy },
+    { label: "Lead Time", value: leadTimePolicy },
   ];
 }
 
 export const products: Product[] = [
   {
-    slug: "mig-contact-tip",
-    title: "MIG Contact Tip",
+    slug: "mig-contact-tip-m6-08mm",
+    title: "MIG Contact Tip M6 0.8mm",
     sku: TO_BE_CONFIRMED,
     categorySlug: "mig-mag-torch-parts",
     kind: "welding-consumable",
     process: "MIG/MAG",
-    consumableFamily: "Contact tip",
+    consumableFamily: "MIG contact tip",
     shortDescription:
-      "MIG/MAG contact tip for welding torch consumable sourcing and distributor RFQ programs.",
+      "MIG contact tip with M6 thread and 0.8mm size for distributor and workshop RFQ programs.",
     description:
-      "This MIG/MAG contact tip page is prepared as a scalable product template for industrial buyers. Exact material, size, thread and compatible torch information should be confirmed by drawing, sample, reference number or target torch model.",
-    imageLabel: "MIG",
-    keywords: ["MIG contact tip", "MIG/MAG contact tip", "welding contact tip"],
-    specifications: createCoreSpecifications(),
+      "MIG Contact Tip M6 0.8mm is prepared for buyers sourcing MIG/MAG torch consumables by thread and wire size. Material, compatible brand, OEM number, packaging and exact order terms should be confirmed by product list, drawing, sample or torch model before quotation.",
+    imageLabel: "M6 0.8",
+    keywords: ["MIG Contact Tip M6 0.8mm", "MIG contact tip 0.8mm", "M6 welding contact tip"],
+    specifications: createConsumableSpecifications({ size: "0.8mm", thread: "M6" }),
     compatibility: [
+      { label: "Process", value: "MIG/MAG" },
+      { label: "Wire Size", value: "0.8mm" },
+      { label: "Thread", value: "M6" },
       { label: "Torch Series", value: TO_BE_CONFIRMED },
-      { label: "Compatible Brand", value: TO_BE_CONFIRMED },
-      { label: "Reference Number", value: TO_BE_CONFIRMED },
+    ],
+    applications: ["Metal fabrication", "Automotive repair", "Repair workshop"],
+    features: [
+      "Confirmed M6 thread and 0.8mm size",
+      "Suitable for MIG/MAG torch consumable RFQ lists",
+      "Compatible torch information should be confirmed before quotation",
+    ],
+    packaging: TO_BE_CONFIRMED,
+    moq: moqPolicy,
+    leadTime: leadTimePolicy,
+    faq: [
+      {
+        question: "What should buyers send for MIG Contact Tip M6 0.8mm quotation?",
+        answer:
+          "Send required quantity, torch model, compatible reference number, package request and destination country.",
+      },
+      {
+        question: "Is the material confirmed for this contact tip?",
+        answer:
+          "Material is not listed until confirmed by product specification, drawing or sample.",
+      },
+    ],
+    relatedProductSlugs: [
+      "mig-contact-tip-m6-10mm",
+      "mig-contact-tip-m6-12mm",
+      "mig-tip-holder-mb15",
+    ],
+    missingFields: packagingMissingFields,
+  },
+  {
+    slug: "mig-contact-tip-m6-10mm",
+    title: "MIG Contact Tip M6 1.0mm",
+    sku: TO_BE_CONFIRMED,
+    categorySlug: "mig-mag-torch-parts",
+    kind: "welding-consumable",
+    process: "MIG/MAG",
+    consumableFamily: "MIG contact tip",
+    shortDescription:
+      "MIG contact tip with M6 thread and 1.0mm size for industrial welding consumable sourcing.",
+    description:
+      "MIG Contact Tip M6 1.0mm helps buyers prepare a clear RFQ by identifying the known thread and size in the product title. Material, compatible torch series, OEM number and packaging should be confirmed before final quotation.",
+    imageLabel: "M6 1.0",
+    keywords: ["MIG Contact Tip M6 1.0mm", "MIG contact tip 1.0mm", "M6 contact tip"],
+    specifications: createConsumableSpecifications({ size: "1.0mm", thread: "M6" }),
+    compatibility: [
+      { label: "Process", value: "MIG/MAG" },
+      { label: "Wire Size", value: "1.0mm" },
+      { label: "Thread", value: "M6" },
+      { label: "Torch Series", value: TO_BE_CONFIRMED },
     ],
     applications: ["Metal fabrication", "Automotive repair", "Industrial maintenance"],
     features: [
-      "Structured for repeat RFQ and SKU expansion",
-      "Suitable for distributor product list organization",
-      "Technical fit should be confirmed before quotation",
+      "Confirmed M6 thread and 1.0mm size",
+      "Prepared for distributor SKU expansion",
+      "Works well in mixed MIG/MAG consumable inquiry lists",
     ],
     packaging: TO_BE_CONFIRMED,
-    moq: TO_BE_CONFIRMED,
-    leadTime: TO_BE_CONFIRMED,
+    moq: moqPolicy,
+    leadTime: leadTimePolicy,
     faq: [
       {
-        question: "How should I confirm the correct MIG contact tip?",
+        question: "Can this M6 1.0mm contact tip be quoted with other sizes?",
         answer:
-          "Send the wire size, thread, torch model, reference number, drawing or sample details so ArcFort Weld can confirm the requested item.",
+          "Yes. Buyers can include 0.8mm, 1.0mm and 1.2mm contact tips in one RFQ list with quantities.",
       },
       {
-        question: "Can this product be added to an RFQ list?",
+        question: "What compatibility details are needed?",
         answer:
-          "Yes. Add the product name and required quantity to the RFQ form, then attach drawings or product lists if available.",
+          "Torch model, sample photo, drawing or reference number helps confirm compatibility before quotation.",
       },
     ],
-    relatedProductSlugs: ["mig-gas-nozzle", "tig-ceramic-cup", "plasma-electrode"],
-    missingFields: coreMissingFields,
+    relatedProductSlugs: [
+      "mig-contact-tip-m6-08mm",
+      "mig-contact-tip-m6-12mm",
+      "mig-gas-nozzle-mb15",
+    ],
+    missingFields: packagingMissingFields,
   },
   {
-    slug: "mig-gas-nozzle",
-    title: "MIG Gas Nozzle",
+    slug: "mig-contact-tip-m6-12mm",
+    title: "MIG Contact Tip M6 1.2mm",
     sku: TO_BE_CONFIRMED,
     categorySlug: "mig-mag-torch-parts",
     kind: "welding-consumable",
     process: "MIG/MAG",
-    consumableFamily: "Gas nozzle",
+    consumableFamily: "MIG contact tip",
     shortDescription:
-      "MIG/MAG gas nozzle for welding torch replacement part programs and industrial supply channels.",
+      "MIG contact tip with M6 thread and 1.2mm size for MIG/MAG torch consumable purchasing.",
     description:
-      "This MIG/MAG gas nozzle entry provides a buyer-friendly structure for sourcing, comparison and RFQ preparation. Dimensions, material, compatible torch series and package details should be confirmed before quotation.",
-    imageLabel: "NOZ",
-    keywords: ["MIG gas nozzle", "MIG/MAG nozzle", "welding torch nozzle"],
-    specifications: createCoreSpecifications(),
+      "MIG Contact Tip M6 1.2mm is part of the first ArcFort Weld welding consumable SKU set. Buyers should confirm material, compatible torch series, OEM number, packaging and quantity before final offer.",
+    imageLabel: "M6 1.2",
+    keywords: ["MIG Contact Tip M6 1.2mm", "MIG contact tip 1.2mm", "MIG welding tip M6"],
+    specifications: createConsumableSpecifications({ size: "1.2mm", thread: "M6" }),
     compatibility: [
+      { label: "Process", value: "MIG/MAG" },
+      { label: "Wire Size", value: "1.2mm" },
+      { label: "Thread", value: "M6" },
       { label: "Torch Series", value: TO_BE_CONFIRMED },
+    ],
+    applications: ["Metal fabrication", "Construction", "Repair workshop"],
+    features: [
+      "Confirmed M6 thread and 1.2mm size",
+      "Useful for distributor consumable assortments",
+      "RFQ-ready page structure for future SKU expansion",
+    ],
+    packaging: TO_BE_CONFIRMED,
+    moq: moqPolicy,
+    leadTime: leadTimePolicy,
+    faq: [
+      {
+        question: "Is this contact tip suitable for all MIG torches?",
+        answer:
+          "No. Compatibility should be confirmed by torch model, reference number, drawing or sample.",
+      },
+      {
+        question: "Can ArcFort Weld quote private label packaging?",
+        answer:
+          "Yes. Logo printing, private label packaging and carton design can be discussed during RFQ.",
+      },
+    ],
+    relatedProductSlugs: [
+      "mig-contact-tip-m6-08mm",
+      "mig-contact-tip-m6-10mm",
+      "mig-tip-holder-mb15",
+    ],
+    missingFields: packagingMissingFields,
+  },
+  {
+    slug: "mig-tip-holder-mb15",
+    title: "MIG Tip Holder for MB15",
+    sku: TO_BE_CONFIRMED,
+    categorySlug: "mig-mag-torch-parts",
+    kind: "welding-consumable",
+    process: "MIG/MAG",
+    consumableFamily: "MIG tip holder",
+    shortDescription:
+      "MIG tip holder for MB15 torch consumable sourcing, repair and distributor RFQ lists.",
+    description:
+      "MIG Tip Holder for MB15 is prepared for buyers sourcing MB15-related MIG/MAG torch parts. Exact material, thread, compatible brand, OEM number and packaging should be confirmed by sample, drawing or reference number.",
+    imageLabel: "MB15",
+    keywords: ["MIG Tip Holder for MB15", "MB15 tip holder", "MIG contact tip holder"],
+    specifications: createConsumableSpecifications({ size: "For MB15" }),
+    compatibility: [
+      { label: "Process", value: "MIG/MAG" },
+      { label: "Torch Series", value: "MB15" },
       { label: "Compatible Brand", value: TO_BE_CONFIRMED },
       { label: "Reference Number", value: TO_BE_CONFIRMED },
     ],
-    applications: ["Metal fabrication", "Repair workshops", "Welding distributor supply"],
+    applications: ["Repair workshop", "Metal fabrication", "Welding distributor supply"],
     features: [
-      "Prepared for product grid and catalog expansion",
-      "Useful for distributor and repair channel RFQs",
-      "Specific fit information is confirmed by torch model, sample or reference number",
+      "Prepared for MB15 torch consumable inquiries",
+      "Can be quoted together with contact tips and gas nozzles",
+      "Sample or drawing confirmation recommended for accurate matching",
     ],
     packaging: TO_BE_CONFIRMED,
-    moq: TO_BE_CONFIRMED,
-    leadTime: TO_BE_CONFIRMED,
+    moq: moqPolicy,
+    leadTime: leadTimePolicy,
     faq: [
       {
-        question: "What information is needed for MIG gas nozzle quotation?",
+        question: "What details are needed for MIG Tip Holder for MB15?",
         answer:
-          "Please provide torch model, nozzle shape, size, reference number, quantity and packaging requirement.",
+          "Send quantity, sample photo, drawing, reference number and packaging requirements when available.",
       },
       {
-        question: "Can ArcFort Weld quote by product photo?",
+        question: "Can this be included in an MB15 consumable set?",
         answer:
-          "A product photo can help initial checking, but drawings, samples or confirmed reference numbers are recommended for accurate quotation.",
+          "Yes. Buyers can request contact tips, tip holders and gas nozzles together in one RFQ.",
       },
     ],
-    relatedProductSlugs: ["mig-contact-tip", "tig-ceramic-cup", "plasma-nozzle"],
-    missingFields: coreMissingFields,
+    relatedProductSlugs: [
+      "mig-contact-tip-m6-08mm",
+      "mig-contact-tip-m6-10mm",
+      "mig-gas-nozzle-mb15",
+    ],
+    missingFields: ["SKU", "Material", "Thread", "Compatible Brand", "OEM Number", "Package"],
   },
   {
-    slug: "tig-ceramic-cup",
-    title: "TIG Ceramic Cup",
+    slug: "mig-gas-nozzle-mb15",
+    title: "MIG Gas Nozzle for MB15",
+    sku: TO_BE_CONFIRMED,
+    categorySlug: "mig-mag-torch-parts",
+    kind: "welding-consumable",
+    process: "MIG/MAG",
+    consumableFamily: "MIG gas nozzle",
+    shortDescription:
+      "MIG gas nozzle for MB15 torch replacement, welding repair and distributor sourcing programs.",
+    description:
+      "MIG Gas Nozzle for MB15 is a key MIG/MAG torch consumable for replacement and distributor programs. Nozzle material, shape, compatible brand, OEM number and packaging should be confirmed before quotation.",
+    imageLabel: "MB15",
+    keywords: ["MIG Gas Nozzle for MB15", "MB15 gas nozzle", "MIG welding nozzle"],
+    specifications: createConsumableSpecifications({ size: "For MB15" }),
+    compatibility: [
+      { label: "Process", value: "MIG/MAG" },
+      { label: "Torch Series", value: "MB15" },
+      { label: "Compatible Brand", value: TO_BE_CONFIRMED },
+      { label: "Reference Number", value: TO_BE_CONFIRMED },
+    ],
+    applications: ["Metal fabrication", "Automotive repair", "Repair workshop"],
+    features: [
+      "Prepared for MB15 torch consumable sourcing",
+      "Suitable for mixed distributor RFQ lists",
+      "Nozzle shape and dimensions should be confirmed before quotation",
+    ],
+    packaging: TO_BE_CONFIRMED,
+    moq: moqPolicy,
+    leadTime: leadTimePolicy,
+    faq: [
+      {
+        question: "What information helps confirm an MB15 gas nozzle?",
+        answer:
+          "Send torch series, nozzle photo, sample, drawing, reference number, quantity and packaging request.",
+      },
+      {
+        question: "Can MB15 gas nozzles be quoted with contact tips?",
+        answer:
+          "Yes. Contact tips, tip holders and gas nozzles can be quoted together as a MIG/MAG torch parts list.",
+      },
+    ],
+    relatedProductSlugs: [
+      "mig-tip-holder-mb15",
+      "mig-contact-tip-m6-08mm",
+      "mig-contact-tip-m6-10mm",
+    ],
+    missingFields: ["SKU", "Material", "Thread", "Compatible Brand", "OEM Number", "Package"],
+  },
+  {
+    slug: "tig-ceramic-cup-5",
+    title: "TIG Ceramic Cup #5",
     sku: TO_BE_CONFIRMED,
     categorySlug: "tig-torch-parts",
     kind: "welding-consumable",
     process: "TIG",
-    consumableFamily: "Ceramic cup",
+    consumableFamily: "TIG ceramic cup",
     shortDescription:
-      "TIG ceramic cup for TIG torch consumable sourcing, replacement programs and repair workshops.",
+      "TIG ceramic cup #5 for TIG torch consumable sourcing, replacement and repair workshop RFQs.",
     description:
-      "This TIG ceramic cup product template is designed for scalable B2B content. Cup size, torch series, package quantity and compatible references should be confirmed by product list, sample or drawing before quotation.",
-    imageLabel: "TIG",
-    keywords: ["TIG ceramic cup", "TIG torch cup", "ceramic nozzle"],
-    specifications: createCoreSpecifications(),
+      "TIG Ceramic Cup #5 is prepared for TIG torch parts buyers who source ceramic cups by cup size. Torch series, material details, OEM number, package and quantity should be confirmed before quotation.",
+    imageLabel: "TIG #5",
+    keywords: ["TIG Ceramic Cup #5", "TIG cup number 5", "TIG ceramic nozzle #5"],
+    specifications: createConsumableSpecifications({ size: "#5" }),
     compatibility: [
+      { label: "Process", value: "TIG" },
+      { label: "Cup Size", value: "#5" },
       { label: "Torch Series", value: TO_BE_CONFIRMED },
       { label: "Tungsten Size", value: TO_BE_CONFIRMED },
-      { label: "Reference Number", value: TO_BE_CONFIRMED },
     ],
-    applications: ["Precision TIG welding", "Repair workshops", "Fabrication shops"],
+    applications: ["Precision TIG welding", "Metal fabrication", "Repair workshop"],
     features: [
-      "Fits structured TIG parts category pages",
-      "Ready for specification and compatibility expansion",
-      "Supports RFQ workflows with drawings or samples",
+      "Confirmed TIG ceramic cup size #5",
+      "Prepared for TIG torch part SKU expansion",
+      "Torch series should be confirmed before quotation",
     ],
     packaging: TO_BE_CONFIRMED,
-    moq: TO_BE_CONFIRMED,
-    leadTime: TO_BE_CONFIRMED,
+    moq: moqPolicy,
+    leadTime: leadTimePolicy,
     faq: [
       {
-        question: "Which TIG ceramic cup size should I request?",
+        question: "What should buyers send for TIG Ceramic Cup #5?",
         answer:
-          "Please send the required cup size, torch series, tungsten size or reference number for confirmation.",
+          "Send torch series, quantity, package request, reference number or sample photo when available.",
       },
       {
-        question: "Can packaging be customized?",
+        question: "Can TIG ceramic cups be customized for packaging?",
         answer:
-          "Packaging can be discussed after item details, quantity and branding requirements are confirmed.",
+          "Private label packaging and carton design can be discussed after quantity and product details are confirmed.",
       },
     ],
-    relatedProductSlugs: ["mig-contact-tip", "plasma-electrode", "plasma-nozzle"],
-    missingFields: coreMissingFields,
+    relatedProductSlugs: ["tig-ceramic-cup-6", "tig-gas-lens-16mm", "mig-contact-tip-m6-08mm"],
+    missingFields: ["SKU", "Material", "Thread", "Compatible Brand", "OEM Number", "Package"],
+  },
+  {
+    slug: "tig-ceramic-cup-6",
+    title: "TIG Ceramic Cup #6",
+    sku: TO_BE_CONFIRMED,
+    categorySlug: "tig-torch-parts",
+    kind: "welding-consumable",
+    process: "TIG",
+    consumableFamily: "TIG ceramic cup",
+    shortDescription:
+      "TIG ceramic cup #6 for TIG torch consumable replacement, distributor lists and RFQ programs.",
+    description:
+      "TIG Ceramic Cup #6 is included in the first ArcFort Weld TIG torch part SKU set. Buyers should confirm torch series, OEM reference, packaging, quantity and destination before quotation.",
+    imageLabel: "TIG #6",
+    keywords: ["TIG Ceramic Cup #6", "TIG cup number 6", "TIG ceramic nozzle #6"],
+    specifications: createConsumableSpecifications({ size: "#6" }),
+    compatibility: [
+      { label: "Process", value: "TIG" },
+      { label: "Cup Size", value: "#6" },
+      { label: "Torch Series", value: TO_BE_CONFIRMED },
+      { label: "Tungsten Size", value: TO_BE_CONFIRMED },
+    ],
+    applications: ["Precision TIG welding", "Pipeline work", "Repair workshop"],
+    features: [
+      "Confirmed TIG ceramic cup size #6",
+      "Useful for TIG torch repair and distributor RFQs",
+      "Can be quoted with gas lens and other TIG torch parts",
+    ],
+    packaging: TO_BE_CONFIRMED,
+    moq: moqPolicy,
+    leadTime: leadTimePolicy,
+    faq: [
+      {
+        question: "Can TIG Ceramic Cup #6 be quoted together with #5?",
+        answer:
+          "Yes. Buyers can send one TIG ceramic cup list with separate sizes and quantities.",
+      },
+      {
+        question: "Is torch compatibility confirmed by cup number only?",
+        answer:
+          "No. Torch series, sample, drawing or reference number should be confirmed before final quotation.",
+      },
+    ],
+    relatedProductSlugs: ["tig-ceramic-cup-5", "tig-gas-lens-16mm", "mig-gas-nozzle-mb15"],
+    missingFields: ["SKU", "Material", "Thread", "Compatible Brand", "OEM Number", "Package"],
+  },
+  {
+    slug: "tig-gas-lens-16mm",
+    title: "TIG Gas Lens 1.6mm",
+    sku: TO_BE_CONFIRMED,
+    categorySlug: "tig-torch-parts",
+    kind: "welding-consumable",
+    process: "TIG",
+    consumableFamily: "TIG gas lens",
+    shortDescription:
+      "TIG gas lens 1.6mm for TIG torch sourcing, shielding gas control and repair workshop RFQs.",
+    description:
+      "TIG Gas Lens 1.6mm helps buyers identify the required size in TIG torch parts inquiries. Torch series, material, compatible reference, packaging and quantity should be confirmed before final quotation.",
+    imageLabel: "1.6",
+    keywords: ["TIG Gas Lens 1.6mm", "TIG gas lens", "1.6mm TIG gas lens"],
+    specifications: createConsumableSpecifications({ size: "1.6mm" }),
+    compatibility: [
+      { label: "Process", value: "TIG" },
+      { label: "Size", value: "1.6mm" },
+      { label: "Torch Series", value: TO_BE_CONFIRMED },
+      { label: "Reference Number", value: TO_BE_CONFIRMED },
+    ],
+    applications: ["Precision TIG welding", "Metal fabrication", "Repair workshop"],
+    features: [
+      "Confirmed 1.6mm TIG gas lens size",
+      "Supports TIG torch consumable RFQ programs",
+      "Compatibility should be confirmed by torch model or sample",
+    ],
+    packaging: TO_BE_CONFIRMED,
+    moq: moqPolicy,
+    leadTime: leadTimePolicy,
+    faq: [
+      {
+        question: "What details are needed for TIG Gas Lens 1.6mm?",
+        answer:
+          "Send torch series, sample photo, reference number, quantity and packaging requirement.",
+      },
+      {
+        question: "Can TIG gas lenses be included in a TIG torch parts set?",
+        answer:
+          "Yes. Buyers can request gas lenses, ceramic cups, collets and collet bodies in one RFQ.",
+      },
+    ],
+    relatedProductSlugs: ["tig-ceramic-cup-5", "tig-ceramic-cup-6", "mig-contact-tip-m6-10mm"],
+    missingFields: ["SKU", "Material", "Thread", "Compatible Brand", "OEM Number", "Package"],
   },
   {
     slug: "plasma-electrode",
@@ -190,42 +423,43 @@ export const products: Product[] = [
     categorySlug: "plasma-cutting-consumables",
     kind: "welding-consumable",
     process: "Plasma Cutting",
-    consumableFamily: "Electrode",
+    consumableFamily: "Plasma electrode",
     shortDescription:
-      "Plasma cutting electrode for industrial consumable sourcing and RFQ list preparation.",
+      "Plasma electrode for plasma cutting consumable sourcing, repair channels and distributor RFQs.",
     description:
-      "This plasma electrode page supports structured product data for future SKU expansion. Torch model, amperage range, compatible references and material details should be confirmed before quotation.",
+      "Plasma Electrode is prepared for buyers sourcing plasma cutting consumables by torch model or reference number. Exact material, size, compatible brand, OEM number and package details should be confirmed before quotation.",
     imageLabel: "CUT",
-    keywords: ["plasma electrode", "plasma cutting electrode", "cutting consumable"],
-    specifications: createCoreSpecifications(),
+    keywords: ["Plasma Electrode", "plasma cutting electrode", "plasma consumable electrode"],
+    specifications: createConsumableSpecifications(),
     compatibility: [
+      { label: "Process", value: "Plasma Cutting" },
       { label: "Torch Model", value: TO_BE_CONFIRMED },
       { label: "Compatible Brand", value: TO_BE_CONFIRMED },
       { label: "Reference Number", value: TO_BE_CONFIRMED },
     ],
-    applications: ["Metal fabrication", "Construction steelwork", "Maintenance cutting"],
+    applications: ["Metal fabrication", "Construction steelwork", "Repair workshop"],
     features: [
-      "Organized for consumable kit planning",
-      "Compatible data can be expanded after confirmation",
-      "Designed for distributor and industrial user RFQs",
+      "Prepared for plasma cutting consumable RFQ lists",
+      "Can be quoted together with plasma nozzles",
+      "Torch model and reference number should be confirmed before quotation",
     ],
     packaging: TO_BE_CONFIRMED,
-    moq: TO_BE_CONFIRMED,
-    leadTime: TO_BE_CONFIRMED,
+    moq: moqPolicy,
+    leadTime: leadTimePolicy,
     faq: [
       {
-        question: "How do I confirm the plasma electrode model?",
+        question: "What should buyers send for plasma electrode quotation?",
         answer:
-          "Please provide the torch model, reference number, photo, drawing or sample information.",
+          "Send torch model, reference number, photos, samples, quantity and packaging requirements.",
       },
       {
-        question: "Can electrodes and nozzles be quoted together?",
+        question: "Can plasma electrodes and nozzles be quoted together?",
         answer:
-          "Yes. Buyers can send a complete consumable list and request quotation by item or kit.",
+          "Yes. Buyers can submit a plasma consumable list and request quotation by item or kit.",
       },
     ],
-    relatedProductSlugs: ["plasma-nozzle", "mig-contact-tip", "tig-ceramic-cup"],
-    missingFields: coreMissingFields,
+    relatedProductSlugs: ["plasma-nozzle", "mig-contact-tip-m6-08mm", "tig-gas-lens-16mm"],
+    missingFields: fullMissingFields,
   },
   {
     slug: "plasma-nozzle",
@@ -234,173 +468,42 @@ export const products: Product[] = [
     categorySlug: "plasma-cutting-consumables",
     kind: "welding-consumable",
     process: "Plasma Cutting",
-    consumableFamily: "Nozzle",
+    consumableFamily: "Plasma nozzle",
     shortDescription:
-      "Plasma cutting nozzle for cutting torch consumable replacement and B2B sourcing programs.",
+      "Plasma nozzle for cutting torch consumable replacement, distributor sourcing and RFQ programs.",
     description:
-      "This plasma nozzle entry is built for scalable product detail pages. Exact nozzle size, compatible torch series, reference number and package requirements should be confirmed during RFQ.",
+      "Plasma Nozzle is part of the first plasma cutting consumable set for ArcFort Weld. Buyers should confirm torch model, amperage or reference number, material, package and quantity before quotation.",
     imageLabel: "NOZ",
-    keywords: ["plasma nozzle", "plasma cutting nozzle", "plasma torch nozzle"],
-    specifications: createCoreSpecifications(),
+    keywords: ["Plasma Nozzle", "plasma cutting nozzle", "plasma torch nozzle"],
+    specifications: createConsumableSpecifications(),
     compatibility: [
+      { label: "Process", value: "Plasma Cutting" },
       { label: "Torch Model", value: TO_BE_CONFIRMED },
       { label: "Compatible Brand", value: TO_BE_CONFIRMED },
       { label: "Reference Number", value: TO_BE_CONFIRMED },
     ],
-    applications: ["Metal fabrication", "Repair workshops", "Industrial cutting"],
+    applications: ["Metal fabrication", "Industrial cutting", "Repair workshop"],
     features: [
-      "Prepared for individual item and kit RFQs",
-      "Supports future compatibility table expansion",
-      "Suitable for industrial consumable catalogs",
+      "Prepared for plasma cutting consumable RFQs",
+      "Suitable for individual item or kit quotation",
+      "Torch model and reference number should be confirmed before quotation",
     ],
     packaging: TO_BE_CONFIRMED,
-    moq: TO_BE_CONFIRMED,
-    leadTime: TO_BE_CONFIRMED,
+    moq: moqPolicy,
+    leadTime: leadTimePolicy,
     faq: [
       {
-        question: "What should be included in a plasma nozzle RFQ?",
+        question: "What information is required for plasma nozzle quotation?",
         answer:
-          "Please include torch model, nozzle size, reference number, quantity, package requirement and destination country.",
+          "Send torch model, reference number, nozzle size if available, quantity, packaging requirement and destination country.",
       },
       {
-        question: "Is compatible brand information confirmed?",
+        question: "Can plasma nozzles be supplied as part of a consumable kit?",
         answer:
-          "Compatible brand information is shown only when confirmed by reference number, drawing, sample or buyer product list.",
+          "Kit contents, packaging and quantity can be discussed after the item list is confirmed.",
       },
     ],
-    relatedProductSlugs: ["plasma-electrode", "mig-gas-nozzle", "tig-ceramic-cup"],
-    missingFields: coreMissingFields,
-  },
-  {
-    slug: "welding-wire",
-    title: "Welding Wire",
-    sku: TO_BE_CONFIRMED,
-    categorySlug: "welding-consumables",
-    kind: "welding-consumable",
-    process: "MIG/MAG",
-    consumableFamily: "Welding wire",
-    shortDescription:
-      "Welding wire product page template for distributor consumable lists and industrial RFQ programs.",
-    description:
-      "This welding wire entry is prepared for scalable B2B content and future SKU expansion. Wire material, diameter, spool package, application and delivery details must be confirmed before quotation.",
-    imageLabel: "CON",
-    keywords: ["welding wire", "MIG wire", "welding consumables"],
-    specifications: createCoreSpecifications(),
-    compatibility: [
-      { label: "Welding Process", value: TO_BE_CONFIRMED },
-      { label: "Material Grade", value: TO_BE_CONFIRMED },
-      { label: "Package Type", value: TO_BE_CONFIRMED },
-    ],
-    applications: ["Fabrication shops", "Repair workshops", "Industrial welding supply"],
-    features: [
-      "Prepared for consumable category expansion",
-      "Suitable for mixed distributor RFQ lists",
-      "Material and package details must be confirmed",
-    ],
-    packaging: TO_BE_CONFIRMED,
-    moq: TO_BE_CONFIRMED,
-    leadTime: TO_BE_CONFIRMED,
-    faq: [
-      {
-        question: "What details are needed for welding wire quotation?",
-        answer:
-          "Please provide material, diameter, package type, quantity, destination country and any existing reference.",
-      },
-      {
-        question: "Can welding wire be quoted with torch consumables?",
-        answer:
-          "Yes. Buyers can send a combined RFQ list for welding wire, torch parts and accessories.",
-      },
-    ],
-    relatedProductSlugs: ["mig-contact-tip", "mig-gas-nozzle", "ground-clamp"],
-    missingFields: coreMissingFields,
-  },
-  {
-    slug: "mig-welding-machine",
-    title: "MIG Welding Machine",
-    sku: TO_BE_CONFIRMED,
-    categorySlug: "welding-machines",
-    kind: "welding-equipment",
-    equipmentFamily: "MIG welding machine",
-    supportedProcesses: ["MIG/MAG"],
-    shortDescription:
-      "MIG welding machine template for industrial equipment sourcing and distributor RFQ discussions.",
-    description:
-      "This MIG welding machine page provides the structure for future equipment content. Electrical parameters, duty cycle, accessory configuration, packaging and compliance information must be confirmed from official documents before quotation.",
-    imageLabel: "MAC",
-    keywords: ["MIG welding machine", "welding equipment", "industrial welding machine"],
-    specifications: createEquipmentSpecifications(),
-    compatibility: [
-      { label: "Supported Process", value: TO_BE_CONFIRMED },
-      { label: "Compatible Accessories", value: TO_BE_CONFIRMED },
-      { label: "Target Application", value: TO_BE_CONFIRMED },
-    ],
-    applications: ["Metal fabrication", "Repair workshops", "Industrial production"],
-    features: [
-      "Equipment template prepared for confirmed specifications",
-      "Supports distributor machine RFQ discussions",
-      "No performance data is listed until confirmed",
-    ],
-    packaging: TO_BE_CONFIRMED,
-    moq: TO_BE_CONFIRMED,
-    leadTime: TO_BE_CONFIRMED,
-    faq: [
-      {
-        question: "Are welding machine specifications confirmed?",
-        answer:
-          "Machine parameters are added only after official specification documents are available.",
-      },
-      {
-        question: "Can accessories be included with a machine RFQ?",
-        answer:
-          "Yes. Buyers can include torch, cable, clamp, holder and spare part requirements in the RFQ.",
-      },
-    ],
-    relatedProductSlugs: ["welding-wire", "ground-clamp", "mig-contact-tip"],
-    missingFields: equipmentMissingFields,
-  },
-  {
-    slug: "ground-clamp",
-    title: "Ground Clamp",
-    sku: TO_BE_CONFIRMED,
-    categorySlug: "welding-accessories",
-    kind: "welding-consumable",
-    process: "MMA",
-    consumableFamily: "Welding accessory",
-    shortDescription:
-      "Ground clamp template for workshop accessory sourcing, welding supply lists and RFQ programs.",
-    description:
-      "This ground clamp page is designed for welding accessory sourcing. Material, current requirement, cable connection, package and MOQ should be confirmed by drawing, sample, photo or product list.",
-    imageLabel: "ACC",
-    keywords: ["ground clamp", "welding clamp", "welding accessories"],
-    specifications: createCoreSpecifications(),
-    compatibility: [
-      { label: "Cable Connection", value: TO_BE_CONFIRMED },
-      { label: "Machine Compatibility", value: TO_BE_CONFIRMED },
-      { label: "Reference Number", value: TO_BE_CONFIRMED },
-    ],
-    applications: ["Repair workshops", "Construction welding", "Fabrication shops"],
-    features: [
-      "Useful for accessory and workshop supply programs",
-      "Prepared for mixed RFQ lists",
-      "Connection and current requirements must be confirmed",
-    ],
-    packaging: TO_BE_CONFIRMED,
-    moq: TO_BE_CONFIRMED,
-    leadTime: TO_BE_CONFIRMED,
-    faq: [
-      {
-        question: "What information is needed for ground clamp quotation?",
-        answer:
-          "Please provide clamp type, cable connection, quantity, package requirement, photo or drawing when available.",
-      },
-      {
-        question: "Can ground clamps be quoted with welding machines?",
-        answer:
-          "Yes. Ground clamps can be included in machine or accessory RFQ lists.",
-      },
-    ],
-    relatedProductSlugs: ["mig-welding-machine", "welding-wire", "mig-contact-tip"],
-    missingFields: coreMissingFields,
+    relatedProductSlugs: ["plasma-electrode", "mig-gas-nozzle-mb15", "tig-ceramic-cup-6"],
+    missingFields: fullMissingFields,
   },
 ];

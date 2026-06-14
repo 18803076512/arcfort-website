@@ -18,7 +18,7 @@ export const applications: ApplicationPage[] = [
       "RFQ support for mixed welding parts and plasma consumables",
     ],
     relatedCategorySlugs: ["mig-mag-torch-parts", "plasma-cutting-consumables", "welding-accessories"],
-    relatedProductSlugs: ["mig-contact-tip", "plasma-electrode", "ground-clamp"],
+    relatedProductSlugs: ["mig-contact-tip-m6-08mm", "plasma-electrode", "mig-gas-nozzle-mb15"],
     faq: [
       {
         question: "What should shipbuilding buyers include in an RFQ?",
@@ -50,7 +50,7 @@ export const applications: ApplicationPage[] = [
       "Packaging and quantity details for distributor programs",
     ],
     relatedCategorySlugs: ["mig-mag-torch-parts", "tig-torch-parts", "welding-consumables"],
-    relatedProductSlugs: ["mig-contact-tip", "mig-gas-nozzle", "welding-wire"],
+    relatedProductSlugs: ["mig-contact-tip-m6-08mm", "mig-gas-nozzle-mb15", "mig-tip-holder-mb15"],
     faq: [
       {
         question: "Can automotive buyers request mixed welding consumables?",
@@ -82,7 +82,7 @@ export const applications: ApplicationPage[] = [
       "Clear RFQ details for delivery planning",
     ],
     relatedCategorySlugs: ["welding-consumables", "welding-accessories", "welding-machines"],
-    relatedProductSlugs: ["welding-wire", "ground-clamp", "mig-welding-machine"],
+    relatedProductSlugs: ["tig-gas-lens-16mm", "tig-ceramic-cup-6", "plasma-electrode"],
     faq: [
       {
         question: "Can pipeline applications be quoted without confirmed specs?",
@@ -114,7 +114,7 @@ export const applications: ApplicationPage[] = [
       "Workshop accessory and clamp product lists",
     ],
     relatedCategorySlugs: ["mig-mag-torch-parts", "plasma-cutting-consumables", "welding-accessories"],
-    relatedProductSlugs: ["mig-contact-tip", "plasma-nozzle", "ground-clamp"],
+    relatedProductSlugs: ["mig-contact-tip-m6-10mm", "plasma-nozzle", "tig-ceramic-cup-5"],
     faq: [
       {
         question: "Can fabrication shops submit product photos?",
@@ -146,7 +146,7 @@ export const applications: ApplicationPage[] = [
       "Packaging and delivery details for project purchasing",
     ],
     relatedCategorySlugs: ["welding-accessories", "welding-consumables", "plasma-cutting-consumables"],
-    relatedProductSlugs: ["ground-clamp", "welding-wire", "plasma-electrode"],
+    relatedProductSlugs: ["plasma-electrode", "plasma-nozzle", "mig-contact-tip-m6-12mm"],
     faq: [
       {
         question: "Can construction buyers request accessories in bulk?",
@@ -178,7 +178,7 @@ export const applications: ApplicationPage[] = [
       "Repeat purchasing support for common workshop items",
     ],
     relatedCategorySlugs: ["mig-mag-torch-parts", "tig-torch-parts", "welding-accessories"],
-    relatedProductSlugs: ["mig-gas-nozzle", "tig-ceramic-cup", "ground-clamp"],
+    relatedProductSlugs: ["mig-gas-nozzle-mb15", "tig-ceramic-cup-5", "mig-tip-holder-mb15"],
     faq: [
       {
         question: "Can repair workshops send mixed product lists?",

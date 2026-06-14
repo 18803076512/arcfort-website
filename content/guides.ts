@@ -24,7 +24,7 @@ export const guides: GuideArticle[] = [
       },
     ],
     categorySlugs: ["mig-mag-torch-parts", "welding-consumables", "welding-accessories"],
-    productSlugs: ["mig-contact-tip", "welding-wire", "ground-clamp"],
+    productSlugs: ["mig-contact-tip-m6-08mm", "mig-tip-holder-mb15", "plasma-electrode"],
     faq: [
       {
         question: "Can I submit an RFQ with incomplete information?",
@@ -62,7 +62,7 @@ export const guides: GuideArticle[] = [
       },
     ],
     categorySlugs: ["mig-mag-torch-parts", "tig-torch-parts"],
-    productSlugs: ["mig-contact-tip", "mig-gas-nozzle", "tig-ceramic-cup"],
+    productSlugs: ["mig-contact-tip-m6-10mm", "mig-gas-nozzle-mb15", "tig-ceramic-cup-5"],
     faq: [
       {
         question: "Can MIG/MAG and TIG parts be quoted together?",
@@ -100,7 +100,7 @@ export const guides: GuideArticle[] = [
       },
     ],
     categorySlugs: ["plasma-cutting-consumables", "welding-accessories"],
-    productSlugs: ["plasma-electrode", "plasma-nozzle", "ground-clamp"],
+    productSlugs: ["plasma-electrode", "plasma-nozzle", "mig-contact-tip-m6-12mm"],
     faq: [
       {
         question: "What details are needed for plasma consumables?",
