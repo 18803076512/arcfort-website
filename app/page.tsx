@@ -92,7 +92,7 @@ export default function Home() {
               Product Scope
             </p>
             <h2 className="mt-3 font-display text-3xl font-black text-arc-midnight sm:text-4xl">
-              A focused range for welding and cutting supply channels.
+              Welding Torch Consumables and Cutting Parts
             </h2>
           </div>
           <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -114,7 +114,7 @@ export default function Home() {
                 Product Categories
               </p>
               <h2 className="mt-3 font-display text-3xl font-black text-arc-midnight sm:text-4xl">
-                Organized product lines for international sourcing.
+                Industrial Welding Product Supply
               </h2>
             </div>
             <Link

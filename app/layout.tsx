@@ -33,7 +33,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: siteConfig.name,
     description:
-      "Industrial welding and cutting content system for global distributors, importers, OEM buyers and industrial users.",
+      "Industrial welding and cutting product supplier for global distributors, importers, OEM buyers and repair workshops.",
     url: siteConfig.url,
     siteName: siteConfig.name,
     type: "website",

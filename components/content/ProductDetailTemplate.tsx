@@ -115,11 +115,11 @@ export function ProductDetailTemplate({
               {technicalDetailsToConfirm.length > 0 ? (
                 <div className="mt-6 border-l-4 border-arc-signal bg-white p-4 shadow-sm">
                   <h2 className="text-xs font-bold uppercase tracking-[0.16em] text-arc-blue">
-                    Technical details to confirm
+                    Technical details available upon request
                   </h2>
                   <p className="mt-2 text-sm leading-6 text-slate-700">
-                    The following items are checked by drawing, sample, product list or model
-                    reference before quotation.
+                    These items can be checked by drawing, sample, product list or model reference
+                    before quotation.
                   </p>
                   <div className="mt-3 flex flex-wrap gap-2">
                     {technicalDetailsToConfirm.map((field) => (

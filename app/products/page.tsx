@@ -11,7 +11,7 @@ import { buildMetadata } from "@/lib/content/seo";
 export const metadata = buildMetadata({
   title: "Product Center",
   description:
-    "Explore ArcFort Weld welding and cutting product categories, product detail pages and RFQ-ready sourcing content for industrial B2B buyers.",
+    "Explore ArcFort Weld welding and cutting product categories for industrial B2B buyers, distributors, importers and repair workshops.",
   path: "/products",
   keywords: [
     "welding products",
@@ -44,16 +44,16 @@ export default function ProductsPage() {
                 Product Center
               </p>
               <h1 className="mt-3 font-display text-4xl font-black leading-tight text-arc-midnight sm:text-5xl">
-                Welding and cutting products built for B2B inquiry.
+                Industrial welding product supply for B2B buyers.
               </h1>
               <p className="mt-5 text-lg leading-8 text-slate-600">
-                ArcFort Weld organizes welding consumables and cutting parts into scalable category and
-                product pages for distributors, importers, OEM buyers and industrial users.
+                ArcFort Weld organizes welding consumables and cutting parts for distributors,
+                importers, OEM buyers and industrial users that need clear RFQ communication.
               </p>
             </div>
             <div className="border-l-4 border-arc-signal bg-arc-frost p-6">
               <h2 className="font-display text-2xl font-black text-arc-midnight">
-                Product Sourcing System
+                Welding Torch Consumables and Cutting Parts
               </h2>
               <p className="mt-3 text-sm leading-7 text-slate-700">
                 The product center helps buyers compare categories, review specification fields,

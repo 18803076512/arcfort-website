@@ -38,7 +38,7 @@ export const productCategories: ProductCategory[] = [
     ],
     features: [
       "Suitable for distributor product lines",
-      "RFQ-ready category structure",
+      "Structured category references for repeat sourcing",
       "Supports OEM and private label discussion",
     ],
     relatedCategorySlugs: ["tig-torch-parts", "plasma-cutting-consumables"],
@@ -100,7 +100,7 @@ export const productCategories: ProductCategory[] = [
     features: [
       "Clear product family structure",
       "Useful for repair workshop sourcing",
-      "Prepared for future SKU expansion",
+      "Suitable for distributor item list development",
     ],
     relatedCategorySlugs: ["mig-mag-torch-parts", "plasma-cutting-consumables"],
     faq: [
@@ -344,7 +344,7 @@ export const productCategories: ProductCategory[] = [
     features: [
       "Useful for workshop supply programs",
       "Supports mixed accessory RFQs",
-      "Prepared for future SKU expansion",
+      "Suitable for distributor accessory programs",
     ],
     relatedCategorySlugs: ["welding-consumables", "welding-machines", "mig-mag-torch-parts"],
     faq: [
