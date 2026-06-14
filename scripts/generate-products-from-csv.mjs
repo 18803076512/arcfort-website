@@ -16,13 +16,18 @@ const requiredColumns = [
   "process",
   "short_description",
   "material",
-  "size",
   "thread",
+  "size",
+  "length",
+  "compatible_model",
   "compatible_brand",
+  "oem",
   "oem_number",
   "package",
   "moq",
   "lead_time",
+  "image_name",
+  "application",
   "applications",
   "features",
   "faq_question_1",
@@ -121,9 +126,10 @@ function readCategories() {
   for (const block of categoryBlocks) {
     const slug = block.match(/slug:\s*"([^"]+)"/)?.[1];
     const code = block.match(/code:\s*"([^"]+)"/)?.[1];
+    const title = block.match(/title:\s*"([^"]+)"/)?.[1];
 
     if (slug && code) {
-      categories.set(slug, { code });
+      categories.set(slug, { code, title: title ?? slug });
     }
   }
 
@@ -145,20 +151,25 @@ function splitList(value) {
     .filter(Boolean);
 }
 
-function toSpecRows(record) {
+function toSpecRows(record, categoryTitle) {
   return [
+    { label: "Product Name", value: record.title },
+    { label: "Category", value: categoryTitle },
     { label: "Material", value: record.material },
-    { label: "Size", value: record.size },
     { label: "Thread", value: record.thread },
-    { label: "Compatible Brand", value: record.compatible_brand },
-    { label: "OEM Number", value: record.oem_number },
+    { label: "Size", value: record.size },
+    { label: "Length", value: record.length },
+    { label: "Compatible Model", value: record.compatible_model },
+    { label: "Application", value: record.application },
     { label: "Package", value: record.package },
     { label: "MOQ", value: record.moq },
     { label: "Lead Time", value: record.lead_time },
+    { label: "Image Name", value: record.image_name },
+    { label: "OEM", value: record.oem },
   ];
 }
 
-function toProduct(record, categoryCode) {
+function toProduct(record, category) {
   const baseProduct = {
     slug: record.product_slug,
     title: record.title,
@@ -167,15 +178,15 @@ function toProduct(record, categoryCode) {
     kind: record.kind,
     shortDescription: record.short_description,
     description: record.short_description,
-    imageLabel: categoryCode,
+    imageLabel: category.code,
     keywords: [record.title],
-    specifications: toSpecRows(record),
+    specifications: toSpecRows(record, category.title),
     compatibility: [
+      { label: "Compatible Model", value: record.compatible_model },
       { label: "Compatible Brand", value: record.compatible_brand },
       { label: "OEM Number", value: record.oem_number },
-      { label: "Reference Number", value: TO_BE_CONFIRMED },
     ],
-    applications: splitList(record.applications),
+    applications: splitList(record.applications || record.application),
     features: splitList(record.features),
     packaging: record.package,
     moq: record.moq,
@@ -280,8 +291,8 @@ function main() {
   const products = records.map((record, index) => {
     const rowNumber = index + 2;
     errors.push(...validateRecord(record, rowNumber, categories, options.write));
-    const categoryCode = categories.get(record.category_slug)?.code ?? "SKU";
-    return toProduct(record, categoryCode);
+    const category = categories.get(record.category_slug) ?? { code: "SKU", title: record.category_slug };
+    return toProduct(record, category);
   });
 
   if (errors.length > 0) {

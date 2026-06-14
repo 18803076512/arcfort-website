@@ -40,6 +40,7 @@ The validator checks:
 - Valid product `kind`
 - Valid welding process
 - Fields marked `To be confirmed`
+- Standard product fields such as `length`, `compatible_model`, `image_name` and `oem`
 
 ## Preview Generated Product Content
 
@@ -108,6 +109,11 @@ Safety behavior:
 | `kind` | Use `welding-consumable` or `welding-equipment`. |
 | `process` | Use `MIG/MAG`, `TIG`, `MMA`, `Plasma Cutting` or `To be confirmed`. |
 | `short_description` | One concise B2B sentence. |
+| `length` | Use confirmed length or `Available upon request`. |
+| `compatible_model` | Use confirmed models such as `MB15 / MB24` or `Compatibility can be confirmed by sample or drawing`. |
+| `oem` | Use `Available` when OEM service is available. |
+| `image_name` | Use a descriptive planned filename such as `mig-contact-tip-m6-10.jpg`. |
+| `application` | Main buyer-facing application phrase for the specification table. |
 | `applications` | Separate multiple values with semicolons. |
 | `features` | Separate multiple values with semicolons. |
 | `related_product_slugs` | Separate product slugs with semicolons. |

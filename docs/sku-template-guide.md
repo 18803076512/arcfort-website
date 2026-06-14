@@ -1,6 +1,6 @@
 # SKU Template Guide
 
-This guide explains how to prepare the first ARCFORT SKU list for website product pages and future
+This guide explains how to prepare the first ArcFort Weld SKU list for website product pages and future
 Supabase or Sanity CMS import.
 
 ## How To Use The CSV
@@ -18,11 +18,46 @@ expanding to the full catalog.
 
 - Do not invent specifications, certifications, prices, stock status, factory capacity or customer
   cases.
-- Use `To be confirmed` for unknown values.
+- Use clear buyer-facing fallback text for uncertain product fields instead of inventing data.
+- Keep `To be confirmed` only for internal SKU or fields that must stay visibly pending in source
+  data.
 - Add every unknown field name to `missing_fields`.
 - Use professional B2B English product names.
 - Use semicolons for list fields such as `applications`, `features`, `related_product_slugs` and
   `missing_fields`.
+
+## Standard Product Fields
+
+Every product row should prepare these buyer-facing fields:
+
+| Field | Example |
+| --- | --- |
+| `title` | MIG Contact Tip M6 1.0mm |
+| `category_slug` | `mig-mag-torch-parts` |
+| `material` | Copper / CuCrZr |
+| `thread` | M6 |
+| `size` | 1.0mm |
+| `length` | 25mm |
+| `compatible_model` | MB15 / MB24 |
+| `application` | MIG/MAG welding torch consumables |
+| `package` | 100 pcs/bag |
+| `moq` | 500 pcs |
+| `lead_time` | 7-15 working days |
+| `image_name` | mig-contact-tip-m6-10.jpg |
+| `oem` | Available |
+| `short_description` | Copper contact tip for stable wire feeding in MIG welding. |
+
+## Uncertain Field Fallbacks
+
+Use these values when exact data is not confirmed:
+
+| Uncertain data | Website value |
+| --- | --- |
+| Exact length unknown | Available upon request |
+| MOQ unknown | Small trial orders accepted |
+| Compatible model unknown | Compatibility can be confirmed by sample or drawing |
+| Package unknown | Standard export packing or customized packaging |
+| Material unknown | Copper material, specific grade to be confirmed |
 
 ## Category Slugs
 

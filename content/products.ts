@@ -1,37 +1,63 @@
 import { TO_BE_CONFIRMED, type Product, type SpecRow } from "@/lib/content/schemas";
 
-const moqPolicy = "Small trial orders accepted for standard torch parts and welding consumables.";
-const leadTimePolicy = "Usually 7-20 working days after deposit confirmation for regular orders.";
+const packagePolicy = "Standard export packing or customized packaging";
+const moqPolicy = "Small trial orders accepted";
+const leadTimePolicy = "7-15 working days";
+const lengthFallback = "Available upon request";
+const compatibilityFallback = "Compatibility can be confirmed by sample or drawing";
+const copperGradeFallback = "Copper material, specific grade to be confirmed";
+const materialGradeFallback = "Specific material grade to be confirmed by sample or drawing";
+const oemPolicy = "Available";
 
-const packagingMissingFields = ["SKU", "Material", "Compatible Brand", "OEM Number", "Package"];
+const packagingMissingFields = ["SKU", "Length", "Compatible Brand", "OEM Number", "Exact Package"];
 const fullMissingFields = [
   "SKU",
-  "Material",
-  "Size",
-  "Thread",
+  "Material Grade",
+  "Length",
   "Compatible Brand",
   "OEM Number",
-  "Package",
+  "Exact Package",
 ];
 
 function createConsumableSpecifications({
+  productName,
+  category,
+  material,
   size = TO_BE_CONFIRMED,
   thread = TO_BE_CONFIRMED,
-  compatibleBrand = TO_BE_CONFIRMED,
+  length = lengthFallback,
+  compatibleModel = compatibilityFallback,
+  application,
+  packageValue = packagePolicy,
+  imageName,
+  oem = oemPolicy,
 }: {
+  productName: string;
+  category: string;
+  material: string;
   size?: string;
   thread?: string;
-  compatibleBrand?: string;
-} = {}): SpecRow[] {
+  length?: string;
+  compatibleModel?: string;
+  application: string;
+  packageValue?: string;
+  imageName: string;
+  oem?: string;
+}): SpecRow[] {
   return [
-    { label: "Material", value: TO_BE_CONFIRMED },
-    { label: "Size", value: size },
+    { label: "Product Name", value: productName },
+    { label: "Category", value: category },
+    { label: "Material", value: material },
     { label: "Thread", value: thread },
-    { label: "Compatible Brand", value: compatibleBrand },
-    { label: "OEM Number", value: TO_BE_CONFIRMED },
-    { label: "Package", value: TO_BE_CONFIRMED },
+    { label: "Size", value: size },
+    { label: "Length", value: length },
+    { label: "Compatible Model", value: compatibleModel },
+    { label: "Application", value: application },
+    { label: "Package", value: packageValue },
     { label: "MOQ", value: moqPolicy },
     { label: "Lead Time", value: leadTimePolicy },
+    { label: "Image Name", value: imageName },
+    { label: "OEM", value: oem },
   ];
 }
 
@@ -50,12 +76,22 @@ export const products: Product[] = [
       "MIG Contact Tip M6 0.8mm is prepared for buyers sourcing MIG/MAG torch consumables by thread and wire size. Material, compatible brand, OEM number, packaging and exact order terms should be confirmed by product list, drawing, sample or torch model before quotation.",
     imageLabel: "M6 0.8",
     keywords: ["MIG Contact Tip M6 0.8mm", "MIG contact tip 0.8mm", "M6 welding contact tip"],
-    specifications: createConsumableSpecifications({ size: "0.8mm", thread: "M6" }),
+    specifications: createConsumableSpecifications({
+      productName: "MIG Contact Tip M6 0.8mm",
+      category: "MIG/MAG Torch Parts",
+      material: "Copper / CuCrZr",
+      thread: "M6",
+      size: "0.8mm",
+      compatibleModel: "MB15 / MB24",
+      application: "MIG/MAG welding torch consumables",
+      packageValue: "100 pcs/bag",
+      imageName: "mig-contact-tip-m6-08.jpg",
+    }),
     compatibility: [
       { label: "Process", value: "MIG/MAG" },
       { label: "Wire Size", value: "0.8mm" },
       { label: "Thread", value: "M6" },
-      { label: "Torch Series", value: TO_BE_CONFIRMED },
+      { label: "Compatible Model", value: "MB15 / MB24" },
     ],
     applications: ["Metal fabrication", "Automotive repair", "Repair workshop"],
     features: [
@@ -63,7 +99,7 @@ export const products: Product[] = [
       "Suitable for MIG/MAG torch consumable RFQ lists",
       "Compatible torch information should be confirmed before quotation",
     ],
-    packaging: TO_BE_CONFIRMED,
+    packaging: "100 pcs/bag",
     moq: moqPolicy,
     leadTime: leadTimePolicy,
     faq: [
@@ -99,12 +135,22 @@ export const products: Product[] = [
       "MIG Contact Tip M6 1.0mm helps buyers prepare a clear RFQ by identifying the known thread and size in the product title. Material, compatible torch series, OEM number and packaging should be confirmed before final quotation.",
     imageLabel: "M6 1.0",
     keywords: ["MIG Contact Tip M6 1.0mm", "MIG contact tip 1.0mm", "M6 contact tip"],
-    specifications: createConsumableSpecifications({ size: "1.0mm", thread: "M6" }),
+    specifications: createConsumableSpecifications({
+      productName: "MIG Contact Tip M6 1.0mm",
+      category: "MIG/MAG Torch Parts",
+      material: "Copper / CuCrZr",
+      thread: "M6",
+      size: "1.0mm",
+      compatibleModel: "MB15 / MB24",
+      application: "MIG/MAG welding torch consumables",
+      packageValue: "100 pcs/bag",
+      imageName: "mig-contact-tip-m6-10.jpg",
+    }),
     compatibility: [
       { label: "Process", value: "MIG/MAG" },
       { label: "Wire Size", value: "1.0mm" },
       { label: "Thread", value: "M6" },
-      { label: "Torch Series", value: TO_BE_CONFIRMED },
+      { label: "Compatible Model", value: "MB15 / MB24" },
     ],
     applications: ["Metal fabrication", "Automotive repair", "Industrial maintenance"],
     features: [
@@ -112,7 +158,7 @@ export const products: Product[] = [
       "Prepared for distributor SKU expansion",
       "Works well in mixed MIG/MAG consumable inquiry lists",
     ],
-    packaging: TO_BE_CONFIRMED,
+    packaging: "100 pcs/bag",
     moq: moqPolicy,
     leadTime: leadTimePolicy,
     faq: [
@@ -148,12 +194,22 @@ export const products: Product[] = [
       "MIG Contact Tip M6 1.2mm is part of the first ArcFort Weld welding consumable SKU set. Buyers should confirm material, compatible torch series, OEM number, packaging and quantity before final offer.",
     imageLabel: "M6 1.2",
     keywords: ["MIG Contact Tip M6 1.2mm", "MIG contact tip 1.2mm", "MIG welding tip M6"],
-    specifications: createConsumableSpecifications({ size: "1.2mm", thread: "M6" }),
+    specifications: createConsumableSpecifications({
+      productName: "MIG Contact Tip M6 1.2mm",
+      category: "MIG/MAG Torch Parts",
+      material: "Copper / CuCrZr",
+      thread: "M6",
+      size: "1.2mm",
+      compatibleModel: "MB15 / MB24",
+      application: "MIG/MAG welding torch consumables",
+      packageValue: "100 pcs/bag",
+      imageName: "mig-contact-tip-m6-12.jpg",
+    }),
     compatibility: [
       { label: "Process", value: "MIG/MAG" },
       { label: "Wire Size", value: "1.2mm" },
       { label: "Thread", value: "M6" },
-      { label: "Torch Series", value: TO_BE_CONFIRMED },
+      { label: "Compatible Model", value: "MB15 / MB24" },
     ],
     applications: ["Metal fabrication", "Construction", "Repair workshop"],
     features: [
@@ -161,7 +217,7 @@ export const products: Product[] = [
       "Useful for distributor consumable assortments",
       "RFQ-ready page structure for future SKU expansion",
     ],
-    packaging: TO_BE_CONFIRMED,
+    packaging: "100 pcs/bag",
     moq: moqPolicy,
     leadTime: leadTimePolicy,
     faq: [
@@ -197,11 +253,21 @@ export const products: Product[] = [
       "MIG Tip Holder for MB15 is prepared for buyers sourcing MB15-related MIG/MAG torch parts. Exact material, thread, compatible brand, OEM number and packaging should be confirmed by sample, drawing or reference number.",
     imageLabel: "MB15",
     keywords: ["MIG Tip Holder for MB15", "MB15 tip holder", "MIG contact tip holder"],
-    specifications: createConsumableSpecifications({ size: "For MB15" }),
+    specifications: createConsumableSpecifications({
+      productName: "MIG Tip Holder for MB15",
+      category: "MIG/MAG Torch Parts",
+      material: copperGradeFallback,
+      thread: "Available upon request",
+      size: "For MB15",
+      compatibleModel: "MB15",
+      application: "MIG/MAG welding torch consumables",
+      imageName: "mig-tip-holder-mb15.jpg",
+    }),
     compatibility: [
       { label: "Process", value: "MIG/MAG" },
       { label: "Torch Series", value: "MB15" },
-      { label: "Compatible Brand", value: TO_BE_CONFIRMED },
+      { label: "Compatible Model", value: "MB15" },
+      { label: "Compatible Brand", value: compatibilityFallback },
       { label: "Reference Number", value: TO_BE_CONFIRMED },
     ],
     applications: ["Repair workshop", "Metal fabrication", "Welding distributor supply"],
@@ -210,7 +276,7 @@ export const products: Product[] = [
       "Can be quoted together with contact tips and gas nozzles",
       "Sample or drawing confirmation recommended for accurate matching",
     ],
-    packaging: TO_BE_CONFIRMED,
+    packaging: packagePolicy,
     moq: moqPolicy,
     leadTime: leadTimePolicy,
     faq: [
@@ -246,11 +312,21 @@ export const products: Product[] = [
       "MIG Gas Nozzle for MB15 is a key MIG/MAG torch consumable for replacement and distributor programs. Nozzle material, shape, compatible brand, OEM number and packaging should be confirmed before quotation.",
     imageLabel: "MB15",
     keywords: ["MIG Gas Nozzle for MB15", "MB15 gas nozzle", "MIG welding nozzle"],
-    specifications: createConsumableSpecifications({ size: "For MB15" }),
+    specifications: createConsumableSpecifications({
+      productName: "MIG Gas Nozzle for MB15",
+      category: "MIG/MAG Torch Parts",
+      material: copperGradeFallback,
+      thread: "Available upon request",
+      size: "For MB15",
+      compatibleModel: "MB15",
+      application: "MIG/MAG welding torch consumables",
+      imageName: "mig-gas-nozzle-mb15.jpg",
+    }),
     compatibility: [
       { label: "Process", value: "MIG/MAG" },
       { label: "Torch Series", value: "MB15" },
-      { label: "Compatible Brand", value: TO_BE_CONFIRMED },
+      { label: "Compatible Model", value: "MB15" },
+      { label: "Compatible Brand", value: compatibilityFallback },
       { label: "Reference Number", value: TO_BE_CONFIRMED },
     ],
     applications: ["Metal fabrication", "Automotive repair", "Repair workshop"],
@@ -259,7 +335,7 @@ export const products: Product[] = [
       "Suitable for mixed distributor RFQ lists",
       "Nozzle shape and dimensions should be confirmed before quotation",
     ],
-    packaging: TO_BE_CONFIRMED,
+    packaging: packagePolicy,
     moq: moqPolicy,
     leadTime: leadTimePolicy,
     faq: [
@@ -295,12 +371,21 @@ export const products: Product[] = [
       "TIG Ceramic Cup #5 is prepared for TIG torch parts buyers who source ceramic cups by cup size. Torch series, material details, OEM number, package and quantity should be confirmed before quotation.",
     imageLabel: "TIG #5",
     keywords: ["TIG Ceramic Cup #5", "TIG cup number 5", "TIG ceramic nozzle #5"],
-    specifications: createConsumableSpecifications({ size: "#5" }),
+    specifications: createConsumableSpecifications({
+      productName: "TIG Ceramic Cup #5",
+      category: "TIG Torch Parts",
+      material: "Ceramic",
+      thread: "Available upon request",
+      size: "#5",
+      compatibleModel: compatibilityFallback,
+      application: "TIG welding torch consumables",
+      imageName: "tig-ceramic-cup-5.jpg",
+    }),
     compatibility: [
       { label: "Process", value: "TIG" },
       { label: "Cup Size", value: "#5" },
-      { label: "Torch Series", value: TO_BE_CONFIRMED },
-      { label: "Tungsten Size", value: TO_BE_CONFIRMED },
+      { label: "Compatible Model", value: compatibilityFallback },
+      { label: "Tungsten Size", value: compatibilityFallback },
     ],
     applications: ["Precision TIG welding", "Metal fabrication", "Repair workshop"],
     features: [
@@ -308,7 +393,7 @@ export const products: Product[] = [
       "Prepared for TIG torch part SKU expansion",
       "Torch series should be confirmed before quotation",
     ],
-    packaging: TO_BE_CONFIRMED,
+    packaging: packagePolicy,
     moq: moqPolicy,
     leadTime: leadTimePolicy,
     faq: [
@@ -340,12 +425,21 @@ export const products: Product[] = [
       "TIG Ceramic Cup #6 is included in the first ArcFort Weld TIG torch part SKU set. Buyers should confirm torch series, OEM reference, packaging, quantity and destination before quotation.",
     imageLabel: "TIG #6",
     keywords: ["TIG Ceramic Cup #6", "TIG cup number 6", "TIG ceramic nozzle #6"],
-    specifications: createConsumableSpecifications({ size: "#6" }),
+    specifications: createConsumableSpecifications({
+      productName: "TIG Ceramic Cup #6",
+      category: "TIG Torch Parts",
+      material: "Ceramic",
+      thread: "Available upon request",
+      size: "#6",
+      compatibleModel: compatibilityFallback,
+      application: "TIG welding torch consumables",
+      imageName: "tig-ceramic-cup-6.jpg",
+    }),
     compatibility: [
       { label: "Process", value: "TIG" },
       { label: "Cup Size", value: "#6" },
-      { label: "Torch Series", value: TO_BE_CONFIRMED },
-      { label: "Tungsten Size", value: TO_BE_CONFIRMED },
+      { label: "Compatible Model", value: compatibilityFallback },
+      { label: "Tungsten Size", value: compatibilityFallback },
     ],
     applications: ["Precision TIG welding", "Pipeline work", "Repair workshop"],
     features: [
@@ -353,7 +447,7 @@ export const products: Product[] = [
       "Useful for TIG torch repair and distributor RFQs",
       "Can be quoted with gas lens and other TIG torch parts",
     ],
-    packaging: TO_BE_CONFIRMED,
+    packaging: packagePolicy,
     moq: moqPolicy,
     leadTime: leadTimePolicy,
     faq: [
@@ -385,12 +479,21 @@ export const products: Product[] = [
       "TIG Gas Lens 1.6mm helps buyers identify the required size in TIG torch parts inquiries. Torch series, material, compatible reference, packaging and quantity should be confirmed before final quotation.",
     imageLabel: "1.6",
     keywords: ["TIG Gas Lens 1.6mm", "TIG gas lens", "1.6mm TIG gas lens"],
-    specifications: createConsumableSpecifications({ size: "1.6mm" }),
+    specifications: createConsumableSpecifications({
+      productName: "TIG Gas Lens 1.6mm",
+      category: "TIG Torch Parts",
+      material: materialGradeFallback,
+      thread: "Available upon request",
+      size: "1.6mm",
+      compatibleModel: compatibilityFallback,
+      application: "TIG welding torch consumables",
+      imageName: "tig-gas-lens-16.jpg",
+    }),
     compatibility: [
       { label: "Process", value: "TIG" },
       { label: "Size", value: "1.6mm" },
-      { label: "Torch Series", value: TO_BE_CONFIRMED },
-      { label: "Reference Number", value: TO_BE_CONFIRMED },
+      { label: "Compatible Model", value: compatibilityFallback },
+      { label: "Reference Number", value: compatibilityFallback },
     ],
     applications: ["Precision TIG welding", "Metal fabrication", "Repair workshop"],
     features: [
@@ -398,7 +501,7 @@ export const products: Product[] = [
       "Supports TIG torch consumable RFQ programs",
       "Compatibility should be confirmed by torch model or sample",
     ],
-    packaging: TO_BE_CONFIRMED,
+    packaging: packagePolicy,
     moq: moqPolicy,
     leadTime: leadTimePolicy,
     faq: [
@@ -430,12 +533,21 @@ export const products: Product[] = [
       "Plasma Electrode is prepared for buyers sourcing plasma cutting consumables by torch model or reference number. Exact material, size, compatible brand, OEM number and package details should be confirmed before quotation.",
     imageLabel: "CUT",
     keywords: ["Plasma Electrode", "plasma cutting electrode", "plasma consumable electrode"],
-    specifications: createConsumableSpecifications(),
+    specifications: createConsumableSpecifications({
+      productName: "Plasma Electrode",
+      category: "Plasma Cutting Consumables",
+      material: materialGradeFallback,
+      thread: "Available upon request",
+      size: "Available upon request",
+      compatibleModel: compatibilityFallback,
+      application: "Plasma cutting torch consumables",
+      imageName: "plasma-electrode.jpg",
+    }),
     compatibility: [
       { label: "Process", value: "Plasma Cutting" },
-      { label: "Torch Model", value: TO_BE_CONFIRMED },
-      { label: "Compatible Brand", value: TO_BE_CONFIRMED },
-      { label: "Reference Number", value: TO_BE_CONFIRMED },
+      { label: "Compatible Model", value: compatibilityFallback },
+      { label: "Compatible Brand", value: compatibilityFallback },
+      { label: "Reference Number", value: compatibilityFallback },
     ],
     applications: ["Metal fabrication", "Construction steelwork", "Repair workshop"],
     features: [
@@ -443,7 +555,7 @@ export const products: Product[] = [
       "Can be quoted together with plasma nozzles",
       "Torch model and reference number should be confirmed before quotation",
     ],
-    packaging: TO_BE_CONFIRMED,
+    packaging: packagePolicy,
     moq: moqPolicy,
     leadTime: leadTimePolicy,
     faq: [
@@ -475,12 +587,21 @@ export const products: Product[] = [
       "Plasma Nozzle is part of the first plasma cutting consumable set for ArcFort Weld. Buyers should confirm torch model, amperage or reference number, material, package and quantity before quotation.",
     imageLabel: "NOZ",
     keywords: ["Plasma Nozzle", "plasma cutting nozzle", "plasma torch nozzle"],
-    specifications: createConsumableSpecifications(),
+    specifications: createConsumableSpecifications({
+      productName: "Plasma Nozzle",
+      category: "Plasma Cutting Consumables",
+      material: materialGradeFallback,
+      thread: "Available upon request",
+      size: "Available upon request",
+      compatibleModel: compatibilityFallback,
+      application: "Plasma cutting torch consumables",
+      imageName: "plasma-nozzle.jpg",
+    }),
     compatibility: [
       { label: "Process", value: "Plasma Cutting" },
-      { label: "Torch Model", value: TO_BE_CONFIRMED },
-      { label: "Compatible Brand", value: TO_BE_CONFIRMED },
-      { label: "Reference Number", value: TO_BE_CONFIRMED },
+      { label: "Compatible Model", value: compatibilityFallback },
+      { label: "Compatible Brand", value: compatibilityFallback },
+      { label: "Reference Number", value: compatibilityFallback },
     ],
     applications: ["Metal fabrication", "Industrial cutting", "Repair workshop"],
     features: [
@@ -488,7 +609,7 @@ export const products: Product[] = [
       "Suitable for individual item or kit quotation",
       "Torch model and reference number should be confirmed before quotation",
     ],
-    packaging: TO_BE_CONFIRMED,
+    packaging: packagePolicy,
     moq: moqPolicy,
     leadTime: leadTimePolicy,
     faq: [
