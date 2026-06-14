@@ -32,6 +32,9 @@ export type ProductCategory = {
   seoTitle: string;
   seoDescription: string;
   seoIntro: string;
+  productRange: string[];
+  commonSpecifications: string[];
+  applications: string[];
   buyerGuide: string[];
   features: string[];
   relatedCategorySlugs: string[];

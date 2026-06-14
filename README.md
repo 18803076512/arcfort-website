@@ -36,15 +36,15 @@ ArcFort Weld independent website project for Renqiu Ailesen Welding Technology C
 
 ## Content Architecture
 
-- `content/categories.ts` - sample product category content
-- `content/products.ts` - sample product detail content
+- `content/categories.ts` - product category SEO content
+- `content/products.ts` - product detail content
 - `content/applications.ts` - application page content
 - `content/guides.ts` - buyer guide and article content
 - `lib/content/schemas.ts` - reusable TypeScript content schema
 - `lib/content/seo.ts` - metadata helper
 - `lib/content/jsonld.ts` - JSON-LD helpers for Product, BreadcrumbList, Organization, and FAQ
 
-The current mock content includes 6 product categories, 8 sample products, 6 application pages and 3 buyer guides. Missing product data must remain explicit instead of inventing specifications, certifications, prices, stock status, factory capacity, or customer cases.
+The current content includes 6 product categories, 10 starter product pages, 6 application pages and 3 buyer guides. Missing product data must remain explicit instead of inventing specifications, certifications, prices, stock status, factory capacity, or customer cases.
 
 ## RFQ System
 
@@ -56,6 +56,8 @@ The `/rfq` page includes a responsive inquiry form with:
 - Drawing, product list, PDF, Excel, Word, JPG, and PNG upload selection
 - Server-side validation through `/api/rfq`
 - Success state after validation
+- Optional Supabase storage for RFQ records and attachment metadata
+- Optional Resend email notification to the configured business email
 
 Supabase setup files:
 
@@ -68,8 +70,9 @@ Supabase setup files:
 - `supabase/product-catalog-schema.sql` - future product catalog database schema
 - `docs/supabase-product-catalog-setup.md` - product catalog database setup instructions
 
-Supabase storage is optional and must be configured through environment variables. No real API keys,
-email passwords, database passwords, or private tokens are committed.
+Supabase storage and Resend email delivery are optional production services and must be configured
+through environment variables. No real API keys, email passwords, database passwords, or private
+tokens are committed.
 
 Environment variables:
 
@@ -78,6 +81,9 @@ SUPABASE_URL=
 SUPABASE_SERVICE_ROLE_KEY=
 SUPABASE_RFQ_TABLE=rfq_inquiries
 SUPABASE_RFQ_BUCKET=rfq-attachments
+RFQ_EMAIL_RECIPIENT=arcfortweld@outlook.com
+RFQ_EMAIL_FROM=
+RESEND_API_KEY=
 ```
 
 Confirmed business information:
@@ -162,8 +168,7 @@ npm run generate:products
 ## Notes
 
 - No real API keys or secrets are included.
-- The RFQ page validates submissions and can store them in Supabase after environment variables are configured.
-- Replace placeholder contact details before production launch.
-- The privacy notice uses placeholder contact information and should be reviewed before production launch.
+- The RFQ page validates submissions and can store them in Supabase or send email through Resend after environment variables are configured.
+- Confirm real product images, final SKU codes and exact product specifications before scaling product pages.
 - `app/sitemap.ts` and `app/robots.ts` are included for search engine discovery.
 - Product and category pages include SEO metadata and JSON-LD structured data where appropriate.

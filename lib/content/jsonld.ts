@@ -13,7 +13,16 @@ type BreadcrumbItem = {
 };
 
 function confirmedRows(rows: { label: string; value: string }[]) {
-  return rows.filter((row) => row.value && row.value !== TO_BE_CONFIRMED);
+  return rows.filter((row) => {
+    const normalizedValue = row.value.trim().toLowerCase();
+
+    return (
+      row.label !== "Image Name" &&
+      row.value &&
+      row.value !== TO_BE_CONFIRMED &&
+      !normalizedValue.includes("to be confirmed")
+    );
+  });
 }
 
 export function organizationJsonLd() {

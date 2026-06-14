@@ -1,5 +1,5 @@
 import Link from "next/link";
-import type { Product, ProductCategory } from "@/lib/content/schemas";
+import { TO_BE_CONFIRMED, type Product, type ProductCategory } from "@/lib/content/schemas";
 import { Breadcrumbs } from "@/components/content/Breadcrumbs";
 import { CompatibilityTable } from "@/components/content/CompatibilityTable";
 import { FaqSection } from "@/components/content/FaqSection";
@@ -21,12 +21,23 @@ type ProductDetailTemplateProps = {
   relatedProducts: RelatedProduct[];
 };
 
+function isPublicDetailRow(row: { label: string; value: string }) {
+  return (
+    row.label !== "Image Name" &&
+    row.value !== TO_BE_CONFIRMED &&
+    !row.value.trim().toLowerCase().includes("to be confirmed")
+  );
+}
+
 export function ProductDetailTemplate({
   product,
   category,
   relatedProducts,
 }: ProductDetailTemplateProps) {
   const rfqHref = `/rfq?product=${encodeURIComponent(product.title)}`;
+  const publicSpecifications = product.specifications.filter(isPublicDetailRow);
+  const publicCompatibility = product.compatibility.filter(isPublicDetailRow);
+  const technicalDetailsToConfirm = Array.from(new Set(product.missingFields));
 
   return (
     <>
@@ -91,12 +102,25 @@ export function ProductDetailTemplate({
                 </Link>
               </div>
 
-              {product.missingFields.length > 0 ? (
+              {technicalDetailsToConfirm.length > 0 ? (
                 <div className="mt-6 border-l-4 border-arc-signal bg-white p-4 shadow-sm">
-                  <p className="text-sm font-semibold leading-6 text-slate-700">
-                    RFQ confirmation needed: {product.missingFields.join(", ")}. These fields will
-                    be confirmed by drawing, sample, product list or model reference.
+                  <h2 className="text-xs font-bold uppercase tracking-[0.16em] text-arc-blue">
+                    Technical details to confirm
+                  </h2>
+                  <p className="mt-2 text-sm leading-6 text-slate-700">
+                    The following items are checked by drawing, sample, product list or model
+                    reference before quotation.
                   </p>
+                  <div className="mt-3 flex flex-wrap gap-2">
+                    {technicalDetailsToConfirm.map((field) => (
+                      <span
+                        key={field}
+                        className="border border-slate-200 bg-arc-frost px-3 py-1 text-xs font-semibold text-slate-700"
+                      >
+                        {field}
+                      </span>
+                    ))}
+                  </div>
                 </div>
               ) : null}
             </div>
@@ -106,8 +130,8 @@ export function ProductDetailTemplate({
 
       <section className="bg-arc-frost py-14 sm:py-16">
         <div className="mx-auto grid max-w-7xl gap-6 px-4 sm:px-6 lg:grid-cols-[1.1fr_0.9fr] lg:px-8">
-          <SpecificationTable rows={product.specifications} />
-          <CompatibilityTable rows={product.compatibility} />
+          <SpecificationTable rows={publicSpecifications} />
+          <CompatibilityTable rows={publicCompatibility} />
         </div>
       </section>
 

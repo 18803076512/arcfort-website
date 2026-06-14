@@ -11,7 +11,7 @@ import { buildMetadata } from "@/lib/content/seo";
 export const metadata = buildMetadata({
   title: "Product Center",
   description:
-    "Explore ArcFort Weld welding and cutting product categories, sample product detail pages and RFQ-ready sourcing content for industrial B2B buyers.",
+    "Explore ArcFort Weld welding and cutting product categories, product detail pages and RFQ-ready sourcing content for industrial B2B buyers.",
   path: "/products",
   keywords: [
     "welding products",
@@ -53,11 +53,11 @@ export default function ProductsPage() {
             </div>
             <div className="border-l-4 border-arc-signal bg-arc-frost p-6">
               <h2 className="font-display text-2xl font-black text-arc-midnight">
-                Content Architecture
+                Product Sourcing System
               </h2>
               <p className="mt-3 text-sm leading-7 text-slate-700">
-                The product system supports category SEO text, product grids, specification tables,
-                compatibility information, FAQ content, related products and RFQ conversion paths.
+                The product center helps buyers compare categories, review specification fields,
+                confirm compatibility information and submit clear RFQs for quotation follow-up.
               </p>
             </div>
           </div>
@@ -72,7 +72,7 @@ export default function ProductsPage() {
                 Categories
               </p>
               <h2 className="mt-3 font-display text-3xl font-black text-arc-midnight">
-                Sample category pages
+                Product Categories
               </h2>
             </div>
             <Link
@@ -113,10 +113,10 @@ export default function ProductsPage() {
       <section className="bg-white py-14 sm:py-16">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <p className="text-sm font-bold uppercase tracking-[0.2em] text-arc-blue">
-            Sample Products
+            Featured Products
           </p>
           <h2 className="mt-3 font-display text-3xl font-black text-arc-midnight">
-            Product detail templates ready for SKU expansion
+            Welding and cutting products for RFQ review
           </h2>
           <div className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
             {products.map((product) => {

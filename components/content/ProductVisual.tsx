@@ -6,6 +6,9 @@ type ProductVisualProps = {
 };
 
 export function ProductVisual({ label, title, category, compact = false }: ProductVisualProps) {
+  const visualTitle = compact ? "Welding & Cutting Consumable" : title;
+  const visualCategory = compact ? "RFQ" : category;
+
   return (
     <div
       className={`relative overflow-hidden border border-slate-200 bg-arc-midnight text-white ${
@@ -22,13 +25,13 @@ export function ProductVisual({ label, title, category, compact = false }: Produ
             {label}
           </span>
           <span className="text-right text-xs font-bold uppercase tracking-[0.16em] text-slate-200">
-            {category}
+            {visualCategory}
           </span>
         </div>
         <div>
           <div className="h-1 w-20 bg-arc-signal" />
           <p className="mt-4 max-w-sm font-display text-2xl font-black leading-tight sm:text-3xl">
-            {title}
+            {visualTitle}
           </p>
         </div>
       </div>

@@ -20,6 +20,9 @@ type RfqResponse = {
   ok: boolean;
   stored?: boolean;
   backendConfigured?: boolean;
+  emailConfigured?: boolean;
+  emailDelivered?: boolean;
+  emailRecipient?: string;
   message?: string;
   errors?: FormErrors;
 };
@@ -198,9 +201,9 @@ export function RfqForm({ initialProduct = "" }: RfqFormProps) {
             Thank you for your inquiry.
           </h2>
           <p className="mt-3 text-sm leading-6 text-slate-700">
-            {submissionResult?.stored
-              ? "Your RFQ has been submitted for follow-up."
-              : "Your RFQ passed validation. Backend storage is not configured yet, so Supabase environment variables must be added before production launch."}
+            {submissionResult?.backendConfigured
+              ? "Your RFQ has been submitted for sales follow-up."
+              : `Your RFQ passed validation, but server-side email delivery or storage is not configured yet. Please also send your inquiry to ${submissionResult?.emailRecipient ?? "the business email"} or contact us by WhatsApp.`}
           </p>
         </div>
         <div className="mt-6 grid gap-4 text-sm text-slate-700">
@@ -370,7 +373,8 @@ export function RfqForm({ initialProduct = "" }: RfqFormProps) {
           {isSubmitting ? "Submitting..." : "Submit RFQ"}
         </button>
         <p className="text-xs leading-5 text-slate-500">
-          No real API keys, email passwords or database credentials are included.
+          Your inquiry is validated by the website before submission. Large files can also be sent
+          directly by email after initial contact.
         </p>
       </div>
     </form>

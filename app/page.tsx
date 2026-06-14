@@ -111,10 +111,10 @@ export default function Home() {
           <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
             <div>
               <p className="text-sm font-bold uppercase tracking-[0.2em] text-arc-blue">
-                SEO Category Pages
+                Product Categories
               </p>
               <h2 className="mt-3 font-display text-3xl font-black text-arc-midnight sm:text-4xl">
-                Category structure ready for organic search.
+                Organized product lines for international sourcing.
               </h2>
             </div>
             <Link
@@ -153,7 +153,7 @@ export default function Home() {
             Hot Products
           </p>
           <h2 className="mt-3 font-display text-3xl font-black text-arc-midnight sm:text-4xl">
-            Sample RFQ-ready product pages.
+            Featured Welding & Cutting Products
           </h2>
           <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
             {products.map((product) => {
