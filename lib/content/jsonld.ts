@@ -5,6 +5,7 @@ import {
   type Product,
   type ProductCategory,
 } from "@/lib/content/schemas";
+import { hasPublicProductImage } from "@/lib/content/product-images";
 import { absoluteUrl, siteConfig } from "@/lib/content/site";
 
 type BreadcrumbItem = {
@@ -20,7 +21,10 @@ function confirmedRows(rows: { label: string; value: string }[]) {
       row.label !== "Image Name" &&
       row.value &&
       row.value !== TO_BE_CONFIRMED &&
-      !normalizedValue.includes("to be confirmed")
+      !normalizedValue.includes("to be confirmed") &&
+      normalizedValue !== "available upon request" &&
+      !normalizedValue.includes("compatibility can be confirmed") &&
+      !normalizedValue.includes("standard export packing")
     );
   });
 }
@@ -94,6 +98,9 @@ export function productJsonLd(product: Product, category: ProductCategory) {
     name: row.label,
     value: row.value,
   }));
+  const productImages = [product.mainImage, ...product.galleryImages]
+    .filter(hasPublicProductImage)
+    .map((imagePath) => absoluteUrl(imagePath));
 
   return {
     "@context": "https://schema.org",
@@ -107,6 +114,7 @@ export function productJsonLd(product: Product, category: ProductCategory) {
       "@type": "Brand",
       name: siteConfig.shortName,
     },
+    ...(productImages.length > 0 ? { image: productImages } : {}),
     ...(additionalProperty.length > 0 ? { additionalProperty } : {}),
   };
 }

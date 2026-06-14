@@ -37,14 +37,15 @@ ArcFort Weld independent website project for Renqiu Ailesen Welding Technology C
 ## Content Architecture
 
 - `content/categories.ts` - product category SEO content
-- `content/products.ts` - product detail content
+- `lib/data/products.ts` - CMS-ready mock product data source for Sanity or Supabase migration
+- `content/products.ts` - adapter that maps product data into the current page schema
 - `content/applications.ts` - application page content
 - `content/guides.ts` - buyer guide and article content
 - `lib/content/schemas.ts` - reusable TypeScript content schema
 - `lib/content/seo.ts` - metadata helper
 - `lib/content/jsonld.ts` - JSON-LD helpers for Product, BreadcrumbList, Organization, and FAQ
 
-The current content includes 6 product categories, 10 starter product pages, 6 application pages and 3 buyer guides. Missing product data must remain explicit instead of inventing specifications, certifications, prices, stock status, factory capacity, or customer cases.
+The current content includes 6 product categories, 12 starter product pages, 6 application pages and 3 buyer guides. Missing product data must remain explicit instead of inventing specifications, certifications, prices, stock status, factory capacity, or customer cases.
 
 ## RFQ System
 

@@ -1,13 +1,24 @@
+import Image from "next/image";
+import { hasPublicProductImage } from "@/lib/content/product-images";
+
 type ProductVisualProps = {
   label: string;
   title: string;
   category: string;
+  mainImage?: string;
   compact?: boolean;
 };
 
-export function ProductVisual({ label, title, category, compact = false }: ProductVisualProps) {
+export function ProductVisual({
+  label,
+  title,
+  category,
+  mainImage,
+  compact = false,
+}: ProductVisualProps) {
   const visualTitle = compact ? "Welding & Cutting Consumable" : title;
   const visualCategory = compact ? "RFQ" : category;
+  const shouldRenderImage = hasPublicProductImage(mainImage);
 
   return (
     <div
@@ -15,10 +26,23 @@ export function ProductVisual({ label, title, category, compact = false }: Produ
         compact ? "aspect-[4/3]" : "aspect-[5/4]"
       }`}
     >
-      <div className="absolute inset-0 bg-[linear-gradient(135deg,rgba(11,35,65,0.98)_0%,rgba(15,76,129,0.88)_52%,rgba(217,230,242,0.32)_100%)]" />
-      <div className="absolute inset-0 opacity-35 [background-image:linear-gradient(90deg,rgba(255,255,255,0.12)_1px,transparent_1px),linear-gradient(rgba(255,255,255,0.12)_1px,transparent_1px)] [background-size:36px_36px]" />
-      <div className="absolute -right-16 -top-16 h-44 w-44 border-[28px] border-white/10" />
-      <div className="absolute bottom-0 left-0 h-24 w-full bg-[repeating-linear-gradient(135deg,rgba(246,180,69,0.35)_0,rgba(246,180,69,0.35)_2px,transparent_2px,transparent_14px)]" />
+      {shouldRenderImage && mainImage ? (
+        <Image
+          src={mainImage}
+          alt={title}
+          fill
+          sizes={compact ? "(min-width: 1024px) 33vw, 100vw" : "(min-width: 1024px) 45vw, 100vw"}
+          className="object-cover"
+        />
+      ) : (
+        <>
+          <div className="absolute inset-0 bg-[linear-gradient(135deg,rgba(11,35,65,0.98)_0%,rgba(15,76,129,0.88)_52%,rgba(217,230,242,0.32)_100%)]" />
+          <div className="absolute inset-0 opacity-35 [background-image:linear-gradient(90deg,rgba(255,255,255,0.12)_1px,transparent_1px),linear-gradient(rgba(255,255,255,0.12)_1px,transparent_1px)] [background-size:36px_36px]" />
+          <div className="absolute -right-16 -top-16 h-44 w-44 border-[28px] border-white/10" />
+          <div className="absolute bottom-0 left-0 h-24 w-full bg-[repeating-linear-gradient(135deg,rgba(246,180,69,0.35)_0,rgba(246,180,69,0.35)_2px,transparent_2px,transparent_14px)]" />
+        </>
+      )}
+      {shouldRenderImage ? <div className="absolute inset-0 bg-arc-midnight/35" /> : null}
       <div className="relative flex h-full flex-col justify-between p-5 sm:p-6">
         <div className="flex items-center justify-between gap-4">
           <span className="inline-flex bg-arc-signal px-3 py-1 font-display text-lg font-black text-arc-midnight">

@@ -34,8 +34,8 @@ export async function generateMetadata({ params }: ProductRouteProps) {
   }
 
   return buildMetadata({
-    title: product.title,
-    description: product.shortDescription,
+    title: product.metaTitle,
+    description: product.metaDescription,
     path: `/products/${category.slug}/${product.slug}`,
     keywords: product.keywords,
   });

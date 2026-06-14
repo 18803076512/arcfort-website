@@ -22,10 +22,15 @@ type ProductDetailTemplateProps = {
 };
 
 function isPublicDetailRow(row: { label: string; value: string }) {
+  const normalizedValue = row.value.trim().toLowerCase();
+
   return (
     row.label !== "Image Name" &&
     row.value !== TO_BE_CONFIRMED &&
-    !row.value.trim().toLowerCase().includes("to be confirmed")
+    !normalizedValue.includes("to be confirmed") &&
+    normalizedValue !== "available upon request" &&
+    !normalizedValue.includes("compatibility can be confirmed") &&
+    !normalizedValue.includes("standard export packing")
   );
 }
 
@@ -53,7 +58,12 @@ export function ProductDetailTemplate({
           />
 
           <div className="mt-8 grid gap-10 lg:grid-cols-[0.95fr_1.05fr] lg:items-start">
-            <ProductVisual label={product.imageLabel} title={product.title} category={category.code} />
+            <ProductVisual
+              label={product.imageLabel}
+              title={product.title}
+              category={category.code}
+              mainImage={product.mainImage}
+            />
 
             <div>
               <p className="text-sm font-bold uppercase tracking-[0.2em] text-arc-blue">
