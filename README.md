@@ -65,6 +65,8 @@ Supabase setup files:
 - `docs/supabase-rfq-setup.md` - Supabase, Vercel and testing instructions
 - `docs/launch-checklist.md` - production launch checklist
 - `docs/product-sku-template.csv` - SKU import planning template
+- `docs/missing-product-data-supplement.csv` - missing data worksheet for the first 10 product pages
+- `docs/production-missing-data-supplement.md` - production missing data priority and RFQ backend notes
 - `docs/sku-template-guide.md` - SKU template filling guide and first batch recommendation
 - `docs/product-data-workflow.md` - product CSV workflow and validation rules
 - `supabase/product-catalog-schema.sql` - future product catalog database schema

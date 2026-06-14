@@ -10,6 +10,8 @@ later be migrated to Supabase or Sanity CMS.
 ## Files
 
 - `docs/product-sku-template.csv` - product data collection template
+- `docs/missing-product-data-supplement.csv` - first 10 product missing data worksheet
+- `docs/production-missing-data-supplement.md` - production missing data priority and RFQ backend notes
 - `scripts/validate-product-csv.mjs` - CSV validation script
 - `content/products.ts` - current mock product data used by the website
 - `content/categories.ts` - current product category data
