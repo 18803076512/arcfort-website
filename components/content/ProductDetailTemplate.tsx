@@ -164,6 +164,17 @@ export function ProductDetailTemplate({
               </div>
             </div>
 
+            <div className="mt-5 border-l-4 border-arc-signal bg-arc-frost p-4">
+              <h3 className="text-xs font-bold uppercase tracking-[0.16em] text-arc-blue">
+                OEM Service Note
+              </h3>
+              <p className="mt-2 text-sm leading-6 text-slate-700">
+                Logo printing, private label packaging, carton design and product model
+                customization are available after product details, quantity and artwork
+                requirements are confirmed.
+              </p>
+            </div>
+
             <button
               type="button"
               disabled

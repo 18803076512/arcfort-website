@@ -268,7 +268,7 @@ export const products: Product[] = [
       { label: "Torch Series", value: "MB15" },
       { label: "Compatible Model", value: "MB15" },
       { label: "Compatible Brand", value: compatibilityFallback },
-      { label: "Reference Number", value: TO_BE_CONFIRMED },
+      { label: "Reference Number", value: "Available upon request" },
     ],
     applications: ["Repair workshop", "Metal fabrication", "Welding distributor supply"],
     features: [
@@ -327,7 +327,7 @@ export const products: Product[] = [
       { label: "Torch Series", value: "MB15" },
       { label: "Compatible Model", value: "MB15" },
       { label: "Compatible Brand", value: compatibilityFallback },
-      { label: "Reference Number", value: TO_BE_CONFIRMED },
+      { label: "Reference Number", value: "Available upon request" },
     ],
     applications: ["Metal fabrication", "Automotive repair", "Repair workshop"],
     features: [
