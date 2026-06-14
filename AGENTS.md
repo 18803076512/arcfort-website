@@ -26,6 +26,10 @@ generation.
 9. Do not hardcode real API keys, email passwords, database passwords, private tokens, or credentials.
 10. After changes, run lint, build, and type checks when available.
 11. Summarize all modified files and any missing data after each task.
+12. Do not invent OEM numbers, compatible models, certifications, prices, exact technical ratings,
+    unverified product dimensions, or other unconfirmed specifications.
+13. Uncertain SKU data must be marked as "needs_review", "unknown", "Available upon request",
+    "Contact us for details", or "TBD" as appropriate.
 
 ## Workflow Rules
 
@@ -35,6 +39,29 @@ generation.
 4. Keep all pages responsive for desktop and mobile.
 5. Keep all pages suitable for overseas B2B industrial inquiries.
 6. Ask for a plan before implementing large changes.
+7. Run `npm run products:validate` before importing SKU CSV data.
+8. Run `npm run products:check-images` before importing or publishing product images.
+
+## SKU Import Rules
+
+Allowed automatic generation:
+
+- `slug`
+- `meta_title`
+- `meta_description`
+- `short_description`
+- `category_slug`
+- `main_image` path
+- `gallery_images` path
+
+Never auto-generate:
+
+- OEM number
+- Confirmed compatible model
+- Certification
+- Price
+- Exact technical rating
+- Unverified product dimensions
 
 ## Future Data Sources
 

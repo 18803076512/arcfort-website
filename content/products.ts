@@ -13,6 +13,10 @@ const processByCategorySlug: Record<string, WeldingProcess> = {
   "welding-accessories": "General Welding",
 };
 
+const activeArcfortProducts = arcfortProducts.filter(
+  (product) => (product.status ?? "active") === "active",
+);
+
 function getImageLabel(product: ArcfortProductData) {
   return product.sku.split("-")[1] ?? "RFQ";
 }
@@ -28,8 +32,14 @@ function isMissingProductValue(value: string) {
   );
 }
 
+function hasMissingProductValue(field: [string, string | undefined]): field is [string, string] {
+  const value = field[1];
+
+  return typeof value === "string" && value.length > 0 && isMissingProductValue(value);
+}
+
 function createSpecifications(product: ArcfortProductData): SpecRow[] {
-  return [
+  const rows = [
     { label: "Product Name", value: product.name },
     { label: "SKU", value: product.sku },
     { label: "Category", value: product.category },
@@ -37,44 +47,54 @@ function createSpecifications(product: ArcfortProductData): SpecRow[] {
     { label: "Size", value: product.size },
     { label: "Thread", value: product.thread },
     { label: "Compatible Brand", value: product.compatibleBrand },
+    { label: "Compatible Model", value: product.compatibleModel },
     { label: "OEM Number", value: product.oemNumber },
+    { label: "Weight", value: product.weight },
+    { label: "Surface Treatment", value: product.surfaceTreatment },
     { label: "Application", value: product.application },
     { label: "Package", value: product.package },
     { label: "MOQ", value: product.moq },
     { label: "Lead Time", value: product.leadTime },
+    { label: "Custom Available", value: product.customAvailable },
+    { label: "Sample Available", value: product.sampleAvailable },
+    { label: "PDF Catalog", value: product.pdfUrl },
   ];
+
+  return rows.filter((row): row is SpecRow => Boolean(row.value));
 }
 
 function createCompatibility(product: ArcfortProductData) {
   return [
     { label: "Product Category", value: product.category },
     { label: "Compatible Brand", value: product.compatibleBrand },
+    { label: "Compatible Model", value: product.compatibleModel },
     { label: "OEM Number", value: product.oemNumber },
     { label: "Application", value: product.application },
-  ];
+  ].filter((row): row is SpecRow => Boolean(row.value));
 }
 
 function createMissingFields(product: ArcfortProductData) {
-  const fields = [
+  const fields: Array<[string, string | undefined]> = [
     ["Material", product.material],
     ["Size", product.size],
     ["Thread", product.thread],
     ["Compatible Brand", product.compatibleBrand],
+    ["Compatible Model", product.compatibleModel],
     ["OEM Number", product.oemNumber],
+    ["Weight", product.weight],
+    ["Surface Treatment", product.surfaceTreatment],
     ["Package", product.package],
   ];
 
-  return fields
-    .filter(([, value]) => isMissingProductValue(value))
-    .map(([label]) => label);
+  return fields.filter(hasMissingProductValue).map(([label]) => label);
 }
 
 function createRelatedProductSlugs(product: ArcfortProductData) {
-  const sameCategorySlugs = arcfortProducts
+  const sameCategorySlugs = activeArcfortProducts
     .filter((relatedProduct) => relatedProduct.slug !== product.slug)
     .filter((relatedProduct) => relatedProduct.categorySlug === product.categorySlug)
     .map((relatedProduct) => relatedProduct.slug);
-  const fallbackSlugs = arcfortProducts
+  const fallbackSlugs = activeArcfortProducts
     .filter((relatedProduct) => relatedProduct.slug !== product.slug)
     .filter((relatedProduct) => relatedProduct.categorySlug !== product.categorySlug)
     .map((relatedProduct) => relatedProduct.slug);
@@ -135,4 +155,4 @@ function toProduct(product: ArcfortProductData): Product {
   };
 }
 
-export const products: Product[] = arcfortProducts.map(toProduct);
+export const products: Product[] = activeArcfortProducts.map(toProduct);

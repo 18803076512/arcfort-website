@@ -62,6 +62,64 @@ The current content includes 6 product categories, 12 starter product pages, 6 a
 3 buyer guides. Missing product data must remain explicit instead of inventing specifications,
 certifications, prices, stock status, factory capacity, or customer cases.
 
+## SKU Bulk Import Workflow
+
+CSV templates:
+
+- `data/import/products-template.csv` - empty product import template
+- `data/import/products-sample.csv` - 5-row sample import file for workflow testing
+- `data/import/products.csv` - working import file, created by copying the template
+
+Workflow:
+
+1. Copy `data/import/products-template.csv` to `data/import/products.csv`.
+2. Fill product data in `data/import/products.csv`.
+3. Put product images in `public/images/products/`.
+4. Run `npm run products:validate`.
+5. Run `npm run products:check-images`.
+6. Run `npm run products:import`.
+7. Run `npm run build`.
+8. Submit a pull request.
+
+Commands:
+
+```bash
+npm run products:validate
+npm run products:check-images
+npm run products:import
+```
+
+The validator checks required fields, SKU format, duplicate SKU and slug values, status enums,
+category slugs, SEO length warnings, description word-count warnings, and image path warnings.
+Missing image files do not fail the build or validation; they are reported as warnings.
+
+Allowed automatic generation:
+
+- `slug`
+- `meta_title`
+- `meta_description`
+- `short_description`
+- `category_slug`
+- `main_image` path
+- `gallery_images` path
+
+Never auto-generate:
+
+- OEM number
+- Confirmed compatible model
+- Certification
+- Price
+- Exact technical rating
+- Unverified product dimensions
+
+Use these values when data is uncertain:
+
+- `Available upon request`
+- `Contact us for details`
+- `TBD`
+- `needs_review`
+- `unknown`
+
 ## RFQ System
 
 The `/rfq` page includes a responsive inquiry form with:
@@ -137,6 +195,24 @@ Validate product CSV data:
 
 ```bash
 npm run validate:products
+```
+
+Validate SKU import data:
+
+```bash
+npm run products:validate
+```
+
+Check product images:
+
+```bash
+npm run products:check-images
+```
+
+Import SKU data:
+
+```bash
+npm run products:import
 ```
 
 Preview generated product content:

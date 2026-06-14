@@ -1,3 +1,15 @@
+export type ProductStatus = "active" | "draft" | "archived";
+export type ProductDataStatus = "confirmed" | "pending" | "needs_review";
+export type ProductSourceType =
+  | "factory"
+  | "supplier_catalog"
+  | "official_catalog"
+  | "customer_sample"
+  | "unknown";
+export type ProductImageStatus = "own_photo" | "supplier_photo" | "placeholder" | "needs_photo";
+export type ProductCompatibilityStatus = "confirmed" | "reference_only" | "unverified";
+export type ProductOemStatus = "confirmed" | "unknown" | "not_applicable";
+
 export type ArcfortProductData = {
   id: string;
   sku: string;
@@ -13,13 +25,28 @@ export type ArcfortProductData = {
   size: string;
   thread: string;
   compatibleBrand: string;
+  compatibleModel?: string;
   oemNumber: string;
+  weight?: string;
+  surfaceTreatment?: string;
   package: string;
   moq: string;
   leadTime: string;
   application: string;
+  customAvailable?: string;
+  sampleAvailable?: string;
+  pdfUrl?: string;
   metaTitle: string;
   metaDescription: string;
+  status?: ProductStatus;
+  dataStatus?: ProductDataStatus;
+  sourceType?: ProductSourceType;
+  sourceReference?: string;
+  verifiedBy?: string;
+  verifiedDate?: string;
+  imageStatus?: ProductImageStatus;
+  compatibilityStatus?: ProductCompatibilityStatus;
+  oemStatus?: ProductOemStatus;
 };
 
 const materialFallback = "Specific material grade to be confirmed by sample or drawing";
