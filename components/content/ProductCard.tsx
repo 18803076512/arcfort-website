@@ -13,7 +13,13 @@ export function ProductCard({ product, category }: ProductCardProps) {
       href={`/products/${category.slug}/${product.slug}`}
       className="group flex h-full flex-col border border-slate-200 bg-white shadow-sm transition hover:-translate-y-1 hover:border-arc-blue hover:shadow-industrial"
     >
-      <ProductVisual label={product.imageLabel} title={product.title} category={category.code} compact />
+      <ProductVisual
+        label={product.imageLabel}
+        title={product.title}
+        category={category.code}
+        mainImage={product.mainImage}
+        compact
+      />
       <div className="flex flex-1 flex-col p-5">
         <div className="text-xs font-bold uppercase tracking-[0.16em] text-arc-blue">
           {category.shortTitle}

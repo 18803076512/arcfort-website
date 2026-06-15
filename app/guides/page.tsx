@@ -9,7 +9,7 @@ import { buildMetadata } from "@/lib/content/seo";
 export const metadata = buildMetadata({
   title: "Welding Buyer Guides",
   description:
-    "Read ARCFORT welding and cutting buyer guides for RFQ preparation, MIG/MAG and TIG consumables, and plasma cutting parts sourcing.",
+    "Read ArcFort Weld welding and cutting buyer guides for RFQ preparation, MIG/MAG and TIG consumables, and plasma cutting parts sourcing.",
   path: "/guides",
   keywords: [
     "welding buyer guide",

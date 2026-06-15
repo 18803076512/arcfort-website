@@ -25,16 +25,16 @@ const privacySections = [
   },
   {
     title: "Contact details",
-    body: "Official privacy contact information is currently To be confirmed and should be replaced before production launch.",
+    body: `For privacy or RFQ information questions, contact ${siteConfig.legalName} by email at ${siteConfig.email} or WhatsApp at ${siteConfig.whatsapp}.`,
   },
 ];
 
 export const metadata = buildMetadata({
   title: "Privacy Notice",
   description:
-    "Privacy notice for ARCFORT RFQ submissions, contact forms, buyer information and uploaded product documents.",
+    "Privacy notice for ArcFort Weld RFQ submissions, contact forms, buyer information and uploaded product documents.",
   path: "/privacy",
-  keywords: ["ARCFORT privacy", "RFQ privacy", "welding supplier privacy notice"],
+  keywords: ["ArcFort Weld privacy", "RFQ privacy", "welding supplier privacy notice"],
 });
 
 export default function PrivacyPage() {
@@ -78,8 +78,11 @@ export default function PrivacyPage() {
           </div>
           <div className="mt-8 border-l-4 border-arc-signal bg-white p-5 shadow-sm">
             <p className="text-sm font-semibold leading-6 text-slate-700">
-              Privacy contact: {siteConfig.email}. Replace this placeholder with an official
-              business email before launch.
+              Privacy contact:{" "}
+              <a href={siteConfig.emailHref} className="font-bold text-arc-blue hover:text-arc-midnight">
+                {siteConfig.email}
+              </a>
+              . Business address: {siteConfig.address}.
             </p>
           </div>
           <div className="mt-8">
@@ -87,7 +90,7 @@ export default function PrivacyPage() {
               href="/contact"
               className="inline-flex items-center justify-center border border-arc-blue px-5 py-3 text-sm font-bold uppercase tracking-[0.14em] text-arc-blue transition hover:bg-arc-blue hover:text-white"
             >
-              Contact ARCFORT
+              Contact ArcFort Weld
             </Link>
           </div>
         </div>

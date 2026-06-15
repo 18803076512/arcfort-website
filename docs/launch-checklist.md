@@ -14,14 +14,16 @@ Use this checklist before switching the website to production traffic.
 
 ## Required Business Data
 
-- Official business email: To be confirmed.
-- Official WhatsApp number: To be confirmed.
-- Company address: To be confirmed.
-- Real product images: To be confirmed.
-- Product catalog PDF: To be confirmed.
-- Real SKU data: To be confirmed.
-- Product specifications: To be confirmed.
-- MOQ and lead time by product: To be confirmed.
+- Official business email: arcfortweld@outlook.com.
+- Official WhatsApp number: +86-18803076512.
+- Company address: Renqiu City, Cangzhou, Hebei Province, China.
+- Main port: Tianjin Xingang Port / Tianjin Port, China.
+- Alternative ports: Qingdao Port or Ningbo Port are available upon request.
+- Real product images: pending.
+- Product catalog PDF: pending.
+- Real SKU data: pending.
+- Product specifications: pending by product.
+- MOQ and lead time by product: covered by policy, pending by exact product and order quantity.
 
 ## Supabase RFQ Setup
 
@@ -57,7 +59,7 @@ Use this checklist before switching the website to production traffic.
 
 ## Post-Launch
 
-- Replace placeholders with confirmed business data.
+- Review confirmed business data before major website updates.
 - Add real product photos.
 - Upload official PDF catalog.
 - Import confirmed SKU data using `docs/product-sku-template.csv`.

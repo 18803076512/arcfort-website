@@ -1,13 +1,26 @@
 # arcfort-website
 
-ARCFORT Welding & Cutting Solutions independent website project.
+ArcFort Weld independent website project for Renqiu Ailesen Welding Technology Co., Ltd.
 
 ## Brand
 
-- Brand name: ARCFORT
-- Full brand: ARCFORT Welding & Cutting Solutions
+- Brand name: ArcFort Weld
+- Company English name: Renqiu Ailesen Welding Technology Co., Ltd.
+- Company Chinese name: 任丘市埃勒森焊接科技有限公司
 - Positioning: Industrial Welding & Cutting Solutions
 - Audience: Global distributors, importers, OEM buyers, industrial users, and repair workshops
+
+## Confirmed Business Information
+
+- Business email: `arcfortweld@outlook.com`
+- WhatsApp: `+86-18803076512`
+- Address: Renqiu City, Cangzhou, Hebei Province, China
+- Main port: Tianjin Xingang Port / Tianjin Port, China
+- Alternative ports: Qingdao Port or Ningbo Port are available upon request
+- Payment terms: T/T, 30% deposit before production, 70% balance before shipment
+- MOQ policy: Small trial orders accepted; OEM MOQ depends on product and packaging requirements
+- Lead time: 7-20 working days for regular orders
+- OEM service: Logo, packaging, private label, and model customization available
 
 ## Tech Stack
 
@@ -21,7 +34,7 @@ ARCFORT Welding & Cutting Solutions independent website project.
 
 - `/` - Home
 - `/products` - Product center
-- `/products/[category]` - SEO category page
+- `/products/[category]` - Product category page
 - `/products/[category]/[slug]` - Product detail page
 - `/applications` - Application center
 - `/applications/[slug]` - Application detail page
@@ -31,19 +44,136 @@ ARCFORT Welding & Cutting Solutions independent website project.
 - `/contact` - Contact
 - `/privacy` - Privacy notice
 - `/rfq` - Request for quotation
-- `/api/rfq` - RFQ submission endpoint prepared for Supabase
+- `/api/rfq` - RFQ submission endpoint prepared for Supabase and Resend
 
 ## Content Architecture
 
-- `content/categories.ts` - sample product category content
-- `content/products.ts` - sample product detail content
+- `content/categories.ts` - product category SEO content
+- `lib/data/products.ts` - CMS-ready mock product data source for Sanity or Supabase migration
+- `content/products.ts` - adapter that maps product data into the current page schema
 - `content/applications.ts` - application page content
 - `content/guides.ts` - buyer guide and article content
 - `lib/content/schemas.ts` - reusable TypeScript content schema
+- `lib/content/site.ts` - centralized company, contact, trade, port, payment, MOQ, lead time and OEM information
 - `lib/content/seo.ts` - metadata helper
 - `lib/content/jsonld.ts` - JSON-LD helpers for Product, BreadcrumbList, Organization, and FAQ
 
-The current mock content includes 6 product categories, 8 sample products, 6 application pages and 3 buyer guides. Missing product data is marked as `To be confirmed` instead of inventing specifications, certifications, prices, stock status, factory capacity, or customer cases.
+The current content includes 6 product categories, 12 starter product pages, 6 application pages and
+3 buyer guides. Missing product data must remain explicit instead of inventing specifications,
+certifications, prices, stock status, factory capacity, or customer cases.
+
+## SKU Bulk Import Workflow
+
+For daily SKU maintenance, use the simple SKU workflow first. It lets you maintain a short CSV and
+generate the full website product CSV automatically.
+
+Simple CSV files:
+
+- `data/import/products-simple-template.csv` - simple SKU template
+- `data/import/products-simple.csv` - simple working SKU file
+
+Simple CSV fields:
+
+- `category`
+- `product_name`
+- `model`
+- `size`
+- `thread`
+- `material`
+- `compatible_model`
+- `image_name`
+- `notes`
+
+Simple workflow:
+
+1. Edit `data/import/products-simple.csv`.
+2. Put images in `public/images/products/` using the `image_name` values.
+3. Run `npm run products:simple:preview` to check generated data without writing files.
+4. Run `npm run products:simple:generate` to generate `data/import/products.csv`.
+5. Run `npm run products:check-images`.
+6. Run `npm run products:simple:import` to update `lib/data/products.ts`.
+7. Run `npm run build`.
+
+The simple importer automatically generates SKU, slug, category slug, short description,
+description, SEO title, SEO description, image path and review statuses. It does not generate
+confirmed OEM numbers, confirmed compatibility, certifications, prices or exact technical ratings.
+
+CSV templates:
+
+- `data/import/products-template.csv` - empty product import template
+- `data/import/products.csv` - working import file, created by copying the template
+
+Workflow:
+
+1. Copy `data/import/products-template.csv` to `data/import/products.csv`.
+2. Fill product data in `data/import/products.csv`.
+3. Put product images in `public/images/products/`.
+4. Run `npm run products:validate`.
+5. Run `npm run products:check-images`.
+6. Run `npm run products:import`.
+7. Run `npm run build`.
+8. Submit a pull request.
+
+Commands:
+
+```bash
+npm run products:validate
+npm run products:check-images
+npm run products:import
+```
+
+The validator checks required fields, SKU format, duplicate SKU and slug values, status enums,
+category slugs, SEO length warnings, description word-count warnings, and image path warnings.
+Missing image files do not fail the build or validation; they are reported as warnings.
+
+Allowed automatic generation means safe placeholder, routing, image-path, or SEO text generation.
+It does not mean inventing confirmed technical facts.
+
+Allowed automatic generation:
+
+- `sku`
+- `name`
+- `category`
+- `category_slug`
+- `slug`
+- `short_description`
+- `description`
+- `main_image` path
+- `gallery_images` path
+- `material` as `Available upon request`
+- `size` as `Available upon request`
+- `thread` as `Available upon request`
+- `compatible_brand` as `Contact us for details`
+- `compatible_model` as `Contact us for details`
+- `oem_number` as `TBD`
+- `package` as `Available upon request`
+- `moq` as `Contact us for details`
+- `lead_time` as `Available upon request`
+- `application`
+- `meta_title`
+- `meta_description`
+- `status`, with missing values defaulting to `draft`
+- `data_status`, with missing values defaulting to `needs_review`
+- `image_status`, with missing values defaulting to `placeholder`
+- `compatibility_status`, with missing values defaulting to `unverified`
+- `oem_status`, with missing values defaulting to `unknown`
+
+Never auto-generate:
+
+- OEM number as a confirmed value
+- Confirmed compatible model
+- Certification
+- Price
+- Exact technical rating
+- Unverified product dimensions
+
+Use these values when data is uncertain:
+
+- `Available upon request`
+- `Contact us for details`
+- `TBD`
+- `needs_review`
+- `unknown`
 
 ## RFQ System
 
@@ -55,16 +185,12 @@ The `/rfq` page includes a responsive inquiry form with:
 - Drawing, product list, PDF, Excel, Word, JPG, and PNG upload selection
 - Server-side validation through `/api/rfq`
 - Success state after validation
+- Optional Supabase storage for RFQ records and attachment metadata
+- Optional Resend email notification to the configured business email
 
-Supabase setup files:
-
-- `supabase/rfq-schema.sql` - RFQ table and private attachment bucket setup
-- `docs/supabase-rfq-setup.md` - Supabase, Vercel and testing instructions
-- `docs/launch-checklist.md` - production launch checklist
-- `docs/product-sku-template.csv` - SKU import planning template
-
-Supabase storage is optional and must be configured through environment variables. No real API keys,
-email passwords, database passwords, or private tokens are committed.
+Supabase storage and Resend email delivery are optional production services and must be configured
+through environment variables. No real API keys, email passwords, database passwords, or private
+tokens are committed.
 
 Environment variables:
 
@@ -73,37 +199,23 @@ SUPABASE_URL=
 SUPABASE_SERVICE_ROLE_KEY=
 SUPABASE_RFQ_TABLE=rfq_inquiries
 SUPABASE_RFQ_BUCKET=rfq-attachments
+RFQ_EMAIL_RECIPIENT=arcfortweld@outlook.com
+RFQ_EMAIL_FROM=
+RESEND_API_KEY=
 ```
 
-Suggested Supabase table fields:
+Related setup files:
 
-- `name`
-- `company`
-- `email`
-- `whatsapp`
-- `country`
-- `product_requirements`
-- `quantity`
-- `message`
-- `attachments` as JSON
-- `source_path`
-- `status`
-- `created_at`
-
-## About Page
-
-- Hero section
-- Company overview
-- What We Supply
-- Our Advantages
-- Quality Control
-- Contact and RFQ CTA
-
-## Contact Page
-
-- Uses B2B inquiry-focused content for welding and cutting sourcing
-- Uses `To be confirmed` for email and WhatsApp until official contact details are confirmed
-- Links buyers to `/rfq` for product lists, drawings, quantities and packaging requirements
+- `supabase/rfq-schema.sql` - RFQ table and private attachment bucket setup
+- `docs/supabase-rfq-setup.md` - Supabase, Vercel and testing instructions
+- `docs/launch-checklist.md` - production launch checklist
+- `docs/product-sku-template.csv` - SKU import planning template
+- `docs/missing-product-data-supplement.csv` - missing data worksheet for product pages
+- `docs/production-missing-data-supplement.md` - production missing data priority and RFQ backend notes
+- `docs/sku-template-guide.md` - SKU template filling guide and first batch recommendation
+- `docs/product-data-workflow.md` - product CSV workflow and validation rules
+- `supabase/product-catalog-schema.sql` - future product catalog database schema
+- `docs/supabase-product-catalog-setup.md` - product catalog database setup instructions
 
 ## Product Lines
 
@@ -134,11 +246,60 @@ Build for production:
 npm run build
 ```
 
+Validate legacy product CSV data:
+
+```bash
+npm run validate:products
+```
+
+Validate SKU import data:
+
+```bash
+npm run products:validate
+```
+
+Preview simple SKU data:
+
+```bash
+npm run products:simple:preview
+```
+
+Generate full SKU CSV from simple SKU data:
+
+```bash
+npm run products:simple:generate
+```
+
+Generate and import simple SKU data:
+
+```bash
+npm run products:simple:import
+```
+
+Check product images:
+
+```bash
+npm run products:check-images
+```
+
+Import SKU data:
+
+```bash
+npm run products:import
+```
+
+Preview generated product content:
+
+```bash
+npm run generate:products
+```
+
 ## Notes
 
 - No real API keys or secrets are included.
-- The RFQ page validates submissions and can store them in Supabase after environment variables are configured.
-- Replace placeholder contact details before production launch.
-- The privacy notice uses placeholder contact information and should be reviewed before production launch.
+- The RFQ page validates submissions and can store them in Supabase or send email through Resend
+  after environment variables are configured.
+- Confirm real product images, final SKU codes and exact product specifications before scaling
+  product pages.
 - `app/sitemap.ts` and `app/robots.ts` are included for search engine discovery.
 - Product and category pages include SEO metadata and JSON-LD structured data where appropriate.

@@ -2,7 +2,7 @@ export const TO_BE_CONFIRMED = "To be confirmed" as const;
 
 export type MissingValue = typeof TO_BE_CONFIRMED;
 
-export type WeldingProcess = "MIG/MAG" | "TIG" | "MMA" | "Plasma Cutting";
+export type WeldingProcess = "MIG/MAG" | "TIG" | "MMA" | "Plasma Cutting" | "General Welding";
 
 export type ProductKind = "welding-consumable" | "welding-equipment";
 
@@ -32,7 +32,13 @@ export type ProductCategory = {
   seoTitle: string;
   seoDescription: string;
   seoIntro: string;
+  productRange: string[];
+  commonSpecifications: string[];
+  compatibilityNote: string;
+  applications: string[];
   buyerGuide: string[];
+  oemServiceNote: string;
+  packagingMoqNote: string;
   features: string[];
   relatedCategorySlugs: string[];
   faq: FaqItem[];
@@ -48,6 +54,10 @@ export type BaseProduct = {
   shortDescription: string;
   description: string;
   imageLabel: string;
+  mainImage: string;
+  galleryImages: string[];
+  metaTitle: string;
+  metaDescription: string;
   keywords: string[];
   specifications: SpecRow[];
   compatibility: CompatibilityRow[];

@@ -2,11 +2,21 @@
   "name": "arcfort-website",
   "version": "0.1.0",
   "private": true,
+  "type": "module",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
     "lint": "eslint . --max-warnings=0",
+    "validate:products": "node scripts/validate-product-csv.mjs docs/product-sku-template.csv",
+    "generate:products": "node scripts/generate-products-from-csv.mjs docs/product-sku-template.csv",
+    "generate:products:write": "node scripts/generate-products-from-csv.mjs docs/product-sku-template.csv --write",
+    "products:validate": "node --experimental-strip-types scripts/validate-products.ts",
+    "products:import": "node --experimental-strip-types scripts/import-products.ts",
+    "products:check-images": "node --experimental-strip-types scripts/check-product-images.ts",
+    "products:simple:preview": "node --experimental-strip-types scripts/import-simple-products.ts",
+    "products:simple:generate": "node --experimental-strip-types scripts/import-simple-products.ts --write",
+    "products:simple:import": "node --experimental-strip-types scripts/import-simple-products.ts --write --import",
     "format": "prettier --write ."
   },
   "dependencies": {

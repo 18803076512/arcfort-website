@@ -1,6 +1,5 @@
 import Link from "next/link";
-import type { Product, ProductCategory } from "@/lib/content/schemas";
-import { TO_BE_CONFIRMED } from "@/lib/content/schemas";
+import { TO_BE_CONFIRMED, type Product, type ProductCategory } from "@/lib/content/schemas";
 import { Breadcrumbs } from "@/components/content/Breadcrumbs";
 import { CompatibilityTable } from "@/components/content/CompatibilityTable";
 import { FaqSection } from "@/components/content/FaqSection";
@@ -8,6 +7,8 @@ import { ProductCard } from "@/components/content/ProductCard";
 import { ProductVisual } from "@/components/content/ProductVisual";
 import { RfqCta } from "@/components/content/RfqCta";
 import { SpecificationTable } from "@/components/content/SpecificationTable";
+import { displayConfirmedValue } from "@/lib/content/display";
+import { siteConfig } from "@/lib/content/site";
 
 type RelatedProduct = {
   product: Product;
@@ -20,12 +21,28 @@ type ProductDetailTemplateProps = {
   relatedProducts: RelatedProduct[];
 };
 
+function isPublicDetailRow(row: { label: string; value: string }) {
+  const normalizedValue = row.value.trim().toLowerCase();
+
+  return (
+    row.label !== "Image Name" &&
+    row.value !== TO_BE_CONFIRMED &&
+    !normalizedValue.includes("to be confirmed") &&
+    normalizedValue !== "available upon request" &&
+    !normalizedValue.includes("compatibility can be confirmed") &&
+    !normalizedValue.includes("standard export packing")
+  );
+}
+
 export function ProductDetailTemplate({
   product,
   category,
   relatedProducts,
 }: ProductDetailTemplateProps) {
   const rfqHref = `/rfq?product=${encodeURIComponent(product.title)}`;
+  const publicSpecifications = product.specifications.filter(isPublicDetailRow);
+  const publicCompatibility = product.compatibility.filter(isPublicDetailRow);
+  const technicalDetailsToConfirm = Array.from(new Set(product.missingFields));
 
   return (
     <>
@@ -41,7 +58,12 @@ export function ProductDetailTemplate({
           />
 
           <div className="mt-8 grid gap-10 lg:grid-cols-[0.95fr_1.05fr] lg:items-start">
-            <ProductVisual label={product.imageLabel} title={product.title} category={category.code} />
+            <ProductVisual
+              label={product.imageLabel}
+              title={product.title}
+              category={category.code}
+              mainImage={product.mainImage}
+            />
 
             <div>
               <p className="text-sm font-bold uppercase tracking-[0.2em] text-arc-blue">
@@ -57,7 +79,9 @@ export function ProductDetailTemplate({
                   <div className="text-xs font-bold uppercase tracking-[0.16em] text-slate-500">
                     SKU
                   </div>
-                  <div className="mt-1 font-semibold text-arc-midnight">{product.sku}</div>
+                  <div className="mt-1 font-semibold text-arc-midnight">
+                    {displayConfirmedValue(product.sku, "Confirm with product details")}
+                  </div>
                 </div>
                 <div>
                   <div className="text-xs font-bold uppercase tracking-[0.16em] text-slate-500">
@@ -81,19 +105,32 @@ export function ProductDetailTemplate({
                   Add to RFQ
                 </Link>
                 <Link
-                  href="/contact"
+                  href={siteConfig.whatsappHref}
                   className="inline-flex items-center justify-center border border-slate-300 px-5 py-3 text-sm font-bold uppercase tracking-[0.14em] text-slate-700 transition hover:border-arc-midnight hover:bg-arc-midnight hover:text-white"
                 >
                   WhatsApp
                 </Link>
               </div>
 
-              {product.missingFields.length > 0 ? (
+              {technicalDetailsToConfirm.length > 0 ? (
                 <div className="mt-6 border-l-4 border-arc-signal bg-white p-4 shadow-sm">
-                  <p className="text-sm font-semibold leading-6 text-slate-700">
-                    Missing data: {product.missingFields.join(", ")}. These fields are marked as{" "}
-                    {TO_BE_CONFIRMED} until confirmed by drawing, sample or model reference.
+                  <h2 className="text-xs font-bold uppercase tracking-[0.16em] text-arc-blue">
+                    Technical details available upon request
+                  </h2>
+                  <p className="mt-2 text-sm leading-6 text-slate-700">
+                    These items can be checked by drawing, reference part, product list or model
+                    reference before quotation.
                   </p>
+                  <div className="mt-3 flex flex-wrap gap-2">
+                    {technicalDetailsToConfirm.map((field) => (
+                      <span
+                        key={field}
+                        className="border border-slate-200 bg-arc-frost px-3 py-1 text-xs font-semibold text-slate-700"
+                      >
+                        {field}
+                      </span>
+                    ))}
+                  </div>
                 </div>
               ) : null}
             </div>
@@ -103,8 +140,8 @@ export function ProductDetailTemplate({
 
       <section className="bg-arc-frost py-14 sm:py-16">
         <div className="mx-auto grid max-w-7xl gap-6 px-4 sm:px-6 lg:grid-cols-[1.1fr_0.9fr] lg:px-8">
-          <SpecificationTable rows={product.specifications} />
-          <CompatibilityTable rows={product.compatibility} />
+          <SpecificationTable rows={publicSpecifications} />
+          <CompatibilityTable rows={publicCompatibility} />
         </div>
       </section>
 
@@ -138,7 +175,7 @@ export function ProductDetailTemplate({
                   Package
                 </div>
                 <div className="mt-1 text-sm font-semibold text-arc-midnight">
-                  {product.packaging}
+                  {displayConfirmedValue(product.packaging)}
                 </div>
               </div>
               <div className="grid gap-3 sm:grid-cols-2">
@@ -146,17 +183,30 @@ export function ProductDetailTemplate({
                   <div className="text-xs font-bold uppercase tracking-[0.16em] text-slate-500">
                     MOQ
                   </div>
-                  <div className="mt-1 text-sm font-semibold text-arc-midnight">{product.moq}</div>
+                  <div className="mt-1 text-sm font-semibold text-arc-midnight">
+                    {displayConfirmedValue(product.moq)}
+                  </div>
                 </div>
                 <div className="border border-slate-100 bg-slate-50 p-4">
                   <div className="text-xs font-bold uppercase tracking-[0.16em] text-slate-500">
                     Lead Time
                   </div>
                   <div className="mt-1 text-sm font-semibold text-arc-midnight">
-                    {product.leadTime}
+                    {displayConfirmedValue(product.leadTime)}
                   </div>
                 </div>
               </div>
+            </div>
+
+            <div className="mt-5 border-l-4 border-arc-signal bg-arc-frost p-4">
+              <h3 className="text-xs font-bold uppercase tracking-[0.16em] text-arc-blue">
+                OEM Service Note
+              </h3>
+              <p className="mt-2 text-sm leading-6 text-slate-700">
+                Logo printing, private label packaging, carton design and product model
+                customization are available after product details, quantity and artwork
+                requirements are confirmed.
+              </p>
             </div>
 
             <button
@@ -164,7 +214,7 @@ export function ProductDetailTemplate({
               disabled
               className="mt-6 inline-flex cursor-not-allowed items-center justify-center bg-slate-200 px-5 py-3 text-sm font-bold uppercase tracking-[0.14em] text-slate-500"
             >
-              PDF Catalog To be confirmed
+              PDF Catalog Available by RFQ
             </button>
           </article>
         </div>

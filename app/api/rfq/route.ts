@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { siteConfig } from "@/lib/content/site";
 
 type RfqPayload = {
   name: string;
@@ -16,6 +17,12 @@ type AttachmentRecord = {
   size: number;
   type: string;
   path?: string;
+};
+
+type EmailNotificationResult = {
+  configured: boolean;
+  delivered: boolean;
+  recipient: string;
 };
 
 const requiredFields: Array<keyof RfqPayload> = [
@@ -140,9 +147,96 @@ async function insertSupabaseInquiry(payload: RfqPayload, attachments: Attachmen
   return true;
 }
 
+function buildInquiryEmailText(payload: RfqPayload, attachments: AttachmentRecord[]) {
+  const attachmentSummary =
+    attachments.length > 0
+      ? attachments
+          .map((attachment) => {
+            const sizeMb = (attachment.size / (1024 * 1024)).toFixed(2);
+            return `- ${attachment.name} (${sizeMb} MB)${attachment.path ? ` - ${attachment.path}` : ""}`;
+          })
+          .join("\n")
+      : "No attachments uploaded.";
+
+  return [
+    "New RFQ inquiry from ArcFort Weld website",
+    "",
+    `Name: ${payload.name}`,
+    `Company: ${payload.company}`,
+    `Email: ${payload.email}`,
+    `WhatsApp: ${payload.whatsapp || "Not provided"}`,
+    `Country: ${payload.country}`,
+    `Quantity: ${payload.quantity}`,
+    "",
+    "Product Requirements:",
+    payload.productRequirements,
+    "",
+    "Message:",
+    payload.message || "No additional message.",
+    "",
+    "Attachments:",
+    attachmentSummary,
+  ].join("\n");
+}
+
+async function sendEmailNotification(
+  payload: RfqPayload,
+  attachments: AttachmentRecord[],
+): Promise<EmailNotificationResult> {
+  const apiKey = process.env.RESEND_API_KEY;
+  const from = process.env.RFQ_EMAIL_FROM;
+  const recipient = process.env.RFQ_EMAIL_RECIPIENT || siteConfig.email;
+
+  if (!apiKey || !from) {
+    return {
+      configured: false,
+      delivered: false,
+      recipient,
+    };
+  }
+
+  const response = await fetch("https://api.resend.com/emails", {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${apiKey}`,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      from,
+      to: [recipient],
+      reply_to: payload.email,
+      subject: `ArcFort Weld RFQ - ${payload.company}`,
+      text: buildInquiryEmailText(payload, attachments),
+    }),
+  });
+
+  if (!response.ok) {
+    throw new Error("RFQ email notification failed.");
+  }
+
+  return {
+    configured: true,
+    delivered: true,
+    recipient,
+  };
+}
+
 export async function POST(request: Request) {
   try {
-    const formData = await request.formData();
+    let formData: FormData;
+
+    try {
+      formData = await request.formData();
+    } catch {
+      return NextResponse.json(
+        {
+          ok: false,
+          message: "Invalid RFQ form data.",
+        },
+        { status: 400 },
+      );
+    }
+
     const payload: RfqPayload = {
       name: cleanField(formData, "name"),
       company: cleanField(formData, "company"),
@@ -201,14 +295,19 @@ export async function POST(request: Request) {
         ? await uploadAttachments(files, supabaseUrl, serviceRoleKey, bucket)
         : attachmentMetadata;
     const stored = await insertSupabaseInquiry(payload, uploadedAttachments);
+    const emailNotification = await sendEmailNotification(payload, uploadedAttachments);
 
     return NextResponse.json({
       ok: true,
       stored,
-      backendConfigured: stored,
-      message: stored
-        ? "RFQ submitted successfully."
-        : "RFQ validated. Configure Supabase environment variables to store submissions.",
+      emailConfigured: emailNotification.configured,
+      emailDelivered: emailNotification.delivered,
+      emailRecipient: emailNotification.recipient,
+      backendConfigured: stored || emailNotification.delivered,
+      message:
+        stored || emailNotification.delivered
+          ? "RFQ submitted successfully."
+          : "RFQ validated. Configure Supabase or Resend email environment variables before production launch.",
     });
   } catch {
     return NextResponse.json(

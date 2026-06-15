@@ -1,6 +1,7 @@
 "use client";
 
 import { type ChangeEvent, type FormEvent, useMemo, useState } from "react";
+import { siteConfig } from "@/lib/content/site";
 
 type RfqFormValues = {
   name: string;
@@ -20,6 +21,9 @@ type RfqResponse = {
   ok: boolean;
   stored?: boolean;
   backendConfigured?: boolean;
+  emailConfigured?: boolean;
+  emailDelivered?: boolean;
+  emailRecipient?: string;
   message?: string;
   errors?: FormErrors;
 };
@@ -198,11 +202,27 @@ export function RfqForm({ initialProduct = "" }: RfqFormProps) {
             Thank you for your inquiry.
           </h2>
           <p className="mt-3 text-sm leading-6 text-slate-700">
-            {submissionResult?.stored
-              ? "Your RFQ has been submitted for follow-up."
-              : "Your RFQ passed validation. Backend storage is not configured yet, so Supabase environment variables must be added before production launch."}
+            {submissionResult?.backendConfigured
+              ? "Your RFQ has been submitted for sales follow-up."
+              : "Your RFQ passed validation, but server-side email delivery or storage is not configured yet. Please also send your inquiry by email or WhatsApp for sales follow-up."}
           </p>
         </div>
+        {!submissionResult?.backendConfigured ? (
+          <div className="mt-5 grid gap-3 sm:grid-cols-2">
+            <a
+              href={siteConfig.emailHref}
+              className="border border-slate-200 bg-arc-frost p-4 text-sm font-semibold text-arc-midnight transition hover:border-arc-blue hover:text-arc-blue"
+            >
+              Email: {submissionResult?.emailRecipient ?? siteConfig.email}
+            </a>
+            <a
+              href={siteConfig.whatsappHref}
+              className="border border-slate-200 bg-arc-frost p-4 text-sm font-semibold text-arc-midnight transition hover:border-arc-blue hover:text-arc-blue"
+            >
+              WhatsApp: {siteConfig.whatsapp}
+            </a>
+          </div>
+        ) : null}
         <div className="mt-6 grid gap-4 text-sm text-slate-700">
           <p>
             <span className="font-bold text-arc-midnight">Company:</span> {values.company}
@@ -370,7 +390,8 @@ export function RfqForm({ initialProduct = "" }: RfqFormProps) {
           {isSubmitting ? "Submitting..." : "Submit RFQ"}
         </button>
         <p className="text-xs leading-5 text-slate-500">
-          No real API keys, email passwords or database credentials are included.
+          Your inquiry is validated by the website before submission. Large files can also be sent
+          directly by email after initial contact.
         </p>
       </div>
     </form>

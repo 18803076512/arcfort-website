@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { siteConfig } from "@/lib/content/site";
 
 const navigation = [
   { href: "/", label: "Home" },
@@ -20,7 +21,7 @@ export function Header() {
           </span>
           <span className="leading-tight">
             <span className="block font-display text-2xl font-black tracking-normal text-arc-midnight">
-              ARCFORT
+              {siteConfig.shortName}
             </span>
             <span className="block text-xs font-bold uppercase tracking-[0.18em] text-arc-blue">
               Welding & Cutting

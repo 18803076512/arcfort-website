@@ -10,18 +10,32 @@ const contactItems = [
   {
     label: "Email",
     value: siteConfig.email,
-    note: "Official business email to be confirmed before launch.",
+    href: siteConfig.emailHref,
+    note: "Send product lists, drawings, photos or RFQ details for quotation follow-up.",
   },
   {
     label: "WhatsApp",
     value: siteConfig.whatsapp,
-    note: "Use the RFQ form until an official WhatsApp number is confirmed.",
+    href: siteConfig.whatsappHref,
+    note: "Available for quick product discussion and inquiry confirmation.",
   },
   {
     label: "Company",
     value: siteConfig.legalName,
-    note: "Industrial welding and cutting product inquiries.",
+    note: siteConfig.chineseName,
   },
+  {
+    label: "Address",
+    value: siteConfig.address,
+    note: "Renqiu City, Cangzhou, Hebei Province, China.",
+  },
+];
+
+const tradeItems = [
+  { label: "Main Port", value: `${siteConfig.mainPort}. ${siteConfig.alternativePorts}` },
+  { label: "Payment Terms", value: siteConfig.paymentTerms },
+  { label: "MOQ Policy", value: siteConfig.moqPolicy },
+  { label: "Lead Time", value: siteConfig.leadTime },
 ];
 
 const inquiryTopics = [
@@ -32,8 +46,8 @@ const inquiryTopics = [
 ];
 
 const buyerChecklist = [
-  "Product name, SKU, OEM number or compatible reference",
-  "Drawing, photo, sample details or existing supplier part number",
+  "Product name, model, size, material or compatible reference",
+  "Drawing, product photo, reference part details or existing supplier part number",
   "Required quantity, packaging requirement and destination country",
   "Target delivery schedule and any distributor or OEM requirements",
 ];
@@ -46,9 +60,9 @@ const responseSteps = [
 ];
 
 export const metadata = buildMetadata({
-  title: "Contact ARCFORT",
+  title: "Contact ArcFort Weld",
   description:
-    "Contact ARCFORT Welding & Cutting Solutions for industrial welding parts, plasma cutting consumables, OEM welding accessories and export RFQ support.",
+    "Contact ArcFort Weld for industrial welding parts, plasma cutting consumables, OEM welding accessories and export RFQ support.",
   path: "/contact",
   keywords: [
     "contact welding parts supplier",
@@ -77,11 +91,12 @@ export default function ContactPage() {
                 Contact
               </p>
               <h1 className="mt-3 font-display text-4xl font-black leading-tight text-arc-midnight sm:text-5xl">
-                Talk with ARCFORT about welding and cutting sourcing.
+                Talk with ArcFort Weld about welding and cutting sourcing.
               </h1>
               <p className="mt-5 max-w-2xl text-lg leading-8 text-slate-600">
-                Send product lists, drawings, reference numbers, quantities and destination market
-                details. ARCFORT will use the confirmed information to prepare a clear RFQ follow-up.
+                Send product names, models, sizes, material requirements, drawings, product photos,
+                quantities, packaging needs and destination country. ArcFort Weld will use the
+                confirmed information to prepare a clear RFQ follow-up.
               </p>
               <div className="mt-8 flex flex-col gap-3 sm:flex-row">
                 <Link
@@ -109,18 +124,49 @@ export default function ContactPage() {
                     <div className="text-xs font-bold uppercase tracking-[0.18em] text-arc-blue">
                       {item.label}
                     </div>
-                    <div className="mt-2 text-base font-semibold leading-7 text-arc-midnight">
-                      {item.value}
-                    </div>
+                    {item.href ? (
+                      <a
+                        href={item.href}
+                        className="mt-2 block text-base font-semibold leading-7 text-arc-midnight hover:text-arc-blue"
+                      >
+                        {item.value}
+                      </a>
+                    ) : (
+                      <div className="mt-2 text-base font-semibold leading-7 text-arc-midnight">
+                        {item.value}
+                      </div>
+                    )}
                     <p className="mt-1 text-sm leading-6 text-slate-600">{item.note}</p>
                   </div>
                 ))}
               </div>
               <p className="mt-6 border-l-4 border-arc-signal bg-white p-4 text-sm font-semibold leading-6 text-slate-700">
-                No placeholder email, WhatsApp number or private contact credential should be used
-                for production. Confirm official contact details before launch.
+                Main export port: {siteConfig.mainPort}. {siteConfig.alternativePorts}
               </p>
             </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="bg-white py-14 sm:py-16">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="max-w-2xl">
+            <p className="text-sm font-bold uppercase tracking-[0.2em] text-arc-blue">
+              Trade Information
+            </p>
+            <h2 className="mt-3 font-display text-3xl font-black text-arc-midnight">
+              Commercial terms for export inquiries
+            </h2>
+          </div>
+          <div className="mt-8 grid gap-5 md:grid-cols-2">
+            {tradeItems.map((item) => (
+              <article key={item.label} className="border border-slate-200 bg-white p-6 shadow-sm">
+                <h3 className="text-xs font-bold uppercase tracking-[0.18em] text-arc-blue">
+                  {item.label}
+                </h3>
+                <p className="mt-3 text-sm leading-7 text-slate-700">{item.value}</p>
+              </article>
+            ))}
           </div>
         </div>
       </section>
@@ -138,6 +184,7 @@ export default function ContactPage() {
               The contact flow is designed for product sourcing, distributor programs, OEM
               discussions and industrial repeat purchasing.
             </p>
+            <p className="mt-4 text-sm leading-7 text-slate-600">{siteConfig.oemService}</p>
           </div>
           <div className="grid gap-4 sm:grid-cols-2">
             {inquiryTopics.map((item) => (
@@ -187,7 +234,7 @@ export default function ContactPage() {
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <RfqCta
             title="Ready to send your product list?"
-            description="Use the RFQ form for drawings, part numbers, quantities, packaging requirements and delivery details. This helps ARCFORT confirm the information needed for quotation."
+            description="Use the RFQ form for drawings, part numbers, quantities, packaging requirements and delivery details. This helps ArcFort Weld confirm the information needed for quotation."
           />
         </div>
       </section>

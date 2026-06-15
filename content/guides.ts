@@ -15,8 +15,8 @@ export const guides: GuideArticle[] = [
         body: "List product names, part numbers, compatible references and quantities. If a field is unknown, mark it clearly instead of guessing.",
       },
       {
-        title: "Attach drawings or samples when possible",
-        body: "Drawings, photos and sample details help confirm dimensions, material and compatibility before quotation.",
+        title: "Attach drawings or reference parts when possible",
+        body: "Drawings, photos and reference part details help confirm dimensions, material and compatibility before quotation.",
       },
       {
         title: "Confirm packaging and market requirements",
@@ -24,12 +24,12 @@ export const guides: GuideArticle[] = [
       },
     ],
     categorySlugs: ["mig-mag-torch-parts", "welding-consumables", "welding-accessories"],
-    productSlugs: ["mig-contact-tip", "welding-wire", "ground-clamp"],
+    productSlugs: ["mig-contact-tip-m6-08mm", "mig-tip-holder-mb15", "plasma-electrode"],
     faq: [
       {
         question: "Can I submit an RFQ with incomplete information?",
         answer:
-          "Yes. Missing details can be marked as To be confirmed, but final quotation depends on confirmed product requirements.",
+          "Yes. Missing details can be clearly listed for review, but final quotation depends on confirmed product requirements.",
       },
       {
         question: "Should I include target quantity?",
@@ -62,7 +62,7 @@ export const guides: GuideArticle[] = [
       },
     ],
     categorySlugs: ["mig-mag-torch-parts", "tig-torch-parts"],
-    productSlugs: ["mig-contact-tip", "mig-gas-nozzle", "tig-ceramic-cup"],
+    productSlugs: ["mig-contact-tip-m6-10mm", "mig-gas-nozzle-mb15", "tig-ceramic-cup-5"],
     faq: [
       {
         question: "Can MIG/MAG and TIG parts be quoted together?",
@@ -72,7 +72,7 @@ export const guides: GuideArticle[] = [
       {
         question: "Is compatibility guaranteed by category name?",
         answer:
-          "No. Compatibility should be confirmed by torch model, drawing, sample or reference number.",
+          "No. Compatibility should be confirmed by torch model, drawing, reference part or reference number.",
       },
     ],
     keywords: ["MIG torch consumables", "TIG torch consumables", "welding torch parts"],
@@ -96,16 +96,16 @@ export const guides: GuideArticle[] = [
       },
       {
         title: "Keep unknown data visible",
-        body: "If compatibility or OEM number is missing, mark it as To be confirmed until drawings, samples or references are reviewed.",
+        body: "If compatibility or OEM number is missing, list it clearly so drawings, reference parts or references can be reviewed before quotation.",
       },
     ],
     categorySlugs: ["plasma-cutting-consumables", "welding-accessories"],
-    productSlugs: ["plasma-electrode", "plasma-nozzle", "ground-clamp"],
+    productSlugs: ["plasma-electrode", "plasma-nozzle", "mig-contact-tip-m6-12mm"],
     faq: [
       {
         question: "What details are needed for plasma consumables?",
         answer:
-          "Send torch model, reference number, item type, quantity, package requirement, drawings or sample details.",
+          "Send torch model, reference number, item type, quantity, package requirement, drawings or reference part details.",
       },
       {
         question: "Can plasma consumables be supplied as kits?",

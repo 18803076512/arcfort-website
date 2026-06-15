@@ -4,13 +4,29 @@ import { RfqCta } from "@/components/content/RfqCta";
 import { getAllApplications } from "@/lib/content/applications";
 import { getAllProductCategories } from "@/lib/content/categories";
 import { getAllProducts } from "@/lib/content/products";
+import { buildMetadata } from "@/lib/content/seo";
+import { siteConfig } from "@/lib/content/site";
+
+export const metadata = buildMetadata({
+  title: "Industrial Welding & Cutting Solutions",
+  description:
+    "ArcFort Weld supplies welding machines, cutting machines, MIG/MAG torch parts, TIG torch parts, plasma cutting consumables and OEM welding accessories for global B2B buyers.",
+  path: "/",
+  keywords: [
+    "industrial welding solutions",
+    "welding torch parts supplier",
+    "plasma cutting consumables",
+    "MIG MAG torch parts",
+    "TIG torch parts",
+  ],
+});
 
 const advantages = [
-  "Factory direct supply discussion",
-  "OEM and private label support",
-  "Stable quality control workflow",
-  "Fast RFQ communication",
-  "Global distributor support",
+  "Stable supply for repeat purchasing",
+  "OEM, private label and packaging support",
+  "Export packing for international shipments",
+  "Fast response for technical RFQ review",
+  "Product customization by drawing or reference part",
 ];
 
 const supplyScope = [
@@ -18,9 +34,23 @@ const supplyScope = [
   "TIG Torch Parts",
   "Plasma Cutting Consumables",
   "Welding Consumables",
-  "Welding Machines",
+  "Welding & Cutting Machines",
   "Welding Accessories",
 ];
+
+const oemServiceItems = [
+  "Logo printing and private label packaging",
+  "Carton design for distributor programs",
+  "Product model customization by buyer requirement",
+  "Quotation by drawing, product photo or reference part",
+] as const;
+
+const tradeHighlights = [
+  { label: "Main Port", value: siteConfig.mainPort },
+  { label: "Payment", value: siteConfig.paymentTerms },
+  { label: "MOQ", value: siteConfig.moqPolicy },
+  { label: "Lead Time", value: siteConfig.leadTime },
+] as const;
 
 export default function Home() {
   const categories = getAllProductCategories();
@@ -36,14 +66,15 @@ export default function Home() {
         <div className="relative mx-auto grid min-h-[calc(100vh-5rem)] max-w-7xl items-center gap-12 px-4 py-16 sm:px-6 lg:grid-cols-[1.03fr_0.97fr] lg:px-8">
           <div className="max-w-3xl">
             <p className="mb-5 inline-flex border-l-4 border-arc-signal bg-white/10 px-4 py-2 text-sm font-semibold uppercase tracking-[0.2em] text-arc-signal">
-              ARCFORT Welding & Cutting Solutions
+              ArcFort Weld | Welding & Cutting Solutions
             </p>
             <h1 className="font-display text-5xl font-black leading-[0.98] sm:text-6xl lg:text-7xl">
               Industrial Welding & Cutting Solutions
             </h1>
             <p className="mt-7 max-w-2xl text-lg leading-8 text-slate-200">
-              Reliable MIG, TIG and plasma cutting parts for global distributors, importers, OEM
-              buyers, industrial users and repair workshops.
+              ArcFort Weld supplies welding machines, cutting machines, MIG/MAG torch parts, TIG
+              torch parts, plasma cutting consumables and OEM welding accessories for global B2B
+              buyers.
             </p>
             <div className="mt-9 flex flex-col gap-3 sm:flex-row">
               <Link
@@ -58,6 +89,14 @@ export default function Home() {
               >
                 Request a Quote
               </Link>
+            </div>
+            <div className="mt-6 flex flex-col gap-2 text-sm text-slate-300 sm:flex-row sm:flex-wrap sm:gap-5">
+              <a href={siteConfig.emailHref} className="font-semibold hover:text-white">
+                Email: {siteConfig.email}
+              </a>
+              <a href={siteConfig.whatsappHref} className="font-semibold hover:text-white">
+                WhatsApp: {siteConfig.whatsapp}
+              </a>
             </div>
           </div>
 
@@ -92,7 +131,7 @@ export default function Home() {
               Product Scope
             </p>
             <h2 className="mt-3 font-display text-3xl font-black text-arc-midnight sm:text-4xl">
-              A focused range for welding and cutting supply channels.
+              Welding Torch Consumables and Cutting Parts
             </h2>
           </div>
           <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -111,10 +150,10 @@ export default function Home() {
           <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
             <div>
               <p className="text-sm font-bold uppercase tracking-[0.2em] text-arc-blue">
-                SEO Category Pages
+                Product Categories
               </p>
               <h2 className="mt-3 font-display text-3xl font-black text-arc-midnight sm:text-4xl">
-                Category structure ready for organic search.
+                Industrial Welding Product Supply
               </h2>
             </div>
             <Link
@@ -153,7 +192,7 @@ export default function Home() {
             Hot Products
           </p>
           <h2 className="mt-3 font-display text-3xl font-black text-arc-midnight sm:text-4xl">
-            Sample RFQ-ready product pages.
+            Featured Welding & Cutting Products
           </h2>
           <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
             {products.map((product) => {
@@ -173,7 +212,7 @@ export default function Home() {
         <div className="mx-auto grid max-w-7xl gap-10 px-4 sm:px-6 lg:grid-cols-[0.85fr_1.15fr] lg:px-8">
           <div>
             <p className="text-sm font-bold uppercase tracking-[0.2em] text-arc-blue">
-              Why Choose ARCFORT
+              Why Choose ArcFort Weld
             </p>
             <h2 className="mt-3 font-display text-3xl font-black text-arc-midnight sm:text-4xl">
               Built for buyers who compare, qualify and reorder.
@@ -184,6 +223,54 @@ export default function Home() {
               <div key={item} className="border-l-4 border-arc-signal bg-white p-5 shadow-sm">
                 <p className="font-semibold leading-7 text-slate-800">{item}</p>
               </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="bg-white py-16 sm:py-20">
+        <div className="mx-auto grid max-w-7xl gap-10 px-4 sm:px-6 lg:grid-cols-[0.9fr_1.1fr] lg:px-8">
+          <div>
+            <p className="text-sm font-bold uppercase tracking-[0.2em] text-arc-blue">
+              OEM Service
+            </p>
+            <h2 className="mt-3 font-display text-3xl font-black text-arc-midnight sm:text-4xl">
+              OEM welding products and packaging support for overseas buyers.
+            </h2>
+            <p className="mt-5 text-sm leading-7 text-slate-600">
+              ArcFort Weld supports product customization, logo printing, private label packaging
+              and carton design after product details, quantity and artwork requirements are
+              confirmed.
+            </p>
+          </div>
+          <div className="grid gap-4 sm:grid-cols-2">
+            {oemServiceItems.map((item) => (
+              <div key={item} className="border-l-4 border-arc-signal bg-arc-frost p-5">
+                <p className="text-sm font-semibold leading-6 text-slate-800">{item}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="bg-arc-frost py-16 sm:py-20">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="max-w-3xl">
+            <p className="text-sm font-bold uppercase tracking-[0.2em] text-arc-blue">
+              Export Terms
+            </p>
+            <h2 className="mt-3 font-display text-3xl font-black text-arc-midnight sm:text-4xl">
+              Clear shipping and payment information for RFQ review.
+            </h2>
+          </div>
+          <div className="mt-10 grid gap-5 md:grid-cols-2 lg:grid-cols-4">
+            {tradeHighlights.map((item) => (
+              <article key={item.label} className="border border-slate-200 bg-white p-5 shadow-sm">
+                <h3 className="text-xs font-bold uppercase tracking-[0.16em] text-arc-blue">
+                  {item.label}
+                </h3>
+                <p className="mt-3 text-sm leading-6 text-slate-700">{item.value}</p>
+              </article>
             ))}
           </div>
         </div>
@@ -220,7 +307,7 @@ export default function Home() {
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <RfqCta
             title="Need a reliable welding parts supplier?"
-            description="Send your product list, drawing or sample details. ARCFORT will respond with quotation, MOQ and delivery options after technical confirmation."
+            description="Send your product list, drawing, product photo or reference part details. ArcFort Weld will respond with quotation, MOQ and delivery options after technical confirmation."
           />
         </div>
       </section>
