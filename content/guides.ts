@@ -15,8 +15,8 @@ export const guides: GuideArticle[] = [
         body: "List product names, part numbers, compatible references and quantities. If a field is unknown, mark it clearly instead of guessing.",
       },
       {
-        title: "Attach drawings or samples when possible",
-        body: "Drawings, photos and sample details help confirm dimensions, material and compatibility before quotation.",
+        title: "Attach drawings or reference parts when possible",
+        body: "Drawings, photos and reference part details help confirm dimensions, material and compatibility before quotation.",
       },
       {
         title: "Confirm packaging and market requirements",
@@ -72,7 +72,7 @@ export const guides: GuideArticle[] = [
       {
         question: "Is compatibility guaranteed by category name?",
         answer:
-          "No. Compatibility should be confirmed by torch model, drawing, sample or reference number.",
+          "No. Compatibility should be confirmed by torch model, drawing, reference part or reference number.",
       },
     ],
     keywords: ["MIG torch consumables", "TIG torch consumables", "welding torch parts"],
@@ -96,7 +96,7 @@ export const guides: GuideArticle[] = [
       },
       {
         title: "Keep unknown data visible",
-        body: "If compatibility or OEM number is missing, list it clearly so drawings, samples or references can be reviewed before quotation.",
+        body: "If compatibility or OEM number is missing, list it clearly so drawings, reference parts or references can be reviewed before quotation.",
       },
     ],
     categorySlugs: ["plasma-cutting-consumables", "welding-accessories"],
@@ -105,7 +105,7 @@ export const guides: GuideArticle[] = [
       {
         question: "What details are needed for plasma consumables?",
         answer:
-          "Send torch model, reference number, item type, quantity, package requirement, drawings or sample details.",
+          "Send torch model, reference number, item type, quantity, package requirement, drawings or reference part details.",
       },
       {
         question: "Can plasma consumables be supplied as kits?",

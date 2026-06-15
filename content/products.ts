@@ -56,7 +56,7 @@ function createSpecifications(product: ArcfortProductData): SpecRow[] {
     { label: "MOQ", value: product.moq },
     { label: "Lead Time", value: product.leadTime },
     { label: "Custom Available", value: product.customAvailable },
-    { label: "Sample Available", value: product.sampleAvailable },
+    { label: "Reference Part Review", value: product.sampleAvailable },
     { label: "PDF Catalog", value: product.pdfUrl },
   ];
 
@@ -107,7 +107,7 @@ function createFaq(product: ArcfortProductData) {
     {
       question: `What information is needed for ${product.name} quotation?`,
       answer:
-        "Please send quantity, drawing, photo, sample details, compatible reference number, packaging requirement and destination country when available.",
+        "Please send quantity, drawing, product photo, reference part details, compatible reference number, packaging requirement and destination country when available.",
     },
     {
       question: `Can ${product.name} be supplied with OEM packaging?`,
@@ -121,7 +121,7 @@ function createFeatures(product: ArcfortProductData) {
   return [
     `Prepared for ${product.category} RFQ programs`,
     "Suitable for distributors, importers, industrial users and repair workshops",
-    "Specifications should be confirmed by drawing, sample or model reference before quotation",
+    "Specifications should be confirmed by drawing, reference part or model reference before quotation",
   ];
 }
 

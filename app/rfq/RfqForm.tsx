@@ -1,6 +1,7 @@
 "use client";
 
 import { type ChangeEvent, type FormEvent, useMemo, useState } from "react";
+import { siteConfig } from "@/lib/content/site";
 
 type RfqFormValues = {
   name: string;
@@ -203,9 +204,25 @@ export function RfqForm({ initialProduct = "" }: RfqFormProps) {
           <p className="mt-3 text-sm leading-6 text-slate-700">
             {submissionResult?.backendConfigured
               ? "Your RFQ has been submitted for sales follow-up."
-              : `Your RFQ passed validation, but server-side email delivery or storage is not configured yet. Please also send your inquiry to ${submissionResult?.emailRecipient ?? "the business email"} or contact us by WhatsApp.`}
+              : "Your RFQ passed validation, but server-side email delivery or storage is not configured yet. Please also send your inquiry by email or WhatsApp for sales follow-up."}
           </p>
         </div>
+        {!submissionResult?.backendConfigured ? (
+          <div className="mt-5 grid gap-3 sm:grid-cols-2">
+            <a
+              href={siteConfig.emailHref}
+              className="border border-slate-200 bg-arc-frost p-4 text-sm font-semibold text-arc-midnight transition hover:border-arc-blue hover:text-arc-blue"
+            >
+              Email: {submissionResult?.emailRecipient ?? siteConfig.email}
+            </a>
+            <a
+              href={siteConfig.whatsappHref}
+              className="border border-slate-200 bg-arc-frost p-4 text-sm font-semibold text-arc-midnight transition hover:border-arc-blue hover:text-arc-blue"
+            >
+              WhatsApp: {siteConfig.whatsapp}
+            </a>
+          </div>
+        ) : null}
         <div className="mt-6 grid gap-4 text-sm text-slate-700">
           <p>
             <span className="font-bold text-arc-midnight">Company:</span> {values.company}

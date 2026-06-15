@@ -49,10 +49,10 @@ export type ArcfortProductData = {
   oemStatus?: ProductOemStatus;
 };
 
-const materialFallback = "Specific material grade to be confirmed by sample or drawing";
+const materialFallback = "Specific material grade to be confirmed by reference part or drawing";
 const copperMaterialFallback = "Copper material, specific grade to be confirmed";
 const dimensionFallback = "Available upon request";
-const compatibilityFallback = "Compatibility can be confirmed by sample or drawing";
+const compatibilityFallback = "Compatibility can be confirmed by reference part or drawing";
 const packageFallback = "Standard export packing or customized packaging";
 const moqFallback = "Small trial orders accepted";
 const leadTimeFallback = "7-20 working days after deposit confirmation";
@@ -68,7 +68,7 @@ export const arcfortProducts: ArcfortProductData[] = [
     shortDescription:
       "MIG contact tip for wire feeding and current transfer in MIG/MAG welding torch applications.",
     description:
-      "MIG Contact Tip is prepared for distributors, repair workshops and industrial users sourcing MIG/MAG torch consumables. Exact size, thread, material grade and compatibility should be confirmed by drawing, sample, torch model or product list before quotation.",
+      "MIG Contact Tip is prepared for distributors, repair workshops and industrial users sourcing MIG/MAG torch consumables. Exact size, thread, material grade and compatibility should be confirmed by drawing, reference part, torch model or product list before quotation.",
     mainImage: "/images/products/mig-contact-tip.jpg",
     galleryImages: [],
     material: copperMaterialFallback,
@@ -82,7 +82,7 @@ export const arcfortProducts: ArcfortProductData[] = [
     application: "MIG/MAG welding torch consumables",
     metaTitle: "MIG Contact Tip for MIG/MAG Torch Parts",
     metaDescription:
-      "Source MIG contact tips for MIG/MAG welding torch consumable programs. Send size, thread, drawing or sample details for ArcFort Weld RFQ confirmation.",
+      "Source MIG contact tips for MIG/MAG welding torch consumable programs. Send size, thread, drawing or reference part details for ArcFort Weld RFQ confirmation.",
   },
   {
     id: "af-mig-gn-0002",
@@ -134,7 +134,7 @@ export const arcfortProducts: ArcfortProductData[] = [
     application: "MIG/MAG welding torch consumables",
     metaTitle: "MIG Diffuser for MIG/MAG Torch Parts",
     metaDescription:
-      "Request quotation for MIG diffusers used in MIG/MAG torch consumable assemblies. Compatibility can be confirmed by drawing, sample or reference number.",
+      "Request quotation for MIG diffusers used in MIG/MAG torch consumable assemblies. Compatibility can be confirmed by drawing, reference part or reference number.",
   },
   {
     id: "af-tig-cc-0004",
@@ -212,7 +212,7 @@ export const arcfortProducts: ArcfortProductData[] = [
     application: "TIG welding torch consumables",
     metaTitle: "TIG Gas Lens for TIG Torch Parts",
     metaDescription:
-      "Request TIG gas lens quotation for TIG torch consumable sourcing. Compatibility can be reviewed by torch model, sample or drawing.",
+      "Request TIG gas lens quotation for TIG torch consumable sourcing. Compatibility can be reviewed by torch model, reference part or drawing.",
   },
   {
     id: "af-pla-el-0007",
@@ -224,7 +224,7 @@ export const arcfortProducts: ArcfortProductData[] = [
     shortDescription:
       "Plasma electrode for plasma cutting torch consumable replacement and distributor RFQs.",
     description:
-      "Plasma Electrode is prepared for plasma cutting consumable sourcing by torch model, sample or reference number. Material grade, size, compatible brand, OEM number and package should be confirmed before quotation.",
+      "Plasma Electrode is prepared for plasma cutting consumable sourcing by torch model, reference part or reference number. Material grade, size, compatible brand, OEM number and package should be confirmed before quotation.",
     mainImage: "/images/products/plasma-electrode.jpg",
     galleryImages: [],
     material: materialFallback,
@@ -290,7 +290,7 @@ export const arcfortProducts: ArcfortProductData[] = [
     application: "Plasma cutting torch consumables",
     metaTitle: "Plasma Swirl Ring for Cutting Torch Consumables",
     metaDescription:
-      "ArcFort Weld supports plasma swirl ring RFQs for plasma cutting consumable stacks. Compatibility is confirmed by torch model or sample.",
+      "ArcFort Weld supports plasma swirl ring RFQs for plasma cutting consumable stacks. Compatibility is confirmed by torch model or reference part.",
   },
   {
     id: "af-con-eh-0010",
@@ -328,7 +328,7 @@ export const arcfortProducts: ArcfortProductData[] = [
     shortDescription:
       "Ground clamp for welding machine accessory lists and workshop replacement programs.",
     description:
-      "Ground Clamp is prepared for welding accessory sourcing and mixed distributor RFQs. Clamp type, current rating, cable connection, material and packaging should be confirmed by sample, drawing or product list.",
+      "Ground Clamp is prepared for welding accessory sourcing and mixed distributor RFQs. Clamp type, current rating, cable connection, material and packaging should be confirmed by reference part, drawing or product list.",
     mainImage: "/images/products/ground-clamp.jpg",
     galleryImages: [],
     material: materialFallback,

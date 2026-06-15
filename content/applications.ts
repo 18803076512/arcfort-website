@@ -60,7 +60,7 @@ export const applications: ApplicationPage[] = [
       {
         question: "Can ArcFort Weld confirm compatibility by torch model?",
         answer:
-          "Compatibility can be reviewed when buyers provide torch model, reference number, drawing or sample details.",
+          "Compatibility can be reviewed when buyers provide torch model, reference number, drawing or reference part details.",
       },
     ],
     keywords: ["automotive welding consumables", "MIG torch parts", "welding wire"],
@@ -119,7 +119,7 @@ export const applications: ApplicationPage[] = [
       {
         question: "Can fabrication shops submit product photos?",
         answer:
-          "Photos can help initial review, but drawings, samples or reference numbers are recommended for accurate quotation.",
+          "Photos can help initial review, but drawings, reference parts or reference numbers are recommended for accurate quotation.",
       },
       {
         question: "Can plasma parts and MIG parts be quoted together?",
@@ -174,7 +174,7 @@ export const applications: ApplicationPage[] = [
     industries: ["Repair workshops", "Maintenance teams", "Distributor counters"],
     buyerNeeds: [
       "Mixed consumable and accessory product lists",
-      "Replacement parts by sample, photo or reference number",
+      "Replacement parts by reference part, photo or reference number",
       "Repeat purchasing support for common workshop items",
     ],
     relatedCategorySlugs: ["mig-mag-torch-parts", "tig-torch-parts", "welding-accessories"],
@@ -183,12 +183,12 @@ export const applications: ApplicationPage[] = [
       {
         question: "Can repair workshops send mixed product lists?",
         answer:
-          "Yes. The RFQ form is prepared for mixed lists, drawings, photos, sample notes and quantities.",
+          "Yes. The RFQ form is prepared for mixed lists, drawings, photos, reference part notes and quantities.",
       },
       {
         question: "Can compatibility be checked before quotation?",
         answer:
-          "Compatibility can be reviewed when torch models, photos, samples or reference numbers are provided.",
+          "Compatibility can be reviewed when torch models, photos, reference parts or reference numbers are provided.",
       },
     ],
     keywords: ["repair workshop welding supplies", "torch consumables", "welding accessories"],

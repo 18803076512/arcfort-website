@@ -1,22 +1,31 @@
-import type { Metadata } from "next";
-import Link from "next/link";
+import { RfqCta } from "@/components/content/RfqCta";
+import { buildMetadata } from "@/lib/content/seo";
 import { siteConfig } from "@/lib/content/site";
 
 const supplyItems = [
-  "MIG Torch Parts",
-  "TIG Torch Parts",
-  "Plasma Cutting Parts",
-  "Welding Consumables",
   "Welding Machines",
-  "OEM Solutions",
+  "Cutting Machines",
+  "Welding Torch Consumables",
+  "Plasma Cutting Consumables",
+  "Welding Consumables",
+  "OEM Welding Accessories",
 ] as const;
 
 const advantages = [
-  "Stable Quality",
-  "Factory Direct Supply",
-  "OEM & Customization",
-  "Fast Delivery",
-  "Global Support",
+  "Stable supply for repeat orders",
+  "OEM support and private label packaging",
+  "Export packing for overseas shipments",
+  "Fast response for RFQ confirmation",
+  "Product customization by buyer requirement",
+] as const;
+
+const targetCustomers = [
+  "International distributors",
+  "Importers and wholesalers",
+  "Welding equipment suppliers",
+  "Repair workshops",
+  "Industrial users",
+  "OEM buyers",
 ] as const;
 
 const companyFacts = [
@@ -57,11 +66,18 @@ const qualitySteps = [
   },
 ] as const;
 
-export const metadata: Metadata = {
+export const metadata = buildMetadata({
   title: "About ArcFort Weld",
   description:
     "Learn about ArcFort Weld and Renqiu Ailesen Welding Technology Co., Ltd., a supplier of industrial welding and cutting solutions for global distributors and industrial users.",
-};
+  path: "/about",
+  keywords: [
+    "ArcFort Weld company",
+    "welding parts supplier China",
+    "industrial welding supplier",
+    "OEM welding accessories",
+  ],
+});
 
 export default function AboutPage() {
   return (
@@ -76,8 +92,8 @@ export default function AboutPage() {
               About ArcFort Weld
             </h1>
             <p className="mt-5 max-w-3xl text-lg leading-8 text-slate-300">
-              A reliable supplier of industrial welding and cutting solutions for global
-              distributors and industrial users.
+              A practical industrial welding and cutting supplier for distributors, importers,
+              wholesalers, repair workshops and OEM buyers.
             </p>
           </div>
         </div>
@@ -98,14 +114,13 @@ export default function AboutPage() {
           </div>
           <div className="space-y-5 text-base leading-8 text-slate-600">
             <p>
-              {siteConfig.legalName} operates the {siteConfig.name} website brand for industrial
-              welding and cutting product supply, including MIG, TIG, Plasma, welding consumables
-              and industrial accessories.
+              {siteConfig.legalName} is located in {siteConfig.address}. The company operates the{" "}
+              {siteConfig.name} website brand for industrial welding and cutting product supply.
             </p>
             <p>
-              The brand is built for global distributors, importers, OEM buyers, industrial users
-              and repair workshops that need reliable product categories, clear inquiry handling and
-              repeatable supply support.
+              The business scope covers welding machines, cutting machines, welding torch
+              consumables, plasma cutting consumables, welding consumables and OEM welding
+              accessories for overseas B2B sourcing programs.
             </p>
             <div className="grid gap-3 sm:grid-cols-2">
               {companyFacts.map((fact) => (
@@ -116,6 +131,18 @@ export default function AboutPage() {
                   <div className="mt-2 text-sm font-semibold text-arc-midnight">{fact.value}</div>
                 </div>
               ))}
+            </div>
+            <div className="border-l-4 border-arc-signal bg-arc-frost p-5">
+              <h3 className="font-display text-2xl font-black text-arc-midnight">
+                Who We Serve
+              </h3>
+              <div className="mt-4 grid gap-2 sm:grid-cols-2">
+                {targetCustomers.map((customer) => (
+                  <div key={customer} className="text-sm font-semibold text-slate-700">
+                    {customer}
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
         </div>
@@ -223,30 +250,12 @@ export default function AboutPage() {
         </div>
       </section>
 
-      <section className="bg-arc-midnight py-16 text-white sm:py-20">
-        <div className="mx-auto flex max-w-7xl flex-col gap-8 px-4 sm:px-6 md:flex-row md:items-center md:justify-between lg:px-8">
-          <div>
-            <p className="text-sm font-bold uppercase tracking-[0.2em] text-arc-signal">
-              Work With {siteConfig.name}
-            </p>
-            <h2 className="mt-3 font-display text-3xl font-black sm:text-4xl">
-              Need a welding parts supplier?
-            </h2>
-          </div>
-          <div className="flex flex-col gap-3 sm:flex-row">
-            <Link
-              href="/contact"
-              className="inline-flex items-center justify-center border border-white/40 px-6 py-3 text-sm font-bold uppercase tracking-[0.14em] text-white transition hover:border-white hover:bg-white/10"
-            >
-              Contact Us
-            </Link>
-            <Link
-              href="/rfq"
-              className="inline-flex items-center justify-center bg-arc-signal px-6 py-3 text-sm font-bold uppercase tracking-[0.14em] text-arc-midnight transition hover:bg-white"
-            >
-              Request a Quote
-            </Link>
-          </div>
+      <section className="bg-arc-frost py-16 sm:py-20">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <RfqCta
+            title="Need a welding parts supplier?"
+            description="Send product lists, drawings, reference part photos or packaging requirements. ArcFort Weld will review the details and respond with quotation, MOQ and delivery options."
+          />
         </div>
       </section>
     </>

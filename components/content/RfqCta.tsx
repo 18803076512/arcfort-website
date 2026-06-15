@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { siteConfig } from "@/lib/content/site";
 
 type RfqCtaProps = {
   title?: string;
@@ -8,7 +9,7 @@ type RfqCtaProps = {
 
 export function RfqCta({
   title = "Need a reliable welding parts supplier?",
-  description = "Send your product list, drawings or sample details. ArcFort Weld will respond with quotation, MOQ and delivery options after confirmation.",
+  description = "Send your product list, drawings, product photos or reference part details. ArcFort Weld will respond with quotation, MOQ and delivery options after confirmation.",
   productName,
 }: RfqCtaProps) {
   const rfqHref = productName ? `/rfq?product=${encodeURIComponent(productName)}` : "/rfq";
@@ -36,6 +37,34 @@ export function RfqCta({
             >
               Contact Team
             </Link>
+          </div>
+        </div>
+        <div className="relative mt-6 grid gap-3 border-t border-white/10 pt-5 sm:grid-cols-2 lg:grid-cols-3">
+          <a
+            href={siteConfig.emailHref}
+            className="border border-white/10 bg-white/5 p-4 text-sm leading-6 text-slate-200 transition hover:border-arc-signal hover:text-white"
+          >
+            <span className="block text-xs font-bold uppercase tracking-[0.16em] text-arc-signal">
+              Email
+            </span>
+            <span className="mt-1 block font-semibold">{siteConfig.email}</span>
+          </a>
+          <a
+            href={siteConfig.whatsappHref}
+            className="border border-white/10 bg-white/5 p-4 text-sm leading-6 text-slate-200 transition hover:border-arc-signal hover:text-white"
+          >
+            <span className="block text-xs font-bold uppercase tracking-[0.16em] text-arc-signal">
+              WhatsApp
+            </span>
+            <span className="mt-1 block font-semibold">{siteConfig.whatsapp}</span>
+          </a>
+          <div className="border border-white/10 bg-white/5 p-4 text-sm leading-6 text-slate-200 sm:col-span-2 lg:col-span-1">
+            <span className="block text-xs font-bold uppercase tracking-[0.16em] text-arc-signal">
+              Response Details
+            </span>
+            <span className="mt-1 block">
+              Send drawings, product photos, model references or product lists for quotation review.
+            </span>
           </div>
         </div>
       </div>

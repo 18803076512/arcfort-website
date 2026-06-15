@@ -12,7 +12,7 @@ export const productCategories: ProductCategory[] = [
     seoDescription:
       "Explore ArcFort Weld MIG/MAG torch parts including contact tips, gas nozzles, diffusers, liners and related welding consumables for B2B RFQ programs.",
     seoIntro:
-      "ArcFort Weld supplies MIG/MAG torch parts for distributors, importers, OEM buyers and repair workshops that need organized product references for repeat purchasing. Product specifications should be confirmed against torch model, drawing or sample before quotation.",
+      "ArcFort Weld supplies MIG/MAG torch parts for distributors, importers, OEM buyers and repair workshops that need organized product references for repeat purchasing. Product specifications should be confirmed against torch model, drawing or reference part before quotation.",
     productRange: [
       "MIG/MAG contact tips by thread and wire size",
       "Gas nozzles, tip holders, diffusers and torch liners",
@@ -20,11 +20,17 @@ export const productCategories: ProductCategory[] = [
       "OEM packaging and mixed distributor RFQ programs",
     ],
     commonSpecifications: [
-      "Thread type such as M6 or other sizes confirmed by sample or drawing",
+      "Thread type such as M6 or other sizes confirmed by reference part or drawing",
       "Wire size, tip length, material grade and package quantity confirmed before quotation",
       "Compatible torch model or reference number required for accurate matching",
       "Private label packaging and carton design available after order details are confirmed",
     ],
+    compatibilityNote:
+      "MIG/MAG torch parts are available in different sizes and fit requirements. Compatibility can be confirmed by sample, drawing, torch model, model number or existing reference part before quotation. ArcFort Weld does not claim exact brand compatibility unless the buyer provides confirmed references.",
+    oemServiceNote:
+      "OEM packaging is available for MIG/MAG torch parts, including logo label discussion, private label bag or box packing and carton design after product details, artwork and quantity are confirmed.",
+    packagingMoqNote:
+      "Standard export packing or customized packaging can be discussed by product type and order quantity. Small trial orders are accepted for standard products, while OEM packaging MOQ depends on the item and packaging requirement.",
     applications: [
       "Metal fabrication workshops",
       "Automotive repair and body shop welding",
@@ -33,7 +39,7 @@ export const productCategories: ProductCategory[] = [
     ],
     buyerGuide: [
       "Confirm the torch model, thread, diameter and material before ordering contact tips or gas nozzles.",
-      "Send existing part numbers, drawings or samples when compatible brand information is required.",
+      "Send existing part numbers, drawings or reference parts when compatible brand information is required.",
       "For distributor programs, group fast-moving consumables by torch series and packaging requirement.",
     ],
     features: [
@@ -44,14 +50,19 @@ export const productCategories: ProductCategory[] = [
     relatedCategorySlugs: ["tig-torch-parts", "plasma-cutting-consumables"],
     faq: [
       {
-        question: "Can ArcFort Weld quote MIG/MAG torch parts by sample or drawing?",
+        question: "Can ArcFort Weld quote MIG/MAG torch parts by reference part or drawing?",
         answer:
-          "Yes. Buyers can send samples, drawings, product lists or reference numbers so the technical details can be confirmed before quotation.",
+          "Yes. Buyers can send reference parts, drawings, product lists or reference numbers so the technical details can be confirmed before quotation.",
       },
       {
         question: "Are compatible brands listed on every MIG/MAG part page?",
         answer:
-          "Compatibility data is added only after it is confirmed by torch model, reference number, drawing or sample.",
+          "Compatibility data is added only after it is confirmed by torch model, reference number, drawing or reference part.",
+      },
+      {
+        question: "Can MIG/MAG torch parts be supplied with OEM packaging?",
+        answer:
+          "Yes. OEM packaging is available after product details, quantity, label artwork and carton requirements are confirmed.",
       },
     ],
     keywords: [
@@ -73,7 +84,7 @@ export const productCategories: ProductCategory[] = [
     seoDescription:
       "Browse TIG torch parts such as ceramic cups, collets, collet bodies, gas lenses and TIG welding accessories for industrial sourcing and RFQ.",
     seoIntro:
-      "ArcFort Weld organizes TIG torch parts for buyers who compare product fit, packaging, MOQ and delivery requirements before placing repeat orders. Unknown technical fields are confirmed by drawing, sample or model reference during RFQ review.",
+      "ArcFort Weld organizes TIG torch parts for buyers who compare product fit, packaging, MOQ and delivery requirements before placing repeat orders. Unknown technical fields are confirmed by drawing, reference part or model reference during RFQ review.",
     productRange: [
       "TIG ceramic cups by cup number and torch series",
       "Collets, collet bodies, gas lenses and torch accessories",
@@ -82,10 +93,16 @@ export const productCategories: ProductCategory[] = [
     ],
     commonSpecifications: [
       "Cup size, tungsten size and torch series should be confirmed before quotation",
-      "Material, thread and reference number are confirmed by drawing, sample or model",
+      "Material, thread and reference number are confirmed by drawing, reference part or model",
       "Standard export packing or customized packaging can be discussed by quantity",
       "Mixed TIG torch part lists can include cups, gas lenses, collets and collet bodies",
     ],
+    compatibilityNote:
+      "TIG torch parts should be checked by torch series, cup number, tungsten size, model number or drawing. Compatibility can be confirmed by sample, drawing or model number before final quotation.",
+    oemServiceNote:
+      "OEM packaging is available for TIG ceramic cups, collets, collet bodies, gas lenses and related TIG accessories when buyers provide packaging style, label artwork and order quantity.",
+    packagingMoqNote:
+      "Small trial orders are accepted for standard TIG torch parts. Customized packing, private labels and mixed item cartons are reviewed according to quantity, product type and export packing requirements.",
     applications: [
       "Precision TIG welding",
       "Pipeline maintenance and repair",
@@ -113,6 +130,11 @@ export const productCategories: ProductCategory[] = [
         question: "Can TIG parts be prepared for OEM packaging?",
         answer:
           "OEM packaging can be discussed after product details, quantity and artwork requirements are confirmed.",
+      },
+      {
+        question: "How should buyers choose TIG ceramic cups or gas lens parts?",
+        answer:
+          "Buyers should confirm torch series, cup number, tungsten size, gas lens requirement and package quantity before sending an RFQ.",
       },
     ],
     keywords: [
@@ -145,8 +167,14 @@ export const productCategories: ProductCategory[] = [
       "Torch model, reference number and amperage range should be confirmed when available",
       "Nozzle size, electrode type and material grade are confirmed before quotation",
       "Kit content, package quantity and labeling are confirmed by buyer item list",
-      "Samples, photos or drawings are recommended for compatibility review",
+      "Reference parts, photos or drawings are recommended for compatibility review",
     ],
+    compatibilityNote:
+      "Plasma cutting consumables should be matched by torch model, model number, drawing, product photo or sample. Compatibility can be confirmed before quotation, and exact brand compatibility is not claimed unless confirmed by buyer references.",
+    oemServiceNote:
+      "OEM packaging is available for plasma electrodes, nozzles, swirl rings, shields and consumable kits. Private label packing and kit structure can be reviewed after item list and quantity are confirmed.",
+    packagingMoqNote:
+      "Standard export packing or customized kit packing can be discussed for plasma consumables. Small trial orders are accepted for standard products, while customized packaging MOQ depends on item mix and packing style.",
     applications: [
       "Industrial metal cutting",
       "Fabrication and maintenance workshops",
@@ -168,12 +196,17 @@ export const productCategories: ProductCategory[] = [
       {
         question: "Can plasma consumables be quoted by reference number?",
         answer:
-          "Yes. Reference numbers, drawings, photos and sample details help confirm compatibility before quotation.",
+          "Yes. Reference numbers, drawings, photos and reference part details help confirm compatibility before quotation.",
       },
       {
         question: "Are plasma consumables sold as kits?",
         answer:
           "Kit structure, packaging and quantity should be confirmed during RFQ based on the buyer's item list and target market.",
+      },
+      {
+        question: "What information is needed for plasma consumable compatibility?",
+        answer:
+          "Please provide torch model, model number, product photo, drawing or reference part details so compatibility can be reviewed before quotation.",
       },
     ],
     keywords: [
@@ -208,6 +241,12 @@ export const productCategories: ProductCategory[] = [
       "MOQ depends on product type, model and customization requirements",
       "Lead time depends on material availability, quantity and packaging schedule",
     ],
+    compatibilityNote:
+      "Welding consumables should be selected by process, material, size, usage environment and packaging requirement. If compatibility or grade is uncertain, it can be confirmed by sample, drawing, model number or buyer item list.",
+    oemServiceNote:
+      "OEM packaging is available for selected welding consumables and workshop items. Logo labels, private label cartons and distributor packing can be discussed after product type and quantity are confirmed.",
+    packagingMoqNote:
+      "Small trial orders are accepted for standard welding consumables. MOQ for OEM packaging or customized product combinations depends on product type, model, carton design and order quantity.",
     applications: [
       "Industrial welding supply distribution",
       "Repair workshop consumable replenishment",
@@ -235,6 +274,11 @@ export const productCategories: ProductCategory[] = [
         question: "Are consumable specifications confirmed on this site?",
         answer:
           "Only confirmed fields should be used for quotation. Unknown fields are reviewed during RFQ confirmation before final offer.",
+      },
+      {
+        question: "Can welding consumables be packed for private label programs?",
+        answer:
+          "Private label packing can be discussed after item list, quantity, label artwork and carton requirements are confirmed.",
       },
     ],
     keywords: [
@@ -269,6 +313,12 @@ export const productCategories: ProductCategory[] = [
       "Accessory package, plug type, language labeling and carton requirements are confirmed by market",
       "MOQ, payment term and delivery schedule depend on model and order quantity",
     ],
+    compatibilityNote:
+      "Welding machine selection should be based on welding process, input requirements, output range, accessory package and target application. Technical parameters must be confirmed by official specification sheet or buyer-approved documents before quotation.",
+    oemServiceNote:
+      "OEM service for welding machines can include logo, panel label, carton design and accessory package discussion after model, market requirement, artwork and order quantity are confirmed.",
+    packagingMoqNote:
+      "Packaging, MOQ and lead time for welding machines depend on model, accessory package, customization requirement and shipment plan. Small trial orders can be discussed for standard models when available.",
     applications: [
       "Industrial fabrication",
       "Repair and maintenance workshops",
@@ -296,6 +346,11 @@ export const productCategories: ProductCategory[] = [
         question: "Are machine certifications listed?",
         answer:
           "Certifications are not invented. Certification fields should only be added after official documents are confirmed.",
+      },
+      {
+        question: "What should buyers send for a welding machine RFQ?",
+        answer:
+          "Please send process type, input voltage requirement, target application, accessory package, quantity, destination country and packaging requirement.",
       },
     ],
     keywords: [
@@ -326,10 +381,16 @@ export const productCategories: ProductCategory[] = [
     ],
     commonSpecifications: [
       "Cable size, connection type, current rating and material should be confirmed by RFQ",
-      "Compatible machine model or accessory dimensions are confirmed by drawing or sample",
+      "Compatible machine model or accessory dimensions are confirmed by drawing or reference part",
       "Packaging, labeling and carton design can be customized after order details are confirmed",
       "Mixed accessory lists should include quantity, photos and destination country",
     ],
+    compatibilityNote:
+      "Welding accessories should be confirmed by size, connection type, cable requirement, machine model or drawing. Compatibility can be confirmed by sample, drawing, product photo or model number before quotation.",
+    oemServiceNote:
+      "OEM packaging is available for selected welding accessories, including label, carton and private label discussion for distributor programs after item list and quantity are confirmed.",
+    packagingMoqNote:
+      "Standard export packing is available for common accessories, and small trial orders are accepted for standard products. Customized packing or mixed accessory kits require MOQ confirmation by item type and packaging plan.",
     applications: [
       "Repair workshop supply",
       "Industrial welding accessory replacement",
@@ -338,7 +399,7 @@ export const productCategories: ProductCategory[] = [
     ],
     buyerGuide: [
       "Confirm accessory size, cable connection, current rating requirement or compatible machine model when available.",
-      "Send photos or sample details for clamps, holders and connectors that must match existing products.",
+      "Send photos or reference part details for clamps, holders and connectors that must match existing products.",
       "Use the RFQ form for mixed accessory lists and packaging requirements.",
     ],
     features: [
@@ -356,7 +417,12 @@ export const productCategories: ProductCategory[] = [
       {
         question: "What details are needed for welding accessory quotation?",
         answer:
-          "Please provide product name, size, connection type, quantity, photos, drawings or samples when available.",
+          "Please provide product name, size, connection type, quantity, photos, drawings or reference parts when available.",
+      },
+      {
+        question: "Can accessories be supplied with customized packaging?",
+        answer:
+          "Yes. Customized packaging can be discussed after product list, package style, artwork and quantity are confirmed.",
       },
     ],
     keywords: [

@@ -46,8 +46,8 @@ const inquiryTopics = [
 ];
 
 const buyerChecklist = [
-  "Product name, SKU, OEM number or compatible reference",
-  "Drawing, photo, sample details or existing supplier part number",
+  "Product name, model, size, material or compatible reference",
+  "Drawing, product photo, reference part details or existing supplier part number",
   "Required quantity, packaging requirement and destination country",
   "Target delivery schedule and any distributor or OEM requirements",
 ];
@@ -94,9 +94,9 @@ export default function ContactPage() {
                 Talk with ArcFort Weld about welding and cutting sourcing.
               </h1>
               <p className="mt-5 max-w-2xl text-lg leading-8 text-slate-600">
-                Send product lists, drawings, reference numbers, quantities and destination market
-                details. ArcFort Weld will use the confirmed information to prepare a clear RFQ
-                follow-up.
+                Send product names, models, sizes, material requirements, drawings, product photos,
+                quantities, packaging needs and destination country. ArcFort Weld will use the
+                confirmed information to prepare a clear RFQ follow-up.
               </p>
               <div className="mt-8 flex flex-col gap-3 sm:flex-row">
                 <Link

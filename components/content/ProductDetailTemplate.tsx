@@ -118,8 +118,8 @@ export function ProductDetailTemplate({
                     Technical details available upon request
                   </h2>
                   <p className="mt-2 text-sm leading-6 text-slate-700">
-                    These items can be checked by drawing, sample, product list or model reference
-                    before quotation.
+                    These items can be checked by drawing, reference part, product list or model
+                    reference before quotation.
                   </p>
                   <div className="mt-3 flex flex-wrap gap-2">
                     {technicalDetailsToConfirm.map((field) => (

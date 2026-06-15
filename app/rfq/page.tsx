@@ -12,9 +12,10 @@ type RfqPageProps = {
 };
 
 const inquiryChecklist = [
-  "Product name, part number, drawing or sample details",
-  "Material, size, thread, compatible brand or OEM number when available",
-  "Required quantity, package requirement and destination country",
+  "Product name, model, size and material requirement",
+  "Drawing, product photo, reference part details or part number",
+  "Compatible brand, compatible model or OEM number when available",
+  "Required quantity, packaging requirement and destination country",
   "Expected delivery schedule or distributor program details",
 ];
 
@@ -32,6 +33,11 @@ const rfqBusinessInfo = [
   { label: "MOQ Policy", value: siteConfig.moqPolicy },
   { label: "Lead Time", value: siteConfig.leadTime },
   { label: "Payment Terms", value: siteConfig.paymentTerms },
+  {
+    label: "Backup Contact",
+    value:
+      "For urgent inquiries or large files, send the same RFQ details by email or WhatsApp.",
+  },
 ];
 
 export const metadata = buildMetadata({
@@ -72,8 +78,9 @@ export default async function RfqPage({ searchParams }: RfqPageProps) {
                 Request a Quote
               </h1>
               <p className="mt-5 text-lg leading-8 text-slate-600">
-                Send us your product list, drawings or sample details. ArcFort Weld will provide
-                quotation, MOQ and delivery options after technical confirmation.
+                Send us your product list, model, size, material requirement, quantity, drawing,
+                product photo, packaging requirement and destination country. ArcFort Weld will
+                provide quotation, MOQ and delivery options after technical confirmation.
               </p>
 
               <div className="mt-8 border-l-4 border-arc-signal bg-arc-frost p-5">

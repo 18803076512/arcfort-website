@@ -64,10 +64,43 @@ certifications, prices, stock status, factory capacity, or customer cases.
 
 ## SKU Bulk Import Workflow
 
+For daily SKU maintenance, use the simple SKU workflow first. It lets you maintain a short CSV and
+generate the full website product CSV automatically.
+
+Simple CSV files:
+
+- `data/import/products-simple-template.csv` - simple SKU template
+- `data/import/products-simple.csv` - simple working SKU file
+
+Simple CSV fields:
+
+- `category`
+- `product_name`
+- `model`
+- `size`
+- `thread`
+- `material`
+- `compatible_model`
+- `image_name`
+- `notes`
+
+Simple workflow:
+
+1. Edit `data/import/products-simple.csv`.
+2. Put images in `public/images/products/` using the `image_name` values.
+3. Run `npm run products:simple:preview` to check generated data without writing files.
+4. Run `npm run products:simple:generate` to generate `data/import/products.csv`.
+5. Run `npm run products:check-images`.
+6. Run `npm run products:simple:import` to update `lib/data/products.ts`.
+7. Run `npm run build`.
+
+The simple importer automatically generates SKU, slug, category slug, short description,
+description, SEO title, SEO description, image path and review statuses. It does not generate
+confirmed OEM numbers, confirmed compatibility, certifications, prices or exact technical ratings.
+
 CSV templates:
 
 - `data/import/products-template.csv` - empty product import template
-- `data/import/products-sample.csv` - 5-row sample import file for workflow testing
 - `data/import/products.csv` - working import file, created by copying the template
 
 Workflow:
@@ -93,19 +126,41 @@ The validator checks required fields, SKU format, duplicate SKU and slug values,
 category slugs, SEO length warnings, description word-count warnings, and image path warnings.
 Missing image files do not fail the build or validation; they are reported as warnings.
 
+Allowed automatic generation means safe placeholder, routing, image-path, or SEO text generation.
+It does not mean inventing confirmed technical facts.
+
 Allowed automatic generation:
 
-- `slug`
-- `meta_title`
-- `meta_description`
-- `short_description`
+- `sku`
+- `name`
+- `category`
 - `category_slug`
+- `slug`
+- `short_description`
+- `description`
 - `main_image` path
 - `gallery_images` path
+- `material` as `Available upon request`
+- `size` as `Available upon request`
+- `thread` as `Available upon request`
+- `compatible_brand` as `Contact us for details`
+- `compatible_model` as `Contact us for details`
+- `oem_number` as `TBD`
+- `package` as `Available upon request`
+- `moq` as `Contact us for details`
+- `lead_time` as `Available upon request`
+- `application`
+- `meta_title`
+- `meta_description`
+- `status`, with missing values defaulting to `draft`
+- `data_status`, with missing values defaulting to `needs_review`
+- `image_status`, with missing values defaulting to `placeholder`
+- `compatibility_status`, with missing values defaulting to `unverified`
+- `oem_status`, with missing values defaulting to `unknown`
 
 Never auto-generate:
 
-- OEM number
+- OEM number as a confirmed value
 - Confirmed compatible model
 - Certification
 - Price
@@ -191,7 +246,7 @@ Build for production:
 npm run build
 ```
 
-Validate product CSV data:
+Validate legacy product CSV data:
 
 ```bash
 npm run validate:products
@@ -201,6 +256,24 @@ Validate SKU import data:
 
 ```bash
 npm run products:validate
+```
+
+Preview simple SKU data:
+
+```bash
+npm run products:simple:preview
+```
+
+Generate full SKU CSV from simple SKU data:
+
+```bash
+npm run products:simple:generate
+```
+
+Generate and import simple SKU data:
+
+```bash
+npm run products:simple:import
 ```
 
 Check product images:
