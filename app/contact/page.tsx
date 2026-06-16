@@ -67,7 +67,7 @@ export const metadata = buildMetadata({
   keywords: [
     "contact welding parts supplier",
     "welding consumables RFQ",
-    "plasma cutting parts inquiry",
+    "plasma cutting consumables inquiry",
     "industrial welding supplier",
   ],
 });

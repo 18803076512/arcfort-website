@@ -5,6 +5,7 @@ import {
   type Product,
   type ProductCategory,
 } from "@/lib/content/schemas";
+import { isLowSignalSpecificationValue } from "@/lib/content/display";
 import { hasPublicProductImage } from "@/lib/content/product-images";
 import { absoluteUrl, siteConfig } from "@/lib/content/site";
 
@@ -14,19 +15,7 @@ type BreadcrumbItem = {
 };
 
 function confirmedRows(rows: { label: string; value: string }[]) {
-  return rows.filter((row) => {
-    const normalizedValue = row.value.trim().toLowerCase();
-
-    return (
-      row.label !== "Image Name" &&
-      row.value &&
-      row.value !== TO_BE_CONFIRMED &&
-      !normalizedValue.includes("to be confirmed") &&
-      normalizedValue !== "available upon request" &&
-      !normalizedValue.includes("compatibility can be confirmed") &&
-      !normalizedValue.includes("standard export packing")
-    );
-  });
+  return rows.filter((row) => row.label !== "Image Name" && !isLowSignalSpecificationValue(row.value));
 }
 
 export function organizationJsonLd() {

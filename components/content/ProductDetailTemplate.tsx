@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { TO_BE_CONFIRMED, type Product, type ProductCategory } from "@/lib/content/schemas";
+import { type Product, type ProductCategory } from "@/lib/content/schemas";
 import { Breadcrumbs } from "@/components/content/Breadcrumbs";
 import { CompatibilityTable } from "@/components/content/CompatibilityTable";
 import { FaqSection } from "@/components/content/FaqSection";
@@ -7,7 +7,7 @@ import { ProductCard } from "@/components/content/ProductCard";
 import { ProductVisual } from "@/components/content/ProductVisual";
 import { RfqCta } from "@/components/content/RfqCta";
 import { SpecificationTable } from "@/components/content/SpecificationTable";
-import { displayConfirmedValue } from "@/lib/content/display";
+import { displayConfirmedValue, isLowSignalSpecificationValue } from "@/lib/content/display";
 import { siteConfig } from "@/lib/content/site";
 
 type RelatedProduct = {
@@ -22,16 +22,7 @@ type ProductDetailTemplateProps = {
 };
 
 function isPublicDetailRow(row: { label: string; value: string }) {
-  const normalizedValue = row.value.trim().toLowerCase();
-
-  return (
-    row.label !== "Image Name" &&
-    row.value !== TO_BE_CONFIRMED &&
-    !normalizedValue.includes("to be confirmed") &&
-    normalizedValue !== "available upon request" &&
-    !normalizedValue.includes("compatibility can be confirmed") &&
-    !normalizedValue.includes("standard export packing")
-  );
+  return row.label !== "Image Name" && !isLowSignalSpecificationValue(row.value);
 }
 
 export function ProductDetailTemplate({

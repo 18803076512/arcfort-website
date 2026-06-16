@@ -214,7 +214,7 @@ export const productCategories: ProductCategory[] = [
       "plasma electrode",
       "plasma nozzle",
       "swirl ring",
-      "plasma cutting parts",
+      "plasma cutting consumables",
     ],
   },
   {

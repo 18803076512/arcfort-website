@@ -45,12 +45,12 @@ const simpleHeaders: SimpleHeader[] = [
 
 const categoryBySimpleInput: Record<string, { category: string; categorySlug: string; code: string }> = {
   "mig torch parts": {
-    category: "MIG Torch Parts",
+    category: "MIG/MAG Torch Parts",
     categorySlug: "mig-mag-torch-parts",
     code: "MIG",
   },
   "mig/mag torch parts": {
-    category: "MIG Torch Parts",
+    category: "MIG/MAG Torch Parts",
     categorySlug: "mig-mag-torch-parts",
     code: "MIG",
   },
@@ -60,12 +60,12 @@ const categoryBySimpleInput: Record<string, { category: string; categorySlug: st
     code: "TIG",
   },
   "plasma cutting parts": {
-    category: "Plasma Cutting Parts",
+    category: "Plasma Cutting Consumables",
     categorySlug: "plasma-cutting-consumables",
     code: "PLA",
   },
   "plasma cutting consumables": {
-    category: "Plasma Cutting Parts",
+    category: "Plasma Cutting Consumables",
     categorySlug: "plasma-cutting-consumables",
     code: "PLA",
   },
@@ -133,6 +133,24 @@ function normalizeImagePath(imageName: string, slug: string) {
   }
 
   return `/images/products/${fileName}`;
+}
+
+function getImageStatus(row: SimpleRow, mainImage: string) {
+  const normalizedNotes = row.notes.trim().toLowerCase();
+
+  if (normalizedNotes.includes("own photo")) {
+    return "own_photo";
+  }
+
+  if (normalizedNotes.includes("supplier photo")) {
+    return "supplier_photo";
+  }
+
+  if (!existsSync(path.join(process.cwd(), "public", mainImage))) {
+    return "needs_photo";
+  }
+
+  return "placeholder";
 }
 
 function appendIfMissing(parts: string[], value: string) {
@@ -222,7 +240,7 @@ function generateSku(categoryCode: string, typeCode: string, maxByCategoryCode: 
 }
 
 function createDescription(name: string, category: string) {
-  return `${name} is prepared for industrial B2B sourcing by distributors, importers, repair workshops and OEM buyers. It can be quoted for ${category.toLowerCase()} supply programs after the buyer confirms required quantity, packaging, destination country and technical references. Material, size, thread, compatible model, OEM number and other product details should be confirmed by drawing, product photo, reference part or model number before final quotation. ArcFort Weld supports standard export packing and OEM packaging discussion when order details are available.`;
+  return `${name} is prepared for industrial B2B sourcing by distributors, importers, repair workshops and OEM buyers. It can be quoted for ${category} supply programs after the buyer confirms required quantity, packaging, destination country and technical references. Material, size, thread, compatible model, OEM number and other product details should be confirmed by drawing, product photo, reference part or model number before final quotation. ArcFort Weld supports standard export packing and OEM packaging discussion when order details are available. Buyers can also send an existing product list or sample photo so the sales team can review the item and prepare a more practical RFQ response.`;
 }
 
 function createMetaDescription(name: string) {
@@ -302,7 +320,7 @@ async function convertSimpleRows(simpleRows: SimpleRow[]) {
     row.category = categoryInfo.category;
     row.category_slug = categoryInfo.categorySlug;
     row.slug = slug;
-    row.short_description = `${name} for ${categoryInfo.category.toLowerCase()} sourcing and RFQ programs.`;
+    row.short_description = `${name} for ${categoryInfo.category} sourcing and RFQ programs.`;
     row.description = createDescription(name, categoryInfo.category);
     row.main_image = mainImage;
     row.material = simpleRow.material || "Available upon request";
@@ -323,7 +341,7 @@ async function convertSimpleRows(simpleRows: SimpleRow[]) {
     row.data_status = "needs_review";
     row.source_type = "unknown";
     row.source_reference = simpleRow.notes;
-    row.image_status = existsSync(path.join(process.cwd(), "public", mainImage)) ? "own_photo" : "needs_photo";
+    row.image_status = getImageStatus(simpleRow, mainImage);
     row.compatibility_status = "unverified";
     row.oem_status = "unknown";
     row.notes_internal = simpleRow.notes;

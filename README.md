@@ -210,6 +210,9 @@ Related setup files:
 - `docs/supabase-rfq-setup.md` - Supabase, Vercel and testing instructions
 - `docs/launch-checklist.md` - production launch checklist
 - `docs/product-sku-template.csv` - SKU import planning template
+- `docs/arcfort-product-information-table.csv` - 12-product B2B information table with missing data notes
+- `docs/product-image-checklist.csv` - product image status, shooting requirements and replacement checklist
+- `docs/product-image-shooting-guide.md` - product photo shooting and editing guide
 - `docs/missing-product-data-supplement.csv` - missing data worksheet for product pages
 - `docs/production-missing-data-supplement.md` - production missing data priority and RFQ backend notes
 - `docs/sku-template-guide.md` - SKU template filling guide and first batch recommendation

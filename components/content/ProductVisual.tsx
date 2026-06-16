@@ -22,7 +22,9 @@ export function ProductVisual({
 
   return (
     <div
-      className={`relative overflow-hidden border border-slate-200 bg-arc-midnight text-white ${
+      className={`relative overflow-hidden border border-slate-200 ${
+        shouldRenderImage ? "bg-white text-arc-midnight" : "bg-arc-midnight text-white"
+      } ${
         compact ? "aspect-[4/3]" : "aspect-[5/4]"
       }`}
     >
@@ -32,7 +34,7 @@ export function ProductVisual({
           alt={title}
           fill
           sizes={compact ? "(min-width: 1024px) 33vw, 100vw" : "(min-width: 1024px) 45vw, 100vw"}
-          className="object-cover"
+          className="object-contain p-4"
         />
       ) : (
         <>
@@ -42,19 +44,25 @@ export function ProductVisual({
           <div className="absolute bottom-0 left-0 h-24 w-full bg-[repeating-linear-gradient(135deg,rgba(246,180,69,0.35)_0,rgba(246,180,69,0.35)_2px,transparent_2px,transparent_14px)]" />
         </>
       )}
-      {shouldRenderImage ? <div className="absolute inset-0 bg-arc-midnight/35" /> : null}
+      {shouldRenderImage ? (
+        <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-white via-white/80 to-transparent" />
+      ) : null}
       <div className="relative flex h-full flex-col justify-between p-5 sm:p-6">
         <div className="flex items-center justify-between gap-4">
           <span className="inline-flex bg-arc-signal px-3 py-1 font-display text-lg font-black text-arc-midnight">
             {label}
           </span>
-          <span className="text-right text-xs font-bold uppercase tracking-[0.16em] text-slate-200">
+          <span
+            className={`text-right text-xs font-bold uppercase tracking-[0.16em] ${
+              shouldRenderImage ? "text-arc-blue" : "text-slate-200"
+            }`}
+          >
             {visualCategory}
           </span>
         </div>
-        <div>
+        <div className={shouldRenderImage ? "max-w-sm" : undefined}>
           <div className="h-1 w-20 bg-arc-signal" />
-          <p className="mt-4 max-w-sm font-display text-2xl font-black leading-tight sm:text-3xl">
+          <p className="mt-4 max-w-sm font-display text-xl font-black leading-tight sm:text-2xl">
             {visualTitle}
           </p>
         </div>
