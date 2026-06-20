@@ -31,9 +31,24 @@ export function ProductDetailTemplate({
   relatedProducts,
 }: ProductDetailTemplateProps) {
   const rfqHref = `/rfq?product=${encodeURIComponent(product.title)}`;
+  const whatsappProductHref = `${siteConfig.whatsappHref}?text=${encodeURIComponent(
+    `Hello ArcFort Weld, I would like to request a quotation for ${product.title} (${product.sku}).`,
+  )}`;
   const publicSpecifications = product.specifications.filter(isPublicDetailRow);
   const publicCompatibility = product.compatibility.filter(isPublicDetailRow);
   const technicalDetailsToConfirm = Array.from(new Set(product.missingFields));
+  const productInquiryChecklist = [
+    `Product: ${product.title}`,
+    `SKU: ${displayConfirmedValue(product.sku, "Confirm with product details")}`,
+    `Category: ${category.title}`,
+    "Send quantity, destination country, drawing or reference part for quotation.",
+  ];
+  const tradeDetails = [
+    { label: "Main Port", value: siteConfig.mainPort },
+    { label: "Payment", value: siteConfig.paymentTerms },
+    { label: "MOQ Policy", value: siteConfig.moqPolicy },
+    { label: "Regular Lead Time", value: siteConfig.leadTime },
+  ];
 
   return (
     <>
@@ -96,11 +111,24 @@ export function ProductDetailTemplate({
                   Add to RFQ
                 </Link>
                 <Link
-                  href={siteConfig.whatsappHref}
+                  href={whatsappProductHref}
                   className="inline-flex items-center justify-center border border-slate-300 px-5 py-3 text-sm font-bold uppercase tracking-[0.14em] text-slate-700 transition hover:border-arc-midnight hover:bg-arc-midnight hover:text-white"
                 >
                   WhatsApp
                 </Link>
+              </div>
+
+              <div className="mt-6 border border-slate-200 bg-arc-frost p-5">
+                <h2 className="text-xs font-bold uppercase tracking-[0.16em] text-arc-blue">
+                  RFQ details for this product
+                </h2>
+                <div className="mt-4 grid gap-3 sm:grid-cols-2">
+                  {productInquiryChecklist.map((item) => (
+                    <div key={item} className="border-l-4 border-arc-signal bg-white p-3">
+                      <p className="text-sm font-semibold leading-6 text-slate-700">{item}</p>
+                    </div>
+                  ))}
+                </div>
               </div>
 
               {technicalDetailsToConfirm.length > 0 ? (
@@ -200,13 +228,33 @@ export function ProductDetailTemplate({
               </p>
             </div>
 
-            <button
-              type="button"
-              disabled
-              className="mt-6 inline-flex cursor-not-allowed items-center justify-center bg-slate-200 px-5 py-3 text-sm font-bold uppercase tracking-[0.14em] text-slate-500"
-            >
-              PDF Catalog Available by RFQ
-            </button>
+            <div className="mt-5 grid gap-3 border-t border-slate-100 pt-5 sm:grid-cols-2">
+              {tradeDetails.map((item) => (
+                <div key={item.label} className="border border-slate-100 bg-slate-50 p-4">
+                  <div className="text-xs font-bold uppercase tracking-[0.16em] text-slate-500">
+                    {item.label}
+                  </div>
+                  <p className="mt-1 text-sm font-semibold leading-6 text-arc-midnight">
+                    {item.value}
+                  </p>
+                </div>
+              ))}
+            </div>
+
+            <div className="mt-6 flex flex-col gap-3 sm:flex-row">
+              <Link
+                href="/downloads"
+                className="inline-flex items-center justify-center border border-arc-blue px-5 py-3 text-sm font-bold uppercase tracking-[0.14em] text-arc-blue transition hover:bg-arc-blue hover:text-white"
+              >
+                Request Datasheet
+              </Link>
+              <Link
+                href={rfqHref}
+                className="inline-flex items-center justify-center bg-arc-blue px-5 py-3 text-sm font-bold uppercase tracking-[0.14em] text-white transition hover:bg-arc-midnight"
+              >
+                Send Product RFQ
+              </Link>
+            </div>
           </article>
         </div>
       </section>

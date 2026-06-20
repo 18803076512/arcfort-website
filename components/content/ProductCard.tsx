@@ -21,8 +21,13 @@ export function ProductCard({ product, category }: ProductCardProps) {
         compact
       />
       <div className="flex flex-1 flex-col p-5">
-        <div className="text-xs font-bold uppercase tracking-[0.16em] text-arc-blue">
-          {category.shortTitle}
+        <div className="flex items-start justify-between gap-3">
+          <div className="text-xs font-bold uppercase tracking-[0.16em] text-arc-blue">
+            {category.shortTitle}
+          </div>
+          <div className="shrink-0 whitespace-nowrap text-right text-[11px] font-bold uppercase tracking-[0.12em] text-slate-400">
+            {product.sku}
+          </div>
         </div>
         <h3 className="mt-3 font-display text-xl font-black leading-tight text-arc-midnight">
           {product.title}
