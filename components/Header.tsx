@@ -15,11 +15,26 @@ const navigation = [
   { href: "/rfq", label: "RFQ" },
 ];
 
+const primaryNavigation = navigation.filter((item) => item.href !== "/rfq");
+
 export function Header() {
   return (
     <header className="sticky top-0 z-50 border-b border-slate-200 bg-white/95 backdrop-blur">
-      <div className="mx-auto flex min-h-20 max-w-7xl flex-col gap-4 px-4 py-4 sm:px-6 lg:flex-row lg:items-center lg:justify-between lg:px-8">
-        <Link href="/" className="flex items-center gap-3">
+      <div className="hidden bg-arc-midnight text-white lg:block">
+        <div className="mx-auto flex max-w-7xl items-center justify-between gap-6 px-8 py-2 text-xs font-semibold uppercase tracking-[0.12em]">
+          <span className="text-slate-300">{siteConfig.legalName}</span>
+          <div className="flex items-center gap-5 text-slate-200">
+            <a href={siteConfig.emailHref} className="hover:text-arc-signal">
+              {siteConfig.email}
+            </a>
+            <a href={siteConfig.whatsappHref} className="hover:text-arc-signal">
+              {siteConfig.whatsapp}
+            </a>
+          </div>
+        </div>
+      </div>
+      <div className="mx-auto flex min-h-20 max-w-7xl items-center justify-between gap-4 px-4 py-4 sm:px-6 lg:px-8">
+        <Link href="/" className="flex shrink-0 items-center gap-3">
           <span className="flex h-11 w-11 items-center justify-center bg-arc-midnight font-display text-lg font-black text-arc-signal">
             AF
           </span>
@@ -32,17 +47,49 @@ export function Header() {
             </span>
           </span>
         </Link>
-        <nav className="flex flex-wrap items-center gap-2 sm:gap-3">
-          {navigation.map((item) => (
+
+        <nav className="hidden items-center gap-1 lg:flex">
+          {primaryNavigation.map((item) => (
             <Link
               key={item.href}
               href={item.href}
-              className="px-3 py-2 text-sm font-bold uppercase tracking-[0.12em] text-slate-700 transition hover:bg-arc-frost hover:text-arc-blue"
+              className="px-3 py-2 text-xs font-bold uppercase tracking-[0.1em] text-slate-700 transition hover:bg-arc-frost hover:text-arc-blue"
             >
               {item.label}
             </Link>
           ))}
+          <Link
+            href="/rfq"
+            className="ml-2 inline-flex items-center justify-center bg-arc-blue px-4 py-3 text-xs font-bold uppercase tracking-[0.12em] text-white transition hover:bg-arc-midnight"
+          >
+            Send RFQ
+          </Link>
         </nav>
+
+        <details className="group relative lg:hidden">
+          <summary className="flex cursor-pointer list-none items-center justify-center bg-arc-blue px-4 py-3 text-xs font-bold uppercase tracking-[0.14em] text-white marker:hidden">
+            Menu
+          </summary>
+          <nav className="absolute right-0 top-14 z-50 grid w-72 gap-1 border border-slate-200 bg-white p-3 shadow-industrial">
+            {navigation.map((item) => (
+              <Link
+                key={item.href}
+                href={item.href}
+                className="px-3 py-3 text-sm font-bold uppercase tracking-[0.12em] text-slate-700 transition hover:bg-arc-frost hover:text-arc-blue"
+              >
+                {item.label}
+              </Link>
+            ))}
+            <div className="mt-2 border-t border-slate-200 pt-3 text-xs leading-5 text-slate-600">
+              <a href={siteConfig.emailHref} className="block font-semibold text-arc-midnight">
+                {siteConfig.email}
+              </a>
+              <a href={siteConfig.whatsappHref} className="mt-1 block font-semibold text-arc-blue">
+                {siteConfig.whatsapp}
+              </a>
+            </div>
+          </nav>
+        </details>
       </div>
     </header>
   );

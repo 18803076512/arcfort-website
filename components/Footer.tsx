@@ -18,10 +18,18 @@ const links = [
   { href: "/rfq", label: "RFQ" },
 ];
 
+const buyerServiceLinks = [
+  { href: "/oem-service", label: "OEM Service" },
+  { href: "/quality-control", label: "Quality Control" },
+  { href: "/shipping-payment", label: "Shipping & Payment" },
+  { href: "/downloads", label: "Downloads" },
+  { href: "/rfq", label: "Request a Quote" },
+];
+
 export function Footer() {
   return (
     <footer className="bg-arc-midnight text-white">
-      <div className="mx-auto grid max-w-7xl gap-10 px-4 py-12 sm:px-6 md:grid-cols-[1.1fr_0.75fr_0.9fr_0.8fr] lg:px-8">
+      <div className="mx-auto grid max-w-7xl gap-10 px-4 py-12 sm:px-6 md:grid-cols-2 lg:grid-cols-[1.05fr_0.65fr_0.9fr_0.85fr_0.85fr] lg:px-8">
         <div>
           <div className="font-display text-3xl font-black">{siteConfig.shortName}</div>
           <p className="mt-4 max-w-sm text-sm leading-6 text-slate-300">
@@ -32,10 +40,33 @@ export function Footer() {
         </div>
         <div>
           <h2 className="text-sm font-bold uppercase tracking-[0.18em] text-arc-signal">
-            Navigation
+            Company
           </h2>
           <div className="mt-4 grid gap-2">
-            {links.map((link) => (
+            {links
+              .filter(
+                (link) =>
+                  !["/oem-service", "/quality-control", "/shipping-payment", "/downloads", "/rfq"].includes(
+                    link.href,
+                  ),
+              )
+              .map((link) => (
+              <Link
+                key={link.href}
+                href={link.href}
+                className="text-sm text-slate-300 hover:text-white"
+              >
+                {link.label}
+              </Link>
+            ))}
+          </div>
+        </div>
+        <div>
+          <h2 className="text-sm font-bold uppercase tracking-[0.18em] text-arc-signal">
+            Buyer Services
+          </h2>
+          <div className="mt-4 grid gap-2">
+            {buyerServiceLinks.map((link) => (
               <Link
                 key={link.href}
                 href={link.href}
