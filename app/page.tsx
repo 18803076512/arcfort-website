@@ -52,6 +52,39 @@ const tradeHighlights = [
   { label: "Lead Time", value: siteConfig.leadTime },
 ] as const;
 
+const rfqSignals = [
+  "Product name, model, size and quantity",
+  "Drawing, sample photo or reference part",
+  "Packaging, label and destination country",
+] as const;
+
+const sourcingSystemLinks = [
+  {
+    href: "/oem-service",
+    title: "OEM & Private Label",
+    description:
+      "Logo printing, private label packaging and model customization reviewed by confirmed product details.",
+  },
+  {
+    href: "/quality-control",
+    title: "Quality Control",
+    description:
+      "Incoming, production, packaging and outgoing inspection flow for stable export supply.",
+  },
+  {
+    href: "/shipping-payment",
+    title: "Shipping & Payment",
+    description:
+      "Main port, payment term, MOQ policy and lead time information for quotation planning.",
+  },
+  {
+    href: "/downloads",
+    title: "Catalog & RFQ Documents",
+    description:
+      "Request product catalogs, data sheets and RFQ document support based on confirmed product data.",
+  },
+] as const;
+
 export default function Home() {
   const categories = getAllProductCategories();
   const products = getAllProducts();
@@ -119,6 +152,32 @@ export default function Home() {
                   </div>
                 ))}
               </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="bg-white py-12 sm:py-14">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="grid gap-6 border border-slate-200 bg-arc-frost p-5 shadow-sm sm:p-6 lg:grid-cols-[0.85fr_1.15fr] lg:items-center">
+            <div>
+              <p className="text-sm font-bold uppercase tracking-[0.2em] text-arc-blue">
+                Fast RFQ Preparation
+              </p>
+              <h2 className="mt-3 font-display text-3xl font-black text-arc-midnight">
+                Send product lists, drawings or sample photos for quotation review.
+              </h2>
+              <p className="mt-4 text-sm leading-7 text-slate-600">
+                A clear RFQ helps ArcFort Weld confirm fit, packaging, MOQ and delivery options
+                without unnecessary back-and-forth.
+              </p>
+            </div>
+            <div className="grid gap-3 sm:grid-cols-3">
+              {rfqSignals.map((item) => (
+                <div key={item} className="border-l-4 border-arc-signal bg-white p-4 shadow-sm">
+                  <p className="text-sm font-semibold leading-6 text-slate-700">{item}</p>
+                </div>
+              ))}
             </div>
           </div>
         </div>
@@ -248,6 +307,40 @@ export default function Home() {
               <div key={item} className="border-l-4 border-arc-signal bg-arc-frost p-5">
                 <p className="text-sm font-semibold leading-6 text-slate-800">{item}</p>
               </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="bg-arc-midnight py-16 text-white sm:py-20">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="max-w-3xl">
+            <p className="text-sm font-bold uppercase tracking-[0.2em] text-arc-signal">
+              Supplier System
+            </p>
+            <h2 className="mt-3 font-display text-3xl font-black sm:text-4xl">
+              Built for industrial buyers who need clear information before inquiry.
+            </h2>
+            <p className="mt-4 text-sm leading-7 text-slate-300">
+              Mature B2B sourcing depends on product scope, OEM options, quality checkpoints,
+              shipping terms and accessible documents. ArcFort Weld keeps these paths visible so
+              distributors and importers can qualify the supply fit quickly.
+            </p>
+          </div>
+          <div className="mt-10 grid gap-5 md:grid-cols-2 lg:grid-cols-4">
+            {sourcingSystemLinks.map((item) => (
+              <Link
+                key={item.href}
+                href={item.href}
+                className="group border border-white/10 bg-white/5 p-5 transition hover:-translate-y-1 hover:border-arc-signal hover:bg-white/10"
+              >
+                <div className="h-1 w-16 bg-arc-signal" />
+                <h3 className="mt-5 font-display text-xl font-black">{item.title}</h3>
+                <p className="mt-3 text-sm leading-6 text-slate-300">{item.description}</p>
+                <span className="mt-5 inline-flex text-sm font-bold uppercase tracking-[0.14em] text-arc-signal group-hover:text-white">
+                  View Details
+                </span>
+              </Link>
             ))}
           </div>
         </div>

@@ -18,10 +18,17 @@ html {
 
 body {
   margin: 0;
+  padding-bottom: 3.75rem;
   background:
     radial-gradient(circle at 10% 0%, rgba(15, 76, 129, 0.10), transparent 28rem),
     linear-gradient(180deg, #ffffff 0%, var(--background) 44%, #eef3f8 100%);
   color: var(--foreground);
+}
+
+@media (min-width: 768px) {
+  body {
+    padding-bottom: 0;
+  }
 }
 
 a {

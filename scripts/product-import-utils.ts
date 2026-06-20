@@ -105,9 +105,9 @@ const categorySlugByCategory: Record<string, string> = {
 };
 
 const categoryBySlug: Record<string, string> = {
-  "mig-mag-torch-parts": "MIG Torch Parts",
+  "mig-mag-torch-parts": "MIG/MAG Torch Parts",
   "tig-torch-parts": "TIG Torch Parts",
-  "plasma-cutting-consumables": "Plasma Cutting Parts",
+  "plasma-cutting-consumables": "Plasma Cutting Consumables",
   "welding-consumables": "Welding Consumables",
   "welding-machines": "Welding Machines",
   "welding-accessories": "Welding Accessories",

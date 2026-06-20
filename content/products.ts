@@ -4,6 +4,7 @@ import {
   type SpecRow,
   type WeldingProcess,
 } from "@/lib/content/schemas";
+import { isUnconfirmedValue } from "@/lib/content/display";
 
 const processByCategorySlug: Record<string, WeldingProcess> = {
   "mig-mag-torch-parts": "MIG/MAG",
@@ -21,21 +22,10 @@ function getImageLabel(product: ArcfortProductData) {
   return product.sku.split("-")[1] ?? "RFQ";
 }
 
-function isMissingProductValue(value: string) {
-  const normalizedValue = value.trim().toLowerCase();
-
-  return (
-    normalizedValue.includes("to be confirmed") ||
-    normalizedValue === "available upon request" ||
-    normalizedValue.includes("compatibility can be confirmed") ||
-    normalizedValue.includes("standard export packing")
-  );
-}
-
 function hasMissingProductValue(field: [string, string | undefined]): field is [string, string] {
   const value = field[1];
 
-  return typeof value === "string" && value.length > 0 && isMissingProductValue(value);
+  return typeof value === "string" && value.length > 0 && isUnconfirmedValue(value);
 }
 
 function createSpecifications(product: ArcfortProductData): SpecRow[] {

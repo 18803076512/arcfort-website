@@ -31,7 +31,7 @@ export const applications: ApplicationPage[] = [
           "No certifications are invented. Any certification requirement must be confirmed with official documents.",
       },
     ],
-    keywords: ["shipbuilding welding parts", "marine welding consumables", "plasma cutting parts"],
+    keywords: ["shipbuilding welding parts", "marine welding consumables", "plasma cutting consumables"],
   },
   {
     slug: "automotive",
@@ -63,7 +63,7 @@ export const applications: ApplicationPage[] = [
           "Compatibility can be reviewed when buyers provide torch model, reference number, drawing or reference part details.",
       },
     ],
-    keywords: ["automotive welding consumables", "MIG torch parts", "welding wire"],
+    keywords: ["automotive welding consumables", "MIG/MAG torch parts", "welding wire"],
   },
   {
     slug: "pipeline",
@@ -166,7 +166,7 @@ export const applications: ApplicationPage[] = [
     title: "Repair Workshop Welding Supplies",
     seoTitle: "Repair Workshop Welding Supplies and Torch Consumables",
     description:
-      "Welding torch consumables, accessories and plasma cutting parts for repair workshops and maintenance buyers.",
+      "Welding torch consumables, accessories and plasma cutting consumables for repair workshops and maintenance buyers.",
     seoDescription:
       "Source repair workshop welding supplies including MIG/MAG parts, TIG parts, accessories and plasma cutting consumables.",
     overview:

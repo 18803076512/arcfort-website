@@ -4,6 +4,10 @@ import { siteConfig } from "@/lib/content/site";
 const navigation = [
   { href: "/", label: "Home" },
   { href: "/products", label: "Products" },
+  { href: "/oem-service", label: "OEM" },
+  { href: "/quality-control", label: "Quality" },
+  { href: "/shipping-payment", label: "Shipping" },
+  { href: "/downloads", label: "Downloads" },
   { href: "/applications", label: "Applications" },
   { href: "/guides", label: "Guides" },
   { href: "/about", label: "About" },

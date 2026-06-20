@@ -49,7 +49,7 @@ export const metadata = buildMetadata({
     "welding RFQ",
     "welding parts quotation",
     "plasma consumables inquiry",
-    "MIG torch parts supplier",
+    "MIG/MAG torch parts supplier",
   ],
 });
 
