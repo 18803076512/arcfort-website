@@ -119,7 +119,8 @@ The database accepts:
 
 ## Production Notes
 
-- Add a notification workflow later, such as Resend, Supabase Edge Functions or a CRM webhook.
+- Email delivery is handled by Resend when `RESEND_API_KEY` and `RFQ_EMAIL_FROM` are configured.
+- See `docs/rfq-email-delivery.md` for Vercel and Resend setup.
 - Build an admin dashboard later before exposing inquiry management to non-technical users.
 - Use signed URLs for private attachment downloads if an admin dashboard is added.
 - Keep all missing product details as `To be confirmed` until confirmed by buyer drawings, samples or product references.
