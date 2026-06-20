@@ -1,6 +1,8 @@
 import { NextResponse } from "next/server";
 import { siteConfig } from "@/lib/content/site";
 
+export const runtime = "nodejs";
+
 type RfqPayload = {
   name: string;
   company: string;
@@ -23,6 +25,7 @@ type EmailNotificationResult = {
   configured: boolean;
   delivered: boolean;
   recipient: string;
+  attachmentCount: number;
 };
 
 const requiredFields: Array<keyof RfqPayload> = [
@@ -37,6 +40,7 @@ const requiredFields: Array<keyof RfqPayload> = [
 const allowedFileExtensions = [".pdf", ".xlsx", ".xls", ".csv", ".jpg", ".jpeg", ".png", ".doc", ".docx"];
 const maxFiles = 5;
 const maxFileSize = 10 * 1024 * 1024;
+const maxTotalFileSize = 25 * 1024 * 1024;
 
 function cleanField(formData: FormData, field: keyof RfqPayload) {
   const value = formData.get(field);
@@ -69,6 +73,10 @@ function getAttachments(formData: FormData) {
   return formData
     .getAll("attachments")
     .filter((entry): entry is File => entry instanceof File && entry.size > 0);
+}
+
+function getTotalFileSize(files: File[]) {
+  return files.reduce((total, file) => total + file.size, 0);
 }
 
 async function uploadAttachments(
@@ -179,9 +187,19 @@ function buildInquiryEmailText(payload: RfqPayload, attachments: AttachmentRecor
   ].join("\n");
 }
 
+async function buildEmailAttachments(files: File[]) {
+  return Promise.all(
+    files.map(async (file) => ({
+      filename: sanitizeFileName(file.name),
+      content: Buffer.from(await file.arrayBuffer()).toString("base64"),
+    })),
+  );
+}
+
 async function sendEmailNotification(
   payload: RfqPayload,
   attachments: AttachmentRecord[],
+  files: File[],
 ): Promise<EmailNotificationResult> {
   const apiKey = process.env.RESEND_API_KEY;
   const from = process.env.RFQ_EMAIL_FROM;
@@ -192,8 +210,11 @@ async function sendEmailNotification(
       configured: false,
       delivered: false,
       recipient,
+      attachmentCount: 0,
     };
   }
+
+  const emailAttachments = files.length > 0 ? await buildEmailAttachments(files) : [];
 
   const response = await fetch("https://api.resend.com/emails", {
     method: "POST",
@@ -207,6 +228,7 @@ async function sendEmailNotification(
       reply_to: payload.email,
       subject: `ArcFort Weld RFQ - ${payload.company}`,
       text: buildInquiryEmailText(payload, attachments),
+      ...(emailAttachments.length > 0 ? { attachments: emailAttachments } : {}),
     }),
   });
 
@@ -218,6 +240,7 @@ async function sendEmailNotification(
     configured: true,
     delivered: true,
     recipient,
+    attachmentCount: emailAttachments.length,
   };
 }
 
@@ -264,6 +287,10 @@ export async function POST(request: Request) {
       errors.attachments = `Please upload no more than ${maxFiles} files.`;
     }
 
+    if (getTotalFileSize(files) > maxTotalFileSize) {
+      errors.attachments = "Total attachment size must be 25 MB or smaller.";
+    }
+
     for (const file of files) {
       const extension = getFileExtension(file.name);
 
@@ -295,7 +322,7 @@ export async function POST(request: Request) {
         ? await uploadAttachments(files, supabaseUrl, serviceRoleKey, bucket)
         : attachmentMetadata;
     const stored = await insertSupabaseInquiry(payload, uploadedAttachments);
-    const emailNotification = await sendEmailNotification(payload, uploadedAttachments);
+    const emailNotification = await sendEmailNotification(payload, uploadedAttachments, files);
 
     return NextResponse.json({
       ok: true,
@@ -303,6 +330,7 @@ export async function POST(request: Request) {
       emailConfigured: emailNotification.configured,
       emailDelivered: emailNotification.delivered,
       emailRecipient: emailNotification.recipient,
+      emailAttachmentCount: emailNotification.attachmentCount,
       backendConfigured: stored || emailNotification.delivered,
       message:
         stored || emailNotification.delivered

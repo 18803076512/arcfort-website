@@ -24,6 +24,7 @@ type RfqResponse = {
   emailConfigured?: boolean;
   emailDelivered?: boolean;
   emailRecipient?: string;
+  emailAttachmentCount?: number;
   message?: string;
   errors?: FormErrors;
 };
@@ -51,6 +52,7 @@ const requiredFields: Array<keyof RfqFormValues> = [
 const allowedFileExtensions = [".pdf", ".xlsx", ".xls", ".csv", ".jpg", ".jpeg", ".png", ".doc", ".docx"];
 const maxFiles = 5;
 const maxFileSize = 10 * 1024 * 1024;
+const maxTotalFileSize = 25 * 1024 * 1024;
 
 function validateEmail(email: string) {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
@@ -67,6 +69,10 @@ function createFileSummary(files: File[]) {
   }
 
   return files.map((file) => file.name).join(", ");
+}
+
+function getTotalFileSize(files: File[]) {
+  return files.reduce((total, file) => total + file.size, 0);
 }
 
 type RfqFormProps = {
@@ -112,6 +118,10 @@ export function RfqForm({ initialProduct = "" }: RfqFormProps) {
 
     if (attachments.length > maxFiles) {
       nextErrors.attachments = `Please upload no more than ${maxFiles} files.`;
+    }
+
+    if (getTotalFileSize(attachments) > maxTotalFileSize) {
+      nextErrors.attachments = "Total attachment size must be 25 MB or smaller.";
     }
 
     for (const file of attachments) {
@@ -192,6 +202,25 @@ export function RfqForm({ initialProduct = "" }: RfqFormProps) {
   }
 
   if (isSubmitted) {
+    const fallbackEmailSubject = encodeURIComponent(`ArcFort Weld RFQ - ${values.company}`);
+    const fallbackEmailBody = encodeURIComponent(
+      [
+        `Name: ${values.name}`,
+        `Company: ${values.company}`,
+        `Email: ${values.email}`,
+        `WhatsApp: ${values.whatsapp || "Not provided"}`,
+        `Country: ${values.country}`,
+        `Quantity: ${values.quantity}`,
+        "",
+        "Product Requirements:",
+        values.productRequirements,
+        "",
+        "Message:",
+        values.message || "No additional message.",
+      ].join("\n"),
+    );
+    const fallbackEmailHref = `${siteConfig.emailHref}?subject=${fallbackEmailSubject}&body=${fallbackEmailBody}`;
+
     return (
       <div className="border border-slate-200 bg-white p-6 shadow-sm sm:p-8">
         <div className="border-l-4 border-arc-signal bg-arc-frost p-5">
@@ -202,15 +231,22 @@ export function RfqForm({ initialProduct = "" }: RfqFormProps) {
             Thank you for your inquiry.
           </h2>
           <p className="mt-3 text-sm leading-6 text-slate-700">
-            {submissionResult?.backendConfigured
-              ? "Your RFQ has been submitted for sales follow-up."
-              : "Your RFQ passed validation, but server-side email delivery or storage is not configured yet. Please also send your inquiry by email or WhatsApp for sales follow-up."}
+            {submissionResult?.emailDelivered
+              ? "Your RFQ has been sent to the ArcFort Weld sales email for follow-up."
+              : submissionResult?.backendConfigured
+                ? "Your RFQ has been submitted for sales follow-up."
+                : "Your RFQ passed validation, but server-side email delivery or storage is not configured yet. Please also send your inquiry by email or WhatsApp for sales follow-up."}
           </p>
+          {submissionResult?.emailDelivered && submissionResult.emailAttachmentCount ? (
+            <p className="mt-2 text-sm leading-6 text-slate-700">
+              Attachments included in email: {submissionResult.emailAttachmentCount}
+            </p>
+          ) : null}
         </div>
         {!submissionResult?.backendConfigured ? (
           <div className="mt-5 grid gap-3 sm:grid-cols-2">
             <a
-              href={siteConfig.emailHref}
+              href={fallbackEmailHref}
               className="border border-slate-200 bg-arc-frost p-4 text-sm font-semibold text-arc-midnight transition hover:border-arc-blue hover:text-arc-blue"
             >
               Email: {submissionResult?.emailRecipient ?? siteConfig.email}
@@ -369,7 +405,7 @@ export function RfqForm({ initialProduct = "" }: RfqFormProps) {
           />
         </label>
         <p id="attachments-help" className="mt-2 text-xs leading-5 text-slate-500">
-          Accepted: PDF, Excel, CSV, Word, JPG and PNG. Maximum 5 files, 10 MB each.
+          Accepted: PDF, Excel, CSV, Word, JPG and PNG. Maximum 5 files, 10 MB each, 25 MB total.
         </p>
         {errors.attachments ? (
           <p className="mt-2 text-sm font-semibold text-red-700">{errors.attachments}</p>
@@ -390,8 +426,8 @@ export function RfqForm({ initialProduct = "" }: RfqFormProps) {
           {isSubmitting ? "Submitting..." : "Submit RFQ"}
         </button>
         <p className="text-xs leading-5 text-slate-500">
-          Your inquiry is validated by the website before submission. Large files can also be sent
-          directly by email after initial contact.
+          Your inquiry is validated by the website before submission. Large or sensitive files can
+          also be sent directly by email after initial contact.
         </p>
       </div>
     </form>

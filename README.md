@@ -131,6 +131,7 @@ The `/rfq` page includes a responsive inquiry form with:
 - Success state after validation
 - Optional Supabase storage for RFQ records and attachment metadata
 - Optional Resend email notification to the configured business email
+- RFQ file attachments sent with the Resend email when email delivery is configured
 
 Supabase storage and Resend email delivery are optional production services and must be configured
 through environment variables. No real API keys, email passwords, database passwords or private
@@ -152,6 +153,7 @@ RESEND_API_KEY=
 
 - `supabase/rfq-schema.sql` - RFQ table and private attachment bucket setup
 - `docs/supabase-rfq-setup.md` - Supabase, Vercel and testing instructions
+- `docs/rfq-email-delivery.md` - Resend email delivery setup for RFQ notifications and attachments
 - `docs/launch-checklist.md` - production launch checklist
 - `docs/arcfort-product-information-table.csv` - 12-product B2B information table with missing data notes
 - `docs/product-image-checklist.csv` - product image status and replacement checklist
