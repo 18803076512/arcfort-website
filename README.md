@@ -1,6 +1,6 @@
 # arcfort-website
 
-ArcFort Weld independent website project for Renqiu Ailesen Welding Technology Co., Ltd.
+Industrial B2B website for ArcFort Weld, operated by Renqiu Ailesen Welding Technology Co., Ltd.
 
 ## Brand
 
@@ -8,7 +8,7 @@ ArcFort Weld independent website project for Renqiu Ailesen Welding Technology C
 - Company English name: Renqiu Ailesen Welding Technology Co., Ltd.
 - Company Chinese name: 任丘市埃勒森焊接科技有限公司
 - Positioning: Industrial Welding & Cutting Solutions
-- Audience: Global distributors, importers, OEM buyers, industrial users, and repair workshops
+- Audience: Global distributors, importers, wholesalers, OEM buyers, industrial users, and repair workshops
 
 ## Confirmed Business Information
 
@@ -41,6 +41,10 @@ ArcFort Weld independent website project for Renqiu Ailesen Welding Technology C
 - `/guides` - Buyer guide center
 - `/guides/[slug]` - Buyer guide article
 - `/about` - About
+- `/oem-service` - OEM service and private label support
+- `/quality-control` - Quality control and inspection workflow
+- `/shipping-payment` - Shipping, payment, MOQ and lead time information
+- `/downloads` - Catalog, data sheet and RFQ document request center
 - `/contact` - Contact
 - `/privacy` - Privacy notice
 - `/rfq` - Request for quotation
@@ -56,11 +60,21 @@ ArcFort Weld independent website project for Renqiu Ailesen Welding Technology C
 - `lib/content/schemas.ts` - reusable TypeScript content schema
 - `lib/content/site.ts` - centralized company, contact, trade, port, payment, MOQ, lead time and OEM information
 - `lib/content/seo.ts` - metadata helper
-- `lib/content/jsonld.ts` - JSON-LD helpers for Product, BreadcrumbList, Organization, and FAQ
+- `lib/content/jsonld.ts` - JSON-LD helpers for Product, BreadcrumbList, Organization and FAQ
 
-The current content includes 6 product categories, 12 starter product pages, 6 application pages and
-3 buyer guides. Missing product data must remain explicit instead of inventing specifications,
-certifications, prices, stock status, factory capacity, or customer cases.
+The website currently includes 6 product categories, 12 starter product pages, 6 application pages,
+3 buyer guides and dedicated trust pages for OEM service, quality control, shipping/payment and
+document requests. Missing product data must remain explicit instead of inventing specifications,
+certifications, prices, stock status, factory capacity or customer cases.
+
+## Product Lines
+
+- MIG/MAG Torch Parts
+- TIG Torch Parts
+- Plasma Cutting Consumables
+- Welding Consumables
+- Welding Machines
+- Welding Accessories
 
 ## SKU Bulk Import Workflow
 
@@ -72,38 +86,21 @@ Simple CSV files:
 - `data/import/products-simple-template.csv` - simple SKU template
 - `data/import/products-simple.csv` - simple working SKU file
 
-Simple CSV fields:
-
-- `category`
-- `product_name`
-- `model`
-- `size`
-- `thread`
-- `material`
-- `compatible_model`
-- `image_name`
-- `notes`
-
 Simple workflow:
 
 1. Edit `data/import/products-simple.csv`.
-2. Put images in `public/images/products/` using the `image_name` values.
+2. Put product images in `public/images/products/` using the `image_name` values.
 3. Run `npm run products:simple:preview` to check generated data without writing files.
 4. Run `npm run products:simple:generate` to generate `data/import/products.csv`.
 5. Run `npm run products:check-images`.
 6. Run `npm run products:simple:import` to update `lib/data/products.ts`.
 7. Run `npm run build`.
 
-The simple importer automatically generates SKU, slug, category slug, short description,
-description, SEO title, SEO description, image path and review statuses. It does not generate
-confirmed OEM numbers, confirmed compatibility, certifications, prices or exact technical ratings.
+The simple importer can generate safe routing, image-path, SEO and placeholder values. It must not
+generate confirmed OEM numbers, confirmed compatible models, certifications, prices, exact technical
+ratings or unverified product dimensions.
 
-CSV templates:
-
-- `data/import/products-template.csv` - empty product import template
-- `data/import/products.csv` - working import file, created by copying the template
-
-Workflow:
+Full CSV workflow:
 
 1. Copy `data/import/products-template.csv` to `data/import/products.csv`.
 2. Fill product data in `data/import/products.csv`.
@@ -113,59 +110,6 @@ Workflow:
 6. Run `npm run products:import`.
 7. Run `npm run build`.
 8. Submit a pull request.
-
-Commands:
-
-```bash
-npm run products:validate
-npm run products:check-images
-npm run products:import
-```
-
-The validator checks required fields, SKU format, duplicate SKU and slug values, status enums,
-category slugs, SEO length warnings, description word-count warnings, and image path warnings.
-Missing image files do not fail the build or validation; they are reported as warnings.
-
-Allowed automatic generation means safe placeholder, routing, image-path, or SEO text generation.
-It does not mean inventing confirmed technical facts.
-
-Allowed automatic generation:
-
-- `sku`
-- `name`
-- `category`
-- `category_slug`
-- `slug`
-- `short_description`
-- `description`
-- `main_image` path
-- `gallery_images` path
-- `material` as `Available upon request`
-- `size` as `Available upon request`
-- `thread` as `Available upon request`
-- `compatible_brand` as `Contact us for details`
-- `compatible_model` as `Contact us for details`
-- `oem_number` as `TBD`
-- `package` as `Available upon request`
-- `moq` as `Contact us for details`
-- `lead_time` as `Available upon request`
-- `application`
-- `meta_title`
-- `meta_description`
-- `status`, with missing values defaulting to `draft`
-- `data_status`, with missing values defaulting to `needs_review`
-- `image_status`, with missing values defaulting to `placeholder`
-- `compatibility_status`, with missing values defaulting to `unverified`
-- `oem_status`, with missing values defaulting to `unknown`
-
-Never auto-generate:
-
-- OEM number as a confirmed value
-- Confirmed compatible model
-- Certification
-- Price
-- Exact technical rating
-- Unverified product dimensions
 
 Use these values when data is uncertain:
 
@@ -179,17 +123,17 @@ Use these values when data is uncertain:
 
 The `/rfq` page includes a responsive inquiry form with:
 
-- Name, company, email, WhatsApp, country, product requirements, quantity, and message fields
+- Name, company, email, WhatsApp, country, product requirements, quantity and message fields
 - Required-field validation
 - Business email format validation
-- Drawing, product list, PDF, Excel, Word, JPG, and PNG upload selection
+- Drawing, product list, PDF, Excel, Word, JPG and PNG upload selection
 - Server-side validation through `/api/rfq`
 - Success state after validation
 - Optional Supabase storage for RFQ records and attachment metadata
 - Optional Resend email notification to the configured business email
 
 Supabase storage and Resend email delivery are optional production services and must be configured
-through environment variables. No real API keys, email passwords, database passwords, or private
+through environment variables. No real API keys, email passwords, database passwords or private
 tokens are committed.
 
 Environment variables:
@@ -204,14 +148,13 @@ RFQ_EMAIL_FROM=
 RESEND_API_KEY=
 ```
 
-Related setup files:
+## Useful Documents
 
 - `supabase/rfq-schema.sql` - RFQ table and private attachment bucket setup
 - `docs/supabase-rfq-setup.md` - Supabase, Vercel and testing instructions
 - `docs/launch-checklist.md` - production launch checklist
-- `docs/product-sku-template.csv` - SKU import planning template
 - `docs/arcfort-product-information-table.csv` - 12-product B2B information table with missing data notes
-- `docs/product-image-checklist.csv` - product image status, shooting requirements and replacement checklist
+- `docs/product-image-checklist.csv` - product image status and replacement checklist
 - `docs/product-image-shooting-guide.md` - product photo shooting and editing guide
 - `docs/missing-product-data-supplement.csv` - missing data worksheet for product pages
 - `docs/production-missing-data-supplement.md` - production missing data priority and RFQ backend notes
@@ -219,15 +162,6 @@ Related setup files:
 - `docs/product-data-workflow.md` - product CSV workflow and validation rules
 - `supabase/product-catalog-schema.sql` - future product catalog database schema
 - `docs/supabase-product-catalog-setup.md` - product catalog database setup instructions
-
-## Product Lines
-
-- MIG Torch Parts
-- TIG Torch Parts
-- Plasma Cutting Parts
-- Welding Consumables
-- Welding Machines
-- Welding Accessories
 
 ## Getting Started
 
@@ -237,7 +171,7 @@ Install dependencies:
 npm install
 ```
 
-Run the development server:
+Run development server:
 
 ```bash
 npm run dev
@@ -249,60 +183,18 @@ Build for production:
 npm run build
 ```
 
-Validate legacy product CSV data:
+Run checks:
 
 ```bash
-npm run validate:products
-```
-
-Validate SKU import data:
-
-```bash
+npm run lint
 npm run products:validate
-```
-
-Preview simple SKU data:
-
-```bash
-npm run products:simple:preview
-```
-
-Generate full SKU CSV from simple SKU data:
-
-```bash
-npm run products:simple:generate
-```
-
-Generate and import simple SKU data:
-
-```bash
-npm run products:simple:import
-```
-
-Check product images:
-
-```bash
 npm run products:check-images
-```
-
-Import SKU data:
-
-```bash
-npm run products:import
-```
-
-Preview generated product content:
-
-```bash
-npm run generate:products
 ```
 
 ## Notes
 
 - No real API keys or secrets are included.
-- The RFQ page validates submissions and can store them in Supabase or send email through Resend
-  after environment variables are configured.
-- Confirm real product images, final SKU codes and exact product specifications before scaling
-  product pages.
 - `app/sitemap.ts` and `app/robots.ts` are included for search engine discovery.
 - Product and category pages include SEO metadata and JSON-LD structured data where appropriate.
+- Confirm real product images, final SKU codes and exact product specifications before scaling
+  product pages.

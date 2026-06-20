@@ -3,6 +3,7 @@ import type { ReactNode } from "react";
 import { StructuredData } from "@/components/content/StructuredData";
 import { Footer } from "@/components/Footer";
 import { Header } from "@/components/Header";
+import { StickyContactBar } from "@/components/StickyContactBar";
 import { organizationJsonLd } from "@/lib/content/jsonld";
 import { siteConfig } from "@/lib/content/site";
 import "./globals.css";
@@ -54,6 +55,7 @@ export default function RootLayout({ children }: Readonly<{ children: ReactNode 
         <Header />
         <main>{children}</main>
         <Footer />
+        <StickyContactBar />
       </body>
     </html>
   );
