@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { ProductCard } from "@/components/content/ProductCard";
 import { RfqCta } from "@/components/content/RfqCta";
@@ -10,7 +11,7 @@ import { siteConfig } from "@/lib/content/site";
 export const metadata = buildMetadata({
   title: "Industrial Welding & Cutting Solutions",
   description:
-    "ArcFort Weld supplies welding machines, cutting machines, MIG/MAG torch parts, TIG torch parts, plasma cutting consumables and OEM welding accessories for global B2B buyers.",
+    "ArcFort Weld supplies welding and cutting machines, MIG/MAG and TIG torch parts, plasma cutting consumables and OEM welding accessories for overseas buyers.",
   path: "/",
   keywords: [
     "industrial welding solutions",
@@ -37,6 +38,13 @@ const supplyScope = [
   "Welding & Cutting Machines",
   "Welding Accessories",
 ];
+
+const heroSupplySignals = [
+  "MIG/MAG Torch Parts",
+  "TIG Torch Parts",
+  "Plasma Cutting Consumables",
+  "OEM Welding Accessories",
+] as const;
 
 const oemServiceItems = [
   "Logo printing and private label packaging",
@@ -93,10 +101,18 @@ export default function Home() {
 
   return (
     <>
-      <section className="relative overflow-hidden bg-arc-midnight text-white">
-        <div className="absolute inset-0 bg-[linear-gradient(115deg,rgba(7,21,36,0.98)_0%,rgba(11,35,65,0.92)_45%,rgba(15,76,129,0.84)_100%)]" />
-        <div className="absolute inset-0 opacity-30 [background-image:linear-gradient(90deg,rgba(255,255,255,0.08)_1px,transparent_1px),linear-gradient(rgba(255,255,255,0.08)_1px,transparent_1px)] [background-size:48px_48px]" />
-        <div className="relative mx-auto grid min-h-[calc(100vh-5rem)] max-w-7xl items-center gap-12 px-4 py-16 sm:px-6 lg:grid-cols-[1.03fr_0.97fr] lg:px-8">
+      <section className="relative isolate overflow-hidden bg-arc-midnight text-white">
+        <Image
+          src="/images/site/arcfort-hero-welding-workshop.png"
+          alt="ArcFort Weld welding and cutting workshop with torch consumables"
+          fill
+          priority
+          sizes="100vw"
+          className="absolute inset-0 -z-20 object-cover"
+        />
+        <div className="absolute inset-0 -z-10 bg-[linear-gradient(90deg,rgba(5,15,28,0.98)_0%,rgba(7,21,36,0.92)_42%,rgba(7,21,36,0.58)_72%,rgba(7,21,36,0.32)_100%)]" />
+        <div className="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_78%_24%,rgba(56,189,248,0.22),transparent_34%),linear-gradient(180deg,rgba(7,21,36,0.1),rgba(7,21,36,0.82))]" />
+        <div className="relative mx-auto flex min-h-[calc(100vh-5rem)] max-w-7xl flex-col justify-center px-4 py-16 sm:px-6 lg:px-8">
           <div className="max-w-3xl">
             <p className="mb-5 inline-flex border-l-4 border-arc-signal bg-white/10 px-4 py-2 text-sm font-semibold uppercase tracking-[0.2em] text-arc-signal">
               ArcFort Weld | Welding & Cutting Solutions
@@ -105,9 +121,9 @@ export default function Home() {
               Industrial Welding & Cutting Solutions
             </h1>
             <p className="mt-7 max-w-2xl text-lg leading-8 text-slate-200">
-              ArcFort Weld supplies welding machines, cutting machines, MIG/MAG torch parts, TIG
-              torch parts, plasma cutting consumables and OEM welding accessories for global B2B
-              buyers.
+              Renqiu Ailesen Welding Technology Co., Ltd. supplies welding and cutting machines,
+              MIG/MAG torch parts, TIG torch parts, plasma cutting consumables and OEM welding
+              accessories for distributors, importers and industrial users.
             </p>
             <div className="mt-9 flex flex-col gap-3 sm:flex-row">
               <Link
@@ -133,26 +149,15 @@ export default function Home() {
             </div>
           </div>
 
-          <div className="relative">
-            <div className="border border-white/15 bg-white/10 p-5 shadow-industrial backdrop-blur">
-              <div className="grid aspect-[4/3] grid-cols-6 grid-rows-6 overflow-hidden border border-white/10 bg-arc-navy">
-                <div className="col-span-4 row-span-4 bg-[linear-gradient(135deg,#d9e6f2_0%,#69839c_48%,#132b46_100%)]" />
-                <div className="col-span-2 row-span-2 border-b border-l border-white/10 bg-arc-signal" />
-                <div className="col-span-2 row-span-2 border-l border-white/10 bg-[#1f5f95]" />
-                <div className="col-span-2 row-span-2 border-t border-white/10 bg-[#203952]" />
-                <div className="col-span-4 row-span-2 border-t border-white/10 bg-[repeating-linear-gradient(135deg,rgba(255,255,255,0.18)_0,rgba(255,255,255,0.18)_1px,transparent_1px,transparent_12px)]" />
+          <div className="mt-12 grid gap-px border border-white/15 bg-white/15 shadow-industrial sm:grid-cols-2 lg:grid-cols-4">
+            {heroSupplySignals.map((item) => (
+              <div key={item} className="bg-arc-midnight/65 p-4 backdrop-blur-sm">
+                <p className="text-xs font-bold uppercase tracking-[0.18em] text-arc-signal">
+                  Supply Scope
+                </p>
+                <p className="mt-2 font-display text-lg font-black text-white">{item}</p>
               </div>
-              <div className="mt-5 grid grid-cols-3 gap-3">
-                {["RFQ", "OEM", "B2B"].map((item) => (
-                  <div key={item} className="border border-white/10 bg-white/10 p-4">
-                    <div className="font-display text-2xl font-black text-white">{item}</div>
-                    <div className="mt-1 text-xs uppercase tracking-[0.14em] text-slate-300">
-                      Supply ready
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
+            ))}
           </div>
         </div>
       </section>
@@ -288,7 +293,26 @@ export default function Home() {
       </section>
 
       <section className="bg-white py-16 sm:py-20">
-        <div className="mx-auto grid max-w-7xl gap-10 px-4 sm:px-6 lg:grid-cols-[0.9fr_1.1fr] lg:px-8">
+        <div className="mx-auto grid max-w-7xl gap-10 px-4 sm:px-6 lg:grid-cols-[1.05fr_0.95fr] lg:items-center lg:px-8">
+          <div className="relative min-h-[320px] overflow-hidden border border-slate-200 bg-arc-midnight shadow-industrial sm:min-h-[420px]">
+            <Image
+              src="/images/site/arcfort-oem-consumables-workbench.png"
+              alt="Welding torch consumables arranged for OEM packaging and quotation review"
+              fill
+              sizes="(min-width: 1024px) 52vw, 100vw"
+              className="object-cover"
+            />
+            <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(7,21,36,0.02),rgba(7,21,36,0.78))]" />
+            <div className="absolute bottom-0 left-0 right-0 p-5 text-white sm:p-6">
+              <p className="text-xs font-bold uppercase tracking-[0.18em] text-arc-signal">
+                OEM Review
+              </p>
+              <p className="mt-2 max-w-xl text-sm leading-6 text-slate-100">
+                Samples, drawings, product photos and packaging requirements help confirm
+                quotation details before production.
+              </p>
+            </div>
+          </div>
           <div>
             <p className="text-sm font-bold uppercase tracking-[0.2em] text-arc-blue">
               OEM Service
