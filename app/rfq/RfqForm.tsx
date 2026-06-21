@@ -84,6 +84,8 @@ export function RfqForm({ initialProduct = "" }: RfqFormProps) {
     ...initialValues,
     productRequirements: initialProduct,
   });
+  const [website, setWebsite] = useState("");
+  const [startedAt] = useState(() => Date.now());
   const [attachments, setAttachments] = useState<File[]>([]);
   const [errors, setErrors] = useState<FormErrors>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -169,6 +171,9 @@ export function RfqForm({ initialProduct = "" }: RfqFormProps) {
     formData.append("productRequirements", values.productRequirements);
     formData.append("quantity", values.quantity);
     formData.append("message", values.message);
+    formData.append("website", website);
+    formData.append("startedAt", String(startedAt));
+    formData.append("sourcePath", window.location.pathname + window.location.search);
 
     for (const file of attachments) {
       formData.append("attachments", file);
@@ -293,6 +298,20 @@ export function RfqForm({ initialProduct = "" }: RfqFormProps) {
 
   return (
     <form onSubmit={handleSubmit} noValidate className="border border-slate-200 bg-white p-6 shadow-sm sm:p-8">
+      <label className="sr-only" htmlFor="website">
+        Website
+      </label>
+      <input
+        id="website"
+        name="website"
+        type="text"
+        value={website}
+        onChange={(event) => setWebsite(event.target.value)}
+        autoComplete="off"
+        tabIndex={-1}
+        className="hidden"
+        aria-hidden="true"
+      />
       <div className="grid gap-5 sm:grid-cols-2">
         <FormField
           id="name"

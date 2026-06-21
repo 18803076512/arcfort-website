@@ -86,7 +86,7 @@ After deployment or local setup:
 | `quantity` | Required quantity or estimated order volume |
 | `message` | Additional packaging, OEM, delivery or sourcing notes |
 | `attachments` | JSON list of uploaded file metadata and storage paths |
-| `source_path` | Source page, currently `/rfq` |
+| `source_path` | Source page path, such as `/rfq` or `/rfq?product=...` |
 | `status` | Inquiry workflow status |
 | `created_at` | Inquiry creation time |
 | `updated_at` | Last update time |
