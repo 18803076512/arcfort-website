@@ -78,12 +78,14 @@ Use `docs/supabase-rfq-setup.md` for the database setup.
 
 After adding Vercel environment variables and redeploying:
 
-1. Open `https://www.arcfortweld.com/rfq`.
-2. Submit a test RFQ with a small PDF or JPG attachment.
-3. Confirm the success message says the RFQ was sent to the sales email.
-4. Check `arcfortweld@outlook.com` for the RFQ email.
-5. Confirm uploaded files appear as email attachments.
-6. If Supabase is configured, confirm the inquiry row appears in `rfq_inquiries`.
+1. Open `https://www.arcfortweld.com/api/rfq/status`.
+2. Confirm `email.ready` is `true` after Resend variables are configured.
+3. Open `https://www.arcfortweld.com/rfq`.
+4. Submit a test RFQ with a small PDF or JPG attachment.
+5. Confirm the success message says the RFQ was sent to the sales email.
+6. Check `arcfortweld@outlook.com` for the RFQ email.
+7. Confirm uploaded files appear as email attachments.
+8. If Supabase is configured, confirm the inquiry row appears in `rfq_inquiries`.
 
 Expected API response after Resend is configured:
 
@@ -100,6 +102,7 @@ Expected API response after Resend is configured:
 
 ## Troubleshooting
 
+- Visit `/api/rfq/status` after every environment variable change to confirm backend readiness.
 - `emailConfigured:false`: `RESEND_API_KEY` or `RFQ_EMAIL_FROM` is missing in Vercel.
 - `emailDelivered:false`: Resend was not configured or rejected the request.
 - `backendConfigured:false`: Neither Resend delivery nor Supabase storage is configured.
