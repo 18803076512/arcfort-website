@@ -49,6 +49,7 @@ Industrial B2B website for ArcFort Weld, operated by Renqiu Ailesen Welding Tech
 - `/privacy` - Privacy notice
 - `/rfq` - Request for quotation
 - `/api/rfq` - RFQ submission endpoint prepared for Supabase and Resend
+- `/api/rfq/status` - RFQ backend configuration status check without exposing secrets
 
 ## Content Architecture
 
@@ -132,6 +133,7 @@ The `/rfq` page includes a responsive inquiry form with:
 - Optional Supabase storage for RFQ records and attachment metadata
 - Optional Resend email notification to the configured business email
 - RFQ file attachments sent with the Resend email when email delivery is configured
+- Backend readiness check at `/api/rfq/status`
 
 Supabase storage and Resend email delivery are optional production services and must be configured
 through environment variables. No real API keys, email passwords, database passwords or private
