@@ -134,6 +134,7 @@ The `/rfq` page includes a responsive inquiry form with:
 - Optional Resend email notification to the configured business email
 - RFQ file attachments sent with the Resend email when email delivery is configured
 - Backend readiness check at `/api/rfq/status`
+- Lightweight spam protection with honeypot, timing checks and source-path tracking
 
 Supabase storage and Resend email delivery are optional production services and must be configured
 through environment variables. No real API keys, email passwords, database passwords or private

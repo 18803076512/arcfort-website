@@ -8,6 +8,8 @@ When a buyer submits `/rfq`, the website should:
 
 - Validate required RFQ fields.
 - Validate upload type, single-file size and total upload size.
+- Reject obvious automated spam submissions without adding friction for normal buyers.
+- Record the source path, referrer and user agent in the sales notification email.
 - Send a sales notification email to `arcfortweld@outlook.com`.
 - Include uploaded RFQ files as email attachments when Resend is configured.
 - Optionally store RFQ records and attachment metadata in Supabase.
@@ -29,6 +31,14 @@ Attachment limits:
 
 The 25 MB total upload limit keeps the RFQ email attachment payload below common email API limits
 after Base64 encoding.
+
+Spam controls:
+
+- Hidden honeypot field.
+- Minimum form completion time of 3 seconds.
+- Maximum form age of 24 hours.
+- Server-side validation mirrors frontend validation.
+- Source path is normalized before storage or email notification.
 
 ## Required Vercel Environment Variables
 
@@ -108,6 +118,8 @@ Expected API response after Resend is configured:
 - `backendConfigured:false`: Neither Resend delivery nor Supabase storage is configured.
 - Attachment error: reduce file count, reduce file size, or send large files directly by email.
 - Sender rejected: verify `arcfortweld.com` in Resend and confirm DNS records in Cloudflare.
+- `Please reload the RFQ form and try again`: the submission was too fast, too old, or missing
+  form timing data. Reload `/rfq` and submit again.
 
 ## Security Rules
 
