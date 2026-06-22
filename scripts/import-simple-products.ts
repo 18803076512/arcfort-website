@@ -182,15 +182,28 @@ function getTypeCode(productName: string) {
   if (normalizedName.includes("gas nozzle")) return "GN";
   if (normalizedName.includes("diffuser")) return "DF";
   if (normalizedName.includes("tip holder")) return "TH";
+  if (normalizedName.includes("torch liner")) return "TL";
+  if (normalizedName.includes("swan neck")) return "SN";
   if (normalizedName.includes("ceramic cup")) return "CC";
   if (normalizedName.includes("collet body")) return "CB";
+  if (normalizedName.includes("collet")) return "CL";
   if (normalizedName.includes("gas lens")) return "GL";
   if (normalizedName.includes("swirl ring")) return "SR";
+  if (normalizedName.includes("shield")) return "SH";
+  if (normalizedName.includes("retaining cap")) return "RC";
+  if (normalizedName.includes("cutting tip")) return "CT";
+  if (normalizedName.includes("torch spacer")) return "TS";
+  if (normalizedName.includes("back cap")) return "BC";
+  if (normalizedName.includes("tungsten electrode")) return "TE";
   if (normalizedName.includes("electrode holder")) return "EH";
   if (normalizedName.includes("electrode")) return "EL";
   if (normalizedName.includes("nozzle")) return "NZ";
   if (normalizedName.includes("ground clamp")) return "GC";
   if (normalizedName.includes("cable connector")) return "CC";
+  if (normalizedName.includes("welding cable")) return "WC";
+  if (normalizedName.includes("welding wire")) return "WW";
+  if (normalizedName.includes("dinse connector")) return "DC";
+  if (normalizedName.includes("welding magnet")) return "WM";
 
   return "AUTO";
 }
@@ -237,6 +250,26 @@ function generateSku(categoryCode: string, typeCode: string, maxByCategoryCode: 
   maxByCategoryCode.set(categoryCode, nextNumber);
 
   return `AF-${categoryCode}-${typeCode}-${String(nextNumber).padStart(4, "0")}`;
+}
+
+function normalizeExistingSku(existingSku: string | undefined, typeCode: string) {
+  if (!existingSku) {
+    return undefined;
+  }
+
+  const match = /^(AF-[A-Z]+)-([A-Z0-9]+)-(\d{4})$/.exec(existingSku);
+
+  if (!match) {
+    return existingSku;
+  }
+
+  const [, prefix, existingTypeCode, sequence] = match;
+
+  if (existingTypeCode === "AUTO" || (existingTypeCode === "EL" && typeCode === "TE")) {
+    return `${prefix}-${typeCode}-${sequence}`;
+  }
+
+  return existingSku;
 }
 
 function createDescription(name: string, category: string) {
@@ -313,9 +346,10 @@ async function convertSimpleRows(simpleRows: SimpleRow[]) {
     const slug = slugify(name);
     const mainImage = normalizeImagePath(simpleRow.image_name, slug);
     const typeCode = getTypeCode(name);
+    const existingSku = normalizeExistingSku(existingSkuBySlug.get(slug), typeCode);
     const row = createEmptyProductRow();
 
-    row.sku = existingSkuBySlug.get(slug) ?? generateSku(categoryInfo.code, typeCode, maxByCategoryCode);
+    row.sku = existingSku ?? generateSku(categoryInfo.code, typeCode, maxByCategoryCode);
     row.name = name;
     row.category = categoryInfo.category;
     row.category_slug = categoryInfo.categorySlug;
