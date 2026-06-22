@@ -6,14 +6,14 @@ industrial B2B welding and cutting product pages, not for retail-style product l
 ## Files
 
 - `data/import/products-simple-30-sku-template.csv` - first 30 SKU worksheet with safe placeholders
-- `data/import/products-simple.csv` - active simple SKU file used by the default simple workflow
+- `data/import/products-simple.csv` - active simple SKU file, currently aligned with this 30 SKU batch
 - `data/import/products.csv` - generated full product CSV
 - `lib/data/products.ts` - website product data generated from the full CSV
 
 ## Recommended Workflow
 
 1. Review `data/import/products-simple-30-sku-template.csv`.
-2. Copy selected rows into `data/import/products-simple.csv`, or replace the active file when ready.
+2. Edit `data/import/products-simple.csv` for the active website SKU list.
 3. Add real product photos to `public/images/products/`.
 4. Keep image filenames consistent with the `image_name` column.
 5. Run a preview before writing generated data:
@@ -56,6 +56,13 @@ node --experimental-strip-types scripts/import-simple-products.ts --input data/i
 
 This command should generate product rows in preview mode only. It does not write files unless
 `--write` is added.
+
+## Current Import Status
+
+The first 30 SKU worksheet has been promoted into the active simple CSV workflow. Importing the
+current active CSV keeps existing generic starter records and adds more specific first-batch SKUs.
+This is intentional: existing product data is retained until it is deliberately archived or replaced
+after real specifications and product photos are confirmed.
 
 ## What You Should Confirm Before Publishing
 

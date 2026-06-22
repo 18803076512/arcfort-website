@@ -63,9 +63,10 @@ Industrial B2B website for ArcFort Weld, operated by Renqiu Ailesen Welding Tech
 - `lib/content/seo.ts` - metadata helper
 - `lib/content/jsonld.ts` - JSON-LD helpers for Product, BreadcrumbList, Organization and FAQ
 
-The website currently includes 6 product categories, 12 starter product pages, 6 application pages,
+The website currently includes 6 product categories, 34 active product records, 6 application pages,
 3 buyer guides and dedicated trust pages for OEM service, quality control, shipping/payment and
-document requests. Missing product data must remain explicit instead of inventing specifications,
+document requests. The product data includes the first 30 SKU batch plus retained generic starter
+records. Missing product data must remain explicit instead of inventing specifications,
 certifications, prices, stock status, factory capacity or customer cases.
 
 ## Product Lines
@@ -85,8 +86,8 @@ generate the full website product CSV automatically.
 Simple CSV files:
 
 - `data/import/products-simple-template.csv` - simple SKU template
-- `data/import/products-simple.csv` - simple working SKU file
-- `data/import/products-simple-30-sku-template.csv` - recommended first 30 SKU worksheet
+- `data/import/products-simple.csv` - active simple working SKU file, currently aligned with the first 30 SKU batch
+- `data/import/products-simple-30-sku-template.csv` - reusable first 30 SKU worksheet
 
 Simple workflow:
 
@@ -98,7 +99,7 @@ Simple workflow:
 6. Run `npm run products:simple:import` to update `lib/data/products.ts`.
 7. Run `npm run build`.
 
-To preview the recommended first 30 SKU worksheet without replacing the active simple CSV:
+To preview the reusable first 30 SKU worksheet without replacing the active simple CSV:
 
 ```bash
 node --experimental-strip-types scripts/import-simple-products.ts --input data/import/products-simple-30-sku-template.csv
@@ -167,6 +168,7 @@ RESEND_API_KEY=
 - `docs/launch-checklist.md` - production launch checklist
 - `docs/arcfort-product-information-table.csv` - 12-product B2B information table with missing data notes
 - `docs/product-image-checklist.csv` - product image status and replacement checklist
+- `docs/first-30-sku-image-checklist.csv` - image checklist for the imported first 30 SKU batch
 - `docs/product-image-shooting-guide.md` - product photo shooting and editing guide
 - `docs/missing-product-data-supplement.csv` - missing data worksheet for product pages
 - `docs/production-missing-data-supplement.md` - production missing data priority and RFQ backend notes

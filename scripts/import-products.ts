@@ -57,10 +57,24 @@ function emptyToUndefined(value: string) {
   return value ? value : undefined;
 }
 
+function getProductId(row: ProductImportRow, existingProduct?: ImportableProduct) {
+  const generatedId = row.sku.toLowerCase();
+
+  if (!existingProduct) {
+    return generatedId;
+  }
+
+  if (/^af-[a-z]+-[a-z0-9]+-\d{4}$/.test(existingProduct.id)) {
+    return generatedId;
+  }
+
+  return existingProduct.id;
+}
+
 function rowToProduct(row: ProductImportRow, existingProduct?: ImportableProduct): ImportableProduct {
   return {
     ...existingProduct,
-    id: existingProduct?.id ?? row.sku.toLowerCase(),
+    id: getProductId(row, existingProduct),
     sku: row.sku,
     name: row.name,
     slug: row.slug,
