@@ -86,6 +86,7 @@ Simple CSV files:
 
 - `data/import/products-simple-template.csv` - simple SKU template
 - `data/import/products-simple.csv` - simple working SKU file
+- `data/import/products-simple-30-sku-template.csv` - recommended first 30 SKU worksheet
 
 Simple workflow:
 
@@ -96,6 +97,12 @@ Simple workflow:
 5. Run `npm run products:check-images`.
 6. Run `npm run products:simple:import` to update `lib/data/products.ts`.
 7. Run `npm run build`.
+
+To preview the recommended first 30 SKU worksheet without replacing the active simple CSV:
+
+```bash
+node --experimental-strip-types scripts/import-simple-products.ts --input data/import/products-simple-30-sku-template.csv
+```
 
 The simple importer can generate safe routing, image-path, SEO and placeholder values. It must not
 generate confirmed OEM numbers, confirmed compatible models, certifications, prices, exact technical
@@ -164,6 +171,7 @@ RESEND_API_KEY=
 - `docs/missing-product-data-supplement.csv` - missing data worksheet for product pages
 - `docs/production-missing-data-supplement.md` - production missing data priority and RFQ backend notes
 - `docs/sku-template-guide.md` - SKU template filling guide and first batch recommendation
+- `docs/first-30-sku-preparation.md` - first 30 SKU worksheet workflow and data confirmation guide
 - `docs/product-data-workflow.md` - product CSV workflow and validation rules
 - `supabase/product-catalog-schema.sql` - future product catalog database schema
 - `docs/supabase-product-catalog-setup.md` - product catalog database setup instructions
