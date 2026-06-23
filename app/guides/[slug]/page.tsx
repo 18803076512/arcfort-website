@@ -18,6 +18,13 @@ type GuideRouteProps = {
   }>;
 };
 
+const rfqReviewPoints = [
+  "Do not guess unknown technical values",
+  "Confirm compatibility by model, drawing, sample or reference part",
+  "Include quantity, packaging and destination country",
+  "Keep OEM, certification and exact rating claims document-based",
+] as const;
+
 export function generateStaticParams() {
   return getAllGuides().map((guide) => ({
     slug: guide.slug,
@@ -78,7 +85,7 @@ export default async function GuideDetailPage({ params }: GuideRouteProps) {
       />
 
       <section className="bg-white py-12 sm:py-16">
-        <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <Breadcrumbs
             items={[
               { label: "Home", href: "/" },
@@ -86,25 +93,68 @@ export default async function GuideDetailPage({ params }: GuideRouteProps) {
               { label: guide.title },
             ]}
           />
-          <p className="mt-8 text-sm font-bold uppercase tracking-[0.2em] text-arc-blue">
-            Buyer Guide
-          </p>
-          <h1 className="mt-3 font-display text-4xl font-black leading-tight text-arc-midnight sm:text-5xl">
-            {guide.title}
-          </h1>
-          <p className="mt-5 text-lg leading-8 text-slate-600">{guide.description}</p>
         </div>
       </section>
 
-      <section className="bg-arc-frost py-14 sm:py-16">
-        <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
+      <section className="bg-arc-midnight text-white">
+        <div className="mx-auto grid max-w-7xl gap-10 px-4 py-14 sm:px-6 sm:py-16 lg:grid-cols-[1fr_0.72fr] lg:items-end lg:px-8">
+          <div>
+            <p className="text-sm font-bold uppercase tracking-[0.2em] text-arc-signal">
+              Buyer Guide
+            </p>
+            <h1 className="mt-4 max-w-4xl font-display text-4xl font-black leading-tight sm:text-5xl lg:text-6xl">
+              {guide.title}
+            </h1>
+            <p className="mt-6 max-w-3xl text-lg leading-8 text-slate-300">
+              {guide.description}
+            </p>
+            <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+              <Link
+                href="#guide-content"
+                className="inline-flex items-center justify-center bg-arc-signal px-6 py-3 text-sm font-bold uppercase tracking-[0.16em] text-arc-midnight transition hover:bg-white"
+              >
+                Read Guide
+              </Link>
+              <Link
+                href="/rfq"
+                className="inline-flex items-center justify-center border border-white/30 px-6 py-3 text-sm font-bold uppercase tracking-[0.16em] text-white transition hover:border-white hover:bg-white/10"
+              >
+                Send RFQ
+              </Link>
+            </div>
+          </div>
+          <aside className="border border-white/10 bg-white/5 p-5 shadow-industrial">
+            <p className="text-xs font-bold uppercase tracking-[0.18em] text-arc-signal">
+              RFQ review principles
+            </p>
+            <div className="mt-5 grid gap-3">
+              {rfqReviewPoints.map((point) => (
+                <div key={point} className="border-l-4 border-arc-signal bg-white/5 p-4">
+                  <p className="text-sm font-semibold leading-6 text-slate-200">{point}</p>
+                </div>
+              ))}
+            </div>
+          </aside>
+        </div>
+      </section>
+
+      <section id="guide-content" className="bg-arc-frost py-14 sm:py-16">
+        <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
           <div className="grid gap-6">
-            {guide.sections.map((section) => (
-              <article key={section.title} className="border border-slate-200 bg-white p-6 shadow-sm">
-                <h2 className="font-display text-2xl font-black text-arc-midnight">
-                  {section.title}
-                </h2>
-                <p className="mt-3 text-sm leading-7 text-slate-600">{section.body}</p>
+            {guide.sections.map((section, index) => (
+              <article
+                key={section.title}
+                className="grid gap-5 border border-slate-200 bg-white p-6 shadow-sm sm:grid-cols-[5rem_1fr] sm:items-start"
+              >
+                <div className="font-display text-4xl font-black text-arc-blue">
+                  {String(index + 1).padStart(2, "0")}
+                </div>
+                <div>
+                  <h2 className="font-display text-2xl font-black text-arc-midnight">
+                    {section.title}
+                  </h2>
+                  <p className="mt-3 text-sm leading-7 text-slate-600">{section.body}</p>
+                </div>
               </article>
             ))}
           </div>
@@ -117,6 +167,9 @@ export default async function GuideDetailPage({ params }: GuideRouteProps) {
             <h2 className="font-display text-2xl font-black text-arc-midnight">
               Related Categories
             </h2>
+            <p className="mt-3 text-sm leading-7 text-slate-600">
+              Use these categories to compare product families before sending an RFQ.
+            </p>
             <div className="mt-5 grid gap-3">
               {relatedCategories.map((category) => (
                 <Link
@@ -130,6 +183,9 @@ export default async function GuideDetailPage({ params }: GuideRouteProps) {
                   <div className="mt-2 font-display text-xl font-black text-arc-midnight">
                     {category.title}
                   </div>
+                  <p className="mt-2 text-sm leading-6 text-slate-600">
+                    {category.description}
+                  </p>
                 </Link>
               ))}
             </div>
@@ -139,6 +195,9 @@ export default async function GuideDetailPage({ params }: GuideRouteProps) {
             <p className="text-sm font-bold uppercase tracking-[0.2em] text-arc-blue">
               Related Products
             </p>
+            <h2 className="mt-3 font-display text-3xl font-black text-arc-midnight">
+              Product pages to compare
+            </h2>
             <div className="mt-5 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
               {relatedProducts.map((item) => (
                 <ProductCard key={item.product.slug} product={item.product} category={item.category} />
@@ -151,7 +210,10 @@ export default async function GuideDetailPage({ params }: GuideRouteProps) {
       <section className="bg-arc-frost py-14 sm:py-16">
         <div className="mx-auto grid max-w-7xl gap-8 px-4 sm:px-6 lg:grid-cols-[1fr_0.95fr] lg:px-8">
           <FaqSection items={guide.faq} title="Guide FAQ" />
-          <RfqCta title="Ready to prepare your RFQ?" />
+          <RfqCta
+            title="Ready to prepare your RFQ?"
+            description="Send product names, photos, drawings, quantity, packaging requirements and destination country. ArcFort Weld will review confirmed details before quotation."
+          />
         </div>
       </section>
     </>
