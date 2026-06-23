@@ -169,6 +169,7 @@ RESEND_API_KEY=
 - `docs/arcfort-product-information-table.csv` - 12-product B2B information table with missing data notes
 - `docs/product-image-checklist.csv` - product image status and replacement checklist
 - `docs/first-30-sku-image-checklist.csv` - image checklist for the imported first 30 SKU batch
+- `docs/site-wide-upgrade-roadmap.md` - phased roadmap for improving page quality, SEO and RFQ conversion
 - `docs/product-image-shooting-guide.md` - product photo shooting and editing guide
 - `docs/missing-product-data-supplement.csv` - missing data worksheet for product pages
 - `docs/production-missing-data-supplement.md` - production missing data priority and RFQ backend notes

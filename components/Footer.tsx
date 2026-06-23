@@ -29,6 +29,42 @@ const buyerServiceLinks = [
 export function Footer() {
   return (
     <footer className="bg-arc-midnight text-white">
+      <div className="border-b border-white/10 bg-[linear-gradient(90deg,rgba(11,35,65,0.96),rgba(15,76,129,0.78))]">
+        <div className="mx-auto grid max-w-7xl gap-6 px-4 py-10 sm:px-6 lg:grid-cols-[1fr_0.72fr] lg:items-center lg:px-8">
+          <div>
+            <p className="text-xs font-bold uppercase tracking-[0.18em] text-arc-signal">
+              Export RFQ Support
+            </p>
+            <h2 className="mt-3 font-display text-3xl font-black leading-tight">
+              Send product lists, drawings or sample photos for quotation review.
+            </h2>
+            <p className="mt-3 max-w-3xl text-sm leading-7 text-slate-300">
+              ArcFort Weld reviews welding and cutting product requirements for distributors,
+              importers, repair workshops and OEM buyers before confirming quotation details.
+            </p>
+          </div>
+          <div className="grid gap-3 sm:grid-cols-3 lg:grid-cols-1">
+            <Link
+              href="/rfq"
+              className="inline-flex min-h-12 items-center justify-center bg-arc-signal px-5 text-xs font-bold uppercase tracking-[0.14em] text-arc-midnight transition hover:bg-white"
+            >
+              Request a Quote
+            </Link>
+            <a
+              href={siteConfig.emailHref}
+              className="inline-flex min-h-12 items-center justify-center border border-white/25 px-5 text-xs font-bold uppercase tracking-[0.14em] text-white transition hover:border-arc-signal hover:text-arc-signal"
+            >
+              Email Sales
+            </a>
+            <a
+              href={siteConfig.whatsappHref}
+              className="inline-flex min-h-12 items-center justify-center border border-white/25 px-5 text-xs font-bold uppercase tracking-[0.14em] text-white transition hover:border-arc-signal hover:text-arc-signal"
+            >
+              WhatsApp
+            </a>
+          </div>
+        </div>
+      </div>
       <div className="mx-auto grid max-w-7xl gap-10 px-4 py-12 sm:px-6 md:grid-cols-2 lg:grid-cols-[1.05fr_0.65fr_0.9fr_0.85fr_0.85fr] lg:px-8">
         <div>
           <div className="font-display text-3xl font-black">{siteConfig.shortName}</div>
@@ -51,14 +87,14 @@ export function Footer() {
                   ),
               )
               .map((link) => (
-              <Link
-                key={link.href}
-                href={link.href}
-                className="text-sm text-slate-300 hover:text-white"
-              >
-                {link.label}
-              </Link>
-            ))}
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  className="text-sm text-slate-300 hover:text-white"
+                >
+                  {link.label}
+                </Link>
+              ))}
           </div>
         </div>
         <div>

@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
+import { BuyerTrustStrip } from "@/components/BuyerTrustStrip";
 import { StructuredData } from "@/components/content/StructuredData";
 import { Footer } from "@/components/Footer";
 import { Header } from "@/components/Header";
@@ -53,6 +54,7 @@ export default function RootLayout({ children }: Readonly<{ children: ReactNode 
       <body className="font-sans antialiased">
         <StructuredData data={organizationJsonLd()} />
         <Header />
+        <BuyerTrustStrip />
         <main>{children}</main>
         <Footer />
         <StickyContactBar />
