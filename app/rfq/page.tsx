@@ -26,6 +26,27 @@ const processSteps = [
   "Discuss MOQ and delivery",
 ];
 
+const submissionChannels = [
+  {
+    title: "Website RFQ Form",
+    description:
+      "Best for structured inquiries with required fields, product requirements and attachments.",
+    href: undefined,
+  },
+  {
+    title: "Business Email",
+    description:
+      "Best for detailed product lists, drawings, quotation sheets and large sourcing discussions.",
+    href: siteConfig.emailHref,
+  },
+  {
+    title: "WhatsApp",
+    description:
+      "Best for quick product photos, model checks, sample discussion and urgent follow-up.",
+    href: siteConfig.whatsappHref,
+  },
+] as const;
+
 const rfqBusinessInfo = [
   { label: "Business Email", value: siteConfig.email, href: siteConfig.emailHref },
   { label: "WhatsApp", value: siteConfig.whatsapp, href: siteConfig.whatsappHref },
@@ -106,6 +127,43 @@ export default async function RfqPage({ searchParams }: RfqPageProps) {
                     <div className="mt-2 font-semibold text-arc-midnight">{step}</div>
                   </div>
                 ))}
+              </div>
+
+              <div className="mt-6 border border-slate-200 bg-white p-5 shadow-sm">
+                <h2 className="font-display text-2xl font-black text-arc-midnight">
+                  Three ways to send an inquiry
+                </h2>
+                <div className="mt-5 grid gap-4">
+                  {submissionChannels.map((channel) => {
+                    const content = (
+                      <>
+                        <div className="text-xs font-bold uppercase tracking-[0.16em] text-arc-blue">
+                          {channel.title}
+                        </div>
+                        <p className="mt-2 text-sm leading-6 text-slate-700">
+                          {channel.description}
+                        </p>
+                      </>
+                    );
+
+                    return channel.href ? (
+                      <a
+                        key={channel.title}
+                        href={channel.href}
+                        className="block border-l-4 border-arc-signal bg-arc-frost p-4 transition hover:bg-white"
+                      >
+                        {content}
+                      </a>
+                    ) : (
+                      <div
+                        key={channel.title}
+                        className="border-l-4 border-arc-signal bg-arc-frost p-4"
+                      >
+                        {content}
+                      </div>
+                    );
+                  })}
+                </div>
               </div>
 
               <div className="mt-6 border border-slate-200 bg-white p-5 shadow-sm">

@@ -13,6 +13,28 @@ export function RfqCta({
   productName,
 }: RfqCtaProps) {
   const rfqHref = productName ? `/rfq?product=${encodeURIComponent(productName)}` : "/rfq";
+  const supportDetails = [
+    {
+      label: "Email",
+      value: siteConfig.email,
+      href: siteConfig.emailHref,
+    },
+    {
+      label: "WhatsApp",
+      value: siteConfig.whatsapp,
+      href: siteConfig.whatsappHref,
+    },
+    {
+      label: "Main Port",
+      value: siteConfig.mainPort,
+      href: undefined,
+    },
+    {
+      label: "RFQ Details",
+      value: "Send drawings, product photos, model references or product lists.",
+      href: undefined,
+    },
+  ] as const;
 
   return (
     <section className="overflow-hidden bg-arc-midnight text-white shadow-industrial">
@@ -39,33 +61,31 @@ export function RfqCta({
             </Link>
           </div>
         </div>
-        <div className="relative mt-6 grid gap-3 border-t border-white/10 pt-5 sm:grid-cols-2 lg:grid-cols-3">
-          <a
-            href={siteConfig.emailHref}
-            className="border border-white/10 bg-white/5 p-4 text-sm leading-6 text-slate-200 transition hover:border-arc-signal hover:text-white"
-          >
-            <span className="block text-xs font-bold uppercase tracking-[0.16em] text-arc-signal">
-              Email
-            </span>
-            <span className="mt-1 block font-semibold">{siteConfig.email}</span>
-          </a>
-          <a
-            href={siteConfig.whatsappHref}
-            className="border border-white/10 bg-white/5 p-4 text-sm leading-6 text-slate-200 transition hover:border-arc-signal hover:text-white"
-          >
-            <span className="block text-xs font-bold uppercase tracking-[0.16em] text-arc-signal">
-              WhatsApp
-            </span>
-            <span className="mt-1 block font-semibold">{siteConfig.whatsapp}</span>
-          </a>
-          <div className="border border-white/10 bg-white/5 p-4 text-sm leading-6 text-slate-200 sm:col-span-2 lg:col-span-1">
-            <span className="block text-xs font-bold uppercase tracking-[0.16em] text-arc-signal">
-              Response Details
-            </span>
-            <span className="mt-1 block">
-              Send drawings, product photos, model references or product lists for quotation review.
-            </span>
-          </div>
+        <div className="relative mt-6 grid gap-3 border-t border-white/10 pt-5 sm:grid-cols-2 lg:grid-cols-4">
+          {supportDetails.map((item) =>
+            item.href ? (
+              <a
+                key={item.label}
+                href={item.href}
+                className="border border-white/10 bg-white/5 p-4 text-sm leading-6 text-slate-200 transition hover:border-arc-signal hover:text-white"
+              >
+                <span className="block text-xs font-bold uppercase tracking-[0.16em] text-arc-signal">
+                  {item.label}
+                </span>
+                <span className="mt-1 block font-semibold">{item.value}</span>
+              </a>
+            ) : (
+              <div
+                key={item.label}
+                className="border border-white/10 bg-white/5 p-4 text-sm leading-6 text-slate-200"
+              >
+                <span className="block text-xs font-bold uppercase tracking-[0.16em] text-arc-signal">
+                  {item.label}
+                </span>
+                <span className="mt-1 block">{item.value}</span>
+              </div>
+            ),
+          )}
         </div>
       </div>
     </section>
