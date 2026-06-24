@@ -41,6 +41,10 @@ generation.
 6. Ask for a plan before implementing large changes.
 7. Run `npm run products:validate` before importing SKU CSV data.
 8. Run `npm run products:check-images` before importing or publishing product images.
+9. For RFQ changes, check `/api/rfq/status` after deployment and report whether `email.ready` is
+   true. If it is false, clearly state that automated email delivery is not production-ready yet.
+10. Do not treat the RFQ form as a complete lead channel until a real test inquiry reaches the
+    configured sales email.
 
 ## SKU Import Rules
 

@@ -148,6 +148,10 @@ Supabase storage and Resend email delivery are optional production services and 
 through environment variables. No real API keys, email passwords, database passwords or private
 tokens are committed.
 
+For production launch, follow `docs/rfq-production-readiness.md` and confirm
+`https://arcfortweld.com/api/rfq/status` reports `email.ready:true` before treating the RFQ form as
+a complete automated lead channel.
+
 Environment variables:
 
 ```bash
@@ -165,6 +169,7 @@ RESEND_API_KEY=
 - `supabase/rfq-schema.sql` - RFQ table and private attachment bucket setup
 - `docs/supabase-rfq-setup.md` - Supabase, Vercel and testing instructions
 - `docs/rfq-email-delivery.md` - Resend email delivery setup for RFQ notifications and attachments
+- `docs/rfq-production-readiness.md` - production RFQ email setup, Vercel environment variables and live test checklist
 - `docs/launch-checklist.md` - production launch checklist
 - `docs/arcfort-product-information-table.csv` - 12-product B2B information table with missing data notes
 - `docs/product-image-checklist.csv` - product image status and replacement checklist
