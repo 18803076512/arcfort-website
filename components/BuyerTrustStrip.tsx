@@ -22,7 +22,7 @@ export function BuyerTrustStrip() {
             Industrial B2B Supply
           </p>
           <p className="mt-1 text-sm leading-6 text-slate-700">
-            {productCount} RFQ-ready product records across {categoryCount} categories for welding
+            {productCount} sourcing items across {categoryCount} product categories for welding
             and cutting buyers.
           </p>
         </div>

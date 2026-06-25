@@ -23,7 +23,7 @@ export function CategoryPageTemplate({
   relatedCategories,
 }: CategoryPageTemplateProps) {
   const categoryStats = [
-    { label: "Product records", value: `${products.length}` },
+    { label: "Products", value: `${products.length}` },
     { label: "OEM support", value: "Available" },
     { label: "Trial orders", value: "Accepted" },
   ] as const;
@@ -111,7 +111,7 @@ export function CategoryPageTemplate({
                 {category.shortTitle} available for RFQ review
               </h2>
               <p className="mt-4 max-w-3xl text-sm leading-7 text-slate-600">
-                Product records show current sourcing references. Missing dimensions or
+                Product listings show current sourcing references. Missing dimensions or
                 compatibility fields should be confirmed by sample, drawing or model number.
               </p>
             </div>
