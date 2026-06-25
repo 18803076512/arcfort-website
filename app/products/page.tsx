@@ -140,7 +140,7 @@ export default function ProductsPage() {
 
           <aside className="border border-white/10 bg-white/5 p-5 shadow-industrial">
             <p className="text-xs font-bold uppercase tracking-[0.18em] text-arc-signal">
-              RFQ-ready scope
+              Current Supply Scope
             </p>
             <div className="mt-5 grid grid-cols-2 gap-px border border-white/10 bg-white/10">
               <div className="bg-arc-midnight p-4">
@@ -156,7 +156,7 @@ export default function ProductsPage() {
                   {productCount}
                 </div>
                 <div className="mt-1 text-xs font-bold uppercase tracking-[0.14em] text-slate-300">
-                  Product records
+                  Product items
                 </div>
               </div>
             </div>
@@ -323,10 +323,10 @@ export default function ProductsPage() {
           <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
             <div>
               <p className="text-sm font-bold uppercase tracking-[0.2em] text-arc-blue">
-                Product Records
+                Available Product Lines
               </p>
               <h2 className="mt-3 font-display text-3xl font-black text-arc-midnight">
-                Current welding and cutting products for RFQ review
+                Welding and cutting products prepared for RFQ review
               </h2>
               <p className="mt-4 max-w-3xl text-sm leading-7 text-slate-600">
                 Product pages use confirmed fields where available and keep unconfirmed technical

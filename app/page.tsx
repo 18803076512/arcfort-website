@@ -253,7 +253,7 @@ export default function Home() {
       <section className="bg-white py-16 sm:py-20">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <p className="text-sm font-bold uppercase tracking-[0.2em] text-arc-blue">
-            Hot Products
+            Featured Products
           </p>
           <h2 className="mt-3 font-display text-3xl font-black text-arc-midnight sm:text-4xl">
             Featured Welding & Cutting Products
