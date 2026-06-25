@@ -8,6 +8,7 @@ import { ProductVisual } from "@/components/content/ProductVisual";
 import { RfqCta } from "@/components/content/RfqCta";
 import { SpecificationTable } from "@/components/content/SpecificationTable";
 import { displayConfirmedValue, isLowSignalSpecificationValue } from "@/lib/content/display";
+import { hasPublicProductImage } from "@/lib/content/product-images";
 import { siteConfig } from "@/lib/content/site";
 
 type RelatedProduct = {
@@ -52,6 +53,52 @@ const confirmationWorkflow = [
   },
 ] as const;
 
+function getTechnicalDataStatusLabel(product: Product) {
+  if (product.dataStatus === "confirmed") {
+    return "Published fields confirmed";
+  }
+
+  if (product.dataStatus === "pending") {
+    return "Final details reviewed before quotation";
+  }
+
+  return "Buyer-safe data, details confirmed by RFQ";
+}
+
+function getImageStatusLabel(product: Product) {
+  if (hasPublicProductImage(product.mainImage)) {
+    return product.imageStatus === "own_photo"
+      ? "Product photo available"
+      : "Representative product image available";
+  }
+
+  return "Product photo available during RFQ review";
+}
+
+function getCompatibilityStatusLabel(product: Product) {
+  if (product.compatibilityStatus === "confirmed") {
+    return "Compatibility confirmed for published references";
+  }
+
+  if (product.compatibilityStatus === "reference_only") {
+    return "Reference only, confirm by model number";
+  }
+
+  return "Confirm by sample, drawing or model reference";
+}
+
+function getOemStatusLabel(product: Product) {
+  if (product.oemStatus === "confirmed") {
+    return "OEM support available for this item";
+  }
+
+  if (product.oemStatus === "not_applicable") {
+    return "OEM request reviewed when applicable";
+  }
+
+  return "OEM details reviewed after quantity and artwork";
+}
+
 export function ProductDetailTemplate({
   product,
   category,
@@ -86,6 +133,28 @@ export function ProductDetailTemplate({
     { label: "Payment", value: siteConfig.paymentTerms },
     { label: "MOQ Policy", value: siteConfig.moqPolicy },
     { label: "Regular Lead Time", value: siteConfig.leadTime },
+  ];
+  const buyerConfirmationSignals = [
+    {
+      label: "Technical Data",
+      value: getTechnicalDataStatusLabel(product),
+      note: "Unconfirmed dimensions, material grades and OEM numbers are not published as final specifications.",
+    },
+    {
+      label: "Product Image",
+      value: getImageStatusLabel(product),
+      note: "Exact product photos can be checked with the requested model, drawing or reference part.",
+    },
+    {
+      label: "Compatibility",
+      value: getCompatibilityStatusLabel(product),
+      note: "Torch model, machine model, drawing, sample or reference part helps avoid wrong consumables.",
+    },
+    {
+      label: "OEM Service",
+      value: getOemStatusLabel(product),
+      note: "Logo, label and carton design are reviewed with order quantity and packaging requirements.",
+    },
   ];
 
   return (
@@ -175,6 +244,27 @@ export function ProductDetailTemplate({
                   {productInquiryChecklist.map((item) => (
                     <div key={item} className="border-l-4 border-arc-signal bg-white p-3">
                       <p className="text-sm font-semibold leading-6 text-slate-700">{item}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              <div className="mt-6 border border-slate-200 bg-white p-5 shadow-sm">
+                <h2 className="text-xs font-bold uppercase tracking-[0.16em] text-arc-blue">
+                  Buyer confirmation status
+                </h2>
+                <div className="mt-4 grid gap-3 sm:grid-cols-2">
+                  {buyerConfirmationSignals.map((item) => (
+                    <div key={item.label} className="border-l-4 border-arc-signal bg-arc-frost p-4">
+                      <div className="text-[11px] font-bold uppercase tracking-[0.16em] text-slate-500">
+                        {item.label}
+                      </div>
+                      <p className="mt-2 text-sm font-black leading-6 text-arc-midnight">
+                        {item.value}
+                      </p>
+                      <p className="mt-2 text-xs font-semibold leading-5 text-slate-600">
+                        {item.note}
+                      </p>
                     </div>
                   ))}
                 </div>

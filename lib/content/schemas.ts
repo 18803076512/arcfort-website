@@ -6,6 +6,14 @@ export type WeldingProcess = "MIG/MAG" | "TIG" | "MMA" | "Plasma Cutting" | "Gen
 
 export type ProductKind = "welding-consumable" | "welding-equipment";
 
+export type ProductDataStatus = "confirmed" | "pending" | "needs_review";
+
+export type ProductImageStatus = "own_photo" | "supplier_photo" | "placeholder" | "needs_photo";
+
+export type ProductCompatibilityStatus = "confirmed" | "reference_only" | "unverified";
+
+export type ProductOemStatus = "confirmed" | "unknown" | "not_applicable";
+
 export type FaqItem = {
   question: string;
   answer: string;
@@ -69,6 +77,10 @@ export type BaseProduct = {
   faq: FaqItem[];
   relatedProductSlugs: string[];
   missingFields: string[];
+  dataStatus?: ProductDataStatus;
+  imageStatus?: ProductImageStatus;
+  compatibilityStatus?: ProductCompatibilityStatus;
+  oemStatus?: ProductOemStatus;
 };
 
 export type WeldingConsumableProduct = BaseProduct & {

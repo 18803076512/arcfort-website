@@ -142,6 +142,10 @@ function toProduct(product: ArcfortProductData): Product {
     faq: createFaq(product),
     relatedProductSlugs: createRelatedProductSlugs(product),
     missingFields: createMissingFields(product),
+    dataStatus: product.dataStatus,
+    imageStatus: product.imageStatus,
+    compatibilityStatus: product.compatibilityStatus,
+    oemStatus: product.oemStatus,
   };
 }
 
