@@ -19,6 +19,9 @@ export function ProductVisual({
   const visualTitle = compact ? "Welding & Cutting Consumable" : title;
   const visualCategory = compact ? "RFQ" : category;
   const shouldRenderImage = hasPublicProductImage(mainImage);
+  const imageNote = compact
+    ? "Photo on request"
+    : "Product photo, drawing or model reference can be reviewed before quotation.";
 
   return (
     <div
@@ -65,6 +68,11 @@ export function ProductVisual({
           <p className="mt-4 max-w-sm font-display text-xl font-black leading-tight sm:text-2xl">
             {visualTitle}
           </p>
+          {!shouldRenderImage ? (
+            <p className="mt-3 max-w-sm text-sm font-semibold leading-6 text-slate-200">
+              {imageNote}
+            </p>
+          ) : null}
         </div>
       </div>
     </div>
