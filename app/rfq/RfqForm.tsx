@@ -1,6 +1,7 @@
 "use client";
 
 import { type ChangeEvent, type FormEvent, useMemo, useState } from "react";
+import { trackAnalyticsEvent } from "@/lib/analytics-events";
 import { siteConfig } from "@/lib/content/site";
 
 type RfqFormValues = {
@@ -198,6 +199,12 @@ export function RfqForm({ initialProduct = "" }: RfqFormProps) {
 
       setSubmissionResult(result);
       setIsSubmitted(true);
+      trackAnalyticsEvent("rfq_submit_success", {
+        email_delivered: Boolean(result.emailDelivered),
+        buyer_confirmation_delivered: Boolean(result.buyerConfirmationDelivered),
+        attachment_count: result.emailAttachmentCount ?? 0,
+        backend_configured: Boolean(result.backendConfigured),
+      });
     } catch {
       setErrors({
         productRequirements: "RFQ submission failed. Please try again.",

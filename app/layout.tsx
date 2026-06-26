@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
 import { BuyerTrustStrip } from "@/components/BuyerTrustStrip";
+import { AnalyticsTracker } from "@/components/AnalyticsTracker";
 import { StructuredData } from "@/components/content/StructuredData";
 import { Footer } from "@/components/Footer";
 import { Header } from "@/components/Header";
@@ -46,6 +47,9 @@ export const metadata: Metadata = {
     description:
       "Industrial welding and cutting solutions for global B2B buyers and RFQ programs.",
   },
+  verification: {
+    google: process.env.GOOGLE_SITE_VERIFICATION || undefined,
+  },
 };
 
 export default function RootLayout({ children }: Readonly<{ children: ReactNode }>) {
@@ -53,6 +57,7 @@ export default function RootLayout({ children }: Readonly<{ children: ReactNode 
     <html lang="en">
       <body className="font-sans antialiased">
         <StructuredData data={organizationJsonLd()} />
+        <AnalyticsTracker />
         <Header />
         <BuyerTrustStrip />
         <main>{children}</main>

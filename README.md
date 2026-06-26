@@ -166,7 +166,31 @@ SUPABASE_RFQ_BUCKET=rfq-attachments
 RFQ_EMAIL_RECIPIENT=arcfortweld@outlook.com
 RFQ_EMAIL_FROM=
 RESEND_API_KEY=
+GOOGLE_SITE_VERIFICATION=
+NEXT_PUBLIC_GA_ID=
 ```
+
+## Search Console and Analytics
+
+The site supports Google Search Console verification and GA4 tracking through environment variables.
+No analytics IDs are hardcoded.
+
+Configure in Vercel only after the accounts are ready:
+
+```bash
+GOOGLE_SITE_VERIFICATION=your-google-site-verification-token
+NEXT_PUBLIC_GA_ID=G-XXXXXXXXXX
+```
+
+When `NEXT_PUBLIC_GA_ID` is configured, the site tracks:
+
+- Page views through GA4.
+- RFQ success events: `rfq_submit_success`.
+- Email link clicks: `contact_email_click`.
+- WhatsApp link clicks: `contact_whatsapp_click`.
+- RFQ link clicks: `rfq_link_click`.
+
+Submit `https://arcfortweld.com/sitemap.xml` in Google Search Console after domain verification.
 
 ## Useful Documents
 
@@ -226,5 +250,6 @@ npm run products:report
 - No real API keys or secrets are included.
 - `app/sitemap.ts` and `app/robots.ts` are included for search engine discovery.
 - Product and category pages include SEO metadata and JSON-LD structured data where appropriate.
+- Analytics and Search Console verification are environment-driven and should not be hardcoded.
 - Confirm real product images, final SKU codes and exact product specifications before scaling
   product pages.
