@@ -14,6 +14,7 @@
     "products:validate": "node --experimental-strip-types scripts/validate-products.ts",
     "products:import": "node --experimental-strip-types scripts/import-products.ts",
     "products:check-images": "node --experimental-strip-types scripts/check-product-images.ts",
+    "products:image-tasks": "node --experimental-strip-types scripts/generate-product-image-tasks.ts",
     "products:report": "node --experimental-strip-types scripts/report-product-readiness.ts",
     "products:simple:preview": "node --experimental-strip-types scripts/import-simple-products.ts",
     "products:simple:generate": "node --experimental-strip-types scripts/import-simple-products.ts --write",
