@@ -99,7 +99,8 @@ Simple workflow:
 6. Run `npm run products:image-tasks` when product photos are missing.
 7. Run `npm run products:report` to generate the internal product readiness checklist.
 8. Run `npm run products:simple:import` to update `lib/data/products.ts`.
-9. Run `npm run build`.
+9. Run `npm run downloads:generate` to refresh public buyer download files.
+10. Run `npm run build`.
 
 To preview the reusable first 30 SKU worksheet without replacing the active simple CSV:
 
@@ -121,8 +122,9 @@ Full CSV workflow:
 6. Run `npm run products:image-tasks` when product photos are missing.
 7. Run `npm run products:report`.
 8. Run `npm run products:import`.
-9. Run `npm run build`.
-10. Submit a pull request.
+9. Run `npm run downloads:generate`.
+10. Run `npm run build`.
+11. Submit a pull request.
 
 Use these values when data is uncertain:
 
@@ -192,6 +194,26 @@ When `NEXT_PUBLIC_GA_ID` is configured, the site tracks:
 
 Submit `https://arcfortweld.com/sitemap.xml` in Google Search Console after domain verification.
 
+## Buyer Download Files
+
+The `/downloads` page provides buyer-facing CSV files that help distributors and importers prepare
+RFQ information.
+
+Generated public files:
+
+- `public/downloads/arcfort-public-product-list.csv` - active product list with SKU, product URL
+  and RFQ-ready sourcing notes
+- `public/downloads/arcfort-rfq-template.csv` - buyer worksheet for product list quotation requests
+
+Refresh the files after SKU updates:
+
+```bash
+npm run downloads:generate
+```
+
+The public product list must not expose internal notes, private supplier references, prices,
+unconfirmed certifications or hidden SKU workflow fields.
+
 ## Useful Documents
 
 - `supabase/rfq-schema.sql` - RFQ table and private attachment bucket setup
@@ -243,6 +265,7 @@ npm run products:validate
 npm run products:check-images
 npm run products:image-tasks
 npm run products:report
+npm run downloads:generate
 ```
 
 ## Notes

@@ -30,6 +30,25 @@ const documentTypes = [
   },
 ] as const;
 
+const downloadFiles = [
+  {
+    title: "Public Product List",
+    type: "CSV",
+    href: "/downloads/arcfort-public-product-list.csv",
+    description:
+      "Download the current ArcFort Weld product list with SKU, category, product URL and RFQ-ready sourcing notes.",
+    note: "Use this file to shortlist products before sending quantity, model and packaging details.",
+  },
+  {
+    title: "RFQ Product List Worksheet",
+    type: "CSV",
+    href: "/downloads/arcfort-rfq-template.csv",
+    description:
+      "Download a buyer worksheet for organizing product name, reference part, quantity, material, packaging and destination details.",
+    note: "Fill this worksheet and upload it through the RFQ form for faster quotation review.",
+  },
+] as const;
+
 const quickLinks = [
   { href: "/products", label: "Browse Products" },
   { href: "/rfq", label: "Upload Product List" },
@@ -52,6 +71,11 @@ const faq = [
     question: "What file types can buyers send for RFQ?",
     answer:
       "The RFQ form accepts PDF, Excel, CSV, Word, JPG and PNG files. Large files can also be sent by email or WhatsApp after initial contact.",
+  },
+  {
+    question: "Can buyers download a product list before sending an inquiry?",
+    answer:
+      "Yes. The download center includes a public CSV product list and an RFQ worksheet. Buyers can fill the worksheet and upload it through the RFQ form.",
   },
 ] as const;
 
@@ -113,6 +137,45 @@ export default function DownloadsPage() {
 
       <section className="bg-arc-frost py-14 sm:py-16">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="mb-8 grid gap-5 lg:grid-cols-[0.8fr_1.2fr] lg:items-end">
+            <div>
+              <p className="text-sm font-bold uppercase tracking-[0.2em] text-arc-blue">
+                Buyer Downloads
+              </p>
+              <h2 className="mt-3 font-display text-3xl font-black text-arc-midnight">
+                Download working files for faster quotation review.
+              </h2>
+            </div>
+            <p className="text-sm leading-7 text-slate-600">
+              These files are prepared for distributors, importers and repair workshops that need
+              to organize multiple welding consumables, torch parts or cutting parts before RFQ.
+            </p>
+          </div>
+          <div className="mb-10 grid gap-5 md:grid-cols-2">
+            {downloadFiles.map((file) => (
+              <article key={file.href} className="border border-slate-200 bg-white p-6 shadow-sm">
+                <div className="flex items-start justify-between gap-4">
+                  <h2 className="font-display text-2xl font-black text-arc-midnight">
+                    {file.title}
+                  </h2>
+                  <span className="bg-arc-midnight px-3 py-1 text-xs font-black uppercase tracking-[0.14em] text-white">
+                    {file.type}
+                  </span>
+                </div>
+                <p className="mt-3 text-sm leading-7 text-slate-600">{file.description}</p>
+                <p className="mt-3 border-l-4 border-arc-signal bg-arc-frost p-3 text-xs font-semibold leading-5 text-slate-700">
+                  {file.note}
+                </p>
+                <a
+                  href={file.href}
+                  download
+                  className="mt-5 inline-flex bg-arc-blue px-5 py-3 text-sm font-bold uppercase tracking-[0.14em] text-white transition hover:bg-arc-midnight"
+                >
+                  Download {file.type}
+                </a>
+              </article>
+            ))}
+          </div>
           <div className="grid gap-5 md:grid-cols-2">
             {documentTypes.map((item) => (
               <article key={item.title} className="border border-slate-200 bg-white p-6 shadow-sm">
