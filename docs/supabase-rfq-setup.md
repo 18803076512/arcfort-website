@@ -36,7 +36,7 @@ This creates:
 
 - `public.rfq_inquiries`
 - Private storage bucket `rfq-attachments`
-- Indexes for status, country and created date
+- Indexes for status, country, created date and UTM source/campaign
 - An `updated_at` trigger
 - RLS enabled on the inquiry table
 
@@ -87,6 +87,13 @@ After deployment or local setup:
 | `message` | Additional packaging, OEM, delivery or sourcing notes |
 | `attachments` | JSON list of uploaded file metadata and storage paths |
 | `source_path` | Source page path, such as `/rfq` or `/rfq?product=...` |
+| `landing_page` | First page captured in the buyer browser session |
+| `referrer` | Browser referrer captured before RFQ submission |
+| `utm_source` | Campaign source, such as Google or newsletter, when provided |
+| `utm_medium` | Campaign medium, such as organic, cpc or email, when provided |
+| `utm_campaign` | Campaign name when provided |
+| `utm_term` | Campaign keyword or term when provided |
+| `utm_content` | Campaign content or variation when provided |
 | `status` | Inquiry workflow status |
 | `created_at` | Inquiry creation time |
 | `updated_at` | Last update time |

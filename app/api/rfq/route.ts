@@ -1,5 +1,10 @@
 import { NextResponse } from "next/server";
 import { siteConfig } from "@/lib/content/site";
+import {
+  emptySourceAttribution,
+  sourceAttributionFields,
+  type SourceAttribution,
+} from "@/lib/source-attribution";
 
 export const runtime = "nodejs";
 
@@ -13,6 +18,7 @@ type RfqPayload = {
   quantity: string;
   message: string;
   sourcePath: string;
+  sourceAttribution: SourceAttribution;
 };
 
 type AttachmentRecord = {
@@ -96,6 +102,24 @@ function normalizeSourcePath(sourcePath: string) {
   return sourcePath;
 }
 
+function cleanSourceValue(value: string) {
+  return value.replace(/[\r\n\t]+/g, " ").trim().slice(0, 240);
+}
+
+function cleanSourceAttribution(formData: FormData): SourceAttribution {
+  const sourceAttribution = emptySourceAttribution();
+
+  for (const field of sourceAttributionFields) {
+    sourceAttribution[field] = cleanSourceValue(cleanFormValue(formData, field));
+  }
+
+  return sourceAttribution;
+}
+
+function getSourceAttributionValue(payload: RfqPayload, field: keyof SourceAttribution) {
+  return payload.sourceAttribution[field] || null;
+}
+
 function validateStartedAt(startedAt: string) {
   const timestamp = Number(startedAt);
 
@@ -172,6 +196,13 @@ async function insertSupabaseInquiry(payload: RfqPayload, attachments: Attachmen
       message: payload.message,
       attachments,
       source_path: payload.sourcePath,
+      landing_page: getSourceAttributionValue(payload, "landingPage"),
+      referrer: getSourceAttributionValue(payload, "referrer"),
+      utm_source: getSourceAttributionValue(payload, "utmSource"),
+      utm_medium: getSourceAttributionValue(payload, "utmMedium"),
+      utm_campaign: getSourceAttributionValue(payload, "utmCampaign"),
+      utm_term: getSourceAttributionValue(payload, "utmTerm"),
+      utm_content: getSourceAttributionValue(payload, "utmContent"),
       status: "new",
     }),
   });
@@ -219,6 +250,13 @@ function buildInquiryEmailText(
     "",
     "Source:",
     `Path: ${payload.sourcePath}`,
+    `Landing Page: ${payload.sourceAttribution.landingPage || "Not captured"}`,
+    `Browser Referrer: ${payload.sourceAttribution.referrer || "Not captured"}`,
+    `UTM Source: ${payload.sourceAttribution.utmSource || "Not captured"}`,
+    `UTM Medium: ${payload.sourceAttribution.utmMedium || "Not captured"}`,
+    `UTM Campaign: ${payload.sourceAttribution.utmCampaign || "Not captured"}`,
+    `UTM Term: ${payload.sourceAttribution.utmTerm || "Not captured"}`,
+    `UTM Content: ${payload.sourceAttribution.utmContent || "Not captured"}`,
     `Referrer: ${requestMeta.referrer}`,
     `User Agent: ${requestMeta.userAgent}`,
   ].join("\n");
@@ -378,6 +416,7 @@ export async function POST(request: Request) {
       quantity: cleanField(formData, "quantity"),
       message: cleanField(formData, "message"),
       sourcePath: normalizeSourcePath(cleanField(formData, "sourcePath")),
+      sourceAttribution: cleanSourceAttribution(formData),
     };
     const files = getAttachments(formData);
     const honeypot = cleanFormValue(formData, "website");

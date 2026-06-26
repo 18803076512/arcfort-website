@@ -3,6 +3,12 @@
 import { type ChangeEvent, type FormEvent, useMemo, useState } from "react";
 import { trackAnalyticsEvent } from "@/lib/analytics-events";
 import { siteConfig } from "@/lib/content/site";
+import {
+  emptySourceAttribution,
+  sourceAttributionFields,
+  sourceAttributionStorageKey,
+  type SourceAttribution,
+} from "@/lib/source-attribution";
 
 type RfqFormValues = {
   name: string;
@@ -75,6 +81,20 @@ function createFileSummary(files: File[]) {
 
 function getTotalFileSize(files: File[]) {
   return files.reduce((total, file) => total + file.size, 0);
+}
+
+function getStoredSourceAttribution(): SourceAttribution {
+  try {
+    const rawValue = window.sessionStorage.getItem(sourceAttributionStorageKey);
+    const parsedValue = rawValue ? (JSON.parse(rawValue) as Partial<SourceAttribution>) : {};
+
+    return {
+      ...emptySourceAttribution(),
+      ...parsedValue,
+    };
+  } catch {
+    return emptySourceAttribution();
+  }
 }
 
 type RfqFormProps = {
@@ -165,6 +185,8 @@ export function RfqForm({ initialProduct = "" }: RfqFormProps) {
     setIsSubmitting(true);
 
     const formData = new FormData();
+    const sourceAttribution = getStoredSourceAttribution();
+
     formData.append("name", values.name);
     formData.append("company", values.company);
     formData.append("email", values.email);
@@ -176,6 +198,10 @@ export function RfqForm({ initialProduct = "" }: RfqFormProps) {
     formData.append("website", website);
     formData.append("startedAt", String(startedAt));
     formData.append("sourcePath", window.location.pathname + window.location.search);
+
+    for (const field of sourceAttributionFields) {
+      formData.append(field, sourceAttribution[field]);
+    }
 
     for (const file of attachments) {
       formData.append("attachments", file);
@@ -204,6 +230,9 @@ export function RfqForm({ initialProduct = "" }: RfqFormProps) {
         buyer_confirmation_delivered: Boolean(result.buyerConfirmationDelivered),
         attachment_count: result.emailAttachmentCount ?? 0,
         backend_configured: Boolean(result.backendConfigured),
+        utm_source: sourceAttribution.utmSource || undefined,
+        utm_medium: sourceAttribution.utmMedium || undefined,
+        utm_campaign: sourceAttribution.utmCampaign || undefined,
       });
     } catch {
       setErrors({

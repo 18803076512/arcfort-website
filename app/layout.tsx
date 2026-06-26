@@ -5,6 +5,7 @@ import { AnalyticsTracker } from "@/components/AnalyticsTracker";
 import { StructuredData } from "@/components/content/StructuredData";
 import { Footer } from "@/components/Footer";
 import { Header } from "@/components/Header";
+import { SourceAttributionTracker } from "@/components/SourceAttributionTracker";
 import { StickyContactBar } from "@/components/StickyContactBar";
 import { organizationJsonLd } from "@/lib/content/jsonld";
 import { siteConfig } from "@/lib/content/site";
@@ -57,6 +58,7 @@ export default function RootLayout({ children }: Readonly<{ children: ReactNode 
     <html lang="en">
       <body className="font-sans antialiased">
         <StructuredData data={organizationJsonLd()} />
+        <SourceAttributionTracker />
         <AnalyticsTracker />
         <Header />
         <BuyerTrustStrip />
