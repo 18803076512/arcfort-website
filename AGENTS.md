@@ -48,6 +48,8 @@ generation.
    true. If it is false, clearly state that automated email delivery is not production-ready yet.
 12. Do not treat the RFQ form as a complete lead channel until a real test inquiry reaches the
     configured sales email.
+13. Do not hardcode Google Analytics IDs, Search Console verification tokens or marketing pixels;
+    use environment variables.
 
 ## SKU Import Rules
 

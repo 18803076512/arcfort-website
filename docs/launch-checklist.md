@@ -54,8 +54,18 @@ Use this checklist before switching the website to production traffic.
 - Confirm product category metadata.
 - Confirm product detail metadata.
 - Confirm application and guide metadata.
+- Configure `GOOGLE_SITE_VERIFICATION` in Vercel after Google Search Console provides the token.
 - Submit sitemap in Google Search Console after launch.
 - Confirm no invented certifications, prices, stock status, factory capacity or customer cases are published.
+
+## Analytics and Conversion Tracking
+
+- Create a GA4 property for `arcfortweld.com`.
+- Configure `NEXT_PUBLIC_GA_ID` in Vercel.
+- Confirm page views appear in GA4 Realtime.
+- Submit a test RFQ and confirm `rfq_submit_success` appears in GA4 Realtime or DebugView.
+- Click Email, WhatsApp and RFQ links and confirm click events are tracked.
+- Do not hardcode analytics IDs in repository files.
 
 ## Post-Launch
 
