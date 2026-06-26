@@ -20,7 +20,8 @@ Use this checklist before switching the website to production traffic.
 - Main port: Tianjin Xingang Port / Tianjin Port, China.
 - Alternative ports: Qingdao Port or Ningbo Port are available upon request.
 - Real product images: pending.
-- Product catalog PDF: pending.
+- Public product list CSV: available in `/downloads`.
+- Product catalog PDF: pending until real product images and confirmed specifications are ready.
 - Real SKU data: pending.
 - Product specifications: pending by product.
 - MOQ and lead time by product: covered by policy, pending by exact product and order quantity.
@@ -72,5 +73,6 @@ Use this checklist before switching the website to production traffic.
 - Review confirmed business data before major website updates.
 - Add real product photos.
 - Upload official PDF catalog.
+- Refresh public download files with `npm run downloads:generate` after SKU updates.
 - Import confirmed SKU data using `docs/product-sku-template.csv`.
 - Add analytics only after privacy requirements are reviewed.

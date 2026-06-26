@@ -19,6 +19,7 @@
     "products:simple:preview": "node --experimental-strip-types scripts/import-simple-products.ts",
     "products:simple:generate": "node --experimental-strip-types scripts/import-simple-products.ts --write",
     "products:simple:import": "node --experimental-strip-types scripts/import-simple-products.ts --write --import",
+    "downloads:generate": "node --experimental-strip-types scripts/generate-download-assets.ts",
     "format": "prettier --write ."
   },
   "dependencies": {
