@@ -35,6 +35,7 @@ Use this checklist before switching the website to production traffic.
 - Configure `SUPABASE_RFQ_BUCKET=rfq-attachments`.
 - Submit a real test RFQ and confirm the row is stored.
 - Upload a test attachment and confirm the file path is stored.
+- Submit a test RFQ with UTM parameters and confirm source attribution fields are stored.
 
 ## Vercel Deployment
 
@@ -64,6 +65,7 @@ Use this checklist before switching the website to production traffic.
 - Configure `NEXT_PUBLIC_GA_ID` in Vercel.
 - Confirm page views appear in GA4 Realtime.
 - Submit a test RFQ and confirm `rfq_submit_success` appears in GA4 Realtime or DebugView.
+- Confirm RFQ sales email includes landing page, referrer and UTM attribution fields.
 - Click Email, WhatsApp and RFQ links and confirm click events are tracked.
 - Do not hardcode analytics IDs in repository files.
 
