@@ -25,6 +25,7 @@ type RfqResponse = {
   emailDelivered?: boolean;
   emailRecipient?: string;
   emailAttachmentCount?: number;
+  buyerConfirmationDelivered?: boolean;
   message?: string;
   errors?: FormErrors;
 };
@@ -245,6 +246,11 @@ export function RfqForm({ initialProduct = "" }: RfqFormProps) {
           {submissionResult?.emailDelivered && submissionResult.emailAttachmentCount ? (
             <p className="mt-2 text-sm leading-6 text-slate-700">
               Attachments included in email: {submissionResult.emailAttachmentCount}
+            </p>
+          ) : null}
+          {submissionResult?.buyerConfirmationDelivered ? (
+            <p className="mt-2 text-sm leading-6 text-slate-700">
+              A confirmation copy has also been sent to {values.email}.
             </p>
           ) : null}
         </div>

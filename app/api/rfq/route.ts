@@ -27,6 +27,7 @@ type EmailNotificationResult = {
   delivered: boolean;
   recipient: string;
   attachmentCount: number;
+  buyerConfirmationDelivered: boolean;
 };
 
 const requiredFields: Array<keyof RfqPayload> = [
@@ -223,6 +224,51 @@ function buildInquiryEmailText(
   ].join("\n");
 }
 
+function buildBuyerConfirmationEmailText(payload: RfqPayload, attachments: AttachmentRecord[]) {
+  const attachmentSummary =
+    attachments.length > 0
+      ? attachments
+          .map((attachment) => {
+            const sizeMb = (attachment.size / (1024 * 1024)).toFixed(2);
+            return `- ${attachment.name} (${sizeMb} MB)`;
+          })
+          .join("\n")
+      : "No attachments uploaded.";
+
+  return [
+    `Dear ${payload.name},`,
+    "",
+    "Thank you for sending your RFQ to ArcFort Weld.",
+    "",
+    "We have received your inquiry and the sales team will review the product details, quantity, packaging requirement and delivery information before follow-up.",
+    "",
+    "RFQ Summary",
+    `Company: ${payload.company}`,
+    `Email: ${payload.email}`,
+    `WhatsApp: ${payload.whatsapp || "Not provided"}`,
+    `Country: ${payload.country}`,
+    `Quantity: ${payload.quantity}`,
+    "",
+    "Product Requirements:",
+    payload.productRequirements,
+    "",
+    "Message:",
+    payload.message || "No additional message.",
+    "",
+    "Attachments:",
+    attachmentSummary,
+    "",
+    "For urgent updates, you can also contact us directly:",
+    `Email: ${siteConfig.email}`,
+    `WhatsApp: ${siteConfig.whatsapp}`,
+    "",
+    `${siteConfig.legalName}`,
+    siteConfig.tagline,
+    "",
+    "This is an automatic confirmation email from the ArcFort Weld website.",
+  ].join("\n");
+}
+
 async function buildEmailAttachments(files: File[]) {
   return Promise.all(
     files.map(async (file) => ({
@@ -248,6 +294,7 @@ async function sendEmailNotification(
       delivered: false,
       recipient,
       attachmentCount: 0,
+      buyerConfirmationDelivered: false,
     };
   }
 
@@ -273,11 +320,35 @@ async function sendEmailNotification(
     throw new Error("RFQ email notification failed.");
   }
 
+  let buyerConfirmationDelivered = false;
+
+  try {
+    const buyerResponse = await fetch("https://api.resend.com/emails", {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${apiKey}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        from,
+        to: [payload.email],
+        reply_to: recipient,
+        subject: "ArcFort Weld received your RFQ",
+        text: buildBuyerConfirmationEmailText(payload, attachments),
+      }),
+    });
+
+    buyerConfirmationDelivered = buyerResponse.ok;
+  } catch {
+    buyerConfirmationDelivered = false;
+  }
+
   return {
     configured: true,
     delivered: true,
     recipient,
     attachmentCount: emailAttachments.length,
+    buyerConfirmationDelivered,
   };
 }
 
@@ -400,6 +471,7 @@ export async function POST(request: Request) {
       emailDelivered: emailNotification.delivered,
       emailRecipient: emailNotification.recipient,
       emailAttachmentCount: emailNotification.attachmentCount,
+      buyerConfirmationDelivered: emailNotification.buyerConfirmationDelivered,
       backendConfigured: stored || emailNotification.delivered,
       message:
         stored || emailNotification.delivered

@@ -11,6 +11,8 @@ When a buyer submits `/rfq`, the website should:
 - Reject obvious automated spam submissions without adding friction for normal buyers.
 - Record the source path, referrer and user agent in the sales notification email.
 - Send a sales notification email to `arcfortweld@outlook.com`.
+- Send an automatic confirmation email to the buyer's submitted email address when email delivery
+  is configured.
 - Include uploaded RFQ files as email attachments when Resend is configured.
 - Optionally store RFQ records and attachment metadata in Supabase.
 
@@ -21,6 +23,15 @@ Files:
 - `app/rfq/RfqForm.tsx` - frontend validation and buyer success message.
 - `app/api/rfq/route.ts` - server-side validation, optional Supabase storage and Resend email delivery.
 - `.env.example` - environment variable names only.
+
+Email flow:
+
+- Sales notification goes to `RFQ_EMAIL_RECIPIENT` and includes RFQ details, source metadata and
+  uploaded attachments.
+- Buyer confirmation goes to the submitted buyer email and includes a clean RFQ summary plus ArcFort
+  Weld backup contact details.
+- Buyer confirmation delivery is treated as a secondary enhancement. A temporary buyer confirmation
+  failure does not block the sales notification success response.
 
 Attachment limits:
 
@@ -93,9 +104,11 @@ After adding Vercel environment variables and redeploying:
 3. Open `https://www.arcfortweld.com/rfq`.
 4. Submit a test RFQ with a small PDF or JPG attachment.
 5. Confirm the success message says the RFQ was sent to the sales email.
-6. Check `arcfortweld@outlook.com` for the RFQ email.
-7. Confirm uploaded files appear as email attachments.
-8. If Supabase is configured, confirm the inquiry row appears in `rfq_inquiries`.
+6. Confirm the success message says a confirmation copy was sent to the buyer email.
+7. Check `arcfortweld@outlook.com` for the RFQ email.
+8. Check the buyer test inbox for the confirmation email.
+9. Confirm uploaded files appear as email attachments in the sales notification.
+10. If Supabase is configured, confirm the inquiry row appears in `rfq_inquiries`.
 
 Expected API response after Resend is configured:
 

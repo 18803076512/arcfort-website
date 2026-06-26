@@ -12,6 +12,7 @@ Minimum production target:
 
 - RFQ form accepts required fields and valid attachments.
 - Website sends an email notification to `arcfortweld@outlook.com`.
+- Website sends an automatic confirmation email to the buyer email when Resend is configured.
 - Buyer receives a clear success message after submission.
 - Large or failed submissions still direct the buyer to email or WhatsApp.
 - No API keys, email passwords or database secrets are committed to the repository.
@@ -80,8 +81,11 @@ Security rules:
 6. Confirm `email.ready` is `true`.
 7. Submit a test RFQ at `https://arcfortweld.com/rfq`.
 8. Confirm the success message says the RFQ was sent to sales email.
-9. Confirm `arcfortweld@outlook.com` receives the message.
-10. Submit one test with a small PDF or JPG attachment and confirm the attachment arrives.
+9. Confirm the success message says a confirmation copy was sent to the buyer email.
+10. Confirm `arcfortweld@outlook.com` receives the sales notification.
+11. Confirm the buyer test inbox receives the confirmation email.
+12. Submit one test with a small PDF or JPG attachment and confirm the attachment arrives in the
+    sales notification.
 
 ## Expected Status Response
 
