@@ -96,8 +96,9 @@ Simple workflow:
 3. Run `npm run products:simple:preview` to check generated data without writing files.
 4. Run `npm run products:simple:generate` to generate `data/import/products.csv`.
 5. Run `npm run products:check-images`.
-6. Run `npm run products:simple:import` to update `lib/data/products.ts`.
-7. Run `npm run build`.
+6. Run `npm run products:report` to generate the internal product readiness checklist.
+7. Run `npm run products:simple:import` to update `lib/data/products.ts`.
+8. Run `npm run build`.
 
 To preview the reusable first 30 SKU worksheet without replacing the active simple CSV:
 
@@ -116,9 +117,10 @@ Full CSV workflow:
 3. Put product images in `public/images/products/`.
 4. Run `npm run products:validate`.
 5. Run `npm run products:check-images`.
-6. Run `npm run products:import`.
-7. Run `npm run build`.
-8. Submit a pull request.
+6. Run `npm run products:report`.
+7. Run `npm run products:import`.
+8. Run `npm run build`.
+9. Submit a pull request.
 
 Use these values when data is uncertain:
 
@@ -175,6 +177,7 @@ RESEND_API_KEY=
 - `docs/product-image-checklist.csv` - product image status and replacement checklist
 - `docs/first-30-sku-image-checklist.csv` - image checklist for the imported first 30 SKU batch
 - `docs/representative-product-image-notes.md` - representative product-family image usage notes
+- `docs/product-readiness-report.md` - generated product data, image and confirmation status checklist
 - `docs/site-wide-upgrade-roadmap.md` - phased roadmap for improving page quality, SEO and RFQ conversion
 - `docs/product-image-shooting-guide.md` - product photo shooting and editing guide
 - `docs/missing-product-data-supplement.csv` - missing data worksheet for product pages
@@ -211,6 +214,7 @@ Run checks:
 npm run lint
 npm run products:validate
 npm run products:check-images
+npm run products:report
 ```
 
 ## Notes
