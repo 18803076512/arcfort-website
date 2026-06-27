@@ -4,7 +4,7 @@ export const siteConfig = {
   legalName: "Renqiu Ailesen Welding Technology Co., Ltd.",
   chineseName: "任丘市埃勒森焊接科技有限公司",
   tagline: "Industrial Welding & Cutting Solutions",
-  url: "https://arcfortweld.com",
+  url: "https://www.arcfortweld.com",
   description:
     "Industrial welding and cutting product supplier for distributors, importers, OEM buyers, industrial users and repair workshops.",
   email: "arcfortweld@outlook.com",

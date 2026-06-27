@@ -10,16 +10,17 @@ type SeoInput = {
 
 export function buildMetadata({ title, description, path, keywords = [] }: SeoInput): Metadata {
   const url = absoluteUrl(path);
+  const normalizedTitle = title.replace(/\s*\|\s*ArcFort Weld\s*$/i, "");
 
   return {
-    title,
+    title: normalizedTitle,
     description,
     keywords,
     alternates: {
       canonical: path,
     },
     openGraph: {
-      title,
+      title: normalizedTitle,
       description,
       url,
       siteName: siteConfig.name,
@@ -27,7 +28,7 @@ export function buildMetadata({ title, description, path, keywords = [] }: SeoIn
     },
     twitter: {
       card: "summary_large_image",
-      title,
+      title: normalizedTitle,
       description,
     },
   };

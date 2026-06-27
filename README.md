@@ -155,7 +155,7 @@ through environment variables. No real API keys, email passwords, database passw
 tokens are committed.
 
 For production launch, follow `docs/rfq-production-readiness.md` and confirm
-`https://arcfortweld.com/api/rfq/status` reports `email.ready:true` before treating the RFQ form as
+`https://www.arcfortweld.com/api/rfq/status` reports `email.ready:true` before treating the RFQ form as
 a complete automated lead channel.
 
 Environment variables:
@@ -192,7 +192,7 @@ When `NEXT_PUBLIC_GA_ID` is configured, the site tracks:
 - WhatsApp link clicks: `contact_whatsapp_click`.
 - RFQ link clicks: `rfq_link_click`.
 
-Submit `https://arcfortweld.com/sitemap.xml` in Google Search Console after domain verification.
+Submit `https://www.arcfortweld.com/sitemap.xml` in Google Search Console after domain verification.
 
 ## Buyer Download Files
 
