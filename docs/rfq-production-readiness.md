@@ -78,9 +78,9 @@ Security rules:
 2. Add the Resend DNS records in Cloudflare.
 3. Add `RFQ_EMAIL_RECIPIENT`, `RFQ_EMAIL_FROM` and `RESEND_API_KEY` in Vercel.
 4. Redeploy the Vercel production deployment.
-5. Open `https://arcfortweld.com/api/rfq/status`.
+5. Open `https://www.arcfortweld.com/api/rfq/status`.
 6. Confirm `email.ready` is `true`.
-7. Submit a test RFQ at `https://arcfortweld.com/rfq`.
+7. Submit a test RFQ at `https://www.arcfortweld.com/rfq`.
 8. Confirm the success message says the RFQ was sent to sales email.
 9. Confirm the success message says a confirmation copy was sent to the buyer email.
 10. Confirm `arcfortweld@outlook.com` receives the sales notification.
@@ -92,7 +92,7 @@ Security rules:
 
 ## Expected Status Response
 
-After Resend is configured, `https://arcfortweld.com/api/rfq/status` should include:
+After Resend is configured, `https://www.arcfortweld.com/api/rfq/status` should include:
 
 ```json
 {
