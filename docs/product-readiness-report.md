@@ -1,6 +1,6 @@
 # Product Readiness Report
 
-Generated from `data/import/products.csv` at 2026-06-26T04:28:50.077Z.
+Generated from `data/import/products.csv` at 2026-06-27T04:17:25.159Z.
 
 This report is an internal working checklist. Do not use it to invent product specifications, certifications, prices, stock status, factory capacity or confirmed compatibility.
 
@@ -11,7 +11,7 @@ This report is an internal working checklist. Do not use it to invent product sp
 - Products with own-photo image status: 0
 - Products with confirmed compatibility status: 0
 - Products with confirmed OEM status: 0
-- Missing main images: 16
+- Missing main images: 0
 - Missing gallery images: 0
 - Products with high-priority placeholder fields: 30
 
@@ -21,8 +21,7 @@ This report is an internal working checklist. Do not use it to invent product sp
 
 ## Image Status
 
-- needs_photo: 22
-- placeholder: 8
+- placeholder: 30
 
 ## Compatibility Status
 
@@ -34,24 +33,7 @@ This report is an internal working checklist. Do not use it to invent product sp
 
 ## Missing Main Images
 
-| SKU | Product | Category | Notes |
-| --- | --- | --- | --- |
-| AF-MIG-TH-0007 | MIG Tip Holder for MB15 | MIG/MAG Torch Parts | /images/products/mig-tip-holder-for-mb15.jpg |
-| AF-MIG-TL-0009 | MIG Torch Liner | MIG/MAG Torch Parts | /images/products/mig-torch-liner.jpg |
-| AF-MIG-SN-0010 | MIG Swan Neck | MIG/MAG Torch Parts | /images/products/mig-swan-neck.jpg |
-| AF-TIG-CL-0009 | TIG Collet | TIG Torch Parts | /images/products/tig-collet.jpg |
-| AF-TIG-GL-0010 | TIG Gas Lens 1.6mm | TIG Torch Parts | /images/products/tig-gas-lens-1-6mm.jpg |
-| AF-TIG-BC-0011 | TIG Back Cap | TIG Torch Parts | /images/products/tig-back-cap.jpg |
-| AF-TIG-TE-0012 | TIG Tungsten Electrode | TIG Torch Parts | /images/products/tig-tungsten-electrode.jpg |
-| AF-PLA-SH-0010 | Plasma Shield | Plasma Cutting Consumables | /images/products/plasma-shield.jpg |
-| AF-PLA-RC-0011 | Plasma Retaining Cap | Plasma Cutting Consumables | /images/products/plasma-retaining-cap.jpg |
-| AF-PLA-CT-0012 | Plasma Cutting Tip | Plasma Cutting Consumables | /images/products/plasma-cutting-tip.jpg |
-| AF-PLA-TS-0013 | Plasma Torch Spacer | Plasma Cutting Consumables | /images/products/plasma-torch-spacer.jpg |
-| AF-CON-EL-0011 | Welding Electrode | Welding Consumables | /images/products/welding-electrode.jpg |
-| AF-CON-WW-0012 | Welding Wire | Welding Consumables | /images/products/welding-wire.jpg |
-| AF-ACC-WC-0013 | Welding Cable | Welding Accessories | /images/products/welding-cable.jpg |
-| AF-ACC-DC-0014 | Dinse Connector | Welding Accessories | /images/products/dinse-connector.jpg |
-| AF-ACC-WM-0015 | Welding Magnet | Welding Accessories | /images/products/welding-magnet.jpg |
+No items found.
 
 ## Missing Gallery Images
 
