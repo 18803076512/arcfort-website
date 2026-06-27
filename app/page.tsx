@@ -96,6 +96,7 @@ const sourcingSystemLinks = [
 export default function Home() {
   const categories = getAllProductCategories();
   const products = getAllProducts();
+  const featuredProducts = products.slice(0, 8);
   const applications = getAllApplications();
   const categoryMap = new Map(categories.map((category) => [category.slug, category]));
 
@@ -114,10 +115,10 @@ export default function Home() {
         <div className="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_78%_24%,rgba(56,189,248,0.22),transparent_34%),linear-gradient(180deg,rgba(7,21,36,0.1),rgba(7,21,36,0.82))]" />
         <div className="relative mx-auto flex min-h-[calc(100vh-5rem)] max-w-7xl flex-col justify-center px-4 py-16 sm:px-6 lg:px-8">
           <div className="max-w-3xl">
-            <p className="mb-5 inline-flex border-l-4 border-arc-signal bg-white/10 px-4 py-2 text-sm font-semibold uppercase tracking-[0.2em] text-arc-signal">
+            <p className="mb-5 inline-flex max-w-full flex-wrap border-l-4 border-arc-signal bg-white/10 px-4 py-2 text-xs font-semibold uppercase leading-6 tracking-[0.14em] text-arc-signal sm:text-sm sm:tracking-[0.2em]">
               ArcFort Weld | Welding & Cutting Solutions
             </p>
-            <h1 className="font-display text-5xl font-black leading-[0.98] sm:text-6xl lg:text-7xl">
+            <h1 className="font-display text-4xl font-black leading-[1.02] sm:text-6xl lg:text-7xl">
               Industrial Welding & Cutting Solutions
             </h1>
             <p className="mt-7 max-w-2xl text-lg leading-8 text-slate-200">
@@ -128,13 +129,13 @@ export default function Home() {
             <div className="mt-9 flex flex-col gap-3 sm:flex-row">
               <Link
                 href="/products"
-                className="inline-flex items-center justify-center bg-arc-signal px-6 py-3 text-sm font-bold uppercase tracking-[0.16em] text-arc-midnight transition hover:bg-white"
+                className="inline-flex w-full items-center justify-center bg-arc-signal px-6 py-3 text-sm font-bold uppercase tracking-[0.16em] text-arc-midnight transition hover:bg-white sm:w-auto"
               >
                 View Products
               </Link>
               <Link
                 href="/rfq"
-                className="inline-flex items-center justify-center border border-white/40 px-6 py-3 text-sm font-bold uppercase tracking-[0.16em] text-white transition hover:border-white hover:bg-white/10"
+                className="inline-flex w-full items-center justify-center border border-white/40 px-6 py-3 text-sm font-bold uppercase tracking-[0.16em] text-white transition hover:border-white hover:bg-white/10 sm:w-auto"
               >
                 Request a Quote
               </Link>
@@ -259,7 +260,7 @@ export default function Home() {
             Featured Welding & Cutting Products
           </h2>
           <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-            {products.map((product) => {
+            {featuredProducts.map((product) => {
               const category = categoryMap.get(product.categorySlug);
 
               if (!category) {
@@ -268,6 +269,14 @@ export default function Home() {
 
               return <ProductCard key={product.slug} product={product} category={category} />;
             })}
+          </div>
+          <div className="mt-8 flex justify-center">
+            <Link
+              href="/products"
+              className="inline-flex w-full items-center justify-center border border-arc-blue px-5 py-3 text-sm font-bold uppercase tracking-[0.14em] text-arc-blue transition hover:bg-arc-blue hover:text-white sm:w-auto"
+            >
+              View All Products
+            </Link>
           </div>
         </div>
       </section>

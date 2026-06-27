@@ -93,7 +93,7 @@ export function Header() {
           <summary className="flex cursor-pointer list-none items-center justify-center bg-arc-blue px-4 py-3 text-xs font-bold uppercase tracking-[0.14em] text-white marker:hidden">
             Menu
           </summary>
-          <nav className="absolute right-0 top-14 z-50 grid w-72 gap-1 border border-slate-200 bg-white p-3 shadow-industrial">
+          <nav className="fixed left-4 right-4 top-24 z-50 grid max-h-[calc(100vh-8rem)] gap-1 overflow-y-auto border border-slate-200 bg-white p-3 shadow-industrial">
             {mobileNavigationGroups.map((group) => (
               <div key={group.title} className="border-b border-slate-100 pb-2 last:border-b-0">
                 <div className="px-3 py-2 text-[11px] font-bold uppercase tracking-[0.16em] text-slate-400">

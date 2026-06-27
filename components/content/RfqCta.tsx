@@ -49,13 +49,13 @@ export function RfqCta({
           <div className="flex flex-col gap-3 sm:flex-row">
             <Link
               href={rfqHref}
-              className="inline-flex items-center justify-center bg-arc-signal px-5 py-3 text-sm font-bold uppercase tracking-[0.14em] text-arc-midnight transition hover:bg-white"
+              className="inline-flex w-full items-center justify-center bg-arc-signal px-5 py-3 text-sm font-bold uppercase tracking-[0.14em] text-arc-midnight transition hover:bg-white sm:w-auto"
             >
               Send Inquiry
             </Link>
             <Link
               href="/contact"
-              className="inline-flex items-center justify-center border border-white/30 px-5 py-3 text-sm font-bold uppercase tracking-[0.14em] text-white transition hover:border-white hover:bg-white/10"
+              className="inline-flex w-full items-center justify-center border border-white/30 px-5 py-3 text-sm font-bold uppercase tracking-[0.14em] text-white transition hover:border-white hover:bg-white/10 sm:w-auto"
             >
               Contact Team
             </Link>
@@ -67,22 +67,22 @@ export function RfqCta({
               <a
                 key={item.label}
                 href={item.href}
-                className="border border-white/10 bg-white/5 p-4 text-sm leading-6 text-slate-200 transition hover:border-arc-signal hover:text-white"
+                className="min-w-0 border border-white/10 bg-white/5 p-4 text-sm leading-6 text-slate-200 transition hover:border-arc-signal hover:text-white"
               >
                 <span className="block text-xs font-bold uppercase tracking-[0.16em] text-arc-signal">
                   {item.label}
                 </span>
-                <span className="mt-1 block font-semibold">{item.value}</span>
+                <span className="mt-1 block break-words font-semibold">{item.value}</span>
               </a>
             ) : (
               <div
                 key={item.label}
-                className="border border-white/10 bg-white/5 p-4 text-sm leading-6 text-slate-200"
+                className="min-w-0 border border-white/10 bg-white/5 p-4 text-sm leading-6 text-slate-200"
               >
                 <span className="block text-xs font-bold uppercase tracking-[0.16em] text-arc-signal">
                   {item.label}
                 </span>
-                <span className="mt-1 block">{item.value}</span>
+                <span className="mt-1 block break-words">{item.value}</span>
               </div>
             ),
           )}

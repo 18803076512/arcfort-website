@@ -179,10 +179,10 @@ export function ProductDetailTemplate({
             />
 
             <div>
-              <p className="text-sm font-bold uppercase tracking-[0.2em] text-arc-blue">
+              <p className="text-sm font-bold uppercase leading-6 tracking-[0.14em] text-arc-blue sm:tracking-[0.2em]">
                 {category.title}
               </p>
-              <h1 className="mt-3 font-display text-4xl font-black leading-tight text-arc-midnight sm:text-5xl">
+              <h1 className="mt-3 break-words font-display text-3xl font-black leading-tight text-arc-midnight sm:text-5xl">
                 {product.title}
               </h1>
               <p className="mt-5 text-lg leading-8 text-slate-600">{product.shortDescription}</p>
@@ -218,19 +218,19 @@ export function ProductDetailTemplate({
               <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
                 <Link
                   href={rfqHref}
-                  className="inline-flex items-center justify-center bg-arc-blue px-5 py-3 text-sm font-bold uppercase tracking-[0.14em] text-white transition hover:bg-arc-midnight"
+                  className="inline-flex w-full items-center justify-center bg-arc-blue px-5 py-3 text-sm font-bold uppercase tracking-[0.14em] text-white transition hover:bg-arc-midnight sm:w-auto"
                 >
                   Request Quote
                 </Link>
                 <Link
                   href={rfqHref}
-                  className="inline-flex items-center justify-center border border-arc-blue px-5 py-3 text-sm font-bold uppercase tracking-[0.14em] text-arc-blue transition hover:bg-arc-blue hover:text-white"
+                  className="inline-flex w-full items-center justify-center border border-arc-blue px-5 py-3 text-sm font-bold uppercase tracking-[0.14em] text-arc-blue transition hover:bg-arc-blue hover:text-white sm:w-auto"
                 >
                   Add to RFQ
                 </Link>
                 <Link
                   href={whatsappProductHref}
-                  className="inline-flex items-center justify-center border border-slate-300 px-5 py-3 text-sm font-bold uppercase tracking-[0.14em] text-slate-700 transition hover:border-arc-midnight hover:bg-arc-midnight hover:text-white"
+                  className="inline-flex w-full items-center justify-center border border-slate-300 px-5 py-3 text-sm font-bold uppercase tracking-[0.14em] text-slate-700 transition hover:border-arc-midnight hover:bg-arc-midnight hover:text-white sm:w-auto"
                 >
                   WhatsApp
                 </Link>
@@ -414,13 +414,13 @@ export function ProductDetailTemplate({
             <div className="mt-6 flex flex-col gap-3 sm:flex-row">
               <Link
                 href="/downloads"
-                className="inline-flex items-center justify-center border border-arc-blue px-5 py-3 text-sm font-bold uppercase tracking-[0.14em] text-arc-blue transition hover:bg-arc-blue hover:text-white"
+                className="inline-flex w-full items-center justify-center border border-arc-blue px-5 py-3 text-sm font-bold uppercase tracking-[0.14em] text-arc-blue transition hover:bg-arc-blue hover:text-white sm:w-auto"
               >
                 Request Datasheet
               </Link>
               <Link
                 href={rfqHref}
-                className="inline-flex items-center justify-center bg-arc-blue px-5 py-3 text-sm font-bold uppercase tracking-[0.14em] text-white transition hover:bg-arc-midnight"
+                className="inline-flex w-full items-center justify-center bg-arc-blue px-5 py-3 text-sm font-bold uppercase tracking-[0.14em] text-white transition hover:bg-arc-midnight sm:w-auto"
               >
                 Send Product RFQ
               </Link>
