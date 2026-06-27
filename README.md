@@ -194,6 +194,16 @@ When `NEXT_PUBLIC_GA_ID` is configured, the site tracks:
 
 Submit `https://www.arcfortweld.com/sitemap.xml` in Google Search Console after domain verification.
 
+For IndexNow-compatible search engines, the repository includes a public key file and a submission
+script. After deployment, run:
+
+```bash
+npm run indexing:submit -- --dry-run
+npm run indexing:submit
+```
+
+See `docs/search-indexing-submission.md` for the full indexing workflow.
+
 ## Buyer Download Files
 
 The `/downloads` page provides buyer-facing CSV files that help distributors and importers prepare
@@ -231,6 +241,7 @@ unconfirmed certifications or hidden SKU workflow fields.
 - `docs/product-image-shooting-guide.md` - product photo shooting and editing guide
 - `docs/missing-product-data-supplement.csv` - missing data worksheet for product pages
 - `docs/production-missing-data-supplement.md` - production missing data priority and RFQ backend notes
+- `docs/search-indexing-submission.md` - Google Search Console and IndexNow submission workflow
 - `docs/sku-template-guide.md` - SKU template filling guide and first batch recommendation
 - `docs/first-30-sku-preparation.md` - first 30 SKU worksheet workflow and data confirmation guide
 - `docs/product-data-workflow.md` - product CSV workflow and validation rules
@@ -266,6 +277,7 @@ npm run products:check-images
 npm run products:image-tasks
 npm run products:report
 npm run downloads:generate
+npm run indexing:submit -- --dry-run
 ```
 
 ## Notes
