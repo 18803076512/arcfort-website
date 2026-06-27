@@ -110,10 +110,10 @@ export default function DownloadsPage() {
           <Breadcrumbs items={[{ label: "Home", href: "/" }, { label: "Downloads" }]} />
           <div className="mt-8 grid gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:items-end">
             <div>
-              <p className="text-sm font-bold uppercase tracking-[0.2em] text-arc-blue">
+              <p className="text-sm font-bold uppercase leading-6 tracking-[0.14em] text-arc-blue sm:tracking-[0.2em]">
                 Download Center
               </p>
-              <h1 className="mt-3 font-display text-4xl font-black leading-tight text-arc-midnight sm:text-5xl">
+              <h1 className="mt-3 break-words font-display text-3xl font-black leading-tight text-arc-midnight sm:text-5xl">
                 Catalog and RFQ documents for welding product sourcing.
               </h1>
               <p className="mt-5 text-lg leading-8 text-slate-600">
@@ -139,7 +139,7 @@ export default function DownloadsPage() {
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="mb-8 grid gap-5 lg:grid-cols-[0.8fr_1.2fr] lg:items-end">
             <div>
-              <p className="text-sm font-bold uppercase tracking-[0.2em] text-arc-blue">
+              <p className="text-sm font-bold uppercase leading-6 tracking-[0.14em] text-arc-blue sm:tracking-[0.2em]">
                 Buyer Downloads
               </p>
               <h2 className="mt-3 font-display text-3xl font-black text-arc-midnight">
@@ -154,11 +154,11 @@ export default function DownloadsPage() {
           <div className="mb-10 grid gap-5 md:grid-cols-2">
             {downloadFiles.map((file) => (
               <article key={file.href} className="border border-slate-200 bg-white p-6 shadow-sm">
-                <div className="flex items-start justify-between gap-4">
-                  <h2 className="font-display text-2xl font-black text-arc-midnight">
+                <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+                  <h2 className="break-words font-display text-2xl font-black text-arc-midnight">
                     {file.title}
                   </h2>
-                  <span className="bg-arc-midnight px-3 py-1 text-xs font-black uppercase tracking-[0.14em] text-white">
+                  <span className="inline-flex w-fit bg-arc-midnight px-3 py-1 text-xs font-black uppercase tracking-[0.14em] text-white">
                     {file.type}
                   </span>
                 </div>
@@ -169,7 +169,7 @@ export default function DownloadsPage() {
                 <a
                   href={file.href}
                   download
-                  className="mt-5 inline-flex bg-arc-blue px-5 py-3 text-sm font-bold uppercase tracking-[0.14em] text-white transition hover:bg-arc-midnight"
+                  className="mt-5 inline-flex w-full items-center justify-center bg-arc-blue px-5 py-3 text-sm font-bold uppercase tracking-[0.14em] text-white transition hover:bg-arc-midnight sm:w-auto"
                 >
                   Download {file.type}
                 </a>
@@ -198,7 +198,7 @@ export default function DownloadsPage() {
       <section className="bg-white py-14 sm:py-16">
         <div className="mx-auto grid max-w-7xl gap-8 px-4 sm:px-6 lg:grid-cols-[0.85fr_1.15fr] lg:px-8">
           <div>
-            <p className="text-sm font-bold uppercase tracking-[0.2em] text-arc-blue">
+            <p className="text-sm font-bold uppercase leading-6 tracking-[0.14em] text-arc-blue sm:tracking-[0.2em]">
               Buyer Shortcuts
             </p>
             <h2 className="mt-3 font-display text-3xl font-black text-arc-midnight">

@@ -18,7 +18,7 @@ html {
 
 body {
   margin: 0;
-  padding-bottom: 3.75rem;
+  padding-bottom: calc(5rem + env(safe-area-inset-bottom));
   background:
     radial-gradient(circle at 10% 0%, rgba(15, 76, 129, 0.10), transparent 28rem),
     linear-gradient(180deg, #ffffff 0%, var(--background) 44%, #eef3f8 100%);

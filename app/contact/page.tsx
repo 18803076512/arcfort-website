@@ -87,10 +87,10 @@ export default function ContactPage() {
           <Breadcrumbs items={[{ label: "Home", href: "/" }, { label: "Contact" }]} />
           <div className="mt-8 grid gap-10 lg:grid-cols-[0.95fr_1.05fr] lg:items-start">
             <div>
-              <p className="text-sm font-bold uppercase tracking-[0.2em] text-arc-blue">
+              <p className="text-sm font-bold uppercase leading-6 tracking-[0.14em] text-arc-blue sm:tracking-[0.2em]">
                 Contact
               </p>
-              <h1 className="mt-3 font-display text-4xl font-black leading-tight text-arc-midnight sm:text-5xl">
+              <h1 className="mt-3 break-words font-display text-3xl font-black leading-tight text-arc-midnight sm:text-5xl">
                 Talk with ArcFort Weld about welding and cutting sourcing.
               </h1>
               <p className="mt-5 max-w-2xl text-lg leading-8 text-slate-600">
@@ -101,13 +101,13 @@ export default function ContactPage() {
               <div className="mt-8 flex flex-col gap-3 sm:flex-row">
                 <Link
                   href="/rfq"
-                  className="inline-flex items-center justify-center bg-arc-blue px-6 py-3 text-sm font-bold uppercase tracking-[0.16em] text-white transition hover:bg-arc-midnight"
+                  className="inline-flex w-full items-center justify-center bg-arc-blue px-6 py-3 text-sm font-bold uppercase tracking-[0.16em] text-white transition hover:bg-arc-midnight sm:w-auto"
                 >
                   Request a Quote
                 </Link>
                 <Link
                   href="/products"
-                  className="inline-flex items-center justify-center border border-arc-blue px-6 py-3 text-sm font-bold uppercase tracking-[0.16em] text-arc-blue transition hover:bg-arc-blue hover:text-white"
+                  className="inline-flex w-full items-center justify-center border border-arc-blue px-6 py-3 text-sm font-bold uppercase tracking-[0.16em] text-arc-blue transition hover:bg-arc-blue hover:text-white sm:w-auto"
                 >
                   View Products
                 </Link>
@@ -127,12 +127,12 @@ export default function ContactPage() {
                     {item.href ? (
                       <a
                         href={item.href}
-                        className="mt-2 block text-base font-semibold leading-7 text-arc-midnight hover:text-arc-blue"
+                        className="mt-2 block break-words text-base font-semibold leading-7 text-arc-midnight hover:text-arc-blue"
                       >
                         {item.value}
                       </a>
                     ) : (
-                      <div className="mt-2 text-base font-semibold leading-7 text-arc-midnight">
+                      <div className="mt-2 break-words text-base font-semibold leading-7 text-arc-midnight">
                         {item.value}
                       </div>
                     )}
