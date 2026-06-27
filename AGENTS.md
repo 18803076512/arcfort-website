@@ -50,6 +50,9 @@ generation.
     configured sales email.
 13. Do not hardcode Google Analytics IDs, Search Console verification tokens or marketing pixels;
     use environment variables.
+14. After publishing important page, SKU, category or guide updates, run
+    `npm run indexing:submit -- --dry-run` and submit through IndexNow only after the deployed
+    sitemap and key file are reachable.
 
 ## SKU Import Rules
 
