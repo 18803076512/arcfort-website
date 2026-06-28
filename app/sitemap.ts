@@ -20,6 +20,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     "/privacy",
     "/rfq",
   ];
+  const downloadableRoutes = ["/downloads/renqiu-ailesen-welding-catalog.pdf"];
   const categoryRoutes = getAllProductCategories().map((category) => `/products/${category.slug}`);
   const productRoutes = getAllProducts().map(
     (product) => `/products/${product.categorySlug}/${product.slug}`,
@@ -29,7 +30,14 @@ export default function sitemap(): MetadataRoute.Sitemap {
   );
   const guideRoutes = getAllGuides().map((guide) => `/guides/${guide.slug}`);
 
-  return [...staticRoutes, ...categoryRoutes, ...productRoutes, ...applicationRoutes, ...guideRoutes].map((route) => ({
+  return [
+    ...staticRoutes,
+    ...downloadableRoutes,
+    ...categoryRoutes,
+    ...productRoutes,
+    ...applicationRoutes,
+    ...guideRoutes,
+  ].map((route) => ({
     url: absoluteUrl(route),
     lastModified: new Date(),
     changeFrequency: route === "/" ? "weekly" : "monthly",
@@ -38,6 +46,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
         ? 1
         : route.startsWith("/products") || route.startsWith("/applications")
           ? 0.8
-          : 0.6,
+          : route.endsWith(".pdf")
+            ? 0.5
+            : 0.6,
   }));
 }
