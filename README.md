@@ -211,6 +211,8 @@ RFQ information.
 
 Generated public files:
 
+- `public/downloads/renqiu-ailesen-welding-catalog.pdf` - compressed website version of the Renqiu
+  Ailesen welding product catalog for buyer download
 - `public/downloads/arcfort-public-product-list.csv` - active product list with SKU, product URL
   and RFQ-ready sourcing notes
 - `public/downloads/arcfort-rfq-template.csv` - buyer worksheet for product list quotation requests

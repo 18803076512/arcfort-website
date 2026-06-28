@@ -32,6 +32,14 @@ const documentTypes = [
 
 const downloadFiles = [
   {
+    title: "Renqiu Ailesen Welding Catalog",
+    type: "PDF",
+    href: "/downloads/renqiu-ailesen-welding-catalog.pdf",
+    description:
+      "Download the Renqiu Ailesen welding product catalog for MIG/MAG, TIG, MMA, plasma cutting and welding accessories sourcing reference.",
+    note: "Use this catalog as a sourcing reference. Final quotation details should be confirmed by model, sample, drawing, quantity and destination.",
+  },
+  {
     title: "Public Product List",
     type: "CSV",
     href: "/downloads/arcfort-public-product-list.csv",
