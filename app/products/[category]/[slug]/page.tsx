@@ -5,7 +5,7 @@ import {
   getAllProductCategories,
   getProductCategoryBySlug,
 } from "@/lib/content/categories";
-import { breadcrumbJsonLd, faqJsonLd, productJsonLd } from "@/lib/content/jsonld";
+import { breadcrumbJsonLd, faqJsonLd } from "@/lib/content/jsonld";
 import {
   getProductBySlug,
   getProductStaticParams,
@@ -83,7 +83,6 @@ export default async function ProductDetailPage({ params }: ProductRouteProps) {
             { name: category.title, path: `/products/${category.slug}` },
             { name: product.title, path: `/products/${category.slug}/${product.slug}` },
           ]),
-          productJsonLd(product, category),
           faqJsonLd(product.faq),
         ]}
       />

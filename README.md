@@ -285,6 +285,8 @@ npm run indexing:submit -- --dry-run
 - No real API keys or secrets are included.
 - `app/sitemap.ts` and `app/robots.ts` are included for search engine discovery.
 - Product and category pages include SEO metadata and JSON-LD structured data where appropriate.
+- Product detail pages currently use BreadcrumbList and FAQPage structured data only. Product rich
+  result markup is disabled until real public offer, review or aggregate rating data is available.
 - Analytics and Search Console verification are environment-driven and should not be hardcoded.
 - Confirm real product images, final SKU codes and exact product specifications before scaling
   product pages.
