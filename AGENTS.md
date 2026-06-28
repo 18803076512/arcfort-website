@@ -53,6 +53,9 @@ generation.
 14. After publishing important page, SKU, category or guide updates, run
     `npm run indexing:submit -- --dry-run` and submit through IndexNow only after the deployed
     sitemap and key file are reachable.
+15. Do not enable Google Product rich result JSON-LD unless real public `offers`, `review`, or
+    `aggregateRating` data is available on the same product page. Never add fake prices, stock
+    status, ratings or reviews to satisfy structured data tools.
 
 ## SKU Import Rules
 
