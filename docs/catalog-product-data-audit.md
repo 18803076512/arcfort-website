@@ -57,5 +57,7 @@ Audit date: 2026-06-29
 - Confirmed exact model numbers and compatibility tables for each product family.
 - Confirmed product dimensions, electrical ratings, material grades and surface treatments.
 - Confirmed package quantity, MOQ by item and real lead time by item.
-- Real individual product images for each newly added product family.
+- Dedicated confirmed white-background product photos for each newly added product family. Temporary
+  main images have been assigned from local product photos or Renqiu Ailesen catalog crops; see
+  `docs/product-image-source-audit.md`.
 - Public certifications, prices or stock status. These must not be invented.
