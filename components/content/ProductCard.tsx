@@ -33,9 +33,14 @@ export function ProductCard({ product, category }: ProductCardProps) {
           {product.title}
         </h3>
         <p className="mt-3 flex-1 text-sm leading-6 text-slate-600">{product.shortDescription}</p>
-        <span className="mt-5 text-sm font-bold uppercase tracking-[0.14em] text-arc-blue group-hover:text-arc-copper">
-          View Product
-        </span>
+        <div className="mt-5 flex items-center justify-between gap-3 border-t border-slate-100 pt-4">
+          <span className="text-sm font-bold uppercase tracking-[0.14em] text-arc-blue group-hover:text-arc-copper">
+            View Details
+          </span>
+          <span className="shrink-0 border border-arc-blue/20 bg-arc-frost px-2.5 py-1 text-[11px] font-bold uppercase tracking-[0.12em] text-arc-blue">
+            RFQ Ready
+          </span>
+        </div>
       </div>
     </Link>
   );
