@@ -105,8 +105,35 @@ export function ProductDetailTemplate({
   relatedProducts,
 }: ProductDetailTemplateProps) {
   const rfqHref = `/rfq?product=${encodeURIComponent(product.title)}`;
+  const productEmailSubject = encodeURIComponent(
+    `ArcFort Weld RFQ - ${product.title} - ${product.sku}`,
+  );
+  const productEmailBody = encodeURIComponent(
+    [
+      `Product: ${product.title}`,
+      `SKU: ${product.sku}`,
+      `Category: ${category.title}`,
+      "",
+      "Quantity:",
+      "Destination country:",
+      "Required model / size / material:",
+      "Packaging or OEM request:",
+      "Drawing, sample photo or reference part:",
+      "",
+      "Please confirm quotation, MOQ and lead time.",
+    ].join("\n"),
+  );
+  const productEmailHref = `${siteConfig.emailHref}?subject=${productEmailSubject}&body=${productEmailBody}`;
   const whatsappProductHref = `${siteConfig.whatsappHref}?text=${encodeURIComponent(
-    `Hello ArcFort Weld, I would like to request a quotation for ${product.title} (${product.sku}).`,
+    [
+      "Hello ArcFort Weld, I would like to request a quotation.",
+      `Product: ${product.title}`,
+      `SKU: ${product.sku}`,
+      `Category: ${category.title}`,
+      "Quantity:",
+      "Destination country:",
+      "Packaging or OEM request:",
+    ].join("\n"),
   )}`;
   const publicSpecifications = product.specifications.filter(isPublicDetailRow);
   const publicCompatibility = product.compatibility.filter(isPublicDetailRow);
@@ -156,6 +183,26 @@ export function ProductDetailTemplate({
       note: "Logo, label and carton design are reviewed with order quantity and packaging requirements.",
     },
   ];
+  const directInquiryChannels = [
+    {
+      label: "Email RFQ",
+      value: siteConfig.email,
+      note: "Opens a prefilled product inquiry with SKU and category.",
+      href: productEmailHref,
+    },
+    {
+      label: "WhatsApp RFQ",
+      value: siteConfig.whatsapp,
+      note: "Best for quick product photo, model or sample discussion.",
+      href: whatsappProductHref,
+    },
+    {
+      label: "Main Port",
+      value: siteConfig.mainPort,
+      note: "Other ports can be discussed when preparing the order.",
+      href: undefined,
+    },
+  ] as const;
 
   return (
     <>
@@ -234,6 +281,43 @@ export function ProductDetailTemplate({
                 >
                   WhatsApp
                 </Link>
+              </div>
+
+              <div className="mt-6 grid gap-3 sm:grid-cols-3">
+                {directInquiryChannels.map((item) =>
+                  item.href ? (
+                    <a
+                      key={item.label}
+                      href={item.href}
+                      className="block min-w-0 border border-slate-200 bg-white p-4 shadow-sm transition hover:border-arc-blue hover:bg-arc-frost"
+                    >
+                      <span className="block text-[11px] font-bold uppercase tracking-[0.16em] text-arc-blue">
+                        {item.label}
+                      </span>
+                      <span className="mt-2 block break-words text-sm font-black leading-6 text-arc-midnight">
+                        {item.value}
+                      </span>
+                      <span className="mt-2 block text-xs font-semibold leading-5 text-slate-600">
+                        {item.note}
+                      </span>
+                    </a>
+                  ) : (
+                    <div
+                      key={item.label}
+                      className="min-w-0 border border-slate-200 bg-white p-4 shadow-sm"
+                    >
+                      <span className="block text-[11px] font-bold uppercase tracking-[0.16em] text-arc-blue">
+                        {item.label}
+                      </span>
+                      <span className="mt-2 block break-words text-sm font-black leading-6 text-arc-midnight">
+                        {item.value}
+                      </span>
+                      <span className="mt-2 block text-xs font-semibold leading-5 text-slate-600">
+                        {item.note}
+                      </span>
+                    </div>
+                  ),
+                )}
               </div>
 
               <div className="mt-6 border border-slate-200 bg-arc-frost p-5">
