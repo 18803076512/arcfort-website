@@ -148,7 +148,7 @@ export const arcfortProducts: ArcfortProductData[] = [
     "sourceReference": "Renqiu Ailesen welding catalog PDF visual review; PDF pages 39-41; exact product data requires RFQ confirmation.",
     "verifiedBy": "Codex PDF visual audit",
     "verifiedDate": "2026-06-29",
-    "imageStatus": "placeholder",
+    "imageStatus": "supplier_photo",
     "compatibilityStatus": "unverified",
     "oemStatus": "unknown"
   },
@@ -184,7 +184,7 @@ export const arcfortProducts: ArcfortProductData[] = [
     "sourceReference": "Renqiu Ailesen welding catalog PDF visual review; PDF page 58; exact product data requires RFQ confirmation.",
     "verifiedBy": "Codex PDF visual audit",
     "verifiedDate": "2026-06-29",
-    "imageStatus": "placeholder",
+    "imageStatus": "supplier_photo",
     "compatibilityStatus": "unverified",
     "oemStatus": "unknown"
   },
@@ -253,7 +253,7 @@ export const arcfortProducts: ArcfortProductData[] = [
     "sourceReference": "Renqiu Ailesen welding catalog PDF visual review; PDF page 58; exact product data requires RFQ confirmation.",
     "verifiedBy": "Codex PDF visual audit",
     "verifiedDate": "2026-06-29",
-    "imageStatus": "placeholder",
+    "imageStatus": "supplier_photo",
     "compatibilityStatus": "unverified",
     "oemStatus": "unknown"
   },
@@ -289,7 +289,7 @@ export const arcfortProducts: ArcfortProductData[] = [
     "sourceReference": "Renqiu Ailesen welding catalog PDF visual review; PDF pages 48-54; exact product data requires RFQ confirmation.",
     "verifiedBy": "Codex PDF visual audit",
     "verifiedDate": "2026-06-29",
-    "imageStatus": "placeholder",
+    "imageStatus": "supplier_photo",
     "compatibilityStatus": "unverified",
     "oemStatus": "unknown"
   },
@@ -325,7 +325,7 @@ export const arcfortProducts: ArcfortProductData[] = [
     "sourceReference": "Renqiu Ailesen welding catalog PDF visual review; PDF pages 37 and 58; exact product data requires RFQ confirmation.",
     "verifiedBy": "Codex PDF visual audit",
     "verifiedDate": "2026-06-29",
-    "imageStatus": "placeholder",
+    "imageStatus": "supplier_photo",
     "compatibilityStatus": "unverified",
     "oemStatus": "unknown"
   },
@@ -493,7 +493,7 @@ export const arcfortProducts: ArcfortProductData[] = [
     "sourceReference": "Renqiu Ailesen welding catalog PDF visual review; PDF page 58; exact product data requires RFQ confirmation.",
     "verifiedBy": "Codex PDF visual audit",
     "verifiedDate": "2026-06-29",
-    "imageStatus": "placeholder",
+    "imageStatus": "supplier_photo",
     "compatibilityStatus": "unverified",
     "oemStatus": "unknown"
   },
@@ -562,7 +562,7 @@ export const arcfortProducts: ArcfortProductData[] = [
     "sourceReference": "Renqiu Ailesen welding catalog PDF visual review; PDF page 37; exact product data requires RFQ confirmation.",
     "verifiedBy": "Codex PDF visual audit",
     "verifiedDate": "2026-06-29",
-    "imageStatus": "placeholder",
+    "imageStatus": "supplier_photo",
     "compatibilityStatus": "unverified",
     "oemStatus": "unknown"
   },
@@ -598,7 +598,7 @@ export const arcfortProducts: ArcfortProductData[] = [
     "sourceReference": "Renqiu Ailesen welding catalog PDF visual review; PDF pages 19-20 and 39-40; exact product data requires RFQ confirmation.",
     "verifiedBy": "Codex PDF visual audit",
     "verifiedDate": "2026-06-29",
-    "imageStatus": "placeholder",
+    "imageStatus": "supplier_photo",
     "compatibilityStatus": "unverified",
     "oemStatus": "unknown"
   },
@@ -865,7 +865,7 @@ export const arcfortProducts: ArcfortProductData[] = [
     "sourceReference": "Renqiu Ailesen welding catalog PDF visual review; PDF pages 19-21; exact product data requires RFQ confirmation.",
     "verifiedBy": "Codex PDF visual audit",
     "verifiedDate": "2026-06-29",
-    "imageStatus": "placeholder",
+    "imageStatus": "supplier_photo",
     "compatibilityStatus": "unverified",
     "oemStatus": "unknown"
   },
@@ -901,7 +901,7 @@ export const arcfortProducts: ArcfortProductData[] = [
     "sourceReference": "Renqiu Ailesen welding catalog PDF visual review; PDF pages 4-18; exact product data requires RFQ confirmation.",
     "verifiedBy": "Codex PDF visual audit",
     "verifiedDate": "2026-06-29",
-    "imageStatus": "placeholder",
+    "imageStatus": "supplier_photo",
     "compatibilityStatus": "unverified",
     "oemStatus": "unknown"
   },
@@ -1135,7 +1135,7 @@ export const arcfortProducts: ArcfortProductData[] = [
     "sourceReference": "Renqiu Ailesen welding catalog PDF visual review; PDF pages 22-24 and 55-57; exact product data requires RFQ confirmation.",
     "verifiedBy": "Codex PDF visual audit",
     "verifiedDate": "2026-06-29",
-    "imageStatus": "placeholder",
+    "imageStatus": "supplier_photo",
     "compatibilityStatus": "unverified",
     "oemStatus": "unknown"
   },
@@ -1600,7 +1600,7 @@ export const arcfortProducts: ArcfortProductData[] = [
     "sourceReference": "Renqiu Ailesen welding catalog PDF visual review; PDF page 37; exact product data requires RFQ confirmation.",
     "verifiedBy": "Codex PDF visual audit",
     "verifiedDate": "2026-06-29",
-    "imageStatus": "placeholder",
+    "imageStatus": "supplier_photo",
     "compatibilityStatus": "unverified",
     "oemStatus": "unknown"
   },
@@ -1636,7 +1636,7 @@ export const arcfortProducts: ArcfortProductData[] = [
     "sourceReference": "Renqiu Ailesen welding catalog PDF visual review; PDF pages 25-37; exact product data requires RFQ confirmation.",
     "verifiedBy": "Codex PDF visual audit",
     "verifiedDate": "2026-06-29",
-    "imageStatus": "placeholder",
+    "imageStatus": "supplier_photo",
     "compatibilityStatus": "unverified",
     "oemStatus": "unknown"
   }

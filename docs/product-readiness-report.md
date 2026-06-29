@@ -1,6 +1,6 @@
 # Product Readiness Report
 
-Generated from `data/import/products.csv` at 2026-06-29T04:23:43.093Z.
+Generated from `data/import/products.csv` at 2026-06-29T04:53:05.024Z.
 
 This report is an internal working checklist. Do not use it to invent product specifications, certifications, prices, stock status, factory capacity or confirmed compatibility.
 
@@ -11,7 +11,7 @@ This report is an internal working checklist. Do not use it to invent product sp
 - Products with own-photo image status: 0
 - Products with confirmed compatibility status: 0
 - Products with confirmed OEM status: 0
-- Missing main images: 13
+- Missing main images: 0
 - Missing gallery images: 0
 - Products with high-priority placeholder fields: 43
 
@@ -21,7 +21,8 @@ This report is an internal working checklist. Do not use it to invent product sp
 
 ## Image Status
 
-- placeholder: 43
+- placeholder: 30
+- supplier_photo: 13
 
 ## Compatibility Status
 
@@ -33,21 +34,7 @@ This report is an internal working checklist. Do not use it to invent product sp
 
 ## Missing Main Images
 
-| SKU | Product | Category | Notes |
-| --- | --- | --- | --- |
-| AF-MIG-MT-0031 | MIG/MAG Welding Torch | MIG/MAG Torch Parts | /images/products/mig-mag-welding-torch.jpg |
-| AF-MIG-MS-0032 | MIG Torch Switch | MIG/MAG Torch Parts | /images/products/mig-torch-switch.jpg |
-| AF-MAC-WF-0033 | Wire Feeder | Welding Machines | /images/products/wire-feeder.jpg |
-| AF-PLA-PT-0034 | Plasma Cutting Torch | Plasma Cutting Consumables | /images/products/plasma-cutting-torch.jpg |
-| AF-TIG-TT-0035 | TIG Welding Torch | TIG Torch Parts | /images/products/tig-welding-torch.jpg |
-| AF-TIG-TS-0036 | TIG Torch Switch | TIG Torch Parts | /images/products/tig-torch-switch.jpg |
-| AF-MAC-SG-0037 | Stud Welding Gun | Welding Machines | /images/products/stud-welding-gun.jpg |
-| AF-ACC-SA-0038 | Stud Welding Accessories | Welding Accessories | /images/products/stud-welding-accessories.jpg |
-| AF-ACC-RT-0039 | Robot Welding Torch | Welding Accessories | /images/products/robot-welding-torch.jpg |
-| AF-CON-SE-0040 | Spot Welding Electrode | Welding Consumables | /images/products/spot-welding-electrode.jpg |
-| AF-ACC-FA-0041 | Wire Feeder Accessories | Welding Accessories | /images/products/wire-feeder-accessories.jpg |
-| AF-ACC-PC-0042 | Welding Protective Cover | Welding Accessories | /images/products/welding-protective-cover.jpg |
-| AF-ACC-FM-0043 | CO2 Flowmeter | Welding Accessories | /images/products/co2-flowmeter.jpg |
+No items found.
 
 ## Missing Gallery Images
 

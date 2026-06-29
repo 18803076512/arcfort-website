@@ -242,6 +242,7 @@ unconfirmed certifications or hidden SKU workflow fields.
 - `docs/site-wide-upgrade-roadmap.md` - phased roadmap for improving page quality, SEO and RFQ conversion
 - `docs/product-image-shooting-guide.md` - product photo shooting and editing guide
 - `docs/catalog-product-data-audit.md` - Renqiu Ailesen PDF catalog review notes and imported product-family evidence
+- `docs/product-image-source-audit.md` - temporary product image source notes for catalog-derived SKU pages
 - `docs/missing-product-data-supplement.csv` - missing data worksheet for product pages
 - `docs/production-missing-data-supplement.md` - production missing data priority and RFQ backend notes
 - `docs/search-indexing-submission.md` - Google Search Console and IndexNow submission workflow
