@@ -115,15 +115,34 @@ function createFeatures(product: ArcfortProductData) {
   ];
 }
 
+function getSupportedProcesses(product: ArcfortProductData): WeldingProcess[] {
+  const name = product.name.toLowerCase();
+
+  if (name.includes("wire feeder")) {
+    return ["MIG/MAG"];
+  }
+
+  if (name.includes("plasma")) {
+    return ["Plasma Cutting"];
+  }
+
+  if (name.includes("tig")) {
+    return ["TIG"];
+  }
+
+  if (name.includes("mig") || name.includes("mag")) {
+    return ["MIG/MAG"];
+  }
+
+  return ["General Welding"];
+}
+
 function toProduct(product: ArcfortProductData): Product {
-  return {
+  const baseProduct = {
     slug: product.slug,
     title: product.name,
     sku: product.sku,
     categorySlug: product.categorySlug,
-    kind: "welding-consumable",
-    process: processByCategorySlug[product.categorySlug] ?? "General Welding",
-    consumableFamily: product.name,
     shortDescription: product.shortDescription,
     description: product.description,
     imageLabel: getImageLabel(product),
@@ -146,6 +165,22 @@ function toProduct(product: ArcfortProductData): Product {
     imageStatus: product.imageStatus,
     compatibilityStatus: product.compatibilityStatus,
     oemStatus: product.oemStatus,
+  };
+
+  if (product.categorySlug === "welding-machines") {
+    return {
+      ...baseProduct,
+      kind: "welding-equipment",
+      equipmentFamily: product.name,
+      supportedProcesses: getSupportedProcesses(product),
+    };
+  }
+
+  return {
+    ...baseProduct,
+    kind: "welding-consumable",
+    process: processByCategorySlug[product.categorySlug] ?? "General Welding",
+    consumableFamily: product.name,
   };
 }
 

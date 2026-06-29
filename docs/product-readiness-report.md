@@ -1,39 +1,53 @@
 # Product Readiness Report
 
-Generated from `data/import/products.csv` at 2026-06-27T04:17:25.159Z.
+Generated from `data/import/products.csv` at 2026-06-29T04:23:43.093Z.
 
 This report is an internal working checklist. Do not use it to invent product specifications, certifications, prices, stock status, factory capacity or confirmed compatibility.
 
 ## Summary
 
-- Products checked: 30
+- Products checked: 43
 - Products with confirmed data status: 0
 - Products with own-photo image status: 0
 - Products with confirmed compatibility status: 0
 - Products with confirmed OEM status: 0
-- Missing main images: 0
+- Missing main images: 13
 - Missing gallery images: 0
-- Products with high-priority placeholder fields: 30
+- Products with high-priority placeholder fields: 43
 
 ## Data Status
 
-- needs_review: 30
+- needs_review: 43
 
 ## Image Status
 
-- placeholder: 30
+- placeholder: 43
 
 ## Compatibility Status
 
-- unverified: 30
+- unverified: 43
 
 ## OEM Status
 
-- unknown: 30
+- unknown: 43
 
 ## Missing Main Images
 
-No items found.
+| SKU | Product | Category | Notes |
+| --- | --- | --- | --- |
+| AF-MIG-MT-0031 | MIG/MAG Welding Torch | MIG/MAG Torch Parts | /images/products/mig-mag-welding-torch.jpg |
+| AF-MIG-MS-0032 | MIG Torch Switch | MIG/MAG Torch Parts | /images/products/mig-torch-switch.jpg |
+| AF-MAC-WF-0033 | Wire Feeder | Welding Machines | /images/products/wire-feeder.jpg |
+| AF-PLA-PT-0034 | Plasma Cutting Torch | Plasma Cutting Consumables | /images/products/plasma-cutting-torch.jpg |
+| AF-TIG-TT-0035 | TIG Welding Torch | TIG Torch Parts | /images/products/tig-welding-torch.jpg |
+| AF-TIG-TS-0036 | TIG Torch Switch | TIG Torch Parts | /images/products/tig-torch-switch.jpg |
+| AF-MAC-SG-0037 | Stud Welding Gun | Welding Machines | /images/products/stud-welding-gun.jpg |
+| AF-ACC-SA-0038 | Stud Welding Accessories | Welding Accessories | /images/products/stud-welding-accessories.jpg |
+| AF-ACC-RT-0039 | Robot Welding Torch | Welding Accessories | /images/products/robot-welding-torch.jpg |
+| AF-CON-SE-0040 | Spot Welding Electrode | Welding Consumables | /images/products/spot-welding-electrode.jpg |
+| AF-ACC-FA-0041 | Wire Feeder Accessories | Welding Accessories | /images/products/wire-feeder-accessories.jpg |
+| AF-ACC-PC-0042 | Welding Protective Cover | Welding Accessories | /images/products/welding-protective-cover.jpg |
+| AF-ACC-FM-0043 | CO2 Flowmeter | Welding Accessories | /images/products/co2-flowmeter.jpg |
 
 ## Missing Gallery Images
 
@@ -73,6 +87,19 @@ No items found.
 | AF-ACC-WC-0013 | Welding Cable | material, size, thread, compatible_brand, compatible_model, oem_number, package |
 | AF-ACC-DC-0014 | Dinse Connector | material, size, thread, compatible_brand, compatible_model, oem_number, package |
 | AF-ACC-WM-0015 | Welding Magnet | material, size, thread, compatible_brand, compatible_model, oem_number, package |
+| AF-MIG-MT-0031 | MIG/MAG Welding Torch | material, size, thread, compatible_brand, oem_number, package |
+| AF-MIG-MS-0032 | MIG Torch Switch | material, size, compatible_brand, oem_number, package |
+| AF-MAC-WF-0033 | Wire Feeder | material, size, compatible_brand, oem_number, package |
+| AF-PLA-PT-0034 | Plasma Cutting Torch | material, size, thread, compatible_brand, oem_number, package |
+| AF-TIG-TT-0035 | TIG Welding Torch | material, size, thread, compatible_brand, oem_number, package |
+| AF-TIG-TS-0036 | TIG Torch Switch | material, size, compatible_brand, oem_number, package |
+| AF-MAC-SG-0037 | Stud Welding Gun | material, size, compatible_brand, oem_number, package |
+| AF-ACC-SA-0038 | Stud Welding Accessories | material, size, thread, compatible_brand, oem_number, package |
+| AF-ACC-RT-0039 | Robot Welding Torch | material, size, thread, compatible_brand, oem_number, package |
+| AF-CON-SE-0040 | Spot Welding Electrode | size, thread, compatible_brand, oem_number, package |
+| AF-ACC-FA-0041 | Wire Feeder Accessories | material, size, thread, compatible_brand, oem_number, package |
+| AF-ACC-PC-0042 | Welding Protective Cover | material, size, compatible_brand, oem_number, package |
+| AF-ACC-FM-0043 | CO2 Flowmeter | material, size, thread, compatible_brand, oem_number, package |
 
 ## Next Actions
 
