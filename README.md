@@ -63,10 +63,10 @@ Industrial B2B website for ArcFort Weld, operated by Renqiu Ailesen Welding Tech
 - `lib/content/seo.ts` - metadata helper
 - `lib/content/jsonld.ts` - JSON-LD helpers for Product, BreadcrumbList, Organization and FAQ
 
-The website currently includes 6 product categories, 34 active product records, 6 application pages,
+The website currently includes 6 product categories, 47 active product records, 6 application pages,
 3 buyer guides and dedicated trust pages for OEM service, quality control, shipping/payment and
-document requests. The product data includes the first 30 SKU batch plus retained generic starter
-records. Missing product data must remain explicit instead of inventing specifications,
+document requests. The product data includes the first 30 SKU batch, 13 catalog-derived product-family
+records and retained generic starter records. Missing product data must remain explicit instead of inventing specifications,
 certifications, prices, stock status, factory capacity or customer cases.
 
 ## Product Lines
@@ -241,6 +241,7 @@ unconfirmed certifications or hidden SKU workflow fields.
 - `docs/product-readiness-report.md` - generated product data, image and confirmation status checklist
 - `docs/site-wide-upgrade-roadmap.md` - phased roadmap for improving page quality, SEO and RFQ conversion
 - `docs/product-image-shooting-guide.md` - product photo shooting and editing guide
+- `docs/catalog-product-data-audit.md` - Renqiu Ailesen PDF catalog review notes and imported product-family evidence
 - `docs/missing-product-data-supplement.csv` - missing data worksheet for product pages
 - `docs/production-missing-data-supplement.md` - production missing data priority and RFQ backend notes
 - `docs/search-indexing-submission.md` - Google Search Console and IndexNow submission workflow
