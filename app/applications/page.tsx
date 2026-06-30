@@ -3,7 +3,7 @@ import { Breadcrumbs } from "@/components/content/Breadcrumbs";
 import { RfqCta } from "@/components/content/RfqCta";
 import { StructuredData } from "@/components/content/StructuredData";
 import { getAllApplications } from "@/lib/content/applications";
-import { breadcrumbJsonLd } from "@/lib/content/jsonld";
+import { breadcrumbJsonLd, collectionPageJsonLd } from "@/lib/content/jsonld";
 import { buildMetadata } from "@/lib/content/seo";
 
 const applicationSignals = [
@@ -54,6 +54,18 @@ export default function ApplicationsPage() {
           { name: "Home", path: "/" },
           { name: "Applications", path: "/applications" },
         ])}
+      />
+      <StructuredData
+        data={collectionPageJsonLd({
+          name: "ArcFort Weld Applications",
+          description:
+            "Industrial welding and cutting application pages for B2B product sourcing and RFQ preparation.",
+          path: "/applications",
+          items: applications.map((application) => ({
+            name: application.title,
+            path: `/applications/${application.slug}`,
+          })),
+        })}
       />
 
       <section className="bg-white py-12 sm:py-16">

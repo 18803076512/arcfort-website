@@ -4,7 +4,7 @@ import { ProductCard } from "@/components/content/ProductCard";
 import { RfqCta } from "@/components/content/RfqCta";
 import { StructuredData } from "@/components/content/StructuredData";
 import { getAllProductCategories } from "@/lib/content/categories";
-import { breadcrumbJsonLd } from "@/lib/content/jsonld";
+import { breadcrumbJsonLd, collectionPageJsonLd } from "@/lib/content/jsonld";
 import { getAllProducts } from "@/lib/content/products";
 import { buildMetadata } from "@/lib/content/seo";
 import { siteConfig } from "@/lib/content/site";
@@ -41,7 +41,8 @@ const buyerServiceLinks = [
   {
     href: "/oem-service",
     title: "OEM & Private Label",
-    description: "Logo, packaging and model customization reviewed after product details are confirmed.",
+    description:
+      "Logo, packaging and model customization reviewed after product details are confirmed.",
   },
   {
     href: "/quality-control",
@@ -100,6 +101,18 @@ export default function ProductsPage() {
           { name: "Home", path: "/" },
           { name: "Products", path: "/products" },
         ])}
+      />
+      <StructuredData
+        data={collectionPageJsonLd({
+          name: "ArcFort Weld Product Center",
+          description:
+            "Welding and cutting product categories for distributors, importers, wholesalers, repair workshops and OEM buyers.",
+          path: "/products",
+          items: categories.map((category) => ({
+            name: category.title,
+            path: `/products/${category.slug}`,
+          })),
+        })}
       />
 
       <section className="bg-white py-12 sm:py-16">
@@ -271,8 +284,8 @@ export default function ProductsPage() {
               Prepare these details for faster quotation.
             </h2>
             <p className="mt-4 text-sm leading-7 text-slate-600">
-              Welding torch consumables and cutting parts often depend on small fit details. A
-              clear RFQ helps avoid wrong parts and speeds up quotation review.
+              Welding torch consumables and cutting parts often depend on small fit details. A clear
+              RFQ helps avoid wrong parts and speeds up quotation review.
             </p>
           </div>
           <div className="grid gap-4 sm:grid-cols-2">

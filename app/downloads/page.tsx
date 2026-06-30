@@ -3,7 +3,7 @@ import { Breadcrumbs } from "@/components/content/Breadcrumbs";
 import { FaqSection } from "@/components/content/FaqSection";
 import { RfqCta } from "@/components/content/RfqCta";
 import { StructuredData } from "@/components/content/StructuredData";
-import { breadcrumbJsonLd, faqJsonLd } from "@/lib/content/jsonld";
+import { breadcrumbJsonLd, collectionPageJsonLd, faqJsonLd } from "@/lib/content/jsonld";
 import { buildMetadata } from "@/lib/content/seo";
 import { siteConfig } from "@/lib/content/site";
 
@@ -109,6 +109,16 @@ export default function DownloadsPage() {
             { name: "Home", path: "/" },
             { name: "Downloads", path: "/downloads" },
           ]),
+          collectionPageJsonLd({
+            name: "ArcFort Weld Download Center",
+            description:
+              "Catalog, product list and RFQ worksheet downloads for welding and cutting product sourcing.",
+            path: "/downloads",
+            items: downloadFiles.map((file) => ({
+              name: file.title,
+              path: file.href,
+            })),
+          }),
           faqJsonLd([...faq]),
         ]}
       />
@@ -125,8 +135,8 @@ export default function DownloadsPage() {
                 Catalog and RFQ documents for welding product sourcing.
               </h1>
               <p className="mt-5 text-lg leading-8 text-slate-600">
-                Request product catalogs, data sheets and OEM packaging information for ArcFort
-                Weld welding machines, cutting machines, torch consumables and welding accessories.
+                Request product catalogs, data sheets and OEM packaging information for ArcFort Weld
+                welding machines, cutting machines, torch consumables and welding accessories.
               </p>
             </div>
             <div className="border-l-4 border-arc-signal bg-arc-frost p-6">
@@ -155,8 +165,8 @@ export default function DownloadsPage() {
               </h2>
             </div>
             <p className="text-sm leading-7 text-slate-600">
-              These files are prepared for distributors, importers and repair workshops that need
-              to organize multiple welding consumables, torch parts or cutting parts before RFQ.
+              These files are prepared for distributors, importers and repair workshops that need to
+              organize multiple welding consumables, torch parts or cutting parts before RFQ.
             </p>
           </div>
           <div className="mb-10 grid gap-5 md:grid-cols-2">
@@ -187,9 +197,7 @@ export default function DownloadsPage() {
           <div className="grid gap-5 md:grid-cols-2">
             {documentTypes.map((item) => (
               <article key={item.title} className="border border-slate-200 bg-white p-6 shadow-sm">
-                <h2 className="font-display text-2xl font-black text-arc-midnight">
-                  {item.title}
-                </h2>
+                <h2 className="font-display text-2xl font-black text-arc-midnight">{item.title}</h2>
                 <p className="mt-3 text-sm leading-7 text-slate-600">{item.description}</p>
                 <Link
                   href="/rfq"

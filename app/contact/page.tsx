@@ -2,7 +2,7 @@ import Link from "next/link";
 import { Breadcrumbs } from "@/components/content/Breadcrumbs";
 import { RfqCta } from "@/components/content/RfqCta";
 import { StructuredData } from "@/components/content/StructuredData";
-import { breadcrumbJsonLd } from "@/lib/content/jsonld";
+import { breadcrumbJsonLd, webPageJsonLd } from "@/lib/content/jsonld";
 import { buildMetadata } from "@/lib/content/seo";
 import { siteConfig } from "@/lib/content/site";
 
@@ -80,6 +80,15 @@ export default function ContactPage() {
           { name: "Home", path: "/" },
           { name: "Contact", path: "/contact" },
         ])}
+      />
+      <StructuredData
+        data={webPageJsonLd({
+          name: "Contact ArcFort Weld",
+          description:
+            "Contact ArcFort Weld for welding and cutting product RFQs, OEM welding accessories and export sourcing support.",
+          path: "/contact",
+          pageType: "ContactPage",
+        })}
       />
 
       <section className="bg-white py-12 sm:py-16">

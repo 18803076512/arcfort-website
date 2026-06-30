@@ -1,16 +1,14 @@
 import { notFound } from "next/navigation";
 import { ProductDetailTemplate } from "@/components/content/ProductDetailTemplate";
 import { StructuredData } from "@/components/content/StructuredData";
-import {
-  getAllProductCategories,
-  getProductCategoryBySlug,
-} from "@/lib/content/categories";
-import { breadcrumbJsonLd, faqJsonLd } from "@/lib/content/jsonld";
+import { getAllProductCategories, getProductCategoryBySlug } from "@/lib/content/categories";
+import { breadcrumbJsonLd, faqJsonLd, productWebPageJsonLd } from "@/lib/content/jsonld";
 import {
   getProductBySlug,
   getProductStaticParams,
   getRelatedProducts,
 } from "@/lib/content/products";
+import { hasPublicProductImage } from "@/lib/content/product-images";
 import { buildMetadata } from "@/lib/content/seo";
 
 type ProductRouteProps = {
@@ -38,6 +36,7 @@ export async function generateMetadata({ params }: ProductRouteProps) {
     description: product.metaDescription,
     path: `/products/${category.slug}/${product.slug}`,
     keywords: product.keywords,
+    image: hasPublicProductImage(product.mainImage) ? product.mainImage : undefined,
   });
 }
 
@@ -83,10 +82,15 @@ export default async function ProductDetailPage({ params }: ProductRouteProps) {
             { name: category.title, path: `/products/${category.slug}` },
             { name: product.title, path: `/products/${category.slug}/${product.slug}` },
           ]),
+          productWebPageJsonLd(product, category),
           faqJsonLd(product.faq),
         ]}
       />
-      <ProductDetailTemplate product={product} category={category} relatedProducts={relatedProducts} />
+      <ProductDetailTemplate
+        product={product}
+        category={category}
+        relatedProducts={relatedProducts}
+      />
     </>
   );
 }

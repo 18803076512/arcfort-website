@@ -5,6 +5,8 @@ export const siteConfig = {
   chineseName: "任丘市埃勒森焊接科技有限公司",
   tagline: "Industrial Welding & Cutting Solutions",
   url: "https://www.arcfortweld.com",
+  defaultSeoImage: "/images/site/arcfort-hero-welding-workshop.png",
+  logo: "/favicon.svg",
   description:
     "Industrial welding and cutting product supplier for distributors, importers, OEM buyers, industrial users and repair workshops.",
   email: "arcfortweld@outlook.com",

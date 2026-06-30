@@ -1,5 +1,6 @@
 import {
   TO_BE_CONFIRMED,
+  type ApplicationPage,
   type FaqItem,
   type GuideArticle,
   type Product,
@@ -15,7 +16,9 @@ type BreadcrumbItem = {
 };
 
 function confirmedRows(rows: { label: string; value: string }[]) {
-  return rows.filter((row) => row.label !== "Image Name" && !isLowSignalSpecificationValue(row.value));
+  return rows.filter(
+    (row) => row.label !== "Image Name" && !isLowSignalSpecificationValue(row.value),
+  );
 }
 
 export function organizationJsonLd() {
@@ -29,6 +32,10 @@ export function organizationJsonLd() {
     email: siteConfig.email,
     telephone: siteConfig.whatsapp,
     description: siteConfig.description,
+    logo: absoluteUrl(siteConfig.logo),
+    image: absoluteUrl(siteConfig.defaultSeoImage),
+    slogan: siteConfig.tagline,
+    areaServed: ["Global", "North America", "Europe", "Asia", "South America", "Africa", "Oceania"],
     address: {
       "@type": "PostalAddress",
       streetAddress: siteConfig.address,
@@ -42,6 +49,7 @@ export function organizationJsonLd() {
         contactType: "sales",
         email: siteConfig.email,
         telephone: siteConfig.whatsapp,
+        url: absoluteUrl("/contact"),
         availableLanguage: ["English", "Chinese"],
       },
     ],
@@ -50,6 +58,52 @@ export function organizationJsonLd() {
       name: siteConfig.shortName,
     },
     sameAs: siteConfig.sameAs,
+  };
+}
+
+export function websiteJsonLd() {
+  return {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    name: siteConfig.name,
+    alternateName: [siteConfig.shortName, siteConfig.legalName],
+    url: siteConfig.url,
+    description: siteConfig.description,
+    inLanguage: "en",
+    publisher: {
+      "@type": "Organization",
+      name: siteConfig.legalName,
+    },
+  };
+}
+
+export function webPageJsonLd({
+  name,
+  description,
+  path,
+  pageType = "WebPage",
+}: {
+  name: string;
+  description: string;
+  path: string;
+  pageType?: "WebPage" | "AboutPage" | "ContactPage";
+}) {
+  return {
+    "@context": "https://schema.org",
+    "@type": pageType,
+    name,
+    description,
+    url: absoluteUrl(path),
+    inLanguage: "en",
+    isPartOf: {
+      "@type": "WebSite",
+      name: siteConfig.name,
+      url: siteConfig.url,
+    },
+    publisher: {
+      "@type": "Organization",
+      name: siteConfig.legalName,
+    },
   };
 }
 
@@ -66,6 +120,44 @@ export function breadcrumbJsonLd(items: BreadcrumbItem[]) {
   };
 }
 
+export function collectionPageJsonLd({
+  name,
+  description,
+  path,
+  items,
+}: {
+  name: string;
+  description: string;
+  path: string;
+  items: Array<{
+    name: string;
+    path: string;
+  }>;
+}) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    name,
+    description,
+    url: absoluteUrl(path),
+    inLanguage: "en",
+    isPartOf: {
+      "@type": "WebSite",
+      name: siteConfig.name,
+      url: siteConfig.url,
+    },
+    mainEntity: {
+      "@type": "ItemList",
+      itemListElement: items.map((item, index) => ({
+        "@type": "ListItem",
+        position: index + 1,
+        name: item.name,
+        url: absoluteUrl(item.path),
+      })),
+    },
+  };
+}
+
 export function faqJsonLd(items: FaqItem[]) {
   return {
     "@context": "https://schema.org",
@@ -77,6 +169,35 @@ export function faqJsonLd(items: FaqItem[]) {
         "@type": "Answer",
         text: item.answer,
       },
+    })),
+  };
+}
+
+export function productWebPageJsonLd(product: Product, category: ProductCategory) {
+  return {
+    ...webPageJsonLd({
+      name: product.title,
+      description: product.metaDescription,
+      path: `/products/${category.slug}/${product.slug}`,
+    }),
+    about: {
+      "@type": "Thing",
+      name: product.title,
+      description: product.shortDescription,
+    },
+  };
+}
+
+export function applicationWebPageJsonLd(application: ApplicationPage) {
+  return {
+    ...webPageJsonLd({
+      name: application.title,
+      description: application.seoDescription,
+      path: `/applications/${application.slug}`,
+    }),
+    about: application.industries.map((industry) => ({
+      "@type": "Thing",
+      name: industry,
     })),
   };
 }
@@ -122,6 +243,12 @@ export function articleJsonLd(article: GuideArticle) {
     publisher: {
       "@type": "Organization",
       name: siteConfig.name,
+      logo: {
+        "@type": "ImageObject",
+        url: absoluteUrl(siteConfig.logo),
+      },
     },
+    image: absoluteUrl(siteConfig.defaultSeoImage),
+    inLanguage: "en",
   };
 }
