@@ -5,12 +5,9 @@ import { FaqSection } from "@/components/content/FaqSection";
 import { ProductCard } from "@/components/content/ProductCard";
 import { RfqCta } from "@/components/content/RfqCta";
 import { StructuredData } from "@/components/content/StructuredData";
-import {
-  getAllApplications,
-  getApplicationBySlug,
-} from "@/lib/content/applications";
+import { getAllApplications, getApplicationBySlug } from "@/lib/content/applications";
 import { getAllProductCategories, getRelatedCategories } from "@/lib/content/categories";
-import { breadcrumbJsonLd, faqJsonLd } from "@/lib/content/jsonld";
+import { applicationWebPageJsonLd, breadcrumbJsonLd, faqJsonLd } from "@/lib/content/jsonld";
 import { getAllProducts } from "@/lib/content/products";
 import { buildMetadata } from "@/lib/content/seo";
 import type { Product, ProductCategory } from "@/lib/content/schemas";
@@ -65,7 +62,9 @@ export default async function ApplicationDetailPage({ params }: ApplicationRoute
     notFound();
   }
 
-  const categoryMap = new Map(getAllProductCategories().map((category) => [category.slug, category]));
+  const categoryMap = new Map(
+    getAllProductCategories().map((category) => [category.slug, category]),
+  );
   const relatedCategories = getRelatedCategories(application.relatedCategorySlugs);
   const relatedProducts = getAllProducts()
     .filter((product) => application.relatedProductSlugs.includes(product.slug))
@@ -89,6 +88,7 @@ export default async function ApplicationDetailPage({ params }: ApplicationRoute
             { name: "Applications", path: "/applications" },
             { name: application.title, path: `/applications/${application.slug}` },
           ]),
+          applicationWebPageJsonLd(application),
           faqJsonLd(application.faq),
         ]}
       />
@@ -202,9 +202,7 @@ export default async function ApplicationDetailPage({ params }: ApplicationRoute
             </div>
           </article>
           <article className="border border-slate-200 bg-white p-6 shadow-sm">
-            <h2 className="font-display text-2xl font-black text-arc-midnight">
-              Sourcing Flow
-            </h2>
+            <h2 className="font-display text-2xl font-black text-arc-midnight">Sourcing Flow</h2>
             <div className="mt-5 grid gap-3 sm:grid-cols-2">
               {sourcingFlow.map((step, index) => (
                 <div key={step} className="border border-slate-100 bg-slate-50 p-4">
@@ -250,7 +248,11 @@ export default async function ApplicationDetailPage({ params }: ApplicationRoute
             </h2>
             <div className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
               {relatedProducts.map((item) => (
-                <ProductCard key={item.product.slug} product={item.product} category={item.category} />
+                <ProductCard
+                  key={item.product.slug}
+                  product={item.product}
+                  category={item.category}
+                />
               ))}
             </div>
           </div>

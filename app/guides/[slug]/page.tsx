@@ -44,6 +44,7 @@ export async function generateMetadata({ params }: GuideRouteProps) {
     description: guide.seoDescription,
     path: `/guides/${guide.slug}`,
     keywords: guide.keywords,
+    type: "article",
   });
 }
 
@@ -55,7 +56,9 @@ export default async function GuideDetailPage({ params }: GuideRouteProps) {
     notFound();
   }
 
-  const categoryMap = new Map(getAllProductCategories().map((category) => [category.slug, category]));
+  const categoryMap = new Map(
+    getAllProductCategories().map((category) => [category.slug, category]),
+  );
   const relatedCategories = getRelatedCategories(guide.categorySlugs);
   const relatedProducts = getAllProducts()
     .filter((product) => guide.productSlugs.includes(product.slug))
@@ -105,9 +108,7 @@ export default async function GuideDetailPage({ params }: GuideRouteProps) {
             <h1 className="mt-4 max-w-4xl font-display text-4xl font-black leading-tight sm:text-5xl lg:text-6xl">
               {guide.title}
             </h1>
-            <p className="mt-6 max-w-3xl text-lg leading-8 text-slate-300">
-              {guide.description}
-            </p>
+            <p className="mt-6 max-w-3xl text-lg leading-8 text-slate-300">{guide.description}</p>
             <div className="mt-8 flex flex-col gap-3 sm:flex-row">
               <Link
                 href="#guide-content"
@@ -183,9 +184,7 @@ export default async function GuideDetailPage({ params }: GuideRouteProps) {
                   <div className="mt-2 font-display text-xl font-black text-arc-midnight">
                     {category.title}
                   </div>
-                  <p className="mt-2 text-sm leading-6 text-slate-600">
-                    {category.description}
-                  </p>
+                  <p className="mt-2 text-sm leading-6 text-slate-600">{category.description}</p>
                 </Link>
               ))}
             </div>
@@ -200,7 +199,11 @@ export default async function GuideDetailPage({ params }: GuideRouteProps) {
             </h2>
             <div className="mt-5 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
               {relatedProducts.map((item) => (
-                <ProductCard key={item.product.slug} product={item.product} category={item.category} />
+                <ProductCard
+                  key={item.product.slug}
+                  product={item.product}
+                  category={item.category}
+                />
               ))}
             </div>
           </div>

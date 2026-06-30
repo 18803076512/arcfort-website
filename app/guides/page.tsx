@@ -3,7 +3,7 @@ import { Breadcrumbs } from "@/components/content/Breadcrumbs";
 import { RfqCta } from "@/components/content/RfqCta";
 import { StructuredData } from "@/components/content/StructuredData";
 import { getAllGuides } from "@/lib/content/guides";
-import { breadcrumbJsonLd } from "@/lib/content/jsonld";
+import { breadcrumbJsonLd, collectionPageJsonLd } from "@/lib/content/jsonld";
 import { buildMetadata } from "@/lib/content/seo";
 
 const guideSignals = [
@@ -42,6 +42,18 @@ export default function GuidesPage() {
           { name: "Home", path: "/" },
           { name: "Guides", path: "/guides" },
         ])}
+      />
+      <StructuredData
+        data={collectionPageJsonLd({
+          name: "ArcFort Weld Welding Buyer Guides",
+          description:
+            "Buyer guides for welding and cutting product RFQs, compatibility confirmation and B2B sourcing preparation.",
+          path: "/guides",
+          items: guides.map((guide) => ({
+            name: guide.title,
+            path: `/guides/${guide.slug}`,
+          })),
+        })}
       />
 
       <section className="bg-white py-12 sm:py-16">
@@ -138,9 +150,7 @@ export default function GuidesPage() {
                 href={`/guides/${guide.slug}`}
                 className="group border border-slate-200 bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:border-arc-blue hover:shadow-industrial"
               >
-                <p className="text-xs font-bold uppercase tracking-[0.18em] text-arc-blue">
-                  Guide
-                </p>
+                <p className="text-xs font-bold uppercase tracking-[0.18em] text-arc-blue">Guide</p>
                 <h2 className="mt-4 font-display text-2xl font-black leading-tight text-arc-midnight">
                   {guide.title}
                 </h2>

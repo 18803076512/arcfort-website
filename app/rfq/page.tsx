@@ -1,6 +1,6 @@
 import { Breadcrumbs } from "@/components/content/Breadcrumbs";
 import { StructuredData } from "@/components/content/StructuredData";
-import { breadcrumbJsonLd } from "@/lib/content/jsonld";
+import { breadcrumbJsonLd, webPageJsonLd } from "@/lib/content/jsonld";
 import { buildMetadata } from "@/lib/content/seo";
 import { siteConfig } from "@/lib/content/site";
 import { RfqForm } from "./RfqForm";
@@ -56,8 +56,7 @@ const rfqBusinessInfo = [
   { label: "Payment Terms", value: siteConfig.paymentTerms },
   {
     label: "Backup Contact",
-    value:
-      "For urgent inquiries or large files, send the same RFQ details by email or WhatsApp.",
+    value: "For urgent inquiries or large files, send the same RFQ details by email or WhatsApp.",
   },
 ];
 
@@ -85,6 +84,14 @@ export default async function RfqPage({ searchParams }: RfqPageProps) {
           { name: "Home", path: "/" },
           { name: "Request a Quote", path: "/rfq" },
         ])}
+      />
+      <StructuredData
+        data={webPageJsonLd({
+          name: "Request a Quote",
+          description:
+            "RFQ form for ArcFort Weld welding torch parts, plasma cutting consumables, welding accessories and OEM sourcing programs.",
+          path: "/rfq",
+        })}
       />
 
       <section className="bg-white py-12 sm:py-16">

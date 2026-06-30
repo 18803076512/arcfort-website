@@ -6,7 +6,7 @@ import {
   getProductCategoryBySlug,
   getRelatedCategories,
 } from "@/lib/content/categories";
-import { breadcrumbJsonLd, faqJsonLd } from "@/lib/content/jsonld";
+import { breadcrumbJsonLd, collectionPageJsonLd, faqJsonLd } from "@/lib/content/jsonld";
 import { getProductsByCategory } from "@/lib/content/products";
 import { buildMetadata } from "@/lib/content/seo";
 
@@ -58,6 +58,15 @@ export default async function ProductCategoryPage({ params }: CategoryRouteProps
             { name: "Products", path: "/products" },
             { name: category.title, path: `/products/${category.slug}` },
           ]),
+          collectionPageJsonLd({
+            name: category.title,
+            description: category.seoDescription,
+            path: `/products/${category.slug}`,
+            items: products.map((product) => ({
+              name: product.title,
+              path: `/products/${category.slug}/${product.slug}`,
+            })),
+          }),
           faqJsonLd(category.faq),
         ]}
       />

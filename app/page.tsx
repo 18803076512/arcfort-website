@@ -2,8 +2,10 @@ import Image from "next/image";
 import Link from "next/link";
 import { ProductCard } from "@/components/content/ProductCard";
 import { RfqCta } from "@/components/content/RfqCta";
+import { StructuredData } from "@/components/content/StructuredData";
 import { getAllApplications } from "@/lib/content/applications";
 import { getAllProductCategories } from "@/lib/content/categories";
+import { webPageJsonLd } from "@/lib/content/jsonld";
 import { getAllProducts } from "@/lib/content/products";
 import { buildMetadata } from "@/lib/content/seo";
 import { siteConfig } from "@/lib/content/site";
@@ -102,6 +104,14 @@ export default function Home() {
 
   return (
     <>
+      <StructuredData
+        data={webPageJsonLd({
+          name: "ArcFort Weld Industrial Welding & Cutting Solutions",
+          description:
+            "Industrial welding and cutting product supplier for distributors, importers, OEM buyers, industrial users and repair workshops.",
+          path: "/",
+        })}
+      />
       <section className="relative isolate overflow-hidden bg-arc-midnight text-white">
         <Image
           src="/images/site/arcfort-hero-welding-workshop.png"
@@ -317,8 +327,8 @@ export default function Home() {
                 OEM Review
               </p>
               <p className="mt-2 max-w-xl text-sm leading-6 text-slate-100">
-                Samples, drawings, product photos and packaging requirements help confirm
-                quotation details before production.
+                Samples, drawings, product photos and packaging requirements help confirm quotation
+                details before production.
               </p>
             </div>
           </div>
@@ -404,9 +414,7 @@ export default function Home() {
 
       <section className="bg-white py-16 sm:py-20">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <p className="text-sm font-bold uppercase tracking-[0.2em] text-arc-blue">
-            Applications
-          </p>
+          <p className="text-sm font-bold uppercase tracking-[0.2em] text-arc-blue">Applications</p>
           <h2 className="mt-3 font-display text-3xl font-black text-arc-midnight sm:text-4xl">
             Industrial use cases for welding and cutting supply.
           </h2>

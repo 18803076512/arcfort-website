@@ -5,6 +5,8 @@ import { getAllGuides } from "@/lib/content/guides";
 import { getAllProducts } from "@/lib/content/products";
 import { absoluteUrl } from "@/lib/content/site";
 
+const contentLastModified = new Date("2026-06-30T00:00:00.000Z");
+
 export default function sitemap(): MetadataRoute.Sitemap {
   const staticRoutes = [
     "/",
@@ -39,7 +41,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     ...guideRoutes,
   ].map((route) => ({
     url: absoluteUrl(route),
-    lastModified: new Date(),
+    lastModified: contentLastModified,
     changeFrequency: route === "/" ? "weekly" : "monthly",
     priority:
       route === "/"

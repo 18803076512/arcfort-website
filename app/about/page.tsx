@@ -1,4 +1,6 @@
 import { RfqCta } from "@/components/content/RfqCta";
+import { StructuredData } from "@/components/content/StructuredData";
+import { breadcrumbJsonLd, webPageJsonLd } from "@/lib/content/jsonld";
 import { buildMetadata } from "@/lib/content/seo";
 import { siteConfig } from "@/lib/content/site";
 
@@ -82,6 +84,21 @@ export const metadata = buildMetadata({
 export default function AboutPage() {
   return (
     <>
+      <StructuredData
+        data={[
+          breadcrumbJsonLd([
+            { name: "Home", path: "/" },
+            { name: "About", path: "/about" },
+          ]),
+          webPageJsonLd({
+            name: "About ArcFort Weld",
+            description:
+              "Company information for ArcFort Weld and Renqiu Ailesen Welding Technology Co., Ltd.",
+            path: "/about",
+            pageType: "AboutPage",
+          }),
+        ]}
+      />
       <section className="bg-arc-midnight py-14 text-white sm:py-20">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="max-w-4xl">
@@ -133,9 +150,7 @@ export default function AboutPage() {
               ))}
             </div>
             <div className="border-l-4 border-arc-signal bg-arc-frost p-5">
-              <h3 className="font-display text-2xl font-black text-arc-midnight">
-                Who We Serve
-              </h3>
+              <h3 className="font-display text-2xl font-black text-arc-midnight">Who We Serve</h3>
               <div className="mt-4 grid gap-2 sm:grid-cols-2">
                 {targetCustomers.map((customer) => (
                   <div key={customer} className="text-sm font-semibold text-slate-700">
@@ -165,9 +180,7 @@ export default function AboutPage() {
             {supplyItems.map((item) => (
               <div key={item} className="border border-slate-200 bg-white p-6 shadow-sm">
                 <div className="h-1 w-16 bg-arc-signal" />
-                <h3 className="mt-5 font-display text-2xl font-black text-arc-midnight">
-                  {item}
-                </h3>
+                <h3 className="mt-5 font-display text-2xl font-black text-arc-midnight">{item}</h3>
               </div>
             ))}
           </div>
@@ -216,9 +229,7 @@ export default function AboutPage() {
           <div className="mt-10 grid gap-5 md:grid-cols-2 lg:grid-cols-4">
             {qualitySteps.map((step) => (
               <article key={step.title} className="border border-slate-200 bg-white p-6 shadow-sm">
-                <h3 className="font-display text-xl font-black text-arc-midnight">
-                  {step.title}
-                </h3>
+                <h3 className="font-display text-xl font-black text-arc-midnight">{step.title}</h3>
                 <p className="mt-4 text-sm leading-6 text-slate-600">{step.description}</p>
               </article>
             ))}
