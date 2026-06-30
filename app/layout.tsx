@@ -45,8 +45,7 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: siteConfig.name,
-    description:
-      "Industrial welding and cutting solutions for global B2B buyers and RFQ programs.",
+    description: "Industrial welding and cutting solutions for global B2B buyers and RFQ programs.",
   },
   verification: {
     google: process.env.GOOGLE_SITE_VERIFICATION || undefined,
@@ -57,12 +56,20 @@ export default function RootLayout({ children }: Readonly<{ children: ReactNode 
   return (
     <html lang="en">
       <body className="font-sans antialiased">
+        <a
+          href="#main-content"
+          className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100] focus:bg-arc-signal focus:px-4 focus:py-3 focus:text-sm focus:font-bold focus:uppercase focus:tracking-[0.12em] focus:text-arc-midnight"
+        >
+          Skip to content
+        </a>
         <StructuredData data={organizationJsonLd()} />
         <SourceAttributionTracker />
         <AnalyticsTracker />
         <Header />
         <BuyerTrustStrip />
-        <main>{children}</main>
+        <main id="main-content" tabIndex={-1}>
+          {children}
+        </main>
         <Footer />
         <StickyContactBar />
       </body>
