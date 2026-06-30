@@ -460,7 +460,7 @@ export function RfqForm({ initialProduct = "" }: RfqFormProps) {
             multiple
             accept=".pdf,.xlsx,.xls,.csv,.jpg,.jpeg,.png,.doc,.docx"
             onChange={handleFiles}
-            className="mt-2 block w-full cursor-pointer border border-dashed border-slate-300 bg-slate-50 p-4 text-sm text-slate-700 file:mr-4 file:border-0 file:bg-arc-blue file:px-4 file:py-2 file:text-sm file:font-bold file:uppercase file:tracking-[0.12em] file:text-white hover:border-arc-blue"
+            className="mt-2 block w-full cursor-pointer border border-dashed border-slate-300 bg-slate-50 p-4 text-sm text-slate-700 file:mb-2 file:block file:border-0 file:bg-arc-blue file:px-3 file:py-2 file:text-xs file:font-bold file:uppercase file:tracking-[0.08em] file:text-white hover:border-arc-blue sm:file:mb-0 sm:file:mr-4 sm:file:inline-block sm:file:px-4 sm:file:text-sm sm:file:tracking-[0.12em]"
             aria-invalid={Boolean(errors.attachments)}
             aria-describedby="attachments-help"
           />
@@ -482,7 +482,7 @@ export function RfqForm({ initialProduct = "" }: RfqFormProps) {
         <button
           type="submit"
           disabled={isSubmitting}
-          className="inline-flex w-full items-center justify-center bg-arc-blue px-6 py-3 text-sm font-bold uppercase tracking-[0.16em] text-white transition hover:bg-arc-midnight disabled:cursor-not-allowed disabled:bg-slate-400 sm:w-auto"
+          className="inline-flex min-h-12 w-full items-center justify-center bg-arc-blue px-6 py-3 text-sm font-bold uppercase tracking-[0.12em] text-white transition hover:bg-arc-midnight disabled:cursor-not-allowed disabled:bg-slate-400 sm:w-auto sm:tracking-[0.16em]"
         >
           {isSubmitting ? "Submitting..." : "Submit RFQ"}
         </button>
@@ -532,7 +532,7 @@ function FormField({
         onChange={(event) => onChange(event.target.value)}
         autoComplete={autoComplete}
         placeholder={placeholder}
-        className="mt-2 w-full border-slate-300 bg-slate-50 text-slate-900 placeholder:text-slate-400 focus:border-arc-blue focus:ring-arc-blue"
+        className="mt-2 min-h-12 w-full border-slate-300 bg-slate-50 text-slate-900 placeholder:text-slate-400 focus:border-arc-blue focus:ring-arc-blue"
         aria-invalid={Boolean(error)}
         aria-describedby={error ? errorId : undefined}
       />

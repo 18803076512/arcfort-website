@@ -13,16 +13,28 @@
 }
 
 html {
+  max-width: 100%;
+  overflow-x: hidden;
   scroll-behavior: smooth;
 }
 
 body {
   margin: 0;
   padding-bottom: calc(5rem + env(safe-area-inset-bottom));
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
   background:
     radial-gradient(circle at 10% 0%, rgba(15, 76, 129, 0.10), transparent 28rem),
     linear-gradient(180deg, #ffffff 0%, var(--background) 44%, #eef3f8 100%);
   color: var(--foreground);
+}
+
+img,
+svg,
+video,
+canvas {
+  max-width: 100%;
 }
 
 @media (min-width: 768px) {

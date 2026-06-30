@@ -15,9 +15,9 @@ export function BuyerTrustStrip() {
   const categoryCount = getAllProductCategories().length;
 
   return (
-    <section className="border-b border-slate-200 bg-arc-frost">
-      <div className="mx-auto grid max-w-7xl gap-4 px-4 py-4 sm:px-6 lg:grid-cols-[1.05fr_1.2fr_0.75fr] lg:items-center lg:px-8">
-        <div>
+    <section className="w-full max-w-[100vw] overflow-hidden border-b border-slate-200 bg-arc-frost">
+      <div className="mx-auto grid w-full max-w-[100vw] gap-4 px-4 py-4 sm:px-6 lg:max-w-7xl lg:grid-cols-[1.05fr_1.2fr_0.75fr] lg:items-center lg:px-8">
+        <div className="min-w-0">
           <p className="text-xs font-bold uppercase tracking-[0.18em] text-arc-blue">
             Industrial B2B Supply
           </p>
@@ -26,13 +26,15 @@ export function BuyerTrustStrip() {
             and cutting buyers.
           </p>
         </div>
-        <div className="grid grid-cols-2 gap-px overflow-hidden border border-slate-200 bg-slate-200 sm:grid-cols-4">
+        <div className="grid grid-cols-[repeat(2,minmax(0,1fr))] gap-px overflow-hidden border border-slate-200 bg-slate-200 sm:grid-cols-[repeat(4,minmax(0,1fr))]">
           {serviceSignals.map((item) => (
-            <div key={item.label} className="bg-white px-3 py-3">
+            <div key={item.label} className="min-w-0 bg-white px-3 py-3">
               <div className="text-[11px] font-bold uppercase tracking-[0.14em] text-slate-500">
                 {item.label}
               </div>
-              <div className="mt-1 text-sm font-black text-arc-midnight">{item.value}</div>
+              <div className="mt-1 break-words text-sm font-black text-arc-midnight">
+                {item.value}
+              </div>
             </div>
           ))}
         </div>

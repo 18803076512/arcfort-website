@@ -14,9 +14,11 @@ export function SpecificationTable({ rows, title = "Specification Table" }: Spec
         {rows.map((row) => (
           <div key={row.label} className="grid gap-2 border border-slate-100 bg-white p-4 sm:grid-cols-[12rem_1fr]">
             <div className="text-sm font-bold text-arc-midnight">{row.label}</div>
-            <div className="min-w-0 text-sm leading-6 text-slate-700">
+            <div className="min-w-0 break-words text-sm leading-6 text-slate-700">
               {displayConfirmedValue(row.value)}
-              {row.note ? <span className="ml-2 text-slate-400">{row.note}</span> : null}
+              {row.note ? (
+                <span className="block text-slate-400 sm:ml-2 sm:inline">{row.note}</span>
+              ) : null}
             </div>
           </div>
         ))}

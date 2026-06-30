@@ -115,13 +115,13 @@ export default function Home() {
         <div className="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_78%_24%,rgba(56,189,248,0.22),transparent_34%),linear-gradient(180deg,rgba(7,21,36,0.1),rgba(7,21,36,0.82))]" />
         <div className="relative mx-auto flex min-h-[calc(100vh-5rem)] max-w-7xl flex-col justify-center px-4 py-16 sm:px-6 lg:px-8">
           <div className="max-w-3xl">
-            <p className="mb-5 inline-flex max-w-full flex-wrap border-l-4 border-arc-signal bg-white/10 px-4 py-2 text-xs font-semibold uppercase leading-6 tracking-[0.14em] text-arc-signal sm:text-sm sm:tracking-[0.2em]">
+            <p className="mb-5 inline-flex max-w-full flex-wrap break-words border-l-4 border-arc-signal bg-white/10 px-4 py-2 text-xs font-semibold uppercase leading-6 tracking-[0.1em] text-arc-signal sm:text-sm sm:tracking-[0.2em]">
               ArcFort Weld | Welding & Cutting Solutions
             </p>
-            <h1 className="font-display text-4xl font-black leading-[1.02] sm:text-6xl lg:text-7xl">
+            <h1 className="break-words font-display text-3xl font-black leading-tight sm:text-6xl lg:text-7xl">
               Industrial Welding & Cutting Solutions
             </h1>
-            <p className="mt-7 max-w-2xl text-lg leading-8 text-slate-200">
+            <p className="mt-7 max-w-2xl break-words text-lg leading-8 text-slate-200">
               Renqiu Ailesen Welding Technology Co., Ltd. supplies welding and cutting machines,
               MIG/MAG torch parts, TIG torch parts, plasma cutting consumables and OEM welding
               accessories for distributors, importers and industrial users.
