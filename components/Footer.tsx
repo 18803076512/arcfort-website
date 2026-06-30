@@ -134,14 +134,14 @@ export function Footer() {
             Contact
           </h2>
           <div className="mt-4 grid gap-2 text-sm text-slate-300">
-            <a href={siteConfig.emailHref} className="hover:text-white">
+            <a href={siteConfig.emailHref} className="break-words hover:text-white">
               Email: {siteConfig.email}
             </a>
-            <a href={siteConfig.whatsappHref} className="hover:text-white">
+            <a href={siteConfig.whatsappHref} className="break-words hover:text-white">
               WhatsApp: {siteConfig.whatsapp}
             </a>
-            <p>Address: {siteConfig.address}</p>
-            <p>Main Port: {siteConfig.mainPort}</p>
+            <p className="break-words">Address: {siteConfig.address}</p>
+            <p className="break-words">Main Port: {siteConfig.mainPort}</p>
             <Link href="/rfq" className="font-semibold text-white hover:text-arc-signal">
               Send Inquiry
             </Link>
