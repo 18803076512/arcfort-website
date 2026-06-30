@@ -48,6 +48,45 @@ const initialValues: RfqFormValues = {
   message: "",
 };
 
+const rfqQuickTemplates = [
+  {
+    title: "Mixed consumables list",
+    description: "For distributors buying several welding torch consumables together.",
+    productRequirements:
+      "Mixed welding consumables inquiry: MIG/MAG torch parts, TIG torch parts, plasma cutting consumables or welding accessories. Please review by product list, photo, drawing or reference part.",
+    quantity: "Mixed order / quantity to be confirmed",
+    message:
+      "Please quote available items, MOQ, lead time, export packing options and shipment from Tianjin Port.",
+  },
+  {
+    title: "OEM packaging request",
+    description: "For private label, logo or carton design discussion.",
+    productRequirements:
+      "OEM welding product inquiry. Products, logo artwork, label requirement, carton design and packaging details can be provided for review.",
+    quantity: "Quantity depends on MOQ and packaging requirement",
+    message:
+      "Please confirm OEM packaging options, MOQ policy, lead time and what artwork files are required.",
+  },
+  {
+    title: "Replacement part check",
+    description: "For matching by drawing, current part or model reference.",
+    productRequirements:
+      "Replacement welding part inquiry. Compatibility should be confirmed by sample photo, drawing, torch model, machine model or existing reference part.",
+    quantity: "Small trial order first, repeat order after confirmation",
+    message:
+      "Please review fit, material, size and packaging details after the reference information is provided.",
+  },
+  {
+    title: "Machine and accessory inquiry",
+    description: "For welding machines, cutting machines and workshop accessories.",
+    productRequirements:
+      "Welding machine, cutting machine or welding accessory inquiry. Required process, application, accessories and destination country can be provided for quotation review.",
+    quantity: "Quantity to be confirmed",
+    message:
+      "Please confirm available models, accessory scope, packing, payment terms and delivery options.",
+  },
+] as const;
+
 const requiredFields: Array<keyof RfqFormValues> = [
   "name",
   "company",
@@ -57,7 +96,17 @@ const requiredFields: Array<keyof RfqFormValues> = [
   "quantity",
 ];
 
-const allowedFileExtensions = [".pdf", ".xlsx", ".xls", ".csv", ".jpg", ".jpeg", ".png", ".doc", ".docx"];
+const allowedFileExtensions = [
+  ".pdf",
+  ".xlsx",
+  ".xls",
+  ".csv",
+  ".jpg",
+  ".jpeg",
+  ".png",
+  ".doc",
+  ".docx",
+];
 const maxFiles = 5;
 const maxFileSize = 10 * 1024 * 1024;
 const maxTotalFileSize = 25 * 1024 * 1024;
@@ -124,6 +173,27 @@ export function RfqForm({ initialProduct = "" }: RfqFormProps) {
     setErrors((currentErrors) => ({
       ...currentErrors,
       [field]: undefined,
+    }));
+  }
+
+  function applyQuickTemplate(template: (typeof rfqQuickTemplates)[number]) {
+    setValues((currentValues) => {
+      const currentRequirements = currentValues.productRequirements.trim();
+
+      return {
+        ...currentValues,
+        productRequirements: currentRequirements
+          ? `${currentRequirements}\n\n${template.productRequirements}`
+          : template.productRequirements,
+        quantity: currentValues.quantity.trim() ? currentValues.quantity : template.quantity,
+        message: currentValues.message.trim() ? currentValues.message : template.message,
+      };
+    });
+    setErrors((currentErrors) => ({
+      ...currentErrors,
+      productRequirements: undefined,
+      quantity: undefined,
+      message: undefined,
     }));
   }
 
@@ -339,7 +409,11 @@ export function RfqForm({ initialProduct = "" }: RfqFormProps) {
   }
 
   return (
-    <form onSubmit={handleSubmit} noValidate className="border border-slate-200 bg-white p-6 shadow-sm sm:p-8">
+    <form
+      onSubmit={handleSubmit}
+      noValidate
+      className="border border-slate-200 bg-white p-6 shadow-sm sm:p-8"
+    >
       <label className="sr-only" htmlFor="website">
         Website
       </label>
@@ -354,6 +428,37 @@ export function RfqForm({ initialProduct = "" }: RfqFormProps) {
         className="hidden"
         aria-hidden="true"
       />
+      <div className="mb-6 border border-slate-200 bg-arc-frost p-4 sm:p-5">
+        <div className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
+          <div>
+            <h2 className="font-display text-2xl font-black text-arc-midnight">
+              Quick RFQ starters
+            </h2>
+            <p className="mt-2 text-sm leading-6 text-slate-600">
+              Choose a common buying scenario to prefill product requirements. You can edit the text
+              before submitting.
+            </p>
+          </div>
+          <p className="text-xs font-bold uppercase tracking-[0.14em] text-arc-blue">
+            Buyer Helper
+          </p>
+        </div>
+        <div className="mt-4 grid gap-3 sm:grid-cols-2">
+          {rfqQuickTemplates.map((template) => (
+            <button
+              key={template.title}
+              type="button"
+              onClick={() => applyQuickTemplate(template)}
+              className="min-h-24 border border-slate-200 bg-white p-4 text-left transition hover:border-arc-blue hover:bg-slate-50"
+            >
+              <span className="block text-sm font-black text-arc-midnight">{template.title}</span>
+              <span className="mt-2 block text-xs font-semibold leading-5 text-slate-600">
+                {template.description}
+              </span>
+            </button>
+          ))}
+        </div>
+      </div>
       <div className="grid gap-5 sm:grid-cols-2">
         <FormField
           id="name"
