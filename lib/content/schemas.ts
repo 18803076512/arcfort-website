@@ -66,6 +66,7 @@ export type BaseProduct = {
   galleryImages: string[];
   metaTitle: string;
   metaDescription: string;
+  modifiedDate: string;
   keywords: string[];
   specifications: SpecRow[];
   compatibility: CompatibilityRow[];

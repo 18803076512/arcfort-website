@@ -10,6 +10,7 @@ import { getAllProductCategories, getRelatedCategories } from "@/lib/content/cat
 import { applicationWebPageJsonLd, breadcrumbJsonLd, faqJsonLd } from "@/lib/content/jsonld";
 import { getAllProducts } from "@/lib/content/products";
 import { buildMetadata } from "@/lib/content/seo";
+import { getPreferredSeoImage } from "@/lib/content/seo-images";
 import type { Product, ProductCategory } from "@/lib/content/schemas";
 
 type ApplicationRouteProps = {
@@ -46,11 +47,16 @@ export async function generateMetadata({ params }: ApplicationRouteProps) {
     return {};
   }
 
+  const relatedProducts = getAllProducts().filter((product) =>
+    application.relatedProductSlugs.includes(product.slug),
+  );
+
   return buildMetadata({
     title: application.seoTitle,
     description: application.seoDescription,
     path: `/applications/${application.slug}`,
     keywords: application.keywords,
+    image: getPreferredSeoImage(relatedProducts),
   });
 }
 
@@ -78,6 +84,7 @@ export default async function ApplicationDetailPage({ params }: ApplicationRoute
       return { product, category };
     })
     .filter((item): item is { product: Product; category: ProductCategory } => Boolean(item));
+  const seoImage = getPreferredSeoImage(relatedProducts.map((item) => item.product));
 
   return (
     <>
@@ -88,7 +95,7 @@ export default async function ApplicationDetailPage({ params }: ApplicationRoute
             { name: "Applications", path: "/applications" },
             { name: application.title, path: `/applications/${application.slug}` },
           ]),
-          applicationWebPageJsonLd(application),
+          applicationWebPageJsonLd(application, seoImage),
           faqJsonLd(application.faq),
         ]}
       />

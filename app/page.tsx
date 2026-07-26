@@ -5,6 +5,7 @@ import { RfqCta } from "@/components/content/RfqCta";
 import { StructuredData } from "@/components/content/StructuredData";
 import { getAllApplications } from "@/lib/content/applications";
 import { getAllProductCategories } from "@/lib/content/categories";
+import { selectHomepageFeaturedProducts } from "@/lib/content/featured-products";
 import { webPageJsonLd } from "@/lib/content/jsonld";
 import { getAllProducts } from "@/lib/content/products";
 import { buildMetadata } from "@/lib/content/seo";
@@ -98,7 +99,7 @@ const sourcingSystemLinks = [
 export default function Home() {
   const categories = getAllProductCategories();
   const products = getAllProducts();
-  const featuredProducts = products.slice(0, 8);
+  const featuredProducts = selectHomepageFeaturedProducts(products);
   const applications = getAllApplications();
   const categoryMap = new Map(categories.map((category) => [category.slug, category]));
 

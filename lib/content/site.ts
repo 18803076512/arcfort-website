@@ -9,6 +9,9 @@ export const siteConfig = {
   logo: "/favicon.svg",
   description:
     "Industrial welding and cutting product supplier for distributors, importers, OEM buyers, industrial users and repair workshops.",
+  contentLastModified: "2026-07-26",
+  productTemplateLastModified: "2026-07-26",
+  catalogLastModified: "2026-06-29",
   email: "arcfortweld@outlook.com",
   emailHref: "mailto:arcfortweld@outlook.com",
   whatsapp: "+86-18803076512",

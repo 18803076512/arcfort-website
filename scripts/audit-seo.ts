@@ -5,6 +5,7 @@ import path from "node:path";
 import { applications } from "../content/applications.ts";
 import { productCategories } from "../content/categories.ts";
 import { guides } from "../content/guides.ts";
+import { homepageFeaturedProductSlugs } from "../lib/content/featured-products.ts";
 import { isLegacyProductPath, legacyProductRedirects } from "../lib/content/product-redirects.ts";
 import { composeSeoTitle, SEO_TITLE_MAX_LENGTH } from "../lib/content/seo-title.ts";
 import { siteConfig } from "../lib/content/site.ts";
@@ -18,6 +19,7 @@ type SeoRecord = {
   metaDescription: string;
   mainImage: string;
   imageStatus?: string;
+  verifiedDate?: string;
   shortDescription: string;
   description: string;
 };
@@ -77,6 +79,18 @@ function countWords(value: string) {
   return value.trim().split(/\s+/).filter(Boolean).length;
 }
 
+for (const [label, value] of [
+  ["contentLastModified", siteConfig.contentLastModified],
+  ["productTemplateLastModified", siteConfig.productTemplateLastModified],
+  ["catalogLastModified", siteConfig.catalogLastModified],
+] as const) {
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(value) || !Number.isFinite(Date.parse(value))) {
+    errors.push(`Site config ${label} has an invalid date "${value}".`);
+  } else if (Date.parse(value) > Date.now() + 86_400_000) {
+    errors.push(`Site config ${label} has a future date "${value}".`);
+  }
+}
+
 checkUnique(activeProducts, (product) => product.sku, "SKU");
 checkUnique(
   activeProducts,
@@ -107,6 +121,26 @@ for (const product of activeProducts) {
     if (!existsSync(imagePath)) {
       warnings.push(`${product.sku} main image does not exist: ${product.mainImage}.`);
     }
+  }
+
+  if (product.verifiedDate && !/^\d{4}-\d{2}-\d{2}$/.test(product.verifiedDate)) {
+    errors.push(`${product.sku} has an invalid verified date "${product.verifiedDate}".`);
+  }
+}
+
+const featuredProductSlugs = new Set(homepageFeaturedProductSlugs);
+
+if (featuredProductSlugs.size !== homepageFeaturedProductSlugs.length) {
+  errors.push("Homepage featured product slugs contain duplicates.");
+}
+
+for (const slug of homepageFeaturedProductSlugs) {
+  const product = activeProducts.find((candidate) => candidate.slug === slug);
+
+  if (!product) {
+    errors.push(`Homepage featured product "${slug}" is missing or not indexable.`);
+  } else if (product.imageStatus !== "own_photo" && product.imageStatus !== "supplier_photo") {
+    errors.push(`Homepage featured product "${slug}" does not have a reviewed product image.`);
   }
 }
 

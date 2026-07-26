@@ -10,6 +10,8 @@ import {
 import { breadcrumbJsonLd, collectionPageJsonLd, faqJsonLd } from "@/lib/content/jsonld";
 import { getProductsByCategory } from "@/lib/content/products";
 import { buildMetadata } from "@/lib/content/seo";
+import { getPreferredSeoImage } from "@/lib/content/seo-images";
+import { siteConfig } from "@/lib/content/site";
 
 type CategoryRouteProps = {
   params: Promise<{
@@ -31,11 +33,14 @@ export async function generateMetadata({ params }: CategoryRouteProps) {
     return {};
   }
 
+  const products = getProductsByCategory(category.slug);
+
   return buildMetadata({
     title: category.seoTitle,
     description: category.seoDescription,
     path: `/products/${category.slug}`,
     keywords: category.keywords,
+    image: getPreferredSeoImage(products),
   });
 }
 
@@ -48,6 +53,7 @@ export default async function ProductCategoryPage({ params }: CategoryRouteProps
   }
 
   const products = getProductsByCategory(category.slug);
+  const seoImage = getPreferredSeoImage(products);
   const relatedCategories = getRelatedCategories(category.relatedCategorySlugs);
   const relatedApplications = getApplicationsByCategory(category.slug);
 
@@ -64,6 +70,8 @@ export default async function ProductCategoryPage({ params }: CategoryRouteProps
             name: category.title,
             description: category.seoDescription,
             path: `/products/${category.slug}`,
+            image: seoImage,
+            dateModified: siteConfig.contentLastModified,
             items: products.map((product) => ({
               name: product.title,
               path: `/products/${category.slug}/${product.slug}`,

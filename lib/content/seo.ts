@@ -10,6 +10,11 @@ type SeoInput = {
   image?: string;
   type?: "website" | "article";
   noIndex?: boolean;
+  publishedTime?: string;
+  modifiedTime?: string;
+  authors?: string[];
+  section?: string;
+  tags?: string[];
 };
 
 const defaultSeoImage = {
@@ -27,6 +32,11 @@ export function buildMetadata({
   image,
   type = "website",
   noIndex = false,
+  publishedTime,
+  modifiedTime,
+  authors,
+  section,
+  tags,
 }: SeoInput): Metadata {
   const url = absoluteUrl(path);
   const normalizedTitle = title.replace(/\s*\|\s*ArcFort Weld\s*$/i, "").trim();
@@ -37,6 +47,31 @@ export function buildMetadata({
         alt: `${normalizedTitle} - ${siteConfig.name}`,
       }
     : defaultSeoImage;
+  const openGraph: Metadata["openGraph"] =
+    type === "article"
+      ? {
+          title: seoTitle,
+          description,
+          url,
+          siteName: siteConfig.name,
+          locale: "en_US",
+          type: "article",
+          images: [seoImage],
+          publishedTime,
+          modifiedTime,
+          authors,
+          section,
+          tags,
+        }
+      : {
+          title: seoTitle,
+          description,
+          url,
+          siteName: siteConfig.name,
+          locale: "en_US",
+          type: "website",
+          images: [seoImage],
+        };
 
   return {
     title: {
@@ -58,15 +93,7 @@ export function buildMetadata({
         "max-video-preview": -1,
       },
     },
-    openGraph: {
-      title: seoTitle,
-      description,
-      url,
-      siteName: siteConfig.name,
-      locale: "en_US",
-      type,
-      images: [seoImage],
-    },
+    openGraph,
     twitter: {
       card: "summary_large_image",
       title: seoTitle,
