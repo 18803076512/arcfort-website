@@ -19,15 +19,17 @@ Use this checklist before switching the website to production traffic.
 - Company address: Renqiu City, Cangzhou, Hebei Province, China.
 - Main port: Tianjin Xingang Port / Tianjin Port, China.
 - Alternative ports: Qingdao Port or Ningbo Port are available upon request.
-- Real product images: pending.
+- Reviewed product images: 34 active products; 9 active products still need reviewed photos as of
+  2026-07-26.
 - Public product list CSV: available in `/downloads`.
-- Product catalog PDF: pending until real product images and confirmed specifications are ready.
-- Real SKU data: pending.
+- Product catalog PDF: available at `/downloads/renqiu-ailesen-welding-catalog.pdf`.
+- Active SKU pages: 43; exact technical confirmation remains pending by product.
 - Product specifications: pending by product.
 - MOQ and lead time by product: covered by policy, pending by exact product and order quantity.
 
 ## Supabase RFQ Setup
 
+- Supabase is optional while verified Resend email delivery is active.
 - Run `supabase/rfq-schema.sql` in Supabase SQL Editor.
 - Create or confirm private bucket `rfq-attachments`.
 - Configure `SUPABASE_URL` in Vercel.
@@ -37,6 +39,14 @@ Use this checklist before switching the website to production traffic.
 - Submit a real test RFQ and confirm the row is stored.
 - Upload a test attachment and confirm the file path is stored.
 - Submit a test RFQ with UTM parameters and confirm source attribution fields are stored.
+
+## RFQ Email Delivery
+
+- Production status reports `email.ready:true`.
+- Resend accepted a controlled sales notification and buyer confirmation on 2026-07-26.
+- Resend accepted one controlled JPG attachment in the sales notification on 2026-07-26.
+- Confirm the matching test references in the Outlook inbox or Resend logs.
+- Configure a Vercel Firewall rate limit for `POST /api/rfq`.
 
 ## Vercel Deployment
 

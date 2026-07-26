@@ -9,6 +9,7 @@ import {
   validateRfqTextValues,
 } from "../lib/rfq-constraints.ts";
 import { createRfqReference } from "../lib/rfq-reference.ts";
+import { isTrustedRfqRequest } from "../lib/rfq-request-security.ts";
 
 const validValues: RfqTextValues = {
   name: "Alex Buyer",
@@ -54,6 +55,69 @@ assert.equal(
 assert.equal(
   createRfqReference(new Date("2026-07-26T08:00:00.000Z"), "12345678-abcd-4000-8000-123456789abc"),
   "AF-RFQ-20260726-12345678",
+);
+
+const productionUrl = "https://www.arcfortweld.com";
+
+assert.equal(
+  isTrustedRfqRequest({
+    requestUrl: `${productionUrl}/api/rfq`,
+    requestHost: "www.arcfortweld.com",
+    origin: productionUrl,
+    fetchSite: "same-origin",
+    productionUrl,
+  }),
+  true,
+);
+assert.equal(
+  isTrustedRfqRequest({
+    requestUrl: "https://arcfort-preview.vercel.app/api/rfq",
+    requestHost: "arcfort-preview.vercel.app",
+    origin: "https://arcfort-preview.vercel.app",
+    fetchSite: "same-origin",
+    productionUrl,
+  }),
+  true,
+);
+assert.equal(
+  isTrustedRfqRequest({
+    requestUrl: `${productionUrl}/api/rfq`,
+    requestHost: "www.arcfortweld.com",
+    origin: null,
+    fetchSite: null,
+    productionUrl,
+  }),
+  true,
+);
+assert.equal(
+  isTrustedRfqRequest({
+    requestUrl: `${productionUrl}/api/rfq`,
+    requestHost: "www.arcfortweld.com",
+    origin: "https://untrusted.example",
+    fetchSite: "cross-site",
+    productionUrl,
+  }),
+  false,
+);
+assert.equal(
+  isTrustedRfqRequest({
+    requestUrl: `${productionUrl}/api/rfq`,
+    requestHost: "www.arcfortweld.com",
+    origin: "not-a-valid-origin",
+    fetchSite: null,
+    productionUrl,
+  }),
+  false,
+);
+assert.equal(
+  isTrustedRfqRequest({
+    requestUrl: "http://localhost:3104/api/rfq",
+    requestHost: "127.0.0.1:3104",
+    origin: "http://127.0.0.1:3104",
+    fetchSite: "same-origin",
+    productionUrl,
+  }),
+  true,
 );
 
 console.log("RFQ constraint and reference tests passed.");

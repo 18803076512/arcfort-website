@@ -12,6 +12,7 @@ import {
   validateRfqTextValues,
 } from "@/lib/rfq-constraints";
 import { createRfqReference } from "@/lib/rfq-reference";
+import { isTrustedRfqRequest } from "@/lib/rfq-request-security";
 
 export const runtime = "nodejs";
 
@@ -33,6 +34,8 @@ type EmailNotificationResult = {
   recipient: string;
   attachmentCount: number;
   buyerConfirmationDelivered: boolean;
+  notificationId: string | null;
+  buyerConfirmationId: string | null;
 };
 
 type StorageDeliveryResult = {
@@ -125,6 +128,15 @@ function validateStartedAt(startedAt: string) {
 
 function isConfigured(value: string | undefined) {
   return Boolean(value?.trim());
+}
+
+async function getResendMessageId(response: Response) {
+  try {
+    const body = (await response.json()) as { id?: unknown };
+    return typeof body.id === "string" ? body.id : null;
+  } catch {
+    return null;
+  }
 }
 
 function rfqResponse(reference: string, body: Record<string, unknown>, status = 200) {
@@ -361,6 +373,8 @@ async function sendEmailNotification(
       recipient,
       attachmentCount: 0,
       buyerConfirmationDelivered: false,
+      notificationId: null,
+      buyerConfirmationId: null,
     };
   }
 
@@ -386,7 +400,9 @@ async function sendEmailNotification(
     throw new Error("RFQ email notification failed.");
   }
 
+  const notificationId = await getResendMessageId(response);
   let buyerConfirmationDelivered = false;
+  let buyerConfirmationId: string | null = null;
 
   try {
     const buyerResponse = await fetch("https://api.resend.com/emails", {
@@ -405,6 +421,10 @@ async function sendEmailNotification(
     });
 
     buyerConfirmationDelivered = buyerResponse.ok;
+
+    if (buyerResponse.ok) {
+      buyerConfirmationId = await getResendMessageId(buyerResponse);
+    }
   } catch {
     buyerConfirmationDelivered = false;
   }
@@ -415,11 +435,33 @@ async function sendEmailNotification(
     recipient,
     attachmentCount: emailAttachments.length,
     buyerConfirmationDelivered,
+    notificationId,
+    buyerConfirmationId,
   };
 }
 
 export async function POST(request: Request) {
   const reference = createRfqReference();
+
+  if (
+    !isTrustedRfqRequest({
+      requestUrl: request.url,
+      requestHost: request.headers.get("host"),
+      origin: request.headers.get("origin"),
+      fetchSite: request.headers.get("sec-fetch-site"),
+      productionUrl: siteConfig.url,
+    })
+  ) {
+    return rfqResponse(
+      reference,
+      {
+        ok: false,
+        message: "RFQ request origin could not be verified. Please reload the form and try again.",
+      },
+      403,
+    );
+  }
+
   const contentLengthHeader = request.headers.get("content-length");
   const contentLength = contentLengthHeader ? Number(contentLengthHeader) : 0;
 
@@ -594,6 +636,8 @@ export async function POST(request: Request) {
             recipient: emailRecipient,
             attachmentCount: 0,
             buyerConfirmationDelivered: false,
+            notificationId: null,
+            buyerConfirmationId: null,
           };
     const storageDeliveryComplete =
       stored && (files.length === 0 || storageDelivery.attachmentsStored);
@@ -611,8 +655,23 @@ export async function POST(request: Request) {
       buyerConfirmationDelivered: emailNotification.buyerConfirmationDelivered,
       backendConfigured: deliverySucceeded,
     };
+    const deliveryLog = {
+      event: "rfq_delivery_result",
+      reference,
+      accepted: deliverySucceeded,
+      emailAccepted: emailNotification.delivered,
+      buyerConfirmationAccepted: emailNotification.buyerConfirmationDelivered,
+      emailAttachmentCount: emailNotification.attachmentCount,
+      inquiryStored: stored,
+      attachmentsStored: storageDelivery.attachmentsStored,
+      storageAttachmentCount: storageDelivery.attachmentCount,
+      notificationId: emailNotification.notificationId,
+      buyerConfirmationId: emailNotification.buyerConfirmationId,
+    };
 
     if (!deliverySucceeded) {
+      console.error(JSON.stringify(deliveryLog));
+
       return rfqResponse(
         reference,
         {
@@ -624,6 +683,8 @@ export async function POST(request: Request) {
         storageConfigured || emailConfigured ? 502 : 503,
       );
     }
+
+    console.info(JSON.stringify(deliveryLog));
 
     return rfqResponse(reference, {
       ok: true,
