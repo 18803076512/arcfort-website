@@ -1,8 +1,16 @@
 "use client";
 
-import { type ChangeEvent, type FormEvent, useMemo, useState } from "react";
+import Link from "next/link";
+import { type ChangeEvent, type FormEvent, useEffect, useMemo, useState } from "react";
+import { useRfqList } from "@/components/rfq/useRfqList";
 import { trackAnalyticsEvent } from "@/lib/analytics-events";
 import { siteConfig } from "@/lib/content/site";
+import {
+  buildRfqProductRequirements,
+  clearRfqList,
+  removeRfqListItem,
+  type RfqListItem,
+} from "@/lib/rfq-list";
 import {
   emptySourceAttribution,
   sourceAttributionFields,
@@ -92,7 +100,6 @@ const requiredFields: Array<keyof RfqFormValues> = [
   "company",
   "email",
   "country",
-  "productRequirements",
   "quantity",
 ];
 
@@ -162,8 +169,27 @@ export function RfqForm({ initialProduct = "" }: RfqFormProps) {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [submissionResult, setSubmissionResult] = useState<RfqResponse | null>(null);
+  const [submittedRequirements, setSubmittedRequirements] = useState("");
+  const selectedProducts = useRfqList();
 
   const fileSummary = useMemo(() => createFileSummary(attachments), [attachments]);
+
+  useEffect(() => {
+    if (selectedProducts.length === 0) {
+      return;
+    }
+
+    setErrors((currentErrors) => {
+      if (!currentErrors.productRequirements) {
+        return currentErrors;
+      }
+
+      return {
+        ...currentErrors,
+        productRequirements: undefined,
+      };
+    });
+  }, [selectedProducts.length]);
 
   function updateValue(field: keyof RfqFormValues, value: string) {
     setValues((currentValues) => ({
@@ -206,6 +232,11 @@ export function RfqForm({ initialProduct = "" }: RfqFormProps) {
       }
     }
 
+    if (selectedProducts.length === 0 && !values.productRequirements.trim()) {
+      nextErrors.productRequirements =
+        "Add at least one product to your RFQ list or describe the products you need.";
+    }
+
     if (values.email.trim() && !validateEmail(values.email.trim())) {
       nextErrors.email = "Please enter a valid business email address.";
     }
@@ -245,12 +276,34 @@ export function RfqForm({ initialProduct = "" }: RfqFormProps) {
     }));
   }
 
+  function handleRemoveSelectedProduct(item: RfqListItem) {
+    removeRfqListItem(item);
+    trackAnalyticsEvent("rfq_list_remove", {
+      item_name: item.name,
+      item_sku: item.sku,
+      location: "rfq_form",
+    });
+  }
+
+  function handleClearSelectedProducts() {
+    clearRfqList();
+    trackAnalyticsEvent("rfq_list_clear", {
+      item_count: selectedProducts.length,
+      location: "rfq_form",
+    });
+  }
+
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
 
     if (!validateForm()) {
       return;
     }
+
+    const productRequirements = buildRfqProductRequirements(
+      selectedProducts,
+      values.productRequirements,
+    );
 
     setIsSubmitting(true);
 
@@ -262,7 +315,7 @@ export function RfqForm({ initialProduct = "" }: RfqFormProps) {
     formData.append("email", values.email);
     formData.append("whatsapp", values.whatsapp);
     formData.append("country", values.country);
-    formData.append("productRequirements", values.productRequirements);
+    formData.append("productRequirements", productRequirements);
     formData.append("quantity", values.quantity);
     formData.append("message", values.message);
     formData.append("website", website);
@@ -293,12 +346,15 @@ export function RfqForm({ initialProduct = "" }: RfqFormProps) {
         return;
       }
 
+      setSubmittedRequirements(productRequirements);
       setSubmissionResult(result);
       setIsSubmitted(true);
+      clearRfqList();
       trackAnalyticsEvent("rfq_submit_success", {
         email_delivered: Boolean(result.emailDelivered),
         buyer_confirmation_delivered: Boolean(result.buyerConfirmationDelivered),
         attachment_count: result.emailAttachmentCount ?? 0,
+        selected_product_count: selectedProducts.length,
         backend_configured: Boolean(result.backendConfigured),
         utm_source: sourceAttribution.utmSource || undefined,
         utm_medium: sourceAttribution.utmMedium || undefined,
@@ -314,6 +370,8 @@ export function RfqForm({ initialProduct = "" }: RfqFormProps) {
   }
 
   if (isSubmitted) {
+    const submittedProductRequirements =
+      submittedRequirements || values.productRequirements || "Product details sent with RFQ.";
     const fallbackEmailSubject = encodeURIComponent(`ArcFort Weld RFQ - ${values.company}`);
     const fallbackEmailBody = encodeURIComponent(
       [
@@ -325,7 +383,7 @@ export function RfqForm({ initialProduct = "" }: RfqFormProps) {
         `Quantity: ${values.quantity}`,
         "",
         "Product Requirements:",
-        values.productRequirements,
+        submittedProductRequirements,
         "",
         "Message:",
         values.message || "No additional message.",
@@ -383,10 +441,10 @@ export function RfqForm({ initialProduct = "" }: RfqFormProps) {
           <p>
             <span className="font-bold text-arc-midnight">Email:</span> {values.email}
           </p>
-          <p>
-            <span className="font-bold text-arc-midnight">Products:</span>{" "}
-            {values.productRequirements}
-          </p>
+          <div>
+            <span className="font-bold text-arc-midnight">Products:</span>
+            <p className="mt-1 whitespace-pre-line leading-6">{submittedProductRequirements}</p>
+          </div>
           <p>
             <span className="font-bold text-arc-midnight">Attachments:</span> {fileSummary}
           </p>
@@ -398,6 +456,7 @@ export function RfqForm({ initialProduct = "" }: RfqFormProps) {
             setAttachments([]);
             setErrors({});
             setSubmissionResult(null);
+            setSubmittedRequirements("");
             setIsSubmitted(false);
           }}
           className="mt-6 bg-arc-blue px-5 py-3 text-sm font-bold uppercase tracking-[0.14em] text-white transition hover:bg-arc-midnight"
@@ -428,6 +487,83 @@ export function RfqForm({ initialProduct = "" }: RfqFormProps) {
         className="hidden"
         aria-hidden="true"
       />
+      <section
+        id="selected-products"
+        className="mb-6 scroll-mt-32 border-y-4 border-arc-signal bg-arc-midnight p-4 text-white sm:p-5"
+        aria-labelledby="selected-products-title"
+      >
+        <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+          <div>
+            <div className="flex items-center gap-3">
+              <h2
+                id="selected-products-title"
+                className="font-display text-2xl font-black text-white"
+              >
+                Selected Products
+              </h2>
+              <span className="inline-flex h-7 min-w-7 items-center justify-center bg-arc-signal px-2 text-xs font-black text-arc-midnight">
+                {selectedProducts.length}
+              </span>
+            </div>
+            <p className="mt-2 max-w-2xl text-sm leading-6 text-slate-300">
+              Build one inquiry from several product pages. SKU and category details are added to
+              your RFQ automatically.
+            </p>
+          </div>
+          {selectedProducts.length > 0 ? (
+            <button
+              type="button"
+              onClick={handleClearSelectedProducts}
+              className="min-h-10 self-start border border-white/30 px-3 text-xs font-bold uppercase tracking-[0.1em] text-white transition hover:border-arc-signal hover:text-arc-signal"
+            >
+              Clear List
+            </button>
+          ) : null}
+        </div>
+
+        {selectedProducts.length > 0 ? (
+          <div className="mt-5 divide-y divide-white/15 border-y border-white/15">
+            {selectedProducts.map((item) => (
+              <div
+                key={`${item.categorySlug}/${item.slug}`}
+                className="flex flex-col gap-3 py-4 sm:flex-row sm:items-center sm:justify-between"
+              >
+                <div className="min-w-0">
+                  <Link
+                    href={`/products/${item.categorySlug}/${item.slug}`}
+                    className="break-words font-bold text-white transition hover:text-arc-signal"
+                  >
+                    {item.name}
+                  </Link>
+                  <p className="mt-1 break-words text-xs leading-5 text-slate-300">
+                    SKU: {item.sku} | {item.category}
+                  </p>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => handleRemoveSelectedProduct(item)}
+                  className="min-h-10 self-start border border-white/25 px-3 text-xs font-bold uppercase tracking-[0.1em] text-slate-200 transition hover:border-arc-signal hover:text-arc-signal sm:shrink-0"
+                  aria-label={`Remove ${item.name} from RFQ list`}
+                >
+                  Remove
+                </button>
+              </div>
+            ))}
+          </div>
+        ) : (
+          <div className="mt-5 flex flex-col gap-3 border-t border-white/15 pt-4 sm:flex-row sm:items-center sm:justify-between">
+            <p className="text-sm leading-6 text-slate-300">
+              No products selected yet. You can still enter your requirements manually below.
+            </p>
+            <Link
+              href="/products"
+              className="inline-flex min-h-10 self-start items-center justify-center bg-arc-signal px-4 text-xs font-bold uppercase tracking-[0.1em] text-arc-midnight transition hover:bg-white sm:shrink-0"
+            >
+              Browse Products
+            </Link>
+          </div>
+        )}
+      </section>
       <div className="mb-6 border border-slate-200 bg-arc-frost p-4 sm:p-5">
         <div className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
           <div>
@@ -523,15 +659,25 @@ export function RfqForm({ initialProduct = "" }: RfqFormProps) {
 
       <label htmlFor="productRequirements" className="mt-5 block">
         <span className="text-sm font-bold text-arc-midnight">
-          Product Requirements <span className="text-arc-copper">*</span>
+          {selectedProducts.length > 0 ? "Additional Product Requirements" : "Product Requirements"}{" "}
+          {selectedProducts.length === 0 ? (
+            <span className="text-arc-copper">*</span>
+          ) : (
+            <span className="font-normal text-slate-500">(optional)</span>
+          )}
         </span>
         <textarea
           id="productRequirements"
           rows={5}
           value={values.productRequirements}
           onChange={(event) => updateValue("productRequirements", event.target.value)}
-          placeholder="Product names, part numbers, torch models, material, size, thread, compatible brand or OEM number."
+          placeholder={
+            selectedProducts.length > 0
+              ? "Add size, material, torch model, compatibility, packaging or OEM requirements for the selected products."
+              : "Product names, part numbers, torch models, material, size, thread, compatible brand or OEM number."
+          }
           className="mt-2 w-full border-slate-300 bg-slate-50 text-slate-900 placeholder:text-slate-400 focus:border-arc-blue focus:ring-arc-blue"
+          aria-required={selectedProducts.length === 0}
           aria-invalid={Boolean(errors.productRequirements)}
           aria-describedby={errors.productRequirements ? "productRequirements-error" : undefined}
         />

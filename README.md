@@ -154,6 +154,13 @@ The `/rfq` page includes a responsive inquiry form with:
 - RFQ file attachments sent with the Resend email when email delivery is configured
 - Backend readiness check at `/api/rfq/status`
 - Lightweight spam protection with honeypot, timing checks and source-path tracking
+- Persistent multi-product RFQ shortlist stored in the buyer's browser
+- Live shortlist count in the desktop header, mobile menu and sticky contact bar
+- Selected products automatically merged into the RFQ submission with SKU and category
+
+Buyers can add up to 50 products from product cards or detail pages. The shortlist remains in
+browser `localStorage` until the buyer submits the RFQ or clears the list; it does not require an
+account and does not expose internal product fields.
 
 Supabase storage and Resend email delivery are optional production services and must be configured
 through environment variables. No real API keys, email passwords, database passwords or private
