@@ -1,6 +1,6 @@
 # Product Readiness Report
 
-Generated from `data/import/products.csv` at 2026-07-26T08:25:23.864Z.
+Generated from `data/import/products.csv` at 2026-07-26T09:33:50.927Z.
 
 This report is an internal working checklist. Do not use it to invent product specifications, certifications, prices, stock status, factory capacity or confirmed compatibility.
 
@@ -9,8 +9,8 @@ This report is an internal working checklist. Do not use it to invent product sp
 - Products checked: 43
 - Products with confirmed data status: 0
 - Products with own-photo image status: 0
-- Products with reviewed own or supplier photos: 33
-- Products requiring a reviewed product photo: 10
+- Products with reviewed own or supplier photos: 34
+- Products requiring a reviewed product photo: 9
 - Products with confirmed compatibility status: 0
 - Products with confirmed OEM status: 0
 - Missing main images: 0
@@ -23,8 +23,8 @@ This report is an internal working checklist. Do not use it to invent product sp
 
 ## Image Status
 
-- needs_photo: 10
-- supplier_photo: 33
+- needs_photo: 9
+- supplier_photo: 34
 
 ## Compatibility Status
 
@@ -39,7 +39,6 @@ This report is an internal working checklist. Do not use it to invent product sp
 | SKU | Product | Category | Notes |
 | --- | --- | --- | --- |
 | AF-MIG-TH-0007 | MIG Tip Holder for MB15 | MIG/MAG Torch Parts | needs_photo: replace or verify /images/products/mig-tip-holder-for-mb15.jpg |
-| AF-MIG-DF-0003 | MIG Diffuser | MIG/MAG Torch Parts | needs_photo: replace or verify /images/products/mig-diffuser.jpg |
 | AF-MIG-TL-0009 | MIG Torch Liner | MIG/MAG Torch Parts | needs_photo: replace or verify /images/products/mig-torch-liner.jpg |
 | AF-TIG-GL-0010 | TIG Gas Lens 1.6mm | TIG Torch Parts | needs_photo: replace or verify /images/products/tig-gas-lens-1-6mm.jpg |
 | AF-PLA-SR-0009 | Plasma Swirl Ring | Plasma Cutting Consumables | needs_photo: replace or verify /images/products/plasma-swirl-ring.jpg |

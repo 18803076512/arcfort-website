@@ -27,25 +27,18 @@ When using representative product-family images, keep the product page wording c
 - Keep compatibility wording tied to sample, drawing, model number or reference part confirmation.
 - Replace representative images with exact product photos when available.
 
-## Next Image Priority
+## Remaining Image Priority
 
-The following first-batch SKU pages still need exact product photos:
+The following active SKU pages still need a reviewed own or supplier product photo:
 
 - MIG Tip Holder for MB15
 - MIG Torch Liner
-- MIG Swan Neck
-- TIG Collet
 - TIG Gas Lens 1.6mm
-- TIG Back Cap
-- TIG Tungsten Electrode
-- Plasma Shield
+- Plasma Swirl Ring
 - Plasma Retaining Cap
-- Plasma Cutting Tip
 - Plasma Torch Spacer
 - Welding Electrode
-- Welding Wire
 - Welding Cable
-- Dinse Connector
 - Welding Magnet
 
 Use `docs/product-image-shooting-guide.md` when preparing final product photos.

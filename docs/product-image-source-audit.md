@@ -36,6 +36,7 @@ references remain unverified and must still be confirmed through RFQ details.
 | SKU            | Product                 | Target Image                                   | Local Source                   |
 | -------------- | ----------------------- | ---------------------------------------------- | ------------------------------ |
 | AF-MIG-SN-0010 | MIG Swan Neck           | `/images/products/mig-swan-neck.jpg`           | `欧式弯管1.jpg`                |
+| AF-MIG-DF-0003 | MIG Diffuser            | `/images/products/mig-diffuser.jpg`            | `微信图片_202404111901304.jpg` |
 | AF-TIG-CC-0007 | TIG Ceramic Cup #5      | `/images/products/tig-ceramic-cup-5.jpg`       | `瓷嘴0.jpg`                    |
 | AF-TIG-CC-0008 | TIG Ceramic Cup #6      | `/images/products/tig-ceramic-cup-6.jpg`       | `瓷嘴0.jpg`                    |
 | AF-TIG-CL-0009 | TIG Collet              | `/images/products/tig-collet.jpg`              | `钨极夹.jpg`                   |
