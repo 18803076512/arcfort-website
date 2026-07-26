@@ -28,7 +28,7 @@ export function ProductCard({ product, category }: ProductCardProps) {
           <div className="text-xs font-bold uppercase tracking-[0.16em] text-arc-blue">
             {category.shortTitle}
           </div>
-          <div className="shrink-0 whitespace-nowrap text-right text-[11px] font-bold uppercase tracking-[0.12em] text-slate-400">
+          <div className="shrink-0 whitespace-nowrap text-right text-[11px] font-bold uppercase tracking-[0.12em] text-slate-600">
             {product.sku}
           </div>
         </div>

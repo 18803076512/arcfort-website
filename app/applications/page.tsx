@@ -165,7 +165,7 @@ export default function ApplicationsPage() {
               >
                 <div className="flex items-start justify-between gap-4">
                   <div className="h-1 w-16 bg-arc-signal" />
-                  <span className="text-xs font-bold uppercase tracking-[0.16em] text-slate-400">
+                  <span className="text-xs font-bold uppercase tracking-[0.16em] text-slate-600">
                     Application
                   </span>
                 </div>
