@@ -299,6 +299,8 @@ export function articleJsonLd(article: GuideArticle) {
     "@id": `${url}#article`,
     headline: article.title,
     description: article.description,
+    datePublished: article.publishedDate,
+    dateModified: article.modifiedDate,
     url,
     mainEntityOfPage: {
       "@id": webPageId(path),

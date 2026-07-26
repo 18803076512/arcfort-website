@@ -19,16 +19,26 @@ const buyerChecklist = [
   "Prepare quantity, destination country and packaging requirement before quotation.",
 ] as const;
 
+const guideDateFormatter = new Intl.DateTimeFormat("en-US", {
+  dateStyle: "long",
+  timeZone: "UTC",
+});
+
+function formatGuideDate(value: string) {
+  return guideDateFormatter.format(new Date(`${value}T00:00:00Z`));
+}
+
 export const metadata = buildMetadata({
   title: "Welding Buyer Guides",
   description:
-    "Read ArcFort Weld welding and cutting buyer guides for RFQ preparation, MIG/MAG and TIG consumables, and plasma cutting consumables sourcing.",
+    "Read ArcFort Weld guides for welding RFQs, MIG contact tips, TIG torch parts, plasma consumables, welding cable and connector sourcing.",
   path: "/guides",
   keywords: [
     "welding buyer guide",
     "welding parts RFQ guide",
     "MIG TIG consumables guide",
     "plasma consumables guide",
+    "welding cable connector guide",
   ],
 });
 
@@ -155,6 +165,12 @@ export default function GuidesPage() {
                   {guide.title}
                 </h2>
                 <p className="mt-3 text-sm leading-6 text-slate-600">{guide.description}</p>
+                <time
+                  dateTime={guide.modifiedDate}
+                  className="mt-4 block text-xs font-bold uppercase tracking-[0.12em] text-slate-400"
+                >
+                  Updated {formatGuideDate(guide.modifiedDate)}
+                </time>
                 <div className="mt-5 flex flex-wrap gap-2">
                   {guide.keywords.slice(0, 2).map((keyword) => (
                     <span

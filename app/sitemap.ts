@@ -26,7 +26,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const applicationRoutes = getAllApplications().map(
     (application) => `/applications/${application.slug}`,
   );
-  const guideRoutes = getAllGuides().map((guide) => `/guides/${guide.slug}`);
+  const guideRoutes = getAllGuides();
 
   return [
     ...staticRoutes.map((route) => ({
@@ -44,6 +44,9 @@ export default function sitemap(): MetadataRoute.Sitemap {
       };
     }),
     ...applicationRoutes.map((route) => ({ url: absoluteUrl(route) })),
-    ...guideRoutes.map((route) => ({ url: absoluteUrl(route) })),
+    ...guideRoutes.map((guide) => ({
+      url: absoluteUrl(`/guides/${guide.slug}`),
+      lastModified: guide.modifiedDate,
+    })),
   ];
 }

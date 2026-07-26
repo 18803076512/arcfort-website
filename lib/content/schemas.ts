@@ -118,6 +118,8 @@ export type GuideArticle = {
   seoTitle: string;
   description: string;
   seoDescription: string;
+  publishedDate: string;
+  modifiedDate: string;
   sections: Array<{
     title: string;
     body: string;
