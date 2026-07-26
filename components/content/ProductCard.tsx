@@ -41,7 +41,7 @@ export function ProductCard({ product, category }: ProductCardProps) {
         <div className="mt-5 flex flex-col gap-3 border-t border-slate-100 pt-4 sm:flex-row sm:items-center sm:justify-between">
           <Link
             href={href}
-            className="text-sm font-bold uppercase tracking-[0.14em] text-arc-blue transition hover:text-arc-copper"
+            className="inline-flex min-h-10 items-center text-sm font-bold uppercase tracking-[0.14em] text-arc-blue transition hover:text-arc-copper"
           >
             View Details
           </Link>

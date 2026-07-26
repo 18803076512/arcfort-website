@@ -20,11 +20,17 @@ export function Breadcrumbs({ items }: BreadcrumbsProps) {
             <li key={`${item.label}-${index}`} className="flex min-w-0 items-center gap-2">
               {index > 0 ? <span className="text-slate-300">/</span> : null}
               {item.href && !isCurrent ? (
-                <Link href={item.href} className="break-words font-semibold text-arc-blue hover:text-arc-midnight">
+                <Link
+                  href={item.href}
+                  className="inline-flex min-h-8 items-center break-words font-semibold text-arc-blue hover:text-arc-midnight"
+                >
                   {item.label}
                 </Link>
               ) : (
-                <span aria-current={isCurrent ? "page" : undefined} className="break-words text-slate-600">
+                <span
+                  aria-current={isCurrent ? "page" : undefined}
+                  className="break-words text-slate-600"
+                >
                   {item.label}
                 </span>
               )}

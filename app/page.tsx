@@ -152,10 +152,16 @@ export default function Home() {
               </Link>
             </div>
             <div className="mt-6 flex flex-col gap-2 text-sm text-slate-300 sm:flex-row sm:flex-wrap sm:gap-5">
-              <a href={siteConfig.emailHref} className="font-semibold hover:text-white">
+              <a
+                href={siteConfig.emailHref}
+                className="inline-flex min-h-8 items-center font-semibold hover:text-white"
+              >
                 Email: {siteConfig.email}
               </a>
-              <a href={siteConfig.whatsappHref} className="font-semibold hover:text-white">
+              <a
+                href={siteConfig.whatsappHref}
+                className="inline-flex min-h-8 items-center font-semibold hover:text-white"
+              >
                 WhatsApp: {siteConfig.whatsapp}
               </a>
             </div>
