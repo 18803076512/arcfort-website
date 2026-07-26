@@ -195,6 +195,29 @@ export default function OemServicePage() {
         </div>
       </section>
 
+      <section className="bg-arc-midnight py-12 text-white sm:py-14">
+        <div className="mx-auto flex max-w-7xl flex-col gap-6 px-4 sm:px-6 lg:flex-row lg:items-center lg:justify-between lg:px-8">
+          <div className="max-w-3xl">
+            <p className="text-xs font-bold uppercase tracking-[0.18em] text-arc-signal">
+              OEM Buyer Guide
+            </p>
+            <h2 className="mt-3 font-display text-3xl font-black leading-tight">
+              Plan product approval, artwork and repeat-order records.
+            </h2>
+            <p className="mt-3 text-sm leading-7 text-slate-300">
+              Review the full OEM workflow before sending logo files, private label requirements and
+              carton artwork.
+            </p>
+          </div>
+          <Link
+            href="/guides/oem-welding-products-private-label-guide"
+            className="inline-flex min-h-12 w-full shrink-0 items-center justify-center bg-arc-signal px-6 text-sm font-bold uppercase tracking-[0.14em] text-arc-midnight transition hover:bg-white sm:w-auto"
+          >
+            Read OEM Guide
+          </Link>
+        </div>
+      </section>
+
       <section className="bg-white py-14 sm:py-16">
         <div className="mx-auto grid max-w-7xl gap-8 px-4 sm:px-6 lg:grid-cols-[1fr_0.9fr] lg:px-8">
           <FaqSection items={[...faq]} />
