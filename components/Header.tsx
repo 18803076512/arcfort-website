@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { RfqListLink } from "@/components/rfq/RfqListLink";
 import { siteConfig } from "@/lib/content/site";
 
 const navigation = [
@@ -20,7 +21,6 @@ const buyerServiceNavigation = [
 const mobileNavigationGroups = [
   { title: "Main", items: navigation },
   { title: "Buyer Services", items: buyerServiceNavigation },
-  { title: "Inquiry", items: [{ href: "/rfq", label: "Request a Quote" }] },
 ] as const;
 
 export function Header() {
@@ -81,12 +81,7 @@ export function Header() {
               ))}
             </div>
           </details>
-          <Link
-            href="/rfq"
-            className="ml-2 inline-flex items-center justify-center bg-arc-blue px-4 py-3 text-xs font-bold uppercase tracking-[0.12em] text-white transition hover:bg-arc-midnight"
-          >
-            Send RFQ
-          </Link>
+          <RfqListLink label="Send RFQ" />
         </nav>
 
         <details className="group relative shrink-0 lg:hidden">
@@ -110,6 +105,7 @@ export function Header() {
                 ))}
               </div>
             ))}
+            <RfqListLink variant="menu" label="Request a Quote" />
             <div className="mt-2 grid gap-2 border-t border-slate-200 pt-3 text-xs leading-5 text-slate-600 sm:grid-cols-2">
               <a
                 href={siteConfig.emailHref}

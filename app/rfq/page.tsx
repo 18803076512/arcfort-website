@@ -97,21 +97,21 @@ export default async function RfqPage({ searchParams }: RfqPageProps) {
       <section className="bg-white py-12 sm:py-16">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <Breadcrumbs items={[{ label: "Home", href: "/" }, { label: "Request a Quote" }]} />
-          <div className="mt-8 grid gap-10 lg:grid-cols-[0.85fr_1.15fr] lg:items-start">
-            <div>
-              <p className="text-sm font-bold uppercase tracking-[0.2em] text-arc-blue">
-                RFQ Center
-              </p>
-              <h1 className="mt-3 font-display text-4xl font-black leading-tight text-arc-midnight sm:text-5xl">
-                Request a Quote
-              </h1>
-              <p className="mt-5 text-lg leading-8 text-slate-600">
-                Send us your product list, model, size, material requirement, quantity, drawing,
-                product photo, packaging requirement and destination country. ArcFort Weld will
-                provide quotation, MOQ and delivery options after technical confirmation.
-              </p>
+          <div className="mt-8 max-w-4xl">
+            <p className="text-sm font-bold uppercase tracking-[0.2em] text-arc-blue">RFQ Center</p>
+            <h1 className="mt-3 font-display text-4xl font-black leading-tight text-arc-midnight sm:text-5xl">
+              Request a Quote
+            </h1>
+            <p className="mt-5 text-lg leading-8 text-slate-600">
+              Send us your product list, model, size, material requirement, quantity, drawing,
+              product photo, packaging requirement and destination country. ArcFort Weld will
+              provide quotation, MOQ and delivery options after technical confirmation.
+            </p>
+          </div>
 
-              <div className="mt-8 border-l-4 border-arc-signal bg-arc-frost p-5">
+          <div className="mt-8 grid gap-10 lg:grid-cols-[0.85fr_1.15fr] lg:items-start">
+            <div className="order-2 lg:order-1">
+              <div className="border-l-4 border-arc-signal bg-arc-frost p-5">
                 <h2 className="font-display text-2xl font-black text-arc-midnight">
                   What to include
                 </h2>
@@ -199,7 +199,9 @@ export default async function RfqPage({ searchParams }: RfqPageProps) {
               </div>
             </div>
 
-            <RfqForm initialProduct={initialProduct} />
+            <div className="order-1 lg:order-2">
+              <RfqForm initialProduct={initialProduct} />
+            </div>
           </div>
         </div>
       </section>

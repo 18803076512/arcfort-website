@@ -7,6 +7,7 @@ import { ProductCard } from "@/components/content/ProductCard";
 import { ProductVisual } from "@/components/content/ProductVisual";
 import { RfqCta } from "@/components/content/RfqCta";
 import { SpecificationTable } from "@/components/content/SpecificationTable";
+import { AddToRfqButton } from "@/components/rfq/AddToRfqButton";
 import { displayConfirmedValue, isLowSignalSpecificationValue } from "@/lib/content/display";
 import { hasPublicProductImage } from "@/lib/content/product-images";
 import { siteConfig } from "@/lib/content/site";
@@ -107,6 +108,13 @@ export function ProductDetailTemplate({
 }: ProductDetailTemplateProps) {
   const buyerGuideLink = getBuyerGuideForCategory(category.slug);
   const rfqHref = `/rfq?product=${encodeURIComponent(product.title)}`;
+  const rfqListItem = {
+    sku: product.sku,
+    name: product.title,
+    category: category.title,
+    categorySlug: category.slug,
+    slug: product.slug,
+  };
   const productEmailSubject = encodeURIComponent(
     `ArcFort Weld RFQ - ${product.title} - ${product.sku}`,
   );
@@ -269,12 +277,7 @@ export function ProductDetailTemplate({
                 >
                   Request Quote
                 </Link>
-                <Link
-                  href={rfqHref}
-                  className="inline-flex w-full items-center justify-center border border-arc-blue px-5 py-3 text-sm font-bold uppercase tracking-[0.14em] text-arc-blue transition hover:bg-arc-blue hover:text-white sm:w-auto"
-                >
-                  Add to RFQ
-                </Link>
+                <AddToRfqButton item={rfqListItem} />
                 <Link
                   href={whatsappProductHref}
                   className="inline-flex w-full items-center justify-center border border-slate-300 px-5 py-3 text-sm font-bold uppercase tracking-[0.14em] text-slate-700 transition hover:border-arc-midnight hover:bg-arc-midnight hover:text-white sm:w-auto"
