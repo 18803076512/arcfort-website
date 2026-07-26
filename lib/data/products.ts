@@ -673,10 +673,12 @@ export const arcfortProducts: ArcfortProductData[] = [
     "status": "active",
     "dataStatus": "needs_review",
     "sourceType": "unknown",
-    "sourceReference": "First 30 SKU worksheet - size and thread provided by buyer list; confirm length material grade packaging and real image before publishing.",
-    "imageStatus": "needs_photo",
+    "sourceReference": "Local supplier image archive: 15AK导电嘴.png. Visual review confirms the 15AK/M6 contact-tip product family; the 0.8mm bore is not visible and remains subject to order confirmation.",
+    "imageStatus": "supplier_photo",
     "compatibilityStatus": "unverified",
-    "oemStatus": "unknown"
+    "oemStatus": "unknown",
+    "verifiedBy": "Internal visual asset audit",
+    "verifiedDate": "2026-07-26"
   },
   {
     "id": "af-mig-ct-0005",
@@ -706,10 +708,12 @@ export const arcfortProducts: ArcfortProductData[] = [
     "status": "active",
     "dataStatus": "needs_review",
     "sourceType": "unknown",
-    "sourceReference": "First 30 SKU worksheet - size and thread provided by buyer list; confirm length material grade packaging and real image before publishing.",
-    "imageStatus": "needs_photo",
+    "sourceReference": "Local supplier image archive: 15AK导电嘴.png. Visual review confirms the 15AK/M6 contact-tip product family; the 1.0mm bore is not visible and remains subject to order confirmation.",
+    "imageStatus": "supplier_photo",
     "compatibilityStatus": "unverified",
-    "oemStatus": "unknown"
+    "oemStatus": "unknown",
+    "verifiedBy": "Internal visual asset audit",
+    "verifiedDate": "2026-07-26"
   },
   {
     "id": "af-mig-ct-0006",
@@ -739,10 +743,12 @@ export const arcfortProducts: ArcfortProductData[] = [
     "status": "active",
     "dataStatus": "needs_review",
     "sourceType": "unknown",
-    "sourceReference": "First 30 SKU worksheet - size and thread provided by buyer list; confirm length material grade packaging and real image before publishing.",
-    "imageStatus": "needs_photo",
+    "sourceReference": "Local supplier image archive: 15AK导电嘴.png. Visual review confirms the 15AK/M6 contact-tip product family; the 1.2mm bore is not visible and remains subject to order confirmation.",
+    "imageStatus": "supplier_photo",
     "compatibilityStatus": "unverified",
-    "oemStatus": "unknown"
+    "oemStatus": "unknown",
+    "verifiedBy": "Internal visual asset audit",
+    "verifiedDate": "2026-07-26"
   },
   {
     "id": "af-mig-df-0003",
@@ -820,7 +826,11 @@ export const arcfortProducts: ArcfortProductData[] = [
     "shortDescription": "MIG Gas Nozzle for MB15 for MIG/MAG shielding gas delivery and gas nozzle replacement. Compatibility and ordering details can be confirmed by sample, drawing or model reference.",
     "description": "MIG Gas Nozzle for MB15 is a torch-front consumable that directs shielding gas around the welding zone and covers the internal consumable stack. It is supplied for MIG/MAG shielding gas delivery and gas nozzle replacement in distributor, importer, repair workshop and OEM sourcing programs. Because industrial welding products can vary by model, size, material and application, buyers should confirm torch series, nozzle profile, bore, length, connection style and surface finish using an existing part, drawing, product photo or model reference before quotation. This review helps the sales team check the requested item without publishing unverified compatibility or technical specifications. ArcFort Weld can review mixed product lists and discuss standard export packing, small trial orders for standard items, and logo or private-label packaging when quantity and artwork requirements are available. Send the required quantity and destination country to receive MOQ, lead time and delivery options.",
     "mainImage": "/images/products/mig-gas-nozzle-for-mb15.jpg",
-    "galleryImages": [],
+    "galleryImages": [
+      "/images/products/mig-gas-nozzle-gallery-1.jpg",
+      "/images/products/mig-gas-nozzle-gallery-2.jpg",
+      "/images/products/mig-gas-nozzle-gallery-3.jpg"
+    ],
     "material": "Copper or plated material - exact grade to be confirmed",
     "size": "Available upon request",
     "thread": "Available upon request",
@@ -838,10 +848,12 @@ export const arcfortProducts: ArcfortProductData[] = [
     "status": "active",
     "dataStatus": "needs_review",
     "sourceType": "unknown",
-    "sourceReference": "First 30 SKU worksheet - MB15 name provided by buyer list; confirm nozzle shape finish dimensions and real image before publishing.",
-    "imageStatus": "needs_photo",
+    "sourceReference": "Existing local supplier image set visually confirms the MIG gas-nozzle product family. MB15 fit, nozzle profile and dimensions remain subject to sample or model confirmation.",
+    "imageStatus": "supplier_photo",
     "compatibilityStatus": "unverified",
-    "oemStatus": "unknown"
+    "oemStatus": "unknown",
+    "verifiedBy": "Internal visual asset audit",
+    "verifiedDate": "2026-07-26"
   },
   {
     "id": "af-mig-ms-0032",
@@ -1218,10 +1230,12 @@ export const arcfortProducts: ArcfortProductData[] = [
     "status": "active",
     "dataStatus": "needs_review",
     "sourceType": "unknown",
-    "sourceReference": "First 30 SKU worksheet - confirm torch model shield type reference number and real image before publishing.",
-    "imageStatus": "needs_photo",
+    "sourceReference": "Local supplier image archive: 微信图片_202404111901303.jpg. Visual review confirms plasma torch shield products; torch stack and model compatibility remain unverified.",
+    "imageStatus": "supplier_photo",
     "compatibilityStatus": "unverified",
-    "oemStatus": "unknown"
+    "oemStatus": "unknown",
+    "verifiedBy": "Internal visual asset audit",
+    "verifiedDate": "2026-07-26"
   },
   {
     "id": "af-pla-sr-0009",
@@ -1352,10 +1366,12 @@ export const arcfortProducts: ArcfortProductData[] = [
     "status": "active",
     "dataStatus": "needs_review",
     "sourceType": "unknown",
-    "sourceReference": "First 30 SKU worksheet - confirm tungsten size torch series thread and real image before publishing.",
-    "imageStatus": "needs_photo",
+    "sourceReference": "Local supplier image archive: 微信图片_202404111901304.jpg. Visual review confirms TIG collet-body products; torch series, bore and thread remain unverified.",
+    "imageStatus": "supplier_photo",
     "compatibilityStatus": "unverified",
-    "oemStatus": "unknown"
+    "oemStatus": "unknown",
+    "verifiedBy": "Internal visual asset audit",
+    "verifiedDate": "2026-07-26"
   },
   {
     "id": "af-tig-cc-0004",

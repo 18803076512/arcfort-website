@@ -1,6 +1,6 @@
 # Product Readiness Report
 
-Generated from `data/import/products.csv` at 2026-07-26T04:30:24.904Z.
+Generated from `data/import/products.csv` at 2026-07-26T08:25:23.864Z.
 
 This report is an internal working checklist. Do not use it to invent product specifications, certifications, prices, stock status, factory capacity or confirmed compatibility.
 
@@ -9,8 +9,8 @@ This report is an internal working checklist. Do not use it to invent product sp
 - Products checked: 43
 - Products with confirmed data status: 0
 - Products with own-photo image status: 0
-- Products with reviewed own or supplier photos: 27
-- Products requiring a reviewed product photo: 16
+- Products with reviewed own or supplier photos: 33
+- Products requiring a reviewed product photo: 10
 - Products with confirmed compatibility status: 0
 - Products with confirmed OEM status: 0
 - Missing main images: 0
@@ -23,8 +23,8 @@ This report is an internal working checklist. Do not use it to invent product sp
 
 ## Image Status
 
-- needs_photo: 16
-- supplier_photo: 27
+- needs_photo: 10
+- supplier_photo: 33
 
 ## Compatibility Status
 
@@ -38,17 +38,11 @@ This report is an internal working checklist. Do not use it to invent product sp
 
 | SKU | Product | Category | Notes |
 | --- | --- | --- | --- |
-| AF-MIG-CT-0004 | MIG Contact Tip M6 0.8mm | MIG/MAG Torch Parts | needs_photo: replace or verify /images/products/mig-contact-tip-m6-0-8mm.jpg |
-| AF-MIG-CT-0005 | MIG Contact Tip M6 1.0mm | MIG/MAG Torch Parts | needs_photo: replace or verify /images/products/mig-contact-tip-m6-1-0mm.jpg |
-| AF-MIG-CT-0006 | MIG Contact Tip M6 1.2mm | MIG/MAG Torch Parts | needs_photo: replace or verify /images/products/mig-contact-tip-m6-1-2mm.jpg |
 | AF-MIG-TH-0007 | MIG Tip Holder for MB15 | MIG/MAG Torch Parts | needs_photo: replace or verify /images/products/mig-tip-holder-for-mb15.jpg |
-| AF-MIG-GN-0008 | MIG Gas Nozzle for MB15 | MIG/MAG Torch Parts | needs_photo: replace or verify /images/products/mig-gas-nozzle-for-mb15.jpg |
 | AF-MIG-DF-0003 | MIG Diffuser | MIG/MAG Torch Parts | needs_photo: replace or verify /images/products/mig-diffuser.jpg |
 | AF-MIG-TL-0009 | MIG Torch Liner | MIG/MAG Torch Parts | needs_photo: replace or verify /images/products/mig-torch-liner.jpg |
-| AF-TIG-CB-0005 | TIG Collet Body | TIG Torch Parts | needs_photo: replace or verify /images/products/tig-collet-body.jpg |
 | AF-TIG-GL-0010 | TIG Gas Lens 1.6mm | TIG Torch Parts | needs_photo: replace or verify /images/products/tig-gas-lens-1-6mm.jpg |
 | AF-PLA-SR-0009 | Plasma Swirl Ring | Plasma Cutting Consumables | needs_photo: replace or verify /images/products/plasma-swirl-ring.jpg |
-| AF-PLA-SH-0010 | Plasma Shield | Plasma Cutting Consumables | needs_photo: replace or verify /images/products/plasma-shield.jpg |
 | AF-PLA-RC-0011 | Plasma Retaining Cap | Plasma Cutting Consumables | needs_photo: replace or verify /images/products/plasma-retaining-cap.jpg |
 | AF-PLA-TS-0013 | Plasma Torch Spacer | Plasma Cutting Consumables | needs_photo: replace or verify /images/products/plasma-torch-spacer.jpg |
 | AF-CON-EL-0011 | Welding Electrode | Welding Consumables | needs_photo: replace or verify /images/products/welding-electrode.jpg |
