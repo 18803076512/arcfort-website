@@ -19,6 +19,7 @@
     "products:simple:preview": "node --experimental-strip-types scripts/import-simple-products.ts",
     "products:simple:generate": "node --experimental-strip-types scripts/import-simple-products.ts --write",
     "products:simple:import": "node --experimental-strip-types scripts/import-simple-products.ts --write --import",
+    "seo:audit": "node --experimental-strip-types scripts/audit-seo.ts",
     "downloads:generate": "node --experimental-strip-types scripts/generate-download-assets.ts",
     "indexing:submit": "node --experimental-strip-types scripts/submit-indexnow.ts",
     "format": "prettier --write ."

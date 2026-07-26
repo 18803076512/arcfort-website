@@ -43,17 +43,19 @@ generation.
 8. Run `npm run products:check-images` before importing or publishing product images.
 9. Run `npm run products:image-tasks` when product images are missing or before requesting product photos.
 10. Run `npm run products:report` before publishing SKU batches so missing images and placeholder
-   fields are visible.
-11. For RFQ changes, check `/api/rfq/status` after deployment and report whether `email.ready` is
-   true. If it is false, clearly state that automated email delivery is not production-ready yet.
-12. Do not treat the RFQ form as a complete lead channel until a real test inquiry reaches the
+    fields are visible.
+11. Run `npm run seo:audit` before publishing important product, category, application or guide
+    updates. Fix blocking duplicate-route and broken-reference errors before deployment.
+12. For RFQ changes, check `/api/rfq/status` after deployment and report whether `email.ready` is
+    true. If it is false, clearly state that automated email delivery is not production-ready yet.
+13. Do not treat the RFQ form as a complete lead channel until a real test inquiry reaches the
     configured sales email.
-13. Do not hardcode Google Analytics IDs, Search Console verification tokens or marketing pixels;
+14. Do not hardcode Google Analytics IDs, Search Console verification tokens or marketing pixels;
     use environment variables.
-14. After publishing important page, SKU, category or guide updates, run
+15. After publishing important page, SKU, category or guide updates, run
     `npm run indexing:submit -- --dry-run` and submit through IndexNow only after the deployed
     sitemap and key file are reachable.
-15. Do not enable Google Product rich result JSON-LD unless real public `offers`, `review`, or
+16. Do not enable Google Product rich result JSON-LD unless real public `offers`, `review`, or
     `aggregateRating` data is available on the same product page. Never add fake prices, stock
     status, ratings or reviews to satisfy structured data tools.
 

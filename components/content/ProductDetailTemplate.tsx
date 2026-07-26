@@ -10,6 +10,7 @@ import { SpecificationTable } from "@/components/content/SpecificationTable";
 import { displayConfirmedValue, isLowSignalSpecificationValue } from "@/lib/content/display";
 import { hasPublicProductImage } from "@/lib/content/product-images";
 import { siteConfig } from "@/lib/content/site";
+import { getBuyerGuideForCategory } from "@/lib/content/topic-links";
 
 type RelatedProduct = {
   product: Product;
@@ -104,6 +105,7 @@ export function ProductDetailTemplate({
   category,
   relatedProducts,
 }: ProductDetailTemplateProps) {
+  const buyerGuideLink = getBuyerGuideForCategory(category.slug);
   const rfqHref = `/rfq?product=${encodeURIComponent(product.title)}`;
   const productEmailSubject = encodeURIComponent(
     `ArcFort Weld RFQ - ${product.title} - ${product.sku}`,
@@ -141,9 +143,7 @@ export function ProductDetailTemplate({
   const productFamily =
     product.kind === "welding-consumable" ? product.consumableFamily : product.equipmentFamily;
   const processLabel =
-    product.kind === "welding-consumable"
-      ? product.process
-      : product.supportedProcesses.join(", ");
+    product.kind === "welding-consumable" ? product.process : product.supportedProcesses.join(", ");
   const productSummary = [
     { label: "Product Family", value: productFamily },
     { label: "Process", value: processLabel },
@@ -418,6 +418,31 @@ export function ProductDetailTemplate({
         </div>
       </section>
 
+      <section className="border-y border-slate-200 bg-white py-12 sm:py-14">
+        <div className="mx-auto grid max-w-7xl gap-6 px-4 sm:px-6 lg:grid-cols-[0.78fr_1.22fr] lg:items-center lg:px-8">
+          <div>
+            <p className="text-sm font-bold uppercase tracking-[0.2em] text-arc-blue">
+              Product Buyer Guide
+            </p>
+            <h2 className="mt-3 font-display text-3xl font-black text-arc-midnight">
+              Confirm fit details before ordering.
+            </h2>
+          </div>
+          <Link
+            href={buyerGuideLink.href}
+            className="group border-l-4 border-arc-signal bg-arc-frost p-5 transition hover:bg-slate-100 sm:p-6"
+          >
+            <h3 className="font-display text-2xl font-black text-arc-midnight group-hover:text-arc-blue">
+              {buyerGuideLink.title}
+            </h3>
+            <p className="mt-3 text-sm leading-7 text-slate-600">{buyerGuideLink.description}</p>
+            <span className="mt-4 inline-flex text-sm font-bold uppercase tracking-[0.14em] text-arc-blue group-hover:text-arc-copper">
+              Read Buyer Guide
+            </span>
+          </Link>
+        </div>
+      </section>
+
       <section className="bg-white py-14 sm:py-16">
         <div className="mx-auto grid max-w-7xl gap-8 px-4 sm:px-6 lg:grid-cols-[1fr_1fr] lg:px-8">
           <article className="border border-slate-200 bg-white p-5 shadow-sm sm:p-6">
@@ -477,8 +502,8 @@ export function ProductDetailTemplate({
               </h3>
               <p className="mt-2 text-sm leading-6 text-slate-700">
                 Logo printing, private label packaging, carton design and product model
-                customization are available after product details, quantity and artwork
-                requirements are confirmed.
+                customization are available after product details, quantity and artwork requirements
+                are confirmed.
               </p>
             </div>
 
@@ -525,7 +550,10 @@ export function ProductDetailTemplate({
           </div>
           <div className="grid gap-4 sm:grid-cols-2">
             {product.applications.map((application) => (
-              <div key={application} className="border-l-4 border-arc-signal bg-white p-5 shadow-sm">
+              <div
+                key={application}
+                className="border-l-4 border-arc-signal bg-white p-5 shadow-sm"
+              >
                 <p className="font-semibold text-slate-800">{application}</p>
               </div>
             ))}

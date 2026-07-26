@@ -22,7 +22,7 @@ export function ProductVisual({
   const imageNote = compact
     ? "Photo on request"
     : "Product photo, drawing or model reference can be reviewed before quotation.";
-  const imageAlt = `${title} ${category} product image for ArcFort Weld RFQ`;
+  const imageAlt = `${title}, ${category} product reference from ArcFort Weld`;
 
   if (shouldRenderImage && mainImage) {
     return (

@@ -62,12 +62,15 @@ Industrial B2B website for ArcFort Weld, operated by Renqiu Ailesen Welding Tech
 - `lib/content/site.ts` - centralized company, contact, trade, port, payment, MOQ, lead time and OEM information
 - `lib/content/seo.ts` - metadata helper
 - `lib/content/jsonld.ts` - JSON-LD helpers for Product, BreadcrumbList, Organization and FAQ
+- `lib/content/product-redirects.ts` - permanent redirects for retired generic product URLs
+- `lib/content/topic-links.ts` - category-to-guide internal linking map
 
-The website currently includes 6 product categories, 47 active product records, 6 application pages,
-3 buyer guides and dedicated trust pages for OEM service, quality control, shipping/payment and
-document requests. The product data includes the first 30 SKU batch, 13 catalog-derived product-family
-records and retained generic starter records. Missing product data must remain explicit instead of inventing specifications,
-certifications, prices, stock status, factory capacity or customer cases.
+The website currently includes 6 product categories, 43 indexable product records, 6 application
+pages, 3 buyer guides and dedicated trust pages for OEM service, quality control, shipping/payment
+and document requests. Four retained generic starter URLs permanently redirect to their current
+category pages so they do not compete with exact SKU pages. Missing product data must remain explicit
+instead of inventing specifications, certifications, prices, stock status, factory capacity or
+customer cases.
 
 ## Product Lines
 
@@ -100,7 +103,8 @@ Simple workflow:
 7. Run `npm run products:report` to generate the internal product readiness checklist.
 8. Run `npm run products:simple:import` to update `lib/data/products.ts`.
 9. Run `npm run downloads:generate` to refresh public buyer download files.
-10. Run `npm run build`.
+10. Run `npm run seo:audit`.
+11. Run `npm run build`.
 
 To preview the reusable first 30 SKU worksheet without replacing the active simple CSV:
 
@@ -123,8 +127,9 @@ Full CSV workflow:
 7. Run `npm run products:report`.
 8. Run `npm run products:import`.
 9. Run `npm run downloads:generate`.
-10. Run `npm run build`.
-11. Submit a pull request.
+10. Run `npm run seo:audit`.
+11. Run `npm run build`.
+12. Submit a pull request.
 
 Use these values when data is uncertain:
 
@@ -176,6 +181,16 @@ NEXT_PUBLIC_GA_ID=
 
 The site supports Google Search Console verification and GA4 tracking through environment variables.
 No analytics IDs are hardcoded.
+
+Run the blocking SEO consistency check before every important deployment:
+
+```bash
+npm run seo:audit
+```
+
+The audit checks indexable product routes, duplicate metadata, category and product references,
+legacy redirects, image files and placeholder-content warnings. Warnings identify editorial work
+that still needs real product data; broken links and duplicate routes fail the command.
 
 Configure in Vercel only after the accounts are ready:
 

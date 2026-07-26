@@ -7,13 +7,20 @@ import {
   type ProductCategory,
 } from "@/lib/content/schemas";
 import { isLowSignalSpecificationValue } from "@/lib/content/display";
-import { hasPublicProductImage } from "@/lib/content/product-images";
+import { getSearchEligibleProductImages } from "@/lib/content/product-images";
 import { absoluteUrl, siteConfig } from "@/lib/content/site";
 
 type BreadcrumbItem = {
   name: string;
   path: string;
 };
+
+const organizationId = absoluteUrl("/#organization");
+const websiteId = absoluteUrl("/#website");
+
+function webPageId(path: string) {
+  return `${absoluteUrl(path)}#webpage`;
+}
 
 function confirmedRows(rows: { label: string; value: string }[]) {
   return rows.filter(
@@ -25,6 +32,7 @@ export function organizationJsonLd() {
   return {
     "@context": "https://schema.org",
     "@type": "Organization",
+    "@id": organizationId,
     name: siteConfig.name,
     legalName: siteConfig.legalName,
     alternateName: [siteConfig.shortName, siteConfig.chineseName],
@@ -32,15 +40,24 @@ export function organizationJsonLd() {
     email: siteConfig.email,
     telephone: siteConfig.whatsapp,
     description: siteConfig.description,
-    logo: absoluteUrl(siteConfig.logo),
-    image: absoluteUrl(siteConfig.defaultSeoImage),
+    logo: {
+      "@type": "ImageObject",
+      url: absoluteUrl(siteConfig.logo),
+      contentUrl: absoluteUrl(siteConfig.logo),
+      caption: `${siteConfig.name} logo`,
+    },
+    image: {
+      "@type": "ImageObject",
+      url: absoluteUrl(siteConfig.defaultSeoImage),
+      contentUrl: absoluteUrl(siteConfig.defaultSeoImage),
+      caption: `${siteConfig.name} industrial welding and cutting solutions`,
+    },
     slogan: siteConfig.tagline,
-    areaServed: ["Global", "North America", "Europe", "Asia", "South America", "Africa", "Oceania"],
+    areaServed: "Worldwide",
     address: {
       "@type": "PostalAddress",
-      streetAddress: siteConfig.address,
-      addressLocality: "Renqiu City",
-      addressRegion: "Hebei Province",
+      addressLocality: "Renqiu",
+      addressRegion: "Hebei",
       addressCountry: "CN",
     },
     contactPoint: [
@@ -51,13 +68,24 @@ export function organizationJsonLd() {
         telephone: siteConfig.whatsapp,
         url: absoluteUrl("/contact"),
         availableLanguage: ["English", "Chinese"],
+        areaServed: "Worldwide",
       },
     ],
     brand: {
       "@type": "Brand",
+      "@id": absoluteUrl("/#brand"),
       name: siteConfig.shortName,
     },
-    sameAs: siteConfig.sameAs,
+    knowsAbout: [
+      "MIG/MAG torch parts",
+      "TIG torch parts",
+      "Plasma cutting consumables",
+      "Welding consumables",
+      "Welding machines",
+      "Welding accessories",
+      "OEM welding products",
+    ],
+    ...(siteConfig.sameAs.length > 0 ? { sameAs: siteConfig.sameAs } : {}),
   };
 }
 
@@ -65,6 +93,7 @@ export function websiteJsonLd() {
   return {
     "@context": "https://schema.org",
     "@type": "WebSite",
+    "@id": websiteId,
     name: siteConfig.name,
     alternateName: [siteConfig.shortName, siteConfig.legalName],
     url: siteConfig.url,
@@ -72,6 +101,7 @@ export function websiteJsonLd() {
     inLanguage: "en",
     publisher: {
       "@type": "Organization",
+      "@id": organizationId,
       name: siteConfig.legalName,
     },
   };
@@ -88,29 +118,37 @@ export function webPageJsonLd({
   path: string;
   pageType?: "WebPage" | "AboutPage" | "ContactPage";
 }) {
+  const url = absoluteUrl(path);
+
   return {
     "@context": "https://schema.org",
     "@type": pageType,
+    "@id": webPageId(path),
     name,
     description,
-    url: absoluteUrl(path),
+    url,
     inLanguage: "en",
     isPartOf: {
       "@type": "WebSite",
+      "@id": websiteId,
       name: siteConfig.name,
       url: siteConfig.url,
     },
     publisher: {
       "@type": "Organization",
+      "@id": organizationId,
       name: siteConfig.legalName,
     },
   };
 }
 
 export function breadcrumbJsonLd(items: BreadcrumbItem[]) {
+  const currentPath = items.at(-1)?.path ?? "/";
+
   return {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
+    "@id": `${absoluteUrl(currentPath)}#breadcrumb`,
     itemListElement: items.map((item, index) => ({
       "@type": "ListItem",
       position: index + 1,
@@ -134,20 +172,30 @@ export function collectionPageJsonLd({
     path: string;
   }>;
 }) {
+  const url = absoluteUrl(path);
+
   return {
     "@context": "https://schema.org",
     "@type": "CollectionPage",
+    "@id": webPageId(path),
     name,
     description,
-    url: absoluteUrl(path),
+    url,
     inLanguage: "en",
     isPartOf: {
       "@type": "WebSite",
+      "@id": websiteId,
       name: siteConfig.name,
       url: siteConfig.url,
     },
+    publisher: {
+      "@type": "Organization",
+      "@id": organizationId,
+      name: siteConfig.legalName,
+    },
     mainEntity: {
       "@type": "ItemList",
+      "@id": `${url}#item-list`,
       itemListElement: items.map((item, index) => ({
         "@type": "ListItem",
         position: index + 1,
@@ -174,6 +222,8 @@ export function faqJsonLd(items: FaqItem[]) {
 }
 
 export function productWebPageJsonLd(product: Product, category: ProductCategory) {
+  const [primaryImage] = getSearchEligibleProductImages(product);
+
   return {
     ...webPageJsonLd({
       name: product.title,
@@ -185,6 +235,16 @@ export function productWebPageJsonLd(product: Product, category: ProductCategory
       name: product.title,
       description: product.shortDescription,
     },
+    ...(primaryImage
+      ? {
+          primaryImageOfPage: {
+            "@type": "ImageObject",
+            url: absoluteUrl(primaryImage),
+            contentUrl: absoluteUrl(primaryImage),
+            caption: product.title,
+          },
+        }
+      : {}),
   };
 }
 
@@ -208,9 +268,9 @@ export function productJsonLd(product: Product, category: ProductCategory) {
     name: row.label,
     value: row.value,
   }));
-  const productImages = [product.mainImage, ...product.galleryImages]
-    .filter(hasPublicProductImage)
-    .map((imagePath) => absoluteUrl(imagePath));
+  const productImages = getSearchEligibleProductImages(product).map((imagePath) =>
+    absoluteUrl(imagePath),
+  );
 
   return {
     "@context": "https://schema.org",
@@ -230,19 +290,35 @@ export function productJsonLd(product: Product, category: ProductCategory) {
 }
 
 export function articleJsonLd(article: GuideArticle) {
+  const path = `/guides/${article.slug}`;
+  const url = absoluteUrl(path);
+
   return {
     "@context": "https://schema.org",
     "@type": "Article",
+    "@id": `${url}#article`,
     headline: article.title,
     description: article.description,
-    url: absoluteUrl(`/guides/${article.slug}`),
+    url,
+    mainEntityOfPage: {
+      "@id": webPageId(path),
+    },
+    isPartOf: {
+      "@type": "WebSite",
+      "@id": websiteId,
+      name: siteConfig.name,
+      url: siteConfig.url,
+    },
     author: {
       "@type": "Organization",
-      name: siteConfig.name,
+      "@id": organizationId,
+      name: siteConfig.legalName,
+      url: absoluteUrl("/about"),
     },
     publisher: {
       "@type": "Organization",
-      name: siteConfig.name,
+      "@id": organizationId,
+      name: siteConfig.legalName,
       logo: {
         "@type": "ImageObject",
         url: absoluteUrl(siteConfig.logo),

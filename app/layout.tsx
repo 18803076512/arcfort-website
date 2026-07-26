@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import type { ReactNode } from "react";
 import { BuyerTrustStrip } from "@/components/BuyerTrustStrip";
 import { AnalyticsTracker } from "@/components/AnalyticsTracker";
@@ -18,6 +18,12 @@ export const metadata: Metadata = {
   creator: siteConfig.legalName,
   publisher: siteConfig.legalName,
   category: "Industrial welding and cutting products",
+  referrer: "origin-when-cross-origin",
+  formatDetection: {
+    address: false,
+    email: false,
+    telephone: false,
+  },
   title: {
     default: siteConfig.name,
     template: "%s | ArcFort Weld",
@@ -76,6 +82,11 @@ export const metadata: Metadata = {
   verification: {
     google: process.env.GOOGLE_SITE_VERIFICATION || undefined,
   },
+};
+
+export const viewport: Viewport = {
+  colorScheme: "light",
+  themeColor: "#071524",
 };
 
 export default function RootLayout({ children }: Readonly<{ children: ReactNode }>) {

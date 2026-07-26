@@ -1,5 +1,42 @@
 import type { NextConfig } from "next";
+import { legacyProductRedirects } from "./lib/content/product-redirects";
+import { siteConfig } from "./lib/content/site";
 
-const nextConfig: NextConfig = {};
+const nextConfig: NextConfig = {
+  compress: true,
+  poweredByHeader: false,
+  images: {
+    formats: ["image/avif", "image/webp"],
+    minimumCacheTTL: 86400,
+  },
+  async redirects() {
+    return legacyProductRedirects.map(({ categorySlug, productSlug, destination }) => ({
+      source: `/products/${categorySlug}/${productSlug}`,
+      destination,
+      permanent: true,
+    }));
+  },
+  async headers() {
+    return [
+      {
+        source: "/downloads/renqiu-ailesen-welding-catalog.pdf",
+        headers: [
+          {
+            key: "Link",
+            value: `<${siteConfig.url}/downloads/renqiu-ailesen-welding-catalog.pdf>; rel="canonical"`,
+          },
+        ],
+      },
+      {
+        source: "/downloads/arcfort-public-product-list.csv",
+        headers: [{ key: "X-Robots-Tag", value: "noindex" }],
+      },
+      {
+        source: "/downloads/arcfort-rfq-template.csv",
+        headers: [{ key: "X-Robots-Tag", value: "noindex" }],
+      },
+    ];
+  },
+};
 
 export default nextConfig;

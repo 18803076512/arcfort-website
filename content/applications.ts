@@ -17,8 +17,16 @@ export const applications: ApplicationPage[] = [
       "Clear product lists by torch model or reference number",
       "RFQ support for mixed welding parts and plasma consumables",
     ],
-    relatedCategorySlugs: ["mig-mag-torch-parts", "plasma-cutting-consumables", "welding-accessories"],
-    relatedProductSlugs: ["mig-contact-tip-m6-08mm", "plasma-electrode", "mig-gas-nozzle-mb15"],
+    relatedCategorySlugs: [
+      "mig-mag-torch-parts",
+      "plasma-cutting-consumables",
+      "welding-accessories",
+    ],
+    relatedProductSlugs: [
+      "mig-contact-tip-m6-0-8mm",
+      "plasma-electrode",
+      "mig-gas-nozzle-for-mb15",
+    ],
     faq: [
       {
         question: "What should shipbuilding buyers include in an RFQ?",
@@ -31,7 +39,11 @@ export const applications: ApplicationPage[] = [
           "No certifications are invented. Any certification requirement must be confirmed with official documents.",
       },
     ],
-    keywords: ["shipbuilding welding parts", "marine welding consumables", "plasma cutting consumables"],
+    keywords: [
+      "shipbuilding welding parts",
+      "marine welding consumables",
+      "plasma cutting consumables",
+    ],
   },
   {
     slug: "automotive",
@@ -50,7 +62,11 @@ export const applications: ApplicationPage[] = [
       "Packaging and quantity details for distributor programs",
     ],
     relatedCategorySlugs: ["mig-mag-torch-parts", "tig-torch-parts", "welding-consumables"],
-    relatedProductSlugs: ["mig-contact-tip-m6-08mm", "mig-gas-nozzle-mb15", "mig-tip-holder-mb15"],
+    relatedProductSlugs: [
+      "mig-contact-tip-m6-0-8mm",
+      "mig-gas-nozzle-for-mb15",
+      "mig-tip-holder-for-mb15",
+    ],
     faq: [
       {
         question: "Can automotive buyers request mixed welding consumables?",
@@ -82,7 +98,7 @@ export const applications: ApplicationPage[] = [
       "Clear RFQ details for delivery planning",
     ],
     relatedCategorySlugs: ["welding-consumables", "welding-accessories", "welding-machines"],
-    relatedProductSlugs: ["tig-gas-lens-16mm", "tig-ceramic-cup-6", "plasma-electrode"],
+    relatedProductSlugs: ["tig-gas-lens-1-6mm", "tig-ceramic-cup-6", "plasma-electrode"],
     faq: [
       {
         question: "Can pipeline applications be quoted without confirmed specs?",
@@ -113,8 +129,12 @@ export const applications: ApplicationPage[] = [
       "Plasma electrode and nozzle sourcing",
       "Workshop accessory and clamp product lists",
     ],
-    relatedCategorySlugs: ["mig-mag-torch-parts", "plasma-cutting-consumables", "welding-accessories"],
-    relatedProductSlugs: ["mig-contact-tip-m6-10mm", "plasma-nozzle", "tig-ceramic-cup-5"],
+    relatedCategorySlugs: [
+      "mig-mag-torch-parts",
+      "plasma-cutting-consumables",
+      "welding-accessories",
+    ],
+    relatedProductSlugs: ["mig-contact-tip-m6-1-0mm", "plasma-nozzle", "tig-ceramic-cup-5"],
     faq: [
       {
         question: "Can fabrication shops submit product photos?",
@@ -123,8 +143,7 @@ export const applications: ApplicationPage[] = [
       },
       {
         question: "Can plasma parts and MIG parts be quoted together?",
-        answer:
-          "Yes. Buyers can send a combined RFQ list for welding and cutting consumables.",
+        answer: "Yes. Buyers can send a combined RFQ list for welding and cutting consumables.",
       },
     ],
     keywords: ["metal fabrication welding parts", "plasma consumables", "MIG parts"],
@@ -145,8 +164,12 @@ export const applications: ApplicationPage[] = [
       "Consumables for welding and cutting maintenance",
       "Packaging and delivery details for project purchasing",
     ],
-    relatedCategorySlugs: ["welding-accessories", "welding-consumables", "plasma-cutting-consumables"],
-    relatedProductSlugs: ["plasma-electrode", "plasma-nozzle", "mig-contact-tip-m6-12mm"],
+    relatedCategorySlugs: [
+      "welding-accessories",
+      "welding-consumables",
+      "plasma-cutting-consumables",
+    ],
+    relatedProductSlugs: ["plasma-electrode", "plasma-nozzle", "mig-contact-tip-m6-1-2mm"],
     faq: [
       {
         question: "Can construction buyers request accessories in bulk?",
@@ -178,7 +201,11 @@ export const applications: ApplicationPage[] = [
       "Repeat purchasing support for common workshop items",
     ],
     relatedCategorySlugs: ["mig-mag-torch-parts", "tig-torch-parts", "welding-accessories"],
-    relatedProductSlugs: ["mig-gas-nozzle-mb15", "tig-ceramic-cup-5", "mig-tip-holder-mb15"],
+    relatedProductSlugs: [
+      "mig-gas-nozzle-for-mb15",
+      "tig-ceramic-cup-5",
+      "mig-tip-holder-for-mb15",
+    ],
     faq: [
       {
         question: "Can repair workshops send mixed product lists?",
