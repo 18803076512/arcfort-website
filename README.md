@@ -86,6 +86,10 @@ customer cases.
 For daily SKU maintenance, use the simple SKU workflow first. It lets you maintain a short CSV and
 generate the full website product CSV automatically.
 
+The generator updates rows that match the simple CSV and preserves existing rows that are not in the
+simple file. This prevents catalog-derived or separately maintained products from being removed when
+the simple SKU batch is regenerated.
+
 Simple CSV files:
 
 - `data/import/products-simple-template.csv` - simple SKU template
@@ -114,7 +118,9 @@ node --experimental-strip-types scripts/import-simple-products.ts --input data/i
 
 The simple importer can generate safe routing, image-path, SEO and placeholder values. It must not
 generate confirmed OEM numbers, confirmed compatible models, certifications, prices, exact technical
-ratings or unverified product dimensions.
+ratings or unverified product dimensions. Known product families use the editorial profiles in
+`scripts/product-copy-profiles.ts` to generate function-specific English copy. New product families
+use a conservative category fallback and print a review warning before import.
 
 Full CSV workflow:
 
