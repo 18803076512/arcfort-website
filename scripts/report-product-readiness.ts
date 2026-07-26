@@ -50,22 +50,33 @@ function publicImageExists(imagePath: string) {
 }
 
 function countBy<T extends string>(rows: ProductImportRow[], field: keyof ProductImportRow) {
-  return rows.reduce<Record<T, number>>((counts, row) => {
-    const value = row[field] as T;
-    counts[value] = (counts[value] ?? 0) + 1;
-    return counts;
-  }, {} as Record<T, number>);
+  return rows.reduce<Record<T, number>>(
+    (counts, row) => {
+      const value = row[field] as T;
+      counts[value] = (counts[value] ?? 0) + 1;
+      return counts;
+    },
+    {} as Record<T, number>,
+  );
 }
 
 function getMissingImageRows(rows: ProductImportRow[]) {
   return rows.filter((row) => !publicImageExists(row.main_image));
 }
 
+function getImageReviewRows(rows: ProductImportRow[]) {
+  return rows.filter(
+    (row) => row.image_status === "placeholder" || row.image_status === "needs_photo",
+  );
+}
+
 function getMissingGalleryRows(rows: ProductImportRow[]) {
   return rows
     .map((row) => ({
       row,
-      missingImages: splitImageList(row.gallery_images).filter((imagePath) => !publicImageExists(imagePath)),
+      missingImages: splitImageList(row.gallery_images).filter(
+        (imagePath) => !publicImageExists(imagePath),
+      ),
     }))
     .filter((entry) => entry.missingImages.length > 0);
 }
@@ -97,12 +108,16 @@ function formatProductTable(rows: ProductImportRow[], getNotes: (row: ProductImp
 
 function buildReport(inputPath: string, rows: ProductImportRow[]) {
   const missingMainImageRows = getMissingImageRows(rows);
+  const imageReviewRows = getImageReviewRows(rows);
   const missingGalleryRows = getMissingGalleryRows(rows);
   const rowsWithPlaceholderFields = rows
     .map((row) => ({ row, fields: getPlaceholderFields(row) }))
     .filter((entry) => entry.fields.length > 0);
   const confirmedDataRows = rows.filter((row) => row.data_status === "confirmed");
   const ownPhotoRows = rows.filter((row) => row.image_status === "own_photo");
+  const reviewedPhotoRows = rows.filter(
+    (row) => row.image_status === "own_photo" || row.image_status === "supplier_photo",
+  );
   const confirmedCompatibilityRows = rows.filter((row) => row.compatibility_status === "confirmed");
   const confirmedOemRows = rows.filter((row) => row.oem_status === "confirmed");
   const generatedAt = new Date().toISOString();
@@ -119,6 +134,8 @@ function buildReport(inputPath: string, rows: ProductImportRow[]) {
     `- Products checked: ${rows.length}`,
     `- Products with confirmed data status: ${confirmedDataRows.length}`,
     `- Products with own-photo image status: ${ownPhotoRows.length}`,
+    `- Products with reviewed own or supplier photos: ${reviewedPhotoRows.length}`,
+    `- Products requiring a reviewed product photo: ${imageReviewRows.length}`,
     `- Products with confirmed compatibility status: ${confirmedCompatibilityRows.length}`,
     `- Products with confirmed OEM status: ${confirmedOemRows.length}`,
     `- Missing main images: ${missingMainImageRows.length}`,
@@ -133,6 +150,13 @@ function buildReport(inputPath: string, rows: ProductImportRow[]) {
     "",
     formatStatusCounts("OEM Status", countBy(rows, "oem_status")),
     "",
+    "## Images Requiring Review",
+    "",
+    formatProductTable(
+      imageReviewRows,
+      (row) => `${row.image_status}: replace or verify ${row.main_image}`,
+    ),
+    "",
     "## Missing Main Images",
     "",
     formatProductTable(missingMainImageRows, (row) => row.main_image),
@@ -145,7 +169,8 @@ function buildReport(inputPath: string, rows: ProductImportRow[]) {
           "| SKU | Product | Missing Gallery Images |",
           "| --- | --- | --- |",
           ...missingGalleryRows.map(
-            (entry) => `| ${entry.row.sku} | ${entry.row.name} | ${entry.missingImages.join("<br>")} |`,
+            (entry) =>
+              `| ${entry.row.sku} | ${entry.row.name} | ${entry.missingImages.join("<br>")} |`,
           ),
         ].join("\n"),
     "",
@@ -163,7 +188,7 @@ function buildReport(inputPath: string, rows: ProductImportRow[]) {
     "",
     "## Next Actions",
     "",
-    "1. Replace missing main images with white-background product photos named exactly as the CSV image paths.",
+    "1. Replace `needs_photo` and missing main images with reviewed white-background product photos named exactly as the CSV image paths.",
     "2. Confirm high-priority product fields from samples, drawings, factory data or supplier catalogs.",
     "3. Change `data_status`, `image_status`, `compatibility_status` and `oem_status` only when the supporting data is actually confirmed.",
     "4. Run `npm run products:report`, `npm run products:validate`, `npm run products:check-images` and `npm run build` before publishing SKU updates.",

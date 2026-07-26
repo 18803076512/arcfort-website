@@ -78,10 +78,12 @@ export const arcfortProducts: ArcfortProductData[] = [
     "status": "active",
     "dataStatus": "needs_review",
     "sourceType": "unknown",
-    "sourceReference": "First 30 SKU worksheet - confirm connector size cable compatibility and real image before publishing.",
-    "imageStatus": "placeholder",
+    "sourceReference": "First 30 SKU worksheet - confirm connector size cable compatibility and real image before publishing. Local supplier image archive: QQ截图20211203091759.jpg",
+    "imageStatus": "supplier_photo",
     "compatibilityStatus": "unverified",
-    "oemStatus": "unknown"
+    "oemStatus": "unknown",
+    "verifiedBy": "Internal image review",
+    "verifiedDate": "2026-07-26"
   },
   {
     "id": "af-acc-dc-0014",
@@ -111,10 +113,12 @@ export const arcfortProducts: ArcfortProductData[] = [
     "status": "active",
     "dataStatus": "needs_review",
     "sourceType": "unknown",
-    "sourceReference": "First 30 SKU worksheet - confirm connector size cable compatibility and real image before publishing.",
-    "imageStatus": "placeholder",
+    "sourceReference": "First 30 SKU worksheet - confirm connector size cable compatibility and real image before publishing. Local supplier image archive: 微信图片_202404111901332.jpg",
+    "imageStatus": "supplier_photo",
     "compatibilityStatus": "unverified",
-    "oemStatus": "unknown"
+    "oemStatus": "unknown",
+    "verifiedBy": "Internal image review",
+    "verifiedDate": "2026-07-26"
   },
   {
     "id": "af-acc-fa-0041",
@@ -216,10 +220,12 @@ export const arcfortProducts: ArcfortProductData[] = [
     "status": "active",
     "dataStatus": "needs_review",
     "sourceType": "unknown",
-    "sourceReference": "First 30 SKU worksheet - confirm current rating jaw type connection and real image before publishing.",
-    "imageStatus": "placeholder",
+    "sourceReference": "First 30 SKU worksheet - confirm current rating jaw type connection and real image before publishing. Local supplier image archive: 地线夹3.jpg",
+    "imageStatus": "supplier_photo",
     "compatibilityStatus": "unverified",
-    "oemStatus": "unknown"
+    "oemStatus": "unknown",
+    "verifiedBy": "Internal image review",
+    "verifiedDate": "2026-07-26"
   },
   {
     "id": "af-acc-pc-0042",
@@ -358,7 +364,7 @@ export const arcfortProducts: ArcfortProductData[] = [
     "dataStatus": "needs_review",
     "sourceType": "unknown",
     "sourceReference": "First 30 SKU worksheet - confirm cable size conductor material length and real image before publishing.",
-    "imageStatus": "placeholder",
+    "imageStatus": "needs_photo",
     "compatibilityStatus": "unverified",
     "oemStatus": "unknown"
   },
@@ -391,7 +397,7 @@ export const arcfortProducts: ArcfortProductData[] = [
     "dataStatus": "needs_review",
     "sourceType": "unknown",
     "sourceReference": "First 30 SKU worksheet - confirm holding force angle type package and real image before publishing.",
-    "imageStatus": "placeholder",
+    "imageStatus": "needs_photo",
     "compatibilityStatus": "unverified",
     "oemStatus": "unknown"
   },
@@ -423,10 +429,12 @@ export const arcfortProducts: ArcfortProductData[] = [
     "status": "active",
     "dataStatus": "needs_review",
     "sourceType": "unknown",
-    "sourceReference": "First 30 SKU worksheet - confirm current rating cable connection material and real image before publishing.",
-    "imageStatus": "placeholder",
+    "sourceReference": "First 30 SKU worksheet - confirm current rating cable connection material and real image before publishing. Local supplier image archive: 微信图片_202404111901314.jpg",
+    "imageStatus": "supplier_photo",
     "compatibilityStatus": "unverified",
-    "oemStatus": "unknown"
+    "oemStatus": "unknown",
+    "verifiedBy": "Internal image review",
+    "verifiedDate": "2026-07-26"
   },
   {
     "id": "af-con-el-0011",
@@ -457,7 +465,7 @@ export const arcfortProducts: ArcfortProductData[] = [
     "dataStatus": "needs_review",
     "sourceType": "unknown",
     "sourceReference": "First 30 SKU worksheet - confirm electrode type diameter length package and real image before publishing.",
-    "imageStatus": "placeholder",
+    "imageStatus": "needs_photo",
     "compatibilityStatus": "unverified",
     "oemStatus": "unknown"
   },
@@ -525,10 +533,12 @@ export const arcfortProducts: ArcfortProductData[] = [
     "status": "active",
     "dataStatus": "needs_review",
     "sourceType": "unknown",
-    "sourceReference": "First 30 SKU worksheet - confirm wire type diameter spool package and real image before publishing.",
-    "imageStatus": "placeholder",
+    "sourceReference": "First 30 SKU worksheet - confirm wire type diameter spool package and real image before publishing. Local supplier image archive: 大桥牌气体保护实心焊丝.jpg",
+    "imageStatus": "supplier_photo",
     "compatibilityStatus": "unverified",
-    "oemStatus": "unknown"
+    "oemStatus": "unknown",
+    "verifiedBy": "Internal image review",
+    "verifiedDate": "2026-07-26"
   },
   {
     "id": "af-mac-sg-0037",
@@ -664,7 +674,7 @@ export const arcfortProducts: ArcfortProductData[] = [
     "dataStatus": "needs_review",
     "sourceType": "unknown",
     "sourceReference": "First 30 SKU worksheet - size and thread provided by buyer list; confirm length material grade packaging and real image before publishing.",
-    "imageStatus": "placeholder",
+    "imageStatus": "needs_photo",
     "compatibilityStatus": "unverified",
     "oemStatus": "unknown"
   },
@@ -697,7 +707,7 @@ export const arcfortProducts: ArcfortProductData[] = [
     "dataStatus": "needs_review",
     "sourceType": "unknown",
     "sourceReference": "First 30 SKU worksheet - size and thread provided by buyer list; confirm length material grade packaging and real image before publishing.",
-    "imageStatus": "placeholder",
+    "imageStatus": "needs_photo",
     "compatibilityStatus": "unverified",
     "oemStatus": "unknown"
   },
@@ -730,7 +740,7 @@ export const arcfortProducts: ArcfortProductData[] = [
     "dataStatus": "needs_review",
     "sourceType": "unknown",
     "sourceReference": "First 30 SKU worksheet - size and thread provided by buyer list; confirm length material grade packaging and real image before publishing.",
-    "imageStatus": "placeholder",
+    "imageStatus": "needs_photo",
     "compatibilityStatus": "unverified",
     "oemStatus": "unknown"
   },
@@ -763,7 +773,7 @@ export const arcfortProducts: ArcfortProductData[] = [
     "dataStatus": "needs_review",
     "sourceType": "unknown",
     "sourceReference": "First 30 SKU worksheet - confirm torch series thread material grade and real image before publishing.",
-    "imageStatus": "placeholder",
+    "imageStatus": "needs_photo",
     "compatibilityStatus": "unverified",
     "oemStatus": "unknown"
   },
@@ -829,7 +839,7 @@ export const arcfortProducts: ArcfortProductData[] = [
     "dataStatus": "needs_review",
     "sourceType": "unknown",
     "sourceReference": "First 30 SKU worksheet - MB15 name provided by buyer list; confirm nozzle shape finish dimensions and real image before publishing.",
-    "imageStatus": "placeholder",
+    "imageStatus": "needs_photo",
     "compatibilityStatus": "unverified",
     "oemStatus": "unknown"
   },
@@ -933,10 +943,12 @@ export const arcfortProducts: ArcfortProductData[] = [
     "status": "active",
     "dataStatus": "needs_review",
     "sourceType": "unknown",
-    "sourceReference": "First 30 SKU worksheet - confirm torch model neck angle connection and real image before publishing.",
-    "imageStatus": "placeholder",
+    "sourceReference": "First 30 SKU worksheet - confirm torch model neck angle connection and real image before publishing. Local supplier image archive: 欧式弯管1.jpg",
+    "imageStatus": "supplier_photo",
     "compatibilityStatus": "unverified",
-    "oemStatus": "unknown"
+    "oemStatus": "unknown",
+    "verifiedBy": "Internal image review",
+    "verifiedDate": "2026-07-26"
   },
   {
     "id": "af-mig-th-0007",
@@ -967,7 +979,7 @@ export const arcfortProducts: ArcfortProductData[] = [
     "dataStatus": "needs_review",
     "sourceType": "unknown",
     "sourceReference": "First 30 SKU worksheet - MB15 name provided by buyer list; confirm exact thread dimensions finish and real image before publishing.",
-    "imageStatus": "placeholder",
+    "imageStatus": "needs_photo",
     "compatibilityStatus": "unverified",
     "oemStatus": "unknown"
   },
@@ -1000,7 +1012,7 @@ export const arcfortProducts: ArcfortProductData[] = [
     "dataStatus": "needs_review",
     "sourceType": "unknown",
     "sourceReference": "First 30 SKU worksheet - confirm wire size liner length liner type and real image before publishing.",
-    "imageStatus": "placeholder",
+    "imageStatus": "needs_photo",
     "compatibilityStatus": "unverified",
     "oemStatus": "unknown"
   },
@@ -1032,10 +1044,12 @@ export const arcfortProducts: ArcfortProductData[] = [
     "status": "active",
     "dataStatus": "needs_review",
     "sourceType": "unknown",
-    "sourceReference": "First 30 SKU worksheet - confirm torch model cutting current reference number and real image before publishing.",
-    "imageStatus": "placeholder",
+    "sourceReference": "First 30 SKU worksheet - confirm torch model cutting current reference number and real image before publishing. Local supplier image archive: 温州40.jpg",
+    "imageStatus": "supplier_photo",
     "compatibilityStatus": "unverified",
-    "oemStatus": "unknown"
+    "oemStatus": "unknown",
+    "verifiedBy": "Internal image review",
+    "verifiedDate": "2026-07-26"
   },
   {
     "id": "af-pla-el-0007",
@@ -1065,10 +1079,12 @@ export const arcfortProducts: ArcfortProductData[] = [
     "status": "active",
     "dataStatus": "needs_review",
     "sourceType": "unknown",
-    "sourceReference": "First 30 SKU worksheet - confirm torch model reference number material detail and real image before publishing.",
-    "imageStatus": "placeholder",
+    "sourceReference": "First 30 SKU worksheet - confirm torch model reference number material detail and real image before publishing. Local supplier image archive: 微信图片_202404111901331.jpg",
+    "imageStatus": "supplier_photo",
     "compatibilityStatus": "unverified",
-    "oemStatus": "unknown"
+    "oemStatus": "unknown",
+    "verifiedBy": "Internal image review",
+    "verifiedDate": "2026-07-26"
   },
   {
     "id": "af-pla-nz-0008",
@@ -1098,10 +1114,12 @@ export const arcfortProducts: ArcfortProductData[] = [
     "status": "active",
     "dataStatus": "needs_review",
     "sourceType": "unknown",
-    "sourceReference": "First 30 SKU worksheet - confirm nozzle size torch model reference number and real image before publishing.",
-    "imageStatus": "placeholder",
+    "sourceReference": "First 30 SKU worksheet - confirm nozzle size torch model reference number and real image before publishing. Local supplier image archive: 微信图片_202404111901308.jpg",
+    "imageStatus": "supplier_photo",
     "compatibilityStatus": "unverified",
-    "oemStatus": "unknown"
+    "oemStatus": "unknown",
+    "verifiedBy": "Internal image review",
+    "verifiedDate": "2026-07-26"
   },
   {
     "id": "af-pla-pt-0034",
@@ -1168,7 +1186,7 @@ export const arcfortProducts: ArcfortProductData[] = [
     "dataStatus": "needs_review",
     "sourceType": "unknown",
     "sourceReference": "First 30 SKU worksheet - confirm torch model thread reference number and real image before publishing.",
-    "imageStatus": "placeholder",
+    "imageStatus": "needs_photo",
     "compatibilityStatus": "unverified",
     "oemStatus": "unknown"
   },
@@ -1201,7 +1219,7 @@ export const arcfortProducts: ArcfortProductData[] = [
     "dataStatus": "needs_review",
     "sourceType": "unknown",
     "sourceReference": "First 30 SKU worksheet - confirm torch model shield type reference number and real image before publishing.",
-    "imageStatus": "placeholder",
+    "imageStatus": "needs_photo",
     "compatibilityStatus": "unverified",
     "oemStatus": "unknown"
   },
@@ -1234,7 +1252,7 @@ export const arcfortProducts: ArcfortProductData[] = [
     "dataStatus": "needs_review",
     "sourceType": "unknown",
     "sourceReference": "First 30 SKU worksheet - confirm torch model stack compatibility and real image before publishing.",
-    "imageStatus": "placeholder",
+    "imageStatus": "needs_photo",
     "compatibilityStatus": "unverified",
     "oemStatus": "unknown"
   },
@@ -1267,7 +1285,7 @@ export const arcfortProducts: ArcfortProductData[] = [
     "dataStatus": "needs_review",
     "sourceType": "unknown",
     "sourceReference": "First 30 SKU worksheet - confirm torch model spacer type and real image before publishing.",
-    "imageStatus": "placeholder",
+    "imageStatus": "needs_photo",
     "compatibilityStatus": "unverified",
     "oemStatus": "unknown"
   },
@@ -1299,10 +1317,12 @@ export const arcfortProducts: ArcfortProductData[] = [
     "status": "active",
     "dataStatus": "needs_review",
     "sourceType": "unknown",
-    "sourceReference": "First 30 SKU worksheet - confirm cap length torch series and real image before publishing.",
-    "imageStatus": "placeholder",
+    "sourceReference": "First 30 SKU worksheet - confirm cap length torch series and real image before publishing. Local supplier image archive: 微信图片_20240411190132.jpg",
+    "imageStatus": "supplier_photo",
     "compatibilityStatus": "unverified",
-    "oemStatus": "unknown"
+    "oemStatus": "unknown",
+    "verifiedBy": "Internal image review",
+    "verifiedDate": "2026-07-26"
   },
   {
     "id": "af-tig-cb-0005",
@@ -1333,7 +1353,7 @@ export const arcfortProducts: ArcfortProductData[] = [
     "dataStatus": "needs_review",
     "sourceType": "unknown",
     "sourceReference": "First 30 SKU worksheet - confirm tungsten size torch series thread and real image before publishing.",
-    "imageStatus": "placeholder",
+    "imageStatus": "needs_photo",
     "compatibilityStatus": "unverified",
     "oemStatus": "unknown"
   },
@@ -1398,10 +1418,12 @@ export const arcfortProducts: ArcfortProductData[] = [
     "status": "active",
     "dataStatus": "needs_review",
     "sourceType": "unknown",
-    "sourceReference": "First 30 SKU worksheet - cup number provided by buyer list; confirm torch series dimensions and real image before publishing.",
-    "imageStatus": "placeholder",
+    "sourceReference": "First 30 SKU worksheet - cup number provided by buyer list; confirm torch series dimensions and real image before publishing. Local supplier image archive: 瓷嘴0.jpg",
+    "imageStatus": "supplier_photo",
     "compatibilityStatus": "unverified",
-    "oemStatus": "unknown"
+    "oemStatus": "unknown",
+    "verifiedBy": "Internal image review",
+    "verifiedDate": "2026-07-26"
   },
   {
     "id": "af-tig-cc-0008",
@@ -1431,10 +1453,12 @@ export const arcfortProducts: ArcfortProductData[] = [
     "status": "active",
     "dataStatus": "needs_review",
     "sourceType": "unknown",
-    "sourceReference": "First 30 SKU worksheet - cup number provided by buyer list; confirm torch series dimensions and real image before publishing.",
-    "imageStatus": "placeholder",
+    "sourceReference": "First 30 SKU worksheet - cup number provided by buyer list; confirm torch series dimensions and real image before publishing. Local supplier image archive: 瓷嘴0.jpg",
+    "imageStatus": "supplier_photo",
     "compatibilityStatus": "unverified",
-    "oemStatus": "unknown"
+    "oemStatus": "unknown",
+    "verifiedBy": "Internal image review",
+    "verifiedDate": "2026-07-26"
   },
   {
     "id": "af-tig-cl-0009",
@@ -1464,10 +1488,12 @@ export const arcfortProducts: ArcfortProductData[] = [
     "status": "active",
     "dataStatus": "needs_review",
     "sourceType": "unknown",
-    "sourceReference": "First 30 SKU worksheet - confirm tungsten size torch series and real image before publishing.",
-    "imageStatus": "placeholder",
+    "sourceReference": "First 30 SKU worksheet - confirm tungsten size torch series and real image before publishing. Local supplier image archive: 钨极夹.jpg",
+    "imageStatus": "supplier_photo",
     "compatibilityStatus": "unverified",
-    "oemStatus": "unknown"
+    "oemStatus": "unknown",
+    "verifiedBy": "Internal image review",
+    "verifiedDate": "2026-07-26"
   },
   {
     "id": "af-tig-gl-0006",
@@ -1531,7 +1557,7 @@ export const arcfortProducts: ArcfortProductData[] = [
     "dataStatus": "needs_review",
     "sourceType": "unknown",
     "sourceReference": "First 30 SKU worksheet - 1.6mm size provided by buyer list; confirm torch series gas lens type and real image before publishing.",
-    "imageStatus": "placeholder",
+    "imageStatus": "needs_photo",
     "compatibilityStatus": "unverified",
     "oemStatus": "unknown"
   },
@@ -1563,10 +1589,12 @@ export const arcfortProducts: ArcfortProductData[] = [
     "status": "active",
     "dataStatus": "needs_review",
     "sourceType": "unknown",
-    "sourceReference": "First 30 SKU worksheet - confirm diameter length color code type and real image before publishing.",
-    "imageStatus": "placeholder",
+    "sourceReference": "First 30 SKU worksheet - confirm diameter length color code type and real image before publishing. Local supplier image archive: 微信图片_20240411190131.jpg",
+    "imageStatus": "supplier_photo",
     "compatibilityStatus": "unverified",
-    "oemStatus": "unknown"
+    "oemStatus": "unknown",
+    "verifiedBy": "Internal image review",
+    "verifiedDate": "2026-07-26"
   },
   {
     "id": "af-tig-ts-0036",

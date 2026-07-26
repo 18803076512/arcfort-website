@@ -85,7 +85,10 @@ function getPriority(row: ProductImportRow) {
 
 function createTaskRows(rows: ProductImportRow[]) {
   return rows.flatMap((row) => {
-    const missingMainImage = !publicImageExists(row.main_image)
+    const mainImageExists = publicImageExists(row.main_image);
+    const needsReviewedMainImage =
+      !mainImageExists || row.image_status === "placeholder" || row.image_status === "needs_photo";
+    const missingMainImage = needsReviewedMainImage
       ? [
           {
             sku: row.sku,
@@ -96,6 +99,10 @@ function createTaskRows(rows: ProductImportRow[]) {
             priority: getPriority(row),
             productFamily: getProductFamily(row),
             shotGuidance: getShotGuidance(row),
+            currentStatus: row.image_status,
+            reason: !mainImageExists
+              ? "Target file is missing."
+              : "Current file is not approved for product image SEO.",
             requirements:
               "Real product photo, white or light background, no watermark, no fake certification logo, no price text, product fills 70-85% of frame.",
             dataReminder:
@@ -114,6 +121,8 @@ function createTaskRows(rows: ProductImportRow[]) {
         priority: getPriority(row),
         productFamily: getProductFamily(row),
         shotGuidance: getShotGuidance(row),
+        currentStatus: row.image_status,
+        reason: "Gallery target file is missing.",
         requirements:
           "Real product photo, white or light background, no watermark, no fake certification logo, no price text, product fills 70-85% of frame.",
         dataReminder:
@@ -128,7 +137,9 @@ const inputPath = resolveValidationInputPath(process.argv[2]);
 const result = validateCsvFile(inputPath);
 
 if (result.errors.length > 0) {
-  console.error("Product image task generation failed because the product CSV has validation errors.");
+  console.error(
+    "Product image task generation failed because the product CSV has validation errors.",
+  );
   process.exit(1);
 }
 
@@ -142,6 +153,8 @@ const headers = [
   "priority",
   "product_family",
   "shot_guidance",
+  "current_status",
+  "reason",
   "requirements",
   "data_reminder",
 ];
@@ -157,6 +170,8 @@ const lines = [
       row.priority,
       row.productFamily,
       row.shotGuidance,
+      row.currentStatus,
+      row.reason,
       row.requirements,
       row.dataReminder,
     ]

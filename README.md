@@ -161,6 +161,18 @@ Use these values when data is uncertain:
 - `needs_review`
 - `unknown`
 
+Product image publication rules:
+
+- Use `own_photo` only for a confirmed ArcFort or company-owned product photo.
+- Use `supplier_photo` for a reviewed supplier image that clearly matches the published product
+  type; keep exact model, dimensions and compatibility unconfirmed unless separately verified.
+- Use `needs_photo` when the current file is a placeholder, illustration or family-level image that
+  cannot confirm the published SKU.
+- Only `own_photo` and `supplier_photo` images are eligible for product Open Graph metadata,
+  Product JSON-LD and image sitemap entries.
+- Keep the original image source in `source_reference` and record `verified_by` and
+  `verified_date`; these internal fields are not exposed on public pages.
+
 ## RFQ System
 
 The `/rfq` page includes a responsive inquiry form with:
@@ -293,8 +305,8 @@ unconfirmed certifications or hidden SKU workflow fields.
 - `docs/rfq-production-readiness.md` - production RFQ email setup, Vercel environment variables and live test checklist
 - `docs/launch-checklist.md` - production launch checklist
 - `docs/arcfort-product-information-table.csv` - 12-product B2B information table with missing data notes
-- `docs/product-image-checklist.csv` - product image status and replacement checklist
-- `docs/first-30-sku-image-checklist.csv` - image checklist for the imported first 30 SKU batch
+- `docs/product-image-checklist.csv` - legacy starter-product image planning worksheet
+- `docs/first-30-sku-image-checklist.csv` - original first-30-SKU image planning worksheet
 - `docs/product-image-tasks.csv` - generated missing image task list with target filenames and shot guidance
 - `docs/representative-product-image-notes.md` - representative product-family image usage notes
 - `docs/product-readiness-report.md` - generated product data, image and confirmation status checklist

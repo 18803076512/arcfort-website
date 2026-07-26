@@ -19,6 +19,7 @@ export function ProductCard({ product, category }: ProductCardProps) {
           title={product.title}
           category={category.code}
           mainImage={product.mainImage}
+          imageStatus={product.imageStatus}
           compact
         />
       </Link>

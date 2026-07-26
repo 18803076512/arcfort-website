@@ -1,11 +1,13 @@
 import Image from "next/image";
 import { hasPublicProductImage } from "@/lib/content/product-images";
+import type { ProductImageStatus } from "@/lib/content/schemas";
 
 type ProductVisualProps = {
   label: string;
   title: string;
   category: string;
   mainImage?: string;
+  imageStatus?: ProductImageStatus;
   compact?: boolean;
 };
 
@@ -14,15 +16,21 @@ export function ProductVisual({
   title,
   category,
   mainImage,
+  imageStatus,
   compact = false,
 }: ProductVisualProps) {
   const visualTitle = compact ? "Welding & Cutting Consumable" : title;
   const visualCategory = compact ? "RFQ" : category;
-  const shouldRenderImage = hasPublicProductImage(mainImage);
+  const hasReviewedImage = imageStatus === "own_photo" || imageStatus === "supplier_photo";
+  const shouldRenderImage = hasReviewedImage && hasPublicProductImage(mainImage);
   const imageNote = compact
     ? "Photo on request"
     : "Product photo, drawing or model reference can be reviewed before quotation.";
   const imageAlt = `${title}, ${category} product reference from ArcFort Weld`;
+  const imageCaption =
+    imageStatus === "own_photo"
+      ? "ArcFort product photo for sourcing reference."
+      : "Supplier-provided product image for sourcing reference.";
 
   if (shouldRenderImage && mainImage) {
     return (
@@ -53,8 +61,8 @@ export function ProductVisual({
                 {title}
               </p>
               <p className="mt-2 text-xs font-semibold leading-5 text-slate-600">
-                Product image for sourcing reference. Exact model, size and packaging can be
-                confirmed by sample, drawing or RFQ details.
+                {imageCaption} Exact model, size and packaging can be confirmed by sample, drawing
+                or RFQ details.
               </p>
             </>
           ) : null}
