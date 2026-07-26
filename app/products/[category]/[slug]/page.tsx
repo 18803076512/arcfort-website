@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 import { ProductDetailTemplate } from "@/components/content/ProductDetailTemplate";
 import { StructuredData } from "@/components/content/StructuredData";
+import { getApplicationsForProduct } from "@/lib/content/applications";
 import { getAllProductCategories, getProductCategoryBySlug } from "@/lib/content/categories";
 import { breadcrumbJsonLd, faqJsonLd, productWebPageJsonLd } from "@/lib/content/jsonld";
 import {
@@ -73,6 +74,7 @@ export default async function ProductDetailPage({ params }: ProductRouteProps) {
         category: typeof category;
       } => Boolean(relatedProduct),
     );
+  const relatedApplications = getApplicationsForProduct(product.slug, category.slug);
 
   return (
     <>
@@ -92,6 +94,7 @@ export default async function ProductDetailPage({ params }: ProductRouteProps) {
         product={product}
         category={category}
         relatedProducts={relatedProducts}
+        relatedApplications={relatedApplications}
       />
     </>
   );

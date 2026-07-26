@@ -35,6 +35,13 @@ function formatGuideDate(value: string) {
   return guideDateFormatter.format(new Date(`${value}T00:00:00Z`));
 }
 
+function getSectionId(title: string) {
+  return title
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "");
+}
+
 export function generateStaticParams() {
   return getAllGuides().map((guide) => ({
     slug: guide.slug,
@@ -182,13 +189,41 @@ export default async function GuideDetailPage({ params }: GuideRouteProps) {
         </div>
       </section>
 
+      <section className="border-b border-slate-200 bg-white py-10">
+        <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
+          <nav aria-label="Guide contents">
+            <p className="text-xs font-bold uppercase tracking-[0.18em] text-arc-blue">
+              Guide Contents
+            </p>
+            <ol className="mt-5 grid gap-3 sm:grid-cols-2">
+              {guide.sections.map((section, index) => (
+                <li key={section.title}>
+                  <a
+                    href={`#${getSectionId(section.title)}`}
+                    className="group flex min-h-14 items-center gap-4 border border-slate-200 bg-arc-frost px-4 py-3 transition hover:border-arc-blue hover:bg-white"
+                  >
+                    <span className="font-display text-lg font-black text-arc-blue">
+                      {String(index + 1).padStart(2, "0")}
+                    </span>
+                    <span className="text-sm font-bold leading-6 text-arc-midnight group-hover:text-arc-blue">
+                      {section.title}
+                    </span>
+                  </a>
+                </li>
+              ))}
+            </ol>
+          </nav>
+        </div>
+      </section>
+
       <section id="guide-content" className="bg-arc-frost py-14 sm:py-16">
         <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
           <div className="grid gap-6">
             {guide.sections.map((section, index) => (
               <article
                 key={section.title}
-                className="grid gap-5 border border-slate-200 bg-white p-6 shadow-sm sm:grid-cols-[5rem_1fr] sm:items-start"
+                id={getSectionId(section.title)}
+                className="scroll-mt-28 grid gap-5 border border-slate-200 bg-white p-6 shadow-sm sm:grid-cols-[5rem_1fr] sm:items-start"
               >
                 <div className="font-display text-4xl font-black text-arc-blue">
                   {String(index + 1).padStart(2, "0")}

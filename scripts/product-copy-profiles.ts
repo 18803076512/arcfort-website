@@ -215,6 +215,109 @@ const productCopyProfiles: Record<string, ProductCopyProfile> = {
     seoSelection: "angle, holding force and magnet size",
     application: "metal fabrication fit-up and welding positioning",
   },
+  "mig/mag welding torch": {
+    purpose:
+      "complete hand-held torch assembly that guides welding wire and shielding gas from compatible MIG/MAG equipment to the weld area",
+    selection:
+      "torch series, cooling arrangement, cable length, equipment connection and matching front-end consumables",
+    seoSelection: "torch series, cable connection and consumable system",
+    application: "MIG/MAG welding torch assembly and repair replacement",
+  },
+  "mig torch switch": {
+    purpose:
+      "torch-handle control component used to start the welding sequence on a compatible MIG/MAG torch and power source",
+    selection:
+      "torch handle, switch profile, mounting method, lead arrangement and equipment control connection",
+    seoSelection: "torch handle, switch profile and control connection",
+    application: "MIG/MAG torch control repair and switch replacement",
+  },
+  "tig welding torch": {
+    purpose:
+      "hand-held torch assembly that carries welding current, shielding gas and the tungsten electrode system to the weld area",
+    selection:
+      "torch series, cooling arrangement, head style, cable length, equipment connection and consumable stack",
+    seoSelection: "torch series, cooling arrangement and cable connection",
+    application: "TIG welding torch assembly and repair replacement",
+  },
+  "tig torch switch": {
+    purpose:
+      "torch-mounted control component used to operate a compatible TIG welding power source or remote control circuit",
+    selection:
+      "torch handle, switch format, mounting method, lead length and equipment control connection",
+    seoSelection: "torch handle, switch format and control connection",
+    application: "TIG torch control repair and switch replacement",
+  },
+  "plasma cutting torch": {
+    purpose:
+      "cutting torch assembly that delivers the electrical and gas path required by its compatible plasma consumable stack",
+    selection:
+      "torch model, cooling arrangement, lead length, machine connection and matching electrode, nozzle and cap system",
+    seoSelection: "torch model, machine connection and consumable stack",
+    application: "plasma cutting torch assembly and maintenance replacement",
+  },
+  "wire feeder": {
+    purpose:
+      "wire-delivery equipment assembly that advances welding wire from the spool toward a compatible MIG/MAG torch",
+    selection:
+      "welding process, wire range, drive arrangement, control interface and power-source connection",
+    seoSelection: "wire range, drive arrangement and control interface",
+    application: "MIG/MAG wire delivery and welding equipment supply",
+  },
+  "stud welding gun": {
+    purpose:
+      "hand-held tool used to position a welding fastener and control the joining cycle in a compatible stud welding system",
+    selection:
+      "stud welding process, fastener range, cable and control connections, gun setup and required accessories",
+    seoSelection: "welding process, fastener range and system connection",
+    application: "stud welding equipment supply and maintenance replacement",
+  },
+  "robot welding torch": {
+    purpose:
+      "automated welding torch assembly prepared for repeat welding within a compatible robotic cell",
+    selection:
+      "robot interface, torch geometry, cooling arrangement, cable connection and matching consumable system",
+    seoSelection: "robot interface, torch geometry and consumable system",
+    application: "robotic MIG/MAG welding cell maintenance and torch replacement",
+  },
+  "stud welding accessories": {
+    purpose:
+      "support items used around compatible stud welding guns for setup, fastener handling and maintenance",
+    selection:
+      "accessory type, welding gun or system reference, fastener size, dimensions and connection interface",
+    seoSelection: "accessory type, system reference and fastener size",
+    application: "stud welding setup, maintenance and replacement accessory supply",
+  },
+  "spot welding electrode": {
+    purpose:
+      "current-carrying contact component used to apply force and electrical current in a compatible resistance spot welding setup",
+    selection:
+      "electrode material requirement, tip profile, shank interface, dimensions and machine holder reference",
+    seoSelection: "tip profile, shank interface and holder reference",
+    application: "resistance spot welding electrode replacement and maintenance",
+  },
+  "wire feeder accessories": {
+    purpose: "replacement and support items used along a compatible welding wire-feeding path",
+    selection:
+      "wire feeder model, accessory function, wire diameter and material, dimensions and mounting interface",
+    seoSelection: "feeder model, accessory function and wire size",
+    application: "wire feeder maintenance and replacement accessory supply",
+  },
+  "welding protective cover": {
+    purpose:
+      "protective workshop item supplied for compatible welding equipment, cable or work-area protection requirements",
+    selection:
+      "intended equipment or cable use, dimensions, material requirement, mounting method and working environment",
+    seoSelection: "intended use, dimensions and mounting method",
+    application: "welding equipment, cable and workshop protection",
+  },
+  "co2 flowmeter": {
+    purpose:
+      "gas-control accessory used to indicate and adjust shielding gas flow in a compatible welding gas supply setup",
+    selection:
+      "gas service, inlet and outlet connections, required flow range, regulator arrangement and target market",
+    seoSelection: "gas service, connection and required flow range",
+    application: "CO2 shielding gas flow control for welding workshop supply",
+  },
 };
 
 const fallbackProfiles: Record<string, ProductCopyProfile> = {

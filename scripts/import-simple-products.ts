@@ -10,6 +10,7 @@ import {
   printIssues,
   productCsvHeaders,
   rowsFromCsv,
+  serializeProductCsv,
   slugify,
   validateProductRows,
 } from "./product-import-utils.ts";
@@ -104,21 +105,6 @@ function getArgValue(flag: string) {
 
 function createEmptyProductRow(): ProductImportRow {
   return Object.fromEntries(productCsvHeaders.map((header) => [header, ""])) as ProductImportRow;
-}
-
-function csvEscape(value: string) {
-  if (/[",\r\n]/.test(value)) {
-    return `"${value.replace(/"/g, '""')}"`;
-  }
-
-  return value;
-}
-
-function serializeProductCsv(rows: ProductImportRow[]) {
-  return [
-    productCsvHeaders.join(","),
-    ...rows.map((row) => productCsvHeaders.map((header) => csvEscape(row[header])).join(",")),
-  ].join("\n");
 }
 
 function normalizeImagePath(imageName: string, slug: string) {

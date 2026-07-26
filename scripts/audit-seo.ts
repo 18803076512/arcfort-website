@@ -6,6 +6,8 @@ import { applications } from "../content/applications.ts";
 import { productCategories } from "../content/categories.ts";
 import { guides } from "../content/guides.ts";
 import { isLegacyProductPath, legacyProductRedirects } from "../lib/content/product-redirects.ts";
+import { composeSeoTitle, SEO_TITLE_MAX_LENGTH } from "../lib/content/seo-title.ts";
+import { siteConfig } from "../lib/content/site.ts";
 import { arcfortProducts } from "../lib/data/products.ts";
 
 type SeoRecord = {
@@ -30,6 +32,18 @@ const activeProducts: SeoRecord[] = arcfortProducts
   .filter((product) => (product.status ?? "active") === "active")
   .filter((product) => !isLegacyProductPath(product.categorySlug, product.slug));
 const productSlugs = new Set(activeProducts.map((product) => product.slug));
+
+function checkMetadataLength(owner: string, title: string, description: string) {
+  const renderedTitle = composeSeoTitle(title, siteConfig.shortName);
+
+  if (renderedTitle.length > SEO_TITLE_MAX_LENGTH) {
+    warnings.push(`${owner} rendered SEO title is ${renderedTitle.length} characters.`);
+  }
+
+  if (description.length > 160) {
+    warnings.push(`${owner} meta description is ${description.length} characters.`);
+  }
+}
 
 function checkUnique(records: SeoRecord[], getValue: (record: SeoRecord) => string, label: string) {
   const values = new Map<string, string>();
@@ -71,21 +85,19 @@ checkUnique(
 );
 checkUnique(activeProducts, (product) => product.metaTitle.toLowerCase(), "meta title");
 checkUnique(activeProducts, (product) => product.metaDescription.toLowerCase(), "meta description");
+checkUnique(
+  activeProducts,
+  (product) => product.shortDescription.toLowerCase(),
+  "short description",
+);
+checkUnique(activeProducts, (product) => product.description.toLowerCase(), "description");
 
 for (const product of activeProducts) {
   if (!categorySlugs.has(product.categorySlug)) {
     errors.push(`${product.sku} references missing category "${product.categorySlug}".`);
   }
 
-  if (product.metaTitle.length > 60) {
-    warnings.push(`${product.sku} meta title is ${product.metaTitle.length} characters.`);
-  }
-
-  if (product.metaDescription.length > 160) {
-    warnings.push(
-      `${product.sku} meta description is ${product.metaDescription.length} characters.`,
-    );
-  }
+  checkMetadataLength(product.sku, product.metaTitle, product.metaDescription);
 
   if (!product.mainImage.startsWith("/images/products/")) {
     warnings.push(`${product.sku} main image is outside /images/products/.`);
@@ -99,6 +111,7 @@ for (const product of activeProducts) {
 }
 
 for (const category of productCategories) {
+  checkMetadataLength(`Category ${category.slug}`, category.seoTitle, category.seoDescription);
   checkReferences(
     `Category ${category.slug}`,
     category.relatedCategorySlugs,
@@ -127,15 +140,7 @@ for (const guide of guides) {
   guideSeoTitles.add(normalizedSeoTitle);
   guideSeoDescriptions.add(normalizedSeoDescription);
 
-  if (guide.seoTitle.length > 60) {
-    warnings.push(`Guide ${guide.slug} SEO title is ${guide.seoTitle.length} characters.`);
-  }
-
-  if (guide.seoDescription.length > 160) {
-    warnings.push(
-      `Guide ${guide.slug} SEO description is ${guide.seoDescription.length} characters.`,
-    );
-  }
+  checkMetadataLength(`Guide ${guide.slug}`, guide.seoTitle, guide.seoDescription);
 
   checkReferences(`Guide ${guide.slug}`, guide.categorySlugs, categorySlugs, "category");
   checkReferences(`Guide ${guide.slug}`, guide.productSlugs, productSlugs, "product");
@@ -168,6 +173,11 @@ for (const guide of guides) {
 }
 
 for (const application of applications) {
+  checkMetadataLength(
+    `Application ${application.slug}`,
+    application.seoTitle,
+    application.seoDescription,
+  );
   checkReferences(
     `Application ${application.slug}`,
     application.relatedCategorySlugs,
@@ -189,7 +199,13 @@ const genericShortDescriptions = activeProducts.filter((product) =>
   product.shortDescription.includes("sourcing and RFQ programs"),
 ).length;
 const genericDescriptions = activeProducts.filter((product) =>
-  product.description.includes("prepared for industrial B2B sourcing"),
+  [
+    "prepared for industrial B2B sourcing",
+    "added from the Renqiu Ailesen welding catalog for B2B sourcing reference",
+  ].some((phrase) => product.description.includes(phrase)),
+).length;
+const thinDescriptions = activeProducts.filter(
+  (product) => countWords(product.description) < 80,
 ).length;
 
 if (placeholderImages > 0) {
@@ -202,6 +218,10 @@ if (genericShortDescriptions > 0 || genericDescriptions > 0) {
   warnings.push(
     `${Math.max(genericShortDescriptions, genericDescriptions)} products still use generic import copy and need product-specific editorial review.`,
   );
+}
+
+if (thinDescriptions > 0) {
+  warnings.push(`${thinDescriptions} products have descriptions shorter than 80 words.`);
 }
 
 console.log("ArcFort Weld SEO audit");

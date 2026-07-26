@@ -1,5 +1,5 @@
 import Link from "next/link";
-import type { Product, ProductCategory } from "@/lib/content/schemas";
+import type { ApplicationPage, Product, ProductCategory } from "@/lib/content/schemas";
 import { Breadcrumbs } from "@/components/content/Breadcrumbs";
 import { FaqSection } from "@/components/content/FaqSection";
 import { ProductCard } from "@/components/content/ProductCard";
@@ -10,6 +10,7 @@ type CategoryPageTemplateProps = {
   category: ProductCategory;
   products: Product[];
   relatedCategories: ProductCategory[];
+  relatedApplications: ApplicationPage[];
 };
 
 const rfqEssentials = [
@@ -22,6 +23,7 @@ export function CategoryPageTemplate({
   category,
   products,
   relatedCategories,
+  relatedApplications,
 }: CategoryPageTemplateProps) {
   const buyerGuideLink = getBuyerGuideForCategory(category.slug);
   const categoryStats = [
@@ -272,12 +274,37 @@ export function CategoryPageTemplate({
               distributor programs.
             </p>
           </div>
-          <div className="grid gap-4 sm:grid-cols-2">
-            {category.applications.map((application) => (
-              <div key={application} className="border-l-4 border-arc-signal bg-white/5 p-5">
-                <p className="font-semibold leading-7 text-slate-100">{application}</p>
+          <div className="grid gap-7">
+            <div className="grid gap-4 sm:grid-cols-2">
+              {category.applications.map((application) => (
+                <div key={application} className="border-l-4 border-arc-signal bg-white/5 p-5">
+                  <p className="font-semibold leading-7 text-slate-100">{application}</p>
+                </div>
+              ))}
+            </div>
+            {relatedApplications.length > 0 ? (
+              <div>
+                <p className="text-xs font-bold uppercase tracking-[0.16em] text-arc-signal">
+                  Related Application Pages
+                </p>
+                <div className="mt-4 grid gap-3 sm:grid-cols-3">
+                  {relatedApplications.map((application) => (
+                    <Link
+                      key={application.slug}
+                      href={`/applications/${application.slug}`}
+                      className="border border-white/15 bg-white/5 p-4 transition hover:border-arc-signal hover:bg-white/10"
+                    >
+                      <h3 className="font-display text-lg font-black text-white">
+                        {application.title}
+                      </h3>
+                      <p className="mt-2 text-xs leading-5 text-slate-300">
+                        {application.description}
+                      </p>
+                    </Link>
+                  ))}
+                </div>
               </div>
-            ))}
+            ) : null}
           </div>
         </div>
       </section>
