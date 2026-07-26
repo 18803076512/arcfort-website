@@ -6,7 +6,7 @@ type SeoInput = {
   title: string;
   description: string;
   path: string;
-  keywords?: string[];
+  keywords?: readonly string[];
   image?: string;
   type?: "website" | "article";
   noIndex?: boolean;
@@ -43,16 +43,16 @@ export function buildMetadata({
       absolute: seoTitle,
     },
     description,
-    keywords,
+    keywords: [...keywords],
     alternates: {
       canonical: url,
     },
     robots: {
       index: !noIndex,
-      follow: !noIndex,
+      follow: true,
       googleBot: {
         index: !noIndex,
-        follow: !noIndex,
+        follow: true,
         "max-image-preview": "large",
         "max-snippet": -1,
         "max-video-preview": -1,
