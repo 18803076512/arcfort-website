@@ -9,9 +9,11 @@ import {
   parseCsv,
   printIssues,
   productCsvHeaders,
+  rowsFromCsv,
   slugify,
   validateProductRows,
 } from "./product-import-utils.ts";
+import { createProductEditorialCopy } from "./product-copy-profiles.ts";
 
 type ExistingProduct = {
   sku: string;
@@ -43,7 +45,10 @@ const simpleHeaders: SimpleHeader[] = [
   "notes",
 ];
 
-const categoryBySimpleInput: Record<string, { category: string; categorySlug: string; code: string }> = {
+const categoryBySimpleInput: Record<
+  string,
+  { category: string; categorySlug: string; code: string }
+> = {
   "mig torch parts": {
     category: "MIG/MAG Torch Parts",
     categorySlug: "mig-mag-torch-parts",
@@ -84,15 +89,6 @@ const categoryBySimpleInput: Record<string, { category: string; categorySlug: st
     categorySlug: "welding-accessories",
     code: "ACC",
   },
-};
-
-const applicationByCategorySlug: Record<string, string> = {
-  "mig-mag-torch-parts": "MIG/MAG welding torch consumables",
-  "tig-torch-parts": "TIG welding torch consumables",
-  "plasma-cutting-consumables": "Plasma cutting consumables",
-  "welding-consumables": "Industrial welding consumables",
-  "welding-machines": "Industrial welding and cutting equipment",
-  "welding-accessories": "Workshop welding accessories",
 };
 
 const args = process.argv.slice(2);
@@ -221,7 +217,8 @@ function getCategoryInfo(category: string) {
   if (normalizedCategory.includes("plasma")) return categoryBySimpleInput["plasma cutting parts"];
   if (normalizedCategory.includes("machine")) return categoryBySimpleInput["welding machines"];
   if (normalizedCategory.includes("accessor")) return categoryBySimpleInput["welding accessories"];
-  if (normalizedCategory.includes("consumable")) return categoryBySimpleInput["welding consumables"];
+  if (normalizedCategory.includes("consumable"))
+    return categoryBySimpleInput["welding consumables"];
 
   return categoryBySimpleInput["welding accessories"];
 }
@@ -245,7 +242,11 @@ function getMaxSkuNumbers(existingProducts: ExistingProduct[]) {
   return maxByCategoryCode;
 }
 
-function generateSku(categoryCode: string, typeCode: string, maxByCategoryCode: Map<string, number>) {
+function generateSku(
+  categoryCode: string,
+  typeCode: string,
+  maxByCategoryCode: Map<string, number>,
+) {
   const nextNumber = (maxByCategoryCode.get(categoryCode) ?? 0) + 1;
   maxByCategoryCode.set(categoryCode, nextNumber);
 
@@ -270,14 +271,6 @@ function normalizeExistingSku(existingSku: string | undefined, typeCode: string)
   }
 
   return existingSku;
-}
-
-function createDescription(name: string, category: string) {
-  return `${name} is prepared for industrial B2B sourcing by distributors, importers, repair workshops and OEM buyers. It can be quoted for ${category} supply programs after the buyer confirms required quantity, packaging, destination country and technical references. Material, size, thread, compatible model, OEM number and other product details should be confirmed by drawing, product photo, reference part or model number before final quotation. ArcFort Weld supports standard export packing and OEM packaging discussion when order details are available. Buyers can also send an existing product list or sample photo so the sales team can review the item and prepare a more practical RFQ response.`;
-}
-
-function createMetaDescription(name: string) {
-  return `Request ${name} quotation from ArcFort Weld for distributors, repair shops and OEM buyers.`;
 }
 
 function createSimpleRows(filePath: string) {
@@ -347,6 +340,18 @@ async function convertSimpleRows(simpleRows: SimpleRow[]) {
     const mainImage = normalizeImagePath(simpleRow.image_name, slug);
     const typeCode = getTypeCode(name);
     const existingSku = normalizeExistingSku(existingSkuBySlug.get(slug), typeCode);
+    const editorialCopy = createProductEditorialCopy(
+      name,
+      simpleRow.product_name,
+      categoryInfo.categorySlug,
+    );
+
+    if (!editorialCopy.profileMatched) {
+      console.warn(
+        `Editorial copy fallback used for ${name}. Review the generated description before import.`,
+      );
+    }
+
     const row = createEmptyProductRow();
 
     row.sku = existingSku ?? generateSku(categoryInfo.code, typeCode, maxByCategoryCode);
@@ -354,8 +359,8 @@ async function convertSimpleRows(simpleRows: SimpleRow[]) {
     row.category = categoryInfo.category;
     row.category_slug = categoryInfo.categorySlug;
     row.slug = slug;
-    row.short_description = `${name} for ${categoryInfo.category} sourcing and RFQ programs.`;
-    row.description = createDescription(name, categoryInfo.category);
+    row.short_description = editorialCopy.shortDescription;
+    row.description = editorialCopy.description;
     row.main_image = mainImage;
     row.material = simpleRow.material || "Available upon request";
     row.size = simpleRow.size || "Available upon request";
@@ -366,11 +371,11 @@ async function convertSimpleRows(simpleRows: SimpleRow[]) {
     row.package = "Standard export packing or customized packaging";
     row.moq = "Small trial orders accepted";
     row.lead_time = "7-20 working days for regular orders";
-    row.application = applicationByCategorySlug[categoryInfo.categorySlug] ?? "Industrial welding and cutting supply";
+    row.application = editorialCopy.application;
     row.custom_available = "Available";
     row.sample_available = "Reference part review available";
     row.meta_title = `${name} | ArcFort Weld`;
-    row.meta_description = createMetaDescription(name);
+    row.meta_description = editorialCopy.metaDescription;
     row.status = "active";
     row.data_status = "needs_review";
     row.source_type = "unknown";
@@ -384,14 +389,51 @@ async function convertSimpleRows(simpleRows: SimpleRow[]) {
   });
 }
 
+function mergeWithExistingProductRows(
+  generatedRows: ProductImportRow[],
+  existingRows: ProductImportRow[],
+) {
+  const generatedBySku = new Map(generatedRows.map((row) => [row.sku, row]));
+  const generatedBySlug = new Map(generatedRows.map((row) => [row.slug, row]));
+  const mergedGeneratedKeys = new Set<string>();
+  let preservedCount = 0;
+
+  const mergedRows = existingRows.map((existingRow) => {
+    const generatedRow =
+      generatedBySku.get(existingRow.sku) ?? generatedBySlug.get(existingRow.slug);
+
+    if (!generatedRow) {
+      preservedCount += 1;
+      return existingRow;
+    }
+
+    mergedGeneratedKeys.add(generatedRow.sku);
+    return generatedRow;
+  });
+
+  for (const generatedRow of generatedRows) {
+    if (!mergedGeneratedKeys.has(generatedRow.sku)) {
+      mergedRows.push(generatedRow);
+    }
+  }
+
+  return { rows: mergedRows, preservedCount };
+}
+
 async function main() {
   if (!existsSync(inputPath)) {
     console.error(`Simple product CSV not found: ${inputPath}`);
-    console.error("Copy data/import/products-simple-template.csv to data/import/products-simple.csv first.");
+    console.error(
+      "Copy data/import/products-simple-template.csv to data/import/products-simple.csv first.",
+    );
     process.exit(1);
   }
 
-  const { simpleRows, errors: simpleErrors, warnings: simpleWarnings } = createSimpleRows(inputPath);
+  const {
+    simpleRows,
+    errors: simpleErrors,
+    warnings: simpleWarnings,
+  } = createSimpleRows(inputPath);
 
   if (simpleWarnings.length > 0) {
     console.log("\nSimple CSV warnings:");
@@ -404,8 +446,12 @@ async function main() {
     process.exit(1);
   }
 
-  const productRows = await convertSimpleRows(simpleRows);
-  const validationResult = validateProductRows(productRows);
+  const generatedRows = await convertSimpleRows(simpleRows);
+  const existingCsv = existsSync(outputPath)
+    ? rowsFromCsv(outputPath)
+    : { rows: [] as ProductImportRow[], issues: [] };
+  const mergedRows = mergeWithExistingProductRows(generatedRows, existingCsv.rows);
+  const validationResult = validateProductRows(mergedRows.rows, existingCsv.issues);
 
   printIssues("Errors", validationResult.errors);
   printIssues("Warnings", validationResult.warnings);
@@ -418,7 +464,9 @@ async function main() {
   const csvContent = serializeProductCsv(validationResult.rows);
 
   console.log(`Simple product CSV: ${inputPath}`);
-  console.log(`Products generated: ${validationResult.rows.length}`);
+  console.log(`Simple products generated or updated: ${generatedRows.length}`);
+  console.log(`Existing products preserved: ${mergedRows.preservedCount}`);
+  console.log(`Full product CSV rows: ${validationResult.rows.length}`);
 
   if (!shouldWrite) {
     console.log("\nPreview only. Add --write to generate the full product CSV file.");
