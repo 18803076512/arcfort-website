@@ -202,8 +202,9 @@ npm run seo:audit
 ```
 
 The audit checks indexable product routes, duplicate metadata, category and product references,
-legacy redirects, image files and placeholder-content warnings. Warnings identify editorial work
-that still needs real product data; broken links and duplicate routes fail the command.
+legacy redirects, image files, guide metadata, article dates, guide content depth and
+placeholder-content warnings. Warnings identify editorial work that still needs real product data;
+broken links, duplicate routes, thin guides and invalid references fail the command.
 
 Configure in Vercel only after the accounts are ready:
 

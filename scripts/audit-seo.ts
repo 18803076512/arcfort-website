@@ -23,6 +23,9 @@ type SeoRecord = {
 const errors: string[] = [];
 const warnings: string[] = [];
 const categorySlugs = new Set(productCategories.map((category) => category.slug));
+const guideSlugs = new Set<string>();
+const guideSeoTitles = new Set<string>();
+const guideSeoDescriptions = new Set<string>();
 const activeProducts: SeoRecord[] = arcfortProducts
   .filter((product) => (product.status ?? "active") === "active")
   .filter((product) => !isLegacyProductPath(product.categorySlug, product.slug));
@@ -54,6 +57,10 @@ function checkReferences(
       errors.push(`${owner} references missing ${label} "${reference}".`);
     }
   }
+}
+
+function countWords(value: string) {
+  return value.trim().split(/\s+/).filter(Boolean).length;
 }
 
 checkUnique(activeProducts, (product) => product.sku, "SKU");
@@ -101,8 +108,63 @@ for (const category of productCategories) {
 }
 
 for (const guide of guides) {
+  const normalizedSeoTitle = guide.seoTitle.toLowerCase();
+  const normalizedSeoDescription = guide.seoDescription.toLowerCase();
+
+  if (guideSlugs.has(guide.slug)) {
+    errors.push(`Duplicate guide slug "${guide.slug}".`);
+  }
+
+  if (guideSeoTitles.has(normalizedSeoTitle)) {
+    errors.push(`Duplicate guide SEO title "${guide.seoTitle}".`);
+  }
+
+  if (guideSeoDescriptions.has(normalizedSeoDescription)) {
+    errors.push(`Duplicate guide SEO description on ${guide.slug}.`);
+  }
+
+  guideSlugs.add(guide.slug);
+  guideSeoTitles.add(normalizedSeoTitle);
+  guideSeoDescriptions.add(normalizedSeoDescription);
+
+  if (guide.seoTitle.length > 60) {
+    warnings.push(`Guide ${guide.slug} SEO title is ${guide.seoTitle.length} characters.`);
+  }
+
+  if (guide.seoDescription.length > 160) {
+    warnings.push(
+      `Guide ${guide.slug} SEO description is ${guide.seoDescription.length} characters.`,
+    );
+  }
+
   checkReferences(`Guide ${guide.slug}`, guide.categorySlugs, categorySlugs, "category");
   checkReferences(`Guide ${guide.slug}`, guide.productSlugs, productSlugs, "product");
+
+  const articleWordCount = guide.sections.reduce(
+    (total, section) => total + countWords(`${section.title} ${section.body}`),
+    0,
+  );
+
+  if (guide.sections.length < 5) {
+    errors.push(`Guide ${guide.slug} has fewer than 5 content sections.`);
+  }
+
+  if (articleWordCount < 250) {
+    errors.push(`Guide ${guide.slug} has only ${articleWordCount} section words.`);
+  }
+
+  if (guide.faq.length < 3) {
+    errors.push(`Guide ${guide.slug} has fewer than 3 FAQ items.`);
+  }
+
+  if (
+    !/^\d{4}-\d{2}-\d{2}$/.test(guide.publishedDate) ||
+    !/^\d{4}-\d{2}-\d{2}$/.test(guide.modifiedDate)
+  ) {
+    errors.push(`Guide ${guide.slug} has an invalid publication or modification date.`);
+  } else if (guide.modifiedDate < guide.publishedDate) {
+    errors.push(`Guide ${guide.slug} has a modified date before its published date.`);
+  }
 }
 
 for (const application of applications) {

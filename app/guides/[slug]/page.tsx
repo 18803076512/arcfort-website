@@ -26,6 +26,15 @@ const rfqReviewPoints = [
   "Keep OEM, certification and exact rating claims document-based",
 ] as const;
 
+const guideDateFormatter = new Intl.DateTimeFormat("en-US", {
+  dateStyle: "long",
+  timeZone: "UTC",
+});
+
+function formatGuideDate(value: string) {
+  return guideDateFormatter.format(new Date(`${value}T00:00:00Z`));
+}
+
 export function generateStaticParams() {
   return getAllGuides().map((guide) => ({
     slug: guide.slug,
@@ -60,7 +69,21 @@ export default async function GuideDetailPage({ params }: GuideRouteProps) {
   const categoryMap = new Map(
     getAllProductCategories().map((category) => [category.slug, category]),
   );
+  const allGuides = getAllGuides();
   const relatedCategories = getRelatedCategories(guide.categorySlugs);
+  const guideCategorySlugs = new Set(guide.categorySlugs);
+  const relatedGuides = allGuides
+    .filter((candidate) => candidate.slug !== guide.slug)
+    .map((candidate) => ({
+      guide: candidate,
+      sharedCategoryCount: candidate.categorySlugs.filter((categorySlug) =>
+        guideCategorySlugs.has(categorySlug),
+      ).length,
+    }))
+    .filter((candidate) => candidate.sharedCategoryCount > 0)
+    .sort((left, right) => right.sharedCategoryCount - left.sharedCategoryCount)
+    .slice(0, 3)
+    .map((candidate) => candidate.guide);
   const relatedProducts = getAllProducts()
     .filter((product) => guide.productSlugs.includes(product.slug))
     .map((product) => {
@@ -110,6 +133,14 @@ export default async function GuideDetailPage({ params }: GuideRouteProps) {
               {guide.title}
             </h1>
             <p className="mt-6 max-w-3xl text-lg leading-8 text-slate-300">{guide.description}</p>
+            <div className="mt-5 flex flex-wrap gap-x-5 gap-y-2 text-xs font-bold uppercase tracking-[0.12em] text-slate-400">
+              <time dateTime={guide.publishedDate}>
+                Published {formatGuideDate(guide.publishedDate)}
+              </time>
+              <time dateTime={guide.modifiedDate}>
+                Updated {formatGuideDate(guide.modifiedDate)}
+              </time>
+            </div>
             <div className="mt-8 flex flex-col gap-3 sm:flex-row">
               <Link
                 href="#guide-content"
@@ -221,6 +252,36 @@ export default async function GuideDetailPage({ params }: GuideRouteProps) {
           </div>
         </div>
       </section>
+
+      {relatedGuides.length > 0 ? (
+        <section className="bg-arc-midnight py-14 text-white sm:py-16">
+          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            <p className="text-sm font-bold uppercase tracking-[0.2em] text-arc-signal">
+              Continue Research
+            </p>
+            <h2 className="mt-3 font-display text-3xl font-black">Related buyer guides</h2>
+            <div className="mt-7 grid gap-4 md:grid-cols-3">
+              {relatedGuides.map((relatedGuide) => (
+                <Link
+                  key={relatedGuide.slug}
+                  href={`/guides/${relatedGuide.slug}`}
+                  className="border border-white/15 bg-white/5 p-5 transition hover:border-arc-signal hover:bg-white/10"
+                >
+                  <div className="text-xs font-bold uppercase tracking-[0.16em] text-arc-signal">
+                    Buyer Guide
+                  </div>
+                  <h3 className="mt-3 font-display text-xl font-black leading-tight text-white">
+                    {relatedGuide.title}
+                  </h3>
+                  <p className="mt-3 text-sm leading-6 text-slate-300">
+                    {relatedGuide.description}
+                  </p>
+                </Link>
+              ))}
+            </div>
+          </div>
+        </section>
+      ) : null}
 
       <section className="bg-arc-frost py-14 sm:py-16">
         <div className="mx-auto grid max-w-7xl gap-8 px-4 sm:px-6 lg:grid-cols-[1fr_0.95fr] lg:px-8">
