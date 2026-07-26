@@ -311,7 +311,7 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
                       <span className="flex h-12 w-12 items-center justify-center bg-arc-midnight font-display text-lg font-black text-arc-signal">
                         {category.code}
                       </span>
-                      <span className="text-right text-xs font-bold uppercase tracking-[0.16em] text-slate-400">
+                      <span className="text-right text-xs font-bold uppercase tracking-[0.16em] text-slate-600">
                         {categoryProducts.length} products
                       </span>
                     </div>
@@ -510,7 +510,7 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
                 </p>
               )}
             </div>
-            <p className="text-xs font-bold uppercase tracking-[0.14em] text-slate-400">
+            <p className="text-xs font-bold uppercase tracking-[0.14em] text-slate-600">
               Page {catalog.currentPage} of {catalog.totalPages}
             </p>
           </div>
@@ -570,7 +570,7 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
                   Previous
                 </Link>
               ) : (
-                <span className="inline-flex min-h-11 items-center justify-center border border-slate-200 px-4 text-xs font-bold uppercase tracking-[0.12em] text-slate-300">
+                <span className="inline-flex min-h-11 items-center justify-center border border-slate-200 px-4 text-xs font-bold uppercase tracking-[0.12em] text-slate-500">
                   Previous
                 </span>
               )}
@@ -616,7 +616,7 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
                   Next
                 </Link>
               ) : (
-                <span className="inline-flex min-h-11 items-center justify-center border border-slate-200 px-4 text-xs font-bold uppercase tracking-[0.12em] text-slate-300">
+                <span className="inline-flex min-h-11 items-center justify-center border border-slate-200 px-4 text-xs font-bold uppercase tracking-[0.12em] text-slate-500">
                   Next
                 </span>
               )}

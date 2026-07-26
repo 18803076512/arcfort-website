@@ -287,7 +287,7 @@ export function ProductDetailTemplate({
 
               <div className="mt-6 grid gap-3 border border-slate-200 bg-arc-frost p-5 sm:grid-cols-2">
                 <div>
-                  <div className="text-xs font-bold uppercase tracking-[0.16em] text-slate-500">
+                  <div className="text-xs font-bold uppercase tracking-[0.16em] text-slate-600">
                     SKU
                   </div>
                   <div className="mt-1 font-semibold text-arc-midnight">
@@ -295,7 +295,7 @@ export function ProductDetailTemplate({
                   </div>
                 </div>
                 <div>
-                  <div className="text-xs font-bold uppercase tracking-[0.16em] text-slate-500">
+                  <div className="text-xs font-bold uppercase tracking-[0.16em] text-slate-600">
                     Category
                   </div>
                   <div className="mt-1 font-semibold text-arc-midnight">{category.title}</div>
@@ -375,7 +375,7 @@ export function ProductDetailTemplate({
                 <div className="mt-4 grid gap-3 sm:grid-cols-2">
                   {buyerConfirmationSignals.map((item) => (
                     <div key={item.label} className="border-l-4 border-arc-signal bg-arc-frost p-4">
-                      <div className="text-[11px] font-bold uppercase tracking-[0.16em] text-slate-500">
+                      <div className="text-[11px] font-bold uppercase tracking-[0.16em] text-slate-600">
                         {item.label}
                       </div>
                       <p className="mt-2 text-sm font-black leading-6 text-arc-midnight">

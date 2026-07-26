@@ -169,7 +169,7 @@ export default function GuidesPage() {
                 <p className="mt-3 text-sm leading-6 text-slate-600">{guide.description}</p>
                 <time
                   dateTime={guide.modifiedDate}
-                  className="mt-4 block text-xs font-bold uppercase tracking-[0.12em] text-slate-400"
+                  className="mt-4 block text-xs font-bold uppercase tracking-[0.12em] text-slate-600"
                 >
                   Updated {formatGuideDate(guide.modifiedDate)}
                 </time>
