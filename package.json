@@ -21,6 +21,7 @@
     "products:simple:import": "node --experimental-strip-types scripts/import-simple-products.ts --write --import",
     "products:refresh-copy": "node --experimental-strip-types scripts/refresh-catalog-product-copy.ts",
     "products:refresh-copy:write": "node --experimental-strip-types scripts/refresh-catalog-product-copy.ts --write",
+    "test:rfq": "node --experimental-strip-types scripts/test-rfq-constraints.ts",
     "seo:audit": "node --experimental-strip-types scripts/audit-seo.ts",
     "seo:audit:live": "node --experimental-strip-types scripts/audit-live-seo.ts",
     "downloads:generate": "node --experimental-strip-types scripts/generate-download-assets.ts",

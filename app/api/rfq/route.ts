@@ -5,18 +5,17 @@ import {
   sourceAttributionFields,
   type SourceAttribution,
 } from "@/lib/source-attribution";
+import {
+  rfqMaxRequestBodySize,
+  type RfqTextValues,
+  validateRfqFiles,
+  validateRfqTextValues,
+} from "@/lib/rfq-constraints";
+import { createRfqReference } from "@/lib/rfq-reference";
 
 export const runtime = "nodejs";
 
-type RfqPayload = {
-  name: string;
-  company: string;
-  email: string;
-  whatsapp: string;
-  country: string;
-  productRequirements: string;
-  quantity: string;
-  message: string;
+type RfqPayload = RfqTextValues & {
   sourcePath: string;
   sourceAttribution: SourceAttribution;
 };
@@ -36,25 +35,28 @@ type EmailNotificationResult = {
   buyerConfirmationDelivered: boolean;
 };
 
-const requiredFields: Array<keyof RfqPayload> = [
-  "name",
-  "company",
-  "email",
-  "country",
-  "productRequirements",
-  "quantity",
-];
+type StorageDeliveryResult = {
+  stored: boolean;
+  attachmentsStored: boolean;
+  attachmentCount: number;
+};
 
-const allowedFileExtensions = [".pdf", ".xlsx", ".xls", ".csv", ".jpg", ".jpeg", ".png", ".doc", ".docx"];
-const maxFiles = 5;
-const maxFileSize = 10 * 1024 * 1024;
-const maxTotalFileSize = 25 * 1024 * 1024;
 const minSubmitDurationMs = 3000;
 const maxSubmitAgeMs = 24 * 60 * 60 * 1000;
 
 function cleanField(formData: FormData, field: keyof RfqPayload) {
   const value = formData.get(field);
-  return typeof value === "string" ? value.trim() : "";
+  if (typeof value !== "string") {
+    return "";
+  }
+
+  const trimmedValue = value.replace(/\0/g, "").trim();
+
+  if (field === "productRequirements" || field === "message") {
+    return trimmedValue.replace(/\r\n?/g, "\n");
+  }
+
+  return trimmedValue.replace(/[\r\n\t]+/g, " ").replace(/\s{2,}/g, " ");
 }
 
 function cleanFormValue(formData: FormData, field: string) {
@@ -62,17 +64,8 @@ function cleanFormValue(formData: FormData, field: string) {
   return typeof value === "string" ? value.trim() : "";
 }
 
-function validateEmail(email: string) {
-  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-}
-
-function getFileExtension(fileName: string) {
-  const dotIndex = fileName.lastIndexOf(".");
-  return dotIndex >= 0 ? fileName.slice(dotIndex).toLowerCase() : "";
-}
-
 function sanitizeFileName(fileName: string) {
-  return fileName.replace(/[^a-zA-Z0-9._-]/g, "-").slice(0, 120);
+  return fileName.replace(/[^a-zA-Z0-9._-]/g, "-").slice(0, 120) || "attachment";
 }
 
 function normalizeSupabaseUrl(url: string) {
@@ -90,10 +83,6 @@ function getAttachments(formData: FormData) {
     .filter((entry): entry is File => entry instanceof File && entry.size > 0);
 }
 
-function getTotalFileSize(files: File[]) {
-  return files.reduce((total, file) => total + file.size, 0);
-}
-
 function normalizeSourcePath(sourcePath: string) {
   if (!sourcePath.startsWith("/") || sourcePath.startsWith("//") || sourcePath.length > 240) {
     return "/rfq";
@@ -103,7 +92,10 @@ function normalizeSourcePath(sourcePath: string) {
 }
 
 function cleanSourceValue(value: string) {
-  return value.replace(/[\r\n\t]+/g, " ").trim().slice(0, 240);
+  return value
+    .replace(/[\r\n\t]+/g, " ")
+    .trim()
+    .slice(0, 240);
 }
 
 function cleanSourceAttribution(formData: FormData): SourceAttribution {
@@ -131,17 +123,37 @@ function validateStartedAt(startedAt: string) {
   return elapsed >= minSubmitDurationMs && elapsed <= maxSubmitAgeMs;
 }
 
+function isConfigured(value: string | undefined) {
+  return Boolean(value?.trim());
+}
+
+function rfqResponse(reference: string, body: Record<string, unknown>, status = 200) {
+  return NextResponse.json(
+    {
+      ...body,
+      reference,
+    },
+    {
+      status,
+      headers: {
+        "Cache-Control": "no-store",
+        "X-RFQ-Reference": reference,
+      },
+    },
+  );
+}
+
 async function uploadAttachments(
   files: File[],
   supabaseUrl: string,
   serviceRoleKey: string,
   bucket: string,
+  reference: string,
 ) {
-  const inquiryId = crypto.randomUUID();
   const uploadedAttachments: AttachmentRecord[] = [];
 
   for (const [index, file] of files.entries()) {
-    const objectPath = `${inquiryId}/${index + 1}-${sanitizeFileName(file.name)}`;
+    const objectPath = `${reference.toLowerCase()}/${index + 1}-${sanitizeFileName(file.name)}`;
     const response = await fetch(buildStorageObjectUrl(supabaseUrl, bucket, objectPath), {
       method: "POST",
       headers: {
@@ -158,7 +170,7 @@ async function uploadAttachments(
     }
 
     uploadedAttachments.push({
-      name: file.name,
+      name: sanitizeFileName(file.name),
       size: file.size,
       type: file.type || "application/octet-stream",
       path: objectPath,
@@ -168,7 +180,11 @@ async function uploadAttachments(
   return uploadedAttachments;
 }
 
-async function insertSupabaseInquiry(payload: RfqPayload, attachments: AttachmentRecord[]) {
+async function insertSupabaseInquiry(
+  payload: RfqPayload,
+  attachments: AttachmentRecord[],
+  reference: string,
+) {
   const supabaseUrl = process.env.SUPABASE_URL;
   const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
   const table = process.env.SUPABASE_RFQ_TABLE;
@@ -177,35 +193,39 @@ async function insertSupabaseInquiry(payload: RfqPayload, attachments: Attachmen
     return false;
   }
 
-  const response = await fetch(`${normalizeSupabaseUrl(supabaseUrl)}/rest/v1/${encodeURIComponent(table)}`, {
-    method: "POST",
-    headers: {
-      apikey: serviceRoleKey,
-      Authorization: `Bearer ${serviceRoleKey}`,
-      "Content-Type": "application/json",
-      Prefer: "return=minimal",
+  const response = await fetch(
+    `${normalizeSupabaseUrl(supabaseUrl)}/rest/v1/${encodeURIComponent(table)}`,
+    {
+      method: "POST",
+      headers: {
+        apikey: serviceRoleKey,
+        Authorization: `Bearer ${serviceRoleKey}`,
+        "Content-Type": "application/json",
+        Prefer: "return=minimal",
+      },
+      body: JSON.stringify({
+        reference,
+        name: payload.name,
+        company: payload.company,
+        email: payload.email,
+        whatsapp: payload.whatsapp,
+        country: payload.country,
+        product_requirements: payload.productRequirements,
+        quantity: payload.quantity,
+        message: payload.message,
+        attachments,
+        source_path: payload.sourcePath,
+        landing_page: getSourceAttributionValue(payload, "landingPage"),
+        referrer: getSourceAttributionValue(payload, "referrer"),
+        utm_source: getSourceAttributionValue(payload, "utmSource"),
+        utm_medium: getSourceAttributionValue(payload, "utmMedium"),
+        utm_campaign: getSourceAttributionValue(payload, "utmCampaign"),
+        utm_term: getSourceAttributionValue(payload, "utmTerm"),
+        utm_content: getSourceAttributionValue(payload, "utmContent"),
+        status: "new",
+      }),
     },
-    body: JSON.stringify({
-      name: payload.name,
-      company: payload.company,
-      email: payload.email,
-      whatsapp: payload.whatsapp,
-      country: payload.country,
-      product_requirements: payload.productRequirements,
-      quantity: payload.quantity,
-      message: payload.message,
-      attachments,
-      source_path: payload.sourcePath,
-      landing_page: getSourceAttributionValue(payload, "landingPage"),
-      referrer: getSourceAttributionValue(payload, "referrer"),
-      utm_source: getSourceAttributionValue(payload, "utmSource"),
-      utm_medium: getSourceAttributionValue(payload, "utmMedium"),
-      utm_campaign: getSourceAttributionValue(payload, "utmCampaign"),
-      utm_term: getSourceAttributionValue(payload, "utmTerm"),
-      utm_content: getSourceAttributionValue(payload, "utmContent"),
-      status: "new",
-    }),
-  });
+  );
 
   if (!response.ok) {
     throw new Error("RFQ database insert failed.");
@@ -217,6 +237,7 @@ async function insertSupabaseInquiry(payload: RfqPayload, attachments: Attachmen
 function buildInquiryEmailText(
   payload: RfqPayload,
   attachments: AttachmentRecord[],
+  reference: string,
   requestMeta: { userAgent: string; referrer: string },
 ) {
   const attachmentSummary =
@@ -231,6 +252,7 @@ function buildInquiryEmailText(
 
   return [
     "New RFQ inquiry from ArcFort Weld website",
+    `RFQ Reference: ${reference}`,
     "",
     `Name: ${payload.name}`,
     `Company: ${payload.company}`,
@@ -262,7 +284,11 @@ function buildInquiryEmailText(
   ].join("\n");
 }
 
-function buildBuyerConfirmationEmailText(payload: RfqPayload, attachments: AttachmentRecord[]) {
+function buildBuyerConfirmationEmailText(
+  payload: RfqPayload,
+  attachments: AttachmentRecord[],
+  reference: string,
+) {
   const attachmentSummary =
     attachments.length > 0
       ? attachments
@@ -281,6 +307,7 @@ function buildBuyerConfirmationEmailText(payload: RfqPayload, attachments: Attac
     "We have received your inquiry and the sales team will review the product details, quantity, packaging requirement and delivery information before follow-up.",
     "",
     "RFQ Summary",
+    `Reference: ${reference}`,
     `Company: ${payload.company}`,
     `Email: ${payload.email}`,
     `WhatsApp: ${payload.whatsapp || "Not provided"}`,
@@ -320,6 +347,7 @@ async function sendEmailNotification(
   payload: RfqPayload,
   attachments: AttachmentRecord[],
   files: File[],
+  reference: string,
   requestMeta: { userAgent: string; referrer: string },
 ): Promise<EmailNotificationResult> {
   const apiKey = process.env.RESEND_API_KEY;
@@ -348,8 +376,8 @@ async function sendEmailNotification(
       from,
       to: [recipient],
       reply_to: payload.email,
-      subject: `ArcFort Weld RFQ - ${payload.company}`,
-      text: buildInquiryEmailText(payload, attachments, requestMeta),
+      subject: `ArcFort Weld RFQ ${reference} - ${payload.company}`,
+      text: buildInquiryEmailText(payload, attachments, reference, requestMeta),
       ...(emailAttachments.length > 0 ? { attachments: emailAttachments } : {}),
     }),
   });
@@ -371,8 +399,8 @@ async function sendEmailNotification(
         from,
         to: [payload.email],
         reply_to: recipient,
-        subject: "ArcFort Weld received your RFQ",
-        text: buildBuyerConfirmationEmailText(payload, attachments),
+        subject: `ArcFort Weld received your RFQ - ${reference}`,
+        text: buildBuyerConfirmationEmailText(payload, attachments, reference),
       }),
     });
 
@@ -391,18 +419,34 @@ async function sendEmailNotification(
 }
 
 export async function POST(request: Request) {
+  const reference = createRfqReference();
+  const contentLengthHeader = request.headers.get("content-length");
+  const contentLength = contentLengthHeader ? Number(contentLengthHeader) : 0;
+
+  if (Number.isFinite(contentLength) && contentLength > rfqMaxRequestBodySize) {
+    return rfqResponse(
+      reference,
+      {
+        ok: false,
+        message: "RFQ upload is too large. Please reduce the attachments and try again.",
+      },
+      413,
+    );
+  }
+
   try {
     let formData: FormData;
 
     try {
       formData = await request.formData();
     } catch {
-      return NextResponse.json(
+      return rfqResponse(
+        reference,
         {
           ok: false,
           message: "Invalid RFQ form data.",
         },
-        { status: 400 },
+        400,
       );
     }
 
@@ -421,109 +465,182 @@ export async function POST(request: Request) {
     const files = getAttachments(formData);
     const honeypot = cleanFormValue(formData, "website");
     const startedAt = cleanFormValue(formData, "startedAt");
-    const errors: Partial<Record<keyof RfqPayload | "attachments", string>> = {};
+    const errors: Partial<Record<keyof RfqTextValues | "attachments", string>> = {};
     const requestMeta = {
       userAgent: (request.headers.get("user-agent") || "Unknown").slice(0, 240),
       referrer: (request.headers.get("referer") || "Direct").slice(0, 240),
     };
 
     if (honeypot) {
-      return NextResponse.json(
+      return rfqResponse(
+        reference,
         {
           ok: false,
           message: "RFQ submission failed. Please try again.",
         },
-        { status: 400 },
+        400,
       );
     }
 
     if (!validateStartedAt(startedAt)) {
-      return NextResponse.json(
+      return rfqResponse(
+        reference,
         {
           ok: false,
           message: "Please reload the RFQ form and try again.",
         },
-        { status: 400 },
+        400,
       );
     }
 
-    for (const field of requiredFields) {
-      if (!payload[field]) {
-        errors[field] = "This field is required.";
-      }
-    }
+    Object.assign(errors, validateRfqTextValues(payload));
+    const fileError = validateRfqFiles(files);
 
-    if (payload.email && !validateEmail(payload.email)) {
-      errors.email = "Please enter a valid business email address.";
-    }
-
-    if (files.length > maxFiles) {
-      errors.attachments = `Please upload no more than ${maxFiles} files.`;
-    }
-
-    if (getTotalFileSize(files) > maxTotalFileSize) {
-      errors.attachments = "Total attachment size must be 25 MB or smaller.";
-    }
-
-    for (const file of files) {
-      const extension = getFileExtension(file.name);
-
-      if (!allowedFileExtensions.includes(extension)) {
-        errors.attachments = "Allowed files: PDF, Excel, CSV, Word, JPG and PNG.";
-        break;
-      }
-
-      if (file.size > maxFileSize) {
-        errors.attachments = "Each attachment must be 10 MB or smaller.";
-        break;
-      }
+    if (fileError) {
+      errors.attachments = fileError;
     }
 
     if (Object.keys(errors).length > 0) {
-      return NextResponse.json({ ok: false, errors }, { status: 400 });
+      return rfqResponse(reference, { ok: false, errors }, 400);
     }
 
     const supabaseUrl = process.env.SUPABASE_URL;
     const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
     const bucket = process.env.SUPABASE_RFQ_BUCKET;
+    const table = process.env.SUPABASE_RFQ_TABLE;
+    const emailRecipient = process.env.RFQ_EMAIL_RECIPIENT || siteConfig.email;
+    const storageConfigured =
+      isConfigured(supabaseUrl) && isConfigured(serviceRoleKey) && isConfigured(table);
+    const emailConfigured =
+      isConfigured(process.env.RESEND_API_KEY) &&
+      isConfigured(process.env.RFQ_EMAIL_FROM) &&
+      isConfigured(emailRecipient);
     const attachmentMetadata: AttachmentRecord[] = files.map((file) => ({
-      name: file.name,
+      name: sanitizeFileName(file.name),
       size: file.size,
       type: file.type || "application/octet-stream",
     }));
-    const uploadedAttachments =
-      supabaseUrl && serviceRoleKey && bucket
-        ? await uploadAttachments(files, supabaseUrl, serviceRoleKey, bucket)
-        : attachmentMetadata;
-    const stored = await insertSupabaseInquiry(payload, uploadedAttachments);
-    const emailNotification = await sendEmailNotification(
-      payload,
-      uploadedAttachments,
-      files,
-      requestMeta,
-    );
 
-    return NextResponse.json({
-      ok: true,
+    const storageTask = async () => {
+      if (!storageConfigured || !supabaseUrl || !serviceRoleKey) {
+        return {
+          stored: false,
+          attachmentsStored: false,
+          attachmentCount: 0,
+        } satisfies StorageDeliveryResult;
+      }
+
+      let storageAttachments = attachmentMetadata;
+      let attachmentsStored = files.length === 0;
+
+      if (files.length > 0 && bucket) {
+        try {
+          storageAttachments = await uploadAttachments(
+            files,
+            supabaseUrl,
+            serviceRoleKey,
+            bucket,
+            reference,
+          );
+          attachmentsStored = storageAttachments.length === files.length;
+        } catch {
+          console.error(
+            `[RFQ ${reference}] Attachment storage failed; continuing with inquiry metadata.`,
+          );
+        }
+      } else if (files.length > 0) {
+        console.error(
+          `[RFQ ${reference}] Attachment storage bucket is not configured; continuing with inquiry metadata.`,
+        );
+      }
+
+      const stored = await insertSupabaseInquiry(payload, storageAttachments, reference);
+
+      return {
+        stored,
+        attachmentsStored,
+        attachmentCount: attachmentsStored ? files.length : 0,
+      } satisfies StorageDeliveryResult;
+    };
+
+    const emailTask = () =>
+      sendEmailNotification(payload, attachmentMetadata, files, reference, requestMeta);
+
+    const [storageResult, emailResult] = await Promise.allSettled([storageTask(), emailTask()]);
+
+    if (storageResult.status === "rejected") {
+      console.error(`[RFQ ${reference}] Supabase inquiry storage failed.`);
+    }
+
+    if (emailResult.status === "rejected") {
+      console.error(`[RFQ ${reference}] Resend email delivery failed.`);
+    }
+
+    const storageDelivery: StorageDeliveryResult =
+      storageResult.status === "fulfilled"
+        ? storageResult.value
+        : {
+            stored: false,
+            attachmentsStored: false,
+            attachmentCount: 0,
+          };
+    const stored = storageDelivery.stored;
+    const emailNotification: EmailNotificationResult =
+      emailResult.status === "fulfilled"
+        ? emailResult.value
+        : {
+            configured: emailConfigured,
+            delivered: false,
+            recipient: emailRecipient,
+            attachmentCount: 0,
+            buyerConfirmationDelivered: false,
+          };
+    const storageDeliveryComplete =
+      stored && (files.length === 0 || storageDelivery.attachmentsStored);
+    const deliverySucceeded = storageDeliveryComplete || emailNotification.delivered;
+    const responseBody = {
       stored,
+      storageConfigured,
+      storageDeliveryComplete,
+      attachmentsStored: storageDelivery.attachmentsStored,
+      storageAttachmentCount: storageDelivery.attachmentCount,
       emailConfigured: emailNotification.configured,
       emailDelivered: emailNotification.delivered,
       emailRecipient: emailNotification.recipient,
       emailAttachmentCount: emailNotification.attachmentCount,
       buyerConfirmationDelivered: emailNotification.buyerConfirmationDelivered,
-      backendConfigured: stored || emailNotification.delivered,
-      message:
-        stored || emailNotification.delivered
-          ? "RFQ submitted successfully."
-          : "RFQ validated. Configure Supabase or Resend email environment variables before production launch.",
+      backendConfigured: deliverySucceeded,
+    };
+
+    if (!deliverySucceeded) {
+      return rfqResponse(
+        reference,
+        {
+          ok: false,
+          ...responseBody,
+          message:
+            "Automated RFQ delivery is temporarily unavailable. Please send this inquiry by email or WhatsApp.",
+        },
+        storageConfigured || emailConfigured ? 502 : 503,
+      );
+    }
+
+    return rfqResponse(reference, {
+      ok: true,
+      ...responseBody,
+      message: "RFQ submitted successfully.",
     });
   } catch {
-    return NextResponse.json(
+    console.error(`[RFQ ${reference}] Unexpected RFQ processing failure.`);
+
+    return rfqResponse(
+      reference,
       {
         ok: false,
-        message: "RFQ submission failed. Please check backend configuration and try again.",
+        message:
+          "RFQ submission failed. Please try again or send the inquiry by email or WhatsApp.",
       },
-      { status: 500 },
+      500,
     );
   }
 }

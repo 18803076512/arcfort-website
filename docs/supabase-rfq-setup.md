@@ -35,6 +35,7 @@ Open Supabase SQL Editor and run:
 This creates:
 
 - `public.rfq_inquiries`
+- A unique buyer-facing `reference` column for `AF-RFQ-...` inquiry tracking
 - Private storage bucket `rfq-attachments`
 - Indexes for status, country, created date and UTM source/campaign
 - An `updated_at` trigger
@@ -42,6 +43,9 @@ This creates:
 
 The table does not create public visitor policies. The website API route writes with the server-only
 service role key.
+
+If the table already exists, run the current schema again before enabling storage. The migration-safe
+statements add the `reference` column and its unique index without deleting existing inquiries.
 
 ## Step 3: Configure Environment Variables
 
@@ -72,31 +76,36 @@ After deployment or local setup:
 5. Confirm a new row appears in `public.rfq_inquiries`.
 6. If an attachment was uploaded, confirm a file appears in the private `rfq-attachments` bucket.
 
+For a Supabase-only setup, the form reports success for a submission with files only when the
+inquiry row and all selected files are stored. Configure `SUPABASE_RFQ_BUCKET` before relying on
+Supabase as the only delivery channel.
+
 ## Expected Table Columns
 
-| Column | Purpose |
-| --- | --- |
-| `id` | Internal inquiry ID |
-| `name` | Buyer contact name |
-| `company` | Buyer company |
-| `email` | Buyer business email |
-| `whatsapp` | Optional WhatsApp contact |
-| `country` | Destination or buyer country |
-| `product_requirements` | Product list, models, drawings or sample notes |
-| `quantity` | Required quantity or estimated order volume |
-| `message` | Additional packaging, OEM, delivery or sourcing notes |
-| `attachments` | JSON list of uploaded file metadata and storage paths |
-| `source_path` | Source page path, such as `/rfq` or `/rfq?product=...` |
-| `landing_page` | First page captured in the buyer browser session |
-| `referrer` | Browser referrer captured before RFQ submission |
-| `utm_source` | Campaign source, such as Google or newsletter, when provided |
-| `utm_medium` | Campaign medium, such as organic, cpc or email, when provided |
-| `utm_campaign` | Campaign name when provided |
-| `utm_term` | Campaign keyword or term when provided |
-| `utm_content` | Campaign content or variation when provided |
-| `status` | Inquiry workflow status |
-| `created_at` | Inquiry creation time |
-| `updated_at` | Last update time |
+| Column                 | Purpose                                                       |
+| ---------------------- | ------------------------------------------------------------- |
+| `id`                   | Internal inquiry ID                                           |
+| `reference`            | Buyer-facing RFQ reference used in page and email follow-up   |
+| `name`                 | Buyer contact name                                            |
+| `company`              | Buyer company                                                 |
+| `email`                | Buyer business email                                          |
+| `whatsapp`             | Optional WhatsApp contact                                     |
+| `country`              | Destination or buyer country                                  |
+| `product_requirements` | Product list, models, drawings or sample notes                |
+| `quantity`             | Required quantity or estimated order volume                   |
+| `message`              | Additional packaging, OEM, delivery or sourcing notes         |
+| `attachments`          | JSON list of uploaded file metadata and storage paths         |
+| `source_path`          | Source page path, such as `/rfq` or `/rfq?product=...`        |
+| `landing_page`         | First page captured in the buyer browser session              |
+| `referrer`             | Browser referrer captured before RFQ submission               |
+| `utm_source`           | Campaign source, such as Google or newsletter, when provided  |
+| `utm_medium`           | Campaign medium, such as organic, cpc or email, when provided |
+| `utm_campaign`         | Campaign name when provided                                   |
+| `utm_term`             | Campaign keyword or term when provided                        |
+| `utm_content`          | Campaign content or variation when provided                   |
+| `status`               | Inquiry workflow status                                       |
+| `created_at`           | Inquiry creation time                                         |
+| `updated_at`           | Last update time                                              |
 
 ## Supported Attachment Types
 
@@ -112,7 +121,10 @@ The frontend and API route currently allow:
 Maximum upload limits:
 
 - 5 files per RFQ
-- 10 MB per file
+- 4 MB per file and 4 MB total
+
+Larger files should be sent by email or WhatsApp because Vercel Functions limit the full request
+payload to 4.5 MB.
 
 ## Workflow Status Values
 

@@ -13,8 +13,13 @@ Minimum production target:
 - RFQ form accepts required fields and valid attachments.
 - Website sends an email notification to `arcfortweld@outlook.com`.
 - Website sends an automatic confirmation email to the buyer email when Resend is configured.
+- Every accepted or rejected submission receives a traceable `AF-RFQ-...` reference.
 - Sales notification includes source path, landing page, referrer and UTM fields when available.
-- Buyer receives a clear success message after submission.
+- Buyer sees success only after email delivery or database storage succeeds.
+- Resend and Supabase run independently, so one channel can still capture the inquiry if the other
+  provider fails.
+- A Supabase-only submission with selected files succeeds only when both the inquiry row and files
+  are stored. Saving file names without the files does not produce a buyer success state.
 - Large or failed submissions still direct the buyer to email or WhatsApp.
 - No API keys, email passwords or database secrets are committed to the repository.
 
@@ -82,12 +87,14 @@ Security rules:
 6. Confirm `email.ready` is `true`.
 7. Submit a test RFQ at `https://www.arcfortweld.com/rfq`.
 8. Confirm the success message says the RFQ was sent to sales email.
-9. Confirm the success message says a confirmation copy was sent to the buyer email.
-10. Confirm `arcfortweld@outlook.com` receives the sales notification.
-11. Confirm the buyer test inbox receives the confirmation email.
-12. Submit one test with a small PDF or JPG attachment and confirm the attachment arrives in the
+9. Confirm the page displays an `AF-RFQ-...` reference.
+10. Confirm the sales notification subject and body contain the same reference.
+11. Confirm the success message says a confirmation copy was sent to the buyer email.
+12. Confirm `arcfortweld@outlook.com` receives the sales notification.
+13. Confirm the buyer test inbox receives the confirmation email and matching reference.
+14. Submit one test with a small PDF or JPG attachment and confirm the attachment arrives in the
     sales notification.
-13. Submit one test URL with `?utm_source=test&utm_medium=qa&utm_campaign=rfq-check` and confirm
+15. Submit one test URL with `?utm_source=test&utm_medium=qa&utm_campaign=rfq-check` and confirm
     the sales notification includes the UTM fields.
 
 ## Expected Status Response
@@ -98,8 +105,13 @@ After Resend is configured, `https://www.arcfortweld.com/api/rfq/status` should 
 {
   "ok": true,
   "productionReady": true,
+  "inquiryCaptureReady": true,
+  "attachmentDeliveryReady": true,
+  "deliveryMode": "email",
+  "referenceTracking": true,
   "email": {
     "ready": true,
+    "buyerConfirmationReady": true,
     "resendApiKeyConfigured": true,
     "fromConfigured": true,
     "recipientConfigured": true,
@@ -110,6 +122,16 @@ After Resend is configured, `https://www.arcfortweld.com/api/rfq/status` should 
 
 If Supabase is not configured, `storage.ready` can remain `false`. Email delivery alone is enough
 for the first production inquiry workflow.
+
+`productionReady` is true only when the environment can capture the inquiry and deliver selected
+attachments. For a Supabase-only setup, both the RFQ table and private attachment bucket are
+required.
+
+Before deployment, run:
+
+```bash
+npm run test:rfq
+```
 
 ## Test RFQ Content
 
@@ -136,9 +158,12 @@ After testing, mark the email as an internal test and do not treat it as a real 
 - `recipientConfigured:false`: add `RFQ_EMAIL_RECIPIENT=arcfortweld@outlook.com`.
 - Email not received: check Resend logs, sender domain verification and spam folder.
 - Sender rejected: verify `arcfortweld.com` DNS records in Resend.
-- Attachment rejected: reduce file count or file size. Current limits are 5 files, 10 MB per file
-  and 25 MB total.
+- Attachment rejected: reduce file count or file size. Current limits are 5 files and 4 MB total,
+  keeping the multipart request below Vercel's 4.5 MB Function payload limit.
 - `backendConfigured:false` after submit: neither Resend email nor Supabase storage is ready.
+- HTTP `502`: at least one provider is configured, but no delivery channel completed. Use the
+  displayed RFQ reference and prefilled email or WhatsApp fallback, then check provider logs.
+- HTTP `503`: neither Resend nor Supabase is configured in that environment.
 
 ## Launch Decision
 

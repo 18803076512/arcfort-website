@@ -6,6 +6,7 @@ create extension if not exists pgcrypto;
 
 create table if not exists public.rfq_inquiries (
   id uuid primary key default gen_random_uuid(),
+  reference text,
   name text not null,
   company text not null,
   email text not null,
@@ -32,6 +33,7 @@ create table if not exists public.rfq_inquiries (
 );
 
 alter table public.rfq_inquiries
+  add column if not exists reference text,
   add column if not exists landing_page text,
   add column if not exists referrer text,
   add column if not exists utm_source text,
@@ -42,6 +44,10 @@ alter table public.rfq_inquiries
 
 create index if not exists rfq_inquiries_created_at_idx
   on public.rfq_inquiries (created_at desc);
+
+create unique index if not exists rfq_inquiries_reference_idx
+  on public.rfq_inquiries (reference)
+  where reference is not null;
 
 create index if not exists rfq_inquiries_status_idx
   on public.rfq_inquiries (status);

@@ -21,7 +21,17 @@ export function GET() {
   const storageReady =
     supabaseUrlConfigured && supabaseServiceRoleConfigured && supabaseTableConfigured;
   const attachmentStorageReady = storageReady && supabaseBucketConfigured;
-  const productionReady = emailReady || storageReady;
+  const inquiryCaptureReady = emailReady || storageReady;
+  const attachmentDeliveryReady = emailReady || attachmentStorageReady;
+  const productionReady = inquiryCaptureReady && attachmentDeliveryReady;
+  const deliveryMode =
+    emailReady && attachmentStorageReady
+      ? "email_and_storage"
+      : emailReady
+        ? "email"
+        : attachmentStorageReady
+          ? "storage"
+          : "none";
   const nextSteps: string[] = [];
 
   if (!emailReady) {
@@ -44,8 +54,13 @@ export function GET() {
     {
       ok: true,
       productionReady,
+      inquiryCaptureReady,
+      attachmentDeliveryReady,
+      deliveryMode,
+      referenceTracking: true,
       email: {
         ready: emailReady,
+        buyerConfirmationReady: emailReady,
         resendApiKeyConfigured,
         fromConfigured: emailFromConfigured,
         recipientConfigured: emailRecipientConfigured,

@@ -183,10 +183,14 @@ The `/rfq` page includes a responsive inquiry form with:
 - Business email format validation
 - Drawing, product list, PDF, Excel, Word, JPG and PNG upload selection
 - Server-side validation through `/api/rfq`
-- Success state after validation
+- Success state only after Resend email or complete Supabase inquiry and attachment storage confirms
+  delivery
+- Buyer-visible RFQ reference in success and delivery-failure responses
 - Optional Supabase storage for RFQ records and attachment metadata
 - Optional Resend email notification to the configured business email
 - RFQ file attachments sent with the Resend email when email delivery is configured
+- Independent email and storage delivery so one provider failure does not block the other
+- Prefilled email and WhatsApp fallback when automated delivery is unavailable
 - Backend readiness check at `/api/rfq/status`
 - Lightweight spam protection with honeypot, timing checks and source-path tracking
 - Persistent multi-product RFQ shortlist stored in the buyer's browser
@@ -203,7 +207,14 @@ tokens are committed.
 
 For production launch, follow `docs/rfq-production-readiness.md` and confirm
 `https://www.arcfortweld.com/api/rfq/status` reports `email.ready:true` before treating the RFQ form as
-a complete automated lead channel.
+a complete automated lead channel. Configuration readiness must still be followed by one controlled
+test inquiry that reaches the sales inbox.
+
+Run the shared RFQ validation and reference tests with:
+
+```bash
+npm run test:rfq
+```
 
 Environment variables:
 
