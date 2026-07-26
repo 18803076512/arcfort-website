@@ -10,11 +10,14 @@ import {
   validateProductRows,
 } from "./product-import-utils.ts";
 
+type ProductImageStatus = "own_photo" | "supplier_photo" | "placeholder" | "needs_photo";
+
 type ProductImageRecord = {
   sku: string;
   name: string;
   mainImage: string;
   galleryImages: string[];
+  imageStatus?: ProductImageStatus;
 };
 
 function imageExists(imagePath: string) {
@@ -25,17 +28,27 @@ function checkImages(products: ProductImageRecord[]) {
   const warnings: string[] = [];
 
   for (const product of products) {
+    if (product.imageStatus === "placeholder" || product.imageStatus === "needs_photo") {
+      warnings.push(
+        `${product.sku} ${product.name}: image status is ${product.imageStatus}; replace it with a reviewed own or supplier photo before image SEO publication`,
+      );
+    }
+
     if (product.mainImage && product.mainImage.startsWith("/images/products/")) {
       if (!imageExists(product.mainImage)) {
         warnings.push(`${product.sku} ${product.name}: missing main image ${product.mainImage}`);
       }
     } else {
-      warnings.push(`${product.sku} ${product.name}: main_image should start with /images/products/`);
+      warnings.push(
+        `${product.sku} ${product.name}: main_image should start with /images/products/`,
+      );
     }
 
     for (const galleryImage of product.galleryImages) {
       if (!galleryImage.startsWith("/images/products/")) {
-        warnings.push(`${product.sku} ${product.name}: gallery image should start with /images/products/`);
+        warnings.push(
+          `${product.sku} ${product.name}: gallery image should start with /images/products/`,
+        );
         continue;
       }
 
@@ -57,6 +70,7 @@ async function loadProductsFromDataFile() {
       name: string;
       mainImage: string;
       galleryImages: string[];
+      imageStatus?: ProductImageStatus;
     }>;
   };
 
@@ -65,6 +79,7 @@ async function loadProductsFromDataFile() {
     name: product.name,
     mainImage: product.mainImage,
     galleryImages: product.galleryImages,
+    imageStatus: product.imageStatus,
   }));
 }
 
@@ -83,6 +98,7 @@ async function loadProducts() {
       name: row.name,
       mainImage: row.main_image,
       galleryImages: splitImageList(row.gallery_images),
+      imageStatus: row.image_status as ProductImageStatus,
     }));
   }
 

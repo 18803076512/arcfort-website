@@ -69,10 +69,14 @@ function getTechnicalDataStatusLabel(product: Product) {
 }
 
 function getImageStatusLabel(product: Product) {
-  if (hasPublicProductImage(product.mainImage)) {
+  const hasReviewedImage =
+    (product.imageStatus === "own_photo" || product.imageStatus === "supplier_photo") &&
+    hasPublicProductImage(product.mainImage);
+
+  if (hasReviewedImage) {
     return product.imageStatus === "own_photo"
-      ? "Product photo available"
-      : "Representative product image available";
+      ? "ArcFort product photo available"
+      : "Supplier product image available";
   }
 
   return "Product photo available during RFQ review";
@@ -233,6 +237,7 @@ export function ProductDetailTemplate({
               title={product.title}
               category={category.code}
               mainImage={product.mainImage}
+              imageStatus={product.imageStatus}
             />
 
             <div>
