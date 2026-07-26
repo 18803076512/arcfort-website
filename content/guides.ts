@@ -24,7 +24,7 @@ export const guides: GuideArticle[] = [
       },
     ],
     categorySlugs: ["mig-mag-torch-parts", "welding-consumables", "welding-accessories"],
-    productSlugs: ["mig-contact-tip-m6-08mm", "mig-tip-holder-mb15", "plasma-electrode"],
+    productSlugs: ["mig-contact-tip-m6-0-8mm", "mig-tip-holder-for-mb15", "plasma-electrode"],
     faq: [
       {
         question: "Can I submit an RFQ with incomplete information?",
@@ -33,8 +33,7 @@ export const guides: GuideArticle[] = [
       },
       {
         question: "Should I include target quantity?",
-        answer:
-          "Yes. Quantity helps suppliers review MOQ, packaging and delivery options.",
+        answer: "Yes. Quantity helps suppliers review MOQ, packaging and delivery options.",
       },
     ],
     keywords: ["welding parts RFQ", "welding consumables inquiry", "B2B welding supplier"],
@@ -62,7 +61,7 @@ export const guides: GuideArticle[] = [
       },
     ],
     categorySlugs: ["mig-mag-torch-parts", "tig-torch-parts"],
-    productSlugs: ["mig-contact-tip-m6-10mm", "mig-gas-nozzle-mb15", "tig-ceramic-cup-5"],
+    productSlugs: ["mig-contact-tip-m6-1-0mm", "mig-gas-nozzle-for-mb15", "tig-ceramic-cup-5"],
     faq: [
       {
         question: "Can MIG/MAG and TIG parts be quoted together?",
@@ -100,7 +99,7 @@ export const guides: GuideArticle[] = [
       },
     ],
     categorySlugs: ["plasma-cutting-consumables", "welding-accessories"],
-    productSlugs: ["plasma-electrode", "plasma-nozzle", "mig-contact-tip-m6-12mm"],
+    productSlugs: ["plasma-electrode", "plasma-nozzle", "mig-contact-tip-m6-1-2mm"],
     faq: [
       {
         question: "What details are needed for plasma consumables?",

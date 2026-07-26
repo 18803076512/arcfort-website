@@ -1,10 +1,7 @@
 import { arcfortProducts, type ArcfortProductData } from "@/lib/data/products";
-import {
-  type Product,
-  type SpecRow,
-  type WeldingProcess,
-} from "@/lib/content/schemas";
+import { type Product, type SpecRow, type WeldingProcess } from "@/lib/content/schemas";
 import { isUnconfirmedValue } from "@/lib/content/display";
+import { isLegacyProductPath } from "@/lib/content/product-redirects";
 
 const processByCategorySlug: Record<string, WeldingProcess> = {
   "mig-mag-torch-parts": "MIG/MAG",
@@ -15,7 +12,9 @@ const processByCategorySlug: Record<string, WeldingProcess> = {
 };
 
 const activeArcfortProducts = arcfortProducts.filter(
-  (product) => (product.status ?? "active") === "active",
+  (product) =>
+    (product.status ?? "active") === "active" &&
+    !isLegacyProductPath(product.categorySlug, product.slug),
 );
 
 function getImageLabel(product: ArcfortProductData) {

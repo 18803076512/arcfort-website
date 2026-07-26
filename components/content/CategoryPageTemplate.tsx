@@ -4,6 +4,7 @@ import { Breadcrumbs } from "@/components/content/Breadcrumbs";
 import { FaqSection } from "@/components/content/FaqSection";
 import { ProductCard } from "@/components/content/ProductCard";
 import { RfqCta } from "@/components/content/RfqCta";
+import { getBuyerGuideForCategory } from "@/lib/content/topic-links";
 
 type CategoryPageTemplateProps = {
   category: ProductCategory;
@@ -22,6 +23,7 @@ export function CategoryPageTemplate({
   products,
   relatedCategories,
 }: CategoryPageTemplateProps) {
+  const buyerGuideLink = getBuyerGuideForCategory(category.slug);
   const categoryStats = [
     { label: "Products", value: `${products.length}` },
     { label: "OEM support", value: "Available" },
@@ -54,9 +56,7 @@ export function CategoryPageTemplate({
             <p className="mt-6 max-w-3xl text-lg leading-8 text-slate-300">
               {category.description}
             </p>
-            <p className="mt-4 max-w-3xl text-sm leading-7 text-slate-400">
-              {category.seoIntro}
-            </p>
+            <p className="mt-4 max-w-3xl text-sm leading-7 text-slate-400">{category.seoIntro}</p>
             <div className="mt-8 flex flex-col gap-3 sm:flex-row">
               <Link
                 href="#category-products"
@@ -163,14 +163,17 @@ export function CategoryPageTemplate({
               How buyers should choose {category.shortTitle}
             </h2>
             <p className="mt-4 text-sm leading-7 text-slate-600">
-              Industrial purchasing is safer when each small fit detail is checked before
-              quotation. Use this section as a sourcing checklist, not as a substitute for confirmed
-              drawings or samples.
+              Industrial purchasing is safer when each small fit detail is checked before quotation.
+              Use this section as a sourcing checklist, not as a substitute for confirmed drawings
+              or samples.
             </p>
           </div>
           <div className="grid gap-5">
             {category.buyerGuide.map((item, index) => (
-              <article key={item} className="grid gap-4 border border-slate-200 bg-white p-5 shadow-sm sm:grid-cols-[4rem_1fr] sm:items-start">
+              <article
+                key={item}
+                className="grid gap-4 border border-slate-200 bg-white p-5 shadow-sm sm:grid-cols-[4rem_1fr] sm:items-start"
+              >
                 <div className="font-display text-4xl font-black text-arc-blue">
                   {String(index + 1).padStart(2, "0")}
                 </div>
@@ -263,9 +266,7 @@ export function CategoryPageTemplate({
             <p className="text-sm font-bold uppercase tracking-[0.2em] text-arc-signal">
               Applications
             </p>
-            <h2 className="mt-3 font-display text-3xl font-black">
-              Industrial sourcing scenarios
-            </h2>
+            <h2 className="mt-3 font-display text-3xl font-black">Industrial sourcing scenarios</h2>
             <p className="mt-4 text-sm leading-7 text-slate-300">
               These products support repeat purchasing, maintenance supply and overseas B2B
               distributor programs.
@@ -310,6 +311,22 @@ export function CategoryPageTemplate({
                   </p>
                 </Link>
               ))}
+            </div>
+            <div className="mt-6 border-t border-slate-200 pt-6">
+              <p className="text-xs font-bold uppercase tracking-[0.16em] text-arc-blue">
+                Related Buyer Guide
+              </p>
+              <Link href={buyerGuideLink.href} className="group mt-3 block">
+                <h3 className="font-display text-xl font-black text-arc-midnight group-hover:text-arc-blue">
+                  {buyerGuideLink.title}
+                </h3>
+                <p className="mt-2 text-sm leading-6 text-slate-600">
+                  {buyerGuideLink.description}
+                </p>
+                <span className="mt-4 inline-flex text-sm font-bold uppercase tracking-[0.14em] text-arc-blue group-hover:text-arc-copper">
+                  Read Buyer Guide
+                </span>
+              </Link>
             </div>
           </div>
         </div>

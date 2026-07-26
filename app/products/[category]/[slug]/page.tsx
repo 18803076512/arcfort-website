@@ -8,7 +8,7 @@ import {
   getProductStaticParams,
   getRelatedProducts,
 } from "@/lib/content/products";
-import { hasPublicProductImage } from "@/lib/content/product-images";
+import { getSearchEligibleProductImages } from "@/lib/content/product-images";
 import { buildMetadata } from "@/lib/content/seo";
 
 type ProductRouteProps = {
@@ -31,12 +31,14 @@ export async function generateMetadata({ params }: ProductRouteProps) {
     return {};
   }
 
+  const [searchImage] = getSearchEligibleProductImages(product);
+
   return buildMetadata({
     title: product.metaTitle,
     description: product.metaDescription,
     path: `/products/${category.slug}/${product.slug}`,
     keywords: product.keywords,
-    image: hasPublicProductImage(product.mainImage) ? product.mainImage : undefined,
+    image: searchImage,
   });
 }
 

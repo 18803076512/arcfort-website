@@ -10,6 +10,7 @@ import { getAllGuides, getGuideBySlug } from "@/lib/content/guides";
 import { articleJsonLd, breadcrumbJsonLd, faqJsonLd } from "@/lib/content/jsonld";
 import { getAllProducts } from "@/lib/content/products";
 import { buildMetadata } from "@/lib/content/seo";
+import { siteConfig } from "@/lib/content/site";
 import type { Product, ProductCategory } from "@/lib/content/schemas";
 
 type GuideRouteProps = {
@@ -134,6 +135,17 @@ export default async function GuideDetailPage({ params }: GuideRouteProps) {
                   <p className="text-sm font-semibold leading-6 text-slate-200">{point}</p>
                 </div>
               ))}
+            </div>
+            <div className="mt-5 border-t border-white/10 pt-5">
+              <p className="text-xs font-bold uppercase tracking-[0.16em] text-slate-400">
+                Published by
+              </p>
+              <Link
+                href="/about"
+                className="mt-2 block text-sm font-semibold leading-6 text-white hover:text-arc-signal"
+              >
+                {siteConfig.legalName}
+              </Link>
             </div>
           </aside>
         </div>

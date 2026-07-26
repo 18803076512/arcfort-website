@@ -3,9 +3,8 @@ import { getAllApplications } from "@/lib/content/applications";
 import { getAllProductCategories } from "@/lib/content/categories";
 import { getAllGuides } from "@/lib/content/guides";
 import { getAllProducts } from "@/lib/content/products";
-import { absoluteUrl } from "@/lib/content/site";
-
-const contentLastModified = new Date("2026-06-30T00:00:00.000Z");
+import { getSearchEligibleProductImages } from "@/lib/content/product-images";
+import { absoluteUrl, siteConfig } from "@/lib/content/site";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const staticRoutes = [
@@ -24,32 +23,27 @@ export default function sitemap(): MetadataRoute.Sitemap {
   ];
   const downloadableRoutes = ["/downloads/renqiu-ailesen-welding-catalog.pdf"];
   const categoryRoutes = getAllProductCategories().map((category) => `/products/${category.slug}`);
-  const productRoutes = getAllProducts().map(
-    (product) => `/products/${product.categorySlug}/${product.slug}`,
-  );
   const applicationRoutes = getAllApplications().map(
     (application) => `/applications/${application.slug}`,
   );
   const guideRoutes = getAllGuides().map((guide) => `/guides/${guide.slug}`);
 
   return [
-    ...staticRoutes,
-    ...downloadableRoutes,
-    ...categoryRoutes,
-    ...productRoutes,
-    ...applicationRoutes,
-    ...guideRoutes,
-  ].map((route) => ({
-    url: absoluteUrl(route),
-    lastModified: contentLastModified,
-    changeFrequency: route === "/" ? "weekly" : "monthly",
-    priority:
-      route === "/"
-        ? 1
-        : route.startsWith("/products") || route.startsWith("/applications")
-          ? 0.8
-          : route.endsWith(".pdf")
-            ? 0.5
-            : 0.6,
-  }));
+    ...staticRoutes.map((route) => ({
+      url: route === "/" ? siteConfig.url : absoluteUrl(route),
+    })),
+    ...downloadableRoutes.map((route) => ({ url: absoluteUrl(route) })),
+    ...categoryRoutes.map((route) => ({ url: absoluteUrl(route) })),
+    ...getAllProducts().map((product) => {
+      const route = `/products/${product.categorySlug}/${product.slug}`;
+      const images = getSearchEligibleProductImages(product).map(absoluteUrl);
+
+      return {
+        url: absoluteUrl(route),
+        ...(images.length > 0 ? { images } : {}),
+      };
+    }),
+    ...applicationRoutes.map((route) => ({ url: absoluteUrl(route) })),
+    ...guideRoutes.map((route) => ({ url: absoluteUrl(route) })),
+  ];
 }
