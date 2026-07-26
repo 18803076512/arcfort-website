@@ -9,6 +9,13 @@ type RfqStatusResponse = {
   inquiryCaptureReady?: boolean;
   attachmentDeliveryReady?: boolean;
   deliveryMode?: string;
+  rateLimit?: {
+    applicationFallback?: boolean;
+    distributed?: boolean;
+    limit?: number;
+    windowSeconds?: number;
+    infrastructureRuleRecommended?: boolean;
+  };
   email?: {
     ready?: boolean;
     buyerConfirmationReady?: boolean;
@@ -93,6 +100,11 @@ async function main() {
   console.log(`Inquiry capture ready: ${Boolean(status.inquiryCaptureReady)}`);
   console.log(`Attachment delivery ready: ${Boolean(status.attachmentDeliveryReady)}`);
   console.log(`Delivery mode: ${status.deliveryMode ?? "unknown"}`);
+  console.log(`Application rate-limit fallback: ${Boolean(status.rateLimit?.applicationFallback)}`);
+  console.log(`Distributed rate limit: ${Boolean(status.rateLimit?.distributed)}`);
+  console.log(
+    `Rate-limit policy: ${status.rateLimit?.limit ?? "unknown"} requests / ${status.rateLimit?.windowSeconds ?? "unknown"} seconds`,
+  );
   console.log(`Email ready: ${Boolean(status.email?.ready)}`);
   console.log(`Buyer confirmation ready: ${Boolean(status.email?.buyerConfirmationReady)}`);
   console.log(`Sales recipient: ${status.email?.recipient ?? "not reported"}`);

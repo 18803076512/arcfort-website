@@ -46,6 +46,7 @@ Use this checklist before switching the website to production traffic.
 - Resend accepted a controlled sales notification and buyer confirmation on 2026-07-26.
 - Resend accepted one controlled JPG attachment in the sales notification on 2026-07-26.
 - Confirm the matching test references in the Outlook inbox or Resend logs.
+- Confirm `/api/rfq/status` reports the application rate-limit fallback as enabled.
 - Configure a Vercel Firewall rate limit for `POST /api/rfq`.
 
 ## Vercel Deployment

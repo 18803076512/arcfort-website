@@ -122,6 +122,19 @@ The application rejects browser requests with an untrusted `Origin` or `Sec-Fetc
 the existing honeypot, minimum form-completion time, text limits, file-type limits and request-size
 limit. Every response receives an RFQ reference.
 
+The API also includes a best-effort fixed-window fallback:
+
+- 5 RFQ attempts per 10 minutes per hashed client key
+- Vercel's forwarded client IP is used when available
+- Raw IP addresses are not stored
+- Responses include `X-RateLimit-Limit`, `X-RateLimit-Remaining`, `X-RateLimit-Reset` and
+  `X-RateLimit-Policy`
+- Blocked requests return HTTP `429` with `Retry-After`
+
+This fallback is process-local. It resets when a Vercel Function instance restarts and cannot share
+counts across horizontally scaled instances. It reduces repeated bursts but is not a distributed
+production WAF.
+
 Configure a Vercel Firewall rate-limit rule for production traffic:
 
 - Path: `/api/rfq`
@@ -154,6 +167,13 @@ After Resend is configured, `https://www.arcfortweld.com/api/rfq/status` should 
   "attachmentDeliveryReady": true,
   "deliveryMode": "email",
   "referenceTracking": true,
+  "rateLimit": {
+    "applicationFallback": true,
+    "distributed": false,
+    "limit": 5,
+    "windowSeconds": 600,
+    "infrastructureRuleRecommended": true
+  },
   "email": {
     "ready": true,
     "buyerConfirmationReady": true,

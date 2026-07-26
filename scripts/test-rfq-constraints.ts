@@ -8,6 +8,11 @@ import {
   validateRfqFiles,
   validateRfqTextValues,
 } from "../lib/rfq-constraints.ts";
+import {
+  createFixedWindowRateLimiter,
+  getRfqRateLimitClientKey,
+  getRfqRateLimitHeaders,
+} from "../lib/rfq-rate-limit.ts";
 import { createRfqReference } from "../lib/rfq-reference.ts";
 import { isTrustedRfqRequest } from "../lib/rfq-request-security.ts";
 
@@ -118,6 +123,60 @@ assert.equal(
     productionUrl,
   }),
   true,
+);
+
+const testRateLimiter = createFixedWindowRateLimiter({
+  limit: 2,
+  windowMs: 1000,
+  maxEntries: 2,
+});
+const firstAttempt = testRateLimiter.check("buyer-a", 1000);
+const secondAttempt = testRateLimiter.check("buyer-a", 1100);
+const blockedAttempt = testRateLimiter.check("buyer-a", 1200);
+const resetAttempt = testRateLimiter.check("buyer-a", 2000);
+
+assert.deepEqual(
+  {
+    allowed: firstAttempt.allowed,
+    remaining: firstAttempt.remaining,
+    resetAt: firstAttempt.resetAt,
+  },
+  {
+    allowed: true,
+    remaining: 1,
+    resetAt: 2000,
+  },
+);
+assert.equal(secondAttempt.allowed, true);
+assert.equal(secondAttempt.remaining, 0);
+assert.equal(blockedAttempt.allowed, false);
+assert.equal(blockedAttempt.retryAfterSeconds, 1);
+assert.equal(resetAttempt.allowed, true);
+assert.equal(resetAttempt.remaining, 1);
+assert.equal(resetAttempt.resetAt, 3000);
+
+const rateLimitHeaders = getRfqRateLimitHeaders(blockedAttempt);
+assert.equal(rateLimitHeaders["X-RateLimit-Limit"], "2");
+assert.equal(rateLimitHeaders["X-RateLimit-Remaining"], "0");
+assert.equal(rateLimitHeaders["X-RateLimit-Reset"], "2");
+assert.equal(rateLimitHeaders["X-RateLimit-Policy"], "2;w=1");
+
+const forwardedHeaders = new Headers({
+  "x-vercel-forwarded-for": "203.0.113.25",
+  "user-agent": "Test Browser",
+});
+assert.equal(
+  getRfqRateLimitClientKey(forwardedHeaders),
+  getRfqRateLimitClientKey(forwardedHeaders),
+);
+assert.notEqual(
+  getRfqRateLimitClientKey(forwardedHeaders),
+  getRfqRateLimitClientKey(
+    new Headers({
+      "x-vercel-forwarded-for": "203.0.113.26",
+      "user-agent": "Test Browser",
+    }),
+  ),
 );
 
 console.log("RFQ constraint and reference tests passed.");

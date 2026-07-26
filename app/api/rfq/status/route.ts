@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { siteConfig } from "@/lib/content/site";
+import { rfqRateLimitConfig } from "@/lib/rfq-rate-limit";
 
 export const dynamic = "force-dynamic";
 export const runtime = "nodejs";
@@ -58,6 +59,13 @@ export function GET() {
       attachmentDeliveryReady,
       deliveryMode,
       referenceTracking: true,
+      rateLimit: {
+        applicationFallback: true,
+        distributed: false,
+        limit: rfqRateLimitConfig.limit,
+        windowSeconds: Math.ceil(rfqRateLimitConfig.windowMs / 1000),
+        infrastructureRuleRecommended: true,
+      },
       email: {
         ready: emailReady,
         buyerConfirmationReady: emailReady,
