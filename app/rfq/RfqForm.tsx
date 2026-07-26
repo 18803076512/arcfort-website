@@ -17,30 +17,32 @@ import {
   sourceAttributionStorageKey,
   type SourceAttribution,
 } from "@/lib/source-attribution";
+import {
+  rfqAllowedFileExtensions,
+  rfqFieldLimits,
+  type RfqTextValues,
+  validateRfqFiles,
+  validateRfqTextValues,
+} from "@/lib/rfq-constraints";
 
-type RfqFormValues = {
-  name: string;
-  company: string;
-  email: string;
-  whatsapp: string;
-  country: string;
-  productRequirements: string;
-  quantity: string;
-  message: string;
-};
+type RfqFormValues = RfqTextValues;
 
-type FormErrorKey = keyof RfqFormValues | "attachments";
+type FormErrorKey = keyof RfqFormValues | "attachments" | "submission";
 type FormErrors = Partial<Record<FormErrorKey, string>>;
 
 type RfqResponse = {
   ok: boolean;
   stored?: boolean;
   backendConfigured?: boolean;
+  storageDeliveryComplete?: boolean;
+  attachmentsStored?: boolean;
+  storageAttachmentCount?: number;
   emailConfigured?: boolean;
   emailDelivered?: boolean;
   emailRecipient?: string;
   emailAttachmentCount?: number;
   buyerConfirmationDelivered?: boolean;
+  reference?: string;
   message?: string;
   errors?: FormErrors;
 };
@@ -95,37 +97,13 @@ const rfqQuickTemplates = [
   },
 ] as const;
 
-const requiredFields: Array<keyof RfqFormValues> = [
+const clientRequiredFields: Array<keyof RfqFormValues> = [
   "name",
   "company",
   "email",
   "country",
   "quantity",
 ];
-
-const allowedFileExtensions = [
-  ".pdf",
-  ".xlsx",
-  ".xls",
-  ".csv",
-  ".jpg",
-  ".jpeg",
-  ".png",
-  ".doc",
-  ".docx",
-];
-const maxFiles = 5;
-const maxFileSize = 10 * 1024 * 1024;
-const maxTotalFileSize = 25 * 1024 * 1024;
-
-function validateEmail(email: string) {
-  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-}
-
-function getFileExtension(fileName: string) {
-  const dotIndex = fileName.lastIndexOf(".");
-  return dotIndex >= 0 ? fileName.slice(dotIndex).toLowerCase() : "";
-}
 
 function createFileSummary(files: File[]) {
   if (files.length === 0) {
@@ -135,8 +113,14 @@ function createFileSummary(files: File[]) {
   return files.map((file) => file.name).join(", ");
 }
 
-function getTotalFileSize(files: File[]) {
-  return files.reduce((total, file) => total + file.size, 0);
+function createFallbackExcerpt(value: string, limit: number) {
+  const trimmedValue = value.trim();
+
+  if (trimmedValue.length <= limit) {
+    return trimmedValue;
+  }
+
+  return `${trimmedValue.slice(0, limit).trimEnd()}\n[Additional details shortened. Please paste the full list or attach it.]`;
 }
 
 function getStoredSourceAttribution(): SourceAttribution {
@@ -169,6 +153,7 @@ export function RfqForm({ initialProduct = "" }: RfqFormProps) {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [submissionResult, setSubmissionResult] = useState<RfqResponse | null>(null);
+  const [failedReference, setFailedReference] = useState("");
   const [submittedRequirements, setSubmittedRequirements] = useState("");
   const selectedProducts = useRfqList();
 
@@ -180,15 +165,17 @@ export function RfqForm({ initialProduct = "" }: RfqFormProps) {
     }
 
     setErrors((currentErrors) => {
-      if (!currentErrors.productRequirements) {
+      if (!currentErrors.productRequirements && !currentErrors.submission) {
         return currentErrors;
       }
 
       return {
         ...currentErrors,
         productRequirements: undefined,
+        submission: undefined,
       };
     });
+    setFailedReference("");
   }, [selectedProducts.length]);
 
   function updateValue(field: keyof RfqFormValues, value: string) {
@@ -199,7 +186,9 @@ export function RfqForm({ initialProduct = "" }: RfqFormProps) {
     setErrors((currentErrors) => ({
       ...currentErrors,
       [field]: undefined,
+      submission: undefined,
     }));
+    setFailedReference("");
   }
 
   function applyQuickTemplate(template: (typeof rfqQuickTemplates)[number]) {
@@ -220,47 +209,33 @@ export function RfqForm({ initialProduct = "" }: RfqFormProps) {
       productRequirements: undefined,
       quantity: undefined,
       message: undefined,
+      submission: undefined,
     }));
+    setFailedReference("");
   }
 
   function validateForm() {
-    const nextErrors: FormErrors = {};
-
-    for (const field of requiredFields) {
-      if (!values[field].trim()) {
-        nextErrors[field] = "This field is required.";
-      }
-    }
+    const nextErrors: FormErrors = validateRfqTextValues(values, clientRequiredFields);
 
     if (selectedProducts.length === 0 && !values.productRequirements.trim()) {
       nextErrors.productRequirements =
         "Add at least one product to your RFQ list or describe the products you need.";
     }
 
-    if (values.email.trim() && !validateEmail(values.email.trim())) {
-      nextErrors.email = "Please enter a valid business email address.";
+    const combinedRequirements = buildRfqProductRequirements(
+      selectedProducts,
+      values.productRequirements,
+    );
+
+    if (combinedRequirements.length > rfqFieldLimits.productRequirements) {
+      nextErrors.productRequirements =
+        "The combined product list and requirements are too long. Remove a few items or attach the full list as a CSV, Excel or PDF file.";
     }
 
-    if (attachments.length > maxFiles) {
-      nextErrors.attachments = `Please upload no more than ${maxFiles} files.`;
-    }
+    const fileError = validateRfqFiles(attachments);
 
-    if (getTotalFileSize(attachments) > maxTotalFileSize) {
-      nextErrors.attachments = "Total attachment size must be 25 MB or smaller.";
-    }
-
-    for (const file of attachments) {
-      const extension = getFileExtension(file.name);
-
-      if (!allowedFileExtensions.includes(extension)) {
-        nextErrors.attachments = "Allowed files: PDF, Excel, CSV, Word, JPG and PNG.";
-        break;
-      }
-
-      if (file.size > maxFileSize) {
-        nextErrors.attachments = "Each attachment must be 10 MB or smaller.";
-        break;
-      }
+    if (fileError) {
+      nextErrors.attachments = fileError;
     }
 
     setErrors(nextErrors);
@@ -273,11 +248,19 @@ export function RfqForm({ initialProduct = "" }: RfqFormProps) {
     setErrors((currentErrors) => ({
       ...currentErrors,
       attachments: undefined,
+      submission: undefined,
     }));
+    setFailedReference("");
   }
 
   function handleRemoveSelectedProduct(item: RfqListItem) {
     removeRfqListItem(item);
+    setErrors((currentErrors) => ({
+      ...currentErrors,
+      productRequirements: undefined,
+      submission: undefined,
+    }));
+    setFailedReference("");
     trackAnalyticsEvent("rfq_list_remove", {
       item_name: item.name,
       item_sku: item.sku,
@@ -287,6 +270,12 @@ export function RfqForm({ initialProduct = "" }: RfqFormProps) {
 
   function handleClearSelectedProducts() {
     clearRfqList();
+    setErrors((currentErrors) => ({
+      ...currentErrors,
+      productRequirements: undefined,
+      submission: undefined,
+    }));
+    setFailedReference("");
     trackAnalyticsEvent("rfq_list_clear", {
       item_count: selectedProducts.length,
       location: "rfq_form",
@@ -295,6 +284,10 @@ export function RfqForm({ initialProduct = "" }: RfqFormProps) {
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
+
+    if (isSubmitting) {
+      return;
+    }
 
     const validationErrors = validateForm();
 
@@ -313,6 +306,11 @@ export function RfqForm({ initialProduct = "" }: RfqFormProps) {
     );
 
     setIsSubmitting(true);
+    setErrors((currentErrors) => ({
+      ...currentErrors,
+      submission: undefined,
+    }));
+    setFailedReference("");
     trackAnalyticsEvent("rfq_submit_start", {
       attachment_count: attachments.length,
       selected_product_count: selectedProducts.length,
@@ -350,9 +348,12 @@ export function RfqForm({ initialProduct = "" }: RfqFormProps) {
       const result = (await response.json()) as RfqResponse;
 
       if (!response.ok || !result.ok) {
+        setFailedReference(result.reference ?? "");
         setErrors(
           result.errors ?? {
-            productRequirements: result.message ?? "RFQ submission failed.",
+            submission:
+              result.message ??
+              "Automated RFQ delivery is unavailable. Please use email or WhatsApp.",
           },
         );
         trackAnalyticsEvent("rfq_submit_error", {
@@ -383,14 +384,24 @@ export function RfqForm({ initialProduct = "" }: RfqFormProps) {
         selected_product_count: selectedProducts.length,
         backend_configured: Boolean(result.backendConfigured),
         stored: Boolean(result.stored),
+        storage_delivery_complete: Boolean(result.storageDeliveryComplete),
+        attachments_stored: Boolean(result.attachmentsStored),
+        delivery_channel:
+          result.emailDelivered && result.stored
+            ? "email_and_storage"
+            : result.emailDelivered
+              ? "email"
+              : "storage",
       });
       trackAnalyticsEvent("generate_lead", {
         lead_source: selectedProducts.length > 0 ? "rfq_shortlist" : "rfq_form",
         items: analyticsItems.length > 0 ? analyticsItems : undefined,
       });
     } catch {
+      setFailedReference("");
       setErrors({
-        productRequirements: "RFQ submission failed. Please try again.",
+        submission:
+          "RFQ submission failed. Please try again or use the email and WhatsApp contacts below.",
       });
       trackAnalyticsEvent("rfq_submit_error", {
         failure_stage: "network_or_parse",
@@ -402,27 +413,37 @@ export function RfqForm({ initialProduct = "" }: RfqFormProps) {
     }
   }
 
+  const fallbackRequirements = createFallbackExcerpt(
+    buildRfqProductRequirements(selectedProducts, values.productRequirements),
+    2400,
+  );
+  const fallbackAdditionalMessage = createFallbackExcerpt(values.message, 800);
+  const fallbackSubject = encodeURIComponent(
+    failedReference
+      ? `ArcFort Weld RFQ ${failedReference} - ${values.company || "Buyer Inquiry"}`
+      : `ArcFort Weld RFQ - ${values.company || "Buyer Inquiry"}`,
+  );
+  const fallbackMessage = [
+    ...(failedReference ? [`RFQ Reference: ${failedReference}`, ""] : []),
+    `Name: ${values.name || "Not provided"}`,
+    `Company: ${values.company || "Not provided"}`,
+    `Email: ${values.email || "Not provided"}`,
+    `WhatsApp: ${values.whatsapp || "Not provided"}`,
+    `Country: ${values.country || "Not provided"}`,
+    `Quantity: ${values.quantity || "Not provided"}`,
+    "",
+    "Product Requirements:",
+    fallbackRequirements || "Not provided",
+    "",
+    "Message:",
+    fallbackAdditionalMessage || "No additional message.",
+  ].join("\n");
+  const fallbackEmailHref = `${siteConfig.emailHref}?subject=${fallbackSubject}&body=${encodeURIComponent(fallbackMessage)}`;
+  const fallbackWhatsappHref = `${siteConfig.whatsappHref}?text=${encodeURIComponent(fallbackMessage)}`;
+
   if (isSubmitted) {
     const submittedProductRequirements =
       submittedRequirements || values.productRequirements || "Product details sent with RFQ.";
-    const fallbackEmailSubject = encodeURIComponent(`ArcFort Weld RFQ - ${values.company}`);
-    const fallbackEmailBody = encodeURIComponent(
-      [
-        `Name: ${values.name}`,
-        `Company: ${values.company}`,
-        `Email: ${values.email}`,
-        `WhatsApp: ${values.whatsapp || "Not provided"}`,
-        `Country: ${values.country}`,
-        `Quantity: ${values.quantity}`,
-        "",
-        "Product Requirements:",
-        submittedProductRequirements,
-        "",
-        "Message:",
-        values.message || "No additional message.",
-      ].join("\n"),
-    );
-    const fallbackEmailHref = `${siteConfig.emailHref}?subject=${fallbackEmailSubject}&body=${fallbackEmailBody}`;
 
     return (
       <div className="border border-slate-200 bg-white p-6 shadow-sm sm:p-8">
@@ -436,13 +457,23 @@ export function RfqForm({ initialProduct = "" }: RfqFormProps) {
           <p className="mt-3 text-sm leading-6 text-slate-700">
             {submissionResult?.emailDelivered
               ? "Your RFQ has been sent to the ArcFort Weld sales email for follow-up."
-              : submissionResult?.backendConfigured
-                ? "Your RFQ has been submitted for sales follow-up."
-                : "Your RFQ passed validation, but server-side email delivery or storage is not configured yet. Please also send your inquiry by email or WhatsApp for sales follow-up."}
+              : "Your RFQ has been securely recorded for sales follow-up."}
           </p>
+          {submissionResult?.reference ? (
+            <p className="mt-3 text-sm font-bold text-arc-midnight">
+              RFQ Reference: {submissionResult.reference}
+            </p>
+          ) : null}
           {submissionResult?.emailDelivered && submissionResult.emailAttachmentCount ? (
             <p className="mt-2 text-sm leading-6 text-slate-700">
               Attachments included in email: {submissionResult.emailAttachmentCount}
+            </p>
+          ) : null}
+          {!submissionResult?.emailDelivered &&
+          submissionResult?.attachmentsStored &&
+          submissionResult.storageAttachmentCount ? (
+            <p className="mt-2 text-sm leading-6 text-slate-700">
+              Attachments stored with this inquiry: {submissionResult.storageAttachmentCount}
             </p>
           ) : null}
           {submissionResult?.buyerConfirmationDelivered ? (
@@ -451,22 +482,6 @@ export function RfqForm({ initialProduct = "" }: RfqFormProps) {
             </p>
           ) : null}
         </div>
-        {!submissionResult?.backendConfigured ? (
-          <div className="mt-5 grid gap-3 sm:grid-cols-2">
-            <a
-              href={fallbackEmailHref}
-              className="border border-slate-200 bg-arc-frost p-4 text-sm font-semibold text-arc-midnight transition hover:border-arc-blue hover:text-arc-blue"
-            >
-              Email: {submissionResult?.emailRecipient ?? siteConfig.email}
-            </a>
-            <a
-              href={siteConfig.whatsappHref}
-              className="border border-slate-200 bg-arc-frost p-4 text-sm font-semibold text-arc-midnight transition hover:border-arc-blue hover:text-arc-blue"
-            >
-              WhatsApp: {siteConfig.whatsapp}
-            </a>
-          </div>
-        ) : null}
         <div className="mt-6 grid gap-4 text-sm text-slate-700">
           <p>
             <span className="font-bold text-arc-midnight">Company:</span> {values.company}
@@ -489,6 +504,7 @@ export function RfqForm({ initialProduct = "" }: RfqFormProps) {
             setAttachments([]);
             setErrors({});
             setSubmissionResult(null);
+            setFailedReference("");
             setSubmittedRequirements("");
             setIsSubmitted(false);
           }}
@@ -520,6 +536,33 @@ export function RfqForm({ initialProduct = "" }: RfqFormProps) {
         className="hidden"
         aria-hidden="true"
       />
+      {errors.submission ? (
+        <div
+          role="alert"
+          aria-live="assertive"
+          className="mb-6 border-l-4 border-red-700 bg-red-50 p-4 text-sm text-red-950"
+        >
+          <p className="font-black">Automated delivery needs your attention.</p>
+          <p className="mt-2 leading-6">{errors.submission}</p>
+          {failedReference ? (
+            <p className="mt-2 font-bold">RFQ Reference: {failedReference}</p>
+          ) : null}
+          <div className="mt-3 flex flex-col gap-2 sm:flex-row">
+            <a
+              href={fallbackEmailHref}
+              className="inline-flex min-h-11 items-center justify-center border border-red-300 bg-white px-4 font-bold transition hover:border-red-700"
+            >
+              Email {siteConfig.email}
+            </a>
+            <a
+              href={fallbackWhatsappHref}
+              className="inline-flex min-h-11 items-center justify-center border border-red-300 bg-white px-4 font-bold transition hover:border-red-700"
+            >
+              WhatsApp {siteConfig.whatsapp}
+            </a>
+          </div>
+        </div>
+      ) : null}
       <section
         id="selected-products"
         className="mb-6 scroll-mt-32 border-y-4 border-arc-signal bg-arc-midnight p-4 text-white sm:p-5"
@@ -701,7 +744,9 @@ export function RfqForm({ initialProduct = "" }: RfqFormProps) {
         </span>
         <textarea
           id="productRequirements"
+          name="productRequirements"
           rows={5}
+          maxLength={rfqFieldLimits.productRequirements}
           value={values.productRequirements}
           onChange={(event) => updateValue("productRequirements", event.target.value)}
           placeholder={
@@ -725,7 +770,9 @@ export function RfqForm({ initialProduct = "" }: RfqFormProps) {
         <span className="text-sm font-bold text-arc-midnight">Message</span>
         <textarea
           id="message"
+          name="message"
           rows={4}
+          maxLength={rfqFieldLimits.message}
           value={values.message}
           onChange={(event) => updateValue("message", event.target.value)}
           placeholder="Packaging requirement, target market, delivery schedule, OEM request or additional notes."
@@ -740,9 +787,10 @@ export function RfqForm({ initialProduct = "" }: RfqFormProps) {
           </span>
           <input
             id="attachments"
+            name="attachments"
             type="file"
             multiple
-            accept=".pdf,.xlsx,.xls,.csv,.jpg,.jpeg,.png,.doc,.docx"
+            accept={rfqAllowedFileExtensions.join(",")}
             onChange={handleFiles}
             className="mt-2 block w-full cursor-pointer border border-dashed border-slate-300 bg-slate-50 p-4 text-sm text-slate-700 file:mb-2 file:block file:border-0 file:bg-arc-blue file:px-3 file:py-2 file:text-xs file:font-bold file:uppercase file:tracking-[0.08em] file:text-white hover:border-arc-blue sm:file:mb-0 sm:file:mr-4 sm:file:inline-block sm:file:px-4 sm:file:text-sm sm:file:tracking-[0.12em]"
             aria-invalid={Boolean(errors.attachments)}
@@ -750,7 +798,8 @@ export function RfqForm({ initialProduct = "" }: RfqFormProps) {
           />
         </label>
         <p id="attachments-help" className="mt-2 text-xs leading-5 text-slate-500">
-          Accepted: PDF, Excel, CSV, Word, JPG and PNG. Maximum 5 files, 10 MB each, 25 MB total.
+          Accepted: PDF, Excel, CSV, Word, JPG and PNG. Maximum 5 files and 4 MB total. Send larger
+          files by email or WhatsApp.
         </p>
         {errors.attachments ? (
           <p className="mt-2 text-sm font-semibold text-red-700">{errors.attachments}</p>
@@ -811,7 +860,9 @@ function FormField({
       </span>
       <input
         id={id}
+        name={id}
         type={type}
+        maxLength={rfqFieldLimits[id]}
         value={value}
         onChange={(event) => onChange(event.target.value)}
         autoComplete={autoComplete}
