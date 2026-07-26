@@ -63,14 +63,19 @@ Industrial B2B website for ArcFort Weld, operated by Renqiu Ailesen Welding Tech
 - `lib/content/seo.ts` - metadata helper
 - `lib/content/jsonld.ts` - JSON-LD helpers for Product, BreadcrumbList, Organization and FAQ
 - `lib/content/product-redirects.ts` - permanent redirects for retired generic product URLs
+- `lib/content/product-search.ts` - server-rendered product search, category filtering and pagination
 - `lib/content/topic-links.ts` - category-to-guide internal linking map
 
 The website currently includes 6 product categories, 43 indexable product records, 6 application
-pages, 3 buyer guides and dedicated trust pages for OEM service, quality control, shipping/payment
+pages, 6 buyer guides and dedicated trust pages for OEM service, quality control, shipping/payment
 and document requests. Four retained generic starter URLs permanently redirect to their current
 category pages so they do not compete with exact SKU pages. Missing product data must remain explicit
 instead of inventing specifications, certifications, prices, stock status, factory capacity or
 customer cases.
+
+The `/products` route supports server-rendered search by product name or SKU, category filtering and
+12-item pagination. Filter and pagination URLs use the product-center canonical and `noindex,follow`
+so buyers can share result URLs without creating duplicate indexable search pages.
 
 ## Product Lines
 
