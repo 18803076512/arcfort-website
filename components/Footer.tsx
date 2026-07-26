@@ -69,28 +69,30 @@ export function Footer() {
         <div>
           <div className="font-display text-3xl font-black">{siteConfig.shortName}</div>
           <p className="mt-4 max-w-sm text-sm leading-6 text-slate-300">
-            {siteConfig.tagline} for distributors, importers, OEM buyers,
-            industrial users, and repair workshops.
+            {siteConfig.tagline} for distributors, importers, OEM buyers, industrial users, and
+            repair workshops.
           </p>
           <p className="mt-4 text-xs leading-5 text-slate-400">{siteConfig.legalName}</p>
         </div>
         <div>
-          <h2 className="text-sm font-bold uppercase tracking-[0.18em] text-arc-signal">
-            Company
-          </h2>
+          <h2 className="text-sm font-bold uppercase tracking-[0.18em] text-arc-signal">Company</h2>
           <div className="mt-4 grid gap-2">
             {links
               .filter(
                 (link) =>
-                  !["/oem-service", "/quality-control", "/shipping-payment", "/downloads", "/rfq"].includes(
-                    link.href,
-                  ),
+                  ![
+                    "/oem-service",
+                    "/quality-control",
+                    "/shipping-payment",
+                    "/downloads",
+                    "/rfq",
+                  ].includes(link.href),
               )
               .map((link) => (
                 <Link
                   key={link.href}
                   href={link.href}
-                  className="text-sm text-slate-300 hover:text-white"
+                  className="inline-flex min-h-8 items-center text-sm text-slate-300 hover:text-white"
                 >
                   {link.label}
                 </Link>
@@ -106,7 +108,7 @@ export function Footer() {
               <Link
                 key={link.href}
                 href={link.href}
-                className="text-sm text-slate-300 hover:text-white"
+                className="inline-flex min-h-8 items-center text-sm text-slate-300 hover:text-white"
               >
                 {link.label}
               </Link>
@@ -122,7 +124,7 @@ export function Footer() {
               <Link
                 key={category.name}
                 href={`/products/${category.slug}`}
-                className="text-sm text-slate-300 hover:text-white"
+                className="inline-flex min-h-8 items-center text-sm text-slate-300 hover:text-white"
               >
                 {category.name}
               </Link>
@@ -130,19 +132,26 @@ export function Footer() {
           </div>
         </div>
         <div>
-          <h2 className="text-sm font-bold uppercase tracking-[0.18em] text-arc-signal">
-            Contact
-          </h2>
+          <h2 className="text-sm font-bold uppercase tracking-[0.18em] text-arc-signal">Contact</h2>
           <div className="mt-4 grid gap-2 text-sm text-slate-300">
-            <a href={siteConfig.emailHref} className="break-words hover:text-white">
+            <a
+              href={siteConfig.emailHref}
+              className="inline-flex min-h-8 items-center break-words hover:text-white"
+            >
               Email: {siteConfig.email}
             </a>
-            <a href={siteConfig.whatsappHref} className="break-words hover:text-white">
+            <a
+              href={siteConfig.whatsappHref}
+              className="inline-flex min-h-8 items-center break-words hover:text-white"
+            >
               WhatsApp: {siteConfig.whatsapp}
             </a>
             <p className="break-words">Address: {siteConfig.address}</p>
             <p className="break-words">Main Port: {siteConfig.mainPort}</p>
-            <Link href="/rfq" className="font-semibold text-white hover:text-arc-signal">
+            <Link
+              href="/rfq"
+              className="inline-flex min-h-8 items-center font-semibold text-white hover:text-arc-signal"
+            >
               Send Inquiry
             </Link>
           </div>

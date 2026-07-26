@@ -31,20 +31,38 @@ export function ProductVisual({
     imageStatus === "own_photo"
       ? "ArcFort product photo for sourcing reference."
       : "Supplier-provided product image for sourcing reference.";
+  const productImage = mainImage ? (
+    <Image
+      src={mainImage}
+      alt={imageAlt}
+      fill
+      sizes={compact ? "(min-width: 1024px) 33vw, 100vw" : "(min-width: 1024px) 45vw, 100vw"}
+      className="object-contain p-5 sm:p-7"
+      priority={!compact}
+      quality={88}
+    />
+  ) : null;
 
   if (shouldRenderImage && mainImage) {
     return (
       <figure className="overflow-hidden border border-slate-200 bg-white shadow-sm">
         <div className={`relative bg-white ${compact ? "aspect-[4/3]" : "aspect-[5/4]"}`}>
-          <Image
-            src={mainImage}
-            alt={imageAlt}
-            fill
-            sizes={compact ? "(min-width: 1024px) 33vw, 100vw" : "(min-width: 1024px) 45vw, 100vw"}
-            className="object-contain p-5 sm:p-7"
-            priority={!compact}
-            quality={88}
-          />
+          {compact ? (
+            productImage
+          ) : (
+            <a
+              href={mainImage}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group/image relative block h-full w-full"
+              aria-label={`Open full-size image of ${title}`}
+            >
+              {productImage}
+              <span className="absolute right-3 top-3 border border-slate-200 bg-white/95 px-3 py-2 text-[11px] font-bold uppercase tracking-[0.12em] text-arc-blue shadow-sm transition group-hover/image:border-arc-blue group-hover/image:bg-arc-blue group-hover/image:text-white">
+                View Full Image
+              </span>
+            </a>
+          )}
         </div>
         <figcaption className="border-t border-slate-200 bg-arc-frost px-4 py-3 sm:px-5">
           <div className="flex min-w-0 items-center justify-between gap-3">

@@ -31,10 +31,16 @@ export function Header() {
           <span className="text-slate-300">{siteConfig.legalName}</span>
           <div className="flex items-center gap-5 text-slate-200">
             <span className="text-slate-400">Main Port: Tianjin Port</span>
-            <a href={siteConfig.emailHref} className="hover:text-arc-signal">
+            <a
+              href={siteConfig.emailHref}
+              className="inline-flex min-h-7 items-center hover:text-arc-signal"
+            >
               {siteConfig.email}
             </a>
-            <a href={siteConfig.whatsappHref} className="hover:text-arc-signal">
+            <a
+              href={siteConfig.whatsappHref}
+              className="inline-flex min-h-7 items-center hover:text-arc-signal"
+            >
               {siteConfig.whatsapp}
             </a>
           </div>
