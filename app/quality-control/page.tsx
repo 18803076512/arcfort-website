@@ -3,8 +3,9 @@ import { Breadcrumbs } from "@/components/content/Breadcrumbs";
 import { FaqSection } from "@/components/content/FaqSection";
 import { RfqCta } from "@/components/content/RfqCta";
 import { StructuredData } from "@/components/content/StructuredData";
-import { breadcrumbJsonLd, faqJsonLd } from "@/lib/content/jsonld";
+import { breadcrumbJsonLd, faqJsonLd, webPageJsonLd } from "@/lib/content/jsonld";
 import { buildMetadata } from "@/lib/content/seo";
+import { siteConfig } from "@/lib/content/site";
 
 const inspectionSteps = [
   {
@@ -76,6 +77,13 @@ export default function QualityControlPage() {
             { name: "Home", path: "/" },
             { name: "Quality Control", path: "/quality-control" },
           ]),
+          webPageJsonLd({
+            name: "Quality Control for Welding and Cutting Products",
+            description:
+              "Incoming, production, packaging and outgoing inspection workflow for welding and cutting product supply.",
+            path: "/quality-control",
+            dateModified: siteConfig.contentLastModified,
+          }),
           faqJsonLd([...faq]),
         ]}
       />
@@ -111,9 +119,7 @@ export default function QualityControlPage() {
           <div className="mt-10 grid gap-5 md:grid-cols-2 lg:grid-cols-4">
             {inspectionSteps.map((step) => (
               <article key={step.title} className="border border-slate-200 bg-white p-6 shadow-sm">
-                <h3 className="font-display text-xl font-black text-arc-midnight">
-                  {step.title}
-                </h3>
+                <h3 className="font-display text-xl font-black text-arc-midnight">{step.title}</h3>
                 <p className="mt-4 text-sm leading-6 text-slate-600">{step.description}</p>
               </article>
             ))}

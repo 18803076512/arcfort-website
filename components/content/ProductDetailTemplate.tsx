@@ -226,6 +226,15 @@ export function ProductDetailTemplate({
       href: undefined,
     },
   ] as const;
+  const productPageSections = [
+    { href: "#product-specifications", label: "Specifications" },
+    { href: "#product-description", label: "Description & Delivery" },
+    { href: "#product-applications", label: "Applications" },
+    { href: "#product-faq", label: "FAQ & RFQ" },
+    ...(relatedProducts.length > 0
+      ? [{ href: "#related-products", label: "Related Products" }]
+      : []),
+  ];
 
   return (
     <>
@@ -406,6 +415,27 @@ export function ProductDetailTemplate({
         </div>
       </section>
 
+      <nav
+        aria-label={`${product.title} page sections`}
+        className="border-y border-slate-200 bg-white"
+      >
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <ol className="grid grid-cols-2 gap-px bg-slate-200 sm:grid-cols-3 lg:grid-cols-5">
+            {productPageSections.map((section, index) => (
+              <li key={section.href} className="bg-white">
+                <a
+                  href={section.href}
+                  className="flex min-h-14 items-center justify-center gap-2 px-3 py-3 text-center text-xs font-bold uppercase leading-5 tracking-[0.1em] text-arc-midnight transition hover:bg-arc-frost hover:text-arc-blue"
+                >
+                  <span className="text-arc-blue">{String(index + 1).padStart(2, "0")}</span>
+                  <span>{section.label}</span>
+                </a>
+              </li>
+            ))}
+          </ol>
+        </div>
+      </nav>
+
       <section className="bg-arc-midnight py-14 text-white sm:py-16">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="grid gap-8 lg:grid-cols-[0.78fr_1.22fr] lg:items-start">
@@ -437,7 +467,7 @@ export function ProductDetailTemplate({
         </div>
       </section>
 
-      <section className="bg-arc-frost py-14 sm:py-16">
+      <section id="product-specifications" className="scroll-mt-28 bg-arc-frost py-14 sm:py-16">
         <div className="mx-auto grid max-w-7xl gap-6 px-4 sm:px-6 lg:grid-cols-[1.1fr_0.9fr] lg:px-8">
           <SpecificationTable rows={publicSpecifications} />
           <CompatibilityTable rows={publicCompatibility} />
@@ -469,7 +499,7 @@ export function ProductDetailTemplate({
         </div>
       </section>
 
-      <section className="bg-white py-14 sm:py-16">
+      <section id="product-description" className="scroll-mt-28 bg-white py-14 sm:py-16">
         <div className="mx-auto grid max-w-7xl gap-8 px-4 sm:px-6 lg:grid-cols-[1fr_1fr] lg:px-8">
           <article className="border border-slate-200 bg-white p-5 shadow-sm sm:p-6">
             <h2 className="font-display text-2xl font-black text-arc-midnight">
@@ -564,7 +594,7 @@ export function ProductDetailTemplate({
         </div>
       </section>
 
-      <section className="bg-arc-frost py-14 sm:py-16">
+      <section id="product-applications" className="scroll-mt-28 bg-arc-frost py-14 sm:py-16">
         <div className="mx-auto grid max-w-7xl gap-8 px-4 sm:px-6 lg:grid-cols-[0.8fr_1.2fr] lg:px-8">
           <div>
             <p className="text-sm font-bold uppercase tracking-[0.2em] text-arc-blue">
@@ -612,7 +642,7 @@ export function ProductDetailTemplate({
         </div>
       </section>
 
-      <section className="bg-white py-14 sm:py-16">
+      <section id="product-faq" className="scroll-mt-28 bg-white py-14 sm:py-16">
         <div className="mx-auto grid max-w-7xl gap-8 px-4 sm:px-6 lg:grid-cols-[1fr_0.95fr] lg:px-8">
           <FaqSection items={product.faq} title="Product FAQ" />
           <RfqCta title={`Request quotation for ${product.title}`} productName={product.title} />
@@ -620,7 +650,7 @@ export function ProductDetailTemplate({
       </section>
 
       {relatedProducts.length > 0 ? (
-        <section className="bg-arc-frost py-14 sm:py-16">
+        <section id="related-products" className="scroll-mt-28 bg-arc-frost py-14 sm:py-16">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <p className="text-sm font-bold uppercase tracking-[0.2em] text-arc-blue">
               Related Products

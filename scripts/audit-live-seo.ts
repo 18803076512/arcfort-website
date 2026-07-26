@@ -1,6 +1,8 @@
 #!/usr/bin/env node
 
 import { siteConfig } from "../lib/content/site.ts";
+import { isLegacyProductPath, legacyCategoryRedirects } from "../lib/content/product-redirects.ts";
+import { arcfortProducts } from "../lib/data/products.ts";
 
 type PageAudit = {
   canonicalUrl: string;
@@ -22,12 +24,19 @@ type PageAudit = {
   imagesMissingSrc?: number;
   jsonLdCount?: number;
   invalidJsonLdCount?: number;
+  jsonLdTypes?: string[];
+  incompleteProductJsonLdCount?: number;
+  brokenFragmentLinks?: string[];
+  duplicateIdCount?: number;
   internalLinks?: string[];
+  googleVerificationTagPresent?: boolean;
+  analyticsAvailable?: boolean;
 };
 
 type SitemapEntry = {
   url: string;
   lastModified?: string;
+  images: string[];
 };
 
 const args = process.argv.slice(2);
@@ -50,6 +59,14 @@ function getArgValue(flag: string) {
 
 function normalizeBaseUrl(value: string) {
   return value.trim().replace(/\/+$/, "");
+}
+
+function toFetchUrl(canonicalUrl: string) {
+  const canonicalLocation = new URL(canonicalUrl);
+  return new URL(
+    `${canonicalLocation.pathname}${canonicalLocation.search}`,
+    `${fetchBaseUrl}/`,
+  ).toString();
 }
 
 function decodeHtml(value: string) {
@@ -116,10 +133,33 @@ function auditJsonLd(html: string) {
     ),
   ];
   let invalidCount = 0;
+  let incompleteProductCount = 0;
+  const types = new Set<string>();
 
   for (const script of scripts) {
     try {
-      JSON.parse(script[1]);
+      const parsed = JSON.parse(script[1]) as unknown;
+      const entities = getTopLevelJsonLdEntities(parsed);
+
+      for (const entity of entities) {
+        const rawType = entity["@type"];
+        const entityTypes = Array.isArray(rawType) ? rawType : [rawType];
+
+        for (const type of entityTypes) {
+          if (typeof type === "string") {
+            types.add(type);
+          }
+        }
+
+        if (
+          entityTypes.includes("Product") &&
+          !entity.offers &&
+          !entity.review &&
+          !entity.aggregateRating
+        ) {
+          incompleteProductCount += 1;
+        }
+      }
     } catch {
       invalidCount += 1;
     }
@@ -128,6 +168,42 @@ function auditJsonLd(html: string) {
   return {
     count: scripts.length,
     invalidCount,
+    types: [...types],
+    incompleteProductCount,
+  };
+}
+
+function getTopLevelJsonLdEntities(value: unknown): Array<Record<string, unknown>> {
+  if (Array.isArray(value)) {
+    return value.flatMap(getTopLevelJsonLdEntities);
+  }
+
+  if (!value || typeof value !== "object") {
+    return [];
+  }
+
+  const entity = value as Record<string, unknown>;
+  const graphEntities = Array.isArray(entity["@graph"])
+    ? entity["@graph"].flatMap(getTopLevelJsonLdEntities)
+    : [];
+
+  return [...(entity["@type"] ? [entity] : []), ...graphEntities];
+}
+
+function auditFragmentLinks(html: string) {
+  const idTags = html.match(/<[^>]+\bid\s*=\s*["'][^"']+["'][^>]*>/gi) ?? [];
+  const ids = idTags
+    .map((tag) => getAttribute(tag, "id"))
+    .filter((id): id is string => Boolean(id));
+  const idSet = new Set(ids);
+  const fragmentLinks = (html.match(/<a\b[^>]*>/gi) ?? [])
+    .map((tag) => getAttribute(tag, "href"))
+    .filter((href): href is string => Boolean(href?.startsWith("#") && href.length > 1))
+    .map((href) => decodeURIComponent(href.slice(1)));
+
+  return {
+    brokenLinks: [...new Set(fragmentLinks.filter((fragment) => !idSet.has(fragment)))],
+    duplicateIdCount: ids.length - idSet.size,
   };
 }
 
@@ -168,11 +244,7 @@ function normalizeComparableUrl(value: string) {
 }
 
 async function auditUrl(canonicalUrl: string): Promise<PageAudit> {
-  const canonicalLocation = new URL(canonicalUrl);
-  const requestedUrl = new URL(
-    `${canonicalLocation.pathname}${canonicalLocation.search}`,
-    `${fetchBaseUrl}/`,
-  ).toString();
+  const requestedUrl = toFetchUrl(canonicalUrl);
   const response = await fetch(requestedUrl, {
     redirect: "follow",
     signal: AbortSignal.timeout(20_000),
@@ -199,6 +271,7 @@ async function auditUrl(canonicalUrl: string): Promise<PageAudit> {
     .filter(Boolean)
     .join(",");
   const jsonLd = auditJsonLd(html);
+  const fragments = auditFragmentLinks(html);
   const htmlTag = html.match(/<html\b[^>]*>/i)?.[0];
   const imageTags = html.match(/<img\b[^>]*>/gi) ?? [];
 
@@ -218,8 +291,55 @@ async function auditUrl(canonicalUrl: string): Promise<PageAudit> {
     imagesMissingSrc: imageTags.filter((tag) => !getAttribute(tag, "src")).length,
     jsonLdCount: jsonLd.count,
     invalidJsonLdCount: jsonLd.invalidCount,
+    jsonLdTypes: jsonLd.types,
+    incompleteProductJsonLdCount: jsonLd.incompleteProductCount,
+    brokenFragmentLinks: fragments.brokenLinks,
+    duplicateIdCount: fragments.duplicateIdCount,
     internalLinks: getInternalLinks(html, canonicalUrl),
+    googleVerificationTagPresent: Boolean(getMetaContent(html, "google-site-verification")),
+    analyticsAvailable: /data-analytics-available\s*=\s*["']true["']/i.test(html),
   };
+}
+
+async function auditImage(canonicalUrl: string) {
+  const requestedUrl = toFetchUrl(canonicalUrl);
+  const response = await fetch(requestedUrl, {
+    redirect: "follow",
+    signal: AbortSignal.timeout(20_000),
+  });
+
+  return {
+    canonicalUrl,
+    requestedUrl,
+    finalUrl: response.url,
+    status: response.status,
+    contentType: response.headers.get("content-type") ?? "",
+  };
+}
+
+async function auditPermanentRedirect(sourcePath: string, destinationPath: string) {
+  const requestedUrl = new URL(sourcePath, `${fetchBaseUrl}/`).toString();
+  const response = await fetch(requestedUrl, {
+    redirect: "manual",
+    signal: AbortSignal.timeout(20_000),
+  });
+  const location = response.headers.get("location");
+  const resolvedLocation = location ? new URL(location, requestedUrl) : null;
+  const expectedLocation = new URL(destinationPath, `${fetchBaseUrl}/`);
+
+  if (![301, 308].includes(response.status)) {
+    errors.push(`Expected permanent redirect for ${sourcePath}, received HTTP ${response.status}.`);
+  }
+
+  if (
+    !resolvedLocation ||
+    resolvedLocation.pathname !== expectedLocation.pathname ||
+    resolvedLocation.search !== expectedLocation.search
+  ) {
+    errors.push(
+      `Redirect mismatch: ${sourcePath} -> ${location ?? "missing Location header"}; expected ${destinationPath}.`,
+    );
+  }
 }
 
 function checkDuplicates(rows: PageAudit[], field: "title" | "description") {
@@ -242,7 +362,16 @@ function checkDuplicates(rows: PageAudit[], field: "title" | "description") {
   }
 }
 
+function requireJsonLdType(row: PageAudit, type: string) {
+  if (!row.jsonLdTypes?.includes(type)) {
+    errors.push(`Missing ${type} JSON-LD: ${row.canonicalUrl}.`);
+  }
+}
+
 function checkHtmlPage(row: PageAudit) {
+  const pathname = new URL(row.canonicalUrl).pathname;
+  const pathSegments = pathname.split("/").filter(Boolean);
+
   if (!row.title) {
     errors.push(`Missing title: ${row.canonicalUrl}.`);
   } else if (row.title.length > 60) {
@@ -283,6 +412,50 @@ function checkHtmlPage(row: PageAudit) {
 
   if (row.invalidJsonLdCount) {
     errors.push(`Invalid JSON-LD block count ${row.invalidJsonLdCount}: ${row.canonicalUrl}.`);
+  }
+
+  if (row.incompleteProductJsonLdCount) {
+    errors.push(
+      `Product JSON-LD is missing offers, review or aggregateRating: ${row.canonicalUrl}.`,
+    );
+  }
+
+  requireJsonLdType(row, "Organization");
+  requireJsonLdType(row, "WebSite");
+
+  if (pathname === "/") {
+    requireJsonLdType(row, "WebPage");
+  } else {
+    requireJsonLdType(row, "BreadcrumbList");
+  }
+
+  if (["/products", "/applications", "/guides", "/downloads"].includes(pathname)) {
+    requireJsonLdType(row, "CollectionPage");
+  } else if (pathname === "/about") {
+    requireJsonLdType(row, "AboutPage");
+  } else if (pathname === "/contact") {
+    requireJsonLdType(row, "ContactPage");
+  } else if (pathSegments[0] === "guides" && pathSegments.length === 2) {
+    requireJsonLdType(row, "Article");
+    requireJsonLdType(row, "FAQPage");
+  } else if (pathSegments[0] === "products" && pathSegments.length === 2) {
+    requireJsonLdType(row, "CollectionPage");
+    requireJsonLdType(row, "FAQPage");
+  } else if (pathSegments[0] === "products" && pathSegments.length === 3) {
+    requireJsonLdType(row, "WebPage");
+    requireJsonLdType(row, "FAQPage");
+  } else {
+    requireJsonLdType(row, "WebPage");
+  }
+
+  if (row.brokenFragmentLinks?.length) {
+    errors.push(
+      `Broken same-page fragment links (${row.brokenFragmentLinks.join(", ")}): ${row.canonicalUrl}.`,
+    );
+  }
+
+  if (row.duplicateIdCount) {
+    errors.push(`Duplicate HTML id count ${row.duplicateIdCount}: ${row.canonicalUrl}.`);
   }
 
   if (!row.openGraphTitle || !row.openGraphDescription || !row.openGraphImage) {
@@ -327,10 +500,14 @@ async function main() {
       const block = match[1];
       const url = block.match(/<loc>([\s\S]*?)<\/loc>/i);
       const lastModified = block.match(/<lastmod>([\s\S]*?)<\/lastmod>/i);
+      const images = [...block.matchAll(/<image:loc>([\s\S]*?)<\/image:loc>/gi)].map((image) =>
+        decodeHtml(image[1].trim()),
+      );
 
       return {
         url: url ? decodeHtml(url[1].trim()) : "",
         lastModified: lastModified ? decodeHtml(lastModified[1].trim()) : undefined,
+        images,
       };
     },
   );
@@ -372,8 +549,27 @@ async function main() {
         errors.push(`Sitemap URL has a future lastmod value: ${entry.url}.`);
       }
     }
+
+    const entryImages = new Set<string>();
+
+    for (const imageUrl of entry.images) {
+      const normalizedImageUrl = normalizeComparableUrl(imageUrl);
+
+      if (entryImages.has(normalizedImageUrl)) {
+        errors.push(`Duplicate image URL in sitemap entry ${entry.url}: ${imageUrl}.`);
+      }
+
+      if (new URL(imageUrl).origin !== new URL(canonicalBaseUrl).origin) {
+        errors.push(`Sitemap image uses an unexpected host: ${imageUrl}.`);
+      }
+
+      entryImages.add(normalizedImageUrl);
+    }
   }
 
+  const sitemapImageUrls = [
+    ...new Set(sitemapEntries.flatMap((entry) => entry.images).map(normalizeComparableUrl)),
+  ];
   const audits: PageAudit[] = [];
 
   for (let index = 0; index < urls.length; index += batchSize) {
@@ -408,8 +604,56 @@ async function main() {
     }
   }
 
+  for (let index = 0; index < sitemapImageUrls.length; index += batchSize) {
+    const batch = sitemapImageUrls.slice(index, index + batchSize);
+    const batchResults = await Promise.all(
+      batch.map(async (url) => {
+        try {
+          return await auditImage(url);
+        } catch (error) {
+          errors.push(
+            `Image request failed: ${url} (${error instanceof Error ? error.message : String(error)}).`,
+          );
+          return null;
+        }
+      }),
+    );
+
+    for (const image of batchResults.filter((result): result is NonNullable<typeof result> =>
+      Boolean(result),
+    )) {
+      if (image.status !== 200) {
+        errors.push(`Image returned HTTP ${image.status}: ${image.canonicalUrl}.`);
+      }
+
+      if (!image.contentType.toLowerCase().startsWith("image/")) {
+        errors.push(
+          `Sitemap image has non-image content type "${image.contentType}": ${image.canonicalUrl}.`,
+        );
+      }
+
+      if (normalizeComparableUrl(image.finalUrl) !== normalizeComparableUrl(image.requestedUrl)) {
+        errors.push(`Sitemap image redirects: ${image.requestedUrl} -> ${image.finalUrl}.`);
+      }
+    }
+  }
+
   const htmlAudits = audits.filter((row) => row.contentType.includes("text/html"));
   const linkedUrls = new Set(htmlAudits.flatMap((row) => row.internalLinks ?? []));
+  const homeAudit = htmlAudits.find((row) => new URL(row.canonicalUrl).pathname === "/");
+  const privacyAudit = htmlAudits.find((row) => new URL(row.canonicalUrl).pathname === "/privacy");
+
+  if (!homeAudit?.googleVerificationTagPresent) {
+    warnings.push(
+      "Google Search Console HTML verification tag is absent; confirm DNS-based ownership verification separately.",
+    );
+  }
+
+  if (!privacyAudit?.analyticsAvailable) {
+    warnings.push(
+      "GA4 is not configured; set NEXT_PUBLIC_GA_ID after creating a GA4 web data stream.",
+    );
+  }
 
   for (const entry of sitemapEntries) {
     const normalizedUrl = normalizeComparableUrl(entry.url);
@@ -425,6 +669,100 @@ async function main() {
   checkDuplicates(htmlAudits, "title");
   checkDuplicates(htmlAudits, "description");
 
+  const robotsResponse = await fetch(`${fetchBaseUrl}/robots.txt`, {
+    signal: AbortSignal.timeout(20_000),
+  });
+  const robotsText = await robotsResponse.text();
+
+  if (!robotsResponse.ok) {
+    errors.push(`robots.txt returned HTTP ${robotsResponse.status}.`);
+  }
+
+  if (!robotsText.includes(`Sitemap: ${canonicalBaseUrl}/sitemap.xml`)) {
+    errors.push("robots.txt does not reference the canonical sitemap URL.");
+  }
+
+  if (!/Disallow:\s*\/api\//i.test(robotsText)) {
+    errors.push("robots.txt does not disallow the RFQ API path.");
+  }
+
+  const filteredCatalogAudit = await auditUrl(
+    `${canonicalBaseUrl}/products?q=seo-audit&category=mig-mag-torch-parts`,
+  );
+  const expectedCatalogCanonical = `${canonicalBaseUrl}/products`;
+
+  if (filteredCatalogAudit.status !== 200) {
+    errors.push(`Filtered product catalog returned HTTP ${filteredCatalogAudit.status}.`);
+  }
+
+  if (!filteredCatalogAudit.noIndex) {
+    errors.push("Filtered product catalog must be noindex.");
+  }
+
+  if (
+    !filteredCatalogAudit.canonical ||
+    normalizeComparableUrl(filteredCatalogAudit.canonical) !==
+      normalizeComparableUrl(expectedCatalogCanonical)
+  ) {
+    errors.push(
+      `Filtered product catalog canonical mismatch: ${filteredCatalogAudit.canonical ?? "missing"}.`,
+    );
+  }
+
+  for (const redirect of legacyCategoryRedirects) {
+    const sourcePath = `/products/${redirect.sourceCategorySlug}`;
+    const destinationPath = `/products/${redirect.destinationCategorySlug}`;
+
+    await auditPermanentRedirect(sourcePath, destinationPath);
+
+    const destinationProduct = arcfortProducts.find(
+      (product) =>
+        (product.status ?? "active") === "active" &&
+        product.categorySlug === redirect.destinationCategorySlug &&
+        !isLegacyProductPath(product.categorySlug, product.slug),
+    );
+
+    if (destinationProduct) {
+      await auditPermanentRedirect(
+        `${sourcePath}/${destinationProduct.slug}`,
+        `${destinationPath}/${destinationProduct.slug}`,
+      );
+    }
+  }
+
+  const catalogPdfUrl = `${canonicalBaseUrl}/downloads/renqiu-ailesen-welding-catalog.pdf`;
+  const catalogPdfResponse = await fetch(toFetchUrl(catalogPdfUrl), {
+    redirect: "manual",
+    signal: AbortSignal.timeout(20_000),
+  });
+  const catalogCanonicalHeader = catalogPdfResponse.headers.get("link") ?? "";
+
+  if (catalogPdfResponse.status !== 200) {
+    errors.push(`Catalog PDF returned HTTP ${catalogPdfResponse.status}.`);
+  }
+
+  if (!catalogCanonicalHeader.includes(`<${catalogPdfUrl}>; rel="canonical"`)) {
+    errors.push("Catalog PDF is missing its canonical Link header.");
+  }
+
+  for (const csvPath of [
+    "/downloads/arcfort-public-product-list.csv",
+    "/downloads/arcfort-rfq-template.csv",
+  ]) {
+    const response = await fetch(new URL(csvPath, `${fetchBaseUrl}/`), {
+      redirect: "manual",
+      signal: AbortSignal.timeout(20_000),
+    });
+
+    if (response.status !== 200) {
+      errors.push(`${csvPath} returned HTTP ${response.status}.`);
+    }
+
+    if (!response.headers.get("x-robots-tag")?.toLowerCase().includes("noindex")) {
+      errors.push(`${csvPath} is missing an X-Robots-Tag noindex header.`);
+    }
+  }
+
   console.log("ArcFort Weld live SEO audit");
   console.log(`Canonical base URL: ${canonicalBaseUrl}`);
   console.log(`Fetch base URL: ${fetchBaseUrl}`);
@@ -434,6 +772,12 @@ async function main() {
   );
   console.log(`HTML pages checked: ${htmlAudits.length}`);
   console.log(`Non-HTML files checked: ${audits.length - htmlAudits.length}`);
+  console.log(`Sitemap images checked: ${sitemapImageUrls.length}`);
+  console.log(`Legacy category redirects checked: ${legacyCategoryRedirects.length}`);
+  console.log(
+    `Search Console HTML verification tag: ${homeAudit?.googleVerificationTagPresent ? "present" : "absent"}`,
+  );
+  console.log(`GA4 configuration: ${privacyAudit?.analyticsAvailable ? "configured" : "inactive"}`);
 
   if (errors.length > 0) {
     console.error(`\nErrors (${errors.length})`);

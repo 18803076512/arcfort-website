@@ -3,7 +3,7 @@ import { Breadcrumbs } from "@/components/content/Breadcrumbs";
 import { FaqSection } from "@/components/content/FaqSection";
 import { RfqCta } from "@/components/content/RfqCta";
 import { StructuredData } from "@/components/content/StructuredData";
-import { breadcrumbJsonLd, faqJsonLd } from "@/lib/content/jsonld";
+import { breadcrumbJsonLd, faqJsonLd, webPageJsonLd } from "@/lib/content/jsonld";
 import { buildMetadata } from "@/lib/content/seo";
 import { siteConfig } from "@/lib/content/site";
 
@@ -76,6 +76,13 @@ export default function OemServicePage() {
             { name: "Home", path: "/" },
             { name: "OEM Service", path: "/oem-service" },
           ]),
+          webPageJsonLd({
+            name: "OEM Welding Products and Private Label Service",
+            description:
+              "OEM welding product, logo, private label packaging and model customization support for overseas distributors and importers.",
+            path: "/oem-service",
+            dateModified: siteConfig.contentLastModified,
+          }),
           faqJsonLd([...faq]),
         ]}
       />

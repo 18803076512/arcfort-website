@@ -1,8 +1,9 @@
 import Link from "next/link";
+import { AnalyticsConsentSettings } from "@/components/AnalyticsConsentSettings";
 import { Breadcrumbs } from "@/components/content/Breadcrumbs";
 import { RfqCta } from "@/components/content/RfqCta";
 import { StructuredData } from "@/components/content/StructuredData";
-import { breadcrumbJsonLd } from "@/lib/content/jsonld";
+import { breadcrumbJsonLd, webPageJsonLd } from "@/lib/content/jsonld";
 import { buildMetadata } from "@/lib/content/seo";
 import { siteConfig } from "@/lib/content/site";
 
@@ -20,8 +21,16 @@ const privacySections = [
     body: "Uploaded drawings, product lists, photos or PDF files should only include information needed for quotation. Do not upload unrelated confidential documents.",
   },
   {
-    title: "Data storage",
-    body: "RFQ storage can be connected through Supabase after environment variables are configured. Access should remain limited to authorized business users.",
+    title: "RFQ delivery and storage",
+    body: "RFQ information and attachments may be transmitted to the configured ArcFort Weld sales email and, when enabled, stored in protected server-side systems for quotation follow-up. Access is limited to authorized business users and service providers supporting the inquiry process.",
+  },
+  {
+    title: "Retention",
+    body: "Inquiry records are retained only as long as reasonably needed for quotation follow-up, commercial records, dispute handling or applicable legal obligations.",
+  },
+  {
+    title: "Your choices",
+    body: "You may contact ArcFort Weld to request access, correction or deletion of submitted inquiry information where applicable. Optional analytics can be allowed or disabled separately below.",
   },
   {
     title: "Contact details",
@@ -32,34 +41,46 @@ const privacySections = [
 export const metadata = buildMetadata({
   title: "Privacy Notice",
   description:
-    "Privacy notice for ArcFort Weld RFQ submissions, contact forms, buyer information and uploaded product documents.",
+    "Privacy notice for ArcFort Weld RFQ submissions, buyer information, uploaded documents and optional website analytics preferences.",
   path: "/privacy",
   keywords: ["ArcFort Weld privacy", "RFQ privacy", "welding supplier privacy notice"],
 });
 
 export default function PrivacyPage() {
+  const analyticsId = process.env.NEXT_PUBLIC_GA_ID?.trim();
+  const analyticsAvailable = Boolean(analyticsId && /^G-[A-Z0-9]+$/i.test(analyticsId));
+
   return (
     <>
       <StructuredData
-        data={breadcrumbJsonLd([
-          { name: "Home", path: "/" },
-          { name: "Privacy Notice", path: "/privacy" },
-        ])}
+        data={[
+          breadcrumbJsonLd([
+            { name: "Home", path: "/" },
+            { name: "Privacy Notice", path: "/privacy" },
+          ]),
+          webPageJsonLd({
+            name: "ArcFort Weld Privacy Notice",
+            description:
+              "Privacy notice for RFQ information, uploaded documents and optional website analytics.",
+            path: "/privacy",
+            dateModified: siteConfig.contentLastModified,
+          }),
+        ]}
       />
 
       <section className="bg-white py-12 sm:py-16">
         <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
           <Breadcrumbs items={[{ label: "Home", href: "/" }, { label: "Privacy Notice" }]} />
-          <p className="mt-8 text-sm font-bold uppercase tracking-[0.2em] text-arc-blue">
-            Privacy
-          </p>
+          <p className="mt-8 text-sm font-bold uppercase tracking-[0.2em] text-arc-blue">Privacy</p>
           <h1 className="mt-3 font-display text-4xl font-black leading-tight text-arc-midnight sm:text-5xl">
             Privacy Notice
           </h1>
           <p className="mt-5 text-lg leading-8 text-slate-600">
-            This page explains how {siteConfig.name} handles RFQ and contact information submitted
-            through this website. Review with legal counsel before production launch if your market
-            requires specific privacy language.
+            This notice explains how {siteConfig.name} handles RFQ information, uploaded documents
+            and optional website analytics for international B2B inquiries.
+          </p>
+          <p className="mt-4 text-xs font-bold uppercase tracking-[0.12em] text-slate-500">
+            Last updated July 26, 2026
           </p>
         </div>
       </section>
@@ -68,18 +89,37 @@ export default function PrivacyPage() {
         <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
           <div className="grid gap-5">
             {privacySections.map((section) => (
-              <article key={section.title} className="border border-slate-200 bg-white p-6 shadow-sm">
+              <article
+                key={section.title}
+                className="border border-slate-200 bg-white p-6 shadow-sm"
+              >
                 <h2 className="font-display text-2xl font-black text-arc-midnight">
                   {section.title}
                 </h2>
                 <p className="mt-3 text-sm leading-7 text-slate-600">{section.body}</p>
               </article>
             ))}
+            <article className="border border-slate-200 bg-white p-6 shadow-sm">
+              <h2 className="font-display text-2xl font-black text-arc-midnight">
+                Optional analytics
+              </h2>
+              <p className="mt-3 text-sm leading-7 text-slate-600">
+                When analytics is configured, it remains disabled until you allow it. ArcFort Weld
+                may then measure page paths, public product references, product-search result
+                counts, catalog downloads, contact-channel clicks and RFQ completion status. Names,
+                companies, email addresses, telephone numbers, WhatsApp numbers, countries,
+                messages, uploaded files and search text are not sent to analytics.
+              </p>
+              <AnalyticsConsentSettings analyticsAvailable={analyticsAvailable} />
+            </article>
           </div>
           <div className="mt-8 border-l-4 border-arc-signal bg-white p-5 shadow-sm">
             <p className="text-sm font-semibold leading-6 text-slate-700">
               Privacy contact:{" "}
-              <a href={siteConfig.emailHref} className="font-bold text-arc-blue hover:text-arc-midnight">
+              <a
+                href={siteConfig.emailHref}
+                className="font-bold text-arc-blue hover:text-arc-midnight"
+              >
                 {siteConfig.email}
               </a>
               . Business address: {siteConfig.address}.

@@ -2,7 +2,7 @@ import { Breadcrumbs } from "@/components/content/Breadcrumbs";
 import { FaqSection } from "@/components/content/FaqSection";
 import { RfqCta } from "@/components/content/RfqCta";
 import { StructuredData } from "@/components/content/StructuredData";
-import { breadcrumbJsonLd, faqJsonLd } from "@/lib/content/jsonld";
+import { breadcrumbJsonLd, faqJsonLd, webPageJsonLd } from "@/lib/content/jsonld";
 import { buildMetadata } from "@/lib/content/seo";
 import { siteConfig } from "@/lib/content/site";
 
@@ -62,6 +62,13 @@ export default function ShippingPaymentPage() {
             { name: "Home", path: "/" },
             { name: "Shipping and Payment", path: "/shipping-payment" },
           ]),
+          webPageJsonLd({
+            name: "Shipping and Payment for Welding Product Orders",
+            description:
+              "Port, payment, MOQ, lead time and OEM information for ArcFort Weld export orders.",
+            path: "/shipping-payment",
+            dateModified: siteConfig.contentLastModified,
+          }),
           faqJsonLd([...faq]),
         ]}
       />
