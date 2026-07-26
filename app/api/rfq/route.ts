@@ -11,6 +11,11 @@ import {
   validateRfqFiles,
   validateRfqTextValues,
 } from "@/lib/rfq-constraints";
+import {
+  checkRfqRateLimit,
+  getRfqRateLimitHeaders,
+  type RfqRateLimitResult,
+} from "@/lib/rfq-rate-limit";
 import { createRfqReference } from "@/lib/rfq-reference";
 import { isTrustedRfqRequest } from "@/lib/rfq-request-security";
 
@@ -139,7 +144,12 @@ async function getResendMessageId(response: Response) {
   }
 }
 
-function rfqResponse(reference: string, body: Record<string, unknown>, status = 200) {
+function rfqResponse(
+  reference: string,
+  body: Record<string, unknown>,
+  status = 200,
+  extraHeaders: Record<string, string> = {},
+) {
   return NextResponse.json(
     {
       ...body,
@@ -150,6 +160,7 @@ function rfqResponse(reference: string, body: Record<string, unknown>, status = 
       headers: {
         "Cache-Control": "no-store",
         "X-RFQ-Reference": reference,
+        ...extraHeaders,
       },
     },
   );
@@ -442,6 +453,16 @@ async function sendEmailNotification(
 
 export async function POST(request: Request) {
   const reference = createRfqReference();
+  let rateLimitResult: RfqRateLimitResult | null = null;
+  const respond = (
+    body: Record<string, unknown>,
+    status = 200,
+    extraHeaders: Record<string, string> = {},
+  ) =>
+    rfqResponse(reference, body, status, {
+      ...(rateLimitResult ? getRfqRateLimitHeaders(rateLimitResult) : {}),
+      ...extraHeaders,
+    });
 
   if (
     !isTrustedRfqRequest({
@@ -452,8 +473,7 @@ export async function POST(request: Request) {
       productionUrl: siteConfig.url,
     })
   ) {
-    return rfqResponse(
-      reference,
+    return respond(
       {
         ok: false,
         message: "RFQ request origin could not be verified. Please reload the form and try again.",
@@ -462,12 +482,27 @@ export async function POST(request: Request) {
     );
   }
 
+  rateLimitResult = checkRfqRateLimit(request.headers);
+
+  if (!rateLimitResult.allowed) {
+    return respond(
+      {
+        ok: false,
+        message:
+          "Too many RFQ attempts were received from this connection. Please wait before trying again, or use email or WhatsApp.",
+      },
+      429,
+      {
+        "Retry-After": String(rateLimitResult.retryAfterSeconds),
+      },
+    );
+  }
+
   const contentLengthHeader = request.headers.get("content-length");
   const contentLength = contentLengthHeader ? Number(contentLengthHeader) : 0;
 
   if (Number.isFinite(contentLength) && contentLength > rfqMaxRequestBodySize) {
-    return rfqResponse(
-      reference,
+    return respond(
       {
         ok: false,
         message: "RFQ upload is too large. Please reduce the attachments and try again.",
@@ -482,8 +517,7 @@ export async function POST(request: Request) {
     try {
       formData = await request.formData();
     } catch {
-      return rfqResponse(
-        reference,
+      return respond(
         {
           ok: false,
           message: "Invalid RFQ form data.",
@@ -514,8 +548,7 @@ export async function POST(request: Request) {
     };
 
     if (honeypot) {
-      return rfqResponse(
-        reference,
+      return respond(
         {
           ok: false,
           message: "RFQ submission failed. Please try again.",
@@ -525,8 +558,7 @@ export async function POST(request: Request) {
     }
 
     if (!validateStartedAt(startedAt)) {
-      return rfqResponse(
-        reference,
+      return respond(
         {
           ok: false,
           message: "Please reload the RFQ form and try again.",
@@ -543,7 +575,7 @@ export async function POST(request: Request) {
     }
 
     if (Object.keys(errors).length > 0) {
-      return rfqResponse(reference, { ok: false, errors }, 400);
+      return respond({ ok: false, errors }, 400);
     }
 
     const supabaseUrl = process.env.SUPABASE_URL;
@@ -672,8 +704,7 @@ export async function POST(request: Request) {
     if (!deliverySucceeded) {
       console.error(JSON.stringify(deliveryLog));
 
-      return rfqResponse(
-        reference,
+      return respond(
         {
           ok: false,
           ...responseBody,
@@ -686,7 +717,7 @@ export async function POST(request: Request) {
 
     console.info(JSON.stringify(deliveryLog));
 
-    return rfqResponse(reference, {
+    return respond({
       ok: true,
       ...responseBody,
       message: "RFQ submitted successfully.",
@@ -694,8 +725,7 @@ export async function POST(request: Request) {
   } catch {
     console.error(`[RFQ ${reference}] Unexpected RFQ processing failure.`);
 
-    return rfqResponse(
-      reference,
+    return respond(
       {
         ok: false,
         message:

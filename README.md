@@ -194,6 +194,8 @@ The `/rfq` page includes a responsive inquiry form with:
 - Backend readiness check at `/api/rfq/status`
 - Lightweight spam protection with same-origin checks, honeypot, timing checks and source-path
   tracking
+- Best-effort application fallback limiting each hashed client key to 5 RFQ attempts per 10 minutes,
+  with `429`, `Retry-After` and `X-RateLimit-*` response headers
 - Structured server logs for delivery outcome, RFQ reference and Resend message IDs without buyer
   personal data
 - Persistent multi-product RFQ shortlist stored in the buyer's browser
@@ -251,9 +253,11 @@ NEXT_PUBLIC_GA_ID=
 ```
 
 Global responses include `X-Content-Type-Options`, `X-Frame-Options`, `Referrer-Policy`,
-`Permissions-Policy` and `Cross-Origin-Opener-Policy` headers. Configure a Vercel Firewall rate-limit
-rule for `POST /api/rfq` when production traffic starts; application-level form checks are not a
-replacement for an infrastructure-level rate limit.
+`Permissions-Policy` and `Cross-Origin-Opener-Policy` headers. The API rate-limit fallback uses
+Vercel's forwarded client IP when available, hashes the key with a process-local salt and keeps no
+raw IP address. Because Vercel Functions can restart or scale across instances, this fallback is not
+distributed and is not a replacement for a Vercel Firewall rule. Configure the infrastructure rule
+for `POST /api/rfq` when production traffic starts.
 
 ## Search Console and Analytics
 
