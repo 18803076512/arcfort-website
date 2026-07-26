@@ -7,10 +7,10 @@ import { breadcrumbJsonLd, collectionPageJsonLd } from "@/lib/content/jsonld";
 import { buildMetadata } from "@/lib/content/seo";
 
 const guideSignals = [
-  "RFQ preparation",
+  "Product identification",
+  "Machine sourcing",
   "Compatibility confirmation",
-  "Product family comparison",
-  "Packaging and MOQ planning",
+  "OEM packaging and RFQ planning",
 ] as const;
 
 const buyerChecklist = [
@@ -31,7 +31,7 @@ function formatGuideDate(value: string) {
 export const metadata = buildMetadata({
   title: "Welding Buyer Guides",
   description:
-    "Read ArcFort Weld guides for welding RFQs, MIG contact tips, TIG torch parts, plasma consumables, welding cable and connector sourcing.",
+    "Read ArcFort Weld guides for welding RFQs, torch parts, plasma consumables, welding machines, electrodes, wire and OEM packaging.",
   path: "/guides",
   keywords: [
     "welding buyer guide",
@@ -39,6 +39,8 @@ export const metadata = buildMetadata({
     "MIG TIG consumables guide",
     "plasma consumables guide",
     "welding cable connector guide",
+    "welding machine sourcing",
+    "OEM welding products",
   ],
 });
 
@@ -82,8 +84,8 @@ export default function GuidesPage() {
               Welding and cutting sourcing guides for B2B buyers.
             </h1>
             <p className="mt-6 max-w-3xl text-lg leading-8 text-slate-300">
-              Practical articles for buyers preparing product lists, compatibility details,
-              packaging requirements and RFQs for welding torch parts and cutting consumables.
+              Practical articles for buyers identifying welding products, comparing machine and
+              consumable requirements, planning OEM packaging and preparing traceable RFQs.
             </p>
             <div className="mt-8 flex flex-col gap-3 sm:flex-row">
               <Link
@@ -143,7 +145,7 @@ export default function GuidesPage() {
                 Guide Library
               </p>
               <h2 className="mt-3 font-display text-3xl font-black text-arc-midnight">
-                Buyer articles for RFQ preparation
+                Buyer articles for product selection and RFQ preparation
               </h2>
             </div>
             <Link

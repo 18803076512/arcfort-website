@@ -437,4 +437,300 @@ export const guides: GuideArticle[] = [
       "electrode holder",
     ],
   },
+  {
+    slug: "mig-torch-front-end-parts-identification",
+    title: "MIG Torch Front-End Parts Identification",
+    seoTitle: "MIG Torch Front-End Parts Identification Guide",
+    description:
+      "A practical guide to identifying contact tips, tip holders, diffusers, gas nozzles, swan necks and liners before quotation.",
+    seoDescription:
+      "Identify MIG torch front-end parts using torch references, component order, photos, drawings and measured details before requesting a quotation.",
+    publishedDate: "2026-07-26",
+    modifiedDate: "2026-07-26",
+    sections: [
+      {
+        title: "Map the complete front-end assembly",
+        body: "Start by recording the order in which the existing torch parts are assembled. A MIG/MAG torch front end can include the contact tip, tip holder, gas diffuser, gas nozzle and swan neck, with a torch liner supporting wire feeding through the cable assembly. Product names vary between markets, so the assembly order and connection points are often more useful than a generic name. Photograph the complete front end before removing individual components.",
+      },
+      {
+        title: "Identify the contact tip and tip holder",
+        body: "The contact tip guides the welding wire and connects to the surrounding holder arrangement. Record the welding wire size, thread reference, overall length and seating profile only when these fields can be measured or verified. The tip holder must match the contact tip connection and the related torch front end. If either component is worn, provide an unused sample, drawing or approved purchasing reference instead of relying only on dimensions from the damaged part.",
+      },
+      {
+        title: "Differentiate the diffuser and gas nozzle",
+        body: "The gas diffuser and gas nozzle form part of the shielding gas path, but they are separate components. A diffuser may also support the tip holder arrangement, while the nozzle surrounds the front end and directs shielding gas around the welding area. Include side and end photos, connection details and the relationship between both parts. Do not assume that a similar nozzle profile confirms the internal diffuser, thread or torch-series match.",
+      },
+      {
+        title: "Check the swan neck and torch liner",
+        body: "The swan neck positions the front-end assembly and connects it to the torch body. The torch liner guides welding wire through the cable toward the contact tip. Buyers should provide the torch model, liner type or range, cable length and end details when known from existing records. A swan neck photo should show both connection ends and its overall shape. Liner or neck compatibility should be confirmed from documented references, samples or drawings.",
+      },
+      {
+        title: "Build a traceable photo and drawing set",
+        body: "Use one file group for each torch family. Include an assembled view, individual component views, visible markings and measured connection details. Add a scale beside small parts without covering the threads or gas passages. Name each file with the buyer line-item number so the supplier can connect it to the correct quantity. Keep uncertain dimensions and market references clearly marked as unverified until the supplier and buyer review the matching evidence.",
+      },
+      {
+        title: "Prepare a mixed front-end parts RFQ",
+        body: "List every contact tip, holder, diffuser, nozzle, neck and liner as a separate line item with quantity. Add torch series, wire size, confirmed thread, destination country and packing requirement where available. State whether the products are required as loose spares, maintenance sets or private label packs. Ask the supplier to identify missing compatibility details, then confirm MOQ, lead time and packaging after the exact component list has been reviewed.",
+      },
+    ],
+    categorySlugs: ["mig-mag-torch-parts"],
+    productSlugs: [
+      "mig-contact-tip-m6-1-0mm",
+      "mig-diffuser",
+      "mig-gas-nozzle-for-mb15",
+      "mig-tip-holder-for-mb15",
+      "mig-torch-liner",
+      "mig-swan-neck",
+      "mig-mag-welding-torch",
+    ],
+    faq: [
+      {
+        question: "Can a MIG gas nozzle be identified by outside shape alone?",
+        answer:
+          "No. The connection, length, internal arrangement, related diffuser and torch reference may also need confirmation.",
+      },
+      {
+        question: "Should the complete torch front end be photographed before disassembly?",
+        answer:
+          "Yes. An assembled photo records component order and helps the supplier understand how the requested parts connect.",
+      },
+      {
+        question: "What details are useful for a torch liner inquiry?",
+        answer:
+          "Provide the torch or cable reference, cable length, welding wire range, liner end details and a photo or approved sample when available.",
+      },
+      {
+        question: "Can different MIG front-end parts be quoted in one RFQ?",
+        answer:
+          "Yes. Keep each component and variant on a separate line with its own quantity, reference and packaging requirement.",
+      },
+    ],
+    keywords: [
+      "MIG torch front end parts",
+      "MIG gas nozzle and diffuser",
+      "MIG tip holder",
+      "MIG torch liner",
+      "MIG torch spare parts",
+    ],
+  },
+  {
+    slug: "welding-electrode-wire-rfq-guide",
+    title: "Welding Electrode and Wire RFQ Guide",
+    seoTitle: "Welding Electrode and Wire RFQ Guide for Buyers",
+    description:
+      "A B2B guide to preparing welding electrode, welding wire and related consumable inquiries without guessing classifications or ratings.",
+    seoDescription:
+      "Prepare welding electrode and wire RFQs using documented process, classification, size, packaging, quantity and destination requirements.",
+    publishedDate: "2026-07-26",
+    modifiedDate: "2026-07-26",
+    sections: [
+      {
+        title: "Separate electrodes, wire and related accessories",
+        body: "Begin by separating stick electrodes, continuous welding wire, spot welding electrodes and related holders or feeding accessories. These products serve different welding processes and require different purchasing fields. Use one line for each product form, size and package. A general request for welding consumables is not enough for a reliable quotation. The supplier should be able to trace every requested item to a documented process, buyer reference, photo or existing package label.",
+      },
+      {
+        title: "Use documented classification information",
+        body: "Provide the consumable classification, grade, standard or manufacturer reference only when it appears on an approved specification, package label, purchase record or drawing. Do not create a classification from product color, application description or an online comparison. If the buyer does not know the exact designation, send clear label photos and explain the welding process and base material requirement. The supplier can then identify which additional technical information is needed before quotation.",
+      },
+      {
+        title: "Confirm size and package format",
+        body: "Record diameter, length, spool or package format and package weight from verified documents or existing product labels. Keep different diameters and package formats as separate SKU lines. For wire, include the required spool or drum reference when documented. For electrodes, show the package label and product length if available. When these fields are unknown, request available options instead of publishing or ordering an assumed dimension or package quantity.",
+      },
+      {
+        title: "State application and handling requirements",
+        body: "Describe the welding process, general application, destination market and any documented storage or handling requirement from the buyer's quality system. These details support quotation review but do not replace the product classification. Buyers should also state whether batch identification, package labels or product documents are required. The supplier must confirm which records can be supplied; the website or RFQ should not imply certificates or test documents that have not been verified.",
+      },
+      {
+        title: "Plan trials and repeat orders",
+        body: "Provide the initial trial quantity and expected repeat quantity by item. A trial order can support buyer review of packaging, identification and welding performance under the buyer's own procedure. Repeat purchasing should use the approved product reference, package label and sample record. If private labels are required, send artwork, language, barcode and packing-unit information early so the supplier can discuss MOQ and lead time separately from standard export packing.",
+      },
+      {
+        title: "Prepare the consumables RFQ",
+        body: "For each line, include product type, documented classification or reference, size, package, quantity and destination country. Attach label photos, existing data sheets or drawings when available. Explain whether an electrode holder, ground clamp, cable or feeder accessory is also required. Ask the supplier to list unconfirmed fields, available documentation, MOQ, estimated lead time and packing basis before the buyer approves samples or a commercial order.",
+      },
+    ],
+    categorySlugs: ["welding-consumables"],
+    productSlugs: [
+      "welding-electrode",
+      "welding-wire",
+      "spot-welding-electrode",
+      "electrode-holder",
+    ],
+    faq: [
+      {
+        question: "Can an electrode classification be selected from a product photo?",
+        answer:
+          "No. Use an approved label, specification, purchase record or supplier document. A photo can support identification but should not create an unverified classification.",
+      },
+      {
+        question: "Should different wire diameters be listed separately?",
+        answer:
+          "Yes. Keep each diameter, product designation and package format on its own RFQ line with a separate quantity.",
+      },
+      {
+        question: "Can private label packaging be discussed for welding consumables?",
+        answer:
+          "Yes. Artwork, language, barcode, packing unit, quantity and product details should be reviewed before MOQ and lead time are confirmed.",
+      },
+      {
+        question: "What information is needed when the exact grade is unknown?",
+        answer:
+          "Send the existing label, process, application, base material requirement and any approved purchasing reference, then ask which additional fields are needed.",
+      },
+    ],
+    keywords: [
+      "welding electrode RFQ",
+      "welding wire supplier inquiry",
+      "welding consumables buying guide",
+      "welding electrode packaging",
+      "welding wire quotation",
+    ],
+  },
+  {
+    slug: "welding-machine-sourcing-checklist",
+    title: "Industrial Welding Machine Sourcing Checklist",
+    seoTitle: "Industrial Welding Machine Sourcing Checklist",
+    description:
+      "A distributor-focused checklist for defining welding process, electrical requirements, interfaces, documentation and packing before RFQ.",
+    seoDescription:
+      "Prepare an industrial welding machine RFQ with process, input power, documented output requirements, interfaces, accessories and destination market.",
+    publishedDate: "2026-07-26",
+    modifiedDate: "2026-07-26",
+    sections: [
+      {
+        title: "Define the welding or cutting process",
+        body: "State whether the buyer requires MIG/MAG, TIG, MMA, plasma cutting, stud welding or another documented process. Explain the industrial application, expected operating environment and whether the equipment is intended for production, repair, site work or distributor resale. Avoid selecting a machine only from a marketing name. The required process, material range and operating procedure should come from the buyer's technical team or existing approved equipment reference.",
+      },
+      {
+        title: "Document destination electrical requirements",
+        body: "Provide the destination country and the required input voltage, frequency, phase and plug arrangement from the buyer's electrical specification. Do not assume that equipment supplied for one market can be used in another. If several input configurations are acceptable, list them as options for quotation. The supplier should confirm the available configuration, power connection and labeling before production. Exact electrical ratings must remain document-based rather than inferred from a product photo.",
+      },
+      {
+        title: "Confirm performance fields from approved data",
+        body: "List required output range, duty cycle, process modes and other technical ratings only when they are part of an approved buyer requirement. Ask the supplier to provide the available machine data sheet for comparison. Marketing descriptions should not replace documented values. When the buyer is replacing existing equipment, include the model, nameplate photo and key application conditions, while clearly stating that the existing model is a reference and not an automatic compatibility approval.",
+      },
+      {
+        title: "Identify interfaces and included accessories",
+        body: "Define whether the quotation should include a torch, wire feeder, ground lead, electrode holder, regulator, cable connector, remote control or other accessory. Record required connector and feeder interfaces from drawings or equipment references. Separate included items from optional spares so the commercial comparison is clear. For torch and cable assemblies, provide length and connection details when documented. Unconfirmed interfaces should be reviewed before sample or production approval.",
+      },
+      {
+        title: "Specify market documents and labeling",
+        body: "Tell the supplier which language, manual, nameplate, carton marks and product documents the destination market requires. Certification or regulatory requirements must be stated by the buyer and confirmed against real supplier evidence before any claim is published or accepted. Do not assume CE, ISO, RoHS, UL or another certificate is available. Ask the supplier to list exactly which documents, test records and markings can be provided for the quoted configuration.",
+      },
+      {
+        title: "Plan sample review, packing and support",
+        body: "For a new machine program, define sample quantity, inspection points, packing requirement, spare-parts request and after-sales document needs. Provide target order quantity and delivery destination so MOQ, lead time and shipping options can be discussed. Before repeat purchasing, retain the approved configuration, nameplate, accessories list, manual version and packing record. A complete RFQ should separate confirmed requirements, requested options and fields that still require technical review.",
+      },
+    ],
+    categorySlugs: ["welding-machines"],
+    productSlugs: ["wire-feeder", "stud-welding-gun"],
+    faq: [
+      {
+        question: "What electrical information should be included in a welding machine RFQ?",
+        answer:
+          "Provide destination country, required input voltage, frequency, phase and plug arrangement from the buyer's approved electrical requirements.",
+      },
+      {
+        question: "Should certification be assumed for an export welding machine?",
+        answer:
+          "No. State the destination requirement and ask the supplier to confirm available certificates and supporting evidence for the quoted configuration.",
+      },
+      {
+        question: "How should included accessories be compared?",
+        answer:
+          "Use a separate list for the torch, feeder, cables, connectors, holder, clamp, regulator, spare parts and other included or optional items.",
+      },
+      {
+        question: "Is an existing machine model enough for quotation?",
+        answer:
+          "It is a useful reference, but the buyer should also provide process, electrical requirements, application, interfaces and the required accessory scope.",
+      },
+    ],
+    keywords: [
+      "industrial welding machine sourcing",
+      "welding machine RFQ",
+      "welding equipment buying checklist",
+      "export welding machine supplier",
+      "welding machine distributor",
+    ],
+  },
+  {
+    slug: "oem-welding-products-private-label-guide",
+    title: "OEM Welding Products and Private Label Guide",
+    seoTitle: "OEM Welding Products and Private Label Buying Guide",
+    description:
+      "A practical guide for distributors planning welding product customization, logo artwork, labels, cartons, samples and repeat orders.",
+    seoDescription:
+      "Plan OEM welding products and private label packaging with confirmed product references, artwork control, MOQ, samples and export packing.",
+    publishedDate: "2026-07-26",
+    modifiedDate: "2026-07-26",
+    sections: [
+      {
+        title: "Confirm the base product first",
+        body: "OEM work should begin with a clearly identified base product. Confirm the product name, model, size, material, compatibility reference and required quantity using samples, drawings, photos or approved records. Packaging artwork cannot correct an uncertain product match. Keep unknown technical fields visible during quotation review and approve the physical or documented product reference before finalizing labels, cartons or a private label SKU.",
+      },
+      {
+        title: "Define the customization scope",
+        body: "Separate product customization from packaging customization. Product work may include a documented model, color, component or marking request, while packaging work may include logo printing, labels, inner packs and carton design. List every requested change and identify which details are mandatory or optional. The supplier should review feasibility, MOQ and lead time for the actual scope rather than treating the word OEM as one fixed service package.",
+      },
+      {
+        title: "Control logos, labels and artwork",
+        body: "Provide approved vector artwork where available, target dimensions, colors, label location, market language, barcode and importer information required by the buyer. Use version numbers or dates for artwork files so old and new designs are not confused. The buyer is responsible for confirming brand rights and destination-market label content. Ask for an artwork proof or packing sample before production, and retain the approved version for repeat orders.",
+      },
+      {
+        title: "Review MOQ and lead time by requirement",
+        body: "Standard product, printed product, private label package and custom carton requests can have different production conditions. State the trial quantity and expected repeat quantity for every SKU. ArcFort Weld accepts small trial orders for standard products when available, while OEM MOQ depends on the product and packaging requirement. Final lead time should be confirmed after materials, artwork, quantity and production schedule are reviewed.",
+      },
+      {
+        title: "Approve samples and packing references",
+        body: "Use a pre-production sample, approved product reference or documented confirmation appropriate to the order. Review product identity, visible marking, label content, pack quantity, carton artwork and shipping marks before volume production. Do not approve compatibility, certification or exact technical ratings from packaging appearance alone. Record any corrections in a controlled approval message or file so both buyer and supplier can trace the final requirement.",
+      },
+      {
+        title: "Build a repeat-order control file",
+        body: "For each approved OEM SKU, retain the product reference, artwork version, label position, packing unit, carton specification, shipping marks and sample confirmation. Include destination country and contact details for future review. Repeat orders should reference this control file and identify any requested changes before production. A stable record reduces artwork errors and helps distributors compare quotation, packing and delivery details across purchasing cycles.",
+      },
+    ],
+    categorySlugs: [
+      "mig-mag-torch-parts",
+      "tig-torch-parts",
+      "plasma-cutting-consumables",
+      "welding-accessories",
+    ],
+    productSlugs: [
+      "mig-mag-welding-torch",
+      "tig-welding-torch",
+      "plasma-cutting-torch",
+      "welding-protective-cover",
+      "wire-feeder-accessories",
+    ],
+    faq: [
+      {
+        question: "Is OEM MOQ the same for every welding product?",
+        answer:
+          "No. MOQ depends on product type, model, marking, packaging, artwork and other customization requirements.",
+      },
+      {
+        question: "What artwork should a private label buyer provide?",
+        answer:
+          "Provide the approved logo file, colors, dimensions, label text, barcode, language and carton requirements applicable to the target market.",
+      },
+      {
+        question: "Can a small trial order use custom packaging?",
+        answer:
+          "It can be discussed, but custom printing or cartons may require a different MOQ from standard products. The supplier should confirm options after reviewing the request.",
+      },
+      {
+        question: "What should be retained for repeat OEM orders?",
+        answer:
+          "Keep the approved product reference, artwork version, label position, packing unit, carton details, shipping marks and sample confirmation.",
+      },
+    ],
+    keywords: [
+      "OEM welding products",
+      "private label welding accessories",
+      "welding product packaging",
+      "custom welding consumables",
+      "OEM welding supplier",
+    ],
+  },
 ];

@@ -33,10 +33,16 @@ const guideByCategorySlug: Record<string, BuyerGuideLink> = {
       "Review torch model, reference number, consumable stack, quantity and packaging details before RFQ.",
   },
   "welding-consumables": {
-    href: "/guides/welding-cable-connector-selection",
-    title: "Welding Cable and Connector Selection",
+    href: "/guides/welding-electrode-wire-rfq-guide",
+    title: "Welding Electrode and Wire RFQ Guide",
     description:
-      "Prepare cable, connector, ground clamp and electrode holder requirements for a structured RFQ.",
+      "Prepare electrode, wire, classification, packaging and quantity details without guessing unconfirmed specifications.",
+  },
+  "welding-machines": {
+    href: "/guides/welding-machine-sourcing-checklist",
+    title: "Industrial Welding Machine Sourcing Checklist",
+    description:
+      "Define process, electrical requirements, interfaces, accessories and destination-market documents before RFQ.",
   },
   "welding-accessories": {
     href: "/guides/welding-cable-connector-selection",
@@ -55,6 +61,8 @@ const productFallbackGuideByCategorySlug: Record<string, BuyerGuideLink> = {
   },
   "tig-torch-parts": guideByCategorySlug["tig-torch-parts"],
   "plasma-cutting-consumables": guideByCategorySlug["plasma-cutting-consumables"],
+  "welding-consumables": guideByCategorySlug["welding-consumables"],
+  "welding-machines": guideByCategorySlug["welding-machines"],
 };
 
 export function getBuyerGuideForCategory(categorySlug: string) {
