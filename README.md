@@ -230,9 +230,10 @@ npm run seo:audit
 ```
 
 The audit checks indexable product routes, duplicate metadata, category and product references,
-legacy redirects, image files, guide metadata, article dates, guide content depth and
-placeholder-content warnings. Warnings identify editorial work that still needs real product data;
-broken links, duplicate routes, thin guides and invalid references fail the command.
+legacy redirects, homepage featured-product coverage, reviewed image eligibility, guide metadata,
+article dates, guide content depth and placeholder-content warnings. Warnings identify editorial
+work that still needs real product data; broken links, duplicate routes, thin guides and invalid
+references fail the command.
 
 After deployment, audit every sitemap URL against the live site:
 
@@ -241,8 +242,10 @@ npm run seo:audit:live
 ```
 
 The live audit verifies HTTP status, redirects, title length, meta descriptions, canonical URLs,
-one H1 per HTML page, indexability and parseable JSON-LD. Audit a local or preview deployment while
-still requiring production canonical URLs with:
+English language markup, one H1 per HTML page, indexability, Open Graph metadata, Twitter cards,
+parseable JSON-LD, image `alt`/`src` attributes, sitemap `lastmod` values and crawlable internal
+links to every sitemap URL. Audit a local or preview deployment while still requiring production
+canonical URLs with:
 
 ```bash
 npm run seo:audit:live -- --fetch-base-url=http://localhost:3000
@@ -264,6 +267,13 @@ When `NEXT_PUBLIC_GA_ID` is configured, the site tracks:
 - RFQ link clicks: `rfq_link_click`.
 
 Submit `https://www.arcfortweld.com/sitemap.xml` in Google Search Console after domain verification.
+The sitemap includes stable `lastmod` values for every indexable URL and includes only reviewed
+product images in image sitemap entries. Category, application and buyer-guide metadata uses a
+relevant reviewed product image when one is available.
+
+Update `contentLastModified` in `lib/content/site.ts` only after a significant public content
+change. Product URLs use the later of `productTemplateLastModified` and each record's
+`verifiedDate`; never generate a changing build-time date for sitemap entries.
 
 For IndexNow-compatible search engines, the repository includes a public key file and a submission
 script. After deployment, run:

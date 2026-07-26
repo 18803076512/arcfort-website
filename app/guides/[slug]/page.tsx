@@ -10,7 +10,8 @@ import { getAllGuides, getGuideBySlug } from "@/lib/content/guides";
 import { articleJsonLd, breadcrumbJsonLd, faqJsonLd } from "@/lib/content/jsonld";
 import { getAllProducts } from "@/lib/content/products";
 import { buildMetadata } from "@/lib/content/seo";
-import { siteConfig } from "@/lib/content/site";
+import { getPreferredSeoImage } from "@/lib/content/seo-images";
+import { absoluteUrl, siteConfig } from "@/lib/content/site";
 import type { Product, ProductCategory } from "@/lib/content/schemas";
 
 type GuideRouteProps = {
@@ -56,12 +57,22 @@ export async function generateMetadata({ params }: GuideRouteProps) {
     return {};
   }
 
+  const relatedProducts = getAllProducts().filter((product) =>
+    guide.productSlugs.includes(product.slug),
+  );
+
   return buildMetadata({
     title: guide.seoTitle,
     description: guide.seoDescription,
     path: `/guides/${guide.slug}`,
     keywords: guide.keywords,
     type: "article",
+    image: getPreferredSeoImage(relatedProducts),
+    publishedTime: guide.publishedDate,
+    modifiedTime: guide.modifiedDate,
+    authors: [absoluteUrl("/about")],
+    section: "Welding and cutting buyer guides",
+    tags: guide.keywords,
   });
 }
 
@@ -103,6 +114,7 @@ export default async function GuideDetailPage({ params }: GuideRouteProps) {
       return { product, category };
     })
     .filter((item): item is { product: Product; category: ProductCategory } => Boolean(item));
+  const seoImage = getPreferredSeoImage(relatedProducts.map((item) => item.product));
 
   return (
     <>
@@ -113,7 +125,7 @@ export default async function GuideDetailPage({ params }: GuideRouteProps) {
             { name: "Guides", path: "/guides" },
             { name: guide.title, path: `/guides/${guide.slug}` },
           ]),
-          articleJsonLd(guide),
+          articleJsonLd(guide, seoImage),
           faqJsonLd(guide.faq),
         ]}
       />

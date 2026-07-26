@@ -4,7 +4,7 @@ import { getAllProductCategories } from "@/lib/content/categories";
 import { getAllGuides } from "@/lib/content/guides";
 import { getAllProducts } from "@/lib/content/products";
 import { getSearchEligibleProductImages } from "@/lib/content/product-images";
-import { absoluteUrl } from "@/lib/content/site";
+import { absoluteUrl, siteConfig } from "@/lib/content/site";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const staticRoutes = [
@@ -31,19 +31,30 @@ export default function sitemap(): MetadataRoute.Sitemap {
   return [
     ...staticRoutes.map((route) => ({
       url: absoluteUrl(route),
+      lastModified: siteConfig.contentLastModified,
     })),
-    ...downloadableRoutes.map((route) => ({ url: absoluteUrl(route) })),
-    ...categoryRoutes.map((route) => ({ url: absoluteUrl(route) })),
+    ...downloadableRoutes.map((route) => ({
+      url: absoluteUrl(route),
+      lastModified: siteConfig.catalogLastModified,
+    })),
+    ...categoryRoutes.map((route) => ({
+      url: absoluteUrl(route),
+      lastModified: siteConfig.contentLastModified,
+    })),
     ...getAllProducts().map((product) => {
       const route = `/products/${product.categorySlug}/${product.slug}`;
       const images = getSearchEligibleProductImages(product).map(absoluteUrl);
 
       return {
         url: absoluteUrl(route),
+        lastModified: product.modifiedDate,
         ...(images.length > 0 ? { images } : {}),
       };
     }),
-    ...applicationRoutes.map((route) => ({ url: absoluteUrl(route) })),
+    ...applicationRoutes.map((route) => ({
+      url: absoluteUrl(route),
+      lastModified: siteConfig.contentLastModified,
+    })),
     ...guideRoutes.map((guide) => ({
       url: absoluteUrl(`/guides/${guide.slug}`),
       lastModified: guide.modifiedDate,

@@ -56,6 +56,15 @@ const confirmationWorkflow = [
   },
 ] as const;
 
+const productDateFormatter = new Intl.DateTimeFormat("en-US", {
+  dateStyle: "long",
+  timeZone: "UTC",
+});
+
+function formatProductDate(value: string) {
+  return productDateFormatter.format(new Date(`${value}T00:00:00Z`));
+}
+
 function getTechnicalDataStatusLabel(product: Product) {
   if (product.dataStatus === "confirmed") {
     return "Published fields confirmed";
@@ -248,6 +257,13 @@ export function ProductDetailTemplate({
                 {product.title}
               </h1>
               <p className="mt-5 text-lg leading-8 text-slate-600">{product.shortDescription}</p>
+              <p className="mt-4 text-xs font-semibold uppercase tracking-[0.12em] text-slate-500">
+                Page updated{" "}
+                <time dateTime={product.modifiedDate}>
+                  {formatProductDate(product.modifiedDate)}
+                </time>
+                . Unconfirmed technical details are checked during RFQ review.
+              </p>
 
               <div className="mt-6 grid gap-3 sm:grid-cols-3">
                 {productSummary.map((item) => (

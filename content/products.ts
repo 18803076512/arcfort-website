@@ -2,6 +2,7 @@ import { arcfortProducts, type ArcfortProductData } from "@/lib/data/products";
 import { type Product, type SpecRow, type WeldingProcess } from "@/lib/content/schemas";
 import { isUnconfirmedValue } from "@/lib/content/display";
 import { isLegacyProductPath } from "@/lib/content/product-redirects";
+import { siteConfig } from "@/lib/content/site";
 
 const processByCategorySlug: Record<string, WeldingProcess> = {
   "mig-mag-torch-parts": "MIG/MAG",
@@ -136,6 +137,13 @@ function getSupportedProcesses(product: ArcfortProductData): WeldingProcess[] {
   return ["General Welding"];
 }
 
+function getProductModifiedDate(product: ArcfortProductData) {
+  return [siteConfig.productTemplateLastModified, product.verifiedDate]
+    .filter((value): value is string => Boolean(value))
+    .sort()
+    .at(-1)!;
+}
+
 function toProduct(product: ArcfortProductData): Product {
   const baseProduct = {
     slug: product.slug,
@@ -149,6 +157,7 @@ function toProduct(product: ArcfortProductData): Product {
     galleryImages: product.galleryImages,
     metaTitle: product.metaTitle,
     metaDescription: product.metaDescription,
+    modifiedDate: getProductModifiedDate(product),
     keywords: [product.name, product.category, product.application, "ArcFort Weld"],
     specifications: createSpecifications(product),
     compatibility: createCompatibility(product),

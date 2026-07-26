@@ -11,10 +11,23 @@ type PageAudit = {
   title?: string;
   description?: string;
   canonical?: string;
+  htmlLang?: string;
   h1Count?: number;
   noIndex?: boolean;
+  openGraphTitle?: string;
+  openGraphDescription?: string;
+  openGraphImage?: string;
+  twitterCard?: string;
+  imagesMissingAlt?: number;
+  imagesMissingSrc?: number;
   jsonLdCount?: number;
   invalidJsonLdCount?: number;
+  internalLinks?: string[];
+};
+
+type SitemapEntry = {
+  url: string;
+  lastModified?: string;
 };
 
 const args = process.argv.slice(2);
@@ -65,6 +78,18 @@ function getMetaContent(html: string, name: string) {
   return undefined;
 }
 
+function getPropertyMetaContent(html: string, property: string) {
+  const metaTags = html.match(/<meta\b[^>]*>/gi) ?? [];
+
+  for (const tag of metaTags) {
+    if (getAttribute(tag, "property")?.toLowerCase() === property.toLowerCase()) {
+      return getAttribute(tag, "content");
+    }
+  }
+
+  return undefined;
+}
+
 function getCanonical(html: string) {
   const linkTags = html.match(/<link\b[^>]*>/gi) ?? [];
 
@@ -106,6 +131,36 @@ function auditJsonLd(html: string) {
   };
 }
 
+function getInternalLinks(html: string, pageUrl: string) {
+  const canonicalOrigin = new URL(canonicalBaseUrl).origin;
+  const anchorTags = html.match(/<a\b[^>]*>/gi) ?? [];
+  const links = new Set<string>();
+
+  for (const tag of anchorTags) {
+    const href = getAttribute(tag, "href");
+
+    if (!href || href.startsWith("#")) {
+      continue;
+    }
+
+    try {
+      const url = new URL(href, pageUrl);
+
+      if (url.origin !== canonicalOrigin || !["http:", "https:"].includes(url.protocol)) {
+        continue;
+      }
+
+      url.hash = "";
+      url.search = "";
+      links.add(normalizeComparableUrl(url.toString()));
+    } catch {
+      warnings.push(`Invalid internal link "${href}" on ${pageUrl}.`);
+    }
+  }
+
+  return [...links];
+}
+
 function normalizeComparableUrl(value: string) {
   const url = new URL(value);
   url.hash = "";
@@ -136,20 +191,34 @@ async function auditUrl(canonicalUrl: string): Promise<PageAudit> {
   }
 
   const html = await response.text();
-  const robots = [getMetaContent(html, "robots"), getMetaContent(html, "googlebot")]
+  const robots = [
+    response.headers.get("x-robots-tag") ?? undefined,
+    getMetaContent(html, "robots"),
+    getMetaContent(html, "googlebot"),
+  ]
     .filter(Boolean)
     .join(",");
   const jsonLd = auditJsonLd(html);
+  const htmlTag = html.match(/<html\b[^>]*>/i)?.[0];
+  const imageTags = html.match(/<img\b[^>]*>/gi) ?? [];
 
   return {
     ...baseAudit,
     title: getTitle(html),
     description: getMetaContent(html, "description"),
     canonical: getCanonical(html),
+    htmlLang: htmlTag ? getAttribute(htmlTag, "lang") : undefined,
     h1Count: (html.match(/<h1\b/gi) ?? []).length,
     noIndex: robots.toLowerCase().includes("noindex"),
+    openGraphTitle: getPropertyMetaContent(html, "og:title"),
+    openGraphDescription: getPropertyMetaContent(html, "og:description"),
+    openGraphImage: getPropertyMetaContent(html, "og:image"),
+    twitterCard: getMetaContent(html, "twitter:card"),
+    imagesMissingAlt: imageTags.filter((tag) => getAttribute(tag, "alt") === undefined).length,
+    imagesMissingSrc: imageTags.filter((tag) => !getAttribute(tag, "src")).length,
     jsonLdCount: jsonLd.count,
     invalidJsonLdCount: jsonLd.invalidCount,
+    internalLinks: getInternalLinks(html, canonicalUrl),
   };
 }
 
@@ -196,6 +265,10 @@ function checkHtmlPage(row: PageAudit) {
     errors.push(`Canonical mismatch: ${row.canonicalUrl} -> ${row.canonical}.`);
   }
 
+  if (!row.htmlLang?.toLowerCase().startsWith("en")) {
+    errors.push(`Expected an English html lang attribute: ${row.canonicalUrl}.`);
+  }
+
   if (row.h1Count !== 1) {
     errors.push(`Expected one H1, found ${row.h1Count ?? 0}: ${row.canonicalUrl}.`);
   }
@@ -211,6 +284,31 @@ function checkHtmlPage(row: PageAudit) {
   if (row.invalidJsonLdCount) {
     errors.push(`Invalid JSON-LD block count ${row.invalidJsonLdCount}: ${row.canonicalUrl}.`);
   }
+
+  if (!row.openGraphTitle || !row.openGraphDescription || !row.openGraphImage) {
+    errors.push(`Incomplete Open Graph metadata: ${row.canonicalUrl}.`);
+  }
+
+  if (
+    row.openGraphImage &&
+    new URL(row.openGraphImage, row.canonicalUrl).origin !== new URL(canonicalBaseUrl).origin
+  ) {
+    warnings.push(`Open Graph image uses an external host: ${row.canonicalUrl}.`);
+  }
+
+  if (row.twitterCard !== "summary_large_image") {
+    errors.push(`Missing summary_large_image Twitter card: ${row.canonicalUrl}.`);
+  }
+
+  if (row.imagesMissingAlt) {
+    errors.push(`${row.imagesMissingAlt} images are missing alt attributes: ${row.canonicalUrl}.`);
+  }
+
+  if (row.imagesMissingSrc) {
+    errors.push(
+      `${row.imagesMissingSrc} images are missing crawlable src values: ${row.canonicalUrl}.`,
+    );
+  }
 }
 
 async function main() {
@@ -224,17 +322,55 @@ async function main() {
   }
 
   const sitemapXml = await sitemapResponse.text();
-  const urls = [...sitemapXml.matchAll(/<loc>([\s\S]*?)<\/loc>/gi)].map((match) =>
-    decodeHtml(match[1].trim()),
+  const sitemapEntries: SitemapEntry[] = [...sitemapXml.matchAll(/<url>([\s\S]*?)<\/url>/gi)].map(
+    (match) => {
+      const block = match[1];
+      const url = block.match(/<loc>([\s\S]*?)<\/loc>/i);
+      const lastModified = block.match(/<lastmod>([\s\S]*?)<\/lastmod>/i);
+
+      return {
+        url: url ? decodeHtml(url[1].trim()) : "",
+        lastModified: lastModified ? decodeHtml(lastModified[1].trim()) : undefined,
+      };
+    },
   );
+  const urls = sitemapEntries.map((entry) => entry.url).filter(Boolean);
 
   if (urls.length === 0) {
     throw new Error(`No URLs found in sitemap: ${sitemapUrl}`);
   }
 
-  for (const url of urls) {
-    if (new URL(url).origin !== new URL(canonicalBaseUrl).origin) {
-      errors.push(`Sitemap URL uses an unexpected host: ${url}.`);
+  const sitemapUrls = new Set<string>();
+  const now = Date.now();
+
+  for (const entry of sitemapEntries) {
+    if (!entry.url) {
+      errors.push("Sitemap entry is missing a URL.");
+      continue;
+    }
+
+    const normalizedUrl = normalizeComparableUrl(entry.url);
+
+    if (sitemapUrls.has(normalizedUrl)) {
+      errors.push(`Duplicate sitemap URL: ${entry.url}.`);
+    }
+
+    sitemapUrls.add(normalizedUrl);
+
+    if (new URL(entry.url).origin !== new URL(canonicalBaseUrl).origin) {
+      errors.push(`Sitemap URL uses an unexpected host: ${entry.url}.`);
+    }
+
+    if (!entry.lastModified) {
+      errors.push(`Sitemap URL is missing lastmod: ${entry.url}.`);
+    } else {
+      const parsedDate = Date.parse(entry.lastModified);
+
+      if (!Number.isFinite(parsedDate)) {
+        errors.push(`Sitemap URL has an invalid lastmod value: ${entry.url}.`);
+      } else if (parsedDate > now + 86_400_000) {
+        errors.push(`Sitemap URL has a future lastmod value: ${entry.url}.`);
+      }
     }
   }
 
@@ -273,6 +409,19 @@ async function main() {
   }
 
   const htmlAudits = audits.filter((row) => row.contentType.includes("text/html"));
+  const linkedUrls = new Set(htmlAudits.flatMap((row) => row.internalLinks ?? []));
+
+  for (const entry of sitemapEntries) {
+    const normalizedUrl = normalizeComparableUrl(entry.url);
+
+    if (
+      normalizedUrl !== normalizeComparableUrl(`${canonicalBaseUrl}/`) &&
+      !linkedUrls.has(normalizedUrl)
+    ) {
+      errors.push(`Sitemap URL has no crawlable internal link: ${entry.url}.`);
+    }
+  }
+
   checkDuplicates(htmlAudits, "title");
   checkDuplicates(htmlAudits, "description");
 
@@ -280,6 +429,9 @@ async function main() {
   console.log(`Canonical base URL: ${canonicalBaseUrl}`);
   console.log(`Fetch base URL: ${fetchBaseUrl}`);
   console.log(`Sitemap URLs: ${urls.length}`);
+  console.log(
+    `Sitemap URLs with lastmod: ${sitemapEntries.filter((entry) => entry.lastModified).length}`,
+  );
   console.log(`HTML pages checked: ${htmlAudits.length}`);
   console.log(`Non-HTML files checked: ${audits.length - htmlAudits.length}`);
 

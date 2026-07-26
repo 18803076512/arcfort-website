@@ -112,11 +112,15 @@ export function webPageJsonLd({
   description,
   path,
   pageType = "WebPage",
+  image,
+  dateModified,
 }: {
   name: string;
   description: string;
   path: string;
   pageType?: "WebPage" | "AboutPage" | "ContactPage";
+  image?: string;
+  dateModified?: string;
 }) {
   const url = absoluteUrl(path);
 
@@ -139,6 +143,17 @@ export function webPageJsonLd({
       "@id": organizationId,
       name: siteConfig.legalName,
     },
+    ...(image
+      ? {
+          primaryImageOfPage: {
+            "@type": "ImageObject",
+            url: absoluteUrl(image),
+            contentUrl: absoluteUrl(image),
+            caption: name,
+          },
+        }
+      : {}),
+    ...(dateModified ? { dateModified } : {}),
   };
 }
 
@@ -163,6 +178,8 @@ export function collectionPageJsonLd({
   description,
   path,
   items,
+  image,
+  dateModified,
 }: {
   name: string;
   description: string;
@@ -171,6 +188,8 @@ export function collectionPageJsonLd({
     name: string;
     path: string;
   }>;
+  image?: string;
+  dateModified?: string;
 }) {
   const url = absoluteUrl(path);
 
@@ -193,6 +212,17 @@ export function collectionPageJsonLd({
       "@id": organizationId,
       name: siteConfig.legalName,
     },
+    ...(image
+      ? {
+          primaryImageOfPage: {
+            "@type": "ImageObject",
+            url: absoluteUrl(image),
+            contentUrl: absoluteUrl(image),
+            caption: name,
+          },
+        }
+      : {}),
+    ...(dateModified ? { dateModified } : {}),
     mainEntity: {
       "@type": "ItemList",
       "@id": `${url}#item-list`,
@@ -229,31 +259,25 @@ export function productWebPageJsonLd(product: Product, category: ProductCategory
       name: product.title,
       description: product.metaDescription,
       path: `/products/${category.slug}/${product.slug}`,
+      image: primaryImage,
+      dateModified: product.modifiedDate,
     }),
     about: {
       "@type": "Thing",
       name: product.title,
       description: product.shortDescription,
     },
-    ...(primaryImage
-      ? {
-          primaryImageOfPage: {
-            "@type": "ImageObject",
-            url: absoluteUrl(primaryImage),
-            contentUrl: absoluteUrl(primaryImage),
-            caption: product.title,
-          },
-        }
-      : {}),
   };
 }
 
-export function applicationWebPageJsonLd(application: ApplicationPage) {
+export function applicationWebPageJsonLd(application: ApplicationPage, image?: string) {
   return {
     ...webPageJsonLd({
       name: application.title,
       description: application.seoDescription,
       path: `/applications/${application.slug}`,
+      image,
+      dateModified: siteConfig.contentLastModified,
     }),
     about: application.industries.map((industry) => ({
       "@type": "Thing",
@@ -289,7 +313,7 @@ export function productJsonLd(product: Product, category: ProductCategory) {
   };
 }
 
-export function articleJsonLd(article: GuideArticle) {
+export function articleJsonLd(article: GuideArticle, image = siteConfig.defaultSeoImage) {
   const path = `/guides/${article.slug}`;
   const url = absoluteUrl(path);
   const wordCount = article.sections
@@ -334,7 +358,12 @@ export function articleJsonLd(article: GuideArticle) {
         url: absoluteUrl(siteConfig.logo),
       },
     },
-    image: absoluteUrl(siteConfig.defaultSeoImage),
+    image: {
+      "@type": "ImageObject",
+      url: absoluteUrl(image),
+      contentUrl: absoluteUrl(image),
+      caption: article.title,
+    },
     articleSection: "Welding and cutting buyer guides",
     keywords: article.keywords.join(", "),
     wordCount,
