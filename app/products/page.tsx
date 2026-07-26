@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { ProductCatalogTracker } from "@/components/analytics/ProductCatalogTracker";
 import { Breadcrumbs } from "@/components/content/Breadcrumbs";
 import { ProductCard } from "@/components/content/ProductCard";
 import { RfqCta } from "@/components/content/RfqCta";
@@ -156,9 +157,19 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
   const paginationPages = getPaginationPages(catalog.currentPage, catalog.totalPages);
   const productCount = products.length;
   const categoryCount = categories.length;
+  const hasCatalogParameters = hasProductCatalogParameters(resolvedSearchParams);
 
   return (
     <>
+      {hasCatalogParameters ? (
+        <ProductCatalogTracker
+          hasQuery={Boolean(catalog.query)}
+          queryLength={catalog.query.length}
+          categorySlug={catalog.categorySlug}
+          resultCount={catalog.totalMatches}
+          pageNumber={catalog.currentPage}
+        />
+      ) : null}
       <StructuredData
         data={breadcrumbJsonLd([
           { name: "Home", path: "/" },
@@ -468,7 +479,7 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
               >
                 Search Products
               </button>
-              {hasProductCatalogParameters(resolvedSearchParams) ? (
+              {hasCatalogParameters ? (
                 <Link
                   href="/products#product-catalog"
                   className="inline-flex min-h-10 items-center justify-center text-xs font-bold uppercase tracking-[0.14em] text-arc-blue hover:text-arc-copper"

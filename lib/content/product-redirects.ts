@@ -1,3 +1,14 @@
+export const legacyCategoryRedirects = [
+  {
+    sourceCategorySlug: "mig-torch-parts",
+    destinationCategorySlug: "mig-mag-torch-parts",
+  },
+  {
+    sourceCategorySlug: "plasma-cutting-parts",
+    destinationCategorySlug: "plasma-cutting-consumables",
+  },
+] as const;
+
 export const legacyProductRedirects = [
   {
     categorySlug: "mig-mag-torch-parts",

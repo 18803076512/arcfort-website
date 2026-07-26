@@ -1,5 +1,5 @@
 import type { NextConfig } from "next";
-import { legacyProductRedirects } from "./lib/content/product-redirects";
+import { legacyCategoryRedirects, legacyProductRedirects } from "./lib/content/product-redirects";
 import { siteConfig } from "./lib/content/site";
 
 const nextConfig: NextConfig = {
@@ -10,11 +10,25 @@ const nextConfig: NextConfig = {
     minimumCacheTTL: 86400,
   },
   async redirects() {
-    return legacyProductRedirects.map(({ categorySlug, productSlug, destination }) => ({
-      source: `/products/${categorySlug}/${productSlug}`,
-      destination,
-      permanent: true,
-    }));
+    return [
+      ...legacyCategoryRedirects.flatMap(({ sourceCategorySlug, destinationCategorySlug }) => [
+        {
+          source: `/products/${sourceCategorySlug}`,
+          destination: `/products/${destinationCategorySlug}`,
+          permanent: true,
+        },
+        {
+          source: `/products/${sourceCategorySlug}/:path+`,
+          destination: `/products/${destinationCategorySlug}/:path+`,
+          permanent: true,
+        },
+      ]),
+      ...legacyProductRedirects.map(({ categorySlug, productSlug, destination }) => ({
+        source: `/products/${categorySlug}/${productSlug}`,
+        destination,
+        permanent: true,
+      })),
+    ];
   },
   async headers() {
     return [

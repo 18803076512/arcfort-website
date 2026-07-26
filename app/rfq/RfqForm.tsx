@@ -264,7 +264,7 @@ export function RfqForm({ initialProduct = "" }: RfqFormProps) {
     }
 
     setErrors(nextErrors);
-    return Object.keys(nextErrors).length === 0;
+    return nextErrors;
   }
 
   function handleFiles(event: ChangeEvent<HTMLInputElement>) {
@@ -296,7 +296,14 @@ export function RfqForm({ initialProduct = "" }: RfqFormProps) {
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
 
-    if (!validateForm()) {
+    const validationErrors = validateForm();
+
+    if (Object.keys(validationErrors).length > 0) {
+      trackAnalyticsEvent("rfq_validation_error", {
+        error_count: Object.keys(validationErrors).length,
+        attachment_count: attachments.length,
+        selected_product_count: selectedProducts.length,
+      });
       return;
     }
 
@@ -306,6 +313,11 @@ export function RfqForm({ initialProduct = "" }: RfqFormProps) {
     );
 
     setIsSubmitting(true);
+    trackAnalyticsEvent("rfq_submit_start", {
+      attachment_count: attachments.length,
+      selected_product_count: selectedProducts.length,
+      has_additional_requirements: Boolean(values.productRequirements.trim()),
+    });
 
     const formData = new FormData();
     const sourceAttribution = getStoredSourceAttribution();
@@ -343,8 +355,22 @@ export function RfqForm({ initialProduct = "" }: RfqFormProps) {
             productRequirements: result.message ?? "RFQ submission failed.",
           },
         );
+        trackAnalyticsEvent("rfq_submit_error", {
+          failure_stage: "server_response",
+          http_status: response.status,
+          server_validation_error: Boolean(result.errors),
+          attachment_count: attachments.length,
+          selected_product_count: selectedProducts.length,
+        });
         return;
       }
+
+      const analyticsItems = selectedProducts.map((item) => ({
+        item_id: item.sku,
+        item_name: item.name,
+        item_brand: "ArcFort Weld",
+        item_category: item.category,
+      }));
 
       setSubmittedRequirements(productRequirements);
       setSubmissionResult(result);
@@ -356,13 +382,20 @@ export function RfqForm({ initialProduct = "" }: RfqFormProps) {
         attachment_count: result.emailAttachmentCount ?? 0,
         selected_product_count: selectedProducts.length,
         backend_configured: Boolean(result.backendConfigured),
-        utm_source: sourceAttribution.utmSource || undefined,
-        utm_medium: sourceAttribution.utmMedium || undefined,
-        utm_campaign: sourceAttribution.utmCampaign || undefined,
+        stored: Boolean(result.stored),
+      });
+      trackAnalyticsEvent("generate_lead", {
+        lead_source: selectedProducts.length > 0 ? "rfq_shortlist" : "rfq_form",
+        items: analyticsItems.length > 0 ? analyticsItems : undefined,
       });
     } catch {
       setErrors({
         productRequirements: "RFQ submission failed. Please try again.",
+      });
+      trackAnalyticsEvent("rfq_submit_error", {
+        failure_stage: "network_or_parse",
+        attachment_count: attachments.length,
+        selected_product_count: selectedProducts.length,
       });
     } finally {
       setIsSubmitting(false);

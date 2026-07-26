@@ -62,7 +62,8 @@ Industrial B2B website for ArcFort Weld, operated by Renqiu Ailesen Welding Tech
 - `lib/content/site.ts` - centralized company, contact, trade, port, payment, MOQ, lead time and OEM information
 - `lib/content/seo.ts` - metadata helper
 - `lib/content/jsonld.ts` - JSON-LD helpers for Product, BreadcrumbList, Organization and FAQ
-- `lib/content/product-redirects.ts` - permanent redirects for retired generic product URLs
+- `lib/content/product-redirects.ts` - permanent redirects for retired product URLs and historical
+  category aliases
 - `lib/content/product-search.ts` - server-rendered product search, category filtering and pagination
 - `lib/content/topic-links.ts` - category-to-guide internal linking map
 
@@ -243,8 +244,12 @@ npm run seo:audit:live
 
 The live audit verifies HTTP status, redirects, title length, meta descriptions, canonical URLs,
 English language markup, one H1 per HTML page, indexability, Open Graph metadata, Twitter cards,
-parseable JSON-LD, image `alt`/`src` attributes, sitemap `lastmod` values and crawlable internal
-links to every sitemap URL. Audit a local or preview deployment while still requiring production
+required JSON-LD types, Product rich-result safety, same-page fragment links, image `alt`/`src`
+attributes, sitemap `lastmod` values, every sitemap product image, filtered catalog `noindex`,
+robots.txt, download indexing headers, legacy category redirects and crawlable internal links to
+every sitemap URL. It also reports whether an HTML Search Console verification tag is present and
+whether GA4 is configured. An absent HTML tag is only a reminder to confirm DNS-based ownership
+verification separately. Audit a local or preview deployment while still requiring production
 canonical URLs with:
 
 ```bash
@@ -258,18 +263,39 @@ GOOGLE_SITE_VERIFICATION=your-google-site-verification-token
 NEXT_PUBLIC_GA_ID=G-XXXXXXXXXX
 ```
 
-When `NEXT_PUBLIC_GA_ID` is configured, the site tracks:
+When `NEXT_PUBLIC_GA_ID` is configured, the Google tag is not loaded until the visitor explicitly
+allows optional analytics. Analytics consent is stored locally and can be changed on `/privacy`.
+Advertising storage, ad user data and ad personalization remain denied.
 
-- Page views through GA4.
-- RFQ success events: `rfq_submit_success`.
+- Sanitized SPA page views without URL query strings.
+- Product views: `view_item`.
+- Product search result summaries: `product_catalog_search`.
+- RFQ validation, start, error and success events: `rfq_validation_error`, `rfq_submit_start`,
+  `rfq_submit_error`, `rfq_submit_success`.
+- GA4 recommended lead event after a successful RFQ: `generate_lead`.
 - Email link clicks: `contact_email_click`.
 - WhatsApp link clicks: `contact_whatsapp_click`.
 - RFQ link clicks: `rfq_link_click`.
+- Catalog and buyer-tool clicks: `catalog_download_click`, `buyer_tool_download_click`.
+
+Visitor names, company names, countries, email addresses, telephone or WhatsApp numbers, messages,
+uploaded file names, search text and raw campaign values are not sent to analytics. After creating
+the GA4 data stream:
+
+1. Mark `generate_lead` as a key event.
+2. Do not assign a lead value or currency until a real internal lead-value policy exists.
+3. In Enhanced Measurement, avoid browser-history page-view tracking because the application sends
+   sanitized SPA page views itself.
+4. Verify one `page_view` per navigation and one `generate_lead` per successful RFQ in DebugView.
 
 Submit `https://www.arcfortweld.com/sitemap.xml` in Google Search Console after domain verification.
 The sitemap includes stable `lastmod` values for every indexable URL and includes only reviewed
 product images in image sitemap entries. Category, application and buyer-guide metadata uses a
 relevant reviewed product image when one is available.
+
+Product and category pages also expose visible section navigation with stable fragment IDs. Keep
+these IDs stable when redesigning long pages so external links and search-result section links do
+not break.
 
 Update `contentLastModified` in `lib/content/site.ts` only after a significant public content
 change. Product URLs use the later of `productTemplateLastModified` and each record's

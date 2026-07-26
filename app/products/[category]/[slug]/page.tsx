@@ -1,4 +1,5 @@
 import { notFound } from "next/navigation";
+import { ProductViewTracker } from "@/components/analytics/ProductViewTracker";
 import { ProductDetailTemplate } from "@/components/content/ProductDetailTemplate";
 import { StructuredData } from "@/components/content/StructuredData";
 import { getApplicationsForProduct } from "@/lib/content/applications";
@@ -78,6 +79,7 @@ export default async function ProductDetailPage({ params }: ProductRouteProps) {
 
   return (
     <>
+      <ProductViewTracker sku={product.sku} name={product.title} category={category.title} />
       <StructuredData
         data={[
           breadcrumbJsonLd([

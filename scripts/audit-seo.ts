@@ -6,7 +6,11 @@ import { applications } from "../content/applications.ts";
 import { productCategories } from "../content/categories.ts";
 import { guides } from "../content/guides.ts";
 import { homepageFeaturedProductSlugs } from "../lib/content/featured-products.ts";
-import { isLegacyProductPath, legacyProductRedirects } from "../lib/content/product-redirects.ts";
+import {
+  isLegacyProductPath,
+  legacyCategoryRedirects,
+  legacyProductRedirects,
+} from "../lib/content/product-redirects.ts";
 import { composeSeoTitle, SEO_TITLE_MAX_LENGTH } from "../lib/content/seo-title.ts";
 import { siteConfig } from "../lib/content/site.ts";
 import { arcfortProducts } from "../lib/data/products.ts";
@@ -34,6 +38,7 @@ const activeProducts: SeoRecord[] = arcfortProducts
   .filter((product) => (product.status ?? "active") === "active")
   .filter((product) => !isLegacyProductPath(product.categorySlug, product.slug));
 const productSlugs = new Set(activeProducts.map((product) => product.slug));
+const legacyCategorySources = new Set<string>();
 
 function checkMetadataLength(owner: string, title: string, description: string) {
   const renderedTitle = composeSeoTitle(title, siteConfig.shortName);
@@ -154,6 +159,26 @@ for (const category of productCategories) {
   );
 }
 
+for (const redirect of legacyCategoryRedirects) {
+  if (categorySlugs.has(redirect.sourceCategorySlug)) {
+    errors.push(
+      `Legacy category redirect source "${redirect.sourceCategorySlug}" conflicts with an active category.`,
+    );
+  }
+
+  if (legacyCategorySources.has(redirect.sourceCategorySlug)) {
+    errors.push(`Duplicate legacy category redirect source "${redirect.sourceCategorySlug}".`);
+  }
+
+  if (!categorySlugs.has(redirect.destinationCategorySlug)) {
+    errors.push(
+      `Legacy category redirect "${redirect.sourceCategorySlug}" points to missing category "${redirect.destinationCategorySlug}".`,
+    );
+  }
+
+  legacyCategorySources.add(redirect.sourceCategorySlug);
+}
+
 for (const guide of guides) {
   const normalizedSeoTitle = guide.seoTitle.toLowerCase();
   const normalizedSeoDescription = guide.seoDescription.toLowerCase();
@@ -263,6 +288,7 @@ console.log(`Indexable product pages: ${activeProducts.length}`);
 console.log(`Product categories: ${productCategories.length}`);
 console.log(`Application pages: ${applications.length}`);
 console.log(`Buyer guides: ${guides.length}`);
+console.log(`Legacy category redirects: ${legacyCategoryRedirects.length}`);
 console.log(`Legacy product redirects: ${legacyProductRedirects.length}`);
 
 if (errors.length > 0) {

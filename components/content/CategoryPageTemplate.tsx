@@ -31,6 +31,14 @@ export function CategoryPageTemplate({
     { label: "OEM support", value: "Available" },
     { label: "Trial orders", value: "Accepted" },
   ] as const;
+  const categoryPageSections = [
+    { href: "#category-products", label: "Products" },
+    { href: "#category-buyer-guide", label: "Buyer Guide" },
+    { href: "#category-product-information", label: "Product Information" },
+    { href: "#category-ordering-information", label: "Ordering & OEM" },
+    { href: "#category-applications", label: "Applications" },
+    { href: "#category-faq", label: "FAQ & Related" },
+  ] as const;
 
   return (
     <>
@@ -102,7 +110,28 @@ export function CategoryPageTemplate({
         </div>
       </section>
 
-      <section id="category-products" className="bg-arc-frost py-14 sm:py-16">
+      <nav
+        aria-label={`${category.title} page sections`}
+        className="border-y border-slate-200 bg-white"
+      >
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <ol className="grid grid-cols-2 gap-px bg-slate-200 sm:grid-cols-3 lg:grid-cols-6">
+            {categoryPageSections.map((section, index) => (
+              <li key={section.href} className="bg-white">
+                <a
+                  href={section.href}
+                  className="flex min-h-14 items-center justify-center gap-2 px-3 py-3 text-center text-xs font-bold uppercase leading-5 tracking-[0.1em] text-arc-midnight transition hover:bg-arc-frost hover:text-arc-blue"
+                >
+                  <span className="text-arc-blue">{String(index + 1).padStart(2, "0")}</span>
+                  <span>{section.label}</span>
+                </a>
+              </li>
+            ))}
+          </ol>
+        </div>
+      </nav>
+
+      <section id="category-products" className="scroll-mt-28 bg-arc-frost py-14 sm:py-16">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
             <div>
@@ -155,7 +184,7 @@ export function CategoryPageTemplate({
         </div>
       </section>
 
-      <section className="bg-white py-14 sm:py-16">
+      <section id="category-buyer-guide" className="scroll-mt-28 bg-white py-14 sm:py-16">
         <div className="mx-auto grid max-w-7xl gap-8 px-4 sm:px-6 lg:grid-cols-[0.78fr_1.22fr] lg:px-8">
           <div className="lg:sticky lg:top-28">
             <p className="text-sm font-bold uppercase tracking-[0.2em] text-arc-blue">
@@ -186,7 +215,10 @@ export function CategoryPageTemplate({
         </div>
       </section>
 
-      <section className="bg-arc-frost py-14 sm:py-16">
+      <section
+        id="category-product-information"
+        className="scroll-mt-28 bg-arc-frost py-14 sm:py-16"
+      >
         <div className="mx-auto grid max-w-7xl gap-8 px-4 sm:px-6 lg:grid-cols-2 lg:px-8">
           <article className="border border-slate-200 bg-white p-5 shadow-sm sm:p-6">
             <p className="text-sm font-bold uppercase tracking-[0.2em] text-arc-blue">
@@ -222,7 +254,7 @@ export function CategoryPageTemplate({
         </div>
       </section>
 
-      <section className="bg-white py-14 sm:py-16">
+      <section id="category-ordering-information" className="scroll-mt-28 bg-white py-14 sm:py-16">
         <div className="mx-auto grid max-w-7xl gap-5 px-4 sm:px-6 lg:grid-cols-3 lg:px-8">
           <article className="border border-slate-200 bg-white p-5 shadow-sm sm:p-6">
             <p className="text-sm font-bold uppercase tracking-[0.2em] text-arc-blue">
@@ -262,7 +294,10 @@ export function CategoryPageTemplate({
         </div>
       </section>
 
-      <section className="bg-arc-midnight py-14 text-white sm:py-16">
+      <section
+        id="category-applications"
+        className="scroll-mt-28 bg-arc-midnight py-14 text-white sm:py-16"
+      >
         <div className="mx-auto grid max-w-7xl gap-8 px-4 sm:px-6 lg:grid-cols-[0.8fr_1.2fr] lg:px-8">
           <div>
             <p className="text-sm font-bold uppercase tracking-[0.2em] text-arc-signal">
@@ -309,7 +344,7 @@ export function CategoryPageTemplate({
         </div>
       </section>
 
-      <section className="bg-arc-frost py-14 sm:py-16">
+      <section id="category-faq" className="scroll-mt-28 bg-arc-frost py-14 sm:py-16">
         <div className="mx-auto grid max-w-7xl gap-8 px-4 sm:px-6 lg:grid-cols-[1fr_0.85fr] lg:px-8">
           <FaqSection items={category.faq} />
           <div className="border border-slate-200 bg-white p-5 shadow-sm sm:p-6">
