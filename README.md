@@ -192,7 +192,10 @@ The `/rfq` page includes a responsive inquiry form with:
 - Independent email and storage delivery so one provider failure does not block the other
 - Prefilled email and WhatsApp fallback when automated delivery is unavailable
 - Backend readiness check at `/api/rfq/status`
-- Lightweight spam protection with honeypot, timing checks and source-path tracking
+- Lightweight spam protection with same-origin checks, honeypot, timing checks and source-path
+  tracking
+- Structured server logs for delivery outcome, RFQ reference and Resend message IDs without buyer
+  personal data
 - Persistent multi-product RFQ shortlist stored in the buyer's browser
 - Live shortlist count in the desktop header, mobile menu and sticky contact bar
 - Selected products automatically merged into the RFQ submission with SKU and category
@@ -216,6 +219,23 @@ Run the shared RFQ validation and reference tests with:
 npm run test:rfq
 ```
 
+Check the deployed backend without sending an inquiry:
+
+```bash
+npm run rfq:check-live
+```
+
+Send a controlled production test only when the sales or test inbox is ready:
+
+```bash
+npm run rfq:check-live -- --send --confirm-production --email=arcfortweld@outlook.com
+npm run rfq:check-live -- --send --confirm-production --email=arcfortweld@outlook.com --attachment=public/images/products/mig-diffuser.jpg
+```
+
+The test command requires both `--send` and `--confirm-production` because it creates real Resend
+emails. A successful API response means the email provider accepted the messages; final inbox
+placement must still be confirmed in Outlook or Resend logs.
+
 Environment variables:
 
 ```bash
@@ -229,6 +249,11 @@ RESEND_API_KEY=
 GOOGLE_SITE_VERIFICATION=
 NEXT_PUBLIC_GA_ID=
 ```
+
+Global responses include `X-Content-Type-Options`, `X-Frame-Options`, `Referrer-Policy`,
+`Permissions-Policy` and `Cross-Origin-Opener-Policy` headers. Configure a Vercel Firewall rate-limit
+rule for `POST /api/rfq` when production traffic starts; application-level form checks are not a
+replacement for an infrastructure-level rate limit.
 
 ## Search Console and Analytics
 

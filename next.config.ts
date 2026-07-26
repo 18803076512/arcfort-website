@@ -2,6 +2,29 @@ import type { NextConfig } from "next";
 import { legacyCategoryRedirects, legacyProductRedirects } from "./lib/content/product-redirects";
 import { siteConfig } from "./lib/content/site";
 
+const securityHeaders = [
+  {
+    key: "X-Content-Type-Options",
+    value: "nosniff",
+  },
+  {
+    key: "X-Frame-Options",
+    value: "DENY",
+  },
+  {
+    key: "Referrer-Policy",
+    value: "strict-origin-when-cross-origin",
+  },
+  {
+    key: "Permissions-Policy",
+    value: "camera=(), microphone=(), geolocation=(), browsing-topics=()",
+  },
+  {
+    key: "Cross-Origin-Opener-Policy",
+    value: "same-origin",
+  },
+] as const;
+
 const nextConfig: NextConfig = {
   compress: true,
   poweredByHeader: false,
@@ -32,6 +55,10 @@ const nextConfig: NextConfig = {
   },
   async headers() {
     return [
+      {
+        source: "/(.*)",
+        headers: securityHeaders.map((header) => ({ ...header })),
+      },
       {
         source: "/downloads/renqiu-ailesen-welding-catalog.pdf",
         headers: [

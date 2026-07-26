@@ -97,6 +97,51 @@ Security rules:
 15. Submit one test URL with `?utm_source=test&utm_medium=qa&utm_campaign=rfq-check` and confirm
     the sales notification includes the UTM fields.
 
+## Repeatable Live Check
+
+Check production configuration without sending an email:
+
+```bash
+npm run rfq:check-live
+```
+
+Send a controlled test only after selecting the receiving inbox:
+
+```bash
+npm run rfq:check-live -- --send --confirm-production --email=arcfortweld@outlook.com
+npm run rfq:check-live -- --send --confirm-production --email=arcfortweld@outlook.com --attachment=public/images/products/mig-diffuser.jpg
+```
+
+Both `--send` and `--confirm-production` are required. A successful result proves that the production
+API and Resend accepted the message. Confirm final inbox placement and the matching RFQ reference in
+Outlook or Resend logs.
+
+## Abuse Protection
+
+The application rejects browser requests with an untrusted `Origin` or `Sec-Fetch-Site`, and keeps
+the existing honeypot, minimum form-completion time, text limits, file-type limits and request-size
+limit. Every response receives an RFQ reference.
+
+Configure a Vercel Firewall rate-limit rule for production traffic:
+
+- Path: `/api/rfq`
+- Method: `POST`
+- Suggested starting threshold: 5 requests per 10 minutes per source IP
+- Action: rate limit or challenge
+
+Review the threshold after real traffic begins. The infrastructure rule cannot be verified from the
+repository and should be confirmed in the Vercel project dashboard.
+
+## Production Verification Record
+
+API verification performed on 2026-07-26:
+
+- `AF-RFQ-20260726-CDF899D4`: Resend accepted the sales notification and buyer confirmation.
+- `AF-RFQ-20260726-7F7535FA`: Resend accepted the sales notification with one JPG attachment and
+  accepted the buyer confirmation.
+- Supabase remained optional and unconfigured during these checks.
+- Outlook inbox placement and spam-folder placement still require confirmation in the mailbox.
+
 ## Expected Status Response
 
 After Resend is configured, `https://www.arcfortweld.com/api/rfq/status` should include:
