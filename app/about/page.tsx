@@ -71,7 +71,7 @@ const qualitySteps = [
 export const metadata = buildMetadata({
   title: "About ArcFort Weld",
   description:
-    "Learn about ArcFort Weld and Renqiu Ailesen Welding Technology Co., Ltd., a supplier of industrial welding and cutting solutions for global distributors and industrial users.",
+    "Learn about Renqiu Ailesen Welding Technology Co., Ltd., supplier of ArcFort Weld welding and cutting products for international B2B buyers.",
   path: "/about",
   keywords: [
     "ArcFort Weld company",

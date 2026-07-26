@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 import { CategoryPageTemplate } from "@/components/content/CategoryPageTemplate";
 import { StructuredData } from "@/components/content/StructuredData";
+import { getApplicationsByCategory } from "@/lib/content/applications";
 import {
   getAllProductCategories,
   getProductCategoryBySlug,
@@ -48,6 +49,7 @@ export default async function ProductCategoryPage({ params }: CategoryRouteProps
 
   const products = getProductsByCategory(category.slug);
   const relatedCategories = getRelatedCategories(category.relatedCategorySlugs);
+  const relatedApplications = getApplicationsByCategory(category.slug);
 
   return (
     <>
@@ -74,6 +76,7 @@ export default async function ProductCategoryPage({ params }: CategoryRouteProps
         category={category}
         products={products}
         relatedCategories={relatedCategories}
+        relatedApplications={relatedApplications}
       />
     </>
   );

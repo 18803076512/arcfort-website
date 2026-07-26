@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { absoluteUrl, siteConfig } from "@/lib/content/site";
+import { composeSeoTitle } from "@/lib/content/seo-title";
 
 type SeoInput = {
   title: string;
@@ -28,7 +29,8 @@ export function buildMetadata({
   noIndex = false,
 }: SeoInput): Metadata {
   const url = absoluteUrl(path);
-  const normalizedTitle = title.replace(/\s*\|\s*ArcFort Weld\s*$/i, "");
+  const normalizedTitle = title.replace(/\s*\|\s*ArcFort Weld\s*$/i, "").trim();
+  const seoTitle = composeSeoTitle(normalizedTitle, siteConfig.shortName);
   const seoImage = image
     ? {
         url: absoluteUrl(image),
@@ -37,7 +39,9 @@ export function buildMetadata({
     : defaultSeoImage;
 
   return {
-    title: normalizedTitle,
+    title: {
+      absolute: seoTitle,
+    },
     description,
     keywords,
     alternates: {
@@ -55,7 +59,7 @@ export function buildMetadata({
       },
     },
     openGraph: {
-      title: normalizedTitle,
+      title: seoTitle,
       description,
       url,
       siteName: siteConfig.name,
@@ -65,7 +69,7 @@ export function buildMetadata({
     },
     twitter: {
       card: "summary_large_image",
-      title: normalizedTitle,
+      title: seoTitle,
       description,
       images: [seoImage.url],
     },

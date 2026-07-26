@@ -4,7 +4,7 @@ import { getAllProductCategories } from "@/lib/content/categories";
 import { getAllGuides } from "@/lib/content/guides";
 import { getAllProducts } from "@/lib/content/products";
 import { getSearchEligibleProductImages } from "@/lib/content/product-images";
-import { absoluteUrl, siteConfig } from "@/lib/content/site";
+import { absoluteUrl } from "@/lib/content/site";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const staticRoutes = [
@@ -30,7 +30,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
   return [
     ...staticRoutes.map((route) => ({
-      url: route === "/" ? siteConfig.url : absoluteUrl(route),
+      url: absoluteUrl(route),
     })),
     ...downloadableRoutes.map((route) => ({ url: absoluteUrl(route) })),
     ...categoryRoutes.map((route) => ({ url: absoluteUrl(route) })),

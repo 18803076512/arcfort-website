@@ -19,7 +19,10 @@
     "products:simple:preview": "node --experimental-strip-types scripts/import-simple-products.ts",
     "products:simple:generate": "node --experimental-strip-types scripts/import-simple-products.ts --write",
     "products:simple:import": "node --experimental-strip-types scripts/import-simple-products.ts --write --import",
+    "products:refresh-copy": "node --experimental-strip-types scripts/refresh-catalog-product-copy.ts",
+    "products:refresh-copy:write": "node --experimental-strip-types scripts/refresh-catalog-product-copy.ts --write",
     "seo:audit": "node --experimental-strip-types scripts/audit-seo.ts",
+    "seo:audit:live": "node --experimental-strip-types scripts/audit-live-seo.ts",
     "downloads:generate": "node --experimental-strip-types scripts/generate-download-assets.ts",
     "indexing:submit": "node --experimental-strip-types scripts/submit-indexnow.ts",
     "format": "prettier --write ."

@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { type Product, type ProductCategory } from "@/lib/content/schemas";
+import { type ApplicationPage, type Product, type ProductCategory } from "@/lib/content/schemas";
 import { Breadcrumbs } from "@/components/content/Breadcrumbs";
 import { CompatibilityTable } from "@/components/content/CompatibilityTable";
 import { FaqSection } from "@/components/content/FaqSection";
@@ -11,7 +11,7 @@ import { AddToRfqButton } from "@/components/rfq/AddToRfqButton";
 import { displayConfirmedValue, isLowSignalSpecificationValue } from "@/lib/content/display";
 import { hasPublicProductImage } from "@/lib/content/product-images";
 import { siteConfig } from "@/lib/content/site";
-import { getBuyerGuideForCategory } from "@/lib/content/topic-links";
+import { getBuyerGuideForProduct } from "@/lib/content/topic-links";
 
 type RelatedProduct = {
   product: Product;
@@ -22,6 +22,7 @@ type ProductDetailTemplateProps = {
   product: Product;
   category: ProductCategory;
   relatedProducts: RelatedProduct[];
+  relatedApplications: ApplicationPage[];
 };
 
 function isPublicDetailRow(row: { label: string; value: string }) {
@@ -105,8 +106,9 @@ export function ProductDetailTemplate({
   product,
   category,
   relatedProducts,
+  relatedApplications,
 }: ProductDetailTemplateProps) {
-  const buyerGuideLink = getBuyerGuideForCategory(category.slug);
+  const buyerGuideLink = getBuyerGuideForProduct(product.slug, category.slug);
   const rfqHref = `/rfq?product=${encodeURIComponent(product.title)}`;
   const rfqListItem = {
     sku: product.sku,
@@ -551,15 +553,40 @@ export function ProductDetailTemplate({
               Common industrial use
             </h2>
           </div>
-          <div className="grid gap-4 sm:grid-cols-2">
-            {product.applications.map((application) => (
-              <div
-                key={application}
-                className="border-l-4 border-arc-signal bg-white p-5 shadow-sm"
-              >
-                <p className="font-semibold text-slate-800">{application}</p>
+          <div className="grid gap-7">
+            <div className="grid gap-4 sm:grid-cols-2">
+              {product.applications.map((application) => (
+                <div
+                  key={application}
+                  className="border-l-4 border-arc-signal bg-white p-5 shadow-sm"
+                >
+                  <p className="font-semibold text-slate-800">{application}</p>
+                </div>
+              ))}
+            </div>
+            {relatedApplications.length > 0 ? (
+              <div>
+                <p className="text-xs font-bold uppercase tracking-[0.16em] text-arc-blue">
+                  Related Application Pages
+                </p>
+                <div className="mt-4 grid gap-3 sm:grid-cols-3">
+                  {relatedApplications.map((application) => (
+                    <Link
+                      key={application.slug}
+                      href={`/applications/${application.slug}`}
+                      className="border border-slate-200 bg-white p-4 shadow-sm transition hover:border-arc-blue hover:bg-slate-50"
+                    >
+                      <h3 className="font-display text-lg font-black text-arc-midnight">
+                        {application.title}
+                      </h3>
+                      <p className="mt-2 text-xs leading-5 text-slate-600">
+                        {application.description}
+                      </p>
+                    </Link>
+                  ))}
+                </div>
               </div>
-            ))}
+            ) : null}
           </div>
         </div>
       </section>

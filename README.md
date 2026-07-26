@@ -122,6 +122,17 @@ ratings or unverified product dimensions. Known product families use the editori
 `scripts/product-copy-profiles.ts` to generate function-specific English copy. New product families
 use a conservative category fallback and print a review warning before import.
 
+Catalog-derived products can use the same reviewed editorial profiles:
+
+```bash
+npm run products:refresh-copy
+npm run products:refresh-copy:write
+npm run products:import
+```
+
+The first command previews matched catalog products. The write command updates only active
+`official_catalog` rows with an exact editorial profile; it stops if a product profile is missing.
+
 Full CSV workflow:
 
 1. Copy `data/import/products-template.csv` to `data/import/products.csv`.
@@ -205,6 +216,20 @@ The audit checks indexable product routes, duplicate metadata, category and prod
 legacy redirects, image files, guide metadata, article dates, guide content depth and
 placeholder-content warnings. Warnings identify editorial work that still needs real product data;
 broken links, duplicate routes, thin guides and invalid references fail the command.
+
+After deployment, audit every sitemap URL against the live site:
+
+```bash
+npm run seo:audit:live
+```
+
+The live audit verifies HTTP status, redirects, title length, meta descriptions, canonical URLs,
+one H1 per HTML page, indexability and parseable JSON-LD. Audit a local or preview deployment while
+still requiring production canonical URLs with:
+
+```bash
+npm run seo:audit:live -- --fetch-base-url=http://localhost:3000
+```
 
 Configure in Vercel only after the accounts are ready:
 

@@ -247,6 +247,21 @@ export function parseCsv(content: string) {
   return rows;
 }
 
+function csvEscape(value: string) {
+  if (/[",\r\n]/.test(value)) {
+    return `"${value.replace(/"/g, '""')}"`;
+  }
+
+  return value;
+}
+
+export function serializeProductCsv(rows: ProductImportRow[]) {
+  return [
+    productCsvHeaders.join(","),
+    ...rows.map((row) => productCsvHeaders.map((header) => csvEscape(row[header])).join(",")),
+  ].join("\n");
+}
+
 export function readCsvFile(filePath: string) {
   const content = readFileSync(filePath, "utf8");
   const parsedRows = parseCsv(content);
@@ -262,13 +277,17 @@ export function rowsFromCsv(filePath: string) {
 
   for (const expectedHeader of productCsvHeaders) {
     if (!headers.includes(expectedHeader)) {
-      issues.push(createIssue("error", `Missing required CSV header: ${expectedHeader}`, 1, "headers"));
+      issues.push(
+        createIssue("error", `Missing required CSV header: ${expectedHeader}`, 1, "headers"),
+      );
     }
   }
 
   for (const header of headers) {
     if (!productCsvHeaders.includes(header as ProductCsvHeader)) {
-      issues.push(createIssue("warning", `Unknown CSV header will be ignored: ${header}`, 1, "headers"));
+      issues.push(
+        createIssue("warning", `Unknown CSV header will be ignored: ${header}`, 1, "headers"),
+      );
     }
   }
 
@@ -326,7 +345,9 @@ export function prepareRow(row: ProductImportRow, rowNumber: number) {
 
   if (!preparedRow.category && preparedRow.category_slug) {
     preparedRow.category = categoryBySlug[preparedRow.category_slug] ?? "Welding Accessories";
-    warnings.push(createIssue("warning", `Generated category: ${preparedRow.category}`, rowNumber, "category"));
+    warnings.push(
+      createIssue("warning", `Generated category: ${preparedRow.category}`, rowNumber, "category"),
+    );
   }
 
   if (!preparedRow.category_slug) {
@@ -343,12 +364,16 @@ export function prepareRow(row: ProductImportRow, rowNumber: number) {
 
   if (!preparedRow.category) {
     preparedRow.category = categoryBySlug[preparedRow.category_slug] ?? "Welding Accessories";
-    warnings.push(createIssue("warning", `Generated category: ${preparedRow.category}`, rowNumber, "category"));
+    warnings.push(
+      createIssue("warning", `Generated category: ${preparedRow.category}`, rowNumber, "category"),
+    );
   }
 
   if (!preparedRow.name) {
     preparedRow.name = `Product ${generatedIndex}`;
-    warnings.push(createIssue("warning", `Generated placeholder name: ${preparedRow.name}`, rowNumber, "name"));
+    warnings.push(
+      createIssue("warning", `Generated placeholder name: ${preparedRow.name}`, rowNumber, "name"),
+    );
   }
 
   if (!preparedRow.slug && preparedRow.name) {
@@ -358,25 +383,36 @@ export function prepareRow(row: ProductImportRow, rowNumber: number) {
 
   if (!preparedRow.slug) {
     preparedRow.slug = `product-${generatedIndex}`;
-    warnings.push(createIssue("warning", `Generated fallback slug: ${preparedRow.slug}`, rowNumber, "slug"));
+    warnings.push(
+      createIssue("warning", `Generated fallback slug: ${preparedRow.slug}`, rowNumber, "slug"),
+    );
   }
 
   if (!preparedRow.sku) {
     const categoryCode = categoryCodeBySlug[preparedRow.category_slug] ?? "ACC";
     preparedRow.sku = `AF-${categoryCode}-AUTO-${generatedIndex}`;
-    warnings.push(createIssue("warning", `Generated review SKU: ${preparedRow.sku}`, rowNumber, "sku"));
+    warnings.push(
+      createIssue("warning", `Generated review SKU: ${preparedRow.sku}`, rowNumber, "sku"),
+    );
   }
 
   if (!preparedRow.main_image && preparedRow.slug) {
     preparedRow.main_image = `/images/products/${preparedRow.slug}.jpg`;
     warnings.push(
-      createIssue("warning", `Generated main_image: ${preparedRow.main_image}`, rowNumber, "main_image"),
+      createIssue(
+        "warning",
+        `Generated main_image: ${preparedRow.main_image}`,
+        rowNumber,
+        "main_image",
+      ),
     );
   }
 
   if (!preparedRow.short_description && preparedRow.name) {
     preparedRow.short_description = `${preparedRow.name} for industrial welding and cutting RFQ programs.`;
-    warnings.push(createIssue("warning", "Generated short_description", rowNumber, "short_description"));
+    warnings.push(
+      createIssue("warning", "Generated short_description", rowNumber, "short_description"),
+    );
   }
 
   if (!preparedRow.description && preparedRow.name) {
@@ -386,17 +422,28 @@ export function prepareRow(row: ProductImportRow, rowNumber: number) {
 
   if (!preparedRow.material) {
     preparedRow.material = requestValue;
-    warnings.push(createIssue("warning", `Generated material placeholder: ${requestValue}`, rowNumber, "material"));
+    warnings.push(
+      createIssue(
+        "warning",
+        `Generated material placeholder: ${requestValue}`,
+        rowNumber,
+        "material",
+      ),
+    );
   }
 
   if (!preparedRow.size) {
     preparedRow.size = requestValue;
-    warnings.push(createIssue("warning", `Generated size placeholder: ${requestValue}`, rowNumber, "size"));
+    warnings.push(
+      createIssue("warning", `Generated size placeholder: ${requestValue}`, rowNumber, "size"),
+    );
   }
 
   if (!preparedRow.thread) {
     preparedRow.thread = requestValue;
-    warnings.push(createIssue("warning", `Generated thread placeholder: ${requestValue}`, rowNumber, "thread"));
+    warnings.push(
+      createIssue("warning", `Generated thread placeholder: ${requestValue}`, rowNumber, "thread"),
+    );
   }
 
   if (!preparedRow.compatible_brand) {
@@ -425,27 +472,52 @@ export function prepareRow(row: ProductImportRow, rowNumber: number) {
 
   if (!preparedRow.oem_number) {
     preparedRow.oem_number = tbdValue;
-    warnings.push(createIssue("warning", `Generated oem_number placeholder: ${tbdValue}`, rowNumber, "oem_number"));
+    warnings.push(
+      createIssue(
+        "warning",
+        `Generated oem_number placeholder: ${tbdValue}`,
+        rowNumber,
+        "oem_number",
+      ),
+    );
   }
 
   if (!preparedRow.package) {
     preparedRow.package = requestValue;
-    warnings.push(createIssue("warning", `Generated package placeholder: ${requestValue}`, rowNumber, "package"));
+    warnings.push(
+      createIssue(
+        "warning",
+        `Generated package placeholder: ${requestValue}`,
+        rowNumber,
+        "package",
+      ),
+    );
   }
 
   if (!preparedRow.moq) {
     preparedRow.moq = contactValue;
-    warnings.push(createIssue("warning", `Generated moq placeholder: ${contactValue}`, rowNumber, "moq"));
+    warnings.push(
+      createIssue("warning", `Generated moq placeholder: ${contactValue}`, rowNumber, "moq"),
+    );
   }
 
   if (!preparedRow.lead_time) {
     preparedRow.lead_time = requestValue;
-    warnings.push(createIssue("warning", `Generated lead_time placeholder: ${requestValue}`, rowNumber, "lead_time"));
+    warnings.push(
+      createIssue(
+        "warning",
+        `Generated lead_time placeholder: ${requestValue}`,
+        rowNumber,
+        "lead_time",
+      ),
+    );
   }
 
   if (!preparedRow.application) {
     preparedRow.application = "Industrial welding and cutting supply";
-    warnings.push(createIssue("warning", "Generated application placeholder", rowNumber, "application"));
+    warnings.push(
+      createIssue("warning", "Generated application placeholder", rowNumber, "application"),
+    );
   }
 
   if (!preparedRow.meta_title && preparedRow.name) {
@@ -455,45 +527,65 @@ export function prepareRow(row: ProductImportRow, rowNumber: number) {
 
   if (!preparedRow.meta_description && preparedRow.name) {
     preparedRow.meta_description = `Request quotation for ${preparedRow.name} from ArcFort Weld. Send drawings samples quantities and packaging requirements for review.`;
-    warnings.push(createIssue("warning", "Generated meta_description", rowNumber, "meta_description"));
+    warnings.push(
+      createIssue("warning", "Generated meta_description", rowNumber, "meta_description"),
+    );
   }
 
   if (!preparedRow.status) {
     preparedRow.status = "draft";
-    warnings.push(createIssue("warning", "Generated safe default status: draft", rowNumber, "status"));
+    warnings.push(
+      createIssue("warning", "Generated safe default status: draft", rowNumber, "status"),
+    );
   }
 
   if (!preparedRow.data_status) {
     preparedRow.data_status = reviewValue;
-    warnings.push(createIssue("warning", `Generated data_status: ${reviewValue}`, rowNumber, "data_status"));
+    warnings.push(
+      createIssue("warning", `Generated data_status: ${reviewValue}`, rowNumber, "data_status"),
+    );
   }
 
   if (!preparedRow.source_type) {
     preparedRow.source_type = unknownValue;
-    warnings.push(createIssue("warning", `Generated source_type: ${unknownValue}`, rowNumber, "source_type"));
+    warnings.push(
+      createIssue("warning", `Generated source_type: ${unknownValue}`, rowNumber, "source_type"),
+    );
   }
 
   if (!preparedRow.image_status) {
     preparedRow.image_status = "placeholder";
-    warnings.push(createIssue("warning", "Generated image_status: placeholder", rowNumber, "image_status"));
+    warnings.push(
+      createIssue("warning", "Generated image_status: placeholder", rowNumber, "image_status"),
+    );
   }
 
   if (!preparedRow.compatibility_status) {
     preparedRow.compatibility_status = "unverified";
     warnings.push(
-      createIssue("warning", "Generated compatibility_status: unverified", rowNumber, "compatibility_status"),
+      createIssue(
+        "warning",
+        "Generated compatibility_status: unverified",
+        rowNumber,
+        "compatibility_status",
+      ),
     );
   }
 
   if (!preparedRow.oem_status) {
     preparedRow.oem_status = unknownValue;
-    warnings.push(createIssue("warning", `Generated oem_status: ${unknownValue}`, rowNumber, "oem_status"));
+    warnings.push(
+      createIssue("warning", `Generated oem_status: ${unknownValue}`, rowNumber, "oem_status"),
+    );
   }
 
   return { preparedRow, warnings };
 }
 
-export function validateProductRows(rows: ProductImportRow[], initialIssues: ValidationIssue[] = []) {
+export function validateProductRows(
+  rows: ProductImportRow[],
+  initialIssues: ValidationIssue[] = [],
+) {
   const errors: ValidationIssue[] = initialIssues.filter((issue) => issue.level === "error");
   const warnings: ValidationIssue[] = initialIssues.filter((issue) => issue.level === "warning");
   const preparedRows: ProductImportRow[] = [];
@@ -527,7 +619,9 @@ export function validateProductRows(rows: ProductImportRow[], initialIssues: Val
       const duplicateRow = seenSkus.get(preparedRow.sku);
 
       if (duplicateRow) {
-        errors.push(createIssue("error", `Duplicate SKU also used on row ${duplicateRow}.`, rowNumber, "sku"));
+        errors.push(
+          createIssue("error", `Duplicate SKU also used on row ${duplicateRow}.`, rowNumber, "sku"),
+        );
       } else {
         seenSkus.set(preparedRow.sku, rowNumber);
       }
@@ -537,7 +631,14 @@ export function validateProductRows(rows: ProductImportRow[], initialIssues: Val
       const duplicateRow = seenSlugs.get(preparedRow.slug);
 
       if (duplicateRow) {
-        errors.push(createIssue("error", `Duplicate slug also used on row ${duplicateRow}.`, rowNumber, "slug"));
+        errors.push(
+          createIssue(
+            "error",
+            `Duplicate slug also used on row ${duplicateRow}.`,
+            rowNumber,
+            "slug",
+          ),
+        );
       } else {
         seenSlugs.set(preparedRow.slug, rowNumber);
       }
@@ -545,7 +646,9 @@ export function validateProductRows(rows: ProductImportRow[], initialIssues: Val
 
     if (
       preparedRow.category_slug &&
-      !canonicalCategorySlugs.includes(preparedRow.category_slug as (typeof canonicalCategorySlugs)[number])
+      !canonicalCategorySlugs.includes(
+        preparedRow.category_slug as (typeof canonicalCategorySlugs)[number],
+      )
     ) {
       errors.push(
         createIssue(
@@ -558,24 +661,44 @@ export function validateProductRows(rows: ProductImportRow[], initialIssues: Val
     }
 
     if (preparedRow.status && !isAllowedValue(preparedRow.status, allowedStatuses)) {
-      errors.push(createIssue("error", `Invalid status: ${preparedRow.status}`, rowNumber, "status"));
+      errors.push(
+        createIssue("error", `Invalid status: ${preparedRow.status}`, rowNumber, "status"),
+      );
     }
 
     if (preparedRow.data_status && !isAllowedValue(preparedRow.data_status, allowedDataStatuses)) {
       errors.push(
-        createIssue("error", `Invalid data_status: ${preparedRow.data_status}`, rowNumber, "data_status"),
+        createIssue(
+          "error",
+          `Invalid data_status: ${preparedRow.data_status}`,
+          rowNumber,
+          "data_status",
+        ),
       );
     }
 
     if (preparedRow.source_type && !isAllowedValue(preparedRow.source_type, allowedSourceTypes)) {
       errors.push(
-        createIssue("error", `Invalid source_type: ${preparedRow.source_type}`, rowNumber, "source_type"),
+        createIssue(
+          "error",
+          `Invalid source_type: ${preparedRow.source_type}`,
+          rowNumber,
+          "source_type",
+        ),
       );
     }
 
-    if (preparedRow.image_status && !isAllowedValue(preparedRow.image_status, allowedImageStatuses)) {
+    if (
+      preparedRow.image_status &&
+      !isAllowedValue(preparedRow.image_status, allowedImageStatuses)
+    ) {
       errors.push(
-        createIssue("error", `Invalid image_status: ${preparedRow.image_status}`, rowNumber, "image_status"),
+        createIssue(
+          "error",
+          `Invalid image_status: ${preparedRow.image_status}`,
+          rowNumber,
+          "image_status",
+        ),
       );
     }
 
@@ -594,7 +717,14 @@ export function validateProductRows(rows: ProductImportRow[], initialIssues: Val
     }
 
     if (preparedRow.oem_status && !isAllowedValue(preparedRow.oem_status, allowedOemStatuses)) {
-      errors.push(createIssue("error", `Invalid oem_status: ${preparedRow.oem_status}`, rowNumber, "oem_status"));
+      errors.push(
+        createIssue(
+          "error",
+          `Invalid oem_status: ${preparedRow.oem_status}`,
+          rowNumber,
+          "oem_status",
+        ),
+      );
     }
 
     if (preparedRow.description && countWords(preparedRow.description) < 80) {
@@ -609,24 +739,43 @@ export function validateProductRows(rows: ProductImportRow[], initialIssues: Val
     }
 
     if (preparedRow.meta_title.length > 60) {
-      warnings.push(createIssue("warning", "meta_title is longer than 60 characters.", rowNumber, "meta_title"));
+      warnings.push(
+        createIssue("warning", "meta_title is longer than 60 characters.", rowNumber, "meta_title"),
+      );
     }
 
     if (preparedRow.meta_description.length > 160) {
       warnings.push(
-        createIssue("warning", "meta_description is longer than 160 characters.", rowNumber, "meta_description"),
+        createIssue(
+          "warning",
+          "meta_description is longer than 160 characters.",
+          rowNumber,
+          "meta_description",
+        ),
       );
     }
 
     if (preparedRow.main_image && !preparedRow.main_image.startsWith("/images/products/")) {
       errors.push(
-        createIssue("error", "main_image must start with /images/products/", rowNumber, "main_image"),
+        createIssue(
+          "error",
+          "main_image must start with /images/products/",
+          rowNumber,
+          "main_image",
+        ),
       );
     }
 
     if (preparedRow.main_image && preparedRow.main_image.startsWith("/images/products/")) {
       if (!publicImagePathExists(preparedRow.main_image)) {
-        warnings.push(createIssue("warning", `Image file missing: ${preparedRow.main_image}`, rowNumber, "main_image"));
+        warnings.push(
+          createIssue(
+            "warning",
+            `Image file missing: ${preparedRow.main_image}`,
+            rowNumber,
+            "main_image",
+          ),
+        );
       }
     }
 
@@ -642,7 +791,12 @@ export function validateProductRows(rows: ProductImportRow[], initialIssues: Val
         );
       } else if (!publicImagePathExists(galleryImage)) {
         warnings.push(
-          createIssue("warning", `Gallery image file missing: ${galleryImage}`, rowNumber, "gallery_images"),
+          createIssue(
+            "warning",
+            `Gallery image file missing: ${galleryImage}`,
+            rowNumber,
+            "gallery_images",
+          ),
         );
       }
     }
