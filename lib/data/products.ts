@@ -778,10 +778,12 @@ export const arcfortProducts: ArcfortProductData[] = [
     "status": "active",
     "dataStatus": "needs_review",
     "sourceType": "unknown",
-    "sourceReference": "First 30 SKU worksheet - confirm torch series thread material grade and real image before publishing.",
-    "imageStatus": "needs_photo",
+    "sourceReference": "First 30 SKU worksheet - confirm torch series thread material grade and real image before publishing. Local supplier image archive: 微信图片_202404111901304.jpg",
+    "imageStatus": "supplier_photo",
     "compatibilityStatus": "unverified",
-    "oemStatus": "unknown"
+    "oemStatus": "unknown",
+    "verifiedBy": "Internal image review",
+    "verifiedDate": "2026-07-26"
   },
   {
     "id": "af-mig-gn-0002",
@@ -1264,11 +1266,13 @@ export const arcfortProducts: ArcfortProductData[] = [
     "sampleAvailable": "Reference part review available",
     "status": "active",
     "dataStatus": "needs_review",
-    "sourceType": "unknown",
-    "sourceReference": "First 30 SKU worksheet - confirm torch model stack compatibility and real image before publishing.",
+    "sourceType": "official_catalog",
+    "sourceReference": "First 30 SKU worksheet - confirm torch model stack compatibility and real image before publishing. Official Renqiu Ailesen welding catalog PDF pages 22-23 identify Swirl Ring items across multiple plasma torch assemblies; exact model geometry and compatibility remain unverified.",
     "imageStatus": "needs_photo",
     "compatibilityStatus": "unverified",
-    "oemStatus": "unknown"
+    "oemStatus": "unknown",
+    "verifiedBy": "Catalog evidence review",
+    "verifiedDate": "2026-07-26"
   },
   {
     "id": "af-pla-ts-0013",

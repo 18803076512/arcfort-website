@@ -52,6 +52,21 @@ Audit date: 2026-06-29
 - Welding Cable
 - Dinse Connector
 
+## Plasma Consumable Evidence Review
+
+The catalog visually identifies `Swirl Ring` as a consumable in several plasma torch assemblies on
+PDF pages 22-23, including A-81, PT-31, CB-50, LT-50, TongChang60 and SG-51 references. This confirms
+that plasma swirl rings are within the company catalog product range, but it does not confirm one
+universal geometry or compatibility for `AF-PLA-SR-0009`.
+
+PDF page 22 also uses `Stand off guide`, while the current website starter product is named `Plasma
+Torch Spacer`. The two terms must not be treated as identical without a torch model, drawing or
+sample. The catalog uses `Shield` for several torch-front parts; this is not sufficient evidence to
+rename or confirm the current `Plasma Retaining Cap` starter SKU.
+
+The catalog component thumbnails are too small to serve as professional exact-SKU main images.
+Keep these three products on `needs_photo` until reviewed product photos are available.
+
 ## Data Still Missing
 
 - Confirmed exact model numbers and compatibility tables for each product family.
