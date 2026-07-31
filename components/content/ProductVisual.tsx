@@ -27,10 +27,6 @@ export function ProductVisual({
     ? "Photo on request"
     : "Product photo, drawing or model reference can be reviewed before quotation.";
   const imageAlt = `${title}, ${category} product reference from ArcFort Weld`;
-  const imageCaption =
-    imageStatus === "own_photo"
-      ? "ArcFort product photo for sourcing reference."
-      : "Supplier-provided product image for sourcing reference.";
   const productImage = mainImage ? (
     <Image
       src={mainImage}
@@ -73,17 +69,6 @@ export function ProductVisual({
               {visualCategory}
             </span>
           </div>
-          {!compact ? (
-            <>
-              <p className="mt-3 font-display text-xl font-black leading-tight text-arc-midnight">
-                {title}
-              </p>
-              <p className="mt-2 text-xs font-semibold leading-5 text-slate-600">
-                {imageCaption} Exact model, size and packaging can be confirmed by sample, drawing
-                or RFQ details.
-              </p>
-            </>
-          ) : null}
         </figcaption>
       </figure>
     );

@@ -423,13 +423,19 @@ Run checks:
 
 ```bash
 npm run lint
+npm run typecheck
 npm run products:validate
 npm run products:check-images
 npm run products:image-tasks
 npm run products:report
+npm run seo:audit
+npm run test:rfq
 npm run downloads:generate
 npm run indexing:submit -- --dry-run
 ```
+
+Pull requests and pushes to `main` run the same product, image, SEO, RFQ, lint, type and production
+build checks through `.github/workflows/quality.yml`.
 
 ## Notes
 

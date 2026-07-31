@@ -151,7 +151,7 @@ export default function Home() {
                 Request a Quote
               </Link>
             </div>
-            <div className="mt-6 flex flex-col gap-2 text-sm text-slate-300 sm:flex-row sm:flex-wrap sm:gap-5">
+            <div className="mt-6 hidden flex-col gap-2 text-sm text-slate-300 sm:flex sm:flex-row sm:flex-wrap sm:gap-5">
               <a
                 href={siteConfig.emailHref}
                 className="inline-flex min-h-8 items-center font-semibold hover:text-white"

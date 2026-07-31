@@ -14,7 +14,7 @@
 
 html {
   max-width: 100%;
-  overflow-x: hidden;
+  overflow-x: clip;
   scroll-behavior: smooth;
 }
 
@@ -23,7 +23,7 @@ body {
   padding-bottom: calc(5rem + env(safe-area-inset-bottom));
   width: 100%;
   max-width: 100%;
-  overflow-x: hidden;
+  overflow-x: clip;
   background:
     radial-gradient(circle at 10% 0%, rgba(15, 76, 129, 0.1), transparent 28rem),
     linear-gradient(180deg, #ffffff 0%, var(--background) 44%, #eef3f8 100%);

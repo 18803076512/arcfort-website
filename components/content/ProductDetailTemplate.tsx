@@ -56,15 +56,6 @@ const confirmationWorkflow = [
   },
 ] as const;
 
-const productDateFormatter = new Intl.DateTimeFormat("en-US", {
-  dateStyle: "long",
-  timeZone: "UTC",
-});
-
-function formatProductDate(value: string) {
-  return productDateFormatter.format(new Date(`${value}T00:00:00Z`));
-}
-
 function getTechnicalDataStatusLabel(product: Product) {
   if (product.dataStatus === "confirmed") {
     return "Published fields confirmed";
@@ -266,13 +257,22 @@ export function ProductDetailTemplate({
                 {product.title}
               </h1>
               <p className="mt-5 text-lg leading-8 text-slate-600">{product.shortDescription}</p>
-              <p className="mt-4 text-xs font-semibold uppercase tracking-[0.12em] text-slate-500">
-                Page updated{" "}
-                <time dateTime={product.modifiedDate}>
-                  {formatProductDate(product.modifiedDate)}
-                </time>
-                . Unconfirmed technical details are checked during RFQ review.
-              </p>
+
+              <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
+                <Link
+                  href={rfqHref}
+                  className="inline-flex w-full items-center justify-center bg-arc-blue px-5 py-3 text-sm font-bold uppercase tracking-[0.14em] text-white transition hover:bg-arc-midnight sm:w-auto"
+                >
+                  Request Quote
+                </Link>
+                <AddToRfqButton item={rfqListItem} />
+                <Link
+                  href={whatsappProductHref}
+                  className="inline-flex w-full items-center justify-center border border-slate-300 px-5 py-3 text-sm font-bold uppercase tracking-[0.14em] text-slate-700 transition hover:border-arc-midnight hover:bg-arc-midnight hover:text-white sm:w-auto"
+                >
+                  WhatsApp
+                </Link>
+              </div>
 
               <div className="mt-6 grid gap-3 sm:grid-cols-3">
                 {productSummary.map((item) => (
@@ -300,22 +300,6 @@ export function ProductDetailTemplate({
                   </div>
                   <div className="mt-1 font-semibold text-arc-midnight">{category.title}</div>
                 </div>
-              </div>
-
-              <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
-                <Link
-                  href={rfqHref}
-                  className="inline-flex w-full items-center justify-center bg-arc-blue px-5 py-3 text-sm font-bold uppercase tracking-[0.14em] text-white transition hover:bg-arc-midnight sm:w-auto"
-                >
-                  Request Quote
-                </Link>
-                <AddToRfqButton item={rfqListItem} />
-                <Link
-                  href={whatsappProductHref}
-                  className="inline-flex w-full items-center justify-center border border-slate-300 px-5 py-3 text-sm font-bold uppercase tracking-[0.14em] text-slate-700 transition hover:border-arc-midnight hover:bg-arc-midnight hover:text-white sm:w-auto"
-                >
-                  WhatsApp
-                </Link>
               </div>
 
               <div className="mt-6 grid gap-3 sm:grid-cols-3">

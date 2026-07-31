@@ -8,6 +8,10 @@ out
 # production
 build
 
+# local review and generated working files
+tmp/
+output/
+
 # local env files
 .env
 .env*.local

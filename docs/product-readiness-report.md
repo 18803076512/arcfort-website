@@ -1,6 +1,6 @@
 # Product Readiness Report
 
-Generated from `data/import/products.csv` at 2026-07-26T09:33:50.927Z.
+Generated from `data/import/products.csv`.
 
 This report is an internal working checklist. Do not use it to invent product specifications, certifications, prices, stock status, factory capacity or confirmed compatibility.
 
@@ -9,8 +9,8 @@ This report is an internal working checklist. Do not use it to invent product sp
 - Products checked: 43
 - Products with confirmed data status: 0
 - Products with own-photo image status: 0
-- Products with reviewed own or supplier photos: 34
-- Products requiring a reviewed product photo: 9
+- Products with reviewed own or supplier photos: 41
+- Products requiring a reviewed product photo: 2
 - Products with confirmed compatibility status: 0
 - Products with confirmed OEM status: 0
 - Missing main images: 0
@@ -23,12 +23,13 @@ This report is an internal working checklist. Do not use it to invent product sp
 
 ## Image Status
 
-- needs_photo: 9
-- supplier_photo: 34
+- needs_photo: 2
+- supplier_photo: 41
 
 ## Compatibility Status
 
-- unverified: 43
+- reference_only: 8
+- unverified: 35
 
 ## OEM Status
 
@@ -38,14 +39,7 @@ This report is an internal working checklist. Do not use it to invent product sp
 
 | SKU | Product | Category | Notes |
 | --- | --- | --- | --- |
-| AF-MIG-TH-0007 | MIG Tip Holder for MB15 | MIG/MAG Torch Parts | needs_photo: replace or verify /images/products/mig-tip-holder-for-mb15.jpg |
-| AF-MIG-TL-0009 | MIG Torch Liner | MIG/MAG Torch Parts | needs_photo: replace or verify /images/products/mig-torch-liner.jpg |
-| AF-TIG-GL-0010 | TIG Gas Lens 1.6mm | TIG Torch Parts | needs_photo: replace or verify /images/products/tig-gas-lens-1-6mm.jpg |
-| AF-PLA-SR-0009 | Plasma Swirl Ring | Plasma Cutting Consumables | needs_photo: replace or verify /images/products/plasma-swirl-ring.jpg |
 | AF-PLA-RC-0011 | Plasma Retaining Cap | Plasma Cutting Consumables | needs_photo: replace or verify /images/products/plasma-retaining-cap.jpg |
-| AF-PLA-TS-0013 | Plasma Torch Spacer | Plasma Cutting Consumables | needs_photo: replace or verify /images/products/plasma-torch-spacer.jpg |
-| AF-CON-EL-0011 | Welding Electrode | Welding Consumables | needs_photo: replace or verify /images/products/welding-electrode.jpg |
-| AF-ACC-WC-0013 | Welding Cable | Welding Accessories | needs_photo: replace or verify /images/products/welding-cable.jpg |
 | AF-ACC-WM-0015 | Welding Magnet | Welding Accessories | needs_photo: replace or verify /images/products/welding-magnet.jpg |
 
 ## Missing Main Images
@@ -60,28 +54,28 @@ No items found.
 
 | SKU | Product | Fields To Confirm |
 | --- | --- | --- |
-| AF-MIG-CT-0004 | MIG Contact Tip M6 0.8mm | compatible_brand, oem_number, package |
-| AF-MIG-CT-0005 | MIG Contact Tip M6 1.0mm | compatible_brand, oem_number, package |
+| AF-MIG-CT-0004 | MIG Contact Tip M6 0.8mm | oem_number, package |
+| AF-MIG-CT-0005 | MIG Contact Tip M6 1.0mm | oem_number, package |
 | AF-MIG-CT-0006 | MIG Contact Tip M6 1.2mm | compatible_brand, oem_number, package |
-| AF-MIG-TH-0007 | MIG Tip Holder for MB15 | size, thread, compatible_brand, oem_number, package |
-| AF-MIG-GN-0008 | MIG Gas Nozzle for MB15 | size, thread, compatible_brand, oem_number, package |
+| AF-MIG-TH-0007 | MIG Tip Holder for MB15 | oem_number, package |
+| AF-MIG-GN-0008 | MIG Gas Nozzle for MB15 | oem_number, package |
 | AF-MIG-DF-0003 | MIG Diffuser | size, thread, compatible_brand, oem_number, package |
-| AF-MIG-TL-0009 | MIG Torch Liner | material, size, thread, compatible_brand, oem_number, package |
+| AF-MIG-TL-0009 | MIG Torch Liner | oem_number, package |
 | AF-MIG-SN-0010 | MIG Swan Neck | material, size, thread, compatible_brand, oem_number, package |
 | AF-TIG-CC-0007 | TIG Ceramic Cup #5 | thread, compatible_brand, oem_number, package |
 | AF-TIG-CC-0008 | TIG Ceramic Cup #6 | thread, compatible_brand, oem_number, package |
 | AF-TIG-CL-0009 | TIG Collet | size, thread, compatible_brand, oem_number, package |
 | AF-TIG-CB-0005 | TIG Collet Body | size, thread, compatible_brand, oem_number, package |
-| AF-TIG-GL-0010 | TIG Gas Lens 1.6mm | thread, compatible_brand, oem_number, package |
+| AF-TIG-GL-0010 | TIG Gas Lens 1.6mm | oem_number, package |
 | AF-TIG-BC-0011 | TIG Back Cap | material, size, thread, compatible_brand, oem_number, package |
 | AF-TIG-TE-0012 | TIG Tungsten Electrode | material, size, thread, compatible_brand, compatible_model, oem_number, package |
 | AF-PLA-EL-0007 | Plasma Electrode | material, size, thread, compatible_brand, oem_number, package |
 | AF-PLA-NZ-0008 | Plasma Nozzle | material, size, thread, compatible_brand, oem_number, package |
-| AF-PLA-SR-0009 | Plasma Swirl Ring | material, size, thread, compatible_brand, oem_number, package |
+| AF-PLA-SR-0009 | Plasma Swirl Ring | oem_number, package |
 | AF-PLA-SH-0010 | Plasma Shield | material, size, thread, compatible_brand, oem_number, package |
 | AF-PLA-RC-0011 | Plasma Retaining Cap | material, size, thread, compatible_brand, oem_number, package |
 | AF-PLA-CT-0012 | Plasma Cutting Tip | material, size, thread, compatible_brand, oem_number, package |
-| AF-PLA-TS-0013 | Plasma Torch Spacer | material, size, thread, compatible_brand, oem_number, package |
+| AF-PLA-TS-0013 | Plasma Torch Spacer | oem_number, package |
 | AF-CON-EH-0010 | Electrode Holder | material, size, thread, compatible_brand, compatible_model, oem_number, package |
 | AF-CON-EL-0011 | Welding Electrode | material, size, thread, compatible_brand, compatible_model, oem_number, package |
 | AF-CON-WW-0012 | Welding Wire | material, size, thread, compatible_brand, compatible_model, oem_number, package |
