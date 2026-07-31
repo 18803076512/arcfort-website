@@ -105,6 +105,27 @@ const clientRequiredFields: Array<keyof RfqFormValues> = [
   "quantity",
 ];
 
+function focusFirstInvalidField(nextErrors: FormErrors) {
+  const firstField = (Object.keys(nextErrors) as FormErrorKey[]).find(
+    (field) => field !== "submission",
+  );
+
+  if (!firstField) {
+    return;
+  }
+
+  window.requestAnimationFrame(() => {
+    const field = document.getElementById(firstField);
+
+    if (!field) {
+      return;
+    }
+
+    field.focus({ preventScroll: true });
+    field.scrollIntoView({ block: "center", inline: "nearest" });
+  });
+}
+
 function createFileSummary(files: File[]) {
   if (files.length === 0) {
     return "No attachment selected";
@@ -239,6 +260,7 @@ export function RfqForm({ initialProduct = "" }: RfqFormProps) {
     }
 
     setErrors(nextErrors);
+    focusFirstInvalidField(nextErrors);
     return nextErrors;
   }
 
@@ -348,14 +370,17 @@ export function RfqForm({ initialProduct = "" }: RfqFormProps) {
       const result = (await response.json()) as RfqResponse;
 
       if (!response.ok || !result.ok) {
-        setFailedReference(result.reference ?? "");
-        setErrors(
-          result.errors ?? {
+        const responseErrors =
+          result.errors ??
+          ({
             submission:
               result.message ??
               "Automated RFQ delivery is unavailable. Please use email or WhatsApp.",
-          },
-        );
+          } satisfies FormErrors);
+
+        setFailedReference(result.reference ?? "");
+        setErrors(responseErrors);
+        focusFirstInvalidField(responseErrors);
         trackAnalyticsEvent("rfq_submit_error", {
           failure_stage: "server_response",
           http_status: response.status,
@@ -640,37 +665,43 @@ export function RfqForm({ initialProduct = "" }: RfqFormProps) {
           </div>
         )}
       </section>
-      <div className="mb-6 border border-slate-200 bg-arc-frost p-4 sm:p-5">
-        <div className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
-          <div>
-            <h2 className="font-display text-2xl font-black text-arc-midnight">
+      <details className="group mb-6 border border-slate-200 bg-arc-frost">
+        <summary className="flex min-h-16 cursor-pointer list-none items-center justify-between gap-4 p-4 marker:hidden sm:p-5">
+          <span className="min-w-0">
+            <span className="block font-display text-xl font-black text-arc-midnight">
               Quick RFQ starters
-            </h2>
-            <p className="mt-2 text-sm leading-6 text-slate-600">
-              Choose a common buying scenario to prefill product requirements. You can edit the text
-              before submitting.
-            </p>
-          </div>
-          <p className="text-xs font-bold uppercase tracking-[0.14em] text-arc-blue">
-            Buyer Helper
+            </span>
+            <span className="mt-1 block text-xs leading-5 text-slate-600">
+              Optional guidance for common buying scenarios.
+            </span>
+          </span>
+          <span className="shrink-0 text-xs font-bold uppercase tracking-[0.12em] text-arc-blue">
+            <span className="group-open:hidden">Open</span>
+            <span className="hidden group-open:inline">Close</span>
+          </span>
+        </summary>
+        <div className="border-t border-slate-200 p-4 sm:p-5">
+          <p className="text-sm leading-6 text-slate-600">
+            Choose a scenario to prefill product requirements, then edit the details before
+            submitting.
           </p>
+          <div className="mt-4 grid gap-3 sm:grid-cols-2">
+            {rfqQuickTemplates.map((template) => (
+              <button
+                key={template.title}
+                type="button"
+                onClick={() => applyQuickTemplate(template)}
+                className="min-h-24 border border-slate-200 bg-white p-4 text-left transition hover:border-arc-blue hover:bg-slate-50"
+              >
+                <span className="block text-sm font-black text-arc-midnight">{template.title}</span>
+                <span className="mt-2 block text-xs font-semibold leading-5 text-slate-600">
+                  {template.description}
+                </span>
+              </button>
+            ))}
+          </div>
         </div>
-        <div className="mt-4 grid gap-3 sm:grid-cols-2">
-          {rfqQuickTemplates.map((template) => (
-            <button
-              key={template.title}
-              type="button"
-              onClick={() => applyQuickTemplate(template)}
-              className="min-h-24 border border-slate-200 bg-white p-4 text-left transition hover:border-arc-blue hover:bg-slate-50"
-            >
-              <span className="block text-sm font-black text-arc-midnight">{template.title}</span>
-              <span className="mt-2 block text-xs font-semibold leading-5 text-slate-600">
-                {template.description}
-              </span>
-            </button>
-          ))}
-        </div>
-      </div>
+      </details>
       <div className="grid gap-5 sm:grid-cols-2">
         <FormField
           id="name"
@@ -755,6 +786,7 @@ export function RfqForm({ initialProduct = "" }: RfqFormProps) {
               : "Product names, part numbers, torch models, material, size, thread, compatible brand or OEM number."
           }
           className="mt-2 w-full border-slate-300 bg-slate-50 text-slate-900 placeholder:text-slate-400 focus:border-arc-blue focus:ring-arc-blue"
+          required={selectedProducts.length === 0}
           aria-required={selectedProducts.length === 0}
           aria-invalid={Boolean(errors.productRequirements)}
           aria-describedby={errors.productRequirements ? "productRequirements-error" : undefined}
@@ -868,6 +900,8 @@ function FormField({
         autoComplete={autoComplete}
         placeholder={placeholder}
         className="mt-2 min-h-12 w-full border-slate-300 bg-slate-50 text-slate-900 placeholder:text-slate-400 focus:border-arc-blue focus:ring-arc-blue"
+        required={required}
+        aria-required={required}
         aria-invalid={Boolean(error)}
         aria-describedby={error ? errorId : undefined}
       />

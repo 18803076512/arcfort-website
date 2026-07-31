@@ -1,0 +1,62 @@
+name: Quality checks
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+concurrency:
+  group: quality-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  quality:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      CI: true
+      NEXT_TELEMETRY_DISABLED: 1
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Validate product data
+        run: npm run products:validate
+
+      - name: Check product images
+        run: npm run products:check-images
+
+      - name: Verify generated product files
+        run: |
+          npm run products:import
+          npm run products:report
+          git diff --exit-code -- lib/data/products.ts docs/product-readiness-report.md
+
+      - name: Audit SEO content
+        run: npm run seo:audit
+
+      - name: Test RFQ constraints
+        run: npm run test:rfq
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Type-check
+        run: npm run typecheck
+
+      - name: Build
+        run: npm run build

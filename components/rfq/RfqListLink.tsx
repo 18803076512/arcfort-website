@@ -24,21 +24,28 @@ const countClasses = {
 
 export function RfqListLink({ label = "RFQ List", variant = "header" }: RfqListLinkProps) {
   const items = useRfqList();
+  const hasSelectedProducts = items.length > 0;
 
   return (
     <Link
-      href="/rfq#selected-products"
+      href={hasSelectedProducts ? "/rfq#selected-products" : "/rfq"}
       className={variantClasses[variant]}
-      aria-label={`${label}, ${items.length} selected product${items.length === 1 ? "" : "s"}`}
+      aria-label={
+        hasSelectedProducts
+          ? `${label}, ${items.length} selected product${items.length === 1 ? "" : "s"}`
+          : label
+      }
     >
       <span>{label}</span>
-      <span
-        className={`inline-flex h-5 min-w-5 items-center justify-center px-1 text-[10px] font-black ${countClasses[variant]}`}
-        aria-hidden="true"
-        data-rfq-count
-      >
-        {items.length}
-      </span>
+      {hasSelectedProducts ? (
+        <span
+          className={`inline-flex h-5 min-w-5 items-center justify-center px-1 text-[10px] font-black ${countClasses[variant]}`}
+          aria-hidden="true"
+          data-rfq-count
+        >
+          {items.length}
+        </span>
+      ) : null}
     </Link>
   );
 }

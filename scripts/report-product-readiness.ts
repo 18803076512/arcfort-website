@@ -120,12 +120,10 @@ function buildReport(inputPath: string, rows: ProductImportRow[]) {
   );
   const confirmedCompatibilityRows = rows.filter((row) => row.compatibility_status === "confirmed");
   const confirmedOemRows = rows.filter((row) => row.oem_status === "confirmed");
-  const generatedAt = new Date().toISOString();
-
   return [
     "# Product Readiness Report",
     "",
-    `Generated from \`${path.relative(process.cwd(), inputPath).replace(/\\/g, "/")}\` at ${generatedAt}.`,
+    `Generated from \`${path.relative(process.cwd(), inputPath).replace(/\\/g, "/")}\`.`,
     "",
     "This report is an internal working checklist. Do not use it to invent product specifications, certifications, prices, stock status, factory capacity or confirmed compatibility.",
     "",
