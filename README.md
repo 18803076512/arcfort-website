@@ -184,6 +184,7 @@ The `/rfq` page includes a responsive inquiry form with:
 - Business email format validation
 - Drawing, product list, PDF, Excel, Word, JPG and PNG upload selection
 - Server-side validation through `/api/rfq`
+- Server-side file signature checks for PDF, JPG, PNG, CSV, legacy Office and OOXML attachments
 - Success state only after Resend email or complete Supabase inquiry and attachment storage confirms
   delivery
 - Buyer-visible RFQ reference in success and delivery-failure responses
@@ -206,6 +207,10 @@ The `/rfq` page includes a responsive inquiry form with:
 Buyers can add up to 50 products from product cards or detail pages. The shortlist remains in
 browser `localStorage` until the buyer submits the RFQ or clears the list; it does not require an
 account and does not expose internal product fields.
+
+Attachment signature checks reject files whose contents do not match the submitted extension before
+storage or email delivery. This reduces simple extension spoofing but does not replace endpoint
+malware scanning; sales users must continue to scan external attachments and avoid enabling macros.
 
 Supabase storage and Resend email delivery are optional production services and must be configured
 through environment variables. No real API keys, email passwords, database passwords or private

@@ -830,8 +830,9 @@ export function RfqForm({ initialProduct = "" }: RfqFormProps) {
           />
         </label>
         <p id="attachments-help" className="mt-2 text-xs leading-5 text-slate-500">
-          Accepted: PDF, Excel, CSV, Word, JPG and PNG. Maximum 5 files and 4 MB total. Send larger
-          files by email or WhatsApp.
+          Accepted: PDF, Excel, CSV, Word, JPG and PNG. Maximum 5 files and 4 MB total. File type,
+          size and content signature are checked before delivery. Send larger files by email or
+          WhatsApp.
         </p>
         {errors.attachments ? (
           <p className="mt-2 text-sm font-semibold text-red-700">{errors.attachments}</p>
