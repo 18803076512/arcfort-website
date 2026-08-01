@@ -202,11 +202,14 @@ The `/rfq` page includes a responsive inquiry form with:
   personal data
 - Persistent multi-product RFQ shortlist stored in the buyer's browser
 - Live shortlist count in the desktop header, mobile menu and sticky contact bar
-- Selected products automatically merged into the RFQ submission with SKU and category
+- Per-product quantity and buyer reference fields for mixed distributor inquiries
+- Selected products automatically merged into the RFQ submission with SKU, category, line quantity
+  and model, size or drawing reference when provided
 
-Buyers can add up to 50 products from product cards or detail pages. The shortlist remains in
-browser `localStorage` until the buyer submits the RFQ or clears the list; it does not require an
-account and does not expose internal product fields.
+Buyers can add up to 50 products from product cards or detail pages. The shortlist and optional
+line-item quantities or references remain in browser `localStorage` until the buyer submits the RFQ
+or clears the list; it does not require an account and does not expose internal product fields. When
+every selected product has a line quantity, the overall quantity summary becomes optional.
 
 Attachment signature checks reject files whose contents do not match the submitted extension before
 storage or email delivery. This reduces simple extension spoofing but does not replace endpoint

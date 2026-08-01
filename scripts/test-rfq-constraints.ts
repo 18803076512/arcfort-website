@@ -16,6 +16,7 @@ import {
 } from "../lib/rfq-rate-limit.ts";
 import { createRfqReference } from "../lib/rfq-reference.ts";
 import { isTrustedRfqRequest } from "../lib/rfq-request-security.ts";
+import { buildRfqProductRequirements, formatRfqListItems } from "../lib/rfq-list.ts";
 
 const validValues: RfqTextValues = {
   name: "Alex Buyer",
@@ -47,6 +48,37 @@ const longCompany = validateRfqTextValues({
   company: "A".repeat(rfqFieldLimits.company + 1),
 });
 assert.match(longCompany.company ?? "", /160 characters or fewer/);
+
+const lineItemRequirements = [
+  {
+    sku: "AF-MIG-CT-0005",
+    name: "MIG Contact Tip M6 1.0mm",
+    category: "MIG/MAG Torch Parts",
+    categorySlug: "mig-mag-torch-parts",
+    slug: "mig-contact-tip-m6-1-0mm",
+    requestedQuantity: "500 pcs",
+    buyerReference: "MB15 reference, drawing item 2",
+  },
+];
+
+assert.equal(
+  formatRfqListItems(lineItemRequirements),
+  "1. MIG Contact Tip M6 1.0mm | SKU: AF-MIG-CT-0005 | Category: MIG/MAG Torch Parts | Requested quantity: 500 pcs | Buyer reference: MB15 reference, drawing item 2",
+);
+assert.match(
+  buildRfqProductRequirements(lineItemRequirements, "Private label bag required."),
+  /Additional product requirements:\nPrivate label bag required\./,
+);
+assert.doesNotMatch(
+  formatRfqListItems([
+    {
+      ...lineItemRequirements[0],
+      requestedQuantity: "",
+      buyerReference: "",
+    },
+  ]),
+  /Requested quantity|Buyer reference/,
+);
 
 assert.equal(
   validateRfqFiles([{ name: "drawing.exe", size: 1024 }]),

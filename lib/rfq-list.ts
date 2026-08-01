@@ -7,9 +7,15 @@ export type RfqListItem = {
   category: string;
   categorySlug: string;
   slug: string;
+  requestedQuantity?: string;
+  buyerReference?: string;
 };
 
 export const maxRfqItems = 50;
+export const rfqLineItemFieldLimits = {
+  requestedQuantity: 80,
+  buyerReference: 240,
+} as const;
 
 function normalizeText(value: unknown, maxLength: number) {
   return typeof value === "string" ? value.trim().slice(0, maxLength) : "";
@@ -18,6 +24,12 @@ function normalizeText(value: unknown, maxLength: number) {
 function normalizeSlug(value: unknown) {
   const slug = normalizeText(value, 120);
   return /^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(slug) ? slug : "";
+}
+
+function normalizeEditableText(value: unknown, maxLength: number) {
+  return typeof value === "string"
+    ? value.replace(/[\u0000-\u001f\u007f]+/g, " ").slice(0, maxLength)
+    : "";
 }
 
 function normalizeRfqListItem(value: unknown): RfqListItem | null {
@@ -32,9 +44,17 @@ function normalizeRfqListItem(value: unknown): RfqListItem | null {
     category: normalizeText(candidate.category, 120),
     categorySlug: normalizeSlug(candidate.categorySlug),
     slug: normalizeSlug(candidate.slug),
+    requestedQuantity: normalizeEditableText(
+      candidate.requestedQuantity,
+      rfqLineItemFieldLimits.requestedQuantity,
+    ),
+    buyerReference: normalizeEditableText(
+      candidate.buyerReference,
+      rfqLineItemFieldLimits.buyerReference,
+    ),
   };
 
-  return Object.values(item).every(Boolean) ? item : null;
+  return item.sku && item.name && item.category && item.categorySlug && item.slug ? item : null;
 }
 
 export function getRfqListItemKey(item: Pick<RfqListItem, "categorySlug" | "slug">) {
@@ -112,15 +132,62 @@ export function removeRfqListItem(item: Pick<RfqListItem, "categorySlug" | "slug
   );
 }
 
+export function updateRfqListItem(
+  item: Pick<RfqListItem, "categorySlug" | "slug">,
+  updates: Pick<RfqListItem, "requestedQuantity" | "buyerReference">,
+) {
+  const itemKey = getRfqListItemKey(item);
+
+  return writeRfqList(
+    readRfqList().map((currentItem) =>
+      getRfqListItemKey(currentItem) === itemKey
+        ? {
+            ...currentItem,
+            requestedQuantity:
+              updates.requestedQuantity === undefined
+                ? currentItem.requestedQuantity
+                : normalizeEditableText(
+                    updates.requestedQuantity,
+                    rfqLineItemFieldLimits.requestedQuantity,
+                  ),
+            buyerReference:
+              updates.buyerReference === undefined
+                ? currentItem.buyerReference
+                : normalizeEditableText(
+                    updates.buyerReference,
+                    rfqLineItemFieldLimits.buyerReference,
+                  ),
+          }
+        : currentItem,
+    ),
+  );
+}
+
 export function clearRfqList() {
   return writeRfqList([]);
 }
 
 export function formatRfqListItems(items: RfqListItem[]) {
   return items
-    .map(
-      (item, index) => `${index + 1}. ${item.name} | SKU: ${item.sku} | Category: ${item.category}`,
-    )
+    .map((item, index) => {
+      const details = [
+        `${index + 1}. ${item.name}`,
+        `SKU: ${item.sku}`,
+        `Category: ${item.category}`,
+      ];
+      const requestedQuantity = item.requestedQuantity?.trim();
+      const buyerReference = item.buyerReference?.trim();
+
+      if (requestedQuantity) {
+        details.push(`Requested quantity: ${requestedQuantity}`);
+      }
+
+      if (buyerReference) {
+        details.push(`Buyer reference: ${buyerReference}`);
+      }
+
+      return details.join(" | ");
+    })
     .join("\n");
 }
 
