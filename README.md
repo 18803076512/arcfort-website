@@ -196,6 +196,7 @@ The `/rfq` page includes a responsive inquiry form with:
 - Backend readiness check at `/api/rfq/status`
 - Lightweight spam protection with same-origin checks, honeypot, timing checks and source-path
   tracking
+- Invisible Vercel BotID Basic verification on browser submissions to `POST /api/rfq`
 - Best-effort application fallback limiting each hashed client key to 5 RFQ attempts per 10 minutes,
   with `429`, `Retry-After` and `X-RateLimit-*` response headers
 - Structured server logs for delivery outcome, RFQ reference and Resend message IDs without buyer
@@ -236,16 +237,10 @@ Check the deployed backend without sending an inquiry:
 npm run rfq:check-live
 ```
 
-Send a controlled production test only when the sales or test inbox is ready:
-
-```bash
-npm run rfq:check-live -- --send --confirm-production --email=arcfortweld@outlook.com
-npm run rfq:check-live -- --send --confirm-production --email=arcfortweld@outlook.com --attachment=public/images/products/mig-diffuser.jpg
-```
-
-The test command requires both `--send` and `--confirm-production` because it creates real Resend
-emails. A successful API response means the email provider accepted the messages; final inbox
-placement must still be confirmed in Outlook or Resend logs.
+BotID requires a browser-generated challenge on protected submissions. Send a controlled production
+test from the deployed `/rfq` page, then confirm the matching `AF-RFQ-...` reference in the sales
+inbox and Resend logs. The command-line checker remains a non-mutating readiness check and does not
+send an inquiry.
 
 Environment variables:
 
@@ -268,10 +263,13 @@ handler attributes, and only allows same-origin resources plus the official Goog
 collection origins. Advertising endpoints are not allowed because this site does not enable Google
 Ads or advertising signals. Re-audit the policy before adding another browser-side service.
 
-The API rate-limit fallback uses Vercel's forwarded client IP when available, hashes the key with a
-process-local salt and keeps no raw IP address. Because Vercel Functions can restart or scale across
-instances, this fallback is not distributed and is not a replacement for a Vercel Firewall rule.
-Configure the infrastructure rule for `POST /api/rfq` when production traffic starts.
+The RFQ endpoint uses free Vercel BotID Basic browser verification before parsing an inquiry. If the
+verification service is temporarily unavailable, the endpoint fails open to the existing same-origin,
+honeypot, timing, file-validation and application-rate-limit protections so genuine buyers retain the
+email and WhatsApp-backed inquiry path. The application limiter uses Vercel's forwarded client IP,
+hashes the key with a process-local salt and keeps no raw IP address. It is not distributed because
+Vercel Functions can restart or scale across instances. A paid Vercel Firewall rate-limit rule for
+`POST /api/rfq` remains optional for sustained abuse and must not be enabled without billing approval.
 
 The App Router includes three buyer-facing recovery layers: `app/not-found.tsx` for missing URLs,
 `app/error.tsx` for page-level runtime errors and `app/global-error.tsx` for root-layout failures.

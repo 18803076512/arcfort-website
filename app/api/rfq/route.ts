@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { checkBotId } from "botid/server";
 import { siteConfig } from "@/lib/content/site";
 import {
   emptySourceAttribution,
@@ -165,6 +166,21 @@ function rfqResponse(
       },
     },
   );
+}
+
+async function verifyRfqBrowser(reference: string) {
+  try {
+    return await checkBotId({
+      advancedOptions: {
+        checkLevel: "basic",
+      },
+    });
+  } catch {
+    console.error(
+      `[RFQ ${reference}] BotID verification was unavailable; continuing with fallback request protections.`,
+    );
+    return null;
+  }
 }
 
 async function uploadAttachments(
@@ -481,6 +497,19 @@ export async function POST(request: Request) {
       {
         ok: false,
         message: "RFQ request origin could not be verified. Please reload the form and try again.",
+      },
+      403,
+    );
+  }
+
+  const botVerification = await verifyRfqBrowser(reference);
+
+  if (botVerification?.isBot) {
+    return respond(
+      {
+        ok: false,
+        message:
+          "This browser session could not be verified. Please reload the RFQ form and try again, or contact us by email or WhatsApp.",
       },
       403,
     );

@@ -59,6 +59,14 @@ export function GET() {
       attachmentDeliveryReady,
       deliveryMode,
       referenceTracking: true,
+      botProtection: {
+        integrated: true,
+        provider: "Vercel BotID",
+        checkLevel: "basic",
+        protectedPath: "/api/rfq",
+        method: "POST",
+        fallbackOnVerificationError: true,
+      },
       rateLimit: {
         applicationFallback: true,
         distributed: false,

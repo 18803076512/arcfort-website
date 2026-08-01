@@ -9,6 +9,13 @@ type RfqStatusResponse = {
   inquiryCaptureReady?: boolean;
   attachmentDeliveryReady?: boolean;
   deliveryMode?: string;
+  botProtection?: {
+    integrated?: boolean;
+    provider?: string;
+    checkLevel?: string;
+    protectedPath?: string;
+    method?: string;
+  };
   rateLimit?: {
     applicationFallback?: boolean;
     distributed?: boolean;
@@ -100,6 +107,10 @@ async function main() {
   console.log(`Inquiry capture ready: ${Boolean(status.inquiryCaptureReady)}`);
   console.log(`Attachment delivery ready: ${Boolean(status.attachmentDeliveryReady)}`);
   console.log(`Delivery mode: ${status.deliveryMode ?? "unknown"}`);
+  console.log(`Bot protection integrated: ${Boolean(status.botProtection?.integrated)}`);
+  console.log(
+    `Bot protection: ${status.botProtection?.provider ?? "unknown"} / ${status.botProtection?.checkLevel ?? "unknown"}`,
+  );
   console.log(`Application rate-limit fallback: ${Boolean(status.rateLimit?.applicationFallback)}`);
   console.log(`Distributed rate limit: ${Boolean(status.rateLimit?.distributed)}`);
   console.log(
@@ -116,6 +127,12 @@ async function main() {
   if (!sendTest) {
     console.log("Readiness check only. No RFQ or email was sent.");
     return;
+  }
+
+  if (status.botProtection?.integrated) {
+    throw new Error(
+      "BotID-protected RFQ submissions require a browser-generated challenge. Send the controlled test from the deployed /rfq page instead of this command.",
+    );
   }
 
   if (!confirmProduction) {

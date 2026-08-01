@@ -1,4 +1,5 @@
 import type { NextConfig } from "next";
+import { withBotId } from "botid/next/config";
 import { legacyCategoryRedirects, legacyProductRedirects } from "./lib/content/product-redirects";
 import { siteConfig } from "./lib/content/site";
 
@@ -121,4 +122,4 @@ const nextConfig: NextConfig = {
   },
 };
 
-export default nextConfig;
+export default withBotId(nextConfig);

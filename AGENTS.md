@@ -61,6 +61,9 @@ generation.
 17. After deployment, run `npm run security:audit:live`. Do not weaken the Content Security Policy
     or add third-party browser origins without documenting the service, buyer value and required
     CSP directives.
+18. Keep Vercel BotID Basic protection on `POST /api/rfq`. Do not enable paid BotID Deep Analysis or
+    paid Vercel Firewall rate limiting without explicit billing approval. Test protected RFQ delivery
+    from a real browser because command-line requests do not carry the BotID browser challenge.
 
 ## SKU Import Rules
 
