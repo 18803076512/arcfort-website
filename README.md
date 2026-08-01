@@ -311,6 +311,21 @@ Run the combined production health check without sending an RFQ or email:
 npm run health:production
 ```
 
+## Performance Budgets
+
+Run a production build and then check the buyer-facing transfer budgets with:
+
+```bash
+npm run build
+npm run performance:budget
+```
+
+The budget reads the generated Next.js app manifest and checks gzip-compressed JavaScript for the
+homepage, Product Center and RFQ route, shared CSS, individual JavaScript assets and source files in
+`public/images/site/`. It prevents future shared scripts, form features or visual assets from
+quietly increasing the initial buyer download. Update a limit only after measuring the deployed page
+and documenting why the additional transfer cost provides necessary buyer value.
+
 Audit only the deployed CSP, browser hardening headers, HSTS, framework disclosure and RFQ status
 cache policy with:
 
@@ -421,6 +436,7 @@ unconfirmed certifications or hidden SKU workflow fields.
 - `docs/supabase-rfq-setup.md` - Supabase, Vercel and testing instructions
 - `docs/rfq-email-delivery.md` - Resend email delivery setup for RFQ notifications and attachments
 - `docs/rfq-production-readiness.md` - production RFQ email setup, Vercel environment variables and live test checklist
+- `docs/performance-baseline.md` - measured mobile baseline, methodology and enforced build budgets
 - `docs/launch-checklist.md` - production launch checklist
 - `docs/arcfort-product-information-table.csv` - 12-product B2B information table with missing data notes
 - `docs/product-image-checklist.csv` - legacy starter-product image planning worksheet
