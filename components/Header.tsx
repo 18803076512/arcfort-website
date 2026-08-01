@@ -12,6 +12,7 @@ const navigation = [
 ] as const;
 
 const buyerServiceNavigation = [
+  { href: "/distributor-supply", label: "Distributor Supply" },
   { href: "/oem-service", label: "OEM Service" },
   { href: "/quality-control", label: "Quality Control" },
   { href: "/shipping-payment", label: "Shipping & Payment" },

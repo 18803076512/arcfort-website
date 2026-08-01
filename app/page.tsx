@@ -71,6 +71,12 @@ const rfqSignals = [
 
 const sourcingSystemLinks = [
   {
+    href: "/distributor-supply",
+    title: "Distributor & Importer Supply",
+    description:
+      "Mixed SKU lists, product-reference review and trade information organized for wholesale sourcing.",
+  },
+  {
     href: "/oem-service",
     title: "OEM & Private Label",
     description:
@@ -377,7 +383,7 @@ export default function Home() {
               distributors and importers can qualify the supply fit quickly.
             </p>
           </div>
-          <div className="mt-10 grid gap-5 md:grid-cols-2 lg:grid-cols-4">
+          <div className="mt-10 grid gap-5 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
             {sourcingSystemLinks.map((item) => (
               <Link
                 key={item.href}
