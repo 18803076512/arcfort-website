@@ -135,6 +135,21 @@ function getImageStatus(row: SimpleRow, mainImage: string) {
   return "placeholder";
 }
 
+function getSafePublicationStatus(
+  requestedStatus: ProductImportRow["status"],
+  imageStatus: ProductImportRow["image_status"],
+  mainImage: string,
+) {
+  if (requestedStatus !== "active") {
+    return requestedStatus;
+  }
+
+  const hasReviewedImage = imageStatus === "own_photo" || imageStatus === "supplier_photo";
+  const imageExists = existsSync(path.join(process.cwd(), "public", mainImage));
+
+  return hasReviewedImage && imageExists ? "active" : "draft";
+}
+
 function appendIfMissing(parts: string[], value: string) {
   const cleanValue = value.trim();
 
@@ -324,6 +339,7 @@ async function convertSimpleRows(simpleRows: SimpleRow[]) {
     const name = composeProductName(simpleRow);
     const slug = slugify(name);
     const mainImage = normalizeImagePath(simpleRow.image_name, slug);
+    const imageStatus = getImageStatus(simpleRow, mainImage);
     const typeCode = getTypeCode(name);
     const existingSku = normalizeExistingSku(existingSkuBySlug.get(slug), typeCode);
     const editorialCopy = createProductEditorialCopy(
@@ -362,11 +378,11 @@ async function convertSimpleRows(simpleRows: SimpleRow[]) {
     row.sample_available = "Reference part review available";
     row.meta_title = `${name} | ArcFort Weld`;
     row.meta_description = editorialCopy.metaDescription;
-    row.status = "active";
+    row.status = getSafePublicationStatus("active", imageStatus, mainImage);
     row.data_status = "needs_review";
     row.source_type = "unknown";
     row.source_reference = simpleRow.notes;
-    row.image_status = getImageStatus(simpleRow, mainImage);
+    row.image_status = imageStatus;
     row.compatibility_status = "unverified";
     row.oem_status = "unknown";
     row.notes_internal = simpleRow.notes;
@@ -394,7 +410,41 @@ function mergeWithExistingProductRows(
     }
 
     mergedGeneratedKeys.add(generatedRow.sku);
-    return generatedRow;
+    const existingImageIsReviewed =
+      (existingRow.image_status === "own_photo" ||
+        existingRow.image_status === "supplier_photo") &&
+      existsSync(path.join(process.cwd(), "public", existingRow.main_image));
+    const sameImage = generatedRow.main_image === existingRow.main_image;
+    const mergedRow = {
+      ...generatedRow,
+      main_image: existingImageIsReviewed ? existingRow.main_image : generatedRow.main_image,
+      gallery_images: existingImageIsReviewed
+        ? existingRow.gallery_images
+        : generatedRow.gallery_images,
+      status: existingRow.status || generatedRow.status,
+      data_status: existingRow.data_status || generatedRow.data_status,
+      source_type: existingRow.source_type || generatedRow.source_type,
+      source_reference: existingRow.source_reference || generatedRow.source_reference,
+      verified_by: existingRow.verified_by || generatedRow.verified_by,
+      verified_date: existingRow.verified_date || generatedRow.verified_date,
+      compatibility_status:
+        existingRow.compatibility_status || generatedRow.compatibility_status,
+      oem_status: existingRow.oem_status || generatedRow.oem_status,
+      notes_internal: existingRow.notes_internal || generatedRow.notes_internal,
+      image_status: existingImageIsReviewed
+        ? existingRow.image_status
+        : sameImage
+        ? existingRow.image_status || generatedRow.image_status
+        : generatedRow.image_status,
+    };
+
+    mergedRow.status = getSafePublicationStatus(
+      mergedRow.status,
+      mergedRow.image_status,
+      mergedRow.main_image,
+    );
+
+    return mergedRow;
   });
 
   for (const generatedRow of generatedRows) {
@@ -448,11 +498,30 @@ async function main() {
   }
 
   const csvContent = serializeProductCsv(validationResult.rows);
+  const activeProductsWithoutReviewedImages = validationResult.rows.filter(
+    (row) =>
+      row.status === "active" &&
+      (row.image_status === "placeholder" || row.image_status === "needs_photo"),
+  );
+
+  if (activeProductsWithoutReviewedImages.length > 0) {
+    console.error(
+      `Simple SKU merge produced ${activeProductsWithoutReviewedImages.length} active products without reviewed images.`,
+    );
+    process.exit(1);
+  }
 
   console.log(`Simple product CSV: ${inputPath}`);
   console.log(`Simple products generated or updated: ${generatedRows.length}`);
   console.log(`Existing products preserved: ${mergedRows.preservedCount}`);
   console.log(`Full product CSV rows: ${validationResult.rows.length}`);
+  console.log(
+    `Active products after merge: ${validationResult.rows.filter((row) => row.status === "active").length}`,
+  );
+  console.log(
+    `Draft products after merge: ${validationResult.rows.filter((row) => row.status === "draft").length}`,
+  );
+  console.log("Active products without reviewed images: 0");
 
   if (!shouldWrite) {
     console.log("\nPreview only. Add --write to generate the full product CSV file.");

@@ -703,6 +703,20 @@ export function validateProductRows(
     }
 
     if (
+      preparedRow.status === "active" &&
+      (preparedRow.image_status === "placeholder" || preparedRow.image_status === "needs_photo")
+    ) {
+      warnings.push(
+        createIssue(
+          "warning",
+          "Active product does not have a reviewed own or supplier photo; use draft until the product image is verified.",
+          rowNumber,
+          "image_status",
+        ),
+      );
+    }
+
+    if (
       preparedRow.compatibility_status &&
       !isAllowedValue(preparedRow.compatibility_status, allowedCompatibilityStatuses)
     ) {

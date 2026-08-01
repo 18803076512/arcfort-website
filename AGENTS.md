@@ -64,6 +64,8 @@ generation.
 18. Keep Vercel BotID Basic protection on `POST /api/rfq`. Do not enable paid BotID Deep Analysis or
     paid Vercel Firewall rate limiting without explicit billing approval. Test protected RFQ delivery
     from a real browser because command-line requests do not carry the BotID browser challenge.
+19. Keep products with `placeholder` or `needs_photo` image status as `draft`. An active product must
+    have a reviewed `own_photo` or `supplier_photo` that clearly supports the published product type.
 
 ## SKU Import Rules
 

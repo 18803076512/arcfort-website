@@ -110,6 +110,9 @@ function buildReport(inputPath: string, rows: ProductImportRow[]) {
   const missingMainImageRows = getMissingImageRows(rows);
   const imageReviewRows = getImageReviewRows(rows);
   const missingGalleryRows = getMissingGalleryRows(rows);
+  const activeRows = rows.filter((row) => row.status === "active");
+  const draftRows = rows.filter((row) => row.status === "draft");
+  const activeImageReviewRows = getImageReviewRows(activeRows);
   const rowsWithPlaceholderFields = rows
     .map((row) => ({ row, fields: getPlaceholderFields(row) }))
     .filter((entry) => entry.fields.length > 0);
@@ -130,15 +133,20 @@ function buildReport(inputPath: string, rows: ProductImportRow[]) {
     "## Summary",
     "",
     `- Products checked: ${rows.length}`,
+    `- Active public products: ${activeRows.length}`,
+    `- Draft products: ${draftRows.length}`,
     `- Products with confirmed data status: ${confirmedDataRows.length}`,
     `- Products with own-photo image status: ${ownPhotoRows.length}`,
     `- Products with reviewed own or supplier photos: ${reviewedPhotoRows.length}`,
     `- Products requiring a reviewed product photo: ${imageReviewRows.length}`,
+    `- Active products requiring a reviewed product photo: ${activeImageReviewRows.length}`,
     `- Products with confirmed compatibility status: ${confirmedCompatibilityRows.length}`,
     `- Products with confirmed OEM status: ${confirmedOemRows.length}`,
     `- Missing main images: ${missingMainImageRows.length}`,
     `- Missing gallery images: ${missingGalleryRows.length}`,
     `- Products with high-priority placeholder fields: ${rowsWithPlaceholderFields.length}`,
+    "",
+    formatStatusCounts("Publication Status", countBy(rows, "status")),
     "",
     formatStatusCounts("Data Status", countBy(rows, "data_status")),
     "",
@@ -152,7 +160,7 @@ function buildReport(inputPath: string, rows: ProductImportRow[]) {
     "",
     formatProductTable(
       imageReviewRows,
-      (row) => `${row.image_status}: replace or verify ${row.main_image}`,
+      (row) => `${row.status}; ${row.image_status}: replace or verify ${row.main_image}`,
     ),
     "",
     "## Missing Main Images",
@@ -186,7 +194,7 @@ function buildReport(inputPath: string, rows: ProductImportRow[]) {
     "",
     "## Next Actions",
     "",
-    "1. Replace `needs_photo` and missing main images with reviewed white-background product photos named exactly as the CSV image paths.",
+    "1. Keep products with `needs_photo` or `placeholder` image status as `draft` until a reviewed product photo is available.",
     "2. Confirm high-priority product fields from samples, drawings, factory data or supplier catalogs.",
     "3. Change `data_status`, `image_status`, `compatibility_status` and `oem_status` only when the supporting data is actually confirmed.",
     "4. Run `npm run products:report`, `npm run products:validate`, `npm run products:check-images` and `npm run build` before publishing SKU updates.",

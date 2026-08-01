@@ -7,15 +7,23 @@ This report is an internal working checklist. Do not use it to invent product sp
 ## Summary
 
 - Products checked: 43
+- Active public products: 41
+- Draft products: 2
 - Products with confirmed data status: 0
 - Products with own-photo image status: 0
 - Products with reviewed own or supplier photos: 41
 - Products requiring a reviewed product photo: 2
+- Active products requiring a reviewed product photo: 0
 - Products with confirmed compatibility status: 0
 - Products with confirmed OEM status: 0
 - Missing main images: 0
 - Missing gallery images: 0
 - Products with high-priority placeholder fields: 43
+
+## Publication Status
+
+- active: 41
+- draft: 2
 
 ## Data Status
 
@@ -39,8 +47,8 @@ This report is an internal working checklist. Do not use it to invent product sp
 
 | SKU | Product | Category | Notes |
 | --- | --- | --- | --- |
-| AF-PLA-RC-0011 | Plasma Retaining Cap | Plasma Cutting Consumables | needs_photo: replace or verify /images/products/plasma-retaining-cap.jpg |
-| AF-ACC-WM-0015 | Welding Magnet | Welding Accessories | needs_photo: replace or verify /images/products/welding-magnet.jpg |
+| AF-PLA-RC-0011 | Plasma Retaining Cap | Plasma Cutting Consumables | draft; needs_photo: replace or verify /images/products/plasma-retaining-cap.jpg |
+| AF-ACC-WM-0015 | Welding Magnet | Welding Accessories | draft; needs_photo: replace or verify /images/products/welding-magnet.jpg |
 
 ## Missing Main Images
 
@@ -100,7 +108,7 @@ No items found.
 
 ## Next Actions
 
-1. Replace `needs_photo` and missing main images with reviewed white-background product photos named exactly as the CSV image paths.
+1. Keep products with `needs_photo` or `placeholder` image status as `draft` until a reviewed product photo is available.
 2. Confirm high-priority product fields from samples, drawings, factory data or supplier catalogs.
 3. Change `data_status`, `image_status`, `compatibility_status` and `oem_status` only when the supporting data is actually confirmed.
 4. Run `npm run products:report`, `npm run products:validate`, `npm run products:check-images` and `npm run build` before publishing SKU updates.

@@ -94,8 +94,9 @@ For daily SKU maintenance, use the simple SKU workflow first. It lets you mainta
 generate the full website product CSV automatically.
 
 The generator updates rows that match the simple CSV and preserves existing rows that are not in the
-simple file. This prevents catalog-derived or separately maintained products from being removed when
-the simple SKU batch is regenerated.
+simple file. Existing publication and verification metadata is retained. New or updated rows without
+a reviewed own or supplier image are generated as `draft`, preventing placeholder products from
+returning to public category pages when the simple SKU batch is regenerated.
 
 Simple CSV files:
 
@@ -170,6 +171,8 @@ Product image publication rules:
   type; keep exact model, dimensions and compatibility unconfirmed unless separately verified.
 - Use `needs_photo` when the current file is a placeholder, illustration or family-level image that
   cannot confirm the published SKU.
+- Keep products with `needs_photo` or `placeholder` image status as `draft`; only publish them after
+  the product type is supported by a reviewed own or supplier photo.
 - Only `own_photo` and `supplier_photo` images are eligible for product Open Graph metadata,
   Product JSON-LD and image sitemap entries.
 - Keep the original image source in `source_reference` and record `verified_by` and
