@@ -26,6 +26,7 @@
     "rfq:check-live": "node --experimental-strip-types scripts/check-live-rfq.ts",
     "seo:audit": "node --experimental-strip-types scripts/audit-seo.ts",
     "seo:audit:live": "node --experimental-strip-types scripts/audit-live-seo.ts",
+    "health:production": "node --experimental-strip-types scripts/check-live-rfq.ts && node --experimental-strip-types scripts/audit-live-seo.ts",
     "downloads:generate": "node --experimental-strip-types scripts/generate-download-assets.ts",
     "indexing:submit": "node --experimental-strip-types scripts/submit-indexnow.ts",
     "format": "prettier --write ."
