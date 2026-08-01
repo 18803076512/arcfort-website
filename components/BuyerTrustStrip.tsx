@@ -42,7 +42,7 @@ export function BuyerTrustStrip() {
           </div>
           {serviceSignals.map((item) => (
             <div key={item.label} className="min-w-0 px-3 py-3 lg:px-5">
-              <div className="text-[10px] font-bold uppercase tracking-[0.12em] text-slate-500">
+              <div className="text-[10px] font-bold uppercase tracking-[0.12em] text-slate-600">
                 {item.label}
               </div>
               <div className="mt-1 break-words text-xs font-black leading-5 text-arc-midnight">
