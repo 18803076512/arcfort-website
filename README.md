@@ -282,6 +282,17 @@ After deployment, audit every sitemap URL against the live site:
 npm run seo:audit:live
 ```
 
+Run the combined production health check without sending an RFQ or email:
+
+```bash
+npm run health:production
+```
+
+`.github/workflows/production-health.yml` runs this check every six hours and can also be started
+manually from GitHub Actions. It fails when the production RFQ configuration is no longer ready or
+when the live SEO audit finds a blocking route, metadata, sitemap, robots, redirect, structured-data
+or internal-link problem. Search Console and GA4 configuration reminders remain non-blocking.
+
 The live audit verifies HTTP status, redirects, title length, meta descriptions, canonical URLs,
 English language markup, one H1 per HTML page, indexability, Open Graph metadata, Twitter cards,
 required JSON-LD types, Product rich-result safety, same-page fragment links, image `alt`/`src`
