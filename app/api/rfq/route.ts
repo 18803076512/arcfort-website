@@ -13,6 +13,7 @@ import {
   validateRfqTextValues,
 } from "@/lib/rfq-constraints";
 import { validateRfqFileContents } from "@/lib/rfq-file-content";
+import { buildBuyerConfirmationEmailHtml, buildInquiryEmailHtml } from "@/lib/rfq-email";
 import {
   checkRfqRateLimit,
   getRfqRateLimitHeaders,
@@ -423,6 +424,7 @@ async function sendEmailNotification(
       reply_to: payload.email,
       subject: `ArcFort Weld RFQ ${reference} - ${payload.company}`,
       text: buildInquiryEmailText(payload, attachments, reference, requestMeta),
+      html: buildInquiryEmailHtml(payload, attachments, reference, requestMeta),
       ...(emailAttachments.length > 0 ? { attachments: emailAttachments } : {}),
     }),
   });
@@ -448,6 +450,7 @@ async function sendEmailNotification(
         reply_to: recipient,
         subject: `ArcFort Weld received your RFQ - ${reference}`,
         text: buildBuyerConfirmationEmailText(payload, attachments, reference),
+        html: buildBuyerConfirmationEmailHtml(payload, attachments, reference),
       }),
     });
 

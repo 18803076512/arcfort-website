@@ -23,6 +23,8 @@ Files:
 
 - `app/rfq/RfqForm.tsx` - frontend validation and buyer success message.
 - `app/api/rfq/route.ts` - server-side validation, optional Supabase storage and Resend email delivery.
+- `lib/rfq-email.ts` - escaped, branded HTML templates for sales and buyer email messages.
+- `scripts/test-rfq-email.ts` - template content and HTML injection regression checks.
 - `.env.example` - environment variable names only.
 
 Email flow:
@@ -31,6 +33,8 @@ Email flow:
   uploaded attachments.
 - Buyer confirmation goes to the submitted buyer email and includes a clean RFQ summary plus ArcFort
   Weld backup contact details.
+- Both messages include a branded HTML layout and the existing plain-text fallback. Buyer-provided
+  text, attachment names and source values are HTML-escaped before rendering.
 - Buyer confirmation delivery is treated as a secondary enhancement. A temporary buyer confirmation
   failure does not block the sales notification success response.
 - Resend and Supabase delivery run independently. A Supabase outage does not block a successful
@@ -123,7 +127,8 @@ After adding Vercel environment variables and redeploying:
 9. Check `arcfortweld@outlook.com` for the RFQ email.
 10. Check the buyer test inbox for the confirmation email and matching reference.
 11. Confirm uploaded files appear as email attachments in the sales notification.
-12. If Supabase is configured, confirm the inquiry row and reference appear in `rfq_inquiries`.
+12. Confirm both messages show the ArcFort Weld HTML layout and remain readable when HTML is disabled.
+13. If Supabase is configured, confirm the inquiry row and reference appear in `rfq_inquiries`.
 
 Expected API response after Resend is configured:
 

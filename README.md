@@ -194,6 +194,9 @@ The `/rfq` page includes a responsive inquiry form with:
 - Optional Supabase storage for RFQ records and attachment metadata
 - Optional Resend email notification to the configured business email
 - RFQ file attachments sent with the Resend email when email delivery is configured
+- Branded HTML sales notifications and buyer confirmations with a plain-text fallback for email
+  client compatibility
+- HTML escaping for buyer, attachment and source values before they are rendered in email markup
 - Independent email and storage delivery so one provider failure does not block the other
 - Prefilled email and WhatsApp fallback when automated delivery is unavailable
 - Backend readiness check at `/api/rfq/status`
@@ -228,7 +231,7 @@ For production launch, follow `docs/rfq-production-readiness.md` and confirm
 a complete automated lead channel. Configuration readiness must still be followed by one controlled
 test inquiry that reaches the sales inbox.
 
-Run the shared RFQ validation and reference tests with:
+Run the shared RFQ validation, reference and email-template safety tests with:
 
 ```bash
 npm run test:rfq
