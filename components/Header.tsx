@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { AutoClosingDetails } from "@/components/AutoClosingDetails";
 import { RfqListLink } from "@/components/rfq/RfqListLink";
 import { siteConfig } from "@/lib/content/site";
 
@@ -72,7 +73,7 @@ export function Header() {
               {item.label}
             </Link>
           ))}
-          <details className="group relative">
+          <AutoClosingDetails className="group relative">
             <summary className="cursor-pointer list-none px-3 py-2 text-xs font-bold uppercase tracking-[0.1em] text-slate-700 transition hover:bg-arc-frost hover:text-arc-blue marker:hidden">
               Buyer Services
             </summary>
@@ -87,11 +88,11 @@ export function Header() {
                 </Link>
               ))}
             </div>
-          </details>
+          </AutoClosingDetails>
           <RfqListLink label="Send RFQ" />
         </nav>
 
-        <details className="group relative shrink-0 lg:hidden">
+        <AutoClosingDetails className="group relative shrink-0 lg:hidden">
           <summary className="flex min-h-11 w-20 cursor-pointer list-none items-center justify-center bg-arc-blue px-3 text-xs font-bold uppercase tracking-[0.08em] text-white marker:hidden">
             Menu
           </summary>
@@ -128,7 +129,7 @@ export function Header() {
               </a>
             </div>
           </nav>
-        </details>
+        </AutoClosingDetails>
       </div>
     </header>
   );
