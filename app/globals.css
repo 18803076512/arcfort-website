@@ -37,6 +37,16 @@ canvas {
   max-width: 100%;
 }
 
+@media (max-width: 767px) {
+  body:has([data-disable-sticky-contact-bar]) {
+    padding-bottom: 0;
+  }
+
+  body:has([data-disable-sticky-contact-bar]) [data-sticky-contact-bar] {
+    display: none;
+  }
+}
+
 @media (min-width: 768px) {
   body {
     padding-bottom: 0;

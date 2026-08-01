@@ -4,6 +4,7 @@ import { siteConfig } from "@/lib/content/site";
 export function StickyContactBar() {
   return (
     <nav
+      data-sticky-contact-bar
       className="fixed inset-x-0 bottom-0 z-50 w-full max-w-[100vw] overflow-hidden border-t border-white/20 bg-arc-midnight/95 px-2 pb-[calc(0.45rem+env(safe-area-inset-bottom))] pt-2 text-white shadow-industrial backdrop-blur md:hidden"
       aria-label="Quick inquiry contacts"
     >
