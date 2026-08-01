@@ -25,6 +25,10 @@ const privacySections = [
     body: "RFQ information and attachments may be transmitted to the configured ArcFort Weld sales email and, when enabled, stored in protected server-side systems for quotation follow-up. Access is limited to authorized business users and service providers supporting the inquiry process.",
   },
   {
+    title: "Security and abuse prevention",
+    body: "ArcFort Weld and its hosting and security provider, Vercel, may process limited request metadata and browser challenge signals to detect automated submissions, protect the RFQ service and investigate abuse. These security signals are not used to prepare quotations or added to public product records.",
+  },
+  {
     title: "Retention",
     body: "Inquiry records are retained only as long as reasonably needed for quotation follow-up, commercial records, dispute handling or applicable legal obligations.",
   },
@@ -41,7 +45,7 @@ const privacySections = [
 export const metadata = buildMetadata({
   title: "Privacy Notice",
   description:
-    "Privacy notice for ArcFort Weld RFQ submissions, buyer information, uploaded documents and optional website analytics preferences.",
+    "Privacy notice for ArcFort Weld RFQ submissions, security checks, uploaded documents and optional website analytics preferences.",
   path: "/privacy",
   keywords: ["ArcFort Weld privacy", "RFQ privacy", "welding supplier privacy notice"],
 });
@@ -61,7 +65,7 @@ export default function PrivacyPage() {
           webPageJsonLd({
             name: "ArcFort Weld Privacy Notice",
             description:
-              "Privacy notice for RFQ information, uploaded documents and optional website analytics.",
+              "Privacy notice for RFQ information, security checks, uploaded documents and optional website analytics.",
             path: "/privacy",
             dateModified: siteConfig.contentLastModified,
           }),
@@ -80,7 +84,7 @@ export default function PrivacyPage() {
             and optional website analytics for international B2B inquiries.
           </p>
           <p className="mt-4 text-xs font-bold uppercase tracking-[0.12em] text-slate-500">
-            Last updated July 26, 2026
+            Last updated August 1, 2026
           </p>
         </div>
       </section>

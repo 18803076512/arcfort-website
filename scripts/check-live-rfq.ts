@@ -124,6 +124,14 @@ async function main() {
     throw new Error("The live RFQ status endpoint is not production-ready.");
   }
 
+  if (
+    !status.botProtection?.integrated ||
+    status.botProtection.provider !== "Vercel BotID" ||
+    status.botProtection.checkLevel !== "basic"
+  ) {
+    throw new Error("The live RFQ endpoint does not report the required Vercel BotID Basic protection.");
+  }
+
   if (!sendTest) {
     console.log("Readiness check only. No RFQ or email was sent.");
     return;
