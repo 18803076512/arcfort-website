@@ -28,6 +28,7 @@
     "seo:audit": "node --experimental-strip-types scripts/audit-seo.ts",
     "seo:audit:live": "node --experimental-strip-types scripts/audit-live-seo.ts",
     "security:audit:live": "node --experimental-strip-types scripts/check-live-security-headers.ts",
+    "performance:budget": "node --experimental-strip-types scripts/check-performance-budget.ts",
     "health:production": "node --experimental-strip-types scripts/check-live-rfq.ts && node --experimental-strip-types scripts/audit-live-seo.ts && node --experimental-strip-types scripts/check-live-security-headers.ts",
     "downloads:generate": "node --experimental-strip-types scripts/generate-download-assets.ts",
     "indexing:submit": "node --experimental-strip-types scripts/submit-indexnow.ts",

@@ -63,3 +63,6 @@ jobs:
 
       - name: Build
         run: npm run build
+
+      - name: Check performance budgets
+        run: npm run performance:budget

@@ -66,6 +66,9 @@ generation.
     from a real browser because command-line requests do not carry the BotID browser challenge.
 19. Keep products with `placeholder` or `needs_photo` image status as `draft`. An active product must
     have a reviewed `own_photo` or `supplier_photo` that clearly supports the published product type.
+20. After frontend layout, shared component, script or site-image changes, run `npm run build` and
+    `npm run performance:budget`. Do not raise a performance budget without documenting the measured
+    buyer value and the reason the additional transfer cost is necessary.
 
 ## SKU Import Rules
 
