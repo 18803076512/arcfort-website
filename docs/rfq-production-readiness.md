@@ -21,6 +21,7 @@ Minimum production target:
 - A Supabase-only submission with selected files succeeds only when both the inquiry row and files
   are stored. Saving file names without the files does not produce a buyer success state.
 - Large or failed submissions still direct the buyer to email or WhatsApp.
+- Browser submissions to `POST /api/rfq` pass Vercel BotID Basic verification before inquiry parsing.
 - No API keys, email passwords or database secrets are committed to the repository.
 
 ## Required Email Delivery Setup
@@ -85,7 +86,8 @@ Security rules:
 4. Redeploy the Vercel production deployment.
 5. Open `https://www.arcfortweld.com/api/rfq/status`.
 6. Confirm `email.ready` is `true`.
-7. Submit a test RFQ at `https://www.arcfortweld.com/rfq`.
+7. Submit a test RFQ in a real browser at `https://www.arcfortweld.com/rfq` so the BotID challenge is
+   attached to the request.
 8. Confirm the success message says the RFQ was sent to sales email.
 9. Confirm the page displays an `AF-RFQ-...` reference.
 10. Confirm the sales notification subject and body contain the same reference.
@@ -105,22 +107,18 @@ Check production configuration without sending an email:
 npm run rfq:check-live
 ```
 
-Send a controlled test only after selecting the receiving inbox:
-
-```bash
-npm run rfq:check-live -- --send --confirm-production --email=arcfortweld@outlook.com
-npm run rfq:check-live -- --send --confirm-production --email=arcfortweld@outlook.com --attachment=public/images/products/mig-diffuser.jpg
-```
-
-Both `--send` and `--confirm-production` are required. A successful result proves that the production
-API and Resend accepted the message. Confirm final inbox placement and the matching RFQ reference in
-Outlook or Resend logs.
+BotID-protected submissions require a browser-generated challenge. Send a controlled test from the
+deployed `/rfq` page instead of a command-line HTTP client. A successful page response proves that
+the production API and Resend accepted the message; confirm final inbox placement and the matching
+RFQ reference in Outlook or Resend logs.
 
 ## Abuse Protection
 
 The application rejects browser requests with an untrusted `Origin` or `Sec-Fetch-Site`, and keeps
 the existing honeypot, minimum form-completion time, text limits, file-type limits and request-size
-limit. Every response receives an RFQ reference.
+limit. Vercel BotID Basic adds an invisible browser challenge and server-side check before the form
+body is parsed. Basic mode is explicitly selected so paid Deep Analysis is not enabled accidentally.
+Every response receives an RFQ reference.
 
 The API also includes a best-effort fixed-window fallback:
 
@@ -133,16 +131,17 @@ The API also includes a best-effort fixed-window fallback:
 
 This fallback is process-local. It resets when a Vercel Function instance restarts and cannot share
 counts across horizontally scaled instances. It reduces repeated bursts but is not a distributed
-production WAF.
+production WAF. BotID reduces automated submissions, but it is not a distributed request counter.
 
-Configure a Vercel Firewall rate-limit rule for production traffic:
+If sustained abuse appears, consider a paid Vercel Firewall rate-limit rule for production traffic:
 
 - Path: `/api/rfq`
 - Method: `POST`
 - Suggested starting threshold: 5 requests per 10 minutes per source IP
 - Action: rate limit or challenge
 
-Review the threshold after real traffic begins. The infrastructure rule cannot be verified from the
+Review the threshold after real traffic begins. Vercel Firewall rate limiting is a paid capability;
+do not enable it without billing approval. The infrastructure rule cannot be verified from the
 repository and should be confirmed in the Vercel project dashboard.
 
 ## Production Verification Record
@@ -167,6 +166,14 @@ After Resend is configured, `https://www.arcfortweld.com/api/rfq/status` should 
   "attachmentDeliveryReady": true,
   "deliveryMode": "email",
   "referenceTracking": true,
+  "botProtection": {
+    "integrated": true,
+    "provider": "Vercel BotID",
+    "checkLevel": "basic",
+    "protectedPath": "/api/rfq",
+    "method": "POST",
+    "fallbackOnVerificationError": true
+  },
   "rateLimit": {
     "applicationFallback": true,
     "distributed": false,
