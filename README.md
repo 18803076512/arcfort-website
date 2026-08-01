@@ -261,12 +261,17 @@ GOOGLE_SITE_VERIFICATION=
 NEXT_PUBLIC_GA_ID=
 ```
 
-Global responses include `X-Content-Type-Options`, `X-Frame-Options`, `Referrer-Policy`,
-`Permissions-Policy` and `Cross-Origin-Opener-Policy` headers. The API rate-limit fallback uses
-Vercel's forwarded client IP when available, hashes the key with a process-local salt and keeps no
-raw IP address. Because Vercel Functions can restart or scale across instances, this fallback is not
-distributed and is not a replacement for a Vercel Firewall rule. Configure the infrastructure rule
-for `POST /api/rfq` when production traffic starts.
+Global responses include a Content Security Policy plus `X-Content-Type-Options`, `X-Frame-Options`,
+`Referrer-Policy`, `Permissions-Policy`, `Cross-Origin-Opener-Policy` and legacy browser hardening
+headers. The CSP keeps statically generated pages cacheable, blocks plugins, frames and inline event
+handler attributes, and only allows same-origin resources plus the official Google tag and GA4
+collection origins. Advertising endpoints are not allowed because this site does not enable Google
+Ads or advertising signals. Re-audit the policy before adding another browser-side service.
+
+The API rate-limit fallback uses Vercel's forwarded client IP when available, hashes the key with a
+process-local salt and keeps no raw IP address. Because Vercel Functions can restart or scale across
+instances, this fallback is not distributed and is not a replacement for a Vercel Firewall rule.
+Configure the infrastructure rule for `POST /api/rfq` when production traffic starts.
 
 The App Router includes three buyer-facing recovery layers: `app/not-found.tsx` for missing URLs,
 `app/error.tsx` for page-level runtime errors and `app/global-error.tsx` for root-layout failures.
@@ -302,10 +307,18 @@ Run the combined production health check without sending an RFQ or email:
 npm run health:production
 ```
 
+Audit only the deployed CSP, browser hardening headers, HSTS, framework disclosure and RFQ status
+cache policy with:
+
+```bash
+npm run security:audit:live
+```
+
 `.github/workflows/production-health.yml` runs this check every six hours and can also be started
 manually from GitHub Actions. It fails when the production RFQ configuration is no longer ready or
 when the live SEO audit finds a blocking route, metadata, sitemap, robots, redirect, structured-data
-or internal-link problem. Search Console and GA4 configuration reminders remain non-blocking.
+or internal-link problem, or when required production security headers regress. Search Console and
+GA4 configuration reminders remain non-blocking.
 
 The live audit verifies HTTP status, redirects, title length, meta descriptions, canonical URLs,
 English language markup, one H1 per HTML page, indexability, Open Graph metadata, Twitter cards,

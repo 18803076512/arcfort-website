@@ -2,7 +2,36 @@ import type { NextConfig } from "next";
 import { legacyCategoryRedirects, legacyProductRedirects } from "./lib/content/product-redirects";
 import { siteConfig } from "./lib/content/site";
 
+const isDevelopment = process.env.NODE_ENV === "development";
+const analyticsScriptOrigin = "https://www.googletagmanager.com";
+const analyticsCollectionOrigins = [
+  "https://*.google-analytics.com",
+  "https://*.analytics.google.com",
+];
+const contentSecurityPolicy = [
+  "default-src 'self'",
+  `script-src 'self' 'unsafe-inline'${isDevelopment ? " 'unsafe-eval'" : ""} ${analyticsScriptOrigin}`,
+  "script-src-attr 'none'",
+  "style-src 'self' 'unsafe-inline'",
+  `img-src 'self' blob: data: ${analyticsScriptOrigin} ${analyticsCollectionOrigins[0]}`,
+  "font-src 'self' data:",
+  `connect-src 'self'${isDevelopment ? " ws: wss:" : ""} ${analyticsScriptOrigin} ${analyticsCollectionOrigins.join(" ")}`,
+  "media-src 'self'",
+  "object-src 'none'",
+  "base-uri 'self'",
+  "form-action 'self'",
+  "frame-ancestors 'none'",
+  "frame-src 'none'",
+  "manifest-src 'self'",
+  "worker-src 'self' blob:",
+  ...(isDevelopment ? [] : ["upgrade-insecure-requests"]),
+].join("; ");
+
 const securityHeaders = [
+  {
+    key: "Content-Security-Policy",
+    value: contentSecurityPolicy,
+  },
   {
     key: "X-Content-Type-Options",
     value: "nosniff",
@@ -22,6 +51,18 @@ const securityHeaders = [
   {
     key: "Cross-Origin-Opener-Policy",
     value: "same-origin",
+  },
+  {
+    key: "X-DNS-Prefetch-Control",
+    value: "on",
+  },
+  {
+    key: "X-Permitted-Cross-Domain-Policies",
+    value: "none",
+  },
+  {
+    key: "X-XSS-Protection",
+    value: "0",
   },
 ] as const;
 

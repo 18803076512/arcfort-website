@@ -29,5 +29,5 @@ jobs:
         with:
           node-version: 22
 
-      - name: Check production RFQ and SEO health
+      - name: Check production RFQ, SEO and security health
         run: npm run health:production
