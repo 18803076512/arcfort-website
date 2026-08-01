@@ -41,6 +41,7 @@ Industrial B2B website for ArcFort Weld, operated by Renqiu Ailesen Welding Tech
 - `/guides` - Buyer guide center
 - `/guides/[slug]` - Buyer guide article
 - `/about` - About
+- `/distributor-supply` - Distributor, importer and wholesale sourcing information
 - `/oem-service` - OEM service and private label support
 - `/quality-control` - Quality control and inspection workflow
 - `/shipping-payment` - Shipping, payment, MOQ and lead time information
@@ -68,9 +69,9 @@ Industrial B2B website for ArcFort Weld, operated by Renqiu Ailesen Welding Tech
 - `lib/content/topic-links.ts` - category-to-guide internal linking map
 
 The website currently includes 6 product categories, 43 indexable product records, 6 application
-pages, 6 buyer guides and dedicated trust pages for OEM service, quality control, shipping/payment
-and document requests. Four retained generic starter URLs permanently redirect to their current
-category pages so they do not compete with exact SKU pages. Missing product data must remain explicit
+pages, 10 buyer guides and dedicated trust pages for distributor supply, OEM service, quality
+control, shipping/payment and document requests. Four retained generic starter URLs permanently
+redirect to their current category pages so they do not compete with exact SKU pages. Missing product data must remain explicit
 instead of inventing specifications, certifications, prices, stock status, factory capacity or
 customer cases.
 

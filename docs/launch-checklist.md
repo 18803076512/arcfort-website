@@ -71,7 +71,8 @@ Use this checklist before switching the website to production traffic.
 - Confirm application and guide metadata.
 - Configure `GOOGLE_SITE_VERIFICATION` in Vercel after Google Search Console provides the token.
 - Submit sitemap in Google Search Console after launch.
-- IndexNow accepted all 78 sitemap URLs with HTTP 200 on 2026-08-01.
+- IndexNow accepted the deployed sitemap with HTTP 200 on 2026-08-01; resubmit after indexable URL
+  changes.
 - Confirm no invented certifications, prices, stock status, factory capacity or customer cases are published.
 
 ## Analytics and Conversion Tracking

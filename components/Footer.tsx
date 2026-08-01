@@ -19,6 +19,7 @@ const links = [
 ];
 
 const buyerServiceLinks = [
+  { href: "/distributor-supply", label: "Distributor Supply" },
   { href: "/oem-service", label: "OEM Service" },
   { href: "/quality-control", label: "Quality Control" },
   { href: "/shipping-payment", label: "Shipping & Payment" },

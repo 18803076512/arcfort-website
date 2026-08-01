@@ -13,6 +13,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     "/applications",
     "/guides",
     "/about",
+    "/distributor-supply",
     "/oem-service",
     "/quality-control",
     "/shipping-payment",
