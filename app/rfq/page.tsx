@@ -94,7 +94,7 @@ export default async function RfqPage({ searchParams }: RfqPageProps) {
         })}
       />
 
-      <section className="bg-white py-12 sm:py-16">
+      <section data-disable-sticky-contact-bar className="bg-white py-12 sm:py-16">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <Breadcrumbs items={[{ label: "Home", href: "/" }, { label: "Request a Quote" }]} />
           <div className="mt-8 max-w-4xl">
