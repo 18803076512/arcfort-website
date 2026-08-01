@@ -11,6 +11,7 @@ import {
   validateRfqFiles,
   validateRfqTextValues,
 } from "@/lib/rfq-constraints";
+import { validateRfqFileContents } from "@/lib/rfq-file-content";
 import {
   checkRfqRateLimit,
   getRfqRateLimitHeaders,
@@ -293,6 +294,9 @@ function buildInquiryEmailText(
     "Attachments:",
     attachmentSummary,
     "",
+    "Attachment Safety:",
+    "Attachments were submitted by an external website visitor. File signatures were checked, but files were not malware-scanned. Use endpoint protection and do not enable macros.",
+    "",
     "Source:",
     `Path: ${payload.sourcePath}`,
     `Landing Page: ${payload.sourceAttribution.landingPage || "Not captured"}`,
@@ -572,6 +576,12 @@ export async function POST(request: Request) {
 
     if (fileError) {
       errors.attachments = fileError;
+    } else {
+      const fileContentError = await validateRfqFileContents(files);
+
+      if (fileContentError) {
+        errors.attachments = fileContentError;
+      }
     }
 
     if (Object.keys(errors).length > 0) {

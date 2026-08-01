@@ -8,6 +8,7 @@ import {
   validateRfqFiles,
   validateRfqTextValues,
 } from "../lib/rfq-constraints.ts";
+import { validateRfqFileContents } from "../lib/rfq-file-content.ts";
 import {
   createFixedWindowRateLimiter,
   getRfqRateLimitClientKey,
@@ -55,6 +56,62 @@ assert.equal(validateRfqFiles([{ name: "drawing.pdf", size: 1024 }]), null);
 assert.equal(
   validateRfqFiles([{ name: "drawing.pdf", size: rfqMaxFileSize + 1 }]),
   "Total attachment size must be 4 MB or smaller.",
+);
+
+const validFileFixtures = [
+  new File([new TextEncoder().encode("%PDF-1.7\n")], "drawing.pdf"),
+  new File([new Uint8Array([0xff, 0xd8, 0xff, 0xe0])], "sample.jpg"),
+  new File([new Uint8Array([0xff, 0xd8, 0xff, 0xe1])], "sample.jpeg"),
+  new File([new Uint8Array([0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a])], "sample.png"),
+  new File([new Uint8Array([0xd0, 0xcf, 0x11, 0xe0, 0xa1, 0xb1, 0x1a, 0xe1])], "product-list.xls"),
+  new File([new Uint8Array([0xd0, 0xcf, 0x11, 0xe0, 0xa1, 0xb1, 0x1a, 0xe1])], "requirements.doc"),
+  new File(
+    [
+      new Uint8Array([0x50, 0x4b, 0x03, 0x04]),
+      new TextEncoder().encode("[Content_Types].xml xl/workbook.xml"),
+    ],
+    "product-list.xlsx",
+  ),
+  new File(
+    [
+      new Uint8Array([0x50, 0x4b, 0x03, 0x04]),
+      new TextEncoder().encode("[Content_Types].xml word/document.xml"),
+    ],
+    "requirements.docx",
+  ),
+  new File([new TextEncoder().encode("sku,quantity\nAF-MIG-CT-0001,500\n")], "products.csv"),
+  new File(
+    [new Uint8Array([0xff, 0xfe, 0x73, 0x00, 0x6b, 0x00, 0x75, 0x00, 0x0a, 0x00])],
+    "products-utf16.csv",
+  ),
+];
+
+for (const file of validFileFixtures) {
+  assert.equal(await validateRfqFileContents([file]), null);
+}
+
+assert.match(
+  (await validateRfqFileContents([
+    new File([new Uint8Array([0x4d, 0x5a, 0x90, 0x00])], "renamed.pdf"),
+  ])) ?? "",
+  /does not match its file extension/,
+);
+assert.match(
+  (await validateRfqFileContents([
+    new File([new Uint8Array([0x50, 0x4b, 0x03, 0x04])], "renamed.docx"),
+  ])) ?? "",
+  /does not match its file extension/,
+);
+assert.match(
+  (await validateRfqFileContents([
+    new File([new Uint8Array([0x4d, 0x5a, 0x00, 0x01])], "renamed.csv"),
+  ])) ?? "",
+  /does not match its file extension/,
+);
+assert.match(
+  (await validateRfqFileContents([new File([new Uint8Array([0xef, 0xbb, 0xbf])], "empty.csv")])) ??
+    "",
+  /does not match its file extension/,
 );
 
 assert.equal(
