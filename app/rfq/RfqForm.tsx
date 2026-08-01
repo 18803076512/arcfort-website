@@ -9,7 +9,9 @@ import {
   buildRfqProductRequirements,
   clearRfqList,
   removeRfqListItem,
+  rfqLineItemFieldLimits,
   type RfqListItem,
+  updateRfqListItem,
 } from "@/lib/rfq-list";
 import {
   emptySourceAttribution,
@@ -97,13 +99,7 @@ const rfqQuickTemplates = [
   },
 ] as const;
 
-const clientRequiredFields: Array<keyof RfqFormValues> = [
-  "name",
-  "company",
-  "email",
-  "country",
-  "quantity",
-];
+const clientRequiredFields: Array<keyof RfqFormValues> = ["name", "company", "email", "country"];
 
 function focusFirstInvalidField(nextErrors: FormErrors) {
   const firstField = (Object.keys(nextErrors) as FormErrorKey[]).find(
@@ -177,6 +173,12 @@ export function RfqForm({ initialProduct = "" }: RfqFormProps) {
   const [failedReference, setFailedReference] = useState("");
   const [submittedRequirements, setSubmittedRequirements] = useState("");
   const selectedProducts = useRfqList();
+  const hasCompleteLineItemQuantities =
+    selectedProducts.length > 0 &&
+    selectedProducts.every((item) => Boolean(item.requestedQuantity?.trim()));
+  const quantityForSubmission =
+    values.quantity.trim() ||
+    (hasCompleteLineItemQuantities ? "See selected product line quantities" : "");
 
   const fileSummary = useMemo(() => createFileSummary(attachments), [attachments]);
 
@@ -236,7 +238,16 @@ export function RfqForm({ initialProduct = "" }: RfqFormProps) {
   }
 
   function validateForm() {
-    const nextErrors: FormErrors = validateRfqTextValues(values, clientRequiredFields);
+    const requiredFields = hasCompleteLineItemQuantities
+      ? clientRequiredFields
+      : [...clientRequiredFields, "quantity" as const];
+    const nextErrors: FormErrors = validateRfqTextValues(
+      {
+        ...values,
+        quantity: quantityForSubmission,
+      },
+      requiredFields,
+    );
 
     if (selectedProducts.length === 0 && !values.productRequirements.trim()) {
       nextErrors.productRequirements =
@@ -288,6 +299,20 @@ export function RfqForm({ initialProduct = "" }: RfqFormProps) {
       item_sku: item.sku,
       location: "rfq_form",
     });
+  }
+
+  function handleLineItemChange(
+    item: RfqListItem,
+    field: "requestedQuantity" | "buyerReference",
+    value: string,
+  ) {
+    updateRfqListItem(item, { [field]: value });
+    setErrors((currentErrors) => ({
+      ...currentErrors,
+      quantity: undefined,
+      submission: undefined,
+    }));
+    setFailedReference("");
   }
 
   function handleClearSelectedProducts() {
@@ -348,7 +373,7 @@ export function RfqForm({ initialProduct = "" }: RfqFormProps) {
     formData.append("whatsapp", values.whatsapp);
     formData.append("country", values.country);
     formData.append("productRequirements", productRequirements);
-    formData.append("quantity", values.quantity);
+    formData.append("quantity", quantityForSubmission);
     formData.append("message", values.message);
     formData.append("website", website);
     formData.append("startedAt", String(startedAt));
@@ -455,7 +480,7 @@ export function RfqForm({ initialProduct = "" }: RfqFormProps) {
     `Email: ${values.email || "Not provided"}`,
     `WhatsApp: ${values.whatsapp || "Not provided"}`,
     `Country: ${values.country || "Not provided"}`,
-    `Quantity: ${values.quantity || "Not provided"}`,
+    `Quantity: ${quantityForSubmission || "Not provided"}`,
     "",
     "Product Requirements:",
     fallbackRequirements || "Not provided",
@@ -607,8 +632,9 @@ export function RfqForm({ initialProduct = "" }: RfqFormProps) {
               </span>
             </div>
             <p className="mt-2 max-w-2xl text-sm leading-6 text-slate-300">
-              Build one inquiry from several product pages. SKU and category details are added to
-              your RFQ automatically.
+              Build one inquiry from several product pages. Add quantity and a model, size or
+              drawing reference for each line when available; SKU and category details are included
+              automatically.
             </p>
           </div>
           {selectedProducts.length > 0 ? (
@@ -627,9 +653,9 @@ export function RfqForm({ initialProduct = "" }: RfqFormProps) {
             {selectedProducts.map((item) => (
               <div
                 key={`${item.categorySlug}/${item.slug}`}
-                className="flex flex-col gap-3 py-4 sm:flex-row sm:items-center sm:justify-between"
+                className="grid gap-4 py-5 sm:grid-cols-2 lg:grid-cols-[minmax(12rem,0.8fr)_minmax(9rem,0.35fr)_minmax(14rem,0.65fr)_auto] lg:items-end"
               >
-                <div className="min-w-0">
+                <div className="min-w-0 sm:col-span-2 lg:col-span-1">
                   <Link
                     href={`/products/${item.categorySlug}/${item.slug}`}
                     className="break-words font-bold text-white transition hover:text-arc-signal"
@@ -640,10 +666,48 @@ export function RfqForm({ initialProduct = "" }: RfqFormProps) {
                     SKU: {item.sku} | {item.category}
                   </p>
                 </div>
+                <label
+                  htmlFor={`line-quantity-${item.categorySlug}-${item.slug}`}
+                  className="block min-w-0"
+                >
+                  <span className="block text-[11px] font-bold uppercase tracking-[0.12em] text-slate-300">
+                    Quantity / Unit
+                  </span>
+                  <input
+                    id={`line-quantity-${item.categorySlug}-${item.slug}`}
+                    type="text"
+                    value={item.requestedQuantity ?? ""}
+                    maxLength={rfqLineItemFieldLimits.requestedQuantity}
+                    placeholder="500 pcs"
+                    onChange={(event) =>
+                      handleLineItemChange(item, "requestedQuantity", event.target.value)
+                    }
+                    className="mt-2 min-h-11 w-full border-white/20 bg-white/10 text-sm text-white placeholder:text-slate-400 focus:border-arc-signal focus:ring-arc-signal"
+                  />
+                </label>
+                <label
+                  htmlFor={`line-reference-${item.categorySlug}-${item.slug}`}
+                  className="block min-w-0"
+                >
+                  <span className="block text-[11px] font-bold uppercase tracking-[0.12em] text-slate-300">
+                    Variant / Model / Reference
+                  </span>
+                  <input
+                    id={`line-reference-${item.categorySlug}-${item.slug}`}
+                    type="text"
+                    value={item.buyerReference ?? ""}
+                    maxLength={rfqLineItemFieldLimits.buyerReference}
+                    placeholder="M6 1.0 mm / drawing item 2"
+                    onChange={(event) =>
+                      handleLineItemChange(item, "buyerReference", event.target.value)
+                    }
+                    className="mt-2 min-h-11 w-full border-white/20 bg-white/10 text-sm text-white placeholder:text-slate-400 focus:border-arc-signal focus:ring-arc-signal"
+                  />
+                </label>
                 <button
                   type="button"
                   onClick={() => handleRemoveSelectedProduct(item)}
-                  className="min-h-10 self-start border border-white/25 px-3 text-xs font-bold uppercase tracking-[0.1em] text-slate-200 transition hover:border-arc-signal hover:text-arc-signal sm:shrink-0"
+                  className="min-h-11 w-full border border-white/25 px-3 text-xs font-bold uppercase tracking-[0.1em] text-slate-200 transition hover:border-arc-signal hover:text-arc-signal sm:w-auto lg:shrink-0"
                   aria-label={`Remove ${item.name} from RFQ list`}
                 >
                   Remove
@@ -755,11 +819,15 @@ export function RfqForm({ initialProduct = "" }: RfqFormProps) {
         />
         <FormField
           id="quantity"
-          label="Quantity"
+          label="Overall Quantity / Order Plan"
           value={values.quantity}
           error={errors.quantity}
-          required
-          placeholder="Example: 500 pcs / mixed order"
+          required={!hasCompleteLineItemQuantities}
+          placeholder={
+            hasCompleteLineItemQuantities
+              ? "Optional summary; line quantities are listed above"
+              : "Example: 500 pcs / mixed order"
+          }
           onChange={(value) => updateValue("quantity", value)}
         />
       </div>
