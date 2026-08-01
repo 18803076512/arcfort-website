@@ -19,8 +19,8 @@ Use this checklist before switching the website to production traffic.
 - Company address: Renqiu City, Cangzhou, Hebei Province, China.
 - Main port: Tianjin Xingang Port / Tianjin Port, China.
 - Alternative ports: Qingdao Port or Ningbo Port are available upon request.
-- Reviewed product images: 34 active products; 9 active products still need reviewed photos as of
-  2026-07-26.
+- Reviewed product images: 41 active products; 2 active products still need reviewed photos as of
+  2026-08-01.
 - Public product list CSV: available in `/downloads`.
 - Product catalog PDF: available at `/downloads/renqiu-ailesen-welding-catalog.pdf`.
 - Active SKU pages: 43; exact technical confirmation remains pending by product.
@@ -60,6 +60,8 @@ Use this checklist before switching the website to production traffic.
 - Set required environment variables.
 - Deploy production.
 - Confirm HTTPS works for both domains.
+- Production deployment verified at `https://www.arcfortweld.com` on 2026-08-01.
+- Apex-domain redirect to `https://www.arcfortweld.com` verified on 2026-08-01.
 
 ## SEO Checks
 
@@ -69,6 +71,7 @@ Use this checklist before switching the website to production traffic.
 - Confirm application and guide metadata.
 - Configure `GOOGLE_SITE_VERIFICATION` in Vercel after Google Search Console provides the token.
 - Submit sitemap in Google Search Console after launch.
+- IndexNow accepted all 78 sitemap URLs with HTTP 200 on 2026-08-01.
 - Confirm no invented certifications, prices, stock status, factory capacity or customer cases are published.
 
 ## Analytics and Conversion Tracking
@@ -84,7 +87,8 @@ Use this checklist before switching the website to production traffic.
 ## Post-Launch
 
 - Review confirmed business data before major website updates.
-- Add real product photos.
+- Replace the remaining placeholder images for `AF-PLA-RC-0011` Plasma Retaining Cap and
+  `AF-ACC-WM-0015` Welding Magnet with reviewed product photos.
 - Upload official PDF catalog.
 - Refresh public download files with `npm run downloads:generate` after SKU updates.
 - Import confirmed SKU data using `docs/product-sku-template.csv`.
