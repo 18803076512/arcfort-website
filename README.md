@@ -260,6 +260,11 @@ raw IP address. Because Vercel Functions can restart or scale across instances, 
 distributed and is not a replacement for a Vercel Firewall rule. Configure the infrastructure rule
 for `POST /api/rfq` when production traffic starts.
 
+The App Router includes three buyer-facing recovery layers: `app/not-found.tsx` for missing URLs,
+`app/error.tsx` for page-level runtime errors and `app/global-error.tsx` for root-layout failures.
+Keep product, RFQ, business email and WhatsApp recovery routes available when these pages are
+updated. Error pages must not expose stack traces, credentials or internal request data.
+
 ## Search Console and Analytics
 
 The site supports Google Search Console verification and GA4 tracking through environment variables.
