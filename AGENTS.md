@@ -58,6 +58,9 @@ generation.
 16. Do not enable Google Product rich result JSON-LD unless real public `offers`, `review`, or
     `aggregateRating` data is available on the same product page. Never add fake prices, stock
     status, ratings or reviews to satisfy structured data tools.
+17. After deployment, run `npm run security:audit:live`. Do not weaken the Content Security Policy
+    or add third-party browser origins without documenting the service, buyer value and required
+    CSP directives.
 
 ## SKU Import Rules
 
