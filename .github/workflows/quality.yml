@@ -37,6 +37,9 @@ jobs:
       - name: Validate product data
         run: npm run products:validate
 
+      - name: Preview safe simple SKU merge
+        run: npm run products:simple:preview
+
       - name: Check product images
         run: npm run products:check-images
 
