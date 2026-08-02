@@ -27,6 +27,12 @@ import {
   normalizeRfqSubmissionToken,
 } from "@/lib/rfq-idempotency";
 import { isTrustedRfqRequest } from "@/lib/rfq-request-security";
+import {
+  buildRfqStorageObjectUrl,
+  buildRfqStorageUpsertUrl,
+  rfqStorageInsertPreference,
+  rfqStorageObjectUpsertHeader,
+} from "@/lib/rfq-storage";
 
 export const runtime = "nodejs";
 
@@ -83,15 +89,6 @@ function cleanFormValue(formData: FormData, field: string) {
 
 function sanitizeFileName(fileName: string) {
   return fileName.replace(/[^a-zA-Z0-9._-]/g, "-").slice(0, 120) || "attachment";
-}
-
-function normalizeSupabaseUrl(url: string) {
-  return url.replace(/\/+$/, "");
-}
-
-function buildStorageObjectUrl(supabaseUrl: string, bucket: string, objectPath: string) {
-  const encodedPath = objectPath.split("/").map(encodeURIComponent).join("/");
-  return `${normalizeSupabaseUrl(supabaseUrl)}/storage/v1/object/${encodeURIComponent(bucket)}/${encodedPath}`;
 }
 
 function getAttachments(formData: FormData) {
@@ -201,13 +198,13 @@ async function uploadAttachments(
 
   for (const [index, file] of files.entries()) {
     const objectPath = `${reference.toLowerCase()}/${index + 1}-${sanitizeFileName(file.name)}`;
-    const response = await fetch(buildStorageObjectUrl(supabaseUrl, bucket, objectPath), {
+    const response = await fetch(buildRfqStorageObjectUrl(supabaseUrl, bucket, objectPath), {
       method: "POST",
       headers: {
         apikey: serviceRoleKey,
         Authorization: `Bearer ${serviceRoleKey}`,
         "Content-Type": file.type || "application/octet-stream",
-        "x-upsert": "false",
+        "x-upsert": rfqStorageObjectUpsertHeader,
       },
       body: file,
     });
@@ -240,39 +237,36 @@ async function insertSupabaseInquiry(
     return false;
   }
 
-  const response = await fetch(
-    `${normalizeSupabaseUrl(supabaseUrl)}/rest/v1/${encodeURIComponent(table)}`,
-    {
-      method: "POST",
-      headers: {
-        apikey: serviceRoleKey,
-        Authorization: `Bearer ${serviceRoleKey}`,
-        "Content-Type": "application/json",
-        Prefer: "return=minimal",
-      },
-      body: JSON.stringify({
-        reference,
-        name: payload.name,
-        company: payload.company,
-        email: payload.email,
-        whatsapp: payload.whatsapp,
-        country: payload.country,
-        product_requirements: payload.productRequirements,
-        quantity: payload.quantity,
-        message: payload.message,
-        attachments,
-        source_path: payload.sourcePath,
-        landing_page: getSourceAttributionValue(payload, "landingPage"),
-        referrer: getSourceAttributionValue(payload, "referrer"),
-        utm_source: getSourceAttributionValue(payload, "utmSource"),
-        utm_medium: getSourceAttributionValue(payload, "utmMedium"),
-        utm_campaign: getSourceAttributionValue(payload, "utmCampaign"),
-        utm_term: getSourceAttributionValue(payload, "utmTerm"),
-        utm_content: getSourceAttributionValue(payload, "utmContent"),
-        status: "new",
-      }),
+  const response = await fetch(buildRfqStorageUpsertUrl(supabaseUrl, table), {
+    method: "POST",
+    headers: {
+      apikey: serviceRoleKey,
+      Authorization: `Bearer ${serviceRoleKey}`,
+      "Content-Type": "application/json",
+      Prefer: rfqStorageInsertPreference,
     },
-  );
+    body: JSON.stringify({
+      reference,
+      name: payload.name,
+      company: payload.company,
+      email: payload.email,
+      whatsapp: payload.whatsapp,
+      country: payload.country,
+      product_requirements: payload.productRequirements,
+      quantity: payload.quantity,
+      message: payload.message,
+      attachments,
+      source_path: payload.sourcePath,
+      landing_page: getSourceAttributionValue(payload, "landingPage"),
+      referrer: getSourceAttributionValue(payload, "referrer"),
+      utm_source: getSourceAttributionValue(payload, "utmSource"),
+      utm_medium: getSourceAttributionValue(payload, "utmMedium"),
+      utm_campaign: getSourceAttributionValue(payload, "utmCampaign"),
+      utm_term: getSourceAttributionValue(payload, "utmTerm"),
+      utm_content: getSourceAttributionValue(payload, "utmContent"),
+      status: "new",
+    }),
+  });
 
   if (!response.ok) {
     throw new Error("RFQ database insert failed.");
@@ -773,6 +767,7 @@ export async function POST(request: Request) {
       notificationId: emailNotification.notificationId,
       buyerConfirmationId: emailNotification.buyerConfirmationId,
       emailIdempotencyProtected: true,
+      storageIdempotencyProtected: true,
     };
 
     if (!deliverySucceeded) {

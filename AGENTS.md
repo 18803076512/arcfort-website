@@ -81,6 +81,9 @@ generation.
 24. Preserve RFQ email idempotency. An unchanged manual retry must reuse the browser submission
     token and stable RFQ reference, while sales and buyer emails must use separate Resend
     idempotency keys. Do not include buyer PII in an idempotency key.
+25. Preserve optional RFQ storage idempotency. Supabase attachment retries must reuse stable object
+    paths, and database writes must ignore duplicate RFQ references without overwriting an existing
+    inquiry or resetting its workflow status.
 
 ## SKU Import Rules
 

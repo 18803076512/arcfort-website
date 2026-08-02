@@ -35,7 +35,7 @@ Open Supabase SQL Editor and run:
 This creates:
 
 - `public.rfq_inquiries`
-- A unique buyer-facing `reference` column for `AF-RFQ-...` inquiry tracking
+- A unique buyer-facing `reference` constraint for `AF-RFQ-...` inquiry tracking and retry handling
 - Private storage bucket `rfq-attachments`
 - Indexes for status, country, created date and UTM source/campaign
 - An `updated_at` trigger
@@ -45,7 +45,13 @@ The table does not create public visitor policies. The website API route writes 
 service role key.
 
 If the table already exists, run the current schema again before enabling storage. The migration-safe
-statements add the `reference` column and its unique index without deleting existing inquiries.
+statements add the `reference` column and its full unique constraint without deleting existing
+inquiries. The schema also asks PostgREST to reload its schema cache so `on_conflict=reference` is
+available immediately.
+
+The API uses the reference as an idempotency boundary. An unchanged browser retry uploads files to
+the same private paths with upsert and ignores a duplicate inquiry row. It does not overwrite the
+existing row, which preserves any `reviewing`, `quoted`, `closed` or `spam` status already assigned.
 
 ## Step 3: Configure Environment Variables
 

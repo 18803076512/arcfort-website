@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { siteConfig } from "@/lib/content/site";
 import { rfqRateLimitConfig } from "@/lib/rfq-rate-limit";
 import { rfqEmailIdempotencyWindowHours } from "@/lib/rfq-idempotency";
+import { rfqStorageConflictColumn } from "@/lib/rfq-storage";
 
 export const dynamic = "force-dynamic";
 export const runtime = "nodejs";
@@ -87,6 +88,9 @@ export function GET() {
       },
       storage: {
         ready: storageReady,
+        idempotencyProtected: true,
+        conflictKey: rfqStorageConflictColumn,
+        attachmentRetrySafe: true,
         supabaseUrlConfigured,
         serviceRoleConfigured: supabaseServiceRoleConfigured,
         tableConfigured: supabaseTableConfigured,

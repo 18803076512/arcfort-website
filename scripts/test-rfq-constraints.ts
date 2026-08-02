@@ -32,6 +32,14 @@ import {
 } from "../lib/rfq-idempotency.ts";
 import { isTrustedRfqRequest } from "../lib/rfq-request-security.ts";
 import { buildRfqProductRequirements, formatRfqListItems } from "../lib/rfq-list.ts";
+import {
+  buildRfqStorageObjectUrl,
+  buildRfqStorageUpsertUrl,
+  normalizeSupabaseUrl,
+  rfqStorageConflictColumn,
+  rfqStorageInsertPreference,
+  rfqStorageObjectUpsertHeader,
+} from "../lib/rfq-storage.ts";
 
 const validValues: RfqTextValues = {
   name: "Alex Buyer",
@@ -244,6 +252,23 @@ assert.equal(retriedSubmissionAttempt.token, firstSubmissionAttempt.token);
 assert.notEqual(changedSubmissionAttempt.token, firstSubmissionAttempt.token);
 assert.equal(changedSubmissionAttempt.fingerprint, "changed-form");
 assert.notEqual(expiredSubmissionAttempt.token, firstSubmissionAttempt.token);
+
+assert.equal(normalizeSupabaseUrl("https://project.supabase.co///"), "https://project.supabase.co");
+assert.equal(
+  buildRfqStorageObjectUrl(
+    "https://project.supabase.co/",
+    "rfq attachments",
+    "af-rfq-20260802/1-drawing #1.pdf",
+  ),
+  "https://project.supabase.co/storage/v1/object/rfq%20attachments/af-rfq-20260802/1-drawing%20%231.pdf",
+);
+assert.equal(
+  buildRfqStorageUpsertUrl("https://project.supabase.co/", "rfq inquiries"),
+  "https://project.supabase.co/rest/v1/rfq%20inquiries?on_conflict=reference",
+);
+assert.equal(rfqStorageConflictColumn, "reference");
+assert.equal(rfqStorageInsertPreference, "resolution=ignore-duplicates,return=minimal");
+assert.equal(rfqStorageObjectUpsertHeader, "true");
 
 const productionUrl = "https://www.arcfortweld.com";
 
