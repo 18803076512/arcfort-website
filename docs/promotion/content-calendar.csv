@@ -1,0 +1,9 @@
+week,channel,topic,campaign_id,asset,call_to_action,status
+1,LinkedIn company page,Distributor product scope,linkedin_company_post,Distributor sourcing guide,Download sourcing guide,ready
+1,Industry directory,Company and product profile,industry_directory_profile,Distributor supply page,Review distributor supply,ready
+1,Targeted email,Relevant distributor introduction,distributor_email_intro,Distributor sourcing guide,Review product scope,ready
+2,LinkedIn company page,MIG/MAG torch parts sourcing,linkedin_mig_post,MIG/MAG category page,Browse MIG/MAG torch parts,ready
+2,Targeted email,Relevant contact follow-up,distributor_email_followup,Download center,Download buyer files,ready
+3,LinkedIn company page,Plasma cutting consumables sourcing,linkedin_plasma_post,Plasma category page,Browse plasma consumables,ready
+3,WhatsApp business,Permission-based guide share,whatsapp_business_intro,Distributor sourcing guide,Review distributor supply,ready
+4,LinkedIn company page,How to prepare a traceable RFQ,linkedin_company_post,RFQ checklist in sourcing guide,Start distributor RFQ,ready

@@ -443,6 +443,8 @@ RFQ information.
 
 Generated public files:
 
+- `public/downloads/arcfort-distributor-sourcing-guide.pdf` - four-page English distributor guide
+  covering product scope, sourcing workflow, confirmed trade terms and an RFQ checklist
 - `public/downloads/renqiu-ailesen-welding-catalog.pdf` - compressed website version of the Renqiu
   Ailesen welding product catalog for buyer download
 - `public/downloads/arcfort-public-product-list.csv` - active product list with SKU, product URL
@@ -457,6 +459,32 @@ npm run downloads:generate
 
 The public product list must not expose internal notes, private supplier references, prices,
 unconfirmed certifications or hidden SKU workflow fields.
+
+## Distributor Promotion Workflow
+
+The first measurable promotion campaign targets relevant welding and cutting product distributors,
+importers and wholesalers. Campaign definitions are stored in `data/promotion/campaigns.csv`; the
+generated UTM links are stored in `docs/promotion/campaign-links.csv`.
+
+Generate and verify promotion links with:
+
+```bash
+npm run promotion:links
+npm run promotion:check
+npm run promotion:test
+```
+
+The English campaign assets are:
+
+- `public/downloads/arcfort-distributor-sourcing-guide.pdf` - published buyer download
+- `scripts/generate-distributor-guide.py` - reproducible PDF source using ReportLab and Pillow
+- `docs/promotion/distributor-campaign-playbook.md` - audience, channel, measurement and publishing workflow
+- `docs/promotion/outreach-templates.md` - targeted email, permission-based WhatsApp, LinkedIn and directory copy
+- `docs/promotion/content-calendar.csv` - four-week channel sequence
+
+Only allowlisted UTM fields are retained in GA4 page locations; unrelated query parameters are
+discarded. Do not put buyer personal data in UTM parameters or analytics events. Outreach must be
+relevant, identified and manually reviewed; the repository does not automate unsolicited messages.
 
 ## Useful Documents
 
@@ -479,6 +507,8 @@ unconfirmed certifications or hidden SKU workflow fields.
 - `docs/missing-product-data-supplement.csv` - missing data worksheet for product pages
 - `docs/production-missing-data-supplement.md` - production missing data priority and RFQ backend notes
 - `docs/search-indexing-submission.md` - Google Search Console and IndexNow submission workflow
+- `docs/promotion/distributor-campaign-playbook.md` - first distributor campaign workflow and measurement plan
+- `docs/promotion/outreach-templates.md` - compliant distributor outreach copy
 - `docs/sku-template-guide.md` - SKU template filling guide and first batch recommendation
 - `docs/first-30-sku-preparation.md` - first 30 SKU worksheet workflow and data confirmation guide
 - `docs/product-data-workflow.md` - product CSV workflow and validation rules

@@ -79,6 +79,11 @@ const sourcingSteps = [
 
 const resourceLinks = [
   {
+    href: "/downloads/arcfort-distributor-sourcing-guide.pdf",
+    title: "Distributor Sourcing Guide",
+    description: "Download the product scope, sourcing process, trade terms and RFQ checklist.",
+  },
+  {
     href: "/downloads",
     title: "Catalog & RFQ Files",
     description: "Download the welding catalog, public product list and RFQ worksheet.",
@@ -219,10 +224,11 @@ export default function DistributorSupplyPage() {
                 Build Distributor RFQ
               </Link>
               <Link
-                href="/downloads"
+                href="/downloads/arcfort-distributor-sourcing-guide.pdf"
+                download
                 className="inline-flex min-h-12 w-full items-center justify-center border border-white/35 px-6 text-sm font-bold uppercase tracking-[0.14em] text-white transition hover:border-white hover:bg-white/10 sm:w-auto"
               >
-                Download Product Files
+                Download Sourcing Guide
               </Link>
             </div>
             <div className="mt-8 flex flex-col gap-2 border-t border-white/15 pt-5 text-sm text-slate-300 sm:flex-row sm:gap-6">
@@ -427,7 +433,7 @@ export default function DistributorSupplyPage() {
               Check product, inspection and delivery information before inquiry.
             </h2>
           </div>
-          <div className="mt-9 grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
+          <div className="mt-9 grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6">
             {resourceLinks.map((item) => (
               <Link
                 key={item.href}

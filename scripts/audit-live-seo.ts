@@ -730,19 +730,24 @@ async function main() {
     }
   }
 
-  const catalogPdfUrl = `${canonicalBaseUrl}/downloads/renqiu-ailesen-welding-catalog.pdf`;
-  const catalogPdfResponse = await fetch(toFetchUrl(catalogPdfUrl), {
-    redirect: "manual",
-    signal: AbortSignal.timeout(20_000),
-  });
-  const catalogCanonicalHeader = catalogPdfResponse.headers.get("link") ?? "";
+  for (const pdfPath of [
+    "/downloads/arcfort-distributor-sourcing-guide.pdf",
+    "/downloads/renqiu-ailesen-welding-catalog.pdf",
+  ]) {
+    const pdfCanonicalUrl = `${canonicalBaseUrl}${pdfPath}`;
+    const pdfResponse = await fetch(toFetchUrl(pdfCanonicalUrl), {
+      redirect: "manual",
+      signal: AbortSignal.timeout(20_000),
+    });
+    const pdfCanonicalHeader = pdfResponse.headers.get("link") ?? "";
 
-  if (catalogPdfResponse.status !== 200) {
-    errors.push(`Catalog PDF returned HTTP ${catalogPdfResponse.status}.`);
-  }
+    if (pdfResponse.status !== 200) {
+      errors.push(`${pdfPath} returned HTTP ${pdfResponse.status}.`);
+    }
 
-  if (!catalogCanonicalHeader.includes(`<${catalogPdfUrl}>; rel="canonical"`)) {
-    errors.push("Catalog PDF is missing its canonical Link header.");
+    if (!pdfCanonicalHeader.includes(`<${pdfCanonicalUrl}>; rel="canonical"`)) {
+      errors.push(`${pdfPath} is missing its canonical Link header.`);
+    }
   }
 
   for (const csvPath of [

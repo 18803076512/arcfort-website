@@ -32,6 +32,14 @@ const documentTypes = [
 
 const downloadFiles = [
   {
+    title: "ArcFort Weld Distributor Sourcing Guide",
+    type: "PDF",
+    href: "/downloads/arcfort-distributor-sourcing-guide.pdf",
+    description:
+      "Download a concise guide to ArcFort Weld product families, sourcing workflow, confirmed trade terms and distributor RFQ preparation.",
+    note: "Use the checklist to prepare product references, quantities, drawings, packaging requirements and destination details before quotation.",
+  },
+  {
     title: "Renqiu Ailesen Welding Catalog",
     type: "PDF",
     href: "/downloads/renqiu-ailesen-welding-catalog.pdf",
@@ -68,7 +76,7 @@ const faq = [
   {
     question: "Are public PDF catalogs available on the website?",
     answer:
-      "Catalog documents should match confirmed product scope. Buyers can request product catalogs by category or send an item list for targeted catalog support.",
+      "Yes. Buyers can download the ArcFort Weld distributor sourcing guide and the Renqiu Ailesen welding catalog. Final product details are confirmed against the requested model, sample, drawing and quantity before quotation.",
   },
   {
     question: "Can ArcFort Weld provide exact product data sheets?",
