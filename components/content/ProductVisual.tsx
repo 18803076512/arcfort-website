@@ -9,6 +9,7 @@ type ProductVisualProps = {
   mainImage?: string;
   imageStatus?: ProductImageStatus;
   compact?: boolean;
+  denseMobile?: boolean;
 };
 
 export function ProductVisual({
@@ -18,6 +19,7 @@ export function ProductVisual({
   mainImage,
   imageStatus,
   compact = false,
+  denseMobile = false,
 }: ProductVisualProps) {
   const visualTitle = compact ? "Welding & Cutting Consumable" : title;
   const visualCategory = compact ? "RFQ" : category;
@@ -32,8 +34,14 @@ export function ProductVisual({
       src={mainImage}
       alt={imageAlt}
       fill
-      sizes={compact ? "(min-width: 1024px) 33vw, 100vw" : "(min-width: 1024px) 45vw, 100vw"}
-      className="object-contain p-5 sm:p-7"
+      sizes={
+        denseMobile
+          ? "(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 46vw"
+          : compact
+            ? "(min-width: 1024px) 33vw, 100vw"
+            : "(min-width: 1024px) 45vw, 100vw"
+      }
+      className={`object-contain ${denseMobile ? "p-3 sm:p-7" : "p-5 sm:p-7"}`}
       priority={!compact}
       quality={88}
     />
@@ -60,12 +68,26 @@ export function ProductVisual({
             </a>
           )}
         </div>
-        <figcaption className="border-t border-slate-200 bg-arc-frost px-4 py-3 sm:px-5">
+        <figcaption
+          className={`border-t border-slate-200 bg-arc-frost ${
+            denseMobile ? "px-2 py-2 sm:px-5 sm:py-3" : "px-4 py-3 sm:px-5"
+          }`}
+        >
           <div className="flex min-w-0 items-center justify-between gap-3">
-            <span className="inline-flex shrink-0 bg-arc-signal px-3 py-1 font-display text-base font-black text-arc-midnight">
+            <span
+              className={`inline-flex shrink-0 bg-arc-signal py-1 font-display font-black text-arc-midnight ${
+                denseMobile ? "px-2 text-sm sm:px-3 sm:text-base" : "px-3 text-base"
+              }`}
+            >
               {label}
             </span>
-            <span className="min-w-0 truncate text-right text-xs font-bold uppercase tracking-[0.14em] text-arc-blue">
+            <span
+              className={`min-w-0 truncate text-right font-bold uppercase text-arc-blue ${
+                denseMobile
+                  ? "text-[10px] tracking-[0.08em] sm:text-xs sm:tracking-[0.14em]"
+                  : "text-xs tracking-[0.14em]"
+              }`}
+            >
               {visualCategory}
             </span>
           </div>
