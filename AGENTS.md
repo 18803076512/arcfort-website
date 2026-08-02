@@ -69,6 +69,9 @@ generation.
 20. After frontend layout, shared component, script or site-image changes, run `npm run build` and
     `npm run performance:budget`. Do not raise a performance budget without documenting the measured
     buyer value and the reason the additional transfer cost is necessary.
+21. Run `npm run security:secrets` before committing environment, deployment, documentation or
+    integration changes. A credential exposed in chat, logs or any external channel must be rotated
+    at its provider even when the repository scan is clean.
 
 ## SKU Import Rules
 

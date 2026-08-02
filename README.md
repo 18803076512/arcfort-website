@@ -262,6 +262,18 @@ GOOGLE_SITE_VERIFICATION=
 NEXT_PUBLIC_GA_ID=
 ```
 
+Scan all Git-tracked text files for high-confidence API keys, access tokens, private keys and
+sensitive environment-variable assignments before committing configuration or documentation:
+
+```bash
+npm run security:secrets
+```
+
+The scan redacts matched values and reports only the credential type, file and line number. It runs
+in CI before product generation, linting and build checks. It complements provider-side key rotation
+and GitHub secret scanning; it does not make a key safe again after that key has been shared outside
+the repository.
+
 Global responses include a Content Security Policy plus `X-Content-Type-Options`, `X-Frame-Options`,
 `Referrer-Policy`, `Permissions-Policy`, `Cross-Origin-Opener-Policy` and legacy browser hardening
 headers. The CSP keeps statically generated pages cacheable, blocks plugins, frames and inline event
