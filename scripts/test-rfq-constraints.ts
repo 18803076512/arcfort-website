@@ -10,6 +10,12 @@ import {
 } from "../lib/rfq-constraints.ts";
 import { validateRfqFileContents } from "../lib/rfq-file-content.ts";
 import {
+  getRfqSubmissionFailureMessage,
+  isRfqSubmissionAbortError,
+  rfqSubmissionTimeoutMs,
+  rfqSubmissionTimeoutSeconds,
+} from "../lib/rfq-client.ts";
+import {
   createFixedWindowRateLimiter,
   getRfqRateLimitClientKey,
   getRfqRateLimitHeaders,
@@ -30,6 +36,15 @@ const validValues: RfqTextValues = {
 };
 
 assert.deepEqual(validateRfqTextValues(validValues), {});
+
+const abortError = new Error("Request aborted");
+abortError.name = "AbortError";
+assert.equal(rfqSubmissionTimeoutMs, 45_000);
+assert.equal(rfqSubmissionTimeoutSeconds, 45);
+assert.equal(isRfqSubmissionAbortError(abortError), true);
+assert.equal(isRfqSubmissionAbortError(new Error("Network unavailable")), false);
+assert.match(getRfqSubmissionFailureMessage(abortError), /avoid a duplicate inquiry/i);
+assert.match(getRfqSubmissionFailureMessage(new Error("Network unavailable")), /try again/i);
 
 const missingEmail = validateRfqTextValues({
   ...validValues,

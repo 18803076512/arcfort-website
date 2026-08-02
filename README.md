@@ -248,6 +248,11 @@ test from the deployed `/rfq` page, then confirm the matching `AF-RFQ-...` refer
 inbox and Resend logs. The command-line checker remains a non-mutating readiness check and does not
 send an inquiry.
 
+The browser waits up to 45 seconds for the RFQ API response. It never retries automatically because
+a delayed response can arrive after the server has already accepted the inquiry. On timeout, all
+entered fields and selected attachments remain in the form, and the buyer is directed to check for
+the confirmation email before retrying or using the email/WhatsApp fallback.
+
 Environment variables:
 
 ```bash
