@@ -78,6 +78,9 @@ generation.
 23. Keep RFQ client requests bounded by a visible timeout and preserve buyer-entered values on
     failure. Never automatically retry a submitted RFQ because the first request may already have
     reached the server or email provider.
+24. Preserve RFQ email idempotency. An unchanged manual retry must reuse the browser submission
+    token and stable RFQ reference, while sales and buyer emails must use separate Resend
+    idempotency keys. Do not include buyer PII in an idempotency key.
 
 ## SKU Import Rules
 

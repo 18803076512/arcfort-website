@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { siteConfig } from "@/lib/content/site";
 import { rfqRateLimitConfig } from "@/lib/rfq-rate-limit";
+import { rfqEmailIdempotencyWindowHours } from "@/lib/rfq-idempotency";
 
 export const dynamic = "force-dynamic";
 export const runtime = "nodejs";
@@ -77,6 +78,8 @@ export function GET() {
       email: {
         ready: emailReady,
         buyerConfirmationReady: emailReady,
+        idempotencyProtected: true,
+        idempotencyWindowHours: rfqEmailIdempotencyWindowHours,
         resendApiKeyConfigured,
         fromConfigured: emailFromConfigured,
         recipientConfigured: emailRecipientConfigured,

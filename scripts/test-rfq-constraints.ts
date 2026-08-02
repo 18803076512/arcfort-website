@@ -21,6 +21,15 @@ import {
   getRfqRateLimitHeaders,
 } from "../lib/rfq-rate-limit.ts";
 import { createRfqReference } from "../lib/rfq-reference.ts";
+import {
+  createRfqEmailIdempotencyKey,
+  createRfqReferenceFromSubmissionToken,
+  createRfqSubmissionToken,
+  getOrCreateRfqSubmissionAttempt,
+  isRfqSubmissionTokenCurrent,
+  normalizeRfqSubmissionToken,
+  rfqEmailIdempotencyWindowHours,
+} from "../lib/rfq-idempotency.ts";
 import { isTrustedRfqRequest } from "../lib/rfq-request-security.ts";
 import { buildRfqProductRequirements, formatRfqListItems } from "../lib/rfq-list.ts";
 
@@ -43,7 +52,7 @@ assert.equal(rfqSubmissionTimeoutMs, 45_000);
 assert.equal(rfqSubmissionTimeoutSeconds, 45);
 assert.equal(isRfqSubmissionAbortError(abortError), true);
 assert.equal(isRfqSubmissionAbortError(new Error("Network unavailable")), false);
-assert.match(getRfqSubmissionFailureMessage(abortError), /avoid a duplicate inquiry/i);
+assert.match(getRfqSubmissionFailureMessage(abortError), /same protected submission identifier/i);
 assert.match(getRfqSubmissionFailureMessage(new Error("Network unavailable")), /try again/i);
 
 const missingEmail = validateRfqTextValues({
@@ -165,6 +174,76 @@ assert.equal(
   createRfqReference(new Date("2026-07-26T08:00:00.000Z"), "12345678-abcd-4000-8000-123456789abc"),
   "AF-RFQ-20260726-12345678",
 );
+
+const submissionUuid = "12345678-abcd-4000-8000-123456789abc";
+const alternateSubmissionUuid = "87654321-dcba-4000-8000-cba987654321";
+const submissionToken = createRfqSubmissionToken(
+  new Date("2026-08-02T08:00:00.000Z"),
+  submissionUuid,
+);
+assert.equal(submissionToken, "20260802-12345678-abcd-4000-8000-123456789abc");
+assert.equal(
+  normalizeRfqSubmissionToken("20260802-12345678-ABCD-4000-8000-123456789ABC"),
+  submissionToken,
+);
+assert.equal(normalizeRfqSubmissionToken("20260230-12345678-abcd-4000-8000-123456789abc"), null);
+assert.equal(normalizeRfqSubmissionToken("not-a-submission-token"), null);
+assert.equal(
+  isRfqSubmissionTokenCurrent(submissionToken, new Date("2026-08-02T23:59:00.000Z")),
+  true,
+);
+assert.equal(
+  isRfqSubmissionTokenCurrent(submissionToken, new Date("2026-08-03T00:01:00.000Z")),
+  true,
+);
+assert.equal(
+  isRfqSubmissionTokenCurrent(submissionToken, new Date("2026-08-04T00:01:00.000Z")),
+  false,
+);
+assert.equal(createRfqReferenceFromSubmissionToken(submissionToken), "AF-RFQ-20260802-12345678");
+assert.equal(rfqEmailIdempotencyWindowHours, 24);
+assert.equal(
+  createRfqEmailIdempotencyKey("sales", submissionToken),
+  `arcfort-rfq-sales/${submissionToken}`,
+);
+assert.equal(
+  createRfqEmailIdempotencyKey("buyer", submissionToken),
+  `arcfort-rfq-buyer/${submissionToken}`,
+);
+assert.notEqual(
+  createRfqEmailIdempotencyKey("sales", submissionToken),
+  createRfqEmailIdempotencyKey("buyer", submissionToken),
+);
+assert.ok(createRfqEmailIdempotencyKey("sales", submissionToken).length <= 256);
+
+const firstSubmissionAttempt = getOrCreateRfqSubmissionAttempt(
+  null,
+  "unchanged-form",
+  new Date("2026-08-02T08:00:00.000Z"),
+  submissionUuid,
+);
+const retriedSubmissionAttempt = getOrCreateRfqSubmissionAttempt(
+  firstSubmissionAttempt,
+  "unchanged-form",
+  new Date("2026-08-02T08:01:00.000Z"),
+  alternateSubmissionUuid,
+);
+const changedSubmissionAttempt = getOrCreateRfqSubmissionAttempt(
+  firstSubmissionAttempt,
+  "changed-form",
+  new Date("2026-08-02T08:01:00.000Z"),
+  alternateSubmissionUuid,
+);
+const expiredSubmissionAttempt = getOrCreateRfqSubmissionAttempt(
+  firstSubmissionAttempt,
+  "unchanged-form",
+  new Date("2026-08-04T08:01:00.000Z"),
+  alternateSubmissionUuid,
+);
+assert.equal(retriedSubmissionAttempt.token, firstSubmissionAttempt.token);
+assert.notEqual(changedSubmissionAttempt.token, firstSubmissionAttempt.token);
+assert.equal(changedSubmissionAttempt.fingerprint, "changed-form");
+assert.notEqual(expiredSubmissionAttempt.token, firstSubmissionAttempt.token);
 
 const productionUrl = "https://www.arcfortweld.com";
 

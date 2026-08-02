@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { type ChangeEvent, type FormEvent, useEffect, useMemo, useState } from "react";
+import { type ChangeEvent, type FormEvent, useEffect, useMemo, useRef, useState } from "react";
 import { useRfqList } from "@/components/rfq/useRfqList";
 import { trackAnalyticsEvent } from "@/lib/analytics-events";
 import { siteConfig } from "@/lib/content/site";
@@ -32,6 +32,7 @@ import {
   rfqSubmissionTimeoutMs,
   rfqSubmissionTimeoutSeconds,
 } from "@/lib/rfq-client";
+import { getOrCreateRfqSubmissionAttempt, type RfqSubmissionAttempt } from "@/lib/rfq-idempotency";
 
 type RfqFormValues = RfqTextValues;
 
@@ -178,6 +179,7 @@ export function RfqForm({ initialProduct = "" }: RfqFormProps) {
   const [submissionResult, setSubmissionResult] = useState<RfqResponse | null>(null);
   const [failedReference, setFailedReference] = useState("");
   const [submittedRequirements, setSubmittedRequirements] = useState("");
+  const submissionAttemptRef = useRef<RfqSubmissionAttempt | null>(null);
   const selectedProducts = useRfqList();
   const hasCompleteLineItemQuantities =
     selectedProducts.length > 0 &&
@@ -372,7 +374,29 @@ export function RfqForm({ initialProduct = "" }: RfqFormProps) {
 
     const formData = new FormData();
     const sourceAttribution = getStoredSourceAttribution();
+    const sourcePath = window.location.pathname + window.location.search;
+    const submissionFingerprint = JSON.stringify({
+      values: {
+        ...values,
+        productRequirements,
+        quantity: quantityForSubmission,
+      },
+      sourcePath,
+      sourceAttribution,
+      attachments: attachments.map((file) => ({
+        name: file.name,
+        size: file.size,
+        type: file.type,
+        lastModified: file.lastModified,
+      })),
+    });
+    const submissionAttempt = getOrCreateRfqSubmissionAttempt(
+      submissionAttemptRef.current,
+      submissionFingerprint,
+    );
+    submissionAttemptRef.current = submissionAttempt;
 
+    formData.append("submissionToken", submissionAttempt.token);
     formData.append("name", values.name);
     formData.append("company", values.company);
     formData.append("email", values.email);
@@ -383,7 +407,7 @@ export function RfqForm({ initialProduct = "" }: RfqFormProps) {
     formData.append("message", values.message);
     formData.append("website", website);
     formData.append("startedAt", String(startedAt));
-    formData.append("sourcePath", window.location.pathname + window.location.search);
+    formData.append("sourcePath", sourcePath);
 
     for (const field of sourceAttributionFields) {
       formData.append(field, sourceAttribution[field]);
@@ -572,6 +596,7 @@ export function RfqForm({ initialProduct = "" }: RfqFormProps) {
             setSubmissionResult(null);
             setFailedReference("");
             setSubmittedRequirements("");
+            submissionAttemptRef.current = null;
             setIsSubmitted(false);
           }}
           className="mt-6 bg-arc-blue px-5 py-3 text-sm font-bold uppercase tracking-[0.14em] text-white transition hover:bg-arc-midnight"

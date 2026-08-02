@@ -39,6 +39,12 @@ Email flow:
   failure does not block the sales notification success response.
 - Resend and Supabase delivery run independently. A Supabase outage does not block a successful
   sales email, and a Resend outage does not discard an inquiry that Supabase stored successfully.
+- The browser creates one submission token for the current RFQ payload. An unchanged retry reuses
+  that token, while any change to fields, selected products, source data or attachments creates a
+  new token.
+- The API derives a stable RFQ reference from the token and sends separate Resend idempotency keys
+  for the sales notification and buyer confirmation. Resend retains these keys for 24 hours, so an
+  unchanged retry returns the original email result without sending the same message twice.
 - When files are selected and Resend is unavailable, Supabase counts as a complete delivery only
   after the inquiry row and every selected file are stored.
 - The browser shows success only when at least one delivery channel succeeds. Otherwise it displays
@@ -59,6 +65,7 @@ References:
 
 - <https://vercel.com/docs/functions/limitations#request-body-size>
 - <https://resend.com/docs/dashboard/emails/attachments#attachment-limitations>
+- <https://resend.com/docs/dashboard/emails/idempotency-keys>
 
 Spam controls:
 
