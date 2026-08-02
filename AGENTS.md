@@ -72,6 +72,9 @@ generation.
 21. Run `npm run security:secrets` before committing environment, deployment, documentation or
     integration changes. A credential exposed in chat, logs or any external channel must be rotated
     at its provider even when the repository scan is clean.
+22. Keep the scheduled Production health incident workflow enabled. The health job must remain
+    read-only; grant `issues: write` only to the separate incident job, and never include credentials
+    or buyer-submitted RFQ data in incident titles, bodies or comments.
 
 ## SKU Import Rules
 

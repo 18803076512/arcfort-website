@@ -31,3 +31,94 @@ jobs:
 
       - name: Check production RFQ, SEO and security health
         run: npm run health:production
+
+  incident:
+    name: incident
+    needs: health
+    if: ${{ always() }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      issues: write
+    env:
+      HEALTH_RESULT: ${{ needs.health.result }}
+
+    steps:
+      - name: Open or resolve production health incident
+        uses: actions/github-script@v9
+        with:
+          script: |
+            const marker = "<!-- arcfort-production-health-incident -->";
+            const result = process.env.HEALTH_RESULT || "unknown";
+
+            if (result === "cancelled") {
+              core.info("A newer production health run replaced this run; no incident update is needed.");
+              return;
+            }
+
+            const { owner, repo } = context.repo;
+            const runUrl = `${context.serverUrl}/${owner}/${repo}/actions/runs/${context.runId}`;
+            const checkedAt = new Date().toISOString();
+            const openIssues = await github.paginate(github.rest.issues.listForRepo, {
+              owner,
+              repo,
+              state: "open",
+              per_page: 100,
+            });
+            const incident = openIssues.find(
+              (issue) => !issue.pull_request && issue.body?.includes(marker),
+            );
+
+            if (result === "success") {
+              if (!incident) {
+                core.info("Production health passed and no open incident exists.");
+                return;
+              }
+
+              await github.rest.issues.createComment({
+                owner,
+                repo,
+                issue_number: incident.number,
+                body: `Production health recovered at ${checkedAt}.\n\nSuccessful run: ${runUrl}`,
+              });
+              await github.rest.issues.update({
+                owner,
+                repo,
+                issue_number: incident.number,
+                state: "closed",
+                state_reason: "completed",
+              });
+              core.notice(`Closed recovered production incident #${incident.number}.`);
+              return;
+            }
+
+            const body = [
+              marker,
+              "## Production health check failed",
+              "",
+              `Result: **${result}**`,
+              `Checked at: ${checkedAt}`,
+              `Workflow run: ${runUrl}`,
+              "",
+              "Review the RFQ readiness, live SEO and security-header output in the linked run.",
+              "This issue will close automatically after a successful production health check.",
+            ].join("\n");
+
+            if (incident) {
+              await github.rest.issues.createComment({
+                owner,
+                repo,
+                issue_number: incident.number,
+                body: `Production health is still failing at ${checkedAt}.\n\nResult: **${result}**\nRun: ${runUrl}`,
+              });
+              core.warning(`Updated open production incident #${incident.number}.`);
+              return;
+            }
+
+            const created = await github.rest.issues.create({
+              owner,
+              repo,
+              title: "[Production] ArcFort Weld health check failed",
+              body,
+            });
+            core.warning(`Opened production incident #${created.data.number}.`);

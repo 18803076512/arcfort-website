@@ -323,6 +323,11 @@ Run the combined production health check without sending an RFQ or email:
 npm run health:production
 ```
 
+GitHub Actions runs the same non-mutating production health check every six hours. A failed run
+opens or updates one `[Production] ArcFort Weld health check failed` issue with the Actions run link;
+the next successful run adds a recovery note and closes that issue. The health job keeps read-only
+repository access, while only the separate incident job receives `issues: write` permission.
+
 ## Performance Budgets
 
 Run a production build and then check the buyer-facing transfer budgets with:
