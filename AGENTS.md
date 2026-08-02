@@ -75,6 +75,9 @@ generation.
 22. Keep the scheduled Production health incident workflow enabled. The health job must remain
     read-only; grant `issues: write` only to the separate incident job, and never include credentials
     or buyer-submitted RFQ data in incident titles, bodies or comments.
+23. Keep RFQ client requests bounded by a visible timeout and preserve buyer-entered values on
+    failure. Never automatically retry a submitted RFQ because the first request may already have
+    reached the server or email provider.
 
 ## SKU Import Rules
 

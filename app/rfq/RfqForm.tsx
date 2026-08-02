@@ -26,6 +26,12 @@ import {
   validateRfqFiles,
   validateRfqTextValues,
 } from "@/lib/rfq-constraints";
+import {
+  getRfqSubmissionFailureMessage,
+  isRfqSubmissionAbortError,
+  rfqSubmissionTimeoutMs,
+  rfqSubmissionTimeoutSeconds,
+} from "@/lib/rfq-client";
 
 type RfqFormValues = RfqTextValues;
 
@@ -387,10 +393,17 @@ export function RfqForm({ initialProduct = "" }: RfqFormProps) {
       formData.append("attachments", file);
     }
 
+    const requestController = new AbortController();
+    const requestTimeout = window.setTimeout(
+      () => requestController.abort(),
+      rfqSubmissionTimeoutMs,
+    );
+
     try {
       const response = await fetch("/api/rfq", {
         method: "POST",
         body: formData,
+        signal: requestController.signal,
       });
       const result = (await response.json()) as RfqResponse;
 
@@ -447,18 +460,21 @@ export function RfqForm({ initialProduct = "" }: RfqFormProps) {
         lead_source: selectedProducts.length > 0 ? "rfq_shortlist" : "rfq_form",
         items: analyticsItems.length > 0 ? analyticsItems : undefined,
       });
-    } catch {
+    } catch (error) {
+      const timedOut = isRfqSubmissionAbortError(error);
+
       setFailedReference("");
       setErrors({
-        submission:
-          "RFQ submission failed. Please try again or use the email and WhatsApp contacts below.",
+        submission: getRfqSubmissionFailureMessage(error),
       });
       trackAnalyticsEvent("rfq_submit_error", {
-        failure_stage: "network_or_parse",
+        failure_stage: timedOut ? "request_timeout" : "network_or_parse",
+        timeout_seconds: timedOut ? rfqSubmissionTimeoutSeconds : undefined,
         attachment_count: attachments.length,
         selected_product_count: selectedProducts.length,
       });
     } finally {
+      window.clearTimeout(requestTimeout);
       setIsSubmitting(false);
     }
   }
@@ -570,6 +586,7 @@ export function RfqForm({ initialProduct = "" }: RfqFormProps) {
     <form
       onSubmit={handleSubmit}
       noValidate
+      aria-busy={isSubmitting}
       className="border border-slate-200 bg-white p-6 shadow-sm sm:p-8"
     >
       <label className="sr-only" htmlFor="website">
@@ -916,13 +933,20 @@ export function RfqForm({ initialProduct = "" }: RfqFormProps) {
         <button
           type="submit"
           disabled={isSubmitting}
+          aria-describedby="rfq-submit-status"
           className="inline-flex min-h-12 w-full items-center justify-center bg-arc-blue px-6 py-3 text-sm font-bold uppercase tracking-[0.12em] text-white transition hover:bg-arc-midnight disabled:cursor-not-allowed disabled:bg-slate-400 sm:w-auto sm:tracking-[0.16em]"
         >
           {isSubmitting ? "Submitting..." : "Submit RFQ"}
         </button>
-        <p className="text-xs leading-5 text-slate-500">
-          Your inquiry is validated by the website before submission. Large or sensitive files can
-          also be sent directly by email after initial contact.
+        <p
+          id="rfq-submit-status"
+          role="status"
+          aria-live="polite"
+          className="text-xs leading-5 text-slate-500"
+        >
+          {isSubmitting
+            ? `Securely sending your inquiry. This can take up to ${rfqSubmissionTimeoutSeconds} seconds; keep this page open.`
+            : "Your inquiry is validated before submission. Large or sensitive files can also be sent directly by email after initial contact."}
         </p>
       </div>
     </form>
