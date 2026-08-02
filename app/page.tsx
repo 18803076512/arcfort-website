@@ -1,7 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
 import { ProductCard } from "@/components/content/ProductCard";
-import { RfqCta } from "@/components/content/RfqCta";
 import { StructuredData } from "@/components/content/StructuredData";
 import { getAllApplications } from "@/lib/content/applications";
 import { getAllProductCategories } from "@/lib/content/categories";
@@ -31,15 +30,6 @@ const advantages = [
   "Export packing for international shipments",
   "Fast response for technical RFQ review",
   "Product customization by drawing or reference part",
-];
-
-const supplyScope = [
-  "MIG/MAG Torch Parts",
-  "TIG Torch Parts",
-  "Plasma Cutting Consumables",
-  "Welding Consumables",
-  "Welding & Cutting Machines",
-  "Welding Accessories",
 ];
 
 const heroSupplySignals = [
@@ -173,13 +163,15 @@ export default function Home() {
             </div>
           </div>
 
-          <div className="mt-12 grid gap-px border border-white/15 bg-white/15 shadow-industrial sm:grid-cols-2 lg:grid-cols-4">
+          <div className="mt-10 grid grid-cols-2 gap-px border border-white/15 bg-white/15 shadow-industrial sm:mt-12 lg:grid-cols-4">
             {heroSupplySignals.map((item) => (
               <div key={item} className="bg-arc-midnight/65 p-4 backdrop-blur-sm">
                 <p className="text-xs font-bold uppercase tracking-[0.18em] text-arc-signal">
                   Supply Scope
                 </p>
-                <p className="mt-2 font-display text-lg font-black text-white">{item}</p>
+                <p className="mt-2 break-words font-display text-sm font-black leading-5 text-white sm:text-lg sm:leading-normal">
+                  {item}
+                </p>
               </div>
             ))}
           </div>
@@ -212,28 +204,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="bg-white py-16 sm:py-20">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="max-w-2xl">
-            <p className="text-sm font-bold uppercase tracking-[0.2em] text-arc-blue">
-              Product Scope
-            </p>
-            <h2 className="mt-3 font-display text-3xl font-black text-arc-midnight sm:text-4xl">
-              Welding Torch Consumables and Cutting Parts
-            </h2>
-          </div>
-          <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {supplyScope.map((item) => (
-              <div key={item} className="border border-slate-200 bg-slate-50 p-5">
-                <div className="h-1 w-16 bg-arc-signal" />
-                <h3 className="mt-4 font-display text-xl font-black text-arc-midnight">{item}</h3>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <section className="bg-arc-frost py-16 sm:py-20">
+      <section className="bg-arc-frost py-14 sm:py-20">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
             <div>
@@ -251,21 +222,23 @@ export default function Home() {
               Product Center
             </Link>
           </div>
-          <div className="mt-10 grid gap-5 md:grid-cols-3">
+          <div className="mt-8 grid grid-cols-2 gap-3 sm:mt-10 sm:gap-5 md:grid-cols-3">
             {categories.map((category) => (
               <Link
                 href={`/products/${category.slug}`}
                 key={category.slug}
-                className="group border border-slate-200 bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:border-arc-blue hover:shadow-industrial"
+                className="group min-w-0 border border-slate-200 bg-white p-4 shadow-sm transition hover:-translate-y-1 hover:border-arc-blue hover:shadow-industrial sm:p-6"
               >
-                <span className="flex h-12 w-12 items-center justify-center bg-arc-navy font-display text-lg font-black text-arc-signal">
+                <span className="flex h-10 w-10 items-center justify-center bg-arc-navy font-display text-sm font-black text-arc-signal sm:h-12 sm:w-12 sm:text-lg">
                   {category.code}
                 </span>
-                <h3 className="mt-5 font-display text-2xl font-black text-arc-midnight">
+                <h3 className="mt-4 break-words font-display text-base font-black leading-tight text-arc-midnight sm:mt-5 sm:text-2xl">
                   {category.title}
                 </h3>
-                <p className="mt-3 text-sm leading-6 text-slate-600">{category.description}</p>
-                <span className="mt-5 inline-flex text-sm font-bold uppercase tracking-[0.14em] text-arc-blue group-hover:text-arc-copper">
+                <p className="mt-3 hidden text-sm leading-6 text-slate-600 sm:block">
+                  {category.description}
+                </p>
+                <span className="mt-4 inline-flex text-[11px] font-bold uppercase tracking-[0.1em] text-arc-blue group-hover:text-arc-copper sm:mt-5 sm:text-sm sm:tracking-[0.14em]">
                   Explore
                 </span>
               </Link>
@@ -274,7 +247,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="bg-white py-16 sm:py-20">
+      <section className="bg-white py-14 sm:py-20">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <p className="text-sm font-bold uppercase tracking-[0.2em] text-arc-blue">
             Featured Products
@@ -282,7 +255,7 @@ export default function Home() {
           <h2 className="mt-3 font-display text-3xl font-black text-arc-midnight sm:text-4xl">
             Featured Welding & Cutting Products
           </h2>
-          <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="mt-8 grid grid-cols-2 gap-3 sm:mt-10 sm:gap-5 lg:grid-cols-3">
             {featuredProducts.map((product) => {
               const category = categoryMap.get(product.categorySlug);
 
@@ -290,7 +263,9 @@ export default function Home() {
                 return null;
               }
 
-              return <ProductCard key={product.slug} product={product} category={category} />;
+              return (
+                <ProductCard key={product.slug} product={product} category={category} denseMobile />
+              );
             })}
           </div>
           <div className="mt-8 flex justify-center">
@@ -368,7 +343,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="bg-arc-midnight py-16 text-white sm:py-20">
+      <section className="bg-arc-midnight py-14 text-white sm:py-20">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="max-w-3xl">
             <p className="text-sm font-bold uppercase tracking-[0.2em] text-arc-signal">
@@ -383,17 +358,21 @@ export default function Home() {
               distributors and importers can qualify the supply fit quickly.
             </p>
           </div>
-          <div className="mt-10 grid gap-5 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
+          <div className="mt-8 grid grid-cols-2 gap-3 sm:mt-10 sm:gap-5 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
             {sourcingSystemLinks.map((item) => (
               <Link
                 key={item.href}
                 href={item.href}
-                className="group border border-white/10 bg-white/5 p-5 transition hover:-translate-y-1 hover:border-arc-signal hover:bg-white/10"
+                className="group min-w-0 border border-white/10 bg-white/5 p-4 transition hover:-translate-y-1 hover:border-arc-signal hover:bg-white/10 sm:p-5"
               >
                 <div className="h-1 w-16 bg-arc-signal" />
-                <h3 className="mt-5 font-display text-xl font-black">{item.title}</h3>
-                <p className="mt-3 text-sm leading-6 text-slate-300">{item.description}</p>
-                <span className="mt-5 inline-flex text-sm font-bold uppercase tracking-[0.14em] text-arc-signal group-hover:text-white">
+                <h3 className="mt-4 break-words font-display text-lg font-black leading-tight sm:mt-5 sm:text-xl">
+                  {item.title}
+                </h3>
+                <p className="mt-3 hidden text-sm leading-6 text-slate-300 sm:block">
+                  {item.description}
+                </p>
+                <span className="mt-4 inline-flex text-[11px] font-bold uppercase tracking-[0.1em] text-arc-signal group-hover:text-white sm:mt-5 sm:text-sm sm:tracking-[0.14em]">
                   View Details
                 </span>
               </Link>
@@ -412,50 +391,50 @@ export default function Home() {
               Clear shipping and payment information for RFQ review.
             </h2>
           </div>
-          <div className="mt-10 grid gap-5 md:grid-cols-2 lg:grid-cols-4">
+          <div className="mt-8 grid grid-cols-2 gap-3 sm:mt-10 sm:gap-5 md:grid-cols-2 lg:grid-cols-4">
             {tradeHighlights.map((item) => (
-              <article key={item.label} className="border border-slate-200 bg-white p-5 shadow-sm">
+              <article
+                key={item.label}
+                className="min-w-0 border border-slate-200 bg-white p-4 shadow-sm sm:p-5"
+              >
                 <h3 className="text-xs font-bold uppercase tracking-[0.16em] text-arc-blue">
                   {item.label}
                 </h3>
-                <p className="mt-3 text-sm leading-6 text-slate-700">{item.value}</p>
+                <p className="mt-3 break-words text-xs leading-5 text-slate-700 sm:text-sm sm:leading-6">
+                  {item.value}
+                </p>
               </article>
             ))}
           </div>
         </div>
       </section>
 
-      <section className="bg-white py-16 sm:py-20">
+      <section className="bg-white py-14 sm:py-20">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <p className="text-sm font-bold uppercase tracking-[0.2em] text-arc-blue">Applications</p>
           <h2 className="mt-3 font-display text-3xl font-black text-arc-midnight sm:text-4xl">
             Industrial use cases for welding and cutting supply.
           </h2>
-          <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="mt-8 grid grid-cols-2 gap-3 sm:mt-10 sm:gap-4 lg:grid-cols-3">
             {applications.map((application) => (
               <Link
                 key={application.slug}
                 href={`/applications/${application.slug}`}
-                className="group bg-arc-midnight p-5 text-white transition hover:-translate-y-1 hover:shadow-industrial"
+                className="group min-w-0 bg-arc-midnight p-4 text-white transition hover:-translate-y-1 hover:shadow-industrial sm:p-5"
               >
                 <div className="h-1 w-16 bg-arc-signal" />
-                <h3 className="mt-5 font-display text-xl font-black">{application.title}</h3>
-                <p className="mt-3 text-sm leading-6 text-slate-300">{application.description}</p>
-                <span className="mt-5 inline-flex text-sm font-bold uppercase tracking-[0.14em] text-arc-signal group-hover:text-white">
+                <h3 className="mt-4 break-words font-display text-lg font-black leading-tight sm:mt-5 sm:text-xl">
+                  {application.title}
+                </h3>
+                <p className="mt-3 hidden text-sm leading-6 text-slate-300 sm:block">
+                  {application.description}
+                </p>
+                <span className="mt-4 inline-flex text-[11px] font-bold uppercase tracking-[0.1em] text-arc-signal group-hover:text-white sm:mt-5 sm:text-sm sm:tracking-[0.14em]">
                   View Application
                 </span>
               </Link>
             ))}
           </div>
-        </div>
-      </section>
-
-      <section className="bg-arc-frost py-16 sm:py-20">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <RfqCta
-            title="Need a reliable welding parts supplier?"
-            description="Send your product list, drawing, product photo or reference part details. ArcFort Weld will respond with quotation, MOQ and delivery options after technical confirmation."
-          />
         </div>
       </section>
     </>
