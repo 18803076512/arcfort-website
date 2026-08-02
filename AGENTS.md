@@ -84,6 +84,10 @@ generation.
 25. Preserve optional RFQ storage idempotency. Supabase attachment retries must reuse stable object
     paths, and database writes must ignore duplicate RFQ references without overwriting an existing
     inquiry or resetting its workflow status.
+26. Promotion links must come from `data/promotion/campaigns.csv` and be regenerated with
+    `npm run promotion:links`. Do not add buyer PII to URLs, analytics events or campaign IDs, and do
+    not automate unsolicited outreach. Use relevant business contacts, identify the company and
+    honor opt-out requests.
 
 ## SKU Import Rules
 

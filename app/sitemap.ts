@@ -22,7 +22,16 @@ export default function sitemap(): MetadataRoute.Sitemap {
     "/privacy",
     "/rfq",
   ];
-  const downloadableRoutes = ["/downloads/renqiu-ailesen-welding-catalog.pdf"];
+  const downloadableRoutes = [
+    {
+      path: "/downloads/arcfort-distributor-sourcing-guide.pdf",
+      lastModified: siteConfig.contentLastModified,
+    },
+    {
+      path: "/downloads/renqiu-ailesen-welding-catalog.pdf",
+      lastModified: siteConfig.catalogLastModified,
+    },
+  ];
   const categoryRoutes = getAllProductCategories().map((category) => `/products/${category.slug}`);
   const applicationRoutes = getAllApplications().map(
     (application) => `/applications/${application.slug}`,
@@ -35,8 +44,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
       lastModified: siteConfig.contentLastModified,
     })),
     ...downloadableRoutes.map((route) => ({
-      url: absoluteUrl(route),
-      lastModified: siteConfig.catalogLastModified,
+      url: absoluteUrl(route.path),
+      lastModified: route.lastModified,
     })),
     ...categoryRoutes.map((route) => ({
       url: absoluteUrl(route),

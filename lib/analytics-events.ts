@@ -1,4 +1,5 @@
 import { isAnalyticsConsentGranted } from "@/lib/analytics-consent";
+import { buildAnalyticsPageLocation } from "@/lib/analytics-campaign";
 
 type AnalyticsPrimitive = boolean | number | string;
 
@@ -95,7 +96,11 @@ export function trackAnalyticsPageView(pathname: string) {
 
   return trackAnalyticsEvent("page_view", {
     page_path: pagePath,
-    page_location: `${window.location.origin}${pagePath}`,
+    page_location: buildAnalyticsPageLocation({
+      href: window.location.href,
+      origin: window.location.origin,
+      pathname: pagePath,
+    }),
     page_title: document.title,
   });
 }

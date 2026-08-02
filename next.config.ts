@@ -102,6 +102,15 @@ const nextConfig: NextConfig = {
         headers: securityHeaders.map((header) => ({ ...header })),
       },
       {
+        source: "/downloads/arcfort-distributor-sourcing-guide.pdf",
+        headers: [
+          {
+            key: "Link",
+            value: `<${siteConfig.url}/downloads/arcfort-distributor-sourcing-guide.pdf>; rel="canonical"`,
+          },
+        ],
+      },
+      {
         source: "/downloads/renqiu-ailesen-welding-catalog.pdf",
         headers: [
           {

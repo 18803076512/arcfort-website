@@ -1,0 +1,9 @@
+id,channel,source,medium,campaign,content,landing_path,audience,primary_action
+linkedin_company_post,LinkedIn company post,linkedin,organic_social,distributor_sourcing_2026,company_post,/distributor-supply,Distributors and importers,Download sourcing guide
+linkedin_mig_post,LinkedIn MIG/MAG category post,linkedin,organic_social,distributor_sourcing_2026,mig_category_post,/products/mig-mag-torch-parts,Welding equipment distributors,Browse MIG/MAG torch parts
+linkedin_plasma_post,LinkedIn plasma category post,linkedin,organic_social,distributor_sourcing_2026,plasma_category_post,/products/plasma-cutting-consumables,Plasma consumable distributors,Browse plasma consumables
+distributor_email_intro,Relevant distributor email outreach,outreach_email,email,distributor_sourcing_2026,introduction,/distributor-supply,Distributors importers and wholesalers,Review distributor supply
+distributor_email_followup,Relevant distributor email follow-up,outreach_email,email,distributor_sourcing_2026,follow_up,/downloads,Distributors importers and wholesalers,Download buyer files
+whatsapp_business_intro,Permission-based WhatsApp introduction,whatsapp,messaging,distributor_sourcing_2026,introduction,/distributor-supply,Existing business contacts,Review distributor supply
+industry_directory_profile,Industrial directory company profile,industry_directory,referral,distributor_sourcing_2026,company_profile,/distributor-supply,Directory visitors,Review distributor supply
+pdf_guide_qr,Distributor sourcing guide QR,pdf,offline,distributor_sourcing_2026,qr_code,/rfq?product=Distributor%20welding%20product%20program,Guide readers,Start distributor RFQ

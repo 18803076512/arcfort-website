@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import Script from "next/script";
 import { useEffect, useRef } from "react";
+import { buildAnalyticsPageLocation } from "@/lib/analytics-campaign";
 import { useAnalyticsConsent } from "@/components/analytics/useAnalyticsConsent";
 import {
   type AnalyticsConsentSettings,
@@ -30,6 +31,10 @@ const analyticsOnlyConsent: AnalyticsConsentSettings = {
 };
 
 const downloadAssets: Record<string, { eventName: string; assetKey: string }> = {
+  "/downloads/arcfort-distributor-sourcing-guide.pdf": {
+    eventName: "buyer_tool_download_click",
+    assetKey: "distributor_sourcing_guide",
+  },
   "/downloads/renqiu-ailesen-welding-catalog.pdf": {
     eventName: "catalog_download_click",
     assetKey: "welding_catalog",
@@ -176,7 +181,11 @@ export function AnalyticsTracker() {
     gtag("config", gaId, {
       allow_ad_personalization_signals: false,
       allow_google_signals: false,
-      page_location: `${window.location.origin}${pagePath}`,
+      page_location: buildAnalyticsPageLocation({
+        href: window.location.href,
+        origin: window.location.origin,
+        pathname: pagePath,
+      }),
       page_path: pagePath,
       page_title: document.title,
       send_page_view: false,

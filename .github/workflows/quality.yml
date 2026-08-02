@@ -52,6 +52,11 @@ jobs:
           npm run products:report
           git diff --exit-code -- lib/data/products.ts docs/product-readiness-report.md
 
+      - name: Verify promotion campaign links
+        run: |
+          npm run promotion:check
+          npm run promotion:test
+
       - name: Audit SEO content
         run: npm run seo:audit
 
