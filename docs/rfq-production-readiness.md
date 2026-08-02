@@ -20,6 +20,8 @@ Minimum production target:
 - Buyer sees success only after email delivery or database storage succeeds.
 - Resend and Supabase run independently, so one channel can still capture the inquiry if the other
   provider fails.
+- Optional Supabase rows and attachment paths are idempotent by RFQ reference. An unchanged retry
+  does not create a duplicate row or reset the existing inquiry status.
 - A Supabase-only submission with selected files succeeds only when both the inquiry row and files
   are stored. Saving file names without the files does not produce a buyer success state.
 - Large or failed submissions still direct the buyer to email or WhatsApp.
@@ -192,6 +194,12 @@ After Resend is configured, `https://www.arcfortweld.com/api/rfq/status` should 
     "fromConfigured": true,
     "recipientConfigured": true,
     "recipient": "arcfortweld@outlook.com"
+  },
+  "storage": {
+    "ready": false,
+    "idempotencyProtected": true,
+    "conflictKey": "reference",
+    "attachmentRetrySafe": true
   }
 }
 ```

@@ -45,9 +45,23 @@ alter table public.rfq_inquiries
 create index if not exists rfq_inquiries_created_at_idx
   on public.rfq_inquiries (created_at desc);
 
-create unique index if not exists rfq_inquiries_reference_idx
-  on public.rfq_inquiries (reference)
-  where reference is not null;
+-- A full UNIQUE constraint allows PostgREST `on_conflict=reference` to infer the conflict target.
+-- PostgreSQL permits multiple NULL values, so legacy rows without a reference remain valid.
+drop index if exists public.rfq_inquiries_reference_idx;
+
+do $$
+begin
+  if not exists (
+    select 1
+    from pg_constraint
+    where conname = 'rfq_inquiries_reference_key'
+      and conrelid = 'public.rfq_inquiries'::regclass
+  ) then
+    alter table public.rfq_inquiries
+      add constraint rfq_inquiries_reference_key unique (reference);
+  end if;
+end
+$$;
 
 create index if not exists rfq_inquiries_status_idx
   on public.rfq_inquiries (status);
@@ -84,6 +98,9 @@ alter table public.rfq_inquiries enable row level security;
 -- Do not create anon or authenticated insert/select policies for public website visitors.
 grant usage on schema public to service_role;
 grant insert, select, update on public.rfq_inquiries to service_role;
+
+-- Make the new unique conflict target available to PostgREST immediately.
+notify pgrst, 'reload schema';
 
 insert into storage.buckets (
   id,

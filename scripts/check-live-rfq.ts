@@ -31,6 +31,12 @@ type RfqStatusResponse = {
     idempotencyWindowHours?: number;
     recipient?: string;
   };
+  storage?: {
+    ready?: boolean;
+    idempotencyProtected?: boolean;
+    conflictKey?: string;
+    attachmentRetrySafe?: boolean;
+  };
 };
 
 type RfqSubmissionResponse = {
@@ -126,6 +132,10 @@ async function main() {
     `Email idempotency window: ${status.email?.idempotencyWindowHours ?? "unknown"} hours`,
   );
   console.log(`Sales recipient: ${status.email?.recipient ?? "not reported"}`);
+  console.log(`Storage ready: ${Boolean(status.storage?.ready)}`);
+  console.log(`Storage idempotency protected: ${Boolean(status.storage?.idempotencyProtected)}`);
+  console.log(`Attachment retry safe: ${Boolean(status.storage?.attachmentRetrySafe)}`);
+  console.log(`Storage conflict key: ${status.storage?.conflictKey ?? "unknown"}`);
 
   if (!statusResponse.ok || !status.ok || !status.productionReady) {
     throw new Error("The live RFQ status endpoint is not production-ready.");
@@ -143,6 +153,14 @@ async function main() {
 
   if (!status.email?.idempotencyProtected || status.email.idempotencyWindowHours !== 24) {
     throw new Error("The live RFQ endpoint does not report 24-hour email idempotency protection.");
+  }
+
+  if (
+    !status.storage?.idempotencyProtected ||
+    !status.storage.attachmentRetrySafe ||
+    status.storage.conflictKey !== "reference"
+  ) {
+    throw new Error("The live RFQ endpoint does not report retry-safe Supabase storage handling.");
   }
 
   if (!sendTest) {

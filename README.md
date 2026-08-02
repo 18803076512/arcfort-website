@@ -198,6 +198,8 @@ The `/rfq` page includes a responsive inquiry form with:
   client compatibility
 - Resend idempotency keys for both the sales notification and buyer confirmation, preventing an
   unchanged retry from sending duplicate emails during the provider's 24-hour protection window
+- Retry-safe optional Supabase delivery: attachment objects use stable reference paths with upsert,
+  and duplicate inquiry rows are ignored by the unique RFQ reference without resetting their status
 - HTML escaping for buyer, attachment and source values before they are rendered in email markup
 - Independent email and storage delivery so one provider failure does not block the other
 - Prefilled email and WhatsApp fallback when automated delivery is unavailable
@@ -253,9 +255,9 @@ send an inquiry.
 The browser waits up to 45 seconds for the RFQ API response. It never retries automatically because
 a delayed response can arrive after the server has already accepted the inquiry. On timeout, all
 entered fields and selected attachments remain in the form. An unchanged manual retry reuses the
-same submission token, RFQ reference and Resend idempotency keys; editing the inquiry creates a new
-token. The buyer is still directed to check for the confirmation email before retrying or using the
-email/WhatsApp fallback.
+same submission token, RFQ reference, Resend idempotency keys and optional Supabase storage paths;
+editing the inquiry creates a new token. The buyer is still directed to check for the confirmation
+email before retrying or using the email/WhatsApp fallback.
 
 Environment variables:
 

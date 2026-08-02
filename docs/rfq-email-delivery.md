@@ -45,6 +45,9 @@ Email flow:
 - The API derives a stable RFQ reference from the token and sends separate Resend idempotency keys
   for the sales notification and buyer confirmation. Resend retains these keys for 24 hours, so an
   unchanged retry returns the original email result without sending the same message twice.
+- Optional Supabase attachment uploads reuse deterministic reference paths with upsert. Database
+  writes use `on_conflict=reference` with `resolution=ignore-duplicates`, so a retry neither creates
+  another inquiry row nor resets an existing inquiry's follow-up status.
 - When files are selected and Resend is unavailable, Supabase counts as a complete delivery only
   after the inquiry row and every selected file are stored.
 - The browser shows success only when at least one delivery channel succeeds. Otherwise it displays
@@ -66,6 +69,9 @@ References:
 - <https://vercel.com/docs/functions/limitations#request-body-size>
 - <https://resend.com/docs/dashboard/emails/attachments#attachment-limitations>
 - <https://resend.com/docs/dashboard/emails/idempotency-keys>
+- <https://supabase.com/docs/reference/javascript/upsert>
+- <https://supabase.com/docs/reference/javascript/file-buckets-upload>
+- <https://docs.postgrest.org/en/stable/references/api/tables_views.html#upsert>
 
 Spam controls:
 
@@ -117,7 +123,9 @@ SUPABASE_RFQ_TABLE=rfq_inquiries
 SUPABASE_RFQ_BUCKET=rfq-attachments
 ```
 
-Use `docs/supabase-rfq-setup.md` for the database setup.
+Use `docs/supabase-rfq-setup.md` for the database setup. Re-run the current
+`supabase/rfq-schema.sql` before enabling storage so the full unique `reference` constraint is
+available to PostgREST conflict handling.
 
 ## Test After Deployment
 
