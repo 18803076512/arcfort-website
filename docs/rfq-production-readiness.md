@@ -13,6 +13,8 @@ Minimum production target:
 - RFQ form accepts required fields and valid attachments.
 - Website sends an email notification to `arcfortweld@outlook.com`.
 - Website sends an automatic confirmation email to the buyer email when Resend is configured.
+- Sales and buyer emails use separate Resend idempotency keys derived from a stable browser
+  submission token, protecting unchanged retries from duplicate delivery for 24 hours.
 - Every accepted or rejected submission receives a traceable `AF-RFQ-...` reference.
 - Sales notification includes source path, landing page, referrer and UTM fields when available.
 - Buyer sees success only after email delivery or database storage succeeds.
@@ -184,6 +186,8 @@ After Resend is configured, `https://www.arcfortweld.com/api/rfq/status` should 
   "email": {
     "ready": true,
     "buyerConfirmationReady": true,
+    "idempotencyProtected": true,
+    "idempotencyWindowHours": 24,
     "resendApiKeyConfigured": true,
     "fromConfigured": true,
     "recipientConfigured": true,

@@ -2,6 +2,7 @@
 
 import { readFile, stat } from "node:fs/promises";
 import { basename, extname, resolve } from "node:path";
+import { createRfqSubmissionToken } from "../lib/rfq-idempotency.ts";
 
 type RfqStatusResponse = {
   ok?: boolean;
@@ -26,6 +27,8 @@ type RfqStatusResponse = {
   email?: {
     ready?: boolean;
     buyerConfirmationReady?: boolean;
+    idempotencyProtected?: boolean;
+    idempotencyWindowHours?: number;
     recipient?: string;
   };
 };
@@ -118,6 +121,10 @@ async function main() {
   );
   console.log(`Email ready: ${Boolean(status.email?.ready)}`);
   console.log(`Buyer confirmation ready: ${Boolean(status.email?.buyerConfirmationReady)}`);
+  console.log(`Email idempotency protected: ${Boolean(status.email?.idempotencyProtected)}`);
+  console.log(
+    `Email idempotency window: ${status.email?.idempotencyWindowHours ?? "unknown"} hours`,
+  );
   console.log(`Sales recipient: ${status.email?.recipient ?? "not reported"}`);
 
   if (!statusResponse.ok || !status.ok || !status.productionReady) {
@@ -129,7 +136,13 @@ async function main() {
     status.botProtection.provider !== "Vercel BotID" ||
     status.botProtection.checkLevel !== "basic"
   ) {
-    throw new Error("The live RFQ endpoint does not report the required Vercel BotID Basic protection.");
+    throw new Error(
+      "The live RFQ endpoint does not report the required Vercel BotID Basic protection.",
+    );
+  }
+
+  if (!status.email?.idempotencyProtected || status.email.idempotencyWindowHours !== 24) {
+    throw new Error("The live RFQ endpoint does not report 24-hour email idempotency protection.");
   }
 
   if (!sendTest) {
@@ -152,6 +165,7 @@ async function main() {
   }
 
   const formData = new FormData();
+  formData.append("submissionToken", createRfqSubmissionToken());
   formData.append("name", "ArcFort Website Delivery Test");
   formData.append("company", "Renqiu Ailesen Welding Technology Co., Ltd.");
   formData.append("email", email);

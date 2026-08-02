@@ -20,6 +20,12 @@ import {
   type RfqRateLimitResult,
 } from "@/lib/rfq-rate-limit";
 import { createRfqReference } from "@/lib/rfq-reference";
+import {
+  createRfqEmailIdempotencyKey,
+  createRfqReferenceFromSubmissionToken,
+  isRfqSubmissionTokenCurrent,
+  normalizeRfqSubmissionToken,
+} from "@/lib/rfq-idempotency";
 import { isTrustedRfqRequest } from "@/lib/rfq-request-security";
 
 export const runtime = "nodejs";
@@ -392,6 +398,7 @@ async function sendEmailNotification(
   attachments: AttachmentRecord[],
   files: File[],
   reference: string,
+  submissionToken: string,
   requestMeta: { userAgent: string; referrer: string },
 ): Promise<EmailNotificationResult> {
   const apiKey = process.env.RESEND_API_KEY;
@@ -417,6 +424,7 @@ async function sendEmailNotification(
     headers: {
       Authorization: `Bearer ${apiKey}`,
       "Content-Type": "application/json",
+      "Idempotency-Key": createRfqEmailIdempotencyKey("sales", submissionToken),
     },
     body: JSON.stringify({
       from,
@@ -443,6 +451,7 @@ async function sendEmailNotification(
       headers: {
         Authorization: `Bearer ${apiKey}`,
         "Content-Type": "application/json",
+        "Idempotency-Key": createRfqEmailIdempotencyKey("buyer", submissionToken),
       },
       body: JSON.stringify({
         from,
@@ -475,7 +484,7 @@ async function sendEmailNotification(
 }
 
 export async function POST(request: Request) {
-  const reference = createRfqReference();
+  let reference = createRfqReference();
   let rateLimitResult: RfqRateLimitResult | null = null;
   const respond = (
     body: Record<string, unknown>,
@@ -577,6 +586,9 @@ export async function POST(request: Request) {
     const files = getAttachments(formData);
     const honeypot = cleanFormValue(formData, "website");
     const startedAt = cleanFormValue(formData, "startedAt");
+    const submissionToken = normalizeRfqSubmissionToken(
+      cleanFormValue(formData, "submissionToken"),
+    );
     const errors: Partial<Record<keyof RfqTextValues | "attachments", string>> = {};
     const requestMeta = {
       userAgent: (request.headers.get("user-agent") || "Unknown").slice(0, 240),
@@ -592,6 +604,18 @@ export async function POST(request: Request) {
         400,
       );
     }
+
+    if (!submissionToken || !isRfqSubmissionTokenCurrent(submissionToken)) {
+      return respond(
+        {
+          ok: false,
+          message: "Please reload the RFQ form and try again.",
+        },
+        400,
+      );
+    }
+
+    reference = createRfqReferenceFromSubmissionToken(submissionToken) || reference;
 
     if (!validateStartedAt(startedAt)) {
       return respond(
@@ -680,7 +704,14 @@ export async function POST(request: Request) {
     };
 
     const emailTask = () =>
-      sendEmailNotification(payload, attachmentMetadata, files, reference, requestMeta);
+      sendEmailNotification(
+        payload,
+        attachmentMetadata,
+        files,
+        reference,
+        submissionToken,
+        requestMeta,
+      );
 
     const [storageResult, emailResult] = await Promise.allSettled([storageTask(), emailTask()]);
 
@@ -741,6 +772,7 @@ export async function POST(request: Request) {
       storageAttachmentCount: storageDelivery.attachmentCount,
       notificationId: emailNotification.notificationId,
       buyerConfirmationId: emailNotification.buyerConfirmationId,
+      emailIdempotencyProtected: true,
     };
 
     if (!deliverySucceeded) {

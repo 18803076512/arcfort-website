@@ -12,7 +12,7 @@ export function isRfqSubmissionAbortError(error: unknown) {
 
 export function getRfqSubmissionFailureMessage(error: unknown) {
   if (isRfqSubmissionAbortError(error)) {
-    return `The website did not receive a delivery confirmation within ${rfqSubmissionTimeoutSeconds} seconds. To avoid a duplicate inquiry, check your email for an RFQ confirmation before trying again, or send the same details by email or WhatsApp.`;
+    return `The website did not receive a delivery confirmation within ${rfqSubmissionTimeoutSeconds} seconds. Check your email for an RFQ confirmation first. If no confirmation arrives, retrying this unchanged form will reuse the same protected submission identifier, or you can send the details by email or WhatsApp.`;
   }
 
   return "RFQ submission failed. Please try again or use the email and WhatsApp contacts below.";
