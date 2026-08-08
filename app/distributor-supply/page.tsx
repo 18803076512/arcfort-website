@@ -143,6 +143,7 @@ export const metadata = buildMetadata({
   description:
     "Source ArcFort Weld welding and cutting products for distributors and importers. Send SKU lists, drawings and packaging requirements for RFQ review.",
   path: "/distributor-supply",
+  useRouteSocialImages: true,
   keywords: [
     "welding products distributor supply",
     "welding consumables importer",

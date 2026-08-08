@@ -8,7 +8,11 @@ export function StickyContactBar() {
       className="fixed inset-x-0 bottom-0 z-50 w-full max-w-[100vw] overflow-hidden border-t border-white/20 bg-arc-midnight/95 px-2 pb-[calc(0.45rem+env(safe-area-inset-bottom))] pt-2 text-white shadow-industrial backdrop-blur md:hidden"
       aria-label="Quick inquiry contacts"
     >
-      <div className="mx-auto grid w-full max-w-xl grid-cols-[repeat(2,minmax(0,1fr))] gap-2 sm:grid-cols-[repeat(3,minmax(0,1fr))]">
+      <div
+        data-nosnippet
+        data-snippet-region="sticky-contact"
+        className="mx-auto grid w-full max-w-xl grid-cols-[repeat(2,minmax(0,1fr))] gap-2 sm:grid-cols-[repeat(3,minmax(0,1fr))]"
+      >
         <RfqListLink variant="sticky" label="Quote" />
         <a
           href={siteConfig.whatsappHref}

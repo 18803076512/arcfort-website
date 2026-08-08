@@ -15,6 +15,7 @@ type SeoInput = {
   authors?: string[];
   section?: string;
   tags?: string[];
+  useRouteSocialImages?: boolean;
 };
 
 const defaultSeoImage = {
@@ -37,6 +38,7 @@ export function buildMetadata({
   authors,
   section,
   tags,
+  useRouteSocialImages = false,
 }: SeoInput): Metadata {
   const url = absoluteUrl(path);
   const normalizedTitle = title.replace(/\s*\|\s*ArcFort Weld\s*$/i, "").trim();
@@ -56,12 +58,12 @@ export function buildMetadata({
           siteName: siteConfig.name,
           locale: "en_US",
           type: "article",
-          images: [seoImage],
           publishedTime,
           modifiedTime,
           authors,
           section,
           tags,
+          ...(useRouteSocialImages ? {} : { images: [seoImage] }),
         }
       : {
           title: seoTitle,
@@ -70,7 +72,7 @@ export function buildMetadata({
           siteName: siteConfig.name,
           locale: "en_US",
           type: "website",
-          images: [seoImage],
+          ...(useRouteSocialImages ? {} : { images: [seoImage] }),
         };
 
   return {
@@ -98,7 +100,7 @@ export function buildMetadata({
       card: "summary_large_image",
       title: seoTitle,
       description,
-      images: [seoImage.url],
+      ...(useRouteSocialImages ? {} : { images: [seoImage.url] }),
     },
   };
 }

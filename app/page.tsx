@@ -229,7 +229,11 @@ export default function Home() {
                 key={category.slug}
                 className="group min-w-0 border border-slate-200 bg-white p-4 shadow-sm transition hover:-translate-y-1 hover:border-arc-blue hover:shadow-industrial sm:p-6"
               >
-                <span className="flex h-10 w-10 items-center justify-center bg-arc-navy font-display text-sm font-black text-arc-signal sm:h-12 sm:w-12 sm:text-lg">
+                <span
+                  data-nosnippet
+                  data-snippet-region="homepage-category-code"
+                  className="flex h-10 w-10 items-center justify-center bg-arc-navy font-display text-sm font-black text-arc-signal sm:h-12 sm:w-12 sm:text-lg"
+                >
                   {category.code}
                 </span>
                 <h3 className="mt-4 break-words font-display text-base font-black leading-tight text-arc-midnight sm:mt-5 sm:text-2xl">

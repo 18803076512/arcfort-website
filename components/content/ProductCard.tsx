@@ -61,6 +61,8 @@ export function ProductCard({ product, category, denseMobile = false }: ProductC
           {product.shortDescription}
         </p>
         <div
+          data-nosnippet
+          data-snippet-region="product-card-actions"
           className={`border-t border-slate-100 pt-4 ${
             denseMobile
               ? "mt-4 grid gap-2 sm:mt-5 sm:flex sm:items-center sm:justify-between sm:gap-3"

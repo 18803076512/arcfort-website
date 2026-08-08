@@ -481,10 +481,20 @@ The English campaign assets are:
 - `docs/promotion/distributor-campaign-playbook.md` - audience, channel, measurement and publishing workflow
 - `docs/promotion/outreach-templates.md` - targeted email, permission-based WhatsApp, LinkedIn and directory copy
 - `docs/promotion/content-calendar.csv` - four-week channel sequence
+- `docs/promotion/social-preview-asset.md` - distributor social-image source, usage limits and validation
 
 Only allowlisted UTM fields are retained in GA4 page locations; unrelated query parameters are
 discarded. Do not put buyer personal data in UTM parameters or analytics events. Outreach must be
 relevant, identified and manually reviewed; the repository does not automate unsolicited messages.
+
+The distributor landing page has route-specific 1200 x 630 Open Graph and Twitter images. Shared
+site chrome, visual category codes, product-image labels and repeated card actions use static
+`data-nosnippet` regions so Google can build cleaner result snippets from the page's primary B2B
+content. After each build, run:
+
+```bash
+npm run seo:snippets
+```
 
 ## Useful Documents
 
