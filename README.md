@@ -486,6 +486,9 @@ The English campaign assets are:
 Only allowlisted UTM fields are retained in GA4 page locations; unrelated query parameters are
 discarded. Do not put buyer personal data in UTM parameters or analytics events. Outreach must be
 relevant, identified and manually reviewed; the repository does not automate unsolicited messages.
+`npm run promotion:test` also verifies that the RFQ conversion funnel keeps its form-start,
+submission, lead, contact and buyer-download events, and that the form-start event contains no buyer
+PII or inquiry content.
 
 The distributor landing page has route-specific 1200 x 630 Open Graph and Twitter images. Shared
 site chrome, visual category codes, product-image labels and repeated card actions use static

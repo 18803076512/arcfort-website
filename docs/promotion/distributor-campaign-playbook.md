@@ -72,6 +72,10 @@ Review these events by source, medium, campaign and content:
 - `contact_email_click`
 - `contact_whatsapp_click`
 
+`rfq_form_start` is recorded once after a consented buyer first interacts with the form. It contains
+only the interaction type, form entry type and selected-product count. Buyer contact details,
+inquiry text, product references and uploaded file details are not included in this event.
+
 Qualified inquiry review remains manual. Check whether an inquiry includes a usable product name or
 reference, quantity and destination, rather than treating every form event as a sales opportunity.
 
