@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 
 import assert from "node:assert/strict";
+import { readFileSync } from "node:fs";
 import { buildAnalyticsPageLocation } from "../lib/analytics-campaign.ts";
 
 const trackedLocation = buildAnalyticsPageLocation({
@@ -22,4 +23,51 @@ const unsafeCampaignValue = buildAnalyticsPageLocation({
 
 assert.equal(unsafeCampaignValue, "https://www.arcfortweld.com/downloads?utm_medium=email");
 
-console.log("Promotion attribution allowlist tests passed.");
+const rfqFormSource = readFileSync(new URL("../app/rfq/RfqForm.tsx", import.meta.url), "utf8");
+const analyticsTrackerSource = readFileSync(
+  new URL("../components/AnalyticsTracker.tsx", import.meta.url),
+  "utf8",
+);
+const formStartEvent = rfqFormSource.match(
+  /trackAnalyticsEvent\("rfq_form_start",\s*\{([\s\S]*?)\}\);/,
+);
+
+assert.ok(formStartEvent, "RFQ form must emit rfq_form_start.");
+
+for (const parameter of ["interaction_type", "form_entry", "selected_product_count"]) {
+  assert.match(
+    formStartEvent[1],
+    new RegExp(`\\b${parameter}\\b`),
+    `rfq_form_start must include ${parameter}.`,
+  );
+}
+
+for (const forbiddenParameter of [
+  "name",
+  "company",
+  "email",
+  "whatsapp",
+  "country",
+  "productRequirements",
+  "message",
+]) {
+  assert.doesNotMatch(
+    formStartEvent[1],
+    new RegExp(`\\b${forbiddenParameter}\\b`, "i"),
+    `rfq_form_start must not include buyer PII or inquiry content: ${forbiddenParameter}.`,
+  );
+}
+
+for (const eventName of ["rfq_submit_start", "rfq_submit_success", "generate_lead"]) {
+  assert.match(rfqFormSource, new RegExp(`trackAnalyticsEvent\\("${eventName}"`));
+}
+
+for (const eventName of [
+  "contact_email_click",
+  "contact_whatsapp_click",
+  "buyer_tool_download_click",
+]) {
+  assert.match(analyticsTrackerSource, new RegExp(`eventName: "${eventName}"`));
+}
+
+console.log("Promotion attribution and conversion funnel tests passed.");

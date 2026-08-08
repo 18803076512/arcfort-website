@@ -19,7 +19,14 @@ type PageAudit = {
   openGraphTitle?: string;
   openGraphDescription?: string;
   openGraphImage?: string;
+  openGraphImageWidth?: string;
+  openGraphImageHeight?: string;
+  openGraphImageAlt?: string;
   twitterCard?: string;
+  twitterImage?: string;
+  twitterImageWidth?: string;
+  twitterImageHeight?: string;
+  twitterImageAlt?: string;
   imagesMissingAlt?: number;
   imagesMissingSrc?: number;
   jsonLdCount?: number;
@@ -286,7 +293,14 @@ async function auditUrl(canonicalUrl: string): Promise<PageAudit> {
     openGraphTitle: getPropertyMetaContent(html, "og:title"),
     openGraphDescription: getPropertyMetaContent(html, "og:description"),
     openGraphImage: getPropertyMetaContent(html, "og:image"),
+    openGraphImageWidth: getPropertyMetaContent(html, "og:image:width"),
+    openGraphImageHeight: getPropertyMetaContent(html, "og:image:height"),
+    openGraphImageAlt: getPropertyMetaContent(html, "og:image:alt"),
     twitterCard: getMetaContent(html, "twitter:card"),
+    twitterImage: getMetaContent(html, "twitter:image"),
+    twitterImageWidth: getMetaContent(html, "twitter:image:width"),
+    twitterImageHeight: getMetaContent(html, "twitter:image:height"),
+    twitterImageAlt: getMetaContent(html, "twitter:image:alt"),
     imagesMissingAlt: imageTags.filter((tag) => getAttribute(tag, "alt") === undefined).length,
     imagesMissingSrc: imageTags.filter((tag) => !getAttribute(tag, "src")).length,
     jsonLdCount: jsonLd.count,
@@ -315,6 +329,45 @@ async function auditImage(canonicalUrl: string) {
     status: response.status,
     contentType: response.headers.get("content-type") ?? "",
   };
+}
+
+async function auditCampaignSocialImage(canonicalUrl: string, label: string) {
+  const response = await fetch(toFetchUrl(canonicalUrl), {
+    redirect: "follow",
+    signal: AbortSignal.timeout(20_000),
+  });
+  const contentType = response.headers.get("content-type") ?? "";
+
+  if (response.status !== 200) {
+    errors.push(`${label} returned HTTP ${response.status}: ${canonicalUrl}.`);
+    return;
+  }
+
+  if (!contentType.toLowerCase().startsWith("image/png")) {
+    errors.push(`${label} is not served as image/png: ${canonicalUrl}.`);
+    return;
+  }
+
+  const bytes = new Uint8Array(await response.arrayBuffer());
+  const isPng =
+    bytes.length >= 24 &&
+    bytes[0] === 0x89 &&
+    bytes[1] === 0x50 &&
+    bytes[2] === 0x4e &&
+    bytes[3] === 0x47;
+
+  if (!isPng) {
+    errors.push(`${label} does not contain a valid PNG signature: ${canonicalUrl}.`);
+    return;
+  }
+
+  const view = new DataView(bytes.buffer, bytes.byteOffset, bytes.byteLength);
+  const width = view.getUint32(16);
+  const height = view.getUint32(20);
+
+  if (width !== 1200 || height !== 630) {
+    errors.push(`${label} dimensions are ${width}x${height}; expected 1200x630.`);
+  }
 }
 
 async function auditPermanentRedirect(sourcePath: string, destinationPath: string) {
@@ -473,6 +526,43 @@ function checkHtmlPage(row: PageAudit) {
     errors.push(`Missing summary_large_image Twitter card: ${row.canonicalUrl}.`);
   }
 
+  if (pathname === "/distributor-supply") {
+    const campaignImages = [
+      {
+        label: "Distributor Open Graph image",
+        image: row.openGraphImage,
+        width: row.openGraphImageWidth,
+        height: row.openGraphImageHeight,
+        alt: row.openGraphImageAlt,
+        expectedPath: "/distributor-supply/opengraph-image",
+      },
+      {
+        label: "Distributor Twitter image",
+        image: row.twitterImage,
+        width: row.twitterImageWidth,
+        height: row.twitterImageHeight,
+        alt: row.twitterImageAlt,
+        expectedPath: "/distributor-supply/twitter-image",
+      },
+    ];
+
+    for (const image of campaignImages) {
+      if (!image.image?.includes(image.expectedPath)) {
+        errors.push(`${image.label} metadata is missing its campaign route.`);
+      }
+
+      if (image.width !== "1200" || image.height !== "630") {
+        errors.push(
+          `${image.label} metadata must be 1200x630; received ${image.width ?? "missing"}x${image.height ?? "missing"}.`,
+        );
+      }
+
+      if (!image.alt?.includes("distributors and importers")) {
+        errors.push(`${image.label} metadata is missing distributor-focused alt text.`);
+      }
+    }
+  }
+
   if (row.imagesMissingAlt) {
     errors.push(`${row.imagesMissingAlt} images are missing alt attributes: ${row.canonicalUrl}.`);
   }
@@ -602,6 +692,18 @@ async function main() {
     if (row.contentType.includes("text/html")) {
       checkHtmlPage(row);
     }
+  }
+
+  const distributorAudit = audits.find(
+    (row) => new URL(row.canonicalUrl).pathname === "/distributor-supply",
+  );
+
+  if (distributorAudit?.openGraphImage) {
+    await auditCampaignSocialImage(distributorAudit.openGraphImage, "Distributor Open Graph image");
+  }
+
+  if (distributorAudit?.twitterImage) {
+    await auditCampaignSocialImage(distributorAudit.twitterImage, "Distributor Twitter image");
   }
 
   for (let index = 0; index < sitemapImageUrls.length; index += batchSize) {

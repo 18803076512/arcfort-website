@@ -30,7 +30,11 @@ const buyerServiceLinks = [
 export function Footer() {
   return (
     <footer className="bg-arc-midnight text-white">
-      <div className="border-b border-white/10 bg-[linear-gradient(90deg,rgba(11,35,65,0.96),rgba(15,76,129,0.78))]">
+      <div
+        data-nosnippet
+        data-snippet-region="site-footer-cta"
+        className="border-b border-white/10 bg-[linear-gradient(90deg,rgba(11,35,65,0.96),rgba(15,76,129,0.78))]"
+      >
         <div className="mx-auto grid max-w-7xl gap-6 px-4 py-10 sm:px-6 lg:grid-cols-[1fr_0.72fr] lg:items-center lg:px-8">
           <div>
             <p className="text-xs font-bold uppercase tracking-[0.18em] text-arc-signal">
@@ -66,7 +70,11 @@ export function Footer() {
           </div>
         </div>
       </div>
-      <div className="mx-auto grid max-w-7xl gap-10 px-4 py-12 sm:px-6 md:grid-cols-2 lg:grid-cols-[1.05fr_0.65fr_0.9fr_0.85fr_0.85fr] lg:px-8">
+      <div
+        data-nosnippet
+        data-snippet-region="site-footer-links"
+        className="mx-auto grid max-w-7xl gap-10 px-4 py-12 sm:px-6 md:grid-cols-2 lg:grid-cols-[1.05fr_0.65fr_0.9fr_0.85fr_0.85fr] lg:px-8"
+      >
         <div>
           <div className="font-display text-3xl font-black">{siteConfig.shortName}</div>
           <p className="mt-4 max-w-sm text-sm leading-6 text-slate-300">
@@ -158,7 +166,11 @@ export function Footer() {
           </div>
         </div>
       </div>
-      <div className="border-t border-white/10 px-4 py-5 text-center text-xs uppercase tracking-[0.16em] text-slate-400">
+      <div
+        data-nosnippet
+        data-snippet-region="site-footer-legal"
+        className="border-t border-white/10 px-4 py-5 text-center text-xs uppercase tracking-[0.16em] text-slate-400"
+      >
         (c) 2026 {siteConfig.name}
       </div>
     </footer>

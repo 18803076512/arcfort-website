@@ -1,7 +1,15 @@
 "use client";
 
 import Link from "next/link";
-import { type ChangeEvent, type FormEvent, useEffect, useMemo, useRef, useState } from "react";
+import {
+  type ChangeEvent,
+  type FocusEvent,
+  type FormEvent,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import { useRfqList } from "@/components/rfq/useRfqList";
 import { trackAnalyticsEvent } from "@/lib/analytics-events";
 import { siteConfig } from "@/lib/content/site";
@@ -180,6 +188,7 @@ export function RfqForm({ initialProduct = "" }: RfqFormProps) {
   const [failedReference, setFailedReference] = useState("");
   const [submittedRequirements, setSubmittedRequirements] = useState("");
   const submissionAttemptRef = useRef<RfqSubmissionAttempt | null>(null);
+  const formStartTrackedRef = useRef(false);
   const selectedProducts = useRfqList();
   const hasCompleteLineItemQuantities =
     selectedProducts.length > 0 &&
@@ -209,7 +218,50 @@ export function RfqForm({ initialProduct = "" }: RfqFormProps) {
     setFailedReference("");
   }, [selectedProducts.length]);
 
+  function trackRfqFormStart(
+    interactionType:
+      | "field_focus"
+      | "field_change"
+      | "file_selection"
+      | "line_item_change"
+      | "quick_template"
+      | "submit_attempt",
+  ) {
+    if (formStartTrackedRef.current) {
+      return;
+    }
+
+    const tracked = trackAnalyticsEvent("rfq_form_start", {
+      interaction_type: interactionType,
+      form_entry:
+        selectedProducts.length > 0
+          ? "selected_products"
+          : initialProduct.trim()
+            ? "prefilled_requirement"
+            : "blank_form",
+      selected_product_count: selectedProducts.length,
+    });
+
+    if (tracked) {
+      formStartTrackedRef.current = true;
+    }
+  }
+
+  function handleFormFocus(event: FocusEvent<HTMLFormElement>) {
+    const target = event.target;
+
+    if (
+      !(target instanceof HTMLElement) ||
+      !target.matches('input:not([name="website"]), textarea, select')
+    ) {
+      return;
+    }
+
+    trackRfqFormStart("field_focus");
+  }
+
   function updateValue(field: keyof RfqFormValues, value: string) {
+    trackRfqFormStart("field_change");
     setValues((currentValues) => ({
       ...currentValues,
       [field]: value,
@@ -223,6 +275,7 @@ export function RfqForm({ initialProduct = "" }: RfqFormProps) {
   }
 
   function applyQuickTemplate(template: (typeof rfqQuickTemplates)[number]) {
+    trackRfqFormStart("quick_template");
     setValues((currentValues) => {
       const currentRequirements = currentValues.productRequirements.trim();
 
@@ -284,6 +337,7 @@ export function RfqForm({ initialProduct = "" }: RfqFormProps) {
   }
 
   function handleFiles(event: ChangeEvent<HTMLInputElement>) {
+    trackRfqFormStart("file_selection");
     const selectedFiles = Array.from(event.target.files ?? []);
     setAttachments(selectedFiles);
     setErrors((currentErrors) => ({
@@ -314,6 +368,7 @@ export function RfqForm({ initialProduct = "" }: RfqFormProps) {
     field: "requestedQuantity" | "buyerReference",
     value: string,
   ) {
+    trackRfqFormStart("line_item_change");
     updateRfqListItem(item, { [field]: value });
     setErrors((currentErrors) => ({
       ...currentErrors,
@@ -343,6 +398,8 @@ export function RfqForm({ initialProduct = "" }: RfqFormProps) {
     if (isSubmitting) {
       return;
     }
+
+    trackRfqFormStart("submit_attempt");
 
     const validationErrors = validateForm();
 
@@ -610,6 +667,7 @@ export function RfqForm({ initialProduct = "" }: RfqFormProps) {
   return (
     <form
       onSubmit={handleSubmit}
+      onFocusCapture={handleFormFocus}
       noValidate
       aria-busy={isSubmitting}
       className="border border-slate-200 bg-white p-6 shadow-sm sm:p-8"

@@ -88,6 +88,10 @@ generation.
     `npm run promotion:links`. Do not add buyer PII to URLs, analytics events or campaign IDs, and do
     not automate unsolicited outreach. Use relevant business contacts, identify the company and
     honor opt-out requests.
+27. Preserve static `data-nosnippet` protection on shared navigation, trust strips, footers,
+    product-image labels and repeated card actions. Never apply it to the page H1 or primary buyer
+    content. After each build, run `npm run seo:snippets` to verify snippet regions and campaign
+    social-image metadata.
 
 ## SKU Import Rules
 

@@ -72,5 +72,8 @@ jobs:
       - name: Build
         run: npm run build
 
+      - name: Audit search snippets and social preview
+        run: npm run seo:snippets
+
       - name: Check performance budgets
         run: npm run performance:budget

@@ -49,55 +49,59 @@ export function ProductVisual({
 
   if (shouldRenderImage && mainImage) {
     return (
-      <figure className="overflow-hidden border border-slate-200 bg-white shadow-sm">
-        <div className={`relative bg-white ${compact ? "aspect-[4/3]" : "aspect-[5/4]"}`}>
-          {compact ? (
-            productImage
-          ) : (
-            <a
-              href={mainImage}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="group/image relative block h-full w-full"
-              aria-label={`Open full-size image of ${title}`}
-            >
-              {productImage}
-              <span className="absolute right-3 top-3 border border-slate-200 bg-white/95 px-3 py-2 text-[11px] font-bold uppercase tracking-[0.12em] text-arc-blue shadow-sm transition group-hover/image:border-arc-blue group-hover/image:bg-arc-blue group-hover/image:text-white">
-                View Full Image
-              </span>
-            </a>
-          )}
-        </div>
-        <figcaption
-          className={`border-t border-slate-200 bg-arc-frost ${
-            denseMobile ? "px-2 py-2 sm:px-5 sm:py-3" : "px-4 py-3 sm:px-5"
-          }`}
-        >
-          <div className="flex min-w-0 items-center justify-between gap-3">
-            <span
-              className={`inline-flex shrink-0 bg-arc-signal py-1 font-display font-black text-arc-midnight ${
-                denseMobile ? "px-2 text-sm sm:px-3 sm:text-base" : "px-3 text-base"
-              }`}
-            >
-              {label}
-            </span>
-            <span
-              className={`min-w-0 truncate text-right font-bold uppercase text-arc-blue ${
-                denseMobile
-                  ? "text-[10px] tracking-[0.08em] sm:text-xs sm:tracking-[0.14em]"
-                  : "text-xs tracking-[0.14em]"
-              }`}
-            >
-              {visualCategory}
-            </span>
+      <div data-nosnippet data-snippet-region="product-visual">
+        <figure className="overflow-hidden border border-slate-200 bg-white shadow-sm">
+          <div className={`relative bg-white ${compact ? "aspect-[4/3]" : "aspect-[5/4]"}`}>
+            {compact ? (
+              productImage
+            ) : (
+              <a
+                href={mainImage}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group/image relative block h-full w-full"
+                aria-label={`Open full-size image of ${title}`}
+              >
+                {productImage}
+                <span className="absolute right-3 top-3 border border-slate-200 bg-white/95 px-3 py-2 text-[11px] font-bold uppercase tracking-[0.12em] text-arc-blue shadow-sm transition group-hover/image:border-arc-blue group-hover/image:bg-arc-blue group-hover/image:text-white">
+                  View Full Image
+                </span>
+              </a>
+            )}
           </div>
-        </figcaption>
-      </figure>
+          <figcaption
+            className={`border-t border-slate-200 bg-arc-frost ${
+              denseMobile ? "px-2 py-2 sm:px-5 sm:py-3" : "px-4 py-3 sm:px-5"
+            }`}
+          >
+            <div className="flex min-w-0 items-center justify-between gap-3">
+              <span
+                className={`inline-flex shrink-0 bg-arc-signal py-1 font-display font-black text-arc-midnight ${
+                  denseMobile ? "px-2 text-sm sm:px-3 sm:text-base" : "px-3 text-base"
+                }`}
+              >
+                {label}
+              </span>
+              <span
+                className={`min-w-0 truncate text-right font-bold uppercase text-arc-blue ${
+                  denseMobile
+                    ? "text-[10px] tracking-[0.08em] sm:text-xs sm:tracking-[0.14em]"
+                    : "text-xs tracking-[0.14em]"
+                }`}
+              >
+                {visualCategory}
+              </span>
+            </div>
+          </figcaption>
+        </figure>
+      </div>
     );
   }
 
   return (
     <div
+      data-nosnippet
+      data-snippet-region="product-visual"
       className={`relative overflow-hidden border border-slate-200 bg-arc-midnight text-white ${
         compact ? "aspect-[4/3]" : "aspect-[5/4]"
       }`}

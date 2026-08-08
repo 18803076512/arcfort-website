@@ -58,7 +58,7 @@ export function CategoryPageTemplate({
         <div className="mx-auto grid max-w-7xl gap-10 px-4 py-14 sm:px-6 sm:py-16 lg:grid-cols-[1fr_0.72fr] lg:items-end lg:px-8">
           <div>
             <p className="text-sm font-bold uppercase leading-6 tracking-[0.14em] text-arc-signal sm:tracking-[0.2em]">
-              {category.code} Category
+              Product Category
             </p>
             <h1 className="mt-4 max-w-4xl break-words font-display text-3xl font-black leading-tight sm:text-5xl lg:text-6xl">
               {category.title}
@@ -362,7 +362,11 @@ export function CategoryPageTemplate({
                   href={`/products/${relatedCategory.slug}`}
                   className="border border-slate-100 p-4 transition hover:border-arc-blue hover:bg-arc-frost"
                 >
-                  <div className="text-xs font-bold uppercase tracking-[0.16em] text-arc-blue">
+                  <div
+                    data-nosnippet
+                    data-snippet-region="related-category-code"
+                    className="text-xs font-bold uppercase tracking-[0.16em] text-arc-blue"
+                  >
                     {relatedCategory.code}
                   </div>
                   <div className="mt-2 font-display text-xl font-black text-arc-midnight">

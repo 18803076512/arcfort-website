@@ -28,7 +28,11 @@ const mobileNavigationGroups = [
 export function Header() {
   return (
     <header className="sticky top-0 z-50 w-full max-w-[100vw] border-b border-slate-200 bg-white/95 backdrop-blur">
-      <div className="hidden bg-arc-midnight text-white lg:block">
+      <div
+        data-nosnippet
+        data-snippet-region="site-header-utility"
+        className="hidden bg-arc-midnight text-white lg:block"
+      >
         <div className="mx-auto flex max-w-7xl items-center justify-between gap-6 px-8 py-2 text-xs font-semibold uppercase tracking-[0.12em]">
           <span className="text-slate-300">{siteConfig.legalName}</span>
           <div className="flex items-center gap-5 text-slate-200">
@@ -48,7 +52,11 @@ export function Header() {
           </div>
         </div>
       </div>
-      <div className="mx-auto grid min-h-16 w-full max-w-[100vw] grid-cols-[minmax(0,1fr)_auto] items-center gap-3 px-4 py-3 sm:min-h-20 sm:gap-4 sm:px-6 sm:py-4 lg:max-w-7xl lg:flex lg:justify-between lg:px-8">
+      <div
+        data-nosnippet
+        data-snippet-region="site-header-navigation"
+        className="mx-auto grid min-h-16 w-full max-w-[100vw] grid-cols-[minmax(0,1fr)_auto] items-center gap-3 px-4 py-3 sm:min-h-20 sm:gap-4 sm:px-6 sm:py-4 lg:max-w-7xl lg:flex lg:justify-between lg:px-8"
+      >
         <Link href="/" className="flex min-w-0 flex-1 items-center gap-2 sm:gap-3 lg:flex-none">
           <span className="flex h-10 w-10 items-center justify-center bg-arc-midnight font-display text-base font-black text-arc-signal sm:h-11 sm:w-11 sm:text-lg">
             AF

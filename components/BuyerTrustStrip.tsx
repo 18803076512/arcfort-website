@@ -13,7 +13,11 @@ export function BuyerTrustStrip() {
   const categoryCount = getAllProductCategories().length;
 
   return (
-    <section className="w-full max-w-[100vw] overflow-hidden border-b border-slate-200 bg-arc-frost">
+    <section
+      data-nosnippet
+      data-snippet-region="site-trust-strip"
+      className="w-full max-w-[100vw] overflow-hidden border-b border-slate-200 bg-arc-frost"
+    >
       <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
         <p className="flex min-h-10 items-center justify-between gap-2 text-[11px] font-bold uppercase tracking-[0.08em] text-slate-700 sm:hidden">
           <span className="text-arc-blue">{productCount} products</span>
