@@ -19,11 +19,11 @@ Use this checklist before switching the website to production traffic.
 - Company address: Renqiu City, Cangzhou, Hebei Province, China.
 - Main port: Tianjin Xingang Port / Tianjin Port, China.
 - Alternative ports: Qingdao Port or Ningbo Port are available upon request.
-- Reviewed product images: 41 active products; 2 active products still need reviewed photos as of
-  2026-08-01.
+- Reviewed product images: 41 active products; 2 draft products still need reviewed photos as of
+  2026-08-09.
 - Public product list CSV: available in `/downloads`.
 - Product catalog PDF: available at `/downloads/renqiu-ailesen-welding-catalog.pdf`.
-- Active SKU pages: 43; exact technical confirmation remains pending by product.
+- Product records: 43; 41 are active public SKU pages and 2 remain draft pending reviewed images.
 - Product specifications: pending by product.
 - MOQ and lead time by product: covered by policy, pending by exact product and order quantity.
 
@@ -66,6 +66,10 @@ Use this checklist before switching the website to production traffic.
 ## SEO Checks
 
 - Confirm homepage title and description.
+- Confirm Organization structured data uses Renqiu Ailesen Welding Technology Co., Ltd. as the
+  company identity and ArcFort Weld only as the website brand.
+- Add social-profile `sameAs` links only after confirming the profile is controlled by this company.
+- Complete independent trademark clearance before expanding paid promotion into new markets.
 - Confirm product category metadata.
 - Confirm product detail metadata.
 - Confirm application and guide metadata.

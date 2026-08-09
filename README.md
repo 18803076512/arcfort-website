@@ -10,6 +10,11 @@ Industrial B2B website for ArcFort Weld, operated by Renqiu Ailesen Welding Tech
 - Positioning: Industrial Welding & Cutting Solutions
 - Audience: Global distributors, importers, wholesalers, OEM buyers, industrial users, and repair workshops
 
+The legal entity and website brand are deliberately separated in structured data: Schema.org
+`Organization` uses Renqiu Ailesen Welding Technology Co., Ltd. as its primary name, while ArcFort
+Weld is represented as the `Brand` and `WebSite`. Add `sameAs` links only for verified profiles
+controlled by this company; never associate unrelated companies that use a similar brand name.
+
 ## Confirmed Business Information
 
 - Business email: `arcfortweld@outlook.com`

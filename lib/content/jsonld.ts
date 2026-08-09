@@ -8,7 +8,7 @@ import {
 } from "@/lib/content/schemas";
 import { isLowSignalSpecificationValue } from "@/lib/content/display";
 import { getSearchEligibleProductImages } from "@/lib/content/product-images";
-import { absoluteUrl, siteConfig } from "@/lib/content/site";
+import { absoluteUrl, organizationIdentity, siteConfig } from "@/lib/content/site";
 
 type BreadcrumbItem = {
   name: string;
@@ -33,9 +33,9 @@ export function organizationJsonLd() {
     "@context": "https://schema.org",
     "@type": "Organization",
     "@id": organizationId,
-    name: siteConfig.name,
-    legalName: siteConfig.legalName,
-    alternateName: [siteConfig.shortName, siteConfig.chineseName],
+    name: organizationIdentity.name,
+    legalName: organizationIdentity.legalName,
+    alternateName: organizationIdentity.alternateNames,
     url: siteConfig.url,
     email: siteConfig.email,
     telephone: siteConfig.whatsapp,
@@ -74,7 +74,9 @@ export function organizationJsonLd() {
     brand: {
       "@type": "Brand",
       "@id": absoluteUrl("/#brand"),
-      name: siteConfig.shortName,
+      name: organizationIdentity.brandName,
+      url: siteConfig.url,
+      logo: absoluteUrl(siteConfig.logo),
     },
     knowsAbout: [
       "MIG/MAG torch parts",
@@ -95,7 +97,7 @@ export function websiteJsonLd() {
     "@type": "WebSite",
     "@id": websiteId,
     name: siteConfig.name,
-    alternateName: [siteConfig.shortName, siteConfig.legalName],
+    alternateName: [`${siteConfig.name} by ${siteConfig.legalName}`, siteConfig.legalName],
     url: siteConfig.url,
     description: siteConfig.description,
     inLanguage: "en",

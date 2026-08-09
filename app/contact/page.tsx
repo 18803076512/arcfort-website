@@ -60,9 +60,9 @@ const responseSteps = [
 ];
 
 export const metadata = buildMetadata({
-  title: "Contact ArcFort Weld",
+  title: "Contact Renqiu Ailesen | ArcFort Weld",
   description:
-    "Contact ArcFort Weld for industrial welding parts, plasma cutting consumables, OEM welding accessories and export RFQ support.",
+    "Contact Renqiu Ailesen Welding Technology Co., Ltd. through ArcFort Weld for welding parts, cutting consumables, OEM supply and export RFQs.",
   path: "/contact",
   keywords: [
     "contact welding parts supplier",
@@ -83,9 +83,9 @@ export default function ContactPage() {
       />
       <StructuredData
         data={webPageJsonLd({
-          name: "Contact ArcFort Weld",
+          name: "Contact Renqiu Ailesen Welding Technology Co., Ltd.",
           description:
-            "Contact ArcFort Weld for welding and cutting product RFQs, OEM welding accessories and export sourcing support.",
+            "Contact Renqiu Ailesen Welding Technology Co., Ltd. through ArcFort Weld for welding and cutting product RFQs and export sourcing support.",
           path: "/contact",
           pageType: "ContactPage",
         })}
@@ -97,10 +97,10 @@ export default function ContactPage() {
           <div className="mt-8 grid gap-10 lg:grid-cols-[0.95fr_1.05fr] lg:items-start">
             <div>
               <p className="text-sm font-bold uppercase leading-6 tracking-[0.14em] text-arc-blue sm:tracking-[0.2em]">
-                Contact
+                {siteConfig.name} | Company Contact
               </p>
               <h1 className="mt-3 break-words font-display text-3xl font-black leading-tight text-arc-midnight sm:text-5xl">
-                Talk with ArcFort Weld about welding and cutting sourcing.
+                Contact Renqiu Ailesen for welding and cutting sourcing.
               </h1>
               <p className="mt-5 max-w-2xl text-lg leading-8 text-slate-600">
                 Send product names, models, sizes, material requirements, drawings, product photos,

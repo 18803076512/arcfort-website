@@ -8,8 +8,9 @@ export const siteConfig = {
   defaultSeoImage: "/images/site/arcfort-hero-welding-workshop.png",
   logo: "/favicon.svg",
   description:
-    "Industrial welding and cutting product supplier for distributors, importers, OEM buyers, industrial users and repair workshops.",
+    "Renqiu Ailesen Welding Technology Co., Ltd. operates ArcFort Weld, supplying industrial welding and cutting products for global distributors, importers, OEM buyers and industrial users.",
   contentLastModified: "2026-08-02",
+  aboutLastModified: "2026-08-09",
   distributorLandingLastModified: "2026-08-09",
   contactLastModified: "2026-08-09",
   productTemplateLastModified: "2026-07-26",
@@ -27,6 +28,13 @@ export const siteConfig = {
   oemService: "Logo, packaging, private label, and model customization available",
   sameAs: [] as string[],
 };
+
+export const organizationIdentity = {
+  name: siteConfig.legalName,
+  legalName: siteConfig.legalName,
+  alternateNames: [siteConfig.name, siteConfig.chineseName],
+  brandName: siteConfig.name,
+} as const;
 
 export function absoluteUrl(path = "/") {
   return new URL(path, siteConfig.url).toString();

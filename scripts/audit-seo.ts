@@ -12,7 +12,7 @@ import {
   legacyProductRedirects,
 } from "../lib/content/product-redirects.ts";
 import { composeSeoTitle, SEO_TITLE_MAX_LENGTH } from "../lib/content/seo-title.ts";
-import { siteConfig } from "../lib/content/site.ts";
+import { organizationIdentity, siteConfig } from "../lib/content/site.ts";
 import { arcfortProducts } from "../lib/data/products.ts";
 
 type SeoRecord = {
@@ -86,7 +86,9 @@ function countWords(value: string) {
 
 for (const [label, value] of [
   ["contentLastModified", siteConfig.contentLastModified],
+  ["aboutLastModified", siteConfig.aboutLastModified],
   ["distributorLandingLastModified", siteConfig.distributorLandingLastModified],
+  ["contactLastModified", siteConfig.contactLastModified],
   ["productTemplateLastModified", siteConfig.productTemplateLastModified],
   ["catalogLastModified", siteConfig.catalogLastModified],
 ] as const) {
@@ -95,6 +97,34 @@ for (const [label, value] of [
   } else if (Date.parse(value) > Date.now() + 86_400_000) {
     errors.push(`Site config ${label} has a future date "${value}".`);
   }
+}
+
+if (
+  organizationIdentity.name !== siteConfig.legalName ||
+  organizationIdentity.legalName !== siteConfig.legalName
+) {
+  errors.push(
+    "Organization structured data must use the registered company as its name and legalName.",
+  );
+}
+
+if (
+  organizationIdentity.brandName !== siteConfig.name ||
+  !organizationIdentity.alternateNames.includes(siteConfig.name) ||
+  !organizationIdentity.alternateNames.includes(siteConfig.chineseName)
+) {
+  errors.push(
+    "Organization structured data must map ArcFort Weld and the Chinese company name to the legal entity.",
+  );
+}
+
+if (
+  !siteConfig.description.includes(siteConfig.legalName) ||
+  !siteConfig.description.includes(siteConfig.name)
+) {
+  errors.push(
+    "The organization description must identify both the legal company and website brand.",
+  );
 }
 
 checkUnique(activeProducts, (product) => product.sku, "SKU");
