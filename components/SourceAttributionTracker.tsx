@@ -3,6 +3,10 @@
 import { useEffect } from "react";
 import {
   emptySourceAttribution,
+  sanitizeCampaignValue,
+  sanitizeReferrerOrigin,
+  sanitizeSourceAttribution,
+  sanitizeSourcePath,
   sourceAttributionStorageKey,
   utmParamMap,
   type SourceAttribution,
@@ -11,7 +15,9 @@ import {
 function readStoredAttribution() {
   try {
     const rawValue = window.sessionStorage.getItem(sourceAttributionStorageKey);
-    return rawValue ? (JSON.parse(rawValue) as Partial<SourceAttribution>) : null;
+    return rawValue
+      ? sanitizeSourceAttribution(JSON.parse(rawValue) as Partial<SourceAttribution>)
+      : null;
   } catch {
     return null;
   }
@@ -27,7 +33,8 @@ function writeStoredAttribution(attribution: SourceAttribution) {
 
 export function SourceAttributionTracker() {
   useEffect(() => {
-    const currentPath = `${window.location.pathname}${window.location.search}`;
+    const currentPath = sanitizeSourcePath(window.location.pathname, "/");
+    const currentReferrer = sanitizeReferrerOrigin(document.referrer);
     const searchParams = new URLSearchParams(window.location.search);
     const storedAttribution = readStoredAttribution();
     const nextAttribution: SourceAttribution = {
@@ -39,19 +46,24 @@ export function SourceAttributionTracker() {
       nextAttribution.landingPage = currentPath;
     }
 
-    if (!nextAttribution.referrer && document.referrer) {
-      nextAttribution.referrer = document.referrer;
+    if (!nextAttribution.referrer && currentReferrer) {
+      nextAttribution.referrer = currentReferrer;
     }
 
     let hasFreshUtm = false;
 
     for (const [field, param] of Object.entries(utmParamMap)) {
-      const value = searchParams.get(param)?.trim();
+      const value = sanitizeCampaignValue(searchParams.get(param));
 
       if (value) {
-        nextAttribution[field as keyof typeof utmParamMap] = value.slice(0, 160);
+        nextAttribution[field as keyof typeof utmParamMap] = value;
         hasFreshUtm = true;
       }
+    }
+
+    if (hasFreshUtm) {
+      nextAttribution.landingPage = currentPath;
+      nextAttribution.referrer = currentReferrer || nextAttribution.referrer;
     }
 
     if (!storedAttribution || hasFreshUtm) {
@@ -61,4 +73,3 @@ export function SourceAttributionTracker() {
 
   return null;
 }
-

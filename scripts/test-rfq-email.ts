@@ -22,8 +22,8 @@ const payload: RfqEmailPayload = {
   message: "Private label bags & export cartons required.",
   sourcePath: "/products/mig-mag-torch-parts/mig-contact-tip",
   sourceAttribution: {
-    landingPage: "/distributor-supply?utm_source=outreach_email&utm_medium=email",
-    referrer: "https://example.com/<source>",
+    landingPage: "/distributor-supply",
+    referrer: "https://example.com",
     utmSource: "outreach_email",
     utmMedium: "email",
     utmCampaign: "distributor_sourcing_2026",

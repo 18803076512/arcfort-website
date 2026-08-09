@@ -22,7 +22,8 @@ import {
   updateRfqListItem,
 } from "@/lib/rfq-list";
 import {
-  emptySourceAttribution,
+  sanitizeSourceAttribution,
+  sanitizeSourcePath,
   sourceAttributionFields,
   sourceAttributionStorageKey,
   type SourceAttribution,
@@ -161,12 +162,9 @@ function getStoredSourceAttribution(): SourceAttribution {
     const rawValue = window.sessionStorage.getItem(sourceAttributionStorageKey);
     const parsedValue = rawValue ? (JSON.parse(rawValue) as Partial<SourceAttribution>) : {};
 
-    return {
-      ...emptySourceAttribution(),
-      ...parsedValue,
-    };
+    return sanitizeSourceAttribution(parsedValue);
   } catch {
-    return emptySourceAttribution();
+    return sanitizeSourceAttribution(null);
   }
 }
 
@@ -453,7 +451,7 @@ export function RfqForm({ initialProduct = "", formPlacement = "rfq_page" }: Rfq
 
     const formData = new FormData();
     const sourceAttribution = getStoredSourceAttribution();
-    const sourcePath = window.location.pathname + window.location.search;
+    const sourcePath = sanitizeSourcePath(window.location.pathname, "/rfq");
     const submissionFingerprint = JSON.stringify({
       values: {
         ...values,

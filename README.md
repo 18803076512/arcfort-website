@@ -207,6 +207,8 @@ The `/rfq` page includes a responsive inquiry form with:
   missing-information prompts; it does not score or reject buyers
 - A human-readable lead-source summary and one-click buyer email action in the sales notification;
   the WhatsApp action appears only for an international-format number supplied by the buyer
+- Privacy-bounded RFQ attribution that retains only the entry page path, external referrer origin
+  and validated UTM labels; unrelated query parameters and full referrer paths are discarded
 - Buyer confirmation guidance covering product references, drawings, sample photos, packaging and
   destination details that can accelerate manual review
 - Resend idempotency keys for both the sales notification and buyer confirmation, preventing an
@@ -523,8 +525,9 @@ The English campaign assets are:
 - `docs/promotion/outreach-wave-03.md` - third-wave company-specific drafts for manual review only
 
 Only allowlisted UTM fields are retained in GA4 page locations; unrelated query parameters are
-discarded. Do not put buyer personal data in UTM parameters or analytics events. Outreach must be
-relevant, identified and manually reviewed; the repository does not automate unsolicited messages.
+discarded. RFQ lead attribution applies the same campaign-value rules and stores only the entry path
+and external referrer origin. Do not put buyer personal data in UTM parameters or analytics events.
+Outreach must be relevant, identified and manually reviewed; the repository does not automate unsolicited messages.
 `npm run promotion:test` also verifies that the RFQ conversion funnel keeps its form-start,
 submission, lead, contact and buyer-download events, and that the form-start event contains no buyer
 PII or inquiry content.
