@@ -471,6 +471,7 @@ Generate and verify promotion links with:
 ```bash
 npm run promotion:links
 npm run promotion:prospects
+npm run promotion:wave
 npm run promotion:check
 npm run promotion:test
 ```
@@ -485,6 +486,8 @@ The English campaign assets are:
 - `docs/promotion/social-preview-asset.md` - distributor social-image source, usage limits and validation
 - `docs/promotion/distributor-prospect-research.csv` - verified public-company research with official source and contact URLs
 - `docs/promotion/prospect-qualification-guide.md` - qualification, status, privacy and manual outreach rules
+- `data/promotion/outreach-wave-01.csv` - five-company Oceania test batch mapped to verified sources and campaign links
+- `docs/promotion/outreach-wave-01.md` - company-specific drafts for manual review and sending only
 
 Only allowlisted UTM fields are retained in GA4 page locations; unrelated query parameters are
 discarded. Do not put buyer personal data in UTM parameters or analytics events. Outreach must be
@@ -497,6 +500,11 @@ The prospect research file is not a customer or partner list. It must contain co
 information only. Recheck each official website before contact, use small manually reviewed batches,
 keep correspondence outside Git and honor opt-out requests. `npm run promotion:prospects` validates
 the schema, official-domain URLs, campaign IDs, statuses and accidental contact data.
+
+The first outreach wave contains five company-level drafts and is not an automated sending system.
+Run `npm run promotion:wave`, reopen every official evidence page, approve each message manually and
+use only the company's published business inquiry route. Keep replies and contact records in a
+private sales system rather than Git.
 
 The distributor landing page has route-specific 1200 x 630 Open Graph and Twitter images. Shared
 site chrome, visual category codes, product-image labels and repeated card actions use static
