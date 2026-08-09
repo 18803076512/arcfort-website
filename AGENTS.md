@@ -86,8 +86,9 @@ generation.
     inquiry or resetting its workflow status.
 26. Promotion links must come from `data/promotion/campaigns.csv` and be regenerated with
     `npm run promotion:links`. Do not add buyer PII to URLs, analytics events or campaign IDs, and do
-    not automate unsolicited outreach. Use relevant business contacts, identify the company and
-    honor opt-out requests.
+    not automate unsolicited outreach. Public prospect research must contain company-level official
+    website URLs only, pass `npm run promotion:prospects`, and never be described as a customer or
+    partner list. Use relevant business contacts, identify the company and honor opt-out requests.
 27. Preserve static `data-nosnippet` protection on shared navigation, trust strips, footers,
     product-image labels and repeated card actions. Never apply it to the page H1 or primary buyer
     content. After each build, run `npm run seo:snippets` to verify snippet regions and campaign
