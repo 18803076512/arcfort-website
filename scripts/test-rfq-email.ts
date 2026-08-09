@@ -8,6 +8,7 @@ import {
   buildInquiryEmailText,
   type RfqEmailPayload,
 } from "../lib/rfq-email.ts";
+import { buildRfqLeadSourceSummary } from "../lib/rfq-lead-source.ts";
 import { buildRfqQuotationReadiness } from "../lib/rfq-qualification.ts";
 
 const payload: RfqEmailPayload = {
@@ -21,13 +22,13 @@ const payload: RfqEmailPayload = {
   message: "Private label bags & export cartons required.",
   sourcePath: "/products/mig-mag-torch-parts/mig-contact-tip",
   sourceAttribution: {
-    landingPage: "/products?utm_source=buyer&utm_medium=email",
+    landingPage: "/distributor-supply?utm_source=outreach_email&utm_medium=email",
     referrer: "https://example.com/<source>",
-    utmSource: "buyer-newsletter",
+    utmSource: "outreach_email",
     utmMedium: "email",
-    utmCampaign: "summer & autumn",
+    utmCampaign: "distributor_sourcing_2026",
     utmTerm: "",
-    utmContent: "",
+    utmContent: "introduction",
   },
 };
 const attachments = [
@@ -64,6 +65,11 @@ assert.match(inquiryHtml, /New Website RFQ/);
 assert.match(inquiryHtml, /Quotation Readiness/);
 assert.match(inquiryHtml, /Ready for sales review/);
 assert.match(inquiryHtml, /Sales follow-up checklist/);
+assert.match(inquiryHtml, /Lead Source/);
+assert.match(inquiryHtml, /Distributor outreach email/);
+assert.match(inquiryHtml, /Reply to Buyer/);
+assert.match(inquiryHtml, /mailto:buyer%40example\.com\?subject=Re%3A%20ArcFort%20Weld%20RFQ/);
+assert.match(inquiryHtml, /https:\/\/wa\.me\/10000000000/);
 assert.match(inquiryHtml, /Inquiry Source/);
 assert.match(inquiryHtml, /drawing-&lt;revision-a&gt;\.pdf/);
 assert.match(inquiryHtml, /rfq\/drawing-&lt;revision-a&gt;\.pdf/);
@@ -80,6 +86,9 @@ assert.doesNotMatch(confirmationHtml, /rfq\/drawing-&lt;revision-a&gt;\.pdf/);
 
 assert.match(inquiryText, /Quotation Readiness: Ready for sales review/);
 assert.match(inquiryText, /Sales Follow-up Checklist:/);
+assert.match(inquiryText, /Lead Source: Distributor outreach email/);
+assert.match(inquiryText, /Sales Response Actions:/);
+assert.match(inquiryText, /https:\/\/wa\.me\/10000000000/);
 assert.match(inquiryText, /rfq\/drawing-<revision-a>\.pdf/);
 assert.match(confirmationText, /Information that can help us review faster:/);
 assert.match(confirmationText, /arcfortweld@outlook\.com/);
@@ -103,5 +112,37 @@ assert.equal(incompleteReadiness.status, "technical_details_needed");
 assert.match(incompleteReadiness.followUpItems.join("\n"), /part number/);
 assert.match(incompleteReadiness.followUpItems.join("\n"), /sample photos/);
 assert.doesNotMatch(incompleteReadiness.label, /New Zealand|Trial order/);
+
+const referralSummary = buildRfqLeadSourceSummary(
+  {
+    landingPage: "/products/mig-mag-torch-parts",
+    referrer: "https://welding-directory.example/suppliers",
+    utmSource: "",
+    utmMedium: "",
+    utmCampaign: "",
+    utmTerm: "",
+    utmContent: "",
+  },
+  "/products/mig-mag-torch-parts",
+);
+assert.equal(referralSummary.label, "Referral: welding-directory.example");
+
+const invalidWhatsAppHtml = buildInquiryEmailHtml(
+  { ...payload, whatsapp: "020 1234 5678" },
+  attachments,
+  reference,
+  requestMeta,
+);
+assert.doesNotMatch(invalidWhatsAppHtml, /https:\/\/wa\.me\/02012345678/);
+assert.match(invalidWhatsAppHtml, /Reply by Email/);
+
+const encodedEmailHtml = buildInquiryEmailHtml(
+  { ...payload, email: "buyer@example.com?body=untrusted" },
+  attachments,
+  reference,
+  requestMeta,
+);
+assert.match(encodedEmailHtml, /mailto:buyer%40example\.com%3Fbody%3Duntrusted\?subject=/);
+assert.doesNotMatch(encodedEmailHtml, /mailto:buyer@example\.com\?body=/);
 
 console.log("RFQ email template tests passed.");
