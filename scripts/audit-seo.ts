@@ -86,6 +86,7 @@ function countWords(value: string) {
 
 for (const [label, value] of [
   ["contentLastModified", siteConfig.contentLastModified],
+  ["distributorLandingLastModified", siteConfig.distributorLandingLastModified],
   ["productTemplateLastModified", siteConfig.productTemplateLastModified],
   ["catalogLastModified", siteConfig.catalogLastModified],
 ] as const) {

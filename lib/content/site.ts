@@ -10,6 +10,7 @@ export const siteConfig = {
   description:
     "Industrial welding and cutting product supplier for distributors, importers, OEM buyers, industrial users and repair workshops.",
   contentLastModified: "2026-08-02",
+  distributorLandingLastModified: "2026-08-09",
   productTemplateLastModified: "2026-07-26",
   catalogLastModified: "2026-06-29",
   email: "arcfortweld@outlook.com",
