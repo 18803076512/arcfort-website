@@ -11,6 +11,11 @@ technical facts, compatibility, prices, certifications or delivery promises.
   Git, public documents or analytics URLs.
 - Treat the website's quotation-readiness label as a checklist aid only. A person must review every
   inquiry before quotation or rejection.
+- Use the sales email's lead-source summary to organize channel follow-up, but treat it as an
+  operational hint because campaign parameters and browser referrers can be buyer-controlled.
+- Verify the recipient before using the one-click email or WhatsApp actions. WhatsApp is shown only
+  when the buyer supplied an international-format number; do not assume that it grants permission
+  for unrelated marketing messages.
 - Scan buyer attachments with endpoint protection. Never enable document macros.
 
 ## First Review

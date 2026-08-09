@@ -1,5 +1,6 @@
 import { siteConfig } from "./content/site.ts";
 import type { RfqTextValues } from "./rfq-constraints.ts";
+import { buildRfqLeadSourceSummary } from "./rfq-lead-source.ts";
 import { buildRfqQuotationReadiness } from "./rfq-qualification.ts";
 import type { SourceAttribution } from "./source-attribution.ts";
 
@@ -125,6 +126,40 @@ function bulletList(items: string[]) {
     .join("")}</ul>`;
 }
 
+function buildBuyerEmailHref(email: string, reference: string) {
+  return `mailto:${encodeURIComponent(email.trim())}?subject=${encodeURIComponent(
+    `Re: ArcFort Weld RFQ ${reference}`,
+  )}`;
+}
+
+function buildBuyerWhatsAppHref(whatsapp: string) {
+  const normalizedValue = whatsapp.trim();
+  const digits = normalizedValue.replace(/\D/g, "");
+
+  if (!normalizedValue.startsWith("+") || digits.length < 8 || digits.length > 15) {
+    return "";
+  }
+
+  return `https://wa.me/${digits}`;
+}
+
+function buyerContactActions(payload: RfqEmailPayload, reference: string) {
+  const emailHref = buildBuyerEmailHref(payload.email, reference);
+  const whatsappHref = buildBuyerWhatsAppHref(payload.whatsapp);
+  const actions = [
+    `<td style="width: ${whatsappHref ? "50%" : "100%"}; padding: 0 ${whatsappHref ? "6px" : "0"} 8px 0;"><a href="${escapeHtml(emailHref)}" style="display: block; background: #0f4c81; padding: 13px 16px; color: #ffffff; font-size: 13px; font-weight: 700; text-align: center; text-decoration: none;">Reply by Email</a></td>`,
+    whatsappHref
+      ? `<td style="width: 50%; padding: 0 0 8px 6px;"><a href="${escapeHtml(whatsappHref)}" style="display: block; border: 1px solid #0f4c81; padding: 12px 16px; color: #0f4c81; font-size: 13px; font-weight: 700; text-align: center; text-decoration: none;">Open WhatsApp</a></td>`
+      : "",
+  ].join("");
+
+  return `
+    <table role="presentation" cellspacing="0" cellpadding="0" border="0" style="width: 100%;">
+      <tr>${actions}</tr>
+    </table>
+    <div style="margin-top: 8px; color: #526174; font-size: 12px; line-height: 1.6;">Verify the recipient and keep ${safeText(reference)} in the reply. WhatsApp is shown only when the buyer supplied an international-format number.</div>`;
+}
+
 function attachmentText(attachments: RfqEmailAttachment[], includePath: boolean) {
   if (attachments.length === 0) {
     return "No attachments uploaded.";
@@ -146,6 +181,9 @@ export function buildInquiryEmailText(
   requestMeta: RfqEmailRequestMeta,
 ) {
   const readiness = buildRfqQuotationReadiness(payload, attachments);
+  const sourceSummary = buildRfqLeadSourceSummary(payload.sourceAttribution, payload.sourcePath);
+  const buyerEmailHref = buildBuyerEmailHref(payload.email, reference);
+  const buyerWhatsAppHref = buildBuyerWhatsAppHref(payload.whatsapp);
 
   return [
     "New RFQ inquiry from ArcFort Weld website",
@@ -157,6 +195,13 @@ export function buildInquiryEmailText(
     "",
     "Sales Follow-up Checklist:",
     ...readiness.followUpItems.map((item) => `- ${item}`),
+    "",
+    `Lead Source: ${sourceSummary.label}`,
+    ...sourceSummary.details.map((item) => `- ${item}`),
+    "",
+    "Sales Response Actions:",
+    `- Reply by email: ${buyerEmailHref}`,
+    ...(buyerWhatsAppHref ? [`- Open WhatsApp: ${buyerWhatsAppHref}`] : []),
     "",
     `Name: ${payload.name}`,
     `Company: ${payload.company}`,
@@ -243,6 +288,7 @@ export function buildInquiryEmailHtml(
   requestMeta: RfqEmailRequestMeta,
 ) {
   const readiness = buildRfqQuotationReadiness(payload, attachments);
+  const sourceSummary = buildRfqLeadSourceSummary(payload.sourceAttribution, payload.sourcePath);
   const buyerRows = [
     detailRow("RFQ Reference", reference),
     detailRow("Name", payload.name),
@@ -270,9 +316,14 @@ export function buildInquiryEmailHtml(
     ${bulletList(readiness.confirmedSignals)}
     <div style="margin: 16px 0 8px; color: #526174; font-size: 12px; font-weight: 700; text-transform: uppercase;">Sales follow-up checklist</div>
     ${bulletList(readiness.followUpItems)}`;
+  const sourceSummaryContent = `
+    <div style="margin: 0 0 8px; color: #071524; font-size: 15px; font-weight: 800;">${safeText(sourceSummary.label)}</div>
+    ${bulletList(sourceSummary.details)}`;
   const content = [
     section("Quotation Readiness", readinessContent),
+    section("Lead Source", sourceSummaryContent),
     `<tr><td style="padding: 0 32px 24px;"><table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="width: 100%; border: 1px solid #d9e2ec; border-collapse: collapse;">${buyerRows}</table></td></tr>`,
+    section("Reply to Buyer", buyerContactActions(payload, reference)),
     section("Product Requirements", multilineText(payload.productRequirements)),
     section("Additional Message", multilineText(payload.message, "No additional message.")),
     section("Attachments", attachmentList(attachments, true)),

@@ -198,6 +198,8 @@ The `/rfq` page includes a responsive inquiry form with:
   client compatibility
 - A privacy-safe quotation-readiness panel in the sales email with confirmed inquiry signals and
   missing-information prompts; it does not score or reject buyers
+- A human-readable lead-source summary and one-click buyer email action in the sales notification;
+  the WhatsApp action appears only for an international-format number supplied by the buyer
 - Buyer confirmation guidance covering product references, drawings, sample photos, packaging and
   destination details that can accelerate manual review
 - Resend idempotency keys for both the sales notification and buyer confirmation, preventing an
