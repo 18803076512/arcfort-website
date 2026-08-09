@@ -13,7 +13,12 @@ import {
   validateRfqTextValues,
 } from "@/lib/rfq-constraints";
 import { validateRfqFileContents } from "@/lib/rfq-file-content";
-import { buildBuyerConfirmationEmailHtml, buildInquiryEmailHtml } from "@/lib/rfq-email";
+import {
+  buildBuyerConfirmationEmailHtml,
+  buildBuyerConfirmationEmailText,
+  buildInquiryEmailHtml,
+  buildInquiryEmailText,
+} from "@/lib/rfq-email";
 import {
   checkRfqRateLimit,
   getRfqRateLimitHeaders,
@@ -273,109 +278,6 @@ async function insertSupabaseInquiry(
   }
 
   return true;
-}
-
-function buildInquiryEmailText(
-  payload: RfqPayload,
-  attachments: AttachmentRecord[],
-  reference: string,
-  requestMeta: { userAgent: string; referrer: string },
-) {
-  const attachmentSummary =
-    attachments.length > 0
-      ? attachments
-          .map((attachment) => {
-            const sizeMb = (attachment.size / (1024 * 1024)).toFixed(2);
-            return `- ${attachment.name} (${sizeMb} MB)${attachment.path ? ` - ${attachment.path}` : ""}`;
-          })
-          .join("\n")
-      : "No attachments uploaded.";
-
-  return [
-    "New RFQ inquiry from ArcFort Weld website",
-    `RFQ Reference: ${reference}`,
-    "",
-    `Name: ${payload.name}`,
-    `Company: ${payload.company}`,
-    `Email: ${payload.email}`,
-    `WhatsApp: ${payload.whatsapp || "Not provided"}`,
-    `Country: ${payload.country}`,
-    `Quantity: ${payload.quantity}`,
-    "",
-    "Product Requirements:",
-    payload.productRequirements,
-    "",
-    "Message:",
-    payload.message || "No additional message.",
-    "",
-    "Attachments:",
-    attachmentSummary,
-    "",
-    "Attachment Safety:",
-    "Attachments were submitted by an external website visitor. File signatures were checked, but files were not malware-scanned. Use endpoint protection and do not enable macros.",
-    "",
-    "Source:",
-    `Path: ${payload.sourcePath}`,
-    `Landing Page: ${payload.sourceAttribution.landingPage || "Not captured"}`,
-    `Browser Referrer: ${payload.sourceAttribution.referrer || "Not captured"}`,
-    `UTM Source: ${payload.sourceAttribution.utmSource || "Not captured"}`,
-    `UTM Medium: ${payload.sourceAttribution.utmMedium || "Not captured"}`,
-    `UTM Campaign: ${payload.sourceAttribution.utmCampaign || "Not captured"}`,
-    `UTM Term: ${payload.sourceAttribution.utmTerm || "Not captured"}`,
-    `UTM Content: ${payload.sourceAttribution.utmContent || "Not captured"}`,
-    `Referrer: ${requestMeta.referrer}`,
-    `User Agent: ${requestMeta.userAgent}`,
-  ].join("\n");
-}
-
-function buildBuyerConfirmationEmailText(
-  payload: RfqPayload,
-  attachments: AttachmentRecord[],
-  reference: string,
-) {
-  const attachmentSummary =
-    attachments.length > 0
-      ? attachments
-          .map((attachment) => {
-            const sizeMb = (attachment.size / (1024 * 1024)).toFixed(2);
-            return `- ${attachment.name} (${sizeMb} MB)`;
-          })
-          .join("\n")
-      : "No attachments uploaded.";
-
-  return [
-    `Dear ${payload.name},`,
-    "",
-    "Thank you for sending your RFQ to ArcFort Weld.",
-    "",
-    "We have received your inquiry and the sales team will review the product details, quantity, packaging requirement and delivery information before follow-up.",
-    "",
-    "RFQ Summary",
-    `Reference: ${reference}`,
-    `Company: ${payload.company}`,
-    `Email: ${payload.email}`,
-    `WhatsApp: ${payload.whatsapp || "Not provided"}`,
-    `Country: ${payload.country}`,
-    `Quantity: ${payload.quantity}`,
-    "",
-    "Product Requirements:",
-    payload.productRequirements,
-    "",
-    "Message:",
-    payload.message || "No additional message.",
-    "",
-    "Attachments:",
-    attachmentSummary,
-    "",
-    "For urgent updates, you can also contact us directly:",
-    `Email: ${siteConfig.email}`,
-    `WhatsApp: ${siteConfig.whatsapp}`,
-    "",
-    `${siteConfig.legalName}`,
-    siteConfig.tagline,
-    "",
-    "This is an automatic confirmation email from the ArcFort Weld website.",
-  ].join("\n");
 }
 
 async function buildEmailAttachments(files: File[]) {
