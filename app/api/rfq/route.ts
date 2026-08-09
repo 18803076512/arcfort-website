@@ -3,6 +3,9 @@ import { checkBotId } from "botid/server";
 import { siteConfig } from "@/lib/content/site";
 import {
   emptySourceAttribution,
+  sanitizeSourceAttribution,
+  sanitizeSourcePath,
+  sanitizeReferrerOrigin,
   sourceAttributionFields,
   type SourceAttribution,
 } from "@/lib/source-attribution";
@@ -102,29 +105,14 @@ function getAttachments(formData: FormData) {
     .filter((entry): entry is File => entry instanceof File && entry.size > 0);
 }
 
-function normalizeSourcePath(sourcePath: string) {
-  if (!sourcePath.startsWith("/") || sourcePath.startsWith("//") || sourcePath.length > 240) {
-    return "/rfq";
-  }
-
-  return sourcePath;
-}
-
-function cleanSourceValue(value: string) {
-  return value
-    .replace(/[\r\n\t]+/g, " ")
-    .trim()
-    .slice(0, 240);
-}
-
 function cleanSourceAttribution(formData: FormData): SourceAttribution {
   const sourceAttribution = emptySourceAttribution();
 
   for (const field of sourceAttributionFields) {
-    sourceAttribution[field] = cleanSourceValue(cleanFormValue(formData, field));
+    sourceAttribution[field] = cleanFormValue(formData, field);
   }
 
-  return sourceAttribution;
+  return sanitizeSourceAttribution(sourceAttribution);
 }
 
 function getSourceAttributionValue(payload: RfqPayload, field: keyof SourceAttribution) {
@@ -476,7 +464,7 @@ export async function POST(request: Request) {
       productRequirements: cleanField(formData, "productRequirements"),
       quantity: cleanField(formData, "quantity"),
       message: cleanField(formData, "message"),
-      sourcePath: normalizeSourcePath(cleanField(formData, "sourcePath")),
+      sourcePath: sanitizeSourcePath(cleanField(formData, "sourcePath"), "/rfq"),
       sourceAttribution: cleanSourceAttribution(formData),
     };
     const files = getAttachments(formData);
@@ -488,7 +476,7 @@ export async function POST(request: Request) {
     const errors: Partial<Record<keyof RfqTextValues | "attachments", string>> = {};
     const requestMeta = {
       userAgent: (request.headers.get("user-agent") || "Unknown").slice(0, 240),
-      referrer: (request.headers.get("referer") || "Direct").slice(0, 240),
+      referrer: sanitizeReferrerOrigin(request.headers.get("referer")) || "Direct",
     };
 
     if (honeypot) {

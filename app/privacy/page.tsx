@@ -25,6 +25,10 @@ const privacySections = [
     body: "RFQ information and attachments may be transmitted to the configured ArcFort Weld sales email and, when enabled, stored in protected server-side systems for quotation follow-up. Access is limited to authorized business users and service providers supporting the inquiry process.",
   },
   {
+    title: "Inquiry source attribution",
+    body: "To understand which business channels produce relevant inquiries, an RFQ may include the entry page path, the external referring website origin and validated UTM campaign labels. Unrelated query parameters, full referrer paths and invalid campaign values are discarded.",
+  },
+  {
     title: "Security and abuse prevention",
     body: "ArcFort Weld and its hosting and security provider, Vercel, may process limited request metadata and browser challenge signals to detect automated submissions, protect the RFQ service and investigate abuse. These security signals are not used to prepare quotations or added to public product records.",
   },
@@ -84,7 +88,7 @@ export default function PrivacyPage() {
             and optional website analytics for international B2B inquiries.
           </p>
           <p className="mt-4 text-xs font-bold uppercase tracking-[0.12em] text-slate-500">
-            Last updated August 1, 2026
+            Last updated August 9, 2026
           </p>
         </div>
       </section>
