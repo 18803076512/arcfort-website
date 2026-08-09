@@ -733,4 +733,83 @@ export const guides: GuideArticle[] = [
       "OEM welding supplier",
     ],
   },
+  {
+    slug: "identify-welding-torch-consumables-from-photos-samples",
+    title: "How to Identify Welding Torch Consumables from Photos and Samples",
+    seoTitle: "Identify Welding Torch Consumables from Photos & Samples",
+    description:
+      "A practical identification workflow for buyers sourcing MIG/MAG, TIG and plasma torch consumables from photos, samples, drawings or model references.",
+    seoDescription:
+      "Identify MIG/MAG, TIG and plasma torch consumables using clear photos, samples, drawings and model references before requesting a supplier quotation.",
+    publishedDate: "2026-08-09",
+    modifiedDate: "2026-08-09",
+    sections: [
+      {
+        title: "Start with the welding or cutting process",
+        body: "First separate the requested parts into MIG/MAG, TIG or plasma cutting families. MIG/MAG torch consumables commonly include contact tips, tip holders, diffusers, gas nozzles, torch liners and swan necks. TIG torch assemblies use parts such as ceramic cups, collets, collet bodies, gas lenses and back caps. Plasma front ends may include electrodes, nozzles, swirl rings, shields and retaining caps. Similar color or shape does not prove that two parts belong to the same system. Record the process shown on the existing package, equipment document or purchasing record before comparing individual components.",
+      },
+      {
+        title: "Photograph the complete assembly before disassembly",
+        body: "When possible, photograph the torch front end and the assembled consumable stack before removing parts. Add a second image after disassembly with the components arranged in installation order. This gives the supplier context that a single loose-part photo cannot provide. Keep the original package, label and used reference parts together until identification is complete. For a mixed workshop collection, assign a temporary line number to each part and show that number in every related photo. Do not clean away useful markings or combine visually similar items into one bag before their references have been recorded.",
+      },
+      {
+        title: "Build a photo set that can be reviewed",
+        body: "Use a plain, well-lit background and keep the product in focus. Capture the complete side profile, both ends, the connection or thread area, gas openings and every visible marking. Add a ruler or caliper reading only when the measuring method is clear, and keep the scale in the same plane as the part to reduce perspective error. Include one image of the package label or equipment nameplate when available. Avoid screenshots with seller logos, watermarks, prices or unrelated product claims. Original photos of the buyer's sample are more useful for matching work because the supplier can trace them directly to the requested line item.",
+      },
+      {
+        title: "Record markings and dimensions without guessing",
+        body: "Copy legible part numbers, cup numbers, wire sizes, thread references and other markings exactly as shown. If a marking is incomplete, state which characters are uncertain instead of completing the number from memory. Record dimensions only when the buyer can measure them reliably and label each value, such as overall length, outside diameter, opening diameter or thread. Appearance alone cannot confirm copper grade, surface treatment, exact thread, electrical rating or OEM number. Leave those fields open for review and ask the supplier which additional drawing, sample or measurement is required.",
+      },
+      {
+        title: "Use model, drawing or sample evidence for compatibility",
+        body: "A common trade name can narrow the search, but it does not guarantee fit. Provide the torch model, machine model when relevant, existing part reference, assembly photo and drawing or physical sample details. Explain whether the model is an approved requirement, a reference from the current installation or only a possible market comparison. The supplier should confirm compatibility against the evidence available for the exact requested item. When the reference remains incomplete, request a conditional quotation and keep the final match subject to sample, drawing or model confirmation before production approval.",
+      },
+      {
+        title: "Organize mixed SKU inquiries for quotation",
+        body: "Create one RFQ row for every product, size or model rather than grouping several consumables under a generic description. Include a line number, product family, current reference, required quantity, package requirement and destination country. Use filenames such as line-01-front, line-01-thread and line-01-label so attachments can be matched to the correct row. State the trial quantity and expected repeat quantity separately. For OEM requests, add logo, label, inner pack and carton requirements, but keep product confirmation separate from packaging approval. This structure helps purchasing and technical teams review the same information without losing traceability.",
+      },
+      {
+        title: "Send the evidence required for an actionable RFQ",
+        body: "Before submission, check that every RFQ row has a clear product name, quantity and at least one usable identification reference. Add the destination country, requested delivery window and whether standard export packing or customized packaging is required. ArcFort Weld can review product lists, drawings, photos and sample details for welding torch consumables and plasma cutting parts. The quotation should identify available products, fields that still require technical confirmation, MOQ, packing basis, expected lead time and delivery options. For standard products, small trial orders can be discussed; OEM MOQ depends on the product and packaging requirements.",
+      },
+    ],
+    categorySlugs: ["mig-mag-torch-parts", "tig-torch-parts", "plasma-cutting-consumables"],
+    productSlugs: [
+      "mig-contact-tip-m6-1-0mm",
+      "mig-gas-nozzle-for-mb15",
+      "tig-ceramic-cup-5",
+      "tig-gas-lens-1-6mm",
+      "plasma-electrode",
+      "plasma-nozzle",
+    ],
+    faq: [
+      {
+        question: "Can a welding torch consumable be identified from one photo?",
+        answer:
+          "A photo can support identification, but one image normally cannot confirm every connection, dimension or compatibility detail. Provide multiple views plus a model, drawing or sample reference when available.",
+      },
+      {
+        question: "Which photos are most useful for a supplier quotation?",
+        answer:
+          "Send the complete part, both ends, connection or thread area, visible markings, package label and the assembled position. Add a clearly shown scale only when dimensions can be measured reliably.",
+      },
+      {
+        question: "Should I send the welding machine model or the torch model?",
+        answer:
+          "Send the torch model first for torch consumables and include the machine model when it helps identify the installed system. A drawing, current part reference or physical sample can provide additional evidence.",
+      },
+      {
+        question: "Can ArcFort Weld review a mixed list of MIG/MAG, TIG and plasma parts?",
+        answer:
+          "Yes. Put each product, size or model on a separate RFQ row with its own quantity and photo references so every item can be reviewed independently.",
+      },
+    ],
+    keywords: [
+      "identify welding torch consumables",
+      "welding parts identification",
+      "MIG torch parts by photo",
+      "TIG consumables sample matching",
+      "plasma consumables identification",
+    ],
+  },
 ];
