@@ -11,7 +11,8 @@ from product-scope review to a traceable RFQ without making unsupported product 
 - Landing page: `/distributor-supply`
 - Primary resource: `/downloads/arcfort-distributor-sourcing-guide.pdf`
 - Supporting resources: company catalog, public product list and RFQ worksheet in `/downloads`
-- Conversion path: `/rfq?product=Distributor%20welding%20product%20program`
+- Conversion path: the complete RFQ form embedded in `/distributor-supply#distributor-rfq-form`
+- Backup conversion path: `/rfq?product=Distributor%20welding%20product%20program`
 - Direct contact: `arcfortweld@outlook.com` and WhatsApp `+86-18803076512`
 
 The sourcing guide explains the product families, inquiry process, confirmed trade terms and the
@@ -88,8 +89,14 @@ Review these events by source, medium, campaign and content:
 - `contact_whatsapp_click`
 
 `rfq_form_start` is recorded once after a consented buyer first interacts with the form. It contains
-only the interaction type, form entry type and selected-product count. Buyer contact details,
-inquiry text, product references and uploaded file details are not included in this event.
+only the interaction type, form entry type, selected-product count and a controlled
+`form_placement` value. `form_placement=distributor_landing` identifies the embedded distributor
+form; `form_placement=rfq_page` identifies the standalone RFQ page. Buyer contact details, inquiry
+text, product references and uploaded file details are not included in this event.
+
+The distributor landing page uses the same production RFQ component as `/rfq`. It retains server
+validation, BotID, attachment checks, Resend delivery, buyer confirmation, idempotency, attribution
+and email/WhatsApp fallback. Do not create a second lightweight form that bypasses these controls.
 
 Qualified inquiry review remains manual. Check whether an inquiry includes a usable product name or
 reference, quantity and destination, rather than treating every form event as a sales opportunity.

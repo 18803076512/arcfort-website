@@ -44,6 +44,7 @@ the following gzip-compressed limits:
 | ----------------------------------------- | ------: |
 | Homepage JavaScript                       | 140 KiB |
 | Product Center JavaScript                 | 145 KiB |
+| Distributor Landing JavaScript            | 150 KiB |
 | RFQ JavaScript                            | 150 KiB |
 | Shared CSS                                |  15 KiB |
 | Any individual JavaScript asset           |  65 KiB |
@@ -55,6 +56,7 @@ Baseline build values when the budget was introduced:
 | ------------------------- | -------------: |
 | Homepage JavaScript       | 122.2 KiB gzip |
 | Product Center JavaScript | 122.6 KiB gzip |
+| Distributor Landing       | 130.5 KiB gzip |
 | RFQ JavaScript            | 123.8 KiB gzip |
 | Shared CSS                |   7.8 KiB gzip |
 | Largest site image source |    2,132.7 KiB |

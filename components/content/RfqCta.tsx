@@ -61,7 +61,7 @@ export function RfqCta({
             </Link>
           </div>
         </div>
-        <div className="relative mt-6 grid gap-3 border-t border-white/10 pt-5 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="relative mt-6 grid gap-3 border-t border-white/10 pt-5 sm:grid-cols-2">
           {supportDetails.map((item) =>
             item.href ? (
               <a
@@ -69,7 +69,7 @@ export function RfqCta({
                 href={item.href}
                 className="min-w-0 border border-white/10 bg-white/5 p-4 text-sm leading-6 text-slate-200 transition hover:border-arc-signal hover:text-white"
               >
-                <span className="block text-xs font-bold uppercase tracking-[0.16em] text-arc-signal">
+                <span className="block text-xs font-bold uppercase tracking-normal text-arc-signal">
                   {item.label}
                 </span>
                 <span className="mt-1 block break-words font-semibold">{item.value}</span>
@@ -79,7 +79,7 @@ export function RfqCta({
                 key={item.label}
                 className="min-w-0 border border-white/10 bg-white/5 p-4 text-sm leading-6 text-slate-200"
               >
-                <span className="block text-xs font-bold uppercase tracking-[0.16em] text-arc-signal">
+                <span className="block text-xs font-bold uppercase tracking-normal text-arc-signal">
                   {item.label}
                 </span>
                 <span className="mt-1 block break-words">{item.value}</span>

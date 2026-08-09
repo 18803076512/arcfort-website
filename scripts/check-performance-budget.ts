@@ -21,6 +21,11 @@ const kibibyte = 1024;
 const routeBudgets: RouteBudget[] = [
   { label: "Homepage", route: "/page", maxGzipBytes: 140 * kibibyte },
   { label: "Product Center", route: "/products/page", maxGzipBytes: 145 * kibibyte },
+  {
+    label: "Distributor Landing",
+    route: "/distributor-supply/page",
+    maxGzipBytes: 150 * kibibyte,
+  },
   { label: "RFQ", route: "/rfq/page", maxGzipBytes: 150 * kibibyte },
 ];
 const maxCssGzipBytes = 15 * kibibyte;

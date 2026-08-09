@@ -72,10 +72,16 @@ function getTrackedLinkEvent(href: string): TrackedLinkEvent | null {
   try {
     const url = new URL(href, window.location.origin);
 
-    if (url.origin === window.location.origin && url.pathname === "/rfq") {
+    if (
+      url.origin === window.location.origin &&
+      (url.pathname === "/rfq" || url.hash === "#distributor-rfq-form")
+    ) {
       return {
         eventName: "rfq_link_click",
-        params: { destination: "rfq" },
+        params: {
+          destination:
+            url.hash === "#distributor-rfq-form" ? "embedded_distributor_rfq" : "rfq_page",
+        },
       };
     }
 

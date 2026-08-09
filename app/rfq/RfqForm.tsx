@@ -171,9 +171,10 @@ function getStoredSourceAttribution(): SourceAttribution {
 
 type RfqFormProps = {
   initialProduct?: string;
+  formPlacement?: "rfq_page" | "distributor_landing";
 };
 
-export function RfqForm({ initialProduct = "" }: RfqFormProps) {
+export function RfqForm({ initialProduct = "", formPlacement = "rfq_page" }: RfqFormProps) {
   const [values, setValues] = useState<RfqFormValues>({
     ...initialValues,
     productRequirements: initialProduct,
@@ -240,6 +241,7 @@ export function RfqForm({ initialProduct = "" }: RfqFormProps) {
             ? "prefilled_requirement"
             : "blank_form",
       selected_product_count: selectedProducts.length,
+      form_placement: formPlacement,
     });
 
     if (tracked) {
@@ -408,6 +410,7 @@ export function RfqForm({ initialProduct = "" }: RfqFormProps) {
         error_count: Object.keys(validationErrors).length,
         attachment_count: attachments.length,
         selected_product_count: selectedProducts.length,
+        form_placement: formPlacement,
       });
       return;
     }
@@ -427,6 +430,7 @@ export function RfqForm({ initialProduct = "" }: RfqFormProps) {
       attachment_count: attachments.length,
       selected_product_count: selectedProducts.length,
       has_additional_requirements: Boolean(values.productRequirements.trim()),
+      form_placement: formPlacement,
     });
 
     const formData = new FormData();
@@ -506,6 +510,7 @@ export function RfqForm({ initialProduct = "" }: RfqFormProps) {
           server_validation_error: Boolean(result.errors),
           attachment_count: attachments.length,
           selected_product_count: selectedProducts.length,
+          form_placement: formPlacement,
         });
         return;
       }
@@ -536,9 +541,11 @@ export function RfqForm({ initialProduct = "" }: RfqFormProps) {
             : result.emailDelivered
               ? "email"
               : "storage",
+        form_placement: formPlacement,
       });
       trackAnalyticsEvent("generate_lead", {
         lead_source: selectedProducts.length > 0 ? "rfq_shortlist" : "rfq_form",
+        form_placement: formPlacement,
         items: analyticsItems.length > 0 ? analyticsItems : undefined,
       });
     } catch (error) {
@@ -553,6 +560,7 @@ export function RfqForm({ initialProduct = "" }: RfqFormProps) {
         timeout_seconds: timedOut ? rfqSubmissionTimeoutSeconds : undefined,
         attachment_count: attachments.length,
         selected_product_count: selectedProducts.length,
+        form_placement: formPlacement,
       });
     } finally {
       window.clearTimeout(requestTimeout);
@@ -647,7 +655,10 @@ export function RfqForm({ initialProduct = "" }: RfqFormProps) {
         <button
           type="button"
           onClick={() => {
-            setValues(initialValues);
+            setValues({
+              ...initialValues,
+              productRequirements: initialProduct,
+            });
             setAttachments([]);
             setErrors({});
             setSubmissionResult(null);
@@ -670,6 +681,7 @@ export function RfqForm({ initialProduct = "" }: RfqFormProps) {
       onFocusCapture={handleFormFocus}
       noValidate
       aria-busy={isSubmitting}
+      data-rfq-form-placement={formPlacement}
       className="border border-slate-200 bg-white p-6 shadow-sm sm:p-8"
     >
       <label className="sr-only" htmlFor="website">
