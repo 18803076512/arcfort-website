@@ -10,7 +10,7 @@ export const guides: GuideArticle[] = [
     seoDescription:
       "Prepare a clear welding parts RFQ with product references, quantities, drawings, compatibility details, packaging needs and destination country.",
     publishedDate: "2026-06-12",
-    modifiedDate: "2026-07-26",
+    modifiedDate: "2026-08-09",
     sections: [
       {
         title: "Build a line-item product list",
@@ -87,7 +87,7 @@ export const guides: GuideArticle[] = [
     seoDescription:
       "Compare MIG/MAG and TIG torch consumables, selection fields, component functions and RFQ requirements for distributor and repair supply.",
     publishedDate: "2026-06-12",
-    modifiedDate: "2026-07-26",
+    modifiedDate: "2026-08-09",
     sections: [
       {
         title: "Separate the two torch systems",
@@ -159,7 +159,7 @@ export const guides: GuideArticle[] = [
     seoDescription:
       "Prepare plasma electrode and nozzle inquiries with torch model, consumable references, cutting requirements, quantities and packaging details.",
     publishedDate: "2026-06-12",
-    modifiedDate: "2026-07-26",
+    modifiedDate: "2026-08-09",
     sections: [
       {
         title: "Identify the plasma torch first",
@@ -226,7 +226,7 @@ export const guides: GuideArticle[] = [
     seoDescription:
       "Learn how to identify MIG contact tip wire size, thread, length and torch reference before ordering M6 0.8mm, 1.0mm or 1.2mm tips.",
     publishedDate: "2026-07-26",
-    modifiedDate: "2026-07-26",
+    modifiedDate: "2026-08-09",
     sections: [
       {
         title: "Read the product name correctly",
@@ -299,7 +299,7 @@ export const guides: GuideArticle[] = [
     seoDescription:
       "Identify TIG torch consumable stack parts and prepare RFQs using torch series, tungsten size, cup number, thread, drawing or sample.",
     publishedDate: "2026-07-26",
-    modifiedDate: "2026-07-26",
+    modifiedDate: "2026-08-09",
     sections: [
       {
         title: "Treat the parts as one assembly",
@@ -372,7 +372,7 @@ export const guides: GuideArticle[] = [
     seoDescription:
       "Prepare welding cable and connector RFQs using cable size, length, connector interface, plug format, clamp or holder and quantity.",
     publishedDate: "2026-07-26",
-    modifiedDate: "2026-07-26",
+    modifiedDate: "2026-08-09",
     sections: [
       {
         title: "Define the complete cable assembly",
@@ -446,7 +446,7 @@ export const guides: GuideArticle[] = [
     seoDescription:
       "Identify MIG torch front-end parts using torch references, component order, photos, drawings and measured details before requesting a quotation.",
     publishedDate: "2026-07-26",
-    modifiedDate: "2026-07-26",
+    modifiedDate: "2026-08-09",
     sections: [
       {
         title: "Map the complete front-end assembly",
@@ -522,7 +522,7 @@ export const guides: GuideArticle[] = [
     seoDescription:
       "Prepare welding electrode and wire RFQs using documented process, classification, size, packaging, quantity and destination requirements.",
     publishedDate: "2026-07-26",
-    modifiedDate: "2026-07-26",
+    modifiedDate: "2026-08-09",
     sections: [
       {
         title: "Separate electrodes, wire and related accessories",
@@ -595,7 +595,7 @@ export const guides: GuideArticle[] = [
     seoDescription:
       "Prepare an industrial welding machine RFQ with process, input power, documented output requirements, interfaces, accessories and destination market.",
     publishedDate: "2026-07-26",
-    modifiedDate: "2026-07-26",
+    modifiedDate: "2026-08-09",
     sections: [
       {
         title: "Define the welding or cutting process",
@@ -663,7 +663,7 @@ export const guides: GuideArticle[] = [
     seoDescription:
       "Plan OEM welding products and private label packaging with confirmed product references, artwork control, MOQ, samples and export packing.",
     publishedDate: "2026-07-26",
-    modifiedDate: "2026-07-26",
+    modifiedDate: "2026-08-09",
     sections: [
       {
         title: "Confirm the base product first",
