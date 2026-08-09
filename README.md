@@ -68,9 +68,10 @@ Industrial B2B website for ArcFort Weld, operated by Renqiu Ailesen Welding Tech
 - `lib/content/product-search.ts` - server-rendered product search, category filtering and pagination
 - `lib/content/topic-links.ts` - category-to-guide internal linking map
 
-The website currently includes 6 product categories, 43 indexable product records, 6 application
-pages, 10 buyer guides and dedicated trust pages for distributor supply, OEM service, quality
-control, shipping/payment and document requests. Four retained generic starter URLs permanently
+The website currently includes 6 product categories, 43 product records (41 active public products
+and 2 draft records awaiting reviewed images), 6 application pages, 11 buyer guides and dedicated
+trust pages for distributor supply, OEM service, quality control, shipping/payment and document
+requests. Four retained generic starter URLs permanently
 redirect to their current category pages so they do not compete with exact SKU pages. Missing product data must remain explicit
 instead of inventing specifications, certifications, prices, stock status, factory capacity or
 customer cases.
@@ -222,6 +223,9 @@ The `/rfq` page includes a responsive inquiry form with:
 - Per-product quantity and buyer reference fields for mixed distributor inquiries
 - Selected products automatically merged into the RFQ submission with SKU, category, line quantity
   and model, size or drawing reference when provided
+- Buyer-guide RFQ links prefill the guide topic so the sales team can see the sourcing context
+- Every buyer guide links directly to the downloadable RFQ worksheet and the upload form through a
+  responsive download, complete and upload workflow
 
 Buyers can add up to 50 products from product cards or detail pages. The shortlist and optional
 line-item quantities or references remain in browser `localStorage` until the buyer submits the RFQ

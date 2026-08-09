@@ -2,6 +2,7 @@
 
 import { existsSync, readFileSync } from "node:fs";
 import path from "node:path";
+import { guides } from "../content/guides.ts";
 
 const buildRoot = path.resolve(".next/server/app");
 const errors: string[] = [];
@@ -101,6 +102,32 @@ for (const [relativePath, html] of pages) {
   }
 }
 
+for (const guide of guides) {
+  const relativePath = `guides/${guide.slug}.html`;
+  const html = readBuiltPage(relativePath);
+  const rfqPrompt = `Reference guide: ${guide.title}\nProducts or parts requested:`;
+  const rfqHref = `/rfq?product=${encodeURIComponent(rfqPrompt)}`;
+  const workflowTags = (html.match(/<section\b[^>]*>/gi) ?? []).filter(
+    (tag) => getAttribute(tag, "data-snippet-region") === "guide-rfq-workflow",
+  );
+
+  if (workflowTags.length !== 1) {
+    errors.push(
+      `${relativePath} requires one guide-rfq-workflow region; found ${workflowTags.length}.`,
+    );
+  } else if (!/\sdata-nosnippet(?:\s|=|>)/i.test(workflowTags[0])) {
+    errors.push(`${relativePath} has an unprotected guide-rfq-workflow region.`);
+  }
+
+  if (!html.includes("/downloads/arcfort-rfq-template.csv")) {
+    errors.push(`${relativePath} is missing the RFQ worksheet download.`);
+  }
+
+  if (!html.includes(rfqHref)) {
+    errors.push(`${relativePath} is missing its topic-prefilled RFQ link.`);
+  }
+}
+
 const distributorHtml = readBuiltPage("distributor-supply.html");
 const socialMetadata = [
   {
@@ -139,6 +166,7 @@ for (const metadata of socialMetadata) {
 
 console.log("ArcFort Weld search snippet and social preview audit");
 console.log(`Snippet regions checked: ${regionRequirements.length}`);
+console.log(`Guide RFQ workflows checked: ${guides.length}`);
 console.log("Distributor social preview: 1200x630 Open Graph and Twitter routes");
 
 if (errors.length > 0) {

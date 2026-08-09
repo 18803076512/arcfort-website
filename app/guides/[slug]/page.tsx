@@ -115,6 +115,8 @@ export default async function GuideDetailPage({ params }: GuideRouteProps) {
     })
     .filter((item): item is { product: Product; category: ProductCategory } => Boolean(item));
   const seoImage = getPreferredSeoImage(relatedProducts.map((item) => item.product));
+  const guideRfqPrompt = `Reference guide: ${guide.title}\nProducts or parts requested:`;
+  const guideRfqHref = `/rfq?product=${encodeURIComponent(guideRfqPrompt)}`;
 
   return (
     <>
@@ -160,19 +162,26 @@ export default async function GuideDetailPage({ params }: GuideRouteProps) {
                 Updated {formatGuideDate(guide.modifiedDate)}
               </time>
             </div>
-            <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+            <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
               <Link
                 href="#guide-content"
-                className="inline-flex items-center justify-center bg-arc-signal px-6 py-3 text-sm font-bold uppercase tracking-[0.16em] text-arc-midnight transition hover:bg-white"
+                className="inline-flex min-h-12 items-center justify-center bg-arc-signal px-6 py-3 text-sm font-bold uppercase tracking-[0.16em] text-arc-midnight transition hover:bg-white"
               >
                 Read Guide
               </Link>
               <Link
-                href="/rfq"
-                className="inline-flex items-center justify-center border border-white/30 px-6 py-3 text-sm font-bold uppercase tracking-[0.16em] text-white transition hover:border-white hover:bg-white/10"
+                href={guideRfqHref}
+                className="inline-flex min-h-12 items-center justify-center border border-white/30 px-6 py-3 text-sm font-bold uppercase tracking-[0.16em] text-white transition hover:border-white hover:bg-white/10"
               >
                 Send RFQ
               </Link>
+              <a
+                href="/downloads/arcfort-rfq-template.csv"
+                download
+                className="inline-flex min-h-12 items-center justify-center border border-white/30 px-6 py-3 text-sm font-bold uppercase tracking-[0.16em] text-white transition hover:border-arc-signal hover:text-arc-signal"
+              >
+                RFQ Worksheet
+              </a>
             </div>
           </div>
           <aside className="border border-white/10 bg-white/5 p-5 shadow-industrial">
@@ -249,6 +258,69 @@ export default async function GuideDetailPage({ params }: GuideRouteProps) {
               </article>
             ))}
           </div>
+        </div>
+      </section>
+
+      <section
+        data-nosnippet
+        data-snippet-region="guide-rfq-workflow"
+        className="border-y border-slate-200 bg-white py-14 sm:py-16"
+      >
+        <div className="mx-auto grid max-w-7xl gap-8 px-4 sm:px-6 lg:grid-cols-[0.82fr_1.18fr] lg:items-center lg:px-8">
+          <div>
+            <p className="text-sm font-bold uppercase tracking-[0.2em] text-arc-blue">
+              Buyer RFQ Tool
+            </p>
+            <h2 className="mt-3 font-display text-3xl font-black leading-tight text-arc-midnight">
+              Turn this guide into a quotation-ready product list.
+            </h2>
+            <p className="mt-4 max-w-2xl text-sm leading-7 text-slate-600">
+              Download the worksheet, keep each product or variant on a separate row, and upload the
+              completed list with photos, drawings or reference documents. The RFQ form will carry
+              this guide topic into the inquiry for faster sales review.
+            </p>
+            <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
+              <a
+                href="/downloads/arcfort-rfq-template.csv"
+                download
+                className="inline-flex min-h-12 w-full items-center justify-center bg-arc-blue px-5 text-sm font-bold uppercase tracking-[0.14em] text-white transition hover:bg-arc-midnight sm:w-auto"
+              >
+                Download RFQ Worksheet
+              </a>
+              <Link
+                href={guideRfqHref}
+                className="inline-flex min-h-12 w-full items-center justify-center border border-arc-blue px-5 text-sm font-bold uppercase tracking-[0.14em] text-arc-blue transition hover:bg-arc-frost hover:text-arc-midnight sm:w-auto"
+              >
+                Upload and Request Quote
+              </Link>
+            </div>
+          </div>
+          <ol className="grid gap-4 sm:grid-cols-3">
+            {[
+              {
+                title: "Download",
+                text: "Open the CSV worksheet and keep one requested item, size or model on each row.",
+              },
+              {
+                title: "Complete",
+                text: "Add quantity, available references, packaging needs and destination country.",
+              },
+              {
+                title: "Upload",
+                text: "Attach the worksheet, product photos or drawings through the secure RFQ form.",
+              },
+            ].map((step, index) => (
+              <li key={step.title} className="border-l-4 border-arc-signal bg-arc-frost p-5">
+                <span className="font-display text-2xl font-black text-arc-blue">
+                  {String(index + 1).padStart(2, "0")}
+                </span>
+                <h3 className="mt-3 font-display text-xl font-black text-arc-midnight">
+                  {step.title}
+                </h3>
+                <p className="mt-2 text-sm leading-6 text-slate-600">{step.text}</p>
+              </li>
+            ))}
+          </ol>
         </div>
       </section>
 
@@ -336,6 +408,7 @@ export default async function GuideDetailPage({ params }: GuideRouteProps) {
           <RfqCta
             title="Ready to prepare your RFQ?"
             description="Send product names, photos, drawings, quantity, packaging requirements and destination country. ArcFort Weld will review confirmed details before quotation."
+            productName={guideRfqPrompt}
           />
         </div>
       </section>
