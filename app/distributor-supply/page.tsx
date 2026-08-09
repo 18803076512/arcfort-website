@@ -4,6 +4,7 @@ import { Breadcrumbs } from "@/components/content/Breadcrumbs";
 import { FaqSection } from "@/components/content/FaqSection";
 import { RfqCta } from "@/components/content/RfqCta";
 import { StructuredData } from "@/components/content/StructuredData";
+import { RfqForm } from "@/app/rfq/RfqForm";
 import { getAllProductCategories } from "@/lib/content/categories";
 import { breadcrumbJsonLd, faqJsonLd, webPageJsonLd } from "@/lib/content/jsonld";
 import { getAllProducts } from "@/lib/content/products";
@@ -218,12 +219,12 @@ export default function DistributorSupplyPage() {
               the details before quotation.
             </p>
             <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-              <Link
-                href="/rfq?product=Distributor%20welding%20product%20program"
+              <a
+                href="#distributor-rfq-form"
                 className="inline-flex min-h-12 w-full items-center justify-center bg-arc-signal px-6 text-sm font-bold uppercase tracking-[0.14em] text-arc-midnight transition hover:bg-white sm:w-auto"
               >
-                Build Distributor RFQ
-              </Link>
+                Start Distributor RFQ
+              </a>
               <Link
                 href="/downloads/arcfort-distributor-sourcing-guide.pdf"
                 download
@@ -309,6 +310,63 @@ export default function DistributorSupplyPage() {
                 </Link>
               </article>
             ))}
+          </div>
+        </div>
+      </section>
+
+      <section
+        id="distributor-rfq"
+        className="scroll-mt-24 bg-arc-frost py-14 text-arc-midnight sm:py-16"
+        aria-labelledby="distributor-rfq-title"
+      >
+        <div className="mx-auto grid max-w-7xl gap-10 px-4 sm:px-6 lg:grid-cols-[0.7fr_1.3fr] lg:items-start lg:px-8">
+          <div className="lg:sticky lg:top-36">
+            <p className="text-sm font-bold uppercase tracking-[0.2em] text-arc-blue">
+              Direct Distributor Inquiry
+            </p>
+            <h2
+              id="distributor-rfq-title"
+              className="mt-3 font-display text-3xl font-black leading-tight sm:text-4xl"
+            >
+              Send one product group or a mixed sourcing list.
+            </h2>
+            <p className="mt-5 text-sm leading-7 text-slate-600">
+              Submit the current part reference, quantity and destination first. Add a drawing,
+              product list or clear sample photos when dimensions or compatibility require review.
+            </p>
+            <ul className="mt-7 grid gap-3 text-sm leading-6 text-slate-700">
+              {[
+                "MIG/MAG, TIG, plasma, machine and accessory lines can be combined.",
+                "Small trial orders can be discussed for standard products.",
+                "Compatibility is checked from buyer-supplied evidence before confirmation.",
+                "Logo, private label, carton and model customization can be reviewed.",
+              ].map((item) => (
+                <li key={item} className="flex gap-3 border-l-4 border-arc-signal bg-white p-4">
+                  <span className="font-display font-black text-arc-blue">+</span>
+                  <span>{item}</span>
+                </li>
+              ))}
+            </ul>
+            <div className="mt-7 border-t border-slate-300 pt-5 text-sm leading-7 text-slate-600">
+              <a
+                href={siteConfig.emailHref}
+                className="block break-words font-bold text-arc-blue hover:text-arc-midnight"
+              >
+                {siteConfig.email}
+              </a>
+              <a
+                href={siteConfig.whatsappHref}
+                className="mt-1 block font-bold text-arc-blue hover:text-arc-midnight"
+              >
+                WhatsApp {siteConfig.whatsapp}
+              </a>
+            </div>
+          </div>
+          <div id="distributor-rfq-form" className="scroll-mt-24 lg:scroll-mt-36">
+            <RfqForm
+              initialProduct="Distributor mixed welding and cutting product inquiry"
+              formPlacement="distributor_landing"
+            />
           </div>
         </div>
       </section>

@@ -34,12 +34,42 @@ const formStartEvent = rfqFormSource.match(
 
 assert.ok(formStartEvent, "RFQ form must emit rfq_form_start.");
 
-for (const parameter of ["interaction_type", "form_entry", "selected_product_count"]) {
+for (const parameter of [
+  "interaction_type",
+  "form_entry",
+  "selected_product_count",
+  "form_placement",
+]) {
   assert.match(
     formStartEvent[1],
     new RegExp(`\\b${parameter}\\b`),
     `rfq_form_start must include ${parameter}.`,
   );
+}
+
+const distributorPageSource = readFileSync(
+  new URL("../app/distributor-supply/page.tsx", import.meta.url),
+  "utf8",
+);
+
+assert.match(distributorPageSource, /href="#distributor-rfq-form"/);
+assert.match(distributorPageSource, /id="distributor-rfq"/);
+assert.match(distributorPageSource, /id="distributor-rfq-form"/);
+assert.match(distributorPageSource, /formPlacement="distributor_landing"/);
+assert.match(
+  distributorPageSource,
+  /initialProduct="Distributor mixed welding and cutting product inquiry"/,
+);
+assert.match(analyticsTrackerSource, /url\.hash === "#distributor-rfq-form"/);
+assert.match(analyticsTrackerSource, /embedded_distributor_rfq/);
+
+for (const eventName of ["rfq_submit_start", "rfq_submit_success", "generate_lead"]) {
+  const eventSource = rfqFormSource.match(
+    new RegExp(`trackAnalyticsEvent\\("${eventName}",\\s*\\{([\\s\\S]*?)\\}\\);`),
+  );
+
+  assert.ok(eventSource, `${eventName} event must exist.`);
+  assert.match(eventSource[1], /\bform_placement\b/);
 }
 
 for (const forbiddenParameter of [
@@ -56,10 +86,6 @@ for (const forbiddenParameter of [
     new RegExp(`\\b${forbiddenParameter}\\b`, "i"),
     `rfq_form_start must not include buyer PII or inquiry content: ${forbiddenParameter}.`,
   );
-}
-
-for (const eventName of ["rfq_submit_start", "rfq_submit_success", "generate_lead"]) {
-  assert.match(rfqFormSource, new RegExp(`trackAnalyticsEvent\\("${eventName}"`));
 }
 
 for (const eventName of [
