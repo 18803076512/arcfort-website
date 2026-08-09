@@ -51,6 +51,7 @@ const distributorPageSource = readFileSync(
   new URL("../app/distributor-supply/page.tsx", import.meta.url),
   "utf8",
 );
+const contactPageSource = readFileSync(new URL("../app/contact/page.tsx", import.meta.url), "utf8");
 
 assert.match(distributorPageSource, /href="#distributor-rfq-form"/);
 assert.match(distributorPageSource, /id="distributor-rfq"/);
@@ -60,8 +61,13 @@ assert.match(
   distributorPageSource,
   /initialProduct="Distributor mixed welding and cutting product inquiry"/,
 );
-assert.match(analyticsTrackerSource, /url\.hash === "#distributor-rfq-form"/);
+assert.match(analyticsTrackerSource, /"#distributor-rfq-form": "embedded_distributor_rfq"/);
 assert.match(analyticsTrackerSource, /embedded_distributor_rfq/);
+assert.match(contactPageSource, /href="#contact-inquiry-form"/);
+assert.match(contactPageSource, /id="contact-inquiry-form"/);
+assert.match(contactPageSource, /formPlacement="contact_page"/);
+assert.match(contactPageSource, /initialProduct="General welding and cutting product inquiry"/);
+assert.match(analyticsTrackerSource, /"#contact-inquiry-form": "embedded_contact_rfq"/);
 
 for (const eventName of ["rfq_submit_start", "rfq_submit_success", "generate_lead"]) {
   const eventSource = rfqFormSource.match(

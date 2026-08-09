@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { Breadcrumbs } from "@/components/content/Breadcrumbs";
-import { RfqCta } from "@/components/content/RfqCta";
 import { StructuredData } from "@/components/content/StructuredData";
+import { RfqForm } from "@/app/rfq/RfqForm";
 import { breadcrumbJsonLd, webPageJsonLd } from "@/lib/content/jsonld";
 import { buildMetadata } from "@/lib/content/seo";
 import { siteConfig } from "@/lib/content/site";
@@ -109,10 +109,10 @@ export default function ContactPage() {
               </p>
               <div className="mt-8 flex flex-col gap-3 sm:flex-row">
                 <Link
-                  href="/rfq"
+                  href="#contact-inquiry-form"
                   className="inline-flex w-full items-center justify-center bg-arc-blue px-6 py-3 text-sm font-bold uppercase tracking-[0.16em] text-white transition hover:bg-arc-midnight sm:w-auto"
                 >
-                  Request a Quote
+                  Send Inquiry
                 </Link>
                 <Link
                   href="/products"
@@ -153,6 +153,69 @@ export default function ContactPage() {
                 Main export port: {siteConfig.mainPort}. {siteConfig.alternativePorts}
               </p>
             </div>
+          </div>
+        </div>
+      </section>
+
+      <section
+        id="contact-inquiry"
+        data-disable-sticky-contact-bar
+        className="scroll-mt-24 bg-arc-frost py-14 sm:py-16"
+        aria-labelledby="contact-inquiry-title"
+      >
+        <div className="mx-auto grid max-w-7xl gap-10 px-4 sm:px-6 lg:grid-cols-[0.72fr_1.28fr] lg:items-start lg:px-8">
+          <div className="lg:sticky lg:top-36">
+            <p className="text-sm font-bold uppercase tracking-[0.2em] text-arc-blue">
+              Direct Inquiry
+            </p>
+            <h2
+              id="contact-inquiry-title"
+              className="mt-3 font-display text-3xl font-black leading-tight text-arc-midnight sm:text-4xl"
+            >
+              Send product requirements without leaving this page.
+            </h2>
+            <p className="mt-5 text-sm leading-7 text-slate-600">
+              Use the same secure RFQ workflow available in the quotation center. Add product
+              references, quantities and destination details, then attach a list, drawing or sample
+              photo when technical review is required.
+            </p>
+            <div className="mt-7">
+              <h3 className="font-display text-xl font-black text-arc-midnight">
+                Prepare a clear inquiry
+              </h3>
+              <ul className="mt-4 grid gap-3">
+                {buyerChecklist.map((item) => (
+                  <li
+                    key={item}
+                    className="flex gap-3 border-l-4 border-arc-signal bg-white p-4 text-sm leading-6 text-slate-700"
+                  >
+                    <span className="font-display font-black text-arc-blue">+</span>
+                    <span>{item}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+            <div className="mt-7 border-t border-slate-300 pt-6">
+              <p className="text-xs font-bold uppercase tracking-[0.16em] text-arc-blue">
+                RFQ Response Flow
+              </p>
+              <ol className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2">
+                {responseSteps.map((step, index) => (
+                  <li key={step} className="bg-white p-4 text-sm font-semibold text-arc-midnight">
+                    <span className="mr-2 font-display font-black text-arc-blue">
+                      {String(index + 1).padStart(2, "0")}
+                    </span>
+                    {step}
+                  </li>
+                ))}
+              </ol>
+            </div>
+          </div>
+          <div id="contact-inquiry-form" className="scroll-mt-24 lg:scroll-mt-36">
+            <RfqForm
+              initialProduct="General welding and cutting product inquiry"
+              formPlacement="contact_page"
+            />
           </div>
         </div>
       </section>
@@ -202,49 +265,6 @@ export default function ContactPage() {
               </div>
             ))}
           </div>
-        </div>
-      </section>
-
-      <section className="bg-white py-14 sm:py-16">
-        <div className="mx-auto grid max-w-7xl gap-8 px-4 sm:px-6 lg:grid-cols-[1fr_1fr] lg:px-8">
-          <div className="border border-slate-200 bg-white p-6 shadow-sm">
-            <h2 className="font-display text-2xl font-black text-arc-midnight">
-              Prepare a Clear Inquiry
-            </h2>
-            <ul className="mt-5 grid gap-4">
-              {buyerChecklist.map((item) => (
-                <li key={item} className="flex gap-3 text-sm leading-6 text-slate-700">
-                  <span className="mt-2 h-1.5 w-1.5 shrink-0 bg-arc-signal" />
-                  <span>{item}</span>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          <div className="border border-slate-200 bg-white p-6 shadow-sm">
-            <h2 className="font-display text-2xl font-black text-arc-midnight">
-              RFQ Response Flow
-            </h2>
-            <div className="mt-5 grid gap-3 sm:grid-cols-2">
-              {responseSteps.map((step, index) => (
-                <div key={step} className="border border-slate-100 bg-slate-50 p-4">
-                  <div className="text-xs font-bold uppercase tracking-[0.16em] text-arc-blue">
-                    Step {index + 1}
-                  </div>
-                  <div className="mt-2 font-semibold text-arc-midnight">{step}</div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section className="bg-arc-frost py-14 sm:py-16">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <RfqCta
-            title="Ready to send your product list?"
-            description="Use the RFQ form for drawings, part numbers, quantities, packaging requirements and delivery details. This helps ArcFort Weld confirm the information needed for quotation."
-          />
         </div>
       </section>
     </>
