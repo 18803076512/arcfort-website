@@ -1,5 +1,6 @@
 import { siteConfig } from "./content/site.ts";
 import type { RfqTextValues } from "./rfq-constraints.ts";
+import { buildRfqQuotationReadiness } from "./rfq-qualification.ts";
 import type { SourceAttribution } from "./source-attribution.ts";
 
 export type RfqEmailPayload = RfqTextValues & {
@@ -118,12 +119,130 @@ function attachmentList(attachments: RfqEmailAttachment[], includePath: boolean)
     .join("")}</ul>`;
 }
 
+function bulletList(items: string[]) {
+  return `<ul style="margin: 0; padding-left: 20px;">${items
+    .map((item) => `<li style="margin: 0 0 6px;">${safeText(item)}</li>`)
+    .join("")}</ul>`;
+}
+
+function attachmentText(attachments: RfqEmailAttachment[], includePath: boolean) {
+  if (attachments.length === 0) {
+    return "No attachments uploaded.";
+  }
+
+  return attachments
+    .map((attachment) => {
+      const sizeMb = (attachment.size / (1024 * 1024)).toFixed(2);
+      const storagePath = includePath && attachment.path ? ` - ${attachment.path}` : "";
+      return `- ${attachment.name} (${sizeMb} MB)${storagePath}`;
+    })
+    .join("\n");
+}
+
+export function buildInquiryEmailText(
+  payload: RfqEmailPayload,
+  attachments: RfqEmailAttachment[],
+  reference: string,
+  requestMeta: RfqEmailRequestMeta,
+) {
+  const readiness = buildRfqQuotationReadiness(payload, attachments);
+
+  return [
+    "New RFQ inquiry from ArcFort Weld website",
+    `RFQ Reference: ${reference}`,
+    `Quotation Readiness: ${readiness.label}`,
+    "",
+    "Confirmed Signals:",
+    ...readiness.confirmedSignals.map((item) => `- ${item}`),
+    "",
+    "Sales Follow-up Checklist:",
+    ...readiness.followUpItems.map((item) => `- ${item}`),
+    "",
+    `Name: ${payload.name}`,
+    `Company: ${payload.company}`,
+    `Email: ${payload.email}`,
+    `WhatsApp: ${payload.whatsapp || "Not provided"}`,
+    `Country: ${payload.country}`,
+    `Quantity: ${payload.quantity}`,
+    "",
+    "Product Requirements:",
+    payload.productRequirements,
+    "",
+    "Message:",
+    payload.message || "No additional message.",
+    "",
+    "Attachments:",
+    attachmentText(attachments, true),
+    "",
+    "Attachment Safety:",
+    "Attachments were submitted by an external website visitor. File signatures were checked, but files were not malware-scanned. Use endpoint protection and do not enable macros.",
+    "",
+    "Source:",
+    `Path: ${payload.sourcePath}`,
+    `Landing Page: ${payload.sourceAttribution.landingPage || "Not captured"}`,
+    `Browser Referrer: ${payload.sourceAttribution.referrer || "Not captured"}`,
+    `UTM Source: ${payload.sourceAttribution.utmSource || "Not captured"}`,
+    `UTM Medium: ${payload.sourceAttribution.utmMedium || "Not captured"}`,
+    `UTM Campaign: ${payload.sourceAttribution.utmCampaign || "Not captured"}`,
+    `UTM Term: ${payload.sourceAttribution.utmTerm || "Not captured"}`,
+    `UTM Content: ${payload.sourceAttribution.utmContent || "Not captured"}`,
+    `Referrer: ${requestMeta.referrer}`,
+    `User Agent: ${requestMeta.userAgent}`,
+  ].join("\n");
+}
+
+export function buildBuyerConfirmationEmailText(
+  payload: RfqEmailPayload,
+  attachments: RfqEmailAttachment[],
+  reference: string,
+) {
+  return [
+    `Dear ${payload.name},`,
+    "",
+    "Thank you for sending your RFQ to ArcFort Weld.",
+    "",
+    "We have received your inquiry. A sales specialist will review the submitted product details, quantity, packaging requirement and destination. Technical fit or OEM requests may require a drawing, sample photo or model reference before a quotation can be finalized.",
+    "",
+    "RFQ Summary",
+    `Reference: ${reference}`,
+    `Company: ${payload.company}`,
+    `Email: ${payload.email}`,
+    `WhatsApp: ${payload.whatsapp || "Not provided"}`,
+    `Country: ${payload.country}`,
+    `Quantity: ${payload.quantity}`,
+    "",
+    "Product Requirements:",
+    payload.productRequirements,
+    "",
+    "Message:",
+    payload.message || "No additional message.",
+    "",
+    "Attachments:",
+    attachmentText(attachments, false),
+    "",
+    "Information that can help us review faster:",
+    "- Product or OEM number, torch or machine model, size and quantity per line item",
+    "- Drawing, product list, or clear sample photos when fit details are important",
+    "- Logo, private-label, carton, shipping term and destination requirements",
+    "",
+    "For updates, reply with the RFQ reference or contact us directly:",
+    `Email: ${siteConfig.email}`,
+    `WhatsApp: ${siteConfig.whatsapp}`,
+    "",
+    `${siteConfig.legalName}`,
+    siteConfig.tagline,
+    "",
+    "This is an automatic confirmation email from the ArcFort Weld website.",
+  ].join("\n");
+}
+
 export function buildInquiryEmailHtml(
   payload: RfqEmailPayload,
   attachments: RfqEmailAttachment[],
   reference: string,
   requestMeta: RfqEmailRequestMeta,
 ) {
+  const readiness = buildRfqQuotationReadiness(payload, attachments);
   const buyerRows = [
     detailRow("RFQ Reference", reference),
     detailRow("Name", payload.name),
@@ -145,7 +264,14 @@ export function buildInquiryEmailHtml(
     detailRow("Request referrer", requestMeta.referrer, "Direct"),
     detailRow("User agent", requestMeta.userAgent, "Unknown"),
   ].join("");
+  const readinessContent = `
+    <div style="margin: 0 0 14px; color: #071524; font-size: 15px; font-weight: 800;">${safeText(readiness.label)}</div>
+    <div style="margin: 0 0 8px; color: #526174; font-size: 12px; font-weight: 700; text-transform: uppercase;">Confirmed signals</div>
+    ${bulletList(readiness.confirmedSignals)}
+    <div style="margin: 16px 0 8px; color: #526174; font-size: 12px; font-weight: 700; text-transform: uppercase;">Sales follow-up checklist</div>
+    ${bulletList(readiness.followUpItems)}`;
   const content = [
+    section("Quotation Readiness", readinessContent),
     `<tr><td style="padding: 0 32px 24px;"><table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="width: 100%; border: 1px solid #d9e2ec; border-collapse: collapse;">${buyerRows}</table></td></tr>`,
     section("Product Requirements", multilineText(payload.productRequirements)),
     section("Additional Message", multilineText(payload.message, "No additional message.")),
@@ -192,6 +318,11 @@ export function buildBuyerConfirmationEmailHtml(
       <li style="margin-bottom: 8px;"><strong>Quotation preparation:</strong> applicable MOQ, packing and delivery options are organized.</li>
       <li><strong>Follow-up:</strong> the sales team may request a drawing, sample photo or model reference when fit details need confirmation.</li>
     </ol>`;
+  const reviewDetails = bulletList([
+    "Product or OEM number, torch or machine model, size and quantity per line item",
+    "Drawing, product list, or clear sample photos when fit details are important",
+    "Logo, private-label, carton, shipping term and destination requirements",
+  ]);
   const contactActions = `
     <table role="presentation" cellspacing="0" cellpadding="0" border="0" style="width: 100%;">
       <tr>
@@ -207,6 +338,7 @@ export function buildBuyerConfirmationEmailHtml(
     section("Additional Message", multilineText(payload.message, "No additional message.")),
     section("Attachments Received", attachmentList(attachments, false)),
     section("What Happens Next", nextSteps),
+    section("Information That Helps Us Review Faster", reviewDetails),
     section("Add Details or Follow Up", contactActions),
   ].join("");
 
@@ -215,7 +347,7 @@ export function buildBuyerConfirmationEmailHtml(
     eyebrow: "RFQ Received",
     title: `Thank you, ${payload.name}`,
     intro:
-      "Your inquiry is now available for product and quotation review. The summary below confirms what was submitted through the ArcFort Weld website.",
+      "Your inquiry is now available for product and quotation review. Technical fit or OEM requests may require a drawing, sample photo or model reference before a quotation can be finalized.",
     content,
   });
 }

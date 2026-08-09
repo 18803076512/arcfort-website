@@ -23,16 +23,20 @@ Files:
 
 - `app/rfq/RfqForm.tsx` - frontend validation and buyer success message.
 - `app/api/rfq/route.ts` - server-side validation, optional Supabase storage and Resend email delivery.
-- `lib/rfq-email.ts` - escaped, branded HTML templates for sales and buyer email messages.
+- `lib/rfq-email.ts` - escaped, branded HTML and plain-text templates for sales and buyer messages.
+- `lib/rfq-qualification.ts` - deterministic quotation-readiness checklist for the sales notification.
 - `scripts/test-rfq-email.ts` - template content and HTML injection regression checks.
+- `docs/sales/rfq-response-playbook.md` - manual review and buyer response workflow.
 - `.env.example` - environment variable names only.
 
 Email flow:
 
 - Sales notification goes to `RFQ_EMAIL_RECIPIENT` and includes RFQ details, source metadata and
   uploaded attachments.
+- Sales notification includes a quotation-readiness panel with confirmed signals and safe follow-up
+  prompts. It does not score buyers, use nationality for prioritization or make automated decisions.
 - Buyer confirmation goes to the submitted buyer email and includes a clean RFQ summary plus ArcFort
-  Weld backup contact details.
+  Weld backup contact details and a concise list of information that can accelerate technical review.
 - Both messages include a branded HTML layout and the existing plain-text fallback. Buyer-provided
   text, attachment names and source values are HTML-escaped before rendering.
 - Buyer confirmation delivery is treated as a secondary enhancement. A temporary buyer confirmation
@@ -143,7 +147,9 @@ After adding Vercel environment variables and redeploying:
 10. Check the buyer test inbox for the confirmation email and matching reference.
 11. Confirm uploaded files appear as email attachments in the sales notification.
 12. Confirm both messages show the ArcFort Weld HTML layout and remain readable when HTML is disabled.
-13. If Supabase is configured, confirm the inquiry row and reference appear in `rfq_inquiries`.
+13. Confirm the sales message shows `Quotation Readiness`, confirmed signals and a follow-up checklist.
+14. Confirm the buyer message does not promise an unverified response deadline.
+15. If Supabase is configured, confirm the inquiry row and reference appear in `rfq_inquiries`.
 
 Expected API response after Resend is configured:
 

@@ -3,9 +3,12 @@
 import assert from "node:assert/strict";
 import {
   buildBuyerConfirmationEmailHtml,
+  buildBuyerConfirmationEmailText,
   buildInquiryEmailHtml,
+  buildInquiryEmailText,
   type RfqEmailPayload,
 } from "../lib/rfq-email.ts";
+import { buildRfqQuotationReadiness } from "../lib/rfq-qualification.ts";
 
 const payload: RfqEmailPayload = {
   name: 'Alex <script>alert("buyer")</script>',
@@ -43,6 +46,8 @@ const requestMeta = {
 
 const inquiryHtml = buildInquiryEmailHtml(payload, attachments, reference, requestMeta);
 const confirmationHtml = buildBuyerConfirmationEmailHtml(payload, attachments, reference);
+const inquiryText = buildInquiryEmailText(payload, attachments, reference, requestMeta);
+const confirmationText = buildBuyerConfirmationEmailText(payload, attachments, reference);
 
 for (const html of [inquiryHtml, confirmationHtml]) {
   assert.match(html, /^<!doctype html>/);
@@ -56,6 +61,9 @@ for (const html of [inquiryHtml, confirmationHtml]) {
 }
 
 assert.match(inquiryHtml, /New Website RFQ/);
+assert.match(inquiryHtml, /Quotation Readiness/);
+assert.match(inquiryHtml, /Ready for sales review/);
+assert.match(inquiryHtml, /Sales follow-up checklist/);
 assert.match(inquiryHtml, /Inquiry Source/);
 assert.match(inquiryHtml, /drawing-&lt;revision-a&gt;\.pdf/);
 assert.match(inquiryHtml, /rfq\/drawing-&lt;revision-a&gt;\.pdf/);
@@ -63,10 +71,37 @@ assert.match(inquiryHtml, /Test Browser &lt;unsafe&gt;/);
 
 assert.match(confirmationHtml, /RFQ Received/);
 assert.match(confirmationHtml, /What Happens Next/);
+assert.match(confirmationHtml, /Information That Helps Us Review Faster/);
 assert.match(confirmationHtml, /mailto:arcfortweld@outlook\.com/);
 assert.match(confirmationHtml, /https:\/\/wa\.me\/8618803076512/);
 assert.match(confirmationHtml, /Additional%20RFQ%20details%20-%20AF-RFQ-20260801-TEST01/);
 assert.match(confirmationHtml, /add%20details%20to%20RFQ%20AF-RFQ-20260801-TEST01/);
 assert.doesNotMatch(confirmationHtml, /rfq\/drawing-&lt;revision-a&gt;\.pdf/);
+
+assert.match(inquiryText, /Quotation Readiness: Ready for sales review/);
+assert.match(inquiryText, /Sales Follow-up Checklist:/);
+assert.match(inquiryText, /rfq\/drawing-<revision-a>\.pdf/);
+assert.match(confirmationText, /Information that can help us review faster:/);
+assert.match(confirmationText, /arcfortweld@outlook\.com/);
+assert.doesNotMatch(confirmationText, /rfq\/drawing-<revision-a>\.pdf/);
+assert.doesNotMatch(confirmationText, /(?:within|in) 24 hours/i);
+
+const detailedReadiness = buildRfqQuotationReadiness(payload, attachments);
+assert.equal(detailedReadiness.status, "ready_for_sales_review");
+assert.ok(detailedReadiness.confirmedSignals.includes("1 supporting file attached"));
+
+const incompleteReadiness = buildRfqQuotationReadiness(
+  {
+    country: "New Zealand",
+    quantity: "Trial order",
+    productRequirements: "We need welding consumables for distribution.",
+    message: "Please send details.",
+  },
+  [],
+);
+assert.equal(incompleteReadiness.status, "technical_details_needed");
+assert.match(incompleteReadiness.followUpItems.join("\n"), /part number/);
+assert.match(incompleteReadiness.followUpItems.join("\n"), /sample photos/);
+assert.doesNotMatch(incompleteReadiness.label, /New Zealand|Trial order/);
 
 console.log("RFQ email template tests passed.");

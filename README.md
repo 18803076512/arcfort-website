@@ -196,6 +196,10 @@ The `/rfq` page includes a responsive inquiry form with:
 - RFQ file attachments sent with the Resend email when email delivery is configured
 - Branded HTML sales notifications and buyer confirmations with a plain-text fallback for email
   client compatibility
+- A privacy-safe quotation-readiness panel in the sales email with confirmed inquiry signals and
+  missing-information prompts; it does not score or reject buyers
+- Buyer confirmation guidance covering product references, drawings, sample photos, packaging and
+  destination details that can accelerate manual review
 - Resend idempotency keys for both the sales notification and buyer confirmation, preventing an
   unchanged retry from sending duplicate emails during the provider's 24-hour protection window
 - Retry-safe optional Supabase delivery: attachment objects use stable reference paths with upsert,
@@ -521,6 +525,7 @@ npm run seo:snippets
 - `docs/supabase-rfq-setup.md` - Supabase, Vercel and testing instructions
 - `docs/rfq-email-delivery.md` - Resend email delivery setup for RFQ notifications and attachments
 - `docs/rfq-production-readiness.md` - production RFQ email setup, Vercel environment variables and live test checklist
+- `docs/sales/rfq-response-playbook.md` - manual RFQ qualification, reply templates and quotation checks
 - `docs/performance-baseline.md` - measured mobile baseline, methodology and enforced build budgets
 - `docs/launch-checklist.md` - production launch checklist
 - `docs/arcfort-product-information-table.csv` - 12-product B2B information table with missing data notes
