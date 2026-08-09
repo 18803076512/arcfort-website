@@ -884,4 +884,81 @@ export const guides: GuideArticle[] = [
       "plasma consumables identification",
     ],
   },
+  {
+    slug: "mig-gas-nozzle-diffuser-selection-guide",
+    title: "MIG Gas Nozzle and Diffuser Selection Guide",
+    seoTitle: "MIG Gas Nozzle and Diffuser Selection Guide",
+    description:
+      "A B2B sourcing guide for identifying MIG/MAG gas nozzles, gas diffusers and tip holders as a matched torch front-end system.",
+    seoDescription:
+      "Prepare MIG gas nozzle, diffuser and tip holder RFQs using torch references, assembly photos, connection details, quantities and packaging needs.",
+    publishedDate: "2026-08-09",
+    modifiedDate: "2026-08-09",
+    sections: [
+      {
+        title: "Identify the complete MIG/MAG front end",
+        body: "Start with the assembled torch front end rather than one loose component. A typical sourcing list may include a contact tip, tip holder or gas diffuser, insulator, gas nozzle and swan neck, but the names and arrangement can vary by system. Photograph the assembly before disassembly and place removed parts in installation order. Record the torch model, existing reference numbers and every visible marking. A familiar nozzle profile or trade name can narrow the search, but it does not confirm that the connection, gas path and adjacent consumables will fit together.",
+      },
+      {
+        title: "Record the nozzle shape and attachment",
+        body: "The gas nozzle directs shielding gas around the wire and weld area. For purchasing, document the complete profile, opening, overall length, attachment style and the position of the contact tip relative to the nozzle only when these details can be verified. Straight, tapered and other nozzle profiles are selected for different access and gas-coverage requirements, but no profile should be presented as universally correct. Buyers should follow the approved welding procedure and torch manufacturer information, then ask the supplier to confirm the available nozzle against the submitted model, drawing or sample.",
+      },
+      {
+        title: "Distinguish the diffuser from the tip holder",
+        body: "Market terminology for gas diffusers, tip holders and tip adaptors is not always consistent. Some front-end components both support the contact tip and distribute shielding gas, while other systems separate these functions. Do not approve a replacement from the product name alone. Show the gas openings, thread or locking connection, seating surfaces, insulator and contact-tip interface. State the wording used on the current package or parts list, but keep the final product identity subject to the actual assembly evidence supplied with the RFQ.",
+      },
+      {
+        title: "Confirm the matched consumable system",
+        body: "Nozzles, diffusers, insulators and contact tips should be reviewed as a connected consumable system. Official manufacturer parts guides use model-specific combinations and may require a different diffuser or insulator when changing consumable families. This means similar-looking parts should not be mixed without confirmation. Provide the torch or gun model, neck reference, current consumable stack and a photo of the assembled position. If MB15 or another common family name is used as a market reference, clearly state that compatibility still requires model, sample or drawing confirmation.",
+      },
+      {
+        title: "Check condition without making diagnosis claims",
+        body: "Spatter, blocked gas openings, deformation, damaged insulation and loose connections are useful observations to record when preparing a replacement inquiry. Photograph the used parts before cleaning and explain whether the request is planned maintenance, repeat purchasing or troubleshooting. These observations do not prove the root cause of a welding problem. The buyer's welding and maintenance team should follow the approved procedure and equipment guidance, while the supplier uses the evidence to identify and quote the requested replacement parts.",
+      },
+      {
+        title: "Plan quantities, packing and OEM labels",
+        body: "List a separate quantity for every nozzle, diffuser, tip holder, insulator and contact-tip variant. Replacement ratios can differ between workshops, so do not assume that all components require the same quantity. State whether standard export packing is acceptable or whether inner labels, private packaging, barcodes or carton artwork are required. Small trial orders can be discussed for standard products. OEM MOQ and lead time depend on the confirmed product, quantity and packaging scope, and should be reviewed after the technical match is clear.",
+      },
+      {
+        title: "Prepare a quotation-ready front-end RFQ",
+        body: "For each requested item, provide the product name, torch or gun reference, existing part number when verified, required quantity and destination country. Attach an assembled photo, individual views of both ends, visible markings and a drawing or sample reference when available. Include the welding wire size for the contact tip and any documented nozzle position or application requirement. ArcFort Weld can review mixed MIG/MAG torch-part lists and confirm which technical details remain open before quotation, sample approval and repeat-order planning.",
+      },
+    ],
+    categorySlugs: ["mig-mag-torch-parts"],
+    productSlugs: [
+      "mig-gas-nozzle-for-mb15",
+      "mig-diffuser",
+      "mig-tip-holder-for-mb15",
+      "mig-contact-tip-m6-1-0mm",
+    ],
+    faq: [
+      {
+        question: "Can a MIG gas nozzle be matched from its shape alone?",
+        answer:
+          "No. Provide the torch model, attachment style, dimensions when reliably measured, assembly photos and the adjacent diffuser or tip holder reference.",
+      },
+      {
+        question: "Are a gas diffuser and a tip holder always the same part?",
+        answer:
+          "Terminology and component functions vary by torch system. Use the current parts list, connection details, photos or sample to confirm the requested component.",
+      },
+      {
+        question: "What should be included in an MB15 nozzle inquiry?",
+        answer:
+          "Treat MB15 as a reference and send the existing nozzle profile, attachment, torch or neck details, adjacent consumable photos, quantity and packaging requirement for confirmation.",
+      },
+      {
+        question: "Can nozzles and diffusers from different consumable systems be mixed?",
+        answer:
+          "Do not assume interchangeability. The complete front-end combination should be confirmed against the torch model, manufacturer documentation, drawing or physical sample.",
+      },
+    ],
+    keywords: [
+      "MIG gas nozzle",
+      "MIG gas diffuser",
+      "MIG tip holder",
+      "MIG torch front end",
+      "MIG consumables supplier",
+    ],
+  },
 ];

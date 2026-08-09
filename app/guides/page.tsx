@@ -8,7 +8,7 @@ import { buildMetadata } from "@/lib/content/seo";
 
 const guideSignals = [
   "Product identification",
-  "Wire feeding and torch liners",
+  "Nozzles, diffusers and torch liners",
   "Machine sourcing",
   "Compatibility confirmation",
   "OEM packaging and RFQ planning",
@@ -38,6 +38,7 @@ export const metadata = buildMetadata({
     "welding buyer guide",
     "welding parts RFQ guide",
     "MIG TIG consumables guide",
+    "MIG gas nozzle diffuser guide",
     "MIG torch liner selection",
     "plasma consumables guide",
     "welding cable connector guide",

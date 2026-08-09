@@ -44,11 +44,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
       lastModified:
         route === "/distributor-supply"
           ? siteConfig.distributorLandingLastModified
-          : route === "/about"
-            ? siteConfig.aboutLastModified
-            : route === "/contact"
-              ? siteConfig.contactLastModified
-              : siteConfig.contentLastModified,
+          : route === "/guides"
+            ? siteConfig.guidesLastModified
+            : route === "/about"
+              ? siteConfig.aboutLastModified
+              : route === "/contact"
+                ? siteConfig.contactLastModified
+                : siteConfig.contentLastModified,
     })),
     ...downloadableRoutes.map((route) => ({
       url: absoluteUrl(route.path),
