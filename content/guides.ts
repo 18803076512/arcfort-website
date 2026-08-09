@@ -514,6 +514,78 @@ export const guides: GuideArticle[] = [
     ],
   },
   {
+    slug: "mig-torch-liner-selection-guide",
+    title: "MIG Torch Liner Selection Guide",
+    seoTitle: "MIG Torch Liner Selection Guide for B2B Buyers",
+    description:
+      "A practical guide for distributors and repair buyers specifying MIG torch liners by wire, cable and connection evidence before quotation.",
+    seoDescription:
+      "Select MIG torch liners by wire type, diameter, cable length, torch connection and sample or model evidence before requesting a B2B quotation.",
+    publishedDate: "2026-08-09",
+    modifiedDate: "2026-08-09",
+    sections: [
+      {
+        title: "Start with the wire feeding requirement",
+        body: "A MIG/MAG torch liner guides welding wire from the feeder through the gun cable toward the contact tip. Begin the inquiry with the welding wire type and diameter used by the application. Keep each wire diameter on a separate RFQ line and distinguish solid wire, flux-cored wire and softer non-ferrous wire when that information is confirmed. A torch model alone may not identify the installed liner because gun length, connection system and wire setup can vary. Do not infer the liner bore, construction or part number from the outside color unless the color code is supported by the relevant manufacturer documentation.",
+      },
+      {
+        title: "Match the liner range to the wire diameter",
+        body: "Select a liner range that is approved for the welding wire diameter rather than assuming one liner covers every wire used in the workshop. Supplier and torch-manufacturer tables normally organize liners by a stated wire range, cable length and connection family. Record the wire diameter exactly as used in the purchasing document or equipment setup, and ask the supplier to identify the applicable range. When several wire sizes are required, list them separately so the quotation can show whether one reviewed liner family or multiple liner variants are needed. Final sizing must follow the confirmed torch and wire references, not a generic market comparison.",
+      },
+      {
+        title: "Confirm liner construction for the wire type",
+        body: "Liner construction is part of the wire-delivery system. Wound metallic liners are commonly associated with steel-wire applications, while polymer liner options are used in applications where lower friction or protection of softer wire is required. This is a selection principle, not a universal compatibility claim. Buyers should provide the wire material, torch arrangement and current liner reference, then ask the supplier to confirm the suitable construction. Do not state PTFE, nylon, steel or another liner material as confirmed unless it is supported by the requested model, an approved document, a drawing or a sample review.",
+      },
+      {
+        title: "Verify cable length and finished liner length",
+        body: "The ordered liner must suit the gun cable and the approved installation method. Provide the complete torch or gun length, current liner length when it can be measured reliably, and clear photos of both liner ends. Do not treat a nominal catalog length as the finished installation dimension because some systems require an installation or trimming procedure. A replacement inquiry should identify whether the existing liner is front-loading, rear-loading or another documented arrangement when that detail is known. The supplier should confirm the supplied length and end preparation against the torch reference before the buyer approves the item.",
+      },
+      {
+        title: "Record the connector and termination details",
+        body: "Two liners with a similar coil or tube appearance may use different rear connections, seals, retaining parts, neck interfaces or end treatments. Photograph the feeder end, torch end and any visible marking without removing useful labels. Add the torch model, connector family, existing product reference and a simple dimensioned sketch when available. If the liner is supplied as part of a repair set, list the related collet, retaining nut, guide or seal as separate items. Compatibility should remain subject to model, sample or drawing confirmation whenever the termination details cannot be verified from current records.",
+      },
+      {
+        title: "Review the complete wire path before replacement",
+        body: "Wire-feeding problems should not automatically be attributed to the liner alone. The buyer or service technician should review the approved drive-roll setup, wire condition, cable routing, contact tip and other documented parts of the feed path. Record the observed issue, but avoid asking a supplier to confirm a root cause from a short description. For a replacement-parts RFQ, explain whether the liner is planned maintenance, a direct replacement for a known reference or part of a wider troubleshooting program. This distinction helps the supplier quote the requested product without making unsupported performance or repair claims.",
+      },
+      {
+        title: "Prepare a quotation-ready liner RFQ",
+        body: "A useful liner RFQ includes the wire type and diameter, torch or gun model, cable length, liner arrangement, connection details, required quantity and destination country. Add photos of both ends, the existing label, an approved drawing or a physical sample reference when possible. State whether standard export packing is acceptable or whether product labels, private packaging or carton artwork are required. ArcFort Weld can review mixed MIG/MAG torch-parts lists, but every liner variant should remain on its own line. MOQ, lead time, packing and compatibility can then be confirmed against the submitted evidence before quotation and production approval.",
+      },
+    ],
+    categorySlugs: ["mig-mag-torch-parts"],
+    productSlugs: ["mig-torch-liner"],
+    faq: [
+      {
+        question: "What information is needed for a MIG torch liner quotation?",
+        answer:
+          "Provide the welding wire type and diameter, torch or gun model, cable length, liner end details, quantity and destination country. Photos, a drawing or an existing sample reference can help confirm the requested variant.",
+      },
+      {
+        question: "Can the same liner be used for different wire diameters?",
+        answer:
+          "Do not assume this from appearance alone. The applicable wire range must be checked against the liner and torch documentation or confirmed by sample, drawing or model reference.",
+      },
+      {
+        question: "Is a polymer liner always required for aluminium wire?",
+        answer:
+          "Polymer liner options are commonly considered for softer wire, but the exact construction must be selected for the confirmed wire, torch and feeding system. Request model-specific confirmation rather than treating one material as universal.",
+      },
+      {
+        question: "How should distributors list several liner variants in one RFQ?",
+        answer:
+          "Use a separate line for each wire range, torch reference, cable length or termination. Add quantity and packaging requirements to every line so the variants remain traceable during quotation.",
+      },
+    ],
+    keywords: [
+      "MIG torch liner",
+      "MIG gun liner",
+      "MIG liner selection",
+      "welding torch liner supplier",
+      "PTFE welding liner",
+    ],
+  },
+  {
     slug: "welding-electrode-wire-rfq-guide",
     title: "Welding Electrode and Wire RFQ Guide",
     seoTitle: "Welding Electrode and Wire RFQ Guide for Buyers",
