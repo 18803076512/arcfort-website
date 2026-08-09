@@ -492,6 +492,8 @@ The English campaign assets are:
 - `docs/promotion/prospect-qualification-guide.md` - qualification, status, privacy and manual outreach rules
 - `data/promotion/outreach-wave-01.csv` - five-company Oceania test batch mapped to verified sources and campaign links
 - `docs/promotion/outreach-wave-01.md` - company-specific drafts for manual review and sending only
+- `data/promotion/outreach-wave-02.csv` - five-company South Africa, UK and Canada test batch
+- `docs/promotion/outreach-wave-02.md` - second-wave company-specific drafts for manual review only
 
 Only allowlisted UTM fields are retained in GA4 page locations; unrelated query parameters are
 discarded. Do not put buyer personal data in UTM parameters or analytics events. Outreach must be
@@ -505,10 +507,10 @@ information only. Recheck each official website before contact, use small manual
 keep correspondence outside Git and honor opt-out requests. `npm run promotion:prospects` validates
 the schema, official-domain URLs, campaign IDs, statuses and accidental contact data.
 
-The first outreach wave contains five company-level drafts and is not an automated sending system.
-Run `npm run promotion:wave`, reopen every official evidence page, approve each message manually and
-use only the company's published business inquiry route. Keep replies and contact records in a
-private sales system rather than Git.
+The two outreach waves contain ten unique company-level drafts and are not an automated sending
+system. Run `npm run promotion:wave`, reopen every official evidence page, approve each message
+manually and use only the company's published business inquiry route. Keep replies and contact
+records in a private sales system rather than Git.
 
 The distributor landing page embeds the same production RFQ form used by `/rfq`, so campaign
 visitors can submit a product list without an extra page transition. The form keeps attachment,

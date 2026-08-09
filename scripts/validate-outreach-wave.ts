@@ -4,10 +4,22 @@ import { existsSync, readFileSync } from "node:fs";
 import path from "node:path";
 import { parseCsv } from "./product-import-utils.ts";
 
-const sourcePath = path.resolve("data/promotion/outreach-wave-01.csv");
 const prospectPath = path.resolve("docs/promotion/distributor-prospect-research.csv");
 const campaignLinksPath = path.resolve("docs/promotion/campaign-links.csv");
-const draftPath = path.resolve("docs/promotion/outreach-wave-01.md");
+const waveDefinitions = [
+  {
+    sourcePath: path.resolve("data/promotion/outreach-wave-01.csv"),
+    draftPath: path.resolve("docs/promotion/outreach-wave-01.md"),
+    expectedWaveId: "oceania_wave_01",
+    label: "Outreach wave 01",
+  },
+  {
+    sourcePath: path.resolve("data/promotion/outreach-wave-02.csv"),
+    draftPath: path.resolve("docs/promotion/outreach-wave-02.md"),
+    expectedWaveId: "global_wave_02",
+    label: "Outreach wave 02",
+  },
+] as const;
 const expectedHeaders = [
   "wave_id",
   "sequence",
@@ -53,8 +65,10 @@ function readCsv(filePath: string, label: string) {
   return parseCsv(readFileSync(filePath, "utf8"));
 }
 
-function readWave() {
-  const parsed = readCsv(sourcePath, "Outreach wave source");
+type WaveDefinition = (typeof waveDefinitions)[number];
+
+function readWave(definition: WaveDefinition) {
+  const parsed = readCsv(definition.sourcePath, `${definition.label} source`);
   const headers = parsed[0] ?? [];
 
   if (headers.join(",") !== expectedHeaders.join(",")) {
@@ -118,100 +132,128 @@ function sectionForCompany(markdown: string, company: string) {
 }
 
 function main() {
-  const wave = readWave();
   const prospects = readRowsByColumn(prospectPath, "company");
   const campaignLinks = readRowsByColumn(campaignLinksPath, "id");
-  const markdown = readFileSync(draftPath, "utf8");
   const companies = new Set<string>();
+  let totalDrafts = 0;
 
-  if (wave.length !== 5) {
-    throw new Error(`Outreach wave 01 must contain exactly 5 companies; received ${wave.length}.`);
-  }
+  for (const definition of waveDefinitions) {
+    const wave = readWave(definition);
+    const markdown = readFileSync(definition.draftPath, "utf8");
 
-  wave.forEach((row, index) => {
-    const rowNumber = index + 2;
+    if (wave.length !== 5) {
+      throw new Error(
+        `${definition.label} must contain exactly 5 companies; received ${wave.length}.`,
+      );
+    }
 
-    for (const field of expectedHeaders) {
-      if (!row[field]) {
-        throw new Error(`Outreach row ${rowNumber} is missing ${field}.`);
+    wave.forEach((row, index) => {
+      const rowNumber = index + 2;
+
+      for (const field of expectedHeaders) {
+        if (!row[field]) {
+          throw new Error(`${definition.label} row ${rowNumber} is missing ${field}.`);
+        }
       }
-    }
 
-    if (row.wave_id !== "oceania_wave_01" || row.sequence !== String(index + 1)) {
-      throw new Error(`Outreach row ${rowNumber} has an invalid wave ID or sequence.`);
-    }
-
-    if (companies.has(row.company)) {
-      throw new Error(`Outreach company is duplicated: ${row.company}.`);
-    }
-
-    if (!allowedStatuses.has(row.status)) {
-      throw new Error(`Outreach row ${rowNumber} has an invalid status: ${row.status}.`);
-    }
-
-    for (const field of ["official_contact_url", "evidence_url", "tracking_url"] as const) {
-      requireHttps(row[field], rowNumber, field);
-    }
-
-    for (const field of ["company", "market", "product_angle", "personalization_basis"] as const) {
-      if (personalContactPattern.test(row[field])) {
-        throw new Error(`Outreach row ${rowNumber} contains personal contact data in ${field}.`);
+      if (row.wave_id !== definition.expectedWaveId || row.sequence !== String(index + 1)) {
+        throw new Error(`${definition.label} row ${rowNumber} has an invalid wave ID or sequence.`);
       }
-    }
 
-    const prospect = prospects.get(row.company);
-    const campaign = campaignLinks.get(row.campaign_link_id);
+      if (companies.has(row.company)) {
+        throw new Error(`Outreach company is duplicated across waves: ${row.company}.`);
+      }
 
-    if (!prospect || prospect.priority !== "A") {
-      throw new Error(`Outreach row ${rowNumber} must reference a Priority A researched company.`);
-    }
-
-    if (
-      prospect.public_contact_url !== row.official_contact_url ||
-      prospect.source_evidence_url !== row.evidence_url
-    ) {
-      throw new Error(`Outreach row ${rowNumber} must reuse the verified prospect URLs.`);
-    }
-
-    if (!campaign || campaign.tracking_url !== row.tracking_url) {
-      throw new Error(`Outreach row ${rowNumber} must reuse a generated campaign tracking link.`);
-    }
-
-    const section = sectionForCompany(markdown, row.company);
-
-    if (!section) {
-      throw new Error(`Outreach draft is missing a section for ${row.company}.`);
-    }
-
-    for (const requiredText of [
-      row.official_contact_url,
-      row.evidence_url,
-      row.tracking_url,
-      "Hello Purchasing Team,",
-      "Renqiu Ailesen Welding Technology Co., Ltd.",
-      optOutSentence,
-    ]) {
-      if (!section.includes(requiredText)) {
+      if (!allowedStatuses.has(row.status)) {
         throw new Error(
-          `Outreach draft for ${row.company} is missing required text: ${requiredText}`,
+          `${definition.label} row ${rowNumber} has an invalid status: ${row.status}.`,
         );
       }
-    }
 
-    if (section.split(row.tracking_url).length - 1 !== 1) {
-      throw new Error(`Outreach draft for ${row.company} must contain exactly one tracking link.`);
-    }
-
-    for (const claim of forbiddenClaims) {
-      if (claim.test(section)) {
-        throw new Error(`Outreach draft for ${row.company} contains a prohibited claim.`);
+      for (const field of ["official_contact_url", "evidence_url", "tracking_url"] as const) {
+        requireHttps(row[field], rowNumber, field);
       }
-    }
 
-    companies.add(row.company);
-  });
+      for (const field of [
+        "company",
+        "market",
+        "product_angle",
+        "personalization_basis",
+      ] as const) {
+        if (personalContactPattern.test(row[field])) {
+          throw new Error(
+            `${definition.label} row ${rowNumber} contains personal contact data in ${field}.`,
+          );
+        }
+      }
 
-  console.log(`Outreach wave 01 passed (${wave.length} manually reviewed company drafts).`);
+      const prospect = prospects.get(row.company);
+      const campaign = campaignLinks.get(row.campaign_link_id);
+
+      if (!prospect || prospect.priority !== "A") {
+        throw new Error(
+          `${definition.label} row ${rowNumber} must reference a Priority A researched company.`,
+        );
+      }
+
+      if (
+        prospect.public_contact_url !== row.official_contact_url ||
+        prospect.source_evidence_url !== row.evidence_url
+      ) {
+        throw new Error(
+          `${definition.label} row ${rowNumber} must reuse the verified prospect URLs.`,
+        );
+      }
+
+      if (!campaign || campaign.tracking_url !== row.tracking_url) {
+        throw new Error(
+          `${definition.label} row ${rowNumber} must reuse a generated campaign tracking link.`,
+        );
+      }
+
+      const section = sectionForCompany(markdown, row.company);
+
+      if (!section) {
+        throw new Error(`${definition.label} draft is missing a section for ${row.company}.`);
+      }
+
+      for (const requiredText of [
+        row.official_contact_url,
+        row.evidence_url,
+        row.tracking_url,
+        "Hello Purchasing Team,",
+        "Renqiu Ailesen Welding Technology Co., Ltd.",
+        optOutSentence,
+      ]) {
+        if (!section.includes(requiredText)) {
+          throw new Error(
+            `${definition.label} draft for ${row.company} is missing required text: ${requiredText}`,
+          );
+        }
+      }
+
+      if (section.split(row.tracking_url).length - 1 !== 1) {
+        throw new Error(
+          `${definition.label} draft for ${row.company} must contain exactly one tracking link.`,
+        );
+      }
+
+      for (const claim of forbiddenClaims) {
+        if (claim.test(section)) {
+          throw new Error(
+            `${definition.label} draft for ${row.company} contains a prohibited claim.`,
+          );
+        }
+      }
+
+      companies.add(row.company);
+    });
+
+    totalDrafts += wave.length;
+    console.log(`${definition.label} passed (${wave.length} company drafts for manual review).`);
+  }
+
+  console.log(`All outreach waves passed (${totalDrafts} unique company drafts).`);
 }
 
 try {
