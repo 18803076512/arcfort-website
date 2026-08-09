@@ -377,6 +377,12 @@ homepage, Product Center and RFQ route, shared CSS, individual JavaScript assets
 quietly increasing the initial buyer download. Update a limit only after measuring the deployed page
 and documenting why the additional transfer cost provides necessary buyer value.
 
+The Next.js image configuration includes common mobile and desktop viewport widths so full-width
+buyer-facing images receive a close responsive AVIF or WebP candidate instead of downloading the
+next much larger default size. Keep page-level `sizes` values accurate when adding or changing an
+image layout, and measure the deployed optimized response rather than treating the source-file size
+as the browser transfer size.
+
 Audit only the deployed CSP, browser hardening headers, HSTS, framework disclosure and RFQ status
 cache policy with:
 
