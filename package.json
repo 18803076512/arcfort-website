@@ -34,8 +34,9 @@
     "health:production": "node --experimental-strip-types scripts/check-live-rfq.ts && node --experimental-strip-types scripts/audit-live-seo.ts && node --experimental-strip-types scripts/check-live-security-headers.ts",
     "downloads:generate": "node --experimental-strip-types scripts/generate-download-assets.ts",
     "promotion:links": "node --experimental-strip-types scripts/generate-promotion-links.ts",
-    "promotion:check": "node --experimental-strip-types scripts/generate-promotion-links.ts --check && npm run promotion:prospects",
+    "promotion:check": "node --experimental-strip-types scripts/generate-promotion-links.ts --check && npm run promotion:prospects && npm run promotion:wave",
     "promotion:prospects": "node --experimental-strip-types scripts/validate-distributor-prospects.ts",
+    "promotion:wave": "node --experimental-strip-types scripts/validate-outreach-wave.ts",
     "promotion:test": "node --experimental-strip-types scripts/test-promotion-attribution.ts",
     "indexing:submit": "node --experimental-strip-types scripts/submit-indexnow.ts",
     "format": "prettier --write ."

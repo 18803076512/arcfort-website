@@ -53,6 +53,11 @@ official website immediately before contact and keep all correspondence and buye
 Repeat the cycle with different product-family evidence only after the previous cycle is reviewed.
 Do not increase outreach volume before relevance and inquiry quality are understood.
 
+The first manual test batch is defined in `data/promotion/outreach-wave-01.csv`, with finished
+company-level drafts in `docs/promotion/outreach-wave-01.md`. Every row remains
+`ready_for_manual_review` until a person rechecks the official source, approves the message and sends
+it through the published business inquiry route. The repository never sends these messages.
+
 ## Link Workflow
 
 1. Maintain campaign definitions in `data/promotion/campaigns.csv`.
@@ -63,7 +68,9 @@ Do not increase outreach volume before relevance and inquiry quality are underst
 6. Never put a buyer name, email address, phone number or company-private reference in a UTM value.
 
 `npm run promotion:check` also validates the public prospect tracker, official-domain source links,
-allowed statuses and campaign-link references. It rejects personal contact data in tracker fields.
+allowed statuses and campaign-link references. It also validates the five-company outreach wave,
+its generated tracking URLs, opt-out wording and unsupported-claim guard. It rejects personal
+contact data in tracker fields.
 
 ## Measurement
 
