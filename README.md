@@ -519,6 +519,8 @@ The English campaign assets are:
 - `docs/promotion/outreach-wave-01.md` - company-specific drafts for manual review and sending only
 - `data/promotion/outreach-wave-02.csv` - five-company South Africa, UK and Canada test batch
 - `docs/promotion/outreach-wave-02.md` - second-wave company-specific drafts for manual review only
+- `data/promotion/outreach-wave-03.csv` - five-company United Arab Emirates test batch
+- `docs/promotion/outreach-wave-03.md` - third-wave company-specific drafts for manual review only
 
 Only allowlisted UTM fields are retained in GA4 page locations; unrelated query parameters are
 discarded. Do not put buyer personal data in UTM parameters or analytics events. Outreach must be
@@ -532,13 +534,13 @@ information only. Recheck each official website before contact, use small manual
 keep correspondence outside Git and honor opt-out requests. `npm run promotion:prospects` validates
 the schema, official-domain URLs, campaign IDs, statuses and accidental contact data.
 
-The two outreach waves contain ten unique company-level drafts and are not an automated sending
+The three outreach waves contain fifteen unique company-level drafts and are not an automated sending
 system. Run `npm run promotion:wave`, reopen every official evidence page, approve each message
 manually and use only the company's published business inquiry route. Keep replies and contact
 records in a private sales system rather than Git.
 
 Use the private `arcfort-outreach-tracker.xlsx` workbook for daily execution. It consolidates the
-ten official contact routes, evidence sources, product angles and UTM links, then calculates review,
+fifteen official contact routes, evidence sources, product angles and UTM links, then calculates review,
 send, reply, follow-up and qualified-inquiry metrics from editable status fields. The workbook belongs
 under the ignored `outputs/` directory and must never be committed after buyer responses are added.
 Initial zero values mean the drafts have not been sent; they are not campaign-performance results.
