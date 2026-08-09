@@ -103,6 +103,32 @@ and email/WhatsApp fallback. Do not create a second lightweight form that bypass
 Qualified inquiry review remains manual. Check whether an inquiry includes a usable product name or
 reference, quantity and destination, rather than treating every form event as a sales opportunity.
 
+## Daily Execution Workbook
+
+Use the local `arcfort-outreach-tracker.xlsx` workbook as the private operating record for the two
+manual outreach waves. It consolidates all ten company-level candidates and provides:
+
+- official business contact and evidence URLs
+- one campaign tracking URL and product angle per company
+- controlled status, response-type and qualification fields
+- reviewed, sent, follow-up and last-updated dates
+- formula-driven next actions, response rate and qualified-inquiry rate
+- a dashboard that starts at zero until real manual activity is recorded
+
+The safe operating sequence is:
+
+1. Open the official evidence and contact pages immediately before use.
+2. Confirm that the company still sells a directly overlapping welding or cutting product range.
+3. Review and personalize the matching company draft.
+4. Send one introduction through the company's published business inquiry route.
+5. Record the reviewed and sent dates, status and one next follow-up date in the private workbook.
+6. Stop after a reply, rejection or opt-out; never send more than one unanswered follow-up.
+
+Treat an inquiry as qualified only when the buyer provides or requests a usable product or reference,
+quantity or forecast, and destination. Opens, clicks and generic acknowledgements are not qualified
+inquiries. Keep buyer replies, personal names, email addresses, phone numbers and private commercial
+details outside Git. The workbook is stored under the ignored `outputs/` directory for local use only.
+
 ## External Account Checklist
 
 - Verify the domain in Google Search Console and submit `https://www.arcfortweld.com/sitemap.xml`.

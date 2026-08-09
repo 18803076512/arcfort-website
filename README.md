@@ -525,6 +525,12 @@ system. Run `npm run promotion:wave`, reopen every official evidence page, appro
 manually and use only the company's published business inquiry route. Keep replies and contact
 records in a private sales system rather than Git.
 
+Use the private `arcfort-outreach-tracker.xlsx` workbook for daily execution. It consolidates the
+ten official contact routes, evidence sources, product angles and UTM links, then calculates review,
+send, reply, follow-up and qualified-inquiry metrics from editable status fields. The workbook belongs
+under the ignored `outputs/` directory and must never be committed after buyer responses are added.
+Initial zero values mean the drafts have not been sent; they are not campaign-performance results.
+
 The distributor landing page and Contact page embed the same production RFQ form used by `/rfq`, so
 buyers can submit a product list without an extra page transition. The form keeps attachment,
 validation, BotID, email delivery and failure-fallback behavior. Conversion events include only the

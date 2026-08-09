@@ -11,6 +11,7 @@ build
 # local review and generated working files
 tmp/
 output/
+outputs/
 
 # local env files
 .env
