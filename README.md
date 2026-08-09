@@ -64,6 +64,7 @@ controlled by this company; never associate unrelated companies that use a simil
 - `content/products.ts` - adapter that maps product data into the current page schema
 - `content/applications.ts` - application page content
 - `content/guides.ts` - buyer guide and article content
+- `docs/content-research/` - internal source records used to verify technical buyer-guide claims
 - `lib/content/schemas.ts` - reusable TypeScript content schema
 - `lib/content/site.ts` - centralized company, contact, trade, port, payment, MOQ, lead time and OEM information
 - `lib/content/seo.ts` - metadata helper
@@ -74,7 +75,7 @@ controlled by this company; never associate unrelated companies that use a simil
 - `lib/content/topic-links.ts` - category-to-guide internal linking map
 
 The website currently includes 6 product categories, 43 product records (41 active public products
-and 2 draft records awaiting reviewed images), 6 application pages, 11 buyer guides and dedicated
+and 2 draft records awaiting reviewed images), 6 application pages, 12 buyer guides and dedicated
 trust pages for distributor supply, OEM service, quality control, shipping/payment and document
 requests. Four retained generic starter URLs permanently
 redirect to their current category pages so they do not compete with exact SKU pages. Missing product data must remain explicit
