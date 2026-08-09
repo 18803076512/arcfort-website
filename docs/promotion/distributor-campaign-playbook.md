@@ -54,12 +54,13 @@ official website immediately before contact and keep all correspondence and buye
 Repeat the cycle with different product-family evidence only after the previous cycle is reviewed.
 Do not increase outreach volume before relevance and inquiry quality are understood.
 
-The first two manual test batches are defined in `data/promotion/outreach-wave-01.csv` and
-`data/promotion/outreach-wave-02.csv`, with finished company-level drafts in the matching files under
-`docs/promotion/`. Wave 01 covers Australia and New Zealand; wave 02 covers South Africa, the United
-Kingdom and Canada. Every row remains `ready_for_manual_review` until a person rechecks the official
-source, approves the message and sends it through the published business inquiry route. The
-repository never sends these messages.
+The first three manual test batches are defined in `data/promotion/outreach-wave-01.csv`,
+`data/promotion/outreach-wave-02.csv` and `data/promotion/outreach-wave-03.csv`, with finished
+company-level drafts in the matching files under `docs/promotion/`. Wave 01 covers Australia and New
+Zealand; wave 02 covers South Africa, the United Kingdom and Canada; wave 03 covers the United Arab
+Emirates. Every row remains `ready_for_manual_review` until a person rechecks the official source,
+approves the message and sends it through the published business inquiry route. The repository never
+sends these messages.
 
 ## Link Workflow
 
@@ -71,7 +72,7 @@ repository never sends these messages.
 6. Never put a buyer name, email address, phone number or company-private reference in a UTM value.
 
 `npm run promotion:check` also validates the public prospect tracker, official-domain source links,
-allowed statuses and campaign-link references. It also validates both five-company outreach waves,
+allowed statuses and campaign-link references. It also validates all three five-company outreach waves,
 their generated tracking URLs, opt-out wording, unique company selection and unsupported-claim
 guard. It rejects personal contact data in tracker fields.
 
@@ -105,8 +106,8 @@ reference, quantity and destination, rather than treating every form event as a 
 
 ## Daily Execution Workbook
 
-Use the local `arcfort-outreach-tracker.xlsx` workbook as the private operating record for the two
-manual outreach waves. It consolidates all ten company-level candidates and provides:
+Use the local `arcfort-outreach-tracker.xlsx` workbook as the private operating record for the three
+manual outreach waves. It consolidates all fifteen company-level candidates and provides:
 
 - official business contact and evidence URLs
 - one campaign tracking URL and product angle per company

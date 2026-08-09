@@ -103,7 +103,7 @@ Use this checklist before switching the website to production traffic.
 ## Post-Launch
 
 - Review confirmed business data before major website updates.
-- Use the private outreach workbook to execute and record the two manually reviewed distributor waves;
+- Use the private outreach workbook to execute and record the three manually reviewed distributor waves;
   do not commit buyer replies or contact details.
 - Replace the remaining placeholder images for `AF-PLA-RC-0011` Plasma Retaining Cap and
   `AF-ACC-WM-0015` Welding Magnet with reviewed product photos.
