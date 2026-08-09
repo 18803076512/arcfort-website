@@ -26,13 +26,16 @@ export function buildRfqQuotationReadiness(
 ): RfqQuotationReadiness {
   const productText = payload.productRequirements.trim();
   const combinedText = `${payload.productRequirements}\n${payload.message}`;
+  const hasQuantity = Boolean(payload.quantity.trim());
+  const hasCountry = Boolean(payload.country.trim());
   const hasAttachment = attachments.length > 0;
   const hasTechnicalReference = technicalReferencePattern.test(productText);
   const hasDimensionalReference = dimensionalReferencePattern.test(productText);
   const hasProductEvidence = hasAttachment || hasTechnicalReference || hasDimensionalReference;
+  const isReadyForSalesReview = hasQuantity && hasCountry && hasProductEvidence;
   const confirmedSignals = [
-    payload.quantity.trim() ? "Requested quantity provided" : "",
-    payload.country.trim() ? "Destination country provided" : "",
+    hasQuantity ? "Requested quantity provided" : "",
+    hasCountry ? "Destination country provided" : "",
     hasAttachment
       ? `${attachments.length} supporting file${attachments.length === 1 ? "" : "s"} attached`
       : "",
@@ -41,6 +44,14 @@ export function buildRfqQuotationReadiness(
       : "",
   ].filter(Boolean);
   const followUpItems: string[] = [];
+
+  if (!hasQuantity) {
+    followUpItems.push("Confirm the required quantity or order plan for each requested item.");
+  }
+
+  if (!hasCountry) {
+    followUpItems.push("Confirm the destination country for packing and delivery planning.");
+  }
 
   if (!hasProductEvidence) {
     followUpItems.push(
@@ -71,8 +82,8 @@ export function buildRfqQuotationReadiness(
   );
 
   return {
-    status: hasProductEvidence ? "ready_for_sales_review" : "technical_details_needed",
-    label: hasProductEvidence ? "Ready for sales review" : "Technical details needed",
+    status: isReadyForSalesReview ? "ready_for_sales_review" : "technical_details_needed",
+    label: isReadyForSalesReview ? "Ready for sales review" : "Technical details needed",
     confirmedSignals,
     followUpItems,
   };

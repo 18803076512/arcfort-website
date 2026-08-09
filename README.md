@@ -239,6 +239,11 @@ line-item quantities or references remain in browser `localStorage` until the bu
 or clears the list; it does not require an account and does not expose internal product fields. When
 every selected product has a line quantity, the overall quantity summary becomes optional.
 
+The form also shows a quotation-preparation check before submission. It identifies whether product
+evidence, quantity, destination and supporting files are present, then lists buyer-friendly details
+that can reduce follow-up. RFQ conversion events include only the readiness status and signal count;
+buyer contact data, requirements and attachment names are not sent to analytics.
+
 Attachment signature checks reject files whose contents do not match the submitted extension before
 storage or email delivery. This reduces simple extension spoofing but does not replace endpoint
 malware scanning; sales users must continue to scan external attachments and avoid enabling macros.

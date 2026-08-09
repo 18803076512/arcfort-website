@@ -113,6 +113,19 @@ assert.match(incompleteReadiness.followUpItems.join("\n"), /part number/);
 assert.match(incompleteReadiness.followUpItems.join("\n"), /sample photos/);
 assert.doesNotMatch(incompleteReadiness.label, /New Zealand|Trial order/);
 
+const missingCommercialDetailsReadiness = buildRfqQuotationReadiness(
+  {
+    country: "",
+    quantity: "",
+    productRequirements: "MIG contact tip M6 1.0mm, reference AF-MIG-CT-0005.",
+    message: "Please quote standard export packing.",
+  },
+  [],
+);
+assert.equal(missingCommercialDetailsReadiness.status, "technical_details_needed");
+assert.match(missingCommercialDetailsReadiness.followUpItems.join("\n"), /required quantity/i);
+assert.match(missingCommercialDetailsReadiness.followUpItems.join("\n"), /destination country/i);
+
 const referralSummary = buildRfqLeadSourceSummary(
   {
     landingPage: "/products/mig-mag-torch-parts",
