@@ -41,7 +41,10 @@ export default function sitemap(): MetadataRoute.Sitemap {
   return [
     ...staticRoutes.map((route) => ({
       url: absoluteUrl(route),
-      lastModified: siteConfig.contentLastModified,
+      lastModified:
+        route === "/distributor-supply"
+          ? siteConfig.distributorLandingLastModified
+          : siteConfig.contentLastModified,
     })),
     ...downloadableRoutes.map((route) => ({
       url: absoluteUrl(route.path),

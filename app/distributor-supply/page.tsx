@@ -185,7 +185,7 @@ export default function DistributorSupplyPage() {
               "Welding and cutting product supply information for distributors, importers, wholesalers and industrial supply networks.",
             path: "/distributor-supply",
             image: "/images/site/arcfort-oem-consumables-workbench.png",
-            dateModified: siteConfig.contentLastModified,
+            dateModified: siteConfig.distributorLandingLastModified,
           }),
           faqJsonLd([...faq]),
         ]}
