@@ -69,9 +69,9 @@ const qualitySteps = [
 ] as const;
 
 export const metadata = buildMetadata({
-  title: "About ArcFort Weld",
+  title: "Renqiu Ailesen Welding Technology | ArcFort Weld",
   description:
-    "Learn about Renqiu Ailesen Welding Technology Co., Ltd., supplier of ArcFort Weld welding and cutting products for international B2B buyers.",
+    "Company profile of Renqiu Ailesen Welding Technology Co., Ltd., operator of ArcFort Weld for industrial welding and cutting product supply.",
   path: "/about",
   keywords: [
     "ArcFort Weld company",
@@ -91,9 +91,9 @@ export default function AboutPage() {
             { name: "About", path: "/about" },
           ]),
           webPageJsonLd({
-            name: "About ArcFort Weld",
+            name: "Renqiu Ailesen Welding Technology Co., Ltd. | ArcFort Weld",
             description:
-              "Company information for ArcFort Weld and Renqiu Ailesen Welding Technology Co., Ltd.",
+              "Company information for Renqiu Ailesen Welding Technology Co., Ltd. and its ArcFort Weld website brand.",
             path: "/about",
             pageType: "AboutPage",
           }),
@@ -103,14 +103,15 @@ export default function AboutPage() {
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="max-w-4xl">
             <p className="text-sm font-bold uppercase tracking-[0.2em] text-arc-signal">
-              {siteConfig.name}
+              Company | {siteConfig.name}
             </p>
-            <h1 className="mt-3 font-display text-4xl font-black leading-tight sm:text-5xl">
-              About ArcFort Weld
+            <h1 className="mt-3 break-words font-display text-3xl font-black leading-tight sm:text-5xl">
+              {siteConfig.legalName}
             </h1>
             <p className="mt-5 max-w-3xl text-lg leading-8 text-slate-300">
-              A practical industrial welding and cutting supplier for distributors, importers,
-              wholesalers, repair workshops and OEM buyers.
+              The company behind the ArcFort Weld website brand, serving distributors, importers,
+              wholesalers, repair workshops and OEM buyers with industrial welding and cutting
+              product supply.
             </p>
           </div>
         </div>
@@ -126,13 +127,14 @@ export default function AboutPage() {
               id="company-overview"
               className="mt-3 font-display text-3xl font-black text-arc-midnight sm:text-4xl"
             >
-              Focused on practical welding and cutting supply for B2B buyers.
+              Registered company identity and practical B2B supply scope.
             </h2>
           </div>
           <div className="space-y-5 text-base leading-8 text-slate-600">
             <p>
-              {siteConfig.legalName} is located in {siteConfig.address}. The company operates the{" "}
-              {siteConfig.name} website brand for industrial welding and cutting product supply.
+              {siteConfig.legalName} is located in {siteConfig.address}. The company operates this
+              website under the {siteConfig.name} brand for industrial welding and cutting product
+              supply.
             </p>
             <p>
               The business scope covers welding machines, cutting machines, welding torch
