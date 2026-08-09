@@ -41,6 +41,7 @@ import {
   rfqSubmissionTimeoutSeconds,
 } from "@/lib/rfq-client";
 import { getOrCreateRfqSubmissionAttempt, type RfqSubmissionAttempt } from "@/lib/rfq-idempotency";
+import { buildRfqQuotationReadiness } from "@/lib/rfq-qualification";
 
 type RfqFormValues = RfqTextValues;
 
@@ -197,6 +198,29 @@ export function RfqForm({ initialProduct = "", formPlacement = "rfq_page" }: Rfq
   const quantityForSubmission =
     values.quantity.trim() ||
     (hasCompleteLineItemQuantities ? "See selected product line quantities" : "");
+  const productRequirementsForSubmission = useMemo(
+    () => buildRfqProductRequirements(selectedProducts, values.productRequirements),
+    [selectedProducts, values.productRequirements],
+  );
+  const quotationReadiness = useMemo(
+    () =>
+      buildRfqQuotationReadiness(
+        {
+          country: values.country,
+          quantity: quantityForSubmission,
+          productRequirements: productRequirementsForSubmission,
+          message: values.message,
+        },
+        attachments.map((file) => ({ name: file.name })),
+      ),
+    [
+      attachments,
+      productRequirementsForSubmission,
+      quantityForSubmission,
+      values.country,
+      values.message,
+    ],
+  );
 
   const fileSummary = useMemo(() => createFileSummary(attachments), [attachments]);
 
@@ -317,12 +341,7 @@ export function RfqForm({ initialProduct = "", formPlacement = "rfq_page" }: Rfq
         "Add at least one product to your RFQ list or describe the products you need.";
     }
 
-    const combinedRequirements = buildRfqProductRequirements(
-      selectedProducts,
-      values.productRequirements,
-    );
-
-    if (combinedRequirements.length > rfqFieldLimits.productRequirements) {
+    if (productRequirementsForSubmission.length > rfqFieldLimits.productRequirements) {
       nextErrors.productRequirements =
         "The combined product list and requirements are too long. Remove a few items or attach the full list as a CSV, Excel or PDF file.";
     }
@@ -415,10 +434,7 @@ export function RfqForm({ initialProduct = "", formPlacement = "rfq_page" }: Rfq
       return;
     }
 
-    const productRequirements = buildRfqProductRequirements(
-      selectedProducts,
-      values.productRequirements,
-    );
+    const productRequirements = productRequirementsForSubmission;
 
     setIsSubmitting(true);
     setErrors((currentErrors) => ({
@@ -430,6 +446,8 @@ export function RfqForm({ initialProduct = "", formPlacement = "rfq_page" }: Rfq
       attachment_count: attachments.length,
       selected_product_count: selectedProducts.length,
       has_additional_requirements: Boolean(values.productRequirements.trim()),
+      quotation_readiness: quotationReadiness.status,
+      confirmed_signal_count: quotationReadiness.confirmedSignals.length,
       form_placement: formPlacement,
     });
 
@@ -541,10 +559,13 @@ export function RfqForm({ initialProduct = "", formPlacement = "rfq_page" }: Rfq
             : result.emailDelivered
               ? "email"
               : "storage",
+        quotation_readiness: quotationReadiness.status,
+        confirmed_signal_count: quotationReadiness.confirmedSignals.length,
         form_placement: formPlacement,
       });
       trackAnalyticsEvent("generate_lead", {
         lead_source: selectedProducts.length > 0 ? "rfq_shortlist" : "rfq_form",
+        quotation_readiness: quotationReadiness.status,
         form_placement: formPlacement,
         items: analyticsItems.length > 0 ? analyticsItems : undefined,
       });
@@ -568,10 +589,7 @@ export function RfqForm({ initialProduct = "", formPlacement = "rfq_page" }: Rfq
     }
   }
 
-  const fallbackRequirements = createFallbackExcerpt(
-    buildRfqProductRequirements(selectedProducts, values.productRequirements),
-    2400,
-  );
+  const fallbackRequirements = createFallbackExcerpt(productRequirementsForSubmission, 2400);
   const fallbackAdditionalMessage = createFallbackExcerpt(values.message, 800);
   const fallbackSubject = encodeURIComponent(
     failedReference
@@ -1023,6 +1041,64 @@ export function RfqForm({ initialProduct = "", formPlacement = "rfq_page" }: Rfq
           </div>
         ) : null}
       </div>
+
+      <section
+        aria-labelledby="quotation-readiness-title"
+        className="mt-6 border-y border-slate-200 py-5"
+      >
+        <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+          <div>
+            <p className="text-xs font-bold uppercase tracking-[0.14em] text-arc-blue">
+              Quotation Preparation
+            </p>
+            <h3
+              id="quotation-readiness-title"
+              className="mt-2 font-display text-xl font-black text-arc-midnight"
+            >
+              {quotationReadiness.label}
+            </h3>
+          </div>
+          <p className="border-l-4 border-arc-signal pl-3 text-sm font-bold text-arc-midnight">
+            {quotationReadiness.confirmedSignals.length} of 4 buyer details detected
+          </p>
+        </div>
+        <p className="mt-3 max-w-3xl text-sm leading-6 text-slate-600">
+          Complete product references reduce follow-up before quotation. This check does not confirm
+          compatibility, price or final technical specifications.
+        </p>
+        <div className="mt-5 grid gap-5 sm:grid-cols-2">
+          <div>
+            <p className="text-xs font-bold uppercase tracking-[0.12em] text-slate-500">
+              Information Provided
+            </p>
+            {quotationReadiness.confirmedSignals.length > 0 ? (
+              <ul className="mt-3 space-y-2 text-sm leading-6 text-slate-700">
+                {quotationReadiness.confirmedSignals.map((signal) => (
+                  <li key={signal} className="border-l-2 border-arc-blue pl-3">
+                    {signal}
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <p className="mt-3 text-sm leading-6 text-slate-600">
+                Add a product name or reference, quantity and destination country to begin.
+              </p>
+            )}
+          </div>
+          <div>
+            <p className="text-xs font-bold uppercase tracking-[0.12em] text-slate-500">
+              Useful Before Final Quotation
+            </p>
+            <ul className="mt-3 space-y-2 text-sm leading-6 text-slate-700">
+              {quotationReadiness.followUpItems.slice(0, 3).map((item) => (
+                <li key={item} className="border-l-2 border-slate-300 pl-3">
+                  {item}
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      </section>
 
       <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:items-center">
         <button
