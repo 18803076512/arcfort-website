@@ -470,6 +470,7 @@ Generate and verify promotion links with:
 
 ```bash
 npm run promotion:links
+npm run promotion:prospects
 npm run promotion:check
 npm run promotion:test
 ```
@@ -482,6 +483,8 @@ The English campaign assets are:
 - `docs/promotion/outreach-templates.md` - targeted email, permission-based WhatsApp, LinkedIn and directory copy
 - `docs/promotion/content-calendar.csv` - four-week channel sequence
 - `docs/promotion/social-preview-asset.md` - distributor social-image source, usage limits and validation
+- `docs/promotion/distributor-prospect-research.csv` - verified public-company research with official source and contact URLs
+- `docs/promotion/prospect-qualification-guide.md` - qualification, status, privacy and manual outreach rules
 
 Only allowlisted UTM fields are retained in GA4 page locations; unrelated query parameters are
 discarded. Do not put buyer personal data in UTM parameters or analytics events. Outreach must be
@@ -489,6 +492,11 @@ relevant, identified and manually reviewed; the repository does not automate uns
 `npm run promotion:test` also verifies that the RFQ conversion funnel keeps its form-start,
 submission, lead, contact and buyer-download events, and that the form-start event contains no buyer
 PII or inquiry content.
+
+The prospect research file is not a customer or partner list. It must contain company-level public
+information only. Recheck each official website before contact, use small manually reviewed batches,
+keep correspondence outside Git and honor opt-out requests. `npm run promotion:prospects` validates
+the schema, official-domain URLs, campaign IDs, statuses and accidental contact data.
 
 The distributor landing page has route-specific 1200 x 630 Open Graph and Twitter images. Shared
 site chrome, visual category codes, product-image labels and repeated card actions use static

@@ -28,6 +28,11 @@ prices or exact specifications.
 Prioritize companies whose current product range clearly overlaps ArcFort Weld supply. Do not use
 unverified personal lists or irrelevant mass messaging.
 
+The first public-company research set is stored in `distributor-prospect-research.csv`. It contains
+official websites and product-scope evidence only. These companies are research candidates, not
+customers, partners or approved distributors. Follow `prospect-qualification-guide.md`, recheck each
+official website immediately before contact and keep all correspondence and buyer data outside Git.
+
 ## Message Hierarchy
 
 1. Product scope: six welding and cutting product families in one RFQ.
@@ -56,6 +61,9 @@ Do not increase outreach volume before relevance and inquiry quality are underst
 4. Run `npm run promotion:check` before deployment.
 5. Run `npm run promotion:test` to verify the analytics query allowlist.
 6. Never put a buyer name, email address, phone number or company-private reference in a UTM value.
+
+`npm run promotion:check` also validates the public prospect tracker, official-domain source links,
+allowed statuses and campaign-link references. It rejects personal contact data in tracker fields.
 
 ## Measurement
 
