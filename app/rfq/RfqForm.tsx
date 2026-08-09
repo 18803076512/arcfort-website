@@ -171,7 +171,7 @@ function getStoredSourceAttribution(): SourceAttribution {
 
 type RfqFormProps = {
   initialProduct?: string;
-  formPlacement?: "rfq_page" | "distributor_landing";
+  formPlacement?: "rfq_page" | "distributor_landing" | "contact_page";
 };
 
 export function RfqForm({ initialProduct = "", formPlacement = "rfq_page" }: RfqFormProps) {

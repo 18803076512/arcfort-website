@@ -226,6 +226,8 @@ The `/rfq` page includes a responsive inquiry form with:
 - Buyer-guide RFQ links prefill the guide topic so the sales team can see the sourcing context
 - Every buyer guide links directly to the downloadable RFQ worksheet and the upload form through a
   responsive download, complete and upload workflow
+- The Contact page embeds the same production RFQ form with a `contact_page` placement marker, so
+  buyers can submit requirements and attachments without an extra page transition
 
 Buyers can add up to 50 products from product cards or detail pages. The shortlist and optional
 line-item quantities or references remain in browser `localStorage` until the buyer submits the RFQ
@@ -518,10 +520,11 @@ system. Run `npm run promotion:wave`, reopen every official evidence page, appro
 manually and use only the company's published business inquiry route. Keep replies and contact
 records in a private sales system rather than Git.
 
-The distributor landing page embeds the same production RFQ form used by `/rfq`, so campaign
-visitors can submit a product list without an extra page transition. The form keeps attachment,
+The distributor landing page and Contact page embed the same production RFQ form used by `/rfq`, so
+buyers can submit a product list without an extra page transition. The form keeps attachment,
 validation, BotID, email delivery and failure-fallback behavior. Conversion events include only the
-controlled `form_placement` value (`distributor_landing` or `rfq_page`) and never buyer PII.
+controlled `form_placement` value (`distributor_landing`, `contact_page` or `rfq_page`) and never
+buyer PII.
 
 The distributor landing page has route-specific 1200 x 630 Open Graph and Twitter images. Shared
 site chrome, visual category codes, product-image labels and repeated card actions use static

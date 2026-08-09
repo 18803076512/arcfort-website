@@ -54,6 +54,11 @@ type TrackedLinkEvent = {
   params: AnalyticsEventParams;
 };
 
+const embeddedRfqDestinations: Record<string, string> = {
+  "#distributor-rfq-form": "embedded_distributor_rfq",
+  "#contact-inquiry-form": "embedded_contact_rfq",
+};
+
 function getTrackedLinkEvent(href: string): TrackedLinkEvent | null {
   if (href.startsWith("mailto:")) {
     return {
@@ -72,15 +77,16 @@ function getTrackedLinkEvent(href: string): TrackedLinkEvent | null {
   try {
     const url = new URL(href, window.location.origin);
 
+    const embeddedRfqDestination = embeddedRfqDestinations[url.hash];
+
     if (
       url.origin === window.location.origin &&
-      (url.pathname === "/rfq" || url.hash === "#distributor-rfq-form")
+      (url.pathname === "/rfq" || embeddedRfqDestination)
     ) {
       return {
         eventName: "rfq_link_click",
         params: {
-          destination:
-            url.hash === "#distributor-rfq-form" ? "embedded_distributor_rfq" : "rfq_page",
+          destination: embeddedRfqDestination ?? "rfq_page",
         },
       };
     }

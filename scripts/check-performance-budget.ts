@@ -26,6 +26,7 @@ const routeBudgets: RouteBudget[] = [
     route: "/distributor-supply/page",
     maxGzipBytes: 150 * kibibyte,
   },
+  { label: "Contact", route: "/contact/page", maxGzipBytes: 150 * kibibyte },
   { label: "RFQ", route: "/rfq/page", maxGzipBytes: 150 * kibibyte },
 ];
 const maxCssGzipBytes = 15 * kibibyte;
