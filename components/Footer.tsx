@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { siteConfig } from "@/lib/content/site";
+import { buildEmailHref, buildWhatsAppHref, siteConfig } from "@/lib/content/site";
 import { productCategories } from "@/lib/product-categories";
 
 const links = [
@@ -56,13 +56,13 @@ export function Footer() {
               Request a Quote
             </Link>
             <a
-              href={siteConfig.emailHref}
+              href={buildEmailHref({ subject: "ArcFort Weld export RFQ" })}
               className="inline-flex min-h-12 items-center justify-center border border-white/25 px-5 text-xs font-bold uppercase tracking-[0.14em] text-white transition hover:border-arc-signal hover:text-arc-signal"
             >
               Email Sales
             </a>
             <a
-              href={siteConfig.whatsappHref}
+              href={buildWhatsAppHref()}
               className="inline-flex min-h-12 items-center justify-center border border-white/25 px-5 text-xs font-bold uppercase tracking-[0.14em] text-white transition hover:border-arc-signal hover:text-arc-signal"
             >
               WhatsApp
@@ -80,6 +80,9 @@ export function Footer() {
           <p className="mt-4 max-w-sm text-sm leading-6 text-slate-300">
             {siteConfig.tagline} for distributors, importers, OEM buyers, industrial users, and
             repair workshops.
+          </p>
+          <p className="mt-3 max-w-sm text-xs leading-5 text-slate-400">
+            {siteConfig.responseNote}
           </p>
           <p className="mt-4 text-xs leading-5 text-slate-400">{siteConfig.legalName}</p>
         </div>
@@ -144,13 +147,13 @@ export function Footer() {
           <h2 className="text-sm font-bold uppercase tracking-[0.18em] text-arc-signal">Contact</h2>
           <div className="mt-4 grid gap-2 text-sm text-slate-300">
             <a
-              href={siteConfig.emailHref}
+              href={buildEmailHref({ subject: "ArcFort Weld product inquiry" })}
               className="inline-flex min-h-8 items-center break-words hover:text-white"
             >
               Email: {siteConfig.email}
             </a>
             <a
-              href={siteConfig.whatsappHref}
+              href={buildWhatsAppHref()}
               className="inline-flex min-h-8 items-center break-words hover:text-white"
             >
               WhatsApp: {siteConfig.whatsapp}

@@ -56,9 +56,9 @@ export function organizationJsonLd() {
     areaServed: "Worldwide",
     address: {
       "@type": "PostalAddress",
-      addressLocality: "Renqiu",
-      addressRegion: "Hebei",
-      addressCountry: "CN",
+      addressLocality: siteConfig.addressCity,
+      addressRegion: siteConfig.addressProvince,
+      addressCountry: siteConfig.addressCountryCode,
     },
     contactPoint: [
       {

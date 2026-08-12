@@ -31,6 +31,19 @@ export type CompatibilityRow = {
   note?: string;
 };
 
+export type CategoryComponent = {
+  name: string;
+  role: string;
+  buyerCheck: string;
+  productSlug?: string;
+};
+
+export type CategorySelectionVariable = {
+  label: string;
+  whyItMatters: string;
+  confirmationMethod: string;
+};
+
 export type ProductCategory = {
   slug: string;
   code: string;
@@ -45,6 +58,9 @@ export type ProductCategory = {
   compatibilityNote: string;
   applications: string[];
   buyerGuide: string[];
+  componentGuide?: CategoryComponent[];
+  selectionVariables?: CategorySelectionVariable[];
+  compatibilityChecklist?: string[];
   oemServiceNote: string;
   packagingMoqNote: string;
   features: string[];
@@ -82,6 +98,9 @@ export type BaseProduct = {
   imageStatus?: ProductImageStatus;
   compatibilityStatus?: ProductCompatibilityStatus;
   oemStatus?: ProductOemStatus;
+  sourceType?: "factory" | "supplier_catalog" | "official_catalog" | "customer_sample" | "unknown";
+  referenceReviewedDate?: string;
+  catalogUrl?: string;
 };
 
 export type WeldingConsumableProduct = BaseProduct & {

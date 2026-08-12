@@ -12,6 +12,8 @@ const processByCategorySlug: Record<string, WeldingProcess> = {
   "welding-accessories": "General Welding",
 };
 
+const companyCatalogPath = "/downloads/renqiu-ailesen-welding-catalog.pdf";
+
 const activeArcfortProducts = arcfortProducts.filter(
   (product) =>
     (product.status ?? "active") === "active" &&
@@ -47,7 +49,6 @@ function createSpecifications(product: ArcfortProductData): SpecRow[] {
     { label: "Lead Time", value: product.leadTime },
     { label: "Custom Available", value: product.customAvailable },
     { label: "Reference Part Review", value: product.sampleAvailable },
-    { label: "PDF Catalog", value: product.pdfUrl },
   ];
 
   return rows.filter((row): row is SpecRow => Boolean(row.value));
@@ -173,6 +174,11 @@ function toProduct(product: ArcfortProductData): Product {
     imageStatus: product.imageStatus,
     compatibilityStatus: product.compatibilityStatus,
     oemStatus: product.oemStatus,
+    sourceType: product.sourceType,
+    referenceReviewedDate: product.verifiedDate,
+    catalogUrl:
+      product.pdfUrl ??
+      (product.sourceType === "official_catalog" ? companyCatalogPath : undefined),
   };
 
   if (product.categorySlug === "welding-machines") {

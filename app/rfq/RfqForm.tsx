@@ -83,7 +83,7 @@ const rfqQuickTemplates = [
     description: "For distributors buying several welding torch consumables together.",
     productRequirements:
       "Mixed welding consumables inquiry: MIG/MAG torch parts, TIG torch parts, plasma cutting consumables or welding accessories. Please review by product list, photo, drawing or reference part.",
-    quantity: "Mixed order / quantity to be confirmed",
+    quantity: "Please advise a suitable MOQ for a mixed order",
     message:
       "Please quote available items, MOQ, lead time, export packing options and shipment from Tianjin Port.",
   },
@@ -110,7 +110,7 @@ const rfqQuickTemplates = [
     description: "For welding machines, cutting machines and workshop accessories.",
     productRequirements:
       "Welding machine, cutting machine or welding accessory inquiry. Required process, application, accessories and destination country can be provided for quotation review.",
-    quantity: "Quantity to be confirmed",
+    quantity: "Please advise a suitable MOQ for the selected model",
     message:
       "Please confirm available models, accessory scope, packing, payment terms and delivery options.",
   },

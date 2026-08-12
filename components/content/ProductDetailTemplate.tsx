@@ -52,7 +52,7 @@ const confirmationWorkflow = [
     step: "04",
     title: "Receive quotation",
     description:
-      "ArcFort Weld responds with quotation details after the product and buyer requirements are clear.",
+      "ArcFort Weld prepares quotation details after the requested product and commercial requirements are reviewed.",
   },
 ] as const;
 
@@ -65,7 +65,7 @@ function getTechnicalDataStatusLabel(product: Product) {
     return "Final details reviewed before quotation";
   }
 
-  return "Buyer-safe data, details confirmed by RFQ";
+  return "Published references reviewed before quotation";
 }
 
 function getImageStatusLabel(product: Product) {
@@ -79,7 +79,7 @@ function getImageStatusLabel(product: Product) {
       : "Supplier product image available";
   }
 
-  return "Product photo available during RFQ review";
+  return "Product photo supplied during quotation review";
 }
 
 function getCompatibilityStatusLabel(product: Product) {
@@ -104,6 +104,37 @@ function getOemStatusLabel(product: Product) {
   }
 
   return "OEM details reviewed after quantity and artwork";
+}
+
+function getTechnicalSourceLabel(product: Product) {
+  switch (product.sourceType) {
+    case "official_catalog":
+      return "Company catalog reference";
+    case "supplier_catalog":
+      return "Supplier catalog reference";
+    case "factory":
+      return "Company-supplied technical record";
+    case "customer_sample":
+      return "Sample-based reference";
+    default:
+      return "Buyer evidence required for final details";
+  }
+}
+
+function getCategoryConfirmationPrompt(categorySlug: string) {
+  if (categorySlug === "plasma-cutting-consumables") {
+    return "Send the torch model, existing references and a photo of the electrode, nozzle, ring, cap and shield in assembly order. Include a documented cutting-current reference only when available.";
+  }
+
+  if (categorySlug === "tig-torch-parts") {
+    return "Send the complete torch and label photo, torch series, tungsten diameter, cup number and the cup, collet, body or gas lens kept in assembly order.";
+  }
+
+  if (categorySlug === "mig-mag-torch-parts") {
+    return "Send the torch model, wire size, thread or connection, overall length and a clear photo or sample of the current contact tip, holder, nozzle or liner.";
+  }
+
+  return "Send the model, drawing, reference part, dimensions and approved technical requirements available for this item.";
 }
 
 export function ProductDetailTemplate({
@@ -161,13 +192,14 @@ export function ProductDetailTemplate({
   const productSummary = [
     { label: "Product Family", value: productFamily },
     { label: "Process", value: processLabel },
-    { label: "Supply Type", value: "B2B RFQ review" },
+    { label: "Supply Type", value: "B2B export supply" },
   ] as const;
   const productInquiryChecklist = [
     `Product: ${product.title}`,
     `SKU: ${displayConfirmedValue(product.sku, "Confirm with product details")}`,
     `Category: ${category.title}`,
-    "Send quantity, destination country, drawing or reference part for quotation.",
+    getCategoryConfirmationPrompt(category.slug),
+    "Add quantity, destination country and standard or OEM packaging requirement.",
   ];
   const tradeDetails = [
     { label: "Main Port", value: siteConfig.mainPort },
@@ -196,6 +228,28 @@ export function ProductDetailTemplate({
       value: getOemStatusLabel(product),
       note: "Logo, label and carton design are reviewed with order quantity and packaging requirements.",
     },
+  ];
+  const technicalReferenceSignals = [
+    {
+      label: "Technical basis",
+      value: getTechnicalSourceLabel(product),
+    },
+    {
+      label: "Data status",
+      value: getTechnicalDataStatusLabel(product),
+    },
+    {
+      label: "Compatibility status",
+      value: getCompatibilityStatusLabel(product),
+    },
+    ...(product.referenceReviewedDate
+      ? [
+          {
+            label: "Reference reviewed",
+            value: product.referenceReviewedDate,
+          },
+        ]
+      : []),
   ];
   const directInquiryChannels = [
     {
@@ -373,14 +427,45 @@ export function ProductDetailTemplate({
                 </div>
               </div>
 
+              <div className="mt-6 border border-slate-200 bg-arc-midnight p-5 text-white shadow-industrial">
+                <div className="flex flex-col gap-5 sm:flex-row sm:items-start sm:justify-between">
+                  <div>
+                    <h2 className="text-xs font-bold uppercase tracking-[0.16em] text-arc-signal">
+                      Technical reference basis
+                    </h2>
+                    <p className="mt-2 max-w-2xl text-sm leading-6 text-slate-300">
+                      Published values show the current review basis. Final fit, material grade and
+                      order-specific details remain subject to quotation confirmation.
+                    </p>
+                  </div>
+                  {product.catalogUrl ? (
+                    <a
+                      href={product.catalogUrl}
+                      className="inline-flex min-h-12 w-full shrink-0 items-center justify-center bg-arc-signal px-4 text-xs font-bold uppercase tracking-[0.12em] text-arc-midnight transition hover:bg-white sm:w-auto"
+                    >
+                      View Company Catalog
+                    </a>
+                  ) : null}
+                </div>
+                <dl className="mt-5 grid gap-px bg-white/10 sm:grid-cols-2">
+                  {technicalReferenceSignals.map((item) => (
+                    <div key={item.label} className="bg-arc-midnight p-4">
+                      <dt className="text-[11px] font-bold uppercase tracking-[0.16em] text-slate-400">
+                        {item.label}
+                      </dt>
+                      <dd className="mt-2 text-sm font-black leading-6 text-white">{item.value}</dd>
+                    </div>
+                  ))}
+                </dl>
+              </div>
+
               {technicalDetailsToConfirm.length > 0 ? (
                 <div className="mt-6 border-l-4 border-arc-signal bg-white p-4 shadow-sm">
                   <h2 className="text-xs font-bold uppercase tracking-[0.16em] text-arc-blue">
                     Technical details available upon request
                   </h2>
                   <p className="mt-2 text-sm leading-6 text-slate-700">
-                    These items can be checked by drawing, reference part, product list or model
-                    reference before quotation.
+                    {getCategoryConfirmationPrompt(category.slug)}
                   </p>
                   <div className="mt-3 flex flex-wrap gap-2">
                     {technicalDetailsToConfirm.map((field) => (
@@ -545,6 +630,12 @@ export function ProductDetailTemplate({
                 customization are available after product details, quantity and artwork requirements
                 are confirmed.
               </p>
+              <Link
+                href="/oem-service"
+                className="mt-4 inline-flex text-xs font-bold uppercase tracking-[0.14em] text-arc-blue hover:text-arc-copper"
+              >
+                Review OEM Service
+              </Link>
             </div>
 
             <div className="mt-5 grid gap-3 border-t border-slate-100 pt-5 sm:grid-cols-2">

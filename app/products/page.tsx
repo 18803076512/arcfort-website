@@ -13,7 +13,13 @@ import {
 } from "@/lib/content/product-search";
 import { getAllProducts } from "@/lib/content/products";
 import { buildMetadata } from "@/lib/content/seo";
-import { siteConfig } from "@/lib/content/site";
+import { buildEmailHref } from "@/lib/content/site";
+
+const productListEmailHref = buildEmailHref({
+  subject: "Welding and cutting product list inquiry",
+  message:
+    "Hello ArcFort Weld, I would like to send a welding and cutting product list for quotation.\n\nProduct categories:\nQuantity by item:\nDestination country:\nDrawing, model or sample references:\nPackaging requirements:",
+});
 
 type ProductsPageProps = {
   searchParams: Promise<ProductCatalogSearchParams>;
@@ -422,7 +428,7 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
               </p>
             </div>
             <a
-              href={siteConfig.emailHref}
+              href={productListEmailHref}
               className="inline-flex w-full items-center justify-center border border-arc-blue px-5 py-3 text-sm font-bold uppercase tracking-[0.14em] text-arc-blue transition hover:bg-arc-blue hover:text-white sm:w-auto"
             >
               Email Product List

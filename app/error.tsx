@@ -1,7 +1,17 @@
 "use client";
 
 import Link from "next/link";
-import { siteConfig } from "@/lib/content/site";
+import { buildEmailHref, buildWhatsAppHref, siteConfig } from "@/lib/content/site";
+
+const recoveryEmailHref = buildEmailHref({
+  subject: "ArcFort Weld sourcing inquiry",
+  message:
+    "Hello ArcFort Weld, the website page did not load, so I am sending my sourcing inquiry directly.\n\nProduct or model:\nQuantity:\nDestination country:\nReference or drawing:",
+});
+const recoveryWhatsAppHref = buildWhatsAppHref({
+  message:
+    "Hello ArcFort Weld, the website page did not load. I would like to request a quotation. Product/model: [add details]. Quantity: [add details]. Destination: [add country].",
+});
 
 type ErrorPageProps = {
   error: Error & { digest?: string };
@@ -53,7 +63,7 @@ export default function ErrorPage({ error, reset }: ErrorPageProps) {
 
         <div className="grid gap-px bg-slate-200 sm:grid-cols-2">
           <a
-            href={siteConfig.emailHref}
+            href={recoveryEmailHref}
             className="min-w-0 bg-arc-frost p-5 transition hover:bg-white"
           >
             <span className="block text-xs font-bold uppercase tracking-[0.16em] text-arc-blue">
@@ -64,7 +74,7 @@ export default function ErrorPage({ error, reset }: ErrorPageProps) {
             </span>
           </a>
           <a
-            href={siteConfig.whatsappHref}
+            href={recoveryWhatsAppHref}
             className="min-w-0 bg-arc-frost p-5 transition hover:bg-white"
           >
             <span className="block text-xs font-bold uppercase tracking-[0.16em] text-arc-blue">

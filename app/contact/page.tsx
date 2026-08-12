@@ -4,20 +4,20 @@ import { StructuredData } from "@/components/content/StructuredData";
 import { RfqForm } from "@/app/rfq/RfqForm";
 import { breadcrumbJsonLd, webPageJsonLd } from "@/lib/content/jsonld";
 import { buildMetadata } from "@/lib/content/seo";
-import { siteConfig } from "@/lib/content/site";
+import { buildEmailHref, buildWhatsAppHref, siteConfig } from "@/lib/content/site";
 
 const contactItems = [
   {
     label: "Email",
     value: siteConfig.email,
-    href: siteConfig.emailHref,
+    href: buildEmailHref({ subject: "ArcFort Weld contact page inquiry" }),
     note: "Send product lists, drawings, photos or RFQ details for quotation follow-up.",
   },
   {
     label: "WhatsApp",
     value: siteConfig.whatsapp,
-    href: siteConfig.whatsappHref,
-    note: "Available for quick product discussion and inquiry confirmation.",
+    href: buildWhatsAppHref(),
+    note: "Use this channel for product photos, model references and quotation follow-up.",
   },
   {
     label: "Company",

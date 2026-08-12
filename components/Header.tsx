@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { AutoClosingDetails } from "@/components/AutoClosingDetails";
 import { RfqListLink } from "@/components/rfq/RfqListLink";
-import { siteConfig } from "@/lib/content/site";
+import { buildEmailHref, buildWhatsAppHref, siteConfig } from "@/lib/content/site";
 
 const navigation = [
   { href: "/", label: "Home" },
@@ -38,13 +38,13 @@ export function Header() {
           <div className="flex items-center gap-5 text-slate-200">
             <span className="text-slate-400">Main Port: Tianjin Port</span>
             <a
-              href={siteConfig.emailHref}
+              href={buildEmailHref({ subject: "ArcFort Weld website inquiry" })}
               className="inline-flex min-h-7 items-center hover:text-arc-signal"
             >
               {siteConfig.email}
             </a>
             <a
-              href={siteConfig.whatsappHref}
+              href={buildWhatsAppHref()}
               className="inline-flex min-h-7 items-center hover:text-arc-signal"
             >
               {siteConfig.whatsapp}
@@ -124,13 +124,13 @@ export function Header() {
             <RfqListLink variant="menu" label="Request a Quote" />
             <div className="mt-2 grid gap-2 border-t border-slate-200 pt-3 text-xs leading-5 text-slate-600 sm:grid-cols-2">
               <a
-                href={siteConfig.emailHref}
+                href={buildEmailHref({ subject: "ArcFort Weld website inquiry" })}
                 className="block min-w-0 border border-slate-100 bg-arc-frost p-3 font-semibold text-arc-midnight"
               >
                 {siteConfig.email}
               </a>
               <a
-                href={siteConfig.whatsappHref}
+                href={buildWhatsAppHref()}
                 className="block min-w-0 border border-slate-100 bg-arc-frost p-3 font-semibold text-arc-blue"
               >
                 {siteConfig.whatsapp}

@@ -1,7 +1,17 @@
 "use client";
 
 import Link from "next/link";
-import { siteConfig } from "@/lib/content/site";
+import { buildEmailHref, buildWhatsAppHref } from "@/lib/content/site";
+
+const recoveryEmailHref = buildEmailHref({
+  subject: "ArcFort Weld sourcing inquiry",
+  message:
+    "Hello ArcFort Weld, the website could not load, so I am sending my sourcing inquiry directly.\n\nProduct or model:\nQuantity:\nDestination country:\nReference or drawing:",
+});
+const recoveryWhatsAppHref = buildWhatsAppHref({
+  message:
+    "Hello ArcFort Weld, the website could not load. I would like to request a quotation. Product/model: [add details]. Quantity: [add details]. Destination: [add country].",
+});
 
 type GlobalErrorProps = {
   error: Error & { digest?: string };
@@ -104,7 +114,7 @@ export default function GlobalError({ error, reset }: GlobalErrorProps) {
                   Home
                 </Link>
                 <a
-                  href={siteConfig.emailHref}
+                  href={recoveryEmailHref}
                   style={{
                     minHeight: 48,
                     display: "inline-flex",
@@ -119,7 +129,7 @@ export default function GlobalError({ error, reset }: GlobalErrorProps) {
                   Email Sales
                 </a>
                 <a
-                  href={siteConfig.whatsappHref}
+                  href={recoveryWhatsAppHref}
                   style={{
                     minHeight: 48,
                     display: "inline-flex",

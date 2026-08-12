@@ -9,7 +9,17 @@ import { getAllProductCategories } from "@/lib/content/categories";
 import { breadcrumbJsonLd, faqJsonLd, webPageJsonLd } from "@/lib/content/jsonld";
 import { getAllProducts } from "@/lib/content/products";
 import { buildMetadata } from "@/lib/content/seo";
-import { siteConfig } from "@/lib/content/site";
+import { buildEmailHref, buildWhatsAppHref, siteConfig } from "@/lib/content/site";
+
+const distributorEmailHref = buildEmailHref({
+  subject: "Distributor and importer sourcing inquiry",
+  message:
+    "Hello ArcFort Weld, I would like to discuss a distributor, importer or private-label welding product program.\n\nTarget product categories:\nEstimated trial quantity:\nDestination country:\nPackaging or OEM requirements:",
+});
+const distributorWhatsAppHref = buildWhatsAppHref({
+  message:
+    "Hello ArcFort Weld, I would like to discuss a distributor or private-label welding product program. Product categories: [add details]. Quantity: [add details]. Destination: [add country].",
+});
 
 const buyerProfiles = [
   "Welding and cutting product distributors",
@@ -142,7 +152,7 @@ const faq = [
 export const metadata = buildMetadata({
   title: "Welding Products for Distributors & Importers",
   description:
-    "Source ArcFort Weld welding and cutting products for distributors and importers. Send SKU lists, drawings and packaging requirements for RFQ review.",
+    "Source ArcFort Weld welding and cutting products for distributors and importers. Send SKU lists, drawings and packaging requirements for quotation preparation.",
   path: "/distributor-supply",
   useRouteSocialImages: true,
   keywords: [
@@ -234,10 +244,10 @@ export default function DistributorSupplyPage() {
               </Link>
             </div>
             <div className="mt-8 flex flex-col gap-2 border-t border-white/15 pt-5 text-sm text-slate-300 sm:flex-row sm:gap-6">
-              <a href={siteConfig.emailHref} className="break-words font-semibold hover:text-white">
+              <a href={distributorEmailHref} className="break-words font-semibold hover:text-white">
                 {siteConfig.email}
               </a>
-              <a href={siteConfig.whatsappHref} className="font-semibold hover:text-white">
+              <a href={distributorWhatsAppHref} className="font-semibold hover:text-white">
                 WhatsApp {siteConfig.whatsapp}
               </a>
             </div>
@@ -349,13 +359,13 @@ export default function DistributorSupplyPage() {
             </ul>
             <div className="mt-7 border-t border-slate-300 pt-5 text-sm leading-7 text-slate-600">
               <a
-                href={siteConfig.emailHref}
+                href={distributorEmailHref}
                 className="block break-words font-bold text-arc-blue hover:text-arc-midnight"
               >
                 {siteConfig.email}
               </a>
               <a
-                href={siteConfig.whatsappHref}
+                href={distributorWhatsAppHref}
                 className="mt-1 block font-bold text-arc-blue hover:text-arc-midnight"
               >
                 WhatsApp {siteConfig.whatsapp}

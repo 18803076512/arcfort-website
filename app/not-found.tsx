@@ -1,6 +1,16 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { siteConfig } from "@/lib/content/site";
+import { buildEmailHref, buildWhatsAppHref, siteConfig } from "@/lib/content/site";
+
+const recoveryEmailHref = buildEmailHref({
+  subject: "ArcFort Weld product inquiry",
+  message:
+    "Hello ArcFort Weld, I could not find the product page I needed. Please help review this inquiry.\n\nProduct or model:\nQuantity:\nDestination country:\nPhoto, drawing or reference:",
+});
+const recoveryWhatsAppHref = buildWhatsAppHref({
+  message:
+    "Hello ArcFort Weld, I could not find the product page I needed. Product/model: [add details]. Quantity: [add details]. Destination: [add country].",
+});
 
 const recoveryLinks = [
   {
@@ -80,13 +90,13 @@ export default function NotFound() {
             </p>
             <div className="mt-5 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
               <a
-                href={siteConfig.emailHref}
+                href={recoveryEmailHref}
                 className="inline-flex min-h-12 w-full items-center justify-center border border-arc-blue px-5 text-sm font-bold text-arc-blue transition hover:bg-arc-blue hover:text-white sm:w-auto"
               >
                 {siteConfig.email}
               </a>
               <a
-                href={siteConfig.whatsappHref}
+                href={recoveryWhatsAppHref}
                 className="inline-flex min-h-12 w-full items-center justify-center border border-arc-blue px-5 text-sm font-bold text-arc-blue transition hover:bg-arc-blue hover:text-white sm:w-auto"
               >
                 WhatsApp {siteConfig.whatsapp}

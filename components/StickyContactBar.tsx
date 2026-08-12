@@ -1,5 +1,5 @@
 import { RfqListLink } from "@/components/rfq/RfqListLink";
-import { siteConfig } from "@/lib/content/site";
+import { buildEmailHref, buildWhatsAppHref } from "@/lib/content/site";
 
 export function StickyContactBar() {
   return (
@@ -15,13 +15,15 @@ export function StickyContactBar() {
       >
         <RfqListLink variant="sticky" label="Quote" />
         <a
-          href={siteConfig.whatsappHref}
+          href={buildWhatsAppHref()}
+          aria-label="Send an ArcFort Weld product inquiry by WhatsApp"
           className="inline-flex min-h-12 min-w-0 items-center justify-center overflow-hidden border border-white/15 px-2 text-center text-[11px] font-bold uppercase tracking-[0.04em] text-white transition hover:border-arc-signal hover:text-arc-signal sm:px-3 sm:text-xs sm:tracking-[0.12em]"
         >
           WhatsApp
         </a>
         <a
-          href={siteConfig.emailHref}
+          href={buildEmailHref({ subject: "ArcFort Weld mobile website inquiry" })}
+          aria-label="Send an ArcFort Weld product inquiry by email"
           className="hidden min-h-12 min-w-0 items-center justify-center overflow-hidden border border-white/15 px-2 text-center text-[11px] font-bold uppercase tracking-[0.04em] text-white transition hover:border-arc-signal hover:text-arc-signal sm:inline-flex sm:px-3 sm:text-xs sm:tracking-[0.12em]"
         >
           Email

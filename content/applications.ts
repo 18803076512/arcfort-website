@@ -90,7 +90,7 @@ export const applications: ApplicationPage[] = [
     seoDescription:
       "Prepare pipeline welding RFQs with welding consumables, accessories and confirmed technical requirements for B2B sourcing.",
     overview:
-      "Pipeline-related inquiries should be based on confirmed process, material, quantity, application and project requirements. Missing technical values should be confirmed during RFQ review.",
+      "Pipeline-related inquiries should be based on confirmed process, material, quantity, application and project requirements. Open technical points can be evaluated against the buyer's drawing, sample or project requirements before quotation.",
     industries: ["Pipeline construction", "Field repair", "Industrial maintenance"],
     buyerNeeds: [
       "Consumable sourcing by process and application",

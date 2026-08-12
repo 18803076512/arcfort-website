@@ -26,6 +26,11 @@ export function CategoryPageTemplate({
   relatedApplications,
 }: CategoryPageTemplateProps) {
   const buyerGuideLink = getBuyerGuideForCategory(category.slug);
+  const hasTechnicalGuide = Boolean(
+    category.componentGuide?.length ||
+    category.selectionVariables?.length ||
+    category.compatibilityChecklist?.length,
+  );
   const categoryStats = [
     { label: "Products", value: `${products.length}` },
     { label: "OEM support", value: "Available" },
@@ -33,6 +38,9 @@ export function CategoryPageTemplate({
   ] as const;
   const categoryPageSections = [
     { href: "#category-products", label: "Products" },
+    ...(hasTechnicalGuide
+      ? [{ href: "#category-component-guide", label: "Parts & Selection" }]
+      : []),
     { href: "#category-buyer-guide", label: "Buyer Guide" },
     { href: "#category-product-information", label: "Product Information" },
     { href: "#category-ordering-information", label: "Ordering & OEM" },
@@ -115,7 +123,9 @@ export function CategoryPageTemplate({
         className="border-y border-slate-200 bg-white"
       >
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <ol className="grid grid-cols-2 gap-px bg-slate-200 sm:grid-cols-3 lg:grid-cols-6">
+          <ol
+            className={`grid grid-cols-2 gap-px bg-slate-200 sm:grid-cols-3 ${hasTechnicalGuide ? "lg:grid-cols-7" : "lg:grid-cols-6"}`}
+          >
             {categoryPageSections.map((section, index) => (
               <li key={section.href} className="bg-white">
                 <a
@@ -139,7 +149,7 @@ export function CategoryPageTemplate({
                 Product Range
               </p>
               <h2 className="mt-3 font-display text-3xl font-black text-arc-midnight">
-                {category.shortTitle} available for RFQ review
+                {category.shortTitle} available for quotation
               </h2>
               <p className="mt-4 max-w-3xl text-sm leading-7 text-slate-600">
                 Product listings show current sourcing references. Missing dimensions or
@@ -183,6 +193,136 @@ export function CategoryPageTemplate({
           </div>
         </div>
       </section>
+
+      {hasTechnicalGuide ? (
+        <section
+          id="category-component-guide"
+          className="scroll-mt-28 border-y border-slate-200 bg-white py-14 sm:py-16"
+        >
+          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            <div className="max-w-4xl">
+              <p className="text-sm font-bold uppercase tracking-[0.2em] text-arc-blue">
+                Component Identification
+              </p>
+              <h2 className="mt-3 font-display text-3xl font-black leading-tight text-arc-midnight sm:text-4xl">
+                Understand the parts before confirming compatibility.
+              </h2>
+              <p className="mt-4 text-sm leading-7 text-slate-600">
+                Similar-looking welding and cutting parts can use different dimensions, threads or
+                assembly relationships. Use this component index to prepare an RFQ, then confirm the
+                exact product from a torch model, drawing, sample or approved reference.
+              </p>
+            </div>
+
+            {category.componentGuide?.length ? (
+              <div className="mt-8 grid gap-4 lg:grid-cols-2">
+                {category.componentGuide.map((component, index) => {
+                  const linkedProduct = component.productSlug
+                    ? products.find((product) => product.slug === component.productSlug)
+                    : undefined;
+
+                  return (
+                    <article
+                      key={component.name}
+                      className="grid gap-4 border border-slate-200 bg-white p-5 shadow-sm sm:grid-cols-[3.5rem_1fr]"
+                    >
+                      <div className="font-display text-3xl font-black text-arc-blue">
+                        {String(index + 1).padStart(2, "0")}
+                      </div>
+                      <div>
+                        <h3 className="font-display text-xl font-black text-arc-midnight">
+                          {linkedProduct ? (
+                            <Link
+                              href={`/products/${category.slug}/${linkedProduct.slug}`}
+                              className="transition hover:text-arc-blue"
+                            >
+                              {component.name}
+                            </Link>
+                          ) : (
+                            component.name
+                          )}
+                        </h3>
+                        <p className="mt-3 text-sm leading-6 text-slate-700">{component.role}</p>
+                        <div className="mt-4 border-l-4 border-arc-signal bg-arc-frost p-4">
+                          <p className="text-[11px] font-bold uppercase tracking-[0.16em] text-arc-blue">
+                            Buyer check
+                          </p>
+                          <p className="mt-2 text-sm leading-6 text-slate-700">
+                            {component.buyerCheck}
+                          </p>
+                        </div>
+                      </div>
+                    </article>
+                  );
+                })}
+              </div>
+            ) : null}
+
+            <div className="mt-8 grid gap-6 lg:grid-cols-[1.15fr_0.85fr]">
+              {category.selectionVariables?.length ? (
+                <div className="border border-slate-200 bg-arc-frost p-5 sm:p-6">
+                  <p className="text-xs font-bold uppercase tracking-[0.18em] text-arc-blue">
+                    Selection Variables
+                  </p>
+                  <h3 className="mt-3 font-display text-2xl font-black text-arc-midnight">
+                    Details that change the product match
+                  </h3>
+                  <dl className="mt-5 grid gap-3">
+                    {category.selectionVariables.map((variable) => (
+                      <div key={variable.label} className="border border-slate-200 bg-white p-4">
+                        <dt className="font-display text-lg font-black text-arc-midnight">
+                          {variable.label}
+                        </dt>
+                        <dd className="mt-2 text-sm leading-6 text-slate-600">
+                          {variable.whyItMatters}
+                        </dd>
+                        <dd className="mt-3 text-xs font-semibold leading-5 text-arc-blue">
+                          Confirm with: {variable.confirmationMethod}
+                        </dd>
+                      </div>
+                    ))}
+                  </dl>
+                </div>
+              ) : null}
+
+              {category.compatibilityChecklist?.length ? (
+                <aside className="border border-slate-200 bg-arc-midnight p-5 text-white shadow-industrial sm:p-6">
+                  <p className="text-xs font-bold uppercase tracking-[0.18em] text-arc-signal">
+                    Compatibility Workflow
+                  </p>
+                  <h3 className="mt-3 font-display text-2xl font-black">
+                    Prepare evidence before quotation
+                  </h3>
+                  <ol className="mt-5 grid gap-3">
+                    {category.compatibilityChecklist.map((item, index) => (
+                      <li key={item} className="grid grid-cols-[2rem_1fr] gap-3 bg-white/5 p-4">
+                        <span className="font-display font-black text-arc-signal">
+                          {String(index + 1).padStart(2, "0")}
+                        </span>
+                        <span className="text-sm leading-6 text-slate-200">{item}</span>
+                      </li>
+                    ))}
+                  </ol>
+                  <div className="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2">
+                    <Link
+                      href={buyerGuideLink.href}
+                      className="inline-flex min-h-12 items-center justify-center bg-arc-signal px-4 text-center text-xs font-bold uppercase tracking-[0.12em] text-arc-midnight transition hover:bg-white"
+                    >
+                      Read Identification Guide
+                    </Link>
+                    <Link
+                      href={`/rfq?product=${encodeURIComponent(category.title)}`}
+                      className="inline-flex min-h-12 items-center justify-center border border-white/30 px-4 text-center text-xs font-bold uppercase tracking-[0.12em] text-white transition hover:border-white hover:bg-white/10"
+                    >
+                      Send Evidence for Review
+                    </Link>
+                  </div>
+                </aside>
+              ) : null}
+            </div>
+          </div>
+        </section>
+      ) : null}
 
       <section id="category-buyer-guide" className="scroll-mt-28 bg-white py-14 sm:py-16">
         <div className="mx-auto grid max-w-7xl gap-8 px-4 sm:px-6 lg:grid-cols-[0.78fr_1.22fr] lg:px-8">
@@ -274,6 +414,12 @@ export function CategoryPageTemplate({
               Packaging and brand support
             </h2>
             <p className="mt-4 text-sm leading-7 text-slate-600">{category.oemServiceNote}</p>
+            <Link
+              href="/oem-service"
+              className="mt-5 inline-flex text-sm font-bold uppercase tracking-[0.14em] text-arc-blue hover:text-arc-copper"
+            >
+              Review OEM Service
+            </Link>
           </article>
 
           <article className="border border-slate-200 bg-white p-5 shadow-sm sm:p-6">
