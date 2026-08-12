@@ -76,8 +76,8 @@ controlled by this company; never associate unrelated companies that use a simil
 - `lib/content/product-search.ts` - server-rendered product search, category filtering and pagination
 - `lib/content/topic-links.ts` - category-to-guide internal linking map
 
-The website currently includes 6 product categories, 43 product records (41 active public products
-and 2 draft records awaiting reviewed images), 6 application pages, 14 buyer guides and dedicated
+The website currently includes 6 product categories, 43 product records (40 active public products
+and 3 draft records awaiting reviewed images), 6 application pages, 16 buyer guides and dedicated
 trust pages for distributor supply, OEM service, quality control, shipping/payment and document
 requests. Four retained generic starter URLs permanently
 redirect to their current category pages so they do not compete with exact SKU pages. Missing product data must remain explicit
@@ -90,6 +90,11 @@ active product records and guide buyers toward model-, drawing- or sample-based 
 TIG parts identification guide is intentionally separate from the TIG consumable-stack selection
 guide: one helps name unknown parts from photos and samples, while the other checks how known parts
 fit together.
+
+The plasma category also provides a company-catalog reference matrix and an interactive RFQ builder.
+The builder carries the buyer's torch family, requested components, visible part reference, quantity
+and packing requirement into `/rfq`. Catalog family names remain reference-only until the exact torch
+label, approved sample or drawing has been reviewed for compatibility.
 
 The `/products` route supports server-rendered search by product name or SKU, category filtering and
 12-item pagination. Filter and pagination URLs use the product-center canonical and `noindex,follow`

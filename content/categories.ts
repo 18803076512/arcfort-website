@@ -347,9 +347,9 @@ export const productCategories: ProductCategory[] = [
     shortTitle: "Plasma Consumables",
     description:
       "Electrodes, nozzles, swirl rings, shields and consumables for plasma cutting systems.",
-    seoTitle: "Plasma Cutter Consumables & Torch Parts",
+    seoTitle: "Plasma Cutter Consumables & Replacement Parts",
     seoDescription:
-      "Source plasma cutter and plasma torch consumables including electrodes, nozzles, swirl rings, shields and retaining caps. Confirm fit by model or sample.",
+      "Source plasma cutter consumables including electrodes, nozzles, swirl rings, shields and torch parts. Match the complete stack by torch model or sample.",
     seoIntro:
       "ArcFort Weld structures plasma cutter consumables by front-end component, torch-family reference and the evidence needed for compatibility review. Electrodes, nozzles, swirl rings, shields, retaining caps and stand-off parts should be checked as one consumable stack. Global distributors and repair buyers can send model labels, reference numbers, drawings, photos or samples before quotation.",
     productRange: [
@@ -380,6 +380,7 @@ export const productCategories: ProductCategory[] = [
       "Confirm cutting torch model, amperage range and consumable stack before selecting electrodes or nozzles.",
       "Check whether the buyer needs nozzles, electrodes, swirl rings and shields as individual items or kits.",
       "Include drawings or reference numbers when replacing existing plasma cutting consumables.",
+      "Use the catalog reference matrix to identify likely component names, then approve the exact stack by torch label, sample or drawing.",
     ],
     componentGuide: [
       {
@@ -422,6 +423,75 @@ export const productCategories: ProductCategory[] = [
         buyerCheck:
           "Confirm torch family, attachment style, working position and approved reference part.",
         productSlug: "plasma-torch-spacer",
+      },
+    ],
+    referenceFamilies: [
+      {
+        name: "SP-60",
+        documentedComponents: ["Shield", "Cutting nozzle", "Electrode"],
+        buyerCheck:
+          "Send the torch label and all three front-end components because the catalog breakdown is a family reference, not a universal-fit claim.",
+      },
+      {
+        name: "A-81",
+        documentedComponents: [
+          "Stand-off guide",
+          "Shield",
+          "Cutting nozzle",
+          "Swirl ring",
+          "Electrode",
+        ],
+        buyerCheck:
+          "Show whether the stand-off guide is required and keep the shield, nozzle, ring and electrode in removal order.",
+      },
+      {
+        name: "PT-31",
+        documentedComponents: ["Shield", "Cutting nozzle", "Ceramic swirl ring", "Electrode"],
+        buyerCheck:
+          "Confirm the PT-31 torch label and show the ceramic ring separately; appearance alone does not confirm dimensions or fit.",
+      },
+      {
+        name: "CB-50",
+        documentedComponents: ["Shield", "Cutting nozzle", "Swirl ring", "Electrode"],
+        buyerCheck:
+          "Provide the complete front-end stack and any visible references before requesting a matched replacement set.",
+      },
+      {
+        name: "LT-50",
+        documentedComponents: ["Shield", "Cutting nozzle", "Swirl ring", "Electrode"],
+        buyerCheck:
+          "Confirm the torch family from its label and provide connection views for the shield, nozzle, ring and electrode.",
+      },
+      {
+        name: "AG-60",
+        documentedComponents: ["Shield", "Cutting nozzle", "Electrode"],
+        buyerCheck:
+          "Send the existing shield, nozzle and electrode together so the three-part catalog stack can be reviewed as one assembly.",
+      },
+      {
+        name: "TongChang60",
+        documentedComponents: ["Shield", "Cutting nozzle", "Swirl ring", "Electrode"],
+        buyerCheck:
+          "Use the torch label or approved reference and attach a complete stack photo before compatibility confirmation.",
+      },
+      {
+        name: "SG-51",
+        documentedComponents: ["Shield", "Cutting nozzle", "Swirl ring", "Electrode"],
+        buyerCheck:
+          "Photograph visible markings and both ends of every part because similar profiles may belong to different torch systems.",
+      },
+      {
+        name: "P-80 reference series",
+        documentedComponents: [
+          "Electrode",
+          "Cutting nozzle",
+          "Shield",
+          "Switch",
+          "Cable assembly",
+          "Pilot cable",
+        ],
+        buyerCheck:
+          "State the exact P-80 series reference shown on the torch and send the documented nozzle requirement; do not select current or orifice from appearance.",
       },
     ],
     selectionVariables: [
@@ -495,6 +565,16 @@ export const productCategories: ProductCategory[] = [
         question: "What information is needed for plasma consumable compatibility?",
         answer:
           "Please provide torch model, model number, product photo, drawing or reference part details so compatibility can be reviewed before quotation.",
+      },
+      {
+        question: "Which plasma torch families appear in the Renqiu Ailesen catalog?",
+        answer:
+          "The catalog includes breakdown references for SP-60, A-81, PT-31, CB-50, LT-50, AG-60, TongChang60, SG-51 and P-80 series products. These references describe the documented supply range and do not guarantee compatibility without reviewing the requested torch and consumable stack.",
+      },
+      {
+        question: "Can ArcFort Weld help identify an unknown plasma cutter consumable?",
+        answer:
+          "Yes. Send the torch label, assembled front-end photo, loose components in removal order, visible markings and a drawing or sample when available. The team can then identify which details still require confirmation before quotation.",
       },
     ],
     keywords: [

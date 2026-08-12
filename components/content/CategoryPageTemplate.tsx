@@ -4,6 +4,7 @@ import { Breadcrumbs } from "@/components/content/Breadcrumbs";
 import { FaqSection } from "@/components/content/FaqSection";
 import { ProductCard } from "@/components/content/ProductCard";
 import { RfqCta } from "@/components/content/RfqCta";
+import { PlasmaConsumablesRfqBuilder } from "@/components/products/PlasmaConsumablesRfqBuilder";
 import { getBuyerGuideForCategory } from "@/lib/content/topic-links";
 
 type CategoryPageTemplateProps = {
@@ -28,9 +29,12 @@ export function CategoryPageTemplate({
   const buyerGuideLink = getBuyerGuideForCategory(category.slug);
   const hasTechnicalGuide = Boolean(
     category.componentGuide?.length ||
+    category.referenceFamilies?.length ||
     category.selectionVariables?.length ||
     category.compatibilityChecklist?.length,
   );
+  const hasPlasmaRfqBuilder =
+    category.slug === "plasma-cutting-consumables" && Boolean(category.referenceFamilies?.length);
   const categoryStats = [
     { label: "Products", value: `${products.length}` },
     { label: "OEM support", value: "Available" },
@@ -41,6 +45,7 @@ export function CategoryPageTemplate({
     ...(hasTechnicalGuide
       ? [{ href: "#category-component-guide", label: "Parts & Selection" }]
       : []),
+    ...(hasPlasmaRfqBuilder ? [{ href: "#category-rfq-builder", label: "Build RFQ" }] : []),
     { href: "#category-buyer-guide", label: "Buyer Guide" },
     { href: "#category-product-information", label: "Product Information" },
     { href: "#category-ordering-information", label: "Ordering & OEM" },
@@ -83,10 +88,14 @@ export function CategoryPageTemplate({
                 View Products
               </Link>
               <Link
-                href={`/rfq?product=${encodeURIComponent(category.title)}`}
+                href={
+                  hasPlasmaRfqBuilder
+                    ? "#category-rfq-builder"
+                    : `/rfq?product=${encodeURIComponent(category.title)}`
+                }
                 className="inline-flex w-full items-center justify-center border border-white/30 px-6 py-3 text-sm font-bold uppercase tracking-[0.16em] text-white transition hover:border-white hover:bg-white/10 sm:w-auto"
               >
-                Send Category RFQ
+                {hasPlasmaRfqBuilder ? "Build Product RFQ" : "Send Category RFQ"}
               </Link>
             </div>
           </div>
@@ -124,7 +133,7 @@ export function CategoryPageTemplate({
       >
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <ol
-            className={`grid grid-cols-2 gap-px bg-slate-200 sm:grid-cols-3 ${hasTechnicalGuide ? "lg:grid-cols-7" : "lg:grid-cols-6"}`}
+            className={`grid grid-cols-2 gap-px bg-slate-200 sm:grid-cols-3 ${hasPlasmaRfqBuilder ? "lg:grid-cols-4 xl:grid-cols-8" : hasTechnicalGuide ? "lg:grid-cols-7" : "lg:grid-cols-6"}`}
           >
             {categoryPageSections.map((section, index) => (
               <li key={section.href} className="bg-white">
@@ -255,6 +264,85 @@ export function CategoryPageTemplate({
                     </article>
                   );
                 })}
+              </div>
+            ) : null}
+
+            {category.referenceFamilies?.length ? (
+              <div className="mt-10">
+                <div className="max-w-4xl">
+                  <p className="text-xs font-bold uppercase tracking-[0.18em] text-arc-blue">
+                    Company Catalog Reference
+                  </p>
+                  <h3 className="mt-3 font-display text-2xl font-black leading-tight text-arc-midnight sm:text-3xl">
+                    Torch families and documented consumable stacks
+                  </h3>
+                  <p className="mt-3 text-sm leading-7 text-slate-600">
+                    The Renqiu Ailesen company catalog shows the following product-family
+                    breakdowns. Use them to organize an inquiry; final compatibility still requires
+                    the exact torch label, part reference, sample, drawing or approved stack.
+                  </p>
+                </div>
+                <div className="mt-6 overflow-hidden border border-slate-200 bg-white shadow-sm">
+                  <div className="hidden grid-cols-[0.55fr_1.05fr_1.4fr] bg-arc-midnight text-xs font-bold uppercase tracking-[0.14em] text-white md:grid">
+                    <div className="p-4">Catalog family</div>
+                    <div className="border-l border-white/10 p-4">Documented components</div>
+                    <div className="border-l border-white/10 p-4">Buyer confirmation</div>
+                  </div>
+                  <div className="divide-y divide-slate-200">
+                    {category.referenceFamilies.map((family) => (
+                      <article
+                        key={family.name}
+                        className="grid gap-4 p-4 md:grid-cols-[0.55fr_1.05fr_1.4fr] md:gap-0 md:p-0"
+                      >
+                        <div className="md:p-4">
+                          <p className="text-[11px] font-bold uppercase tracking-[0.14em] text-slate-500 md:hidden">
+                            Catalog family
+                          </p>
+                          <h4 className="mt-1 font-display text-xl font-black text-arc-midnight md:mt-0">
+                            {family.name}
+                          </h4>
+                        </div>
+                        <div className="md:border-l md:border-slate-200 md:p-4">
+                          <p className="text-[11px] font-bold uppercase tracking-[0.14em] text-slate-500 md:hidden">
+                            Documented components
+                          </p>
+                          <p className="mt-1 text-sm font-semibold leading-6 text-slate-700 md:mt-0">
+                            {family.documentedComponents.join(", ")}
+                          </p>
+                        </div>
+                        <div className="border-l-4 border-arc-signal bg-arc-frost p-4 md:border-y-0 md:border-l md:border-slate-200 md:bg-transparent">
+                          <p className="text-[11px] font-bold uppercase tracking-[0.14em] text-slate-500 md:hidden">
+                            Buyer confirmation
+                          </p>
+                          <p className="mt-1 text-sm leading-6 text-slate-700 md:mt-0">
+                            {family.buyerCheck}
+                          </p>
+                        </div>
+                      </article>
+                    ))}
+                  </div>
+                </div>
+                <div className="mt-3 flex flex-col gap-3 text-xs font-semibold leading-5 text-slate-600 sm:flex-row sm:items-center sm:justify-between">
+                  <p>
+                    Source: Renqiu Ailesen Welding Technology Co., Ltd. welding catalog, plasma
+                    section. Catalog family names are sourcing references and are not universal-fit
+                    claims.
+                  </p>
+                  <a
+                    href="/downloads/renqiu-ailesen-welding-catalog.pdf"
+                    target="_blank"
+                    rel="noreferrer"
+                    className="inline-flex min-h-10 shrink-0 items-center justify-center border border-arc-blue px-4 text-center font-bold uppercase tracking-[0.12em] text-arc-blue transition hover:bg-arc-frost"
+                  >
+                    Open Company Catalog
+                  </a>
+                </div>
+              </div>
+            ) : null}
+
+            {hasPlasmaRfqBuilder && category.referenceFamilies ? (
+              <div id="category-rfq-builder" className="scroll-mt-28 pt-8">
+                <PlasmaConsumablesRfqBuilder torchFamilies={category.referenceFamilies} />
               </div>
             ) : null}
 

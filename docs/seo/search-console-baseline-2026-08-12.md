@@ -106,6 +106,11 @@ link relevant category and guide content to the OEM service, and avoid weakening
     existing URL to a focused replacement and compatibility guide, and added a buyer worksheet for
     handle, switch, control-lead, connector and machine evidence. This preserves the existing search
     path without presenting a cable-termination image as a switch product.
+19. Expanded the plasma consumables category, which recorded 155 impressions and no clicks, with a
+    company-catalog reference matrix for SP-60, A-81, PT-31, CB-50, LT-50, AG-60, TongChang60,
+    SG-51 and P-80 series products. Added an interactive RFQ builder that carries the buyer's torch
+    family, requested components, existing reference, quantity and packing requirement into the RFQ
+    form without turning catalog references into universal compatibility claims.
 
 ## Measurement Plan
 

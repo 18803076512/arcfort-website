@@ -44,6 +44,12 @@ export type CategorySelectionVariable = {
   confirmationMethod: string;
 };
 
+export type CategoryReferenceFamily = {
+  name: string;
+  documentedComponents: string[];
+  buyerCheck: string;
+};
+
 export type BuyerDownloadTool = {
   href: string;
   title: string;
@@ -79,6 +85,7 @@ export type ProductCategory = {
   applications: string[];
   buyerGuide: string[];
   componentGuide?: CategoryComponent[];
+  referenceFamilies?: CategoryReferenceFamily[];
   selectionVariables?: CategorySelectionVariable[];
   compatibilityChecklist?: string[];
   buyerTool?: BuyerDownloadTool;

@@ -383,7 +383,7 @@ export const guides: GuideArticle[] = [
       },
       {
         title: "Prepare a plasma consumables RFQ",
-        body: "Use one RFQ row for each electrode, nozzle, ring, cap, shield or accessory. Include product name, torch model, verified reference, required quantity, package requirement and a filename that links every photo or drawing to the correct row. State the documented cutting setup only when known from the buyer's approved process. ArcFort Weld can review a mixed plasma consumables list and identify which fields still require a sample, drawing or model confirmation before quotation. Retain the approved sample, matched stack and packing reference as the control record for future repeat orders.",
+        body: "Use one RFQ row for each electrode, nozzle, ring, cap, shield or accessory. Include product name, torch model, verified reference, required quantity, package requirement and a filename that links every photo or drawing to the correct row. The company catalog includes breakdown references for SP-60, A-81, PT-31, CB-50, LT-50, AG-60, TongChang60, SG-51 and P-80 series products; use these names only when they are supported by the buyer's torch label or purchasing record. State the documented cutting setup only when known from the buyer's approved process. ArcFort Weld can review a mixed plasma consumables list and identify which fields still require a sample, drawing or model confirmation before quotation. Retain the approved sample, matched stack and packing reference as the control record for future repeat orders.",
       },
     ],
     componentReference: {
@@ -498,6 +498,11 @@ export const guides: GuideArticle[] = [
         question: "What photos help identify an unknown plasma consumable?",
         answer:
           "Send the torch label, assembled front end, removal order, both ends of each component, visible markings and a clearly shown scale when measurements can be taken reliably.",
+      },
+      {
+        question: "Which plasma torch families are referenced in the company catalog?",
+        answer:
+          "The Renqiu Ailesen catalog shows plasma breakdown references for SP-60, A-81, PT-31, CB-50, LT-50, AG-60, TongChang60, SG-51 and P-80 series products. A catalog reference identifies the documented supply family; compatibility still requires the exact torch label, requested stack, sample or drawing.",
       },
     ],
     keywords: [
