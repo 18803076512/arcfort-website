@@ -20,12 +20,74 @@ function normalizeCompactText(value: string) {
   return value.toLowerCase().replace(/[^a-z0-9]+/g, "");
 }
 
+const ignoredSearchTerms = new Set([
+  "a",
+  "an",
+  "and",
+  "factory",
+  "for",
+  "manufacturer",
+  "manufacturers",
+  "name",
+  "names",
+  "of",
+  "oem",
+  "supplier",
+  "suppliers",
+  "the",
+  "wholesale",
+  "wholesaler",
+]);
+
+const searchTermAliases: Record<string, readonly string[]> = {
+  accessory: ["accessory", "part"],
+  accessories: ["accessories", "parts"],
+  component: ["component", "part"],
+  components: ["components", "parts"],
+  consumable: ["consumable", "consumables"],
+  consumables: ["consumables", "consumable"],
+  cutter: ["cutter", "cutting"],
+  cutting: ["cutting", "cutter"],
+  cups: ["cups", "cup"],
+  diffusers: ["diffusers", "diffuser"],
+  electrodes: ["electrodes", "electrode"],
+  gtaw: ["gtaw", "tig"],
+  gun: ["gun", "torch"],
+  holders: ["holders", "holder"],
+  liners: ["liners", "liner"],
+  machines: ["machines", "machine"],
+  nozzles: ["nozzles", "nozzle"],
+  part: ["part", "parts"],
+  parts: ["parts", "part"],
+  spare: ["spare", "part"],
+  spares: ["spares", "parts"],
+  switches: ["switches", "switch"],
+  tips: ["tips", "tip"],
+  tig: ["tig", "gtaw"],
+  torch: ["torch", "gun"],
+  welder: ["welder", "welding"],
+  welding: ["welding", "welder"],
+};
+
+function getSearchTermGroups(query: string) {
+  return normalizeSearchText(query)
+    .split(" ")
+    .filter(Boolean)
+    .filter((term) => !ignoredSearchTerms.has(term))
+    .map((term) => searchTermAliases[term] ?? [term]);
+}
+
 function parsePage(value: string | undefined) {
   const parsedPage = Number.parseInt(value ?? "", 10);
   return Number.isFinite(parsedPage) && parsedPage > 0 ? parsedPage : 1;
 }
 
-function scoreProduct(product: Product, category: ProductCategory, query: string, terms: string[]) {
+function scoreProduct(
+  product: Product,
+  category: ProductCategory,
+  query: string,
+  termGroups: readonly (readonly string[])[],
+) {
   const title = normalizeSearchText(product.title);
   const sku = normalizeSearchText(product.sku);
   const categoryTitle = normalizeSearchText(category.title);
@@ -40,7 +102,7 @@ function scoreProduct(product: Product, category: ProductCategory, query: string
     ].join(" "),
   );
 
-  if (!terms.every((term) => searchableText.includes(term))) {
+  if (!termGroups.every((terms) => terms.some((term) => searchableText.includes(term)))) {
     return null;
   }
 
@@ -60,14 +122,20 @@ function scoreProduct(product: Product, category: ProductCategory, query: string
     score += 300;
   }
 
-  for (const term of terms) {
-    if (sku.includes(term)) {
+  if (normalizedQuery === categoryTitle) {
+    score += 700;
+  } else if (categoryTitle.includes(normalizedQuery)) {
+    score += 250;
+  }
+
+  for (const terms of termGroups) {
+    if (terms.some((term) => sku.includes(term))) {
       score += 60;
     }
-    if (title.includes(term)) {
+    if (terms.some((term) => title.includes(term))) {
       score += 40;
     }
-    if (categoryTitle.includes(term)) {
+    if (terms.some((term) => categoryTitle.includes(term))) {
       score += 10;
     }
   }
@@ -99,7 +167,7 @@ export function getProductCatalogPage({
   const query = rawQuery.trim().replace(/\s+/g, " ").slice(0, 100);
   const requestedCategorySlug = getFirstValue(searchParams.category) ?? "";
   const categorySlug = categoryMap.has(requestedCategorySlug) ? requestedCategorySlug : "";
-  const terms = normalizeSearchText(query).split(" ").filter(Boolean);
+  const termGroups = getSearchTermGroups(query);
 
   const matchingProducts = products
     .filter((product) => !categorySlug || product.categorySlug === categorySlug)
@@ -110,7 +178,7 @@ export function getProductCatalogPage({
         return null;
       }
 
-      const score = terms.length > 0 ? scoreProduct(product, category, query, terms) : 0;
+      const score = termGroups.length > 0 ? scoreProduct(product, category, query, termGroups) : 0;
 
       if (score === null) {
         return null;

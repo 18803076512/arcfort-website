@@ -63,6 +63,9 @@ jobs:
       - name: Test RFQ constraints
         run: npm run test:rfq
 
+      - name: Test product catalog search
+        run: npm run test:product-search
+
       - name: Lint
         run: npm run lint
 
