@@ -8,6 +8,7 @@ import { RfqForm } from "./RfqForm";
 type RfqPageProps = {
   searchParams: Promise<{
     product?: string;
+    quantity?: string;
   }>;
 };
 
@@ -80,6 +81,7 @@ export const metadata = buildMetadata({
 export default async function RfqPage({ searchParams }: RfqPageProps) {
   const params = await searchParams;
   const initialProduct = typeof params.product === "string" ? params.product : "";
+  const initialQuantity = typeof params.quantity === "string" ? params.quantity : "";
 
   return (
     <>
@@ -204,7 +206,7 @@ export default async function RfqPage({ searchParams }: RfqPageProps) {
             </div>
 
             <div className="order-1 lg:order-2">
-              <RfqForm initialProduct={initialProduct} />
+              <RfqForm initialProduct={initialProduct} initialQuantity={initialQuantity} />
             </div>
           </div>
         </div>

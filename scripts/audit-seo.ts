@@ -243,6 +243,30 @@ for (const category of productCategories) {
     "category",
   );
   checkBuyerTool(`Category ${category.slug}`, category.buyerTool?.href);
+
+  if (category.referenceFamilies) {
+    const familyNames = new Set<string>();
+
+    for (const family of category.referenceFamilies) {
+      if (familyNames.has(family.name)) {
+        errors.push(`Category ${category.slug} has duplicate reference family "${family.name}".`);
+      }
+
+      familyNames.add(family.name);
+
+      if (family.documentedComponents.length < 2) {
+        errors.push(
+          `Category ${category.slug} reference family "${family.name}" has fewer than 2 documented components.`,
+        );
+      }
+
+      if (family.buyerCheck.length < 60) {
+        errors.push(
+          `Category ${category.slug} reference family "${family.name}" needs a clearer buyer check.`,
+        );
+      }
+    }
+  }
 }
 
 for (const redirect of legacyCategoryRedirects) {

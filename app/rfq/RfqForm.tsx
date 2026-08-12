@@ -170,13 +170,19 @@ function getStoredSourceAttribution(): SourceAttribution {
 
 type RfqFormProps = {
   initialProduct?: string;
+  initialQuantity?: string;
   formPlacement?: "rfq_page" | "distributor_landing" | "contact_page";
 };
 
-export function RfqForm({ initialProduct = "", formPlacement = "rfq_page" }: RfqFormProps) {
+export function RfqForm({
+  initialProduct = "",
+  initialQuantity = "",
+  formPlacement = "rfq_page",
+}: RfqFormProps) {
   const [values, setValues] = useState<RfqFormValues>({
     ...initialValues,
     productRequirements: initialProduct,
+    quantity: initialQuantity,
   });
   const [website, setWebsite] = useState("");
   const [startedAt] = useState(() => Date.now());
