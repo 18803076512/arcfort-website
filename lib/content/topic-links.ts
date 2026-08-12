@@ -21,16 +21,16 @@ const guideByCategorySlug: Record<string, BuyerGuideLink> = {
       "Review wire size, thread, geometry and torch references before sourcing MIG/MAG contact tips.",
   },
   "tig-torch-parts": {
-    href: "/guides/tig-torch-consumable-stack-selection",
-    title: "TIG Torch Consumable Stack Selection",
+    href: "/guides/tig-torch-parts-names-identification-guide",
+    title: "TIG Torch Parts Names and Identification Guide",
     description:
-      "Identify ceramic cups, collets, collet bodies, gas lenses and related TIG torch references.",
+      "Name unknown TIG torch parts from assembly zones, photos, markings and samples before compatibility review.",
   },
   "plasma-cutting-consumables": {
-    href: "/guides/plasma-electrode-nozzle-buying-guide",
-    title: "Plasma Electrode and Nozzle Buying Guide",
+    href: "/guides/plasma-cutter-consumables-parts-guide",
+    title: "Plasma Cutter Consumables and Parts Guide",
     description:
-      "Review torch model, reference number, consumable stack, quantity and packaging details before RFQ.",
+      "Identify electrodes, nozzles, swirl rings, shields and retaining caps as one compatible consumable stack.",
   },
   "welding-consumables": {
     href: "/guides/welding-electrode-wire-rfq-guide",

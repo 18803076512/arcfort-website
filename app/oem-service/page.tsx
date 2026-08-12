@@ -36,6 +36,26 @@ const processSteps = [
   "Confirm sample, production and export packing details before shipment",
 ] as const;
 
+const oemRfqHref = "/rfq?product=OEM%20welding%20products%20and%20private%20label%20packaging";
+
+const oemSupportLinks = [
+  {
+    href: "/quality-control",
+    title: "Quality Control",
+    description: "Review inspection and packing checkpoints used for order confirmation.",
+  },
+  {
+    href: "/shipping-payment",
+    title: "Shipping & Payment",
+    description: "Check confirmed payment terms, regular lead time and main port information.",
+  },
+  {
+    href: "/downloads",
+    title: "Catalog & RFQ Files",
+    description: "Use the company catalog and RFQ worksheet to prepare an item-by-item request.",
+  },
+] as const;
+
 const faq = [
   {
     question: "Can ArcFort Weld support private label welding products?",
@@ -102,6 +122,20 @@ export default function OemServicePage() {
                 {siteConfig.legalName} supports the {siteConfig.name} brand website for practical
                 OEM sourcing, private label packaging and welding product customization.
               </p>
+              <div className="mt-7 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
+                <Link
+                  href={oemRfqHref}
+                  className="inline-flex min-h-12 w-full items-center justify-center bg-arc-blue px-5 text-sm font-bold uppercase tracking-[0.14em] text-white transition hover:bg-arc-midnight sm:w-auto"
+                >
+                  Start OEM RFQ
+                </Link>
+                <Link
+                  href="/guides/oem-welding-products-private-label-guide"
+                  className="inline-flex min-h-12 w-full items-center justify-center border border-arc-blue px-5 text-sm font-bold uppercase tracking-[0.14em] text-arc-blue transition hover:bg-arc-frost sm:w-auto"
+                >
+                  Review Buyer Guide
+                </Link>
+              </div>
             </div>
             <div className="border-l-4 border-arc-signal bg-arc-frost p-6">
               <h2 className="font-display text-2xl font-black text-arc-midnight">
@@ -195,6 +229,40 @@ export default function OemServicePage() {
         </div>
       </section>
 
+      <section className="border-y border-slate-200 bg-white py-14 sm:py-16">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="max-w-3xl">
+            <p className="text-sm font-bold uppercase tracking-[0.2em] text-arc-blue">
+              OEM Order Planning
+            </p>
+            <h2 className="mt-3 font-display text-3xl font-black text-arc-midnight">
+              Verify products, packing and trade terms together.
+            </h2>
+            <p className="mt-4 text-sm leading-7 text-slate-600">
+              Use these supporting pages to prepare a quotation-ready OEM program without assuming
+              unconfirmed product, certification or delivery details.
+            </p>
+          </div>
+          <div className="mt-8 grid gap-4 md:grid-cols-3">
+            {oemSupportLinks.map((item) => (
+              <Link
+                key={item.href}
+                href={item.href}
+                className="group border border-slate-200 bg-arc-frost p-5 transition hover:border-arc-blue hover:bg-white hover:shadow-industrial"
+              >
+                <h3 className="font-display text-xl font-black text-arc-midnight group-hover:text-arc-blue">
+                  {item.title}
+                </h3>
+                <p className="mt-3 text-sm leading-6 text-slate-600">{item.description}</p>
+                <span className="mt-5 inline-flex text-xs font-bold uppercase tracking-[0.14em] text-arc-blue group-hover:text-arc-copper">
+                  Review Details
+                </span>
+              </Link>
+            ))}
+          </div>
+        </div>
+      </section>
+
       <section className="bg-arc-midnight py-12 text-white sm:py-14">
         <div className="mx-auto flex max-w-7xl flex-col gap-6 px-4 sm:px-6 lg:flex-row lg:items-center lg:justify-between lg:px-8">
           <div className="max-w-3xl">
@@ -214,6 +282,12 @@ export default function OemServicePage() {
             className="inline-flex min-h-12 w-full shrink-0 items-center justify-center bg-arc-signal px-6 text-sm font-bold uppercase tracking-[0.14em] text-arc-midnight transition hover:bg-white sm:w-auto"
           >
             Read OEM Guide
+          </Link>
+          <Link
+            href={oemRfqHref}
+            className="inline-flex min-h-12 w-full shrink-0 items-center justify-center border border-white/30 px-6 text-sm font-bold uppercase tracking-[0.14em] text-white transition hover:border-white hover:bg-white/10 sm:w-auto"
+          >
+            Send OEM RFQ
           </Link>
         </div>
       </section>

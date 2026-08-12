@@ -218,6 +218,80 @@ export const guides: GuideArticle[] = [
     ],
   },
   {
+    slug: "plasma-cutter-consumables-parts-guide",
+    title: "Plasma Cutter Consumables and Parts Guide",
+    seoTitle: "Plasma Cutter Consumables & Torch Parts Guide",
+    description:
+      "A component-by-component guide to plasma electrodes, nozzles, swirl rings, shields, retaining caps and the information buyers need before ordering.",
+    seoDescription:
+      "Identify plasma cutter consumables including electrodes, nozzles, swirl rings, shields and retaining caps, then prepare a compatible parts RFQ.",
+    publishedDate: "2026-08-12",
+    modifiedDate: "2026-08-12",
+    sections: [
+      {
+        title: "Understand the plasma consumable stack",
+        body: "Plasma cutter consumables work as a model-specific front-end stack rather than as isolated parts. Depending on the torch system, the stack may include an electrode, nozzle or cutting tip, swirl ring, retaining cap, shield and stand-off guide. Each component has a different role, but the interfaces, gas path and assembly order must work together. Record the plasma torch model and photograph the complete front end before disassembly. Keep removed components in installation order so a supplier can review the relationship between the parts instead of trying to identify one loose item from appearance alone.",
+      },
+      {
+        title: "Identify the electrode and nozzle",
+        body: "The electrode forms part of the internal arc circuit, while the nozzle constricts and directs the plasma arc through a model-specific geometry. Buyers should record any existing reference number, overall profile, connection and the electrode-nozzle pairing already used in the torch. A nozzle opening, operating-current reference or other technical value should be included only when it comes from an approved drawing, parts list or measured sample. Do not infer a rating from color or appearance. When the exact reference is unavailable, send photos of both ends and the assembled position for compatibility review before quotation.",
+      },
+      {
+        title: "Check swirl rings, caps and shields",
+        body: "The swirl ring supports the intended gas-distribution arrangement, the retaining cap secures compatible consumables, and the shield protects or positions the front-end system where the torch design uses one. These components can look less important than the electrode and nozzle, but a missing or incorrect ring, cap or shield can prevent the stack from assembling correctly. Show the ring orientation, cap connection, shield profile and all seating surfaces. If the request includes a spacer or stand-off guide, photograph its attachment to the torch and state whether it is required for manual cutting setup or replacement supply.",
+      },
+      {
+        title: "Confirm compatibility from evidence",
+        body: "Compatibility should be reviewed from the plasma torch model, existing reference numbers, official parts information, drawing, sample or an organized photo set. A machine brand or generic phrase such as plasma nozzle is not enough because different torch systems can be installed on similar equipment. State whether each model reference is confirmed, reference-only or unverified. For an unknown stack, submit a photo of the torch label, the assembled front end, each loose component from several angles and a clearly shown scale when dimensions can be measured reliably. Final approval should remain subject to the evidence available for the exact requested item.",
+      },
+      {
+        title: "Plan replacement quantities and kits",
+        body: "Electrodes, nozzles, swirl rings, caps and shields may be replaced at different rates, so the RFQ should show a separate quantity for every line item. Do not assume that all parts belong in equal-count kits. Distributors can request individual packing, grouped consumable kits or private label packaging after the exact item list is confirmed. State the packing unit, label or barcode requirement, trial quantity, expected repeat quantity and destination country. Small trial orders can be discussed for standard products, while customized packaging MOQ depends on the confirmed product mix and artwork scope.",
+      },
+      {
+        title: "Prepare a plasma consumables RFQ",
+        body: "Use one RFQ row for each electrode, nozzle, ring, cap, shield or accessory. Include product name, torch model, verified reference, required quantity, package requirement and a filename that links every photo or drawing to the correct row. State the documented cutting setup only when known from the buyer's approved process. ArcFort Weld can review a mixed plasma consumables list and identify which fields still require a sample, drawing or model confirmation before quotation. Retain the approved sample, matched stack and packing reference as the control record for future repeat orders.",
+      },
+    ],
+    categorySlugs: ["plasma-cutting-consumables"],
+    productSlugs: [
+      "plasma-electrode",
+      "plasma-nozzle",
+      "plasma-swirl-ring",
+      "plasma-shield",
+      "plasma-torch-spacer",
+    ],
+    faq: [
+      {
+        question: "What are the main consumable parts of a plasma cutter torch?",
+        answer:
+          "Common front-end parts include an electrode, nozzle or cutting tip, swirl ring, retaining cap and shield. Some torch systems also use stand-off or spacer components. The exact stack depends on the torch model.",
+      },
+      {
+        question: "Can plasma torch consumables be matched by machine brand alone?",
+        answer:
+          "No. Provide the plasma torch model, existing reference number, drawing, sample or clear assembly photos because different torch systems may be installed on similar machines.",
+      },
+      {
+        question: "Should plasma electrodes and nozzles be ordered as equal-count kits?",
+        answer:
+          "Not automatically. Provide the required quantity for each component according to the buyer's approved replacement plan or purchasing history.",
+      },
+      {
+        question: "What photos help identify an unknown plasma consumable?",
+        answer:
+          "Send the torch label, assembled front end, removal order, both ends of each component, visible markings and a clearly shown scale when measurements can be taken reliably.",
+      },
+    ],
+    keywords: [
+      "plasma cutter consumables",
+      "plasma torch consumables",
+      "plasma cutting consumable parts",
+      "plasma electrode and nozzle",
+      "plasma torch parts",
+    ],
+  },
+  {
     slug: "mig-contact-tip-size-thread-selection",
     title: "MIG Contact Tip Size and Thread Selection",
     seoTitle: "MIG Contact Tip Size and Thread Selection Guide",
@@ -361,6 +435,88 @@ export const guides: GuideArticle[] = [
       "TIG collet body",
       "TIG gas lens",
       "TIG consumable stack",
+    ],
+  },
+  {
+    slug: "tig-torch-parts-names-identification-guide",
+    title: "TIG Torch Parts Names and Identification Guide",
+    seoTitle: "TIG Torch Parts Names & Identification Guide",
+    description:
+      "A photo- and sample-based guide for naming unknown TIG torch parts before compatibility review and quotation.",
+    seoDescription:
+      "Identify TIG torch parts by assembly zone, part name, photo, marking and sample. Prepare a clear RFQ for cups, collets, gas lenses, caps and switches.",
+    publishedDate: "2026-08-12",
+    modifiedDate: "2026-08-12",
+    sections: [
+      {
+        title: "Separate the torch into identification zones",
+        body: "Begin with the complete torch instead of one loose component. Record the front-end consumable stack, torch head and body, handle and control area, rear cap, cable or hose assembly, and machine-side connector. This zone-based view helps distinguish a ceramic cup from an internal collet part and a torch switch from a cable or connector item. Keep the original assembly intact until the complete torch and model label have been photographed.",
+      },
+      {
+        title: "Use consistent TIG torch part names",
+        body: "Name each requested item by its function before adding a model reference. Common front-end names include ceramic cup, collet, collet body, gas lens and tungsten electrode. The rear torch-head item is normally described as a back cap. Other service items can include the torch head or body, handle, torch switch, cable or hose assembly and machine-side connector. A descriptive part name is useful for communication, but it is not proof of compatibility.",
+      },
+      {
+        title: "Photograph unknown parts for identification",
+        body: "Provide one photo of the complete torch, one of the model or label area, and clear front, side and connection views of every loose part. Place the removed front-end components in assembly order so the relationship between cup, body or gas lens, collet and tungsten remains visible. Include a ruler or scale where practical, but do not report a dimension as final unless the measurement method and reference points are clear.",
+      },
+      {
+        title: "Record markings and measured references",
+        body: "Copy visible cup numbers, model labels, thread references, package labels and existing part numbers exactly as shown. Record tungsten diameter, component length, thread or connector details only from an approved drawing, catalog reference or measured sample. If a marking is incomplete, provide a close photograph and label the value as uncertain rather than completing it from memory or appearance.",
+      },
+      {
+        title: "Keep identification separate from compatibility",
+        body: "Correctly naming a part does not confirm that it fits a particular torch. A #5 ceramic cup, 1.6 mm collet or gas lens description still needs the related torch series, connection and complete consumable arrangement. Use the identification record to narrow the review, then confirm compatibility by torch model, drawing, approved reference, complete stack or physical sample before ordering.",
+      },
+      {
+        title: "Identify switches, cables and torch assemblies",
+        body: "For a TIG torch switch, photograph the visible switch shape, mounting area, lead and connector or wiring reference without altering the assembly. For a complete torch, state whether the request covers the torch body only or includes the cable, hose, connector, switch and front-end consumables. Cable length, connection and machine interface should remain buyer-provided or document-based fields rather than estimates from a photograph.",
+      },
+      {
+        title: "Build an identification-ready TIG RFQ",
+        body: "Give every part its own line with a provisional name, quantity and evidence reference. Attach the complete-torch photo, label photo, disassembly-order image and any drawing or sample details. Mark which values are confirmed and which require supplier review. Add destination country, standard or OEM packaging request and whether the order is a trial or repeat requirement so product review and commercial quotation can proceed together.",
+      },
+    ],
+    categorySlugs: ["tig-torch-parts"],
+    productSlugs: [
+      "tig-ceramic-cup-5",
+      "tig-ceramic-cup-6",
+      "tig-collet",
+      "tig-collet-body",
+      "tig-gas-lens-1-6mm",
+      "tig-back-cap",
+      "tig-tungsten-electrode",
+      "tig-welding-torch",
+      "tig-torch-switch",
+    ],
+    faq: [
+      {
+        question: "Can a TIG torch part be identified from one photo?",
+        answer:
+          "One photo may suggest a part family, but reliable review normally needs the complete torch, model label, assembly order, connection views and a drawing or sample when available.",
+      },
+      {
+        question: "Is a TIG ceramic cup number enough to confirm compatibility?",
+        answer:
+          "No. The cup number should be checked with the torch series, connection style and the standard collet-body or gas-lens arrangement.",
+      },
+      {
+        question: "What is the difference between identification and compatibility?",
+        answer:
+          "Identification establishes what kind of part is being discussed. Compatibility confirms that its dimensions, interfaces and assembly match the required torch reference.",
+      },
+      {
+        question: "What should be included in a TIG parts identification RFQ?",
+        answer:
+          "Send part names, quantities, complete-torch and label photos, components in assembly order, available measurements, drawing or sample references, packaging needs and destination country.",
+      },
+    ],
+    keywords: [
+      "TIG torch parts names",
+      "TIG torch parts identification",
+      "parts of a TIG welding torch",
+      "TIG torch components",
+      "TIG torch parts diagram",
     ],
   },
   {
@@ -660,14 +816,14 @@ export const guides: GuideArticle[] = [
   },
   {
     slug: "welding-machine-sourcing-checklist",
-    title: "Industrial Welding Machine Sourcing Checklist",
-    seoTitle: "Industrial Welding Machine Sourcing Checklist",
+    title: "Welding Machine RFQ and Sourcing Checklist",
+    seoTitle: "Welding Machine Sourcing Checklist for Distributors",
     description:
-      "A distributor-focused checklist for defining welding process, electrical requirements, interfaces, documentation and packing before RFQ.",
+      "A distributor-focused checklist for defining MIG/MAG, TIG, MMA or plasma equipment requirements before a welding machine RFQ.",
     seoDescription:
-      "Prepare an industrial welding machine RFQ with process, input power, documented output requirements, interfaces, accessories and destination market.",
+      "Use this welding machine sourcing checklist to compare process, input power, documented output requirements, accessories, packing and market needs.",
     publishedDate: "2026-07-26",
-    modifiedDate: "2026-08-09",
+    modifiedDate: "2026-08-12",
     sections: [
       {
         title: "Define the welding or cutting process",

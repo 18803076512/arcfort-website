@@ -36,8 +36,8 @@ This report is an internal working checklist. Do not use it to invent product sp
 
 ## Compatibility Status
 
-- reference_only: 8
-- unverified: 35
+- reference_only: 15
+- unverified: 28
 
 ## OEM Status
 
@@ -64,21 +64,21 @@ No items found.
 | --- | --- | --- |
 | AF-MIG-CT-0004 | MIG Contact Tip M6 0.8mm | oem_number, package |
 | AF-MIG-CT-0005 | MIG Contact Tip M6 1.0mm | oem_number, package |
-| AF-MIG-CT-0006 | MIG Contact Tip M6 1.2mm | compatible_brand, oem_number, package |
+| AF-MIG-CT-0006 | MIG Contact Tip M6 1.2mm | oem_number, package |
 | AF-MIG-TH-0007 | MIG Tip Holder for MB15 | oem_number, package |
 | AF-MIG-GN-0008 | MIG Gas Nozzle for MB15 | oem_number, package |
 | AF-MIG-DF-0003 | MIG Diffuser | size, thread, compatible_brand, oem_number, package |
 | AF-MIG-TL-0009 | MIG Torch Liner | oem_number, package |
 | AF-MIG-SN-0010 | MIG Swan Neck | material, size, thread, compatible_brand, oem_number, package |
-| AF-TIG-CC-0007 | TIG Ceramic Cup #5 | thread, compatible_brand, oem_number, package |
-| AF-TIG-CC-0008 | TIG Ceramic Cup #6 | thread, compatible_brand, oem_number, package |
-| AF-TIG-CL-0009 | TIG Collet | size, thread, compatible_brand, oem_number, package |
-| AF-TIG-CB-0005 | TIG Collet Body | size, thread, compatible_brand, oem_number, package |
+| AF-TIG-CC-0007 | TIG Ceramic Cup #5 | oem_number, package |
+| AF-TIG-CC-0008 | TIG Ceramic Cup #6 | oem_number, package |
+| AF-TIG-CL-0009 | TIG Collet | oem_number, package |
+| AF-TIG-CB-0005 | TIG Collet Body | oem_number, package |
 | AF-TIG-GL-0010 | TIG Gas Lens 1.6mm | oem_number, package |
 | AF-TIG-BC-0011 | TIG Back Cap | material, size, thread, compatible_brand, oem_number, package |
 | AF-TIG-TE-0012 | TIG Tungsten Electrode | material, size, thread, compatible_brand, compatible_model, oem_number, package |
-| AF-PLA-EL-0007 | Plasma Electrode | material, size, thread, compatible_brand, oem_number, package |
-| AF-PLA-NZ-0008 | Plasma Nozzle | material, size, thread, compatible_brand, oem_number, package |
+| AF-PLA-EL-0007 | Plasma Electrode | oem_number, package |
+| AF-PLA-NZ-0008 | Plasma Nozzle | oem_number, package |
 | AF-PLA-SR-0009 | Plasma Swirl Ring | oem_number, package |
 | AF-PLA-SH-0010 | Plasma Shield | material, size, thread, compatible_brand, oem_number, package |
 | AF-PLA-RC-0011 | Plasma Retaining Cap | material, size, thread, compatible_brand, oem_number, package |

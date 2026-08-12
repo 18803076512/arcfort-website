@@ -8,12 +8,12 @@ import { selectHomepageFeaturedProducts } from "@/lib/content/featured-products"
 import { webPageJsonLd } from "@/lib/content/jsonld";
 import { getAllProducts } from "@/lib/content/products";
 import { buildMetadata } from "@/lib/content/seo";
-import { siteConfig } from "@/lib/content/site";
+import { buildEmailHref, buildWhatsAppHref, siteConfig } from "@/lib/content/site";
 
 export const metadata = buildMetadata({
-  title: "Industrial Welding & Cutting Solutions",
+  title: "Welding & Cutting Parts Supplier",
   description:
-    "ArcFort Weld supplies welding and cutting machines, MIG/MAG and TIG torch parts, plasma cutting consumables and OEM welding accessories for overseas buyers.",
+    "Source MIG/MAG and TIG torch parts, plasma cutter consumables, welding machines and OEM welding accessories from ArcFort Weld for global B2B supply.",
   path: "/",
   keywords: [
     "industrial welding solutions",
@@ -28,7 +28,7 @@ const advantages = [
   "Stable supply for repeat purchasing",
   "OEM, private label and packaging support",
   "Export packing for international shipments",
-  "Fast response for technical RFQ review",
+  "Responsive technical and commercial follow-up",
   "Product customization by drawing or reference part",
 ];
 
@@ -149,13 +149,13 @@ export default function Home() {
             </div>
             <div className="mt-6 hidden flex-col gap-2 text-sm text-slate-300 sm:flex sm:flex-row sm:flex-wrap sm:gap-5">
               <a
-                href={siteConfig.emailHref}
+                href={buildEmailHref({ subject: "ArcFort Weld homepage product inquiry" })}
                 className="inline-flex min-h-8 items-center font-semibold hover:text-white"
               >
                 Email: {siteConfig.email}
               </a>
               <a
-                href={siteConfig.whatsappHref}
+                href={buildWhatsAppHref()}
                 className="inline-flex min-h-8 items-center font-semibold hover:text-white"
               >
                 WhatsApp: {siteConfig.whatsapp}
@@ -189,8 +189,8 @@ export default function Home() {
                 Send product lists, drawings or sample photos for quotation review.
               </h2>
               <p className="mt-4 text-sm leading-7 text-slate-600">
-                A clear RFQ helps ArcFort Weld confirm fit, packaging, MOQ and delivery options
-                without unnecessary back-and-forth.
+                A clear RFQ helps ArcFort Weld review compatibility, packaging, MOQ and delivery
+                options with fewer follow-up questions.
               </p>
             </div>
             <div className="grid gap-3 sm:grid-cols-3">
@@ -308,7 +308,7 @@ export default function Home() {
           <div className="relative min-h-[320px] overflow-hidden border border-slate-200 bg-arc-midnight shadow-industrial sm:min-h-[420px]">
             <Image
               src="/images/site/arcfort-oem-consumables-workbench.png"
-              alt="Welding torch consumables arranged for OEM packaging and quotation review"
+              alt="Welding torch consumables arranged for OEM packaging and distributor sourcing"
               fill
               sizes="(min-width: 1024px) 52vw, 100vw"
               className="object-cover"
@@ -316,7 +316,7 @@ export default function Home() {
             <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(7,21,36,0.02),rgba(7,21,36,0.78))]" />
             <div className="absolute bottom-0 left-0 right-0 p-5 text-white sm:p-6">
               <p className="text-xs font-bold uppercase tracking-[0.18em] text-arc-signal">
-                OEM Review
+                OEM Supply
               </p>
               <p className="mt-2 max-w-xl text-sm leading-6 text-slate-100">
                 Samples, drawings, product photos and packaging requirements help confirm quotation
@@ -336,6 +336,20 @@ export default function Home() {
               and carton design after product details, quantity and artwork requirements are
               confirmed.
             </p>
+            <div className="mt-7 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
+              <Link
+                href="/oem-service"
+                className="inline-flex min-h-12 w-full items-center justify-center bg-arc-blue px-5 text-sm font-bold uppercase tracking-[0.14em] text-white transition hover:bg-arc-midnight sm:w-auto"
+              >
+                Review OEM Service
+              </Link>
+              <Link
+                href="/rfq?product=OEM%20welding%20products%20and%20private%20label%20packaging"
+                className="inline-flex min-h-12 w-full items-center justify-center border border-arc-blue px-5 text-sm font-bold uppercase tracking-[0.14em] text-arc-blue transition hover:bg-arc-frost hover:text-arc-midnight sm:w-auto"
+              >
+                Start OEM RFQ
+              </Link>
+            </div>
           </div>
           <div className="grid gap-4 sm:grid-cols-2">
             {oemServiceItems.map((item) => (
@@ -392,7 +406,7 @@ export default function Home() {
               Export Terms
             </p>
             <h2 className="mt-3 font-display text-3xl font-black text-arc-midnight sm:text-4xl">
-              Clear shipping and payment information for RFQ review.
+              Clear shipping and payment information for quotation planning.
             </h2>
           </div>
           <div className="mt-8 grid grid-cols-2 gap-3 sm:mt-10 sm:gap-5 md:grid-cols-2 lg:grid-cols-4">

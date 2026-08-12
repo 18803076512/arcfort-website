@@ -2,7 +2,7 @@ import { Breadcrumbs } from "@/components/content/Breadcrumbs";
 import { StructuredData } from "@/components/content/StructuredData";
 import { breadcrumbJsonLd, webPageJsonLd } from "@/lib/content/jsonld";
 import { buildMetadata } from "@/lib/content/seo";
-import { siteConfig } from "@/lib/content/site";
+import { buildEmailHref, buildWhatsAppHref, siteConfig } from "@/lib/content/site";
 import { RfqForm } from "./RfqForm";
 
 type RfqPageProps = {
@@ -37,19 +37,23 @@ const submissionChannels = [
     title: "Business Email",
     description:
       "Best for detailed product lists, drawings, quotation sheets and large sourcing discussions.",
-    href: siteConfig.emailHref,
+    href: buildEmailHref({ subject: "ArcFort Weld RFQ by email" }),
   },
   {
     title: "WhatsApp",
     description:
       "Best for quick product photos, model checks, sample discussion and urgent follow-up.",
-    href: siteConfig.whatsappHref,
+    href: buildWhatsAppHref(),
   },
 ] as const;
 
 const rfqBusinessInfo = [
-  { label: "Business Email", value: siteConfig.email, href: siteConfig.emailHref },
-  { label: "WhatsApp", value: siteConfig.whatsapp, href: siteConfig.whatsappHref },
+  {
+    label: "Business Email",
+    value: siteConfig.email,
+    href: buildEmailHref({ subject: "ArcFort Weld RFQ by email" }),
+  },
+  { label: "WhatsApp", value: siteConfig.whatsapp, href: buildWhatsAppHref() },
   { label: "Main Port", value: siteConfig.mainPort },
   { label: "MOQ Policy", value: siteConfig.moqPolicy },
   { label: "Lead Time", value: siteConfig.leadTime },

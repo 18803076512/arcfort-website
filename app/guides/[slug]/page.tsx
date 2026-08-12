@@ -186,7 +186,7 @@ export default async function GuideDetailPage({ params }: GuideRouteProps) {
           </div>
           <aside className="border border-white/10 bg-white/5 p-5 shadow-industrial">
             <p className="text-xs font-bold uppercase tracking-[0.18em] text-arc-signal">
-              RFQ review principles
+              Quotation preparation principles
             </p>
             <div className="mt-5 grid gap-3">
               {rfqReviewPoints.map((point) => (

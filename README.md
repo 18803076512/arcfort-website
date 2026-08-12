@@ -67,6 +67,8 @@ controlled by this company; never associate unrelated companies that use a simil
 - `docs/content-research/` - internal source records used to verify technical buyer-guide claims
 - `lib/content/schemas.ts` - reusable TypeScript content schema
 - `lib/content/site.ts` - centralized company, contact, trade, port, payment, MOQ, lead time and OEM information
+- Shared email and WhatsApp link builders in `lib/content/site.ts` prefill product, quantity,
+  destination and reference prompts so buyers can start a usable inquiry from any major page.
 - `lib/content/seo.ts` - metadata helper
 - `lib/content/jsonld.ts` - JSON-LD helpers for Product, BreadcrumbList, Organization and FAQ
 - `lib/content/product-redirects.ts` - permanent redirects for retired product URLs and historical
@@ -75,12 +77,19 @@ controlled by this company; never associate unrelated companies that use a simil
 - `lib/content/topic-links.ts` - category-to-guide internal linking map
 
 The website currently includes 6 product categories, 43 product records (41 active public products
-and 2 draft records awaiting reviewed images), 6 application pages, 13 buyer guides and dedicated
+and 2 draft records awaiting reviewed images), 6 application pages, 14 buyer guides and dedicated
 trust pages for distributor supply, OEM service, quality control, shipping/payment and document
 requests. Four retained generic starter URLs permanently
 redirect to their current category pages so they do not compete with exact SKU pages. Missing product data must remain explicit
 instead of inventing specifications, certifications, prices, stock status, factory capacity or
 customer cases.
+
+Plasma and TIG category records also provide structured component guides, selection variables and
+compatibility evidence checklists. These sections are rendered from `content/categories.ts`, link to
+active product records and guide buyers toward model-, drawing- or sample-based confirmation. The
+TIG parts identification guide is intentionally separate from the TIG consumable-stack selection
+guide: one helps name unknown parts from photos and samples, while the other checks how known parts
+fit together.
 
 The `/products` route supports server-rendered search by product name or SKU, category filtering and
 12-item pagination. Filter and pagination URLs use the product-center canonical and `noindex,follow`
@@ -353,6 +362,11 @@ After deployment, audit every sitemap URL against the live site:
 npm run seo:audit:live
 ```
 
+Search performance improvements should follow exported Search Console evidence rather than isolated
+keyword assumptions. Keep dated baselines under `docs/seo/`, use page and query-cluster trends, and
+wait at least 28 days before judging title or content changes. The current baseline and action record
+is `docs/seo/search-console-baseline-2026-08-12.md`.
+
 Run the combined production health check without sending an RFQ or email:
 
 ```bash
@@ -523,6 +537,8 @@ The English campaign assets are:
 - `docs/promotion/outreach-wave-02.md` - second-wave company-specific drafts for manual review only
 - `data/promotion/outreach-wave-03.csv` - five-company United Arab Emirates test batch
 - `docs/promotion/outreach-wave-03.md` - third-wave company-specific drafts for manual review only
+- `data/promotion/outreach-wave-04.csv` - five-company Saudi Arabia industrial supplier batch
+- `docs/promotion/outreach-wave-04.md` - fourth-wave company-specific drafts for manual review only
 
 Only allowlisted UTM fields are retained in GA4 page locations; unrelated query parameters are
 discarded. RFQ lead attribution applies the same campaign-value rules and stores only the entry path
@@ -537,13 +553,13 @@ information only. Recheck each official website before contact, use small manual
 keep correspondence outside Git and honor opt-out requests. `npm run promotion:prospects` validates
 the schema, official-domain URLs, campaign IDs, statuses and accidental contact data.
 
-The three outreach waves contain fifteen unique company-level drafts and are not an automated sending
+The four outreach waves contain twenty unique company-level drafts and are not an automated sending
 system. Run `npm run promotion:wave`, reopen every official evidence page, approve each message
 manually and use only the company's published business inquiry route. Keep replies and contact
 records in a private sales system rather than Git.
 
 Use the private `arcfort-outreach-tracker.xlsx` workbook for daily execution. It consolidates the
-fifteen official contact routes, evidence sources, product angles and UTM links, then calculates review,
+twenty official contact routes, evidence sources, product angles and UTM links, then calculates review,
 send, reply, follow-up and qualified-inquiry metrics from editable status fields. The workbook belongs
 under the ignored `outputs/` directory and must never be committed after buyer responses are added.
 Initial zero values mean the drafts have not been sent; they are not campaign-performance results.
@@ -585,6 +601,7 @@ npm run seo:snippets
 - `docs/missing-product-data-supplement.csv` - missing data worksheet for product pages
 - `docs/production-missing-data-supplement.md` - production missing data priority and RFQ backend notes
 - `docs/search-indexing-submission.md` - Google Search Console and IndexNow submission workflow
+- `docs/seo/search-console-baseline-2026-08-12.md` - Search Console baseline, prioritized pages and 28-day measurement plan
 - `docs/promotion/distributor-campaign-playbook.md` - first distributor campaign workflow and measurement plan
 - `docs/promotion/outreach-templates.md` - compliant distributor outreach copy
 - `docs/sku-template-guide.md` - SKU template filling guide and first batch recommendation

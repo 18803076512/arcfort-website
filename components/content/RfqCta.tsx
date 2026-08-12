@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { siteConfig } from "@/lib/content/site";
+import { buildEmailHref, buildWhatsAppHref, siteConfig } from "@/lib/content/site";
 
 type RfqCtaProps = {
   title?: string;
@@ -17,12 +17,18 @@ export function RfqCta({
     {
       label: "Email",
       value: siteConfig.email,
-      href: siteConfig.emailHref,
+      href: buildEmailHref({
+        subject: productName ? `ArcFort Weld RFQ - ${productName}` : "ArcFort Weld product RFQ",
+      }),
     },
     {
       label: "WhatsApp",
       value: siteConfig.whatsapp,
-      href: siteConfig.whatsappHref,
+      href: buildWhatsAppHref({
+        message: productName
+          ? `Hello ArcFort Weld, I would like a quotation for ${productName}.\n\nQuantity:\nDestination country:\nModel / drawing / sample reference:`
+          : undefined,
+      }),
     },
     {
       label: "Main Port",
@@ -31,7 +37,7 @@ export function RfqCta({
     },
     {
       label: "RFQ Details",
-      value: "Send drawings, product photos, model references or product lists.",
+      value: "Send product model, quantity, destination and any drawing or sample reference.",
       href: undefined,
     },
   ] as const;

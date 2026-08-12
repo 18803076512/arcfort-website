@@ -8,9 +8,9 @@ export const productCategories: ProductCategory[] = [
     shortTitle: "MIG/MAG Parts",
     description:
       "Contact tips, gas nozzles, diffusers, liners and torch consumables for MIG/MAG welding applications.",
-    seoTitle: "MIG/MAG Torch Parts for Industrial Welding Buyers",
+    seoTitle: "MIG Welding Torch Parts & Consumables",
     seoDescription:
-      "Explore ArcFort Weld MIG/MAG torch parts including contact tips, gas nozzles, diffusers, liners and related welding consumables for B2B RFQ programs.",
+      "Source MIG/MAG welding torch parts including contact tips, tip holders, gas diffusers, nozzles, liners and switches for distributor and repair supply.",
     seoIntro:
       "ArcFort Weld supplies MIG/MAG torch parts for distributors, importers, OEM buyers and repair workshops that need organized product references for repeat purchasing. Product specifications should be confirmed against torch model, drawing or reference part before quotation.",
     productRange: [
@@ -42,6 +42,101 @@ export const productCategories: ProductCategory[] = [
       "Send existing part numbers, drawings or reference parts when compatible brand information is required.",
       "For distributor programs, group fast-moving consumables by torch series and packaging requirement.",
     ],
+    componentGuide: [
+      {
+        name: "Contact Tip",
+        role: "Guides the welding wire through the torch front end and transfers welding current to the wire.",
+        buyerCheck:
+          "Confirm wire diameter, thread, overall geometry, material reference and the tip holder used in the assembly.",
+        productSlug: "mig-contact-tip-m6-1-0mm",
+      },
+      {
+        name: "Tip Holder",
+        role: "Positions the contact tip and connects it to the compatible torch front-end assembly.",
+        buyerCheck:
+          "Confirm contact-tip thread, torch family, holder profile, gas openings and the adjacent diffuser or insulator.",
+        productSlug: "mig-tip-holder-for-mb15",
+      },
+      {
+        name: "Gas Diffuser",
+        role: "Distributes shielding gas within a compatible MIG/MAG torch front end.",
+        buyerCheck:
+          "Show the gas openings, connection, seating surfaces and matching nozzle, tip holder and insulator arrangement.",
+        productSlug: "mig-diffuser",
+      },
+      {
+        name: "Gas Nozzle",
+        role: "Directs shielding gas around the wire and weld area while protecting the inner front-end parts.",
+        buyerCheck:
+          "Confirm nozzle profile, opening, length, attachment style, torch family and contact-tip position when documented.",
+        productSlug: "mig-gas-nozzle-for-mb15",
+      },
+      {
+        name: "Torch Liner",
+        role: "Supports welding-wire feeding through the torch cable toward the contact tip.",
+        buyerCheck:
+          "Confirm wire type and diameter, torch cable length, liner construction, connector end and finished length.",
+        productSlug: "mig-torch-liner",
+      },
+      {
+        name: "Swan Neck",
+        role: "Connects the torch body to the front-end consumables and establishes the working angle.",
+        buyerCheck:
+          "Confirm torch family, neck geometry, connection at both ends, cooling arrangement and complete front-end stack.",
+        productSlug: "mig-swan-neck",
+      },
+      {
+        name: "Torch Switch",
+        role: "Provides the torch-handle control input used with a compatible welding power source.",
+        buyerCheck:
+          "Send the torch model, switch profile, mounting method, lead arrangement and clear photos of the connection.",
+        productSlug: "mig-torch-switch",
+      },
+    ],
+    selectionVariables: [
+      {
+        label: "Torch model and front-end family",
+        whyItMatters:
+          "Parts with similar trade names may use different connections, lengths and assembly relationships.",
+        confirmationMethod:
+          "Torch label, existing parts list, assembled photo, approved sample or drawing.",
+      },
+      {
+        label: "Welding wire diameter",
+        whyItMatters:
+          "The documented wire size affects contact-tip selection and the required liner range.",
+        confirmationMethod:
+          "Wire package, approved welding procedure, existing tip marking or purchasing record.",
+      },
+      {
+        label: "Thread and component geometry",
+        whyItMatters:
+          "A thread reference alone does not confirm length, seat, outside profile or gas-path alignment.",
+        confirmationMethod:
+          "Drawing, measured approved sample, reference number or scale photographs.",
+      },
+      {
+        label: "Nozzle, diffuser and tip-holder stack",
+        whyItMatters:
+          "The surrounding components must connect correctly and preserve the intended shielding-gas path.",
+        confirmationMethod:
+          "Disassembled parts kept in order, plus photos of connections and the assembled front end.",
+      },
+      {
+        label: "Cable, liner and control details",
+        whyItMatters:
+          "Complete torch and repair-part inquiries may depend on cable length, liner termination and switch connection.",
+        confirmationMethod:
+          "Complete-torch photo, cable reference, connector views and documented length requirement.",
+      },
+    ],
+    compatibilityChecklist: [
+      "Record the torch model and photograph the assembled front end before removing parts.",
+      "Lay out the nozzle, diffuser or holder, contact tip and insulator in installation order.",
+      "Record only verified wire sizes, threads, lengths, markings and reference numbers.",
+      "Photograph liner ends, cable connections and torch switches separately when they are part of the request.",
+      "Approve the complete matched assembly or sample reference before repeat purchasing.",
+    ],
     features: [
       "Suitable for distributor product lines",
       "Structured category references for repeat sourcing",
@@ -64,6 +159,11 @@ export const productCategories: ProductCategory[] = [
         answer:
           "Yes. OEM packaging is available after product details, quantity, label artwork and carton requirements are confirmed.",
       },
+      {
+        question: "What are the main parts of a MIG/MAG welding torch?",
+        answer:
+          "Common replacement items include the contact tip, tip holder or gas diffuser, gas nozzle, torch liner, swan neck and torch switch. The exact assembly varies by torch system and should be confirmed from a model, drawing or sample.",
+      },
     ],
     keywords: [
       "MIG/MAG torch parts",
@@ -80,11 +180,11 @@ export const productCategories: ProductCategory[] = [
     shortTitle: "TIG Parts",
     description:
       "Ceramic cups, collets, collet bodies, gas lenses and TIG torch accessories for industrial welding supply.",
-    seoTitle: "TIG Torch Parts and Consumables for B2B Supply",
+    seoTitle: "TIG Torch Parts & Consumables",
     seoDescription:
-      "Browse TIG torch parts such as ceramic cups, collets, collet bodies, gas lenses and TIG welding accessories for industrial sourcing and RFQ.",
+      "Source TIG welding torch parts including ceramic cups, collets, collet bodies, gas lenses, back caps and switches. Confirm fit by model, sample or drawing.",
     seoIntro:
-      "ArcFort Weld organizes TIG torch parts for buyers who compare product fit, packaging, MOQ and delivery requirements before placing repeat orders. Unknown technical fields are confirmed by drawing, reference part or model reference during RFQ review.",
+      "ArcFort Weld organizes TIG torch parts by component role, torch-family reference and the fit details buyers need for repeat purchasing. Ceramic cups, collets, collet bodies, gas lenses, back caps, tungsten electrodes and torch switches should be identified as part of a complete TIG torch assembly. Unknown technical fields are reviewed against a drawing, reference part, sample or model before quotation.",
     productRange: [
       "TIG ceramic cups by cup number and torch series",
       "Collets, collet bodies, gas lenses and torch accessories",
@@ -113,6 +213,96 @@ export const productCategories: ProductCategory[] = [
       "Check torch series and cup size before selecting ceramic cups or gas lens parts.",
       "Confirm collet and collet body dimensions for the required tungsten size.",
       "Provide packaging and labeling requirements when preparing distributor programs.",
+    ],
+    componentGuide: [
+      {
+        name: "Ceramic Cup",
+        role: "Directs shielding gas around the tungsten and weld area.",
+        buyerCheck:
+          "Record cup number, connection style, torch family and whether a standard body or gas lens is used.",
+        productSlug: "tig-ceramic-cup-5",
+      },
+      {
+        name: "Collet",
+        role: "Grips and centers the tungsten electrode inside the torch head.",
+        buyerCheck:
+          "Confirm tungsten diameter, collet length, torch series and matching collet body or gas lens.",
+        productSlug: "tig-collet",
+      },
+      {
+        name: "Collet Body",
+        role: "Supports the collet and forms part of the shielding-gas path.",
+        buyerCheck:
+          "Confirm torch series, thread, tungsten size and the ceramic cup used with the assembly.",
+        productSlug: "tig-collet-body",
+      },
+      {
+        name: "Gas Lens",
+        role: "Uses an internal mesh arrangement to distribute shielding gas before it exits the cup.",
+        buyerCheck:
+          "Confirm gas-lens family, torch series, thread, tungsten bore and compatible cup arrangement.",
+        productSlug: "tig-gas-lens-1-6mm",
+      },
+      {
+        name: "Back Cap",
+        role: "Secures the rear torch-head assembly and accommodates the tungsten length.",
+        buyerCheck:
+          "Confirm rear thread, cap length, torch series and available working clearance.",
+        productSlug: "tig-back-cap",
+      },
+      {
+        name: "Tungsten Electrode",
+        role: "Carries the TIG welding arc and must match the documented welding procedure.",
+        buyerCheck:
+          "State confirmed diameter, length, type or color reference and application requirement.",
+        productSlug: "tig-tungsten-electrode",
+      },
+      {
+        name: "Torch Switch",
+        role: "Provides a torch-mounted control input where the torch and machine configuration supports it.",
+        buyerCheck:
+          "Send the torch model, switch shape, connector or wiring reference and photos of both sides.",
+        productSlug: "tig-torch-switch",
+      },
+    ],
+    selectionVariables: [
+      {
+        label: "Torch series",
+        whyItMatters: "Controls the physical interface used by the front-end and rear components.",
+        confirmationMethod: "Torch label, complete-torch photo, approved model record or sample.",
+      },
+      {
+        label: "Tungsten diameter",
+        whyItMatters: "Affects collet, collet body and gas-lens bore selection.",
+        confirmationMethod:
+          "Documented electrode size, packaging label or measured approved sample.",
+      },
+      {
+        label: "Cup and gas arrangement",
+        whyItMatters:
+          "Cup number alone does not confirm whether the stack uses a standard body or gas lens.",
+        confirmationMethod:
+          "Photo of the disassembled stack kept in order, plus cup and body references.",
+      },
+      {
+        label: "Thread and component length",
+        whyItMatters: "Similar-looking parts can use different interfaces or overall lengths.",
+        confirmationMethod: "Drawing, supplier reference, measured sample or clear scale photo.",
+      },
+      {
+        label: "Order and packing unit",
+        whyItMatters:
+          "Cups, collets, bodies and back caps may use different replacement quantities.",
+        confirmationMethod:
+          "Item-by-item quantity list with standard or OEM packaging requirement.",
+      },
+    ],
+    compatibilityChecklist: [
+      "Photograph the complete torch and model label before removing any components.",
+      "Keep the cup, body or gas lens, collet, tungsten and back cap in assembly order.",
+      "Record only verified cup numbers, tungsten sizes, threads and lengths.",
+      "Use a sample, drawing or approved reference when the torch label is unavailable.",
+      "Approve the complete matching stack before placing a repeat order.",
     ],
     features: [
       "Clear product family structure",
@@ -152,11 +342,11 @@ export const productCategories: ProductCategory[] = [
     shortTitle: "Plasma Consumables",
     description:
       "Electrodes, nozzles, swirl rings, shields and consumables for plasma cutting systems.",
-    seoTitle: "Plasma Cutting Consumables for Industrial Buyers",
+    seoTitle: "Plasma Cutter Consumables & Torch Parts",
     seoDescription:
-      "Source plasma cutting consumables including electrodes, nozzles, swirl rings and shields for distributors, OEM buyers and industrial users.",
+      "Source plasma cutter and plasma torch consumables including electrodes, nozzles, swirl rings, shields and retaining caps. Confirm fit by model or sample.",
     seoIntro:
-      "ArcFort Weld structures plasma cutting consumables by product family, compatibility and RFQ requirements so global buyers can prepare clear sourcing lists. Technical compatibility should be confirmed before production or quotation.",
+      "ArcFort Weld structures plasma cutter consumables by front-end component, torch-family reference and the evidence needed for compatibility review. Electrodes, nozzles, swirl rings, shields, retaining caps and stand-off parts should be checked as one consumable stack. Global distributors and repair buyers can send model labels, reference numbers, drawings, photos or samples before quotation.",
     productRange: [
       "Plasma electrodes and nozzles for cutting torch consumable replacement",
       "Swirl rings, shields and related consumable stack items",
@@ -186,6 +376,92 @@ export const productCategories: ProductCategory[] = [
       "Check whether the buyer needs nozzles, electrodes, swirl rings and shields as individual items or kits.",
       "Include drawings or reference numbers when replacing existing plasma cutting consumables.",
     ],
+    componentGuide: [
+      {
+        name: "Electrode",
+        role: "Forms part of the internal arc circuit and works with the matching torch consumable system.",
+        buyerCheck:
+          "Confirm torch model, reference number, electrode profile and the nozzle normally used with it.",
+        productSlug: "plasma-electrode",
+      },
+      {
+        name: "Nozzle or Cutting Tip",
+        role: "Constrains and directs the plasma arc through a model-specific opening and geometry.",
+        buyerCheck:
+          "Confirm torch model, documented opening or rating reference, profile and electrode pairing.",
+        productSlug: "plasma-nozzle",
+      },
+      {
+        name: "Swirl Ring",
+        role: "Forms part of the torch gas-distribution and consumable-alignment arrangement.",
+        buyerCheck:
+          "Confirm torch family, ring geometry, material reference and orientation in the stack.",
+        productSlug: "plasma-swirl-ring",
+      },
+      {
+        name: "Shield",
+        role: "Protects compatible front-end components and supports the intended torch-to-work interface.",
+        buyerCheck:
+          "Confirm torch model, shield profile, connection and the cap or nozzle arrangement used with it.",
+        productSlug: "plasma-shield",
+      },
+      {
+        name: "Retaining Cap",
+        role: "Secures compatible front-end consumables in the torch assembly.",
+        buyerCheck:
+          "Confirm torch model, thread or connection, internal profile and complete stack photo.",
+      },
+      {
+        name: "Torch Spacer or Stand-off Guide",
+        role: "Supports a repeatable torch stand-off in compatible manual cutting setups.",
+        buyerCheck:
+          "Confirm torch family, attachment style, working position and approved reference part.",
+        productSlug: "plasma-torch-spacer",
+      },
+    ],
+    selectionVariables: [
+      {
+        label: "Torch model and reference",
+        whyItMatters:
+          "Plasma consumables are selected by torch system rather than appearance alone.",
+        confirmationMethod:
+          "Torch label, machine/torch record, reference number, sample or drawing.",
+      },
+      {
+        label: "Complete consumable stack",
+        whyItMatters:
+          "Electrode, nozzle, ring, cap and shield must work as one compatible arrangement.",
+        confirmationMethod:
+          "Photo of components in removal order and an item-by-item requirement list.",
+      },
+      {
+        label: "Documented cutting setup",
+        whyItMatters: "Nozzle and electrode selection may depend on the approved operating setup.",
+        confirmationMethod:
+          "Known current reference, cutting method and material requirement from buyer records.",
+      },
+      {
+        label: "Geometry and interface",
+        whyItMatters:
+          "Similar-looking parts may differ in opening, length, thread, seat or shield profile.",
+        confirmationMethod:
+          "Drawing, measured approved sample, reference number or scale photographs.",
+      },
+      {
+        label: "Replacement ratio and packing",
+        whyItMatters:
+          "Electrodes, nozzles, rings and caps may be reordered in different quantities.",
+        confirmationMethod:
+          "Quantity by item, kit requirement, label format and destination country.",
+      },
+    ],
+    compatibilityChecklist: [
+      "Record the torch model and existing reference numbers before disassembly.",
+      "Lay out the electrode, nozzle, ring, cap and shield in their original assembly order.",
+      "Photograph front, side, connection and marking details with a scale when possible.",
+      "State only documented operating references; do not estimate a rating from appearance.",
+      "Approve a sample or complete matching stack before repeat purchasing.",
+    ],
     features: [
       "Designed for repeat consumable sourcing",
       "Supports kit and individual item RFQs",
@@ -210,11 +486,13 @@ export const productCategories: ProductCategory[] = [
       },
     ],
     keywords: [
+      "plasma cutter consumables",
+      "plasma torch consumables",
+      "plasma consumable parts",
       "plasma cutting consumables",
       "plasma electrode",
       "plasma nozzle",
       "swirl ring",
-      "plasma cutting consumables",
     ],
   },
   {
@@ -228,7 +506,7 @@ export const productCategories: ProductCategory[] = [
     seoDescription:
       "Source welding consumables including welding wires, electrodes, holders, clamps and related items for distributors, importers and repair workshops.",
     seoIntro:
-      "ArcFort Weld structures welding consumables for buyers who need practical product lists, repeat purchasing programs and RFQ-ready information. Exact specifications, packaging, MOQ and lead time should be confirmed before quotation.",
+      "ArcFort Weld structures welding consumables for buyers who need practical product lists, repeat purchasing programs and clear quotation information. Exact specifications, packaging, MOQ and lead time are confirmed before quotation.",
     productRange: [
       "Welding wires, electrodes and general arc welding consumables",
       "Electrode holders, ground clamps and related workshop consumables",
@@ -335,7 +613,11 @@ export const productCategories: ProductCategory[] = [
       "Prepared for OEM and distributor inquiry workflows",
       "Keeps unconfirmed parameters explicit",
     ],
-    relatedCategorySlugs: ["welding-consumables", "welding-accessories", "plasma-cutting-consumables"],
+    relatedCategorySlugs: [
+      "welding-consumables",
+      "welding-accessories",
+      "plasma-cutting-consumables",
+    ],
     faq: [
       {
         question: "Can ArcFort Weld quote welding machines by target process?",
