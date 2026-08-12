@@ -85,6 +85,9 @@ link relevant category and guide content to the OEM service, and avoid weakening
 12. Added a welding machine RFQ workbook for destination electrical inputs, documented performance
     requirements, accessories, market documents and approval checkpoints, with tracked links from
     the guide, category and Download Center.
+13. Expanded the existing Wire Feeder product URL, which recorded 11 impressions at average position
+    16.55, with equipment-specific search copy, selection variables, compatibility evidence, RFQ
+    fields and a direct link to the welding machine RFQ workbook.
 
 ## Measurement Plan
 
