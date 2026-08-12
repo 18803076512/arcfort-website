@@ -111,6 +111,10 @@ link relevant category and guide content to the OEM service, and avoid weakening
     SG-51 and P-80 series products. Added an interactive RFQ builder that carries the buyer's torch
     family, requested components, existing reference, quantity and packing requirement into the RFQ
     form without turning catalog references into universal compatibility claims.
+20. Expanded the TIG torch parts category, which recorded 85 impressions and no clicks, with
+    company-catalog reference groups for WP-9/WP-20, WP-17/WP-18/WP-26 and WP-27 series products. Added a TIG-specific
+    RFQ builder for front-end arrangement, requested parts, documented tungsten diameter, cup or part
+    reference, quantity and packing while keeping final compatibility evidence-based.
 
 ## Measurement Plan
 

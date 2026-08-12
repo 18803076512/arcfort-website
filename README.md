@@ -96,6 +96,11 @@ The builder carries the buyer's torch family, requested components, visible part
 and packing requirement into `/rfq`. Catalog family names remain reference-only until the exact torch
 label, approved sample or drawing has been reviewed for compatibility.
 
+The TIG category provides the same evidence-led path for WP-9/WP-20, WP-17/WP-18/WP-26 and WP-27 catalog
+reference groups, with TIG-specific fields for the front-end arrangement, requested parts, documented
+tungsten diameter and cup or part marking. The builder organizes buyer input without asserting that a
+catalog reference group or visually similar component confirms compatibility.
+
 The `/products` route supports server-rendered search by product name or SKU, category filtering and
 12-item pagination. Filter and pagination URLs use the product-center canonical and `noindex,follow`
 so buyers can share result URLs without creating duplicate indexable search pages.

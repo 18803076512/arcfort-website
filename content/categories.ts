@@ -179,12 +179,12 @@ export const productCategories: ProductCategory[] = [
     title: "TIG Torch Parts",
     shortTitle: "TIG Parts",
     description:
-      "Ceramic cups, collets, collet bodies, gas lenses and TIG torch accessories for industrial welding supply.",
-    seoTitle: "TIG Welding Torch Parts & Components",
+      "TIG torch parts, consumables and replacement components for distributor, repair and OEM supply programs.",
+    seoTitle: "TIG Torch Parts, Components & Consumables",
     seoDescription:
-      "Source TIG welding torch parts and components including ceramic cups, collets, gas lenses, back caps and switches. Confirm fit by model, sample or drawing.",
+      "Source TIG torch parts and consumables including ceramic cups, collets, gas lenses and back caps. Build an RFQ by torch series, photo or sample.",
     seoIntro:
-      "ArcFort Weld organizes TIG torch parts by component role, torch-family reference and the fit details buyers need for repeat purchasing. Ceramic cups, collets, collet bodies, gas lenses, back caps, tungsten electrodes and torch switches should be identified as part of a complete TIG torch assembly. Unknown technical fields are reviewed against a drawing, reference part, sample or model before quotation.",
+      "ArcFort Weld organizes TIG torch parts and consumables by component role, company-catalog torch-series reference and the fit evidence needed for repeat purchasing. Ceramic cups, collets, collet bodies, gas lenses, back caps, tungsten electrodes and torch-control parts should be reviewed as part of a complete TIG torch assembly. Buyers can build a structured RFQ for WP-9/WP-20, WP-17/WP-18/WP-26 or WP-27 series references, while final compatibility remains subject to the exact label, drawing, approved sample or complete component stack.",
     productRange: [
       "TIG ceramic cups by cup number and torch series",
       "Collets, collet bodies, gas lenses and torch accessories",
@@ -265,6 +265,51 @@ export const productCategories: ProductCategory[] = [
           "Send the torch model, switch shape, connector or wiring reference and photos of both sides.",
       },
     ],
+    referenceFamilies: [
+      {
+        name: "WP-9 / WP-20 reference group",
+        documentedComponents: [
+          "Torch body",
+          "Back caps",
+          "Collets",
+          "Collet bodies",
+          "Gas lenses",
+          "Ceramic cups",
+          "Handle or switch",
+          "Cable assembly",
+        ],
+        buyerCheck:
+          "Confirm whether the torch is a 9 or 20 series reference, then send the complete torch label, cooling or cable arrangement, front-end stack and machine-side connection. Shared catalog component families do not prove interchangeability between every configuration.",
+      },
+      {
+        name: "WP-17 / WP-18 / WP-26 reference group",
+        documentedComponents: [
+          "Torch body",
+          "Back caps",
+          "Collets",
+          "Collet bodies",
+          "Gas lenses",
+          "Ceramic cups",
+          "Handle or switch",
+          "Cable or hose assembly",
+        ],
+        buyerCheck:
+          "State the exact 17, 18 or 26 series reference and provide the complete torch view, front-end arrangement, tungsten reference, cable or hose termination and any visible part number. The catalog groups consumable families, but final fit still requires evidence from the requested torch.",
+      },
+      {
+        name: "WP-27 reference group",
+        documentedComponents: [
+          "Torch body",
+          "Collets",
+          "Gas lenses",
+          "Ceramic cups",
+          "Cable or hose assembly",
+          "Torch terminations",
+        ],
+        buyerCheck:
+          "Send the complete 27 series torch label, cooling-line and termination photos, tungsten reference, cup or gas-lens arrangement and requested cable length. Approve the complete assembly or matched parts list before repeat ordering.",
+      },
+    ],
     selectionVariables: [
       {
         label: "Torch series",
@@ -319,7 +364,7 @@ export const productCategories: ProductCategory[] = [
       {
         question: "What TIG torch information should buyers send?",
         answer:
-          "Please send torch series, tungsten size, cup size, reference number or drawings so ArcFort Weld can confirm the requested item.",
+          "Please send the exact torch series, complete-torch and label photos, front-end parts in removal order, documented tungsten diameter, cup number or visible reference, connection views and quantity so ArcFort Weld can review the requested item.",
       },
       {
         question: "Can TIG parts be prepared for OEM packaging?",
@@ -330,6 +375,12 @@ export const productCategories: ProductCategory[] = [
         question: "How should buyers choose TIG ceramic cups or gas lens parts?",
         answer:
           "Buyers should confirm torch series, cup number, tungsten size, gas lens requirement and package quantity before sending an RFQ.",
+      },
+      {
+        question:
+          "Do WP-9, WP-20, WP-17, WP-18, WP-26 and WP-27 references confirm universal compatibility?",
+        answer:
+          "No. These are company-catalog sourcing references that help organize an inquiry. Final compatibility must be confirmed against the exact torch label, component stack, drawing, approved sample or repeat-order record.",
       },
     ],
     keywords: [

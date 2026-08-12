@@ -675,6 +675,10 @@ export const guides: GuideArticle[] = [
         body: "Begin with the complete torch instead of one loose component. Record the front-end consumable stack, torch head and body, handle and control area, rear cap, cable or hose assembly, and machine-side connector. This zone-based view helps distinguish a ceramic cup from an internal collet part and a torch switch from a cable or connector item. Keep the original assembly intact until the complete torch and model label have been photographed.",
       },
       {
+        title: "Use catalog series as a reference, not a fit guarantee",
+        body: "The Renqiu Ailesen company catalog documents TIG torch and component structures for WP-9/WP-20, WP-17/WP-18/WP-26 and WP-27 series reference groups. These references can narrow an inquiry and show which component names belong in a parts list. They do not prove that every cup, collet, body, gas lens, back cap or cable termination is interchangeable. State the exact series shown on the torch and confirm the full arrangement by label, drawing, approved sample or repeat-order record.",
+      },
+      {
         title: "Use consistent TIG torch part names",
         body: "Name each requested item by its function before adding a model reference. Common front-end TIG welding torch components include the ceramic cup, collet, collet body, gas lens and tungsten electrode. The rear torch-head item is normally described as a back cap. Other service items can include the torch head or body, handle, torch switch, cable or hose assembly and machine-side connector. A descriptive part name is useful for communication, but it is not proof of compatibility.",
       },
