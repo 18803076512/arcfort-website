@@ -55,6 +55,10 @@ const downloadAssets: Record<string, { eventName: string; assetKey: string }> = 
     eventName: "buyer_tool_download_click",
     assetKey: "plasma_consumables_rfq_workbook",
   },
+  "/downloads/arcfort-welding-machine-rfq.xlsx": {
+    eventName: "buyer_tool_download_click",
+    assetKey: "welding_machine_rfq_workbook",
+  },
 };
 
 type TrackedLinkEvent = {

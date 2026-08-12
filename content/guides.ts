@@ -1010,7 +1010,7 @@ export const guides: GuideArticle[] = [
   {
     slug: "welding-machine-sourcing-checklist",
     title: "Welding Machine RFQ and Sourcing Checklist",
-    seoTitle: "Welding Machine Sourcing Checklist for Distributors",
+    seoTitle: "Welding Machine RFQ Checklist for Distributors",
     description:
       "A distributor-focused checklist for defining MIG/MAG, TIG, MMA or plasma equipment requirements before a welding machine RFQ.",
     seoDescription:
@@ -1043,6 +1043,93 @@ export const guides: GuideArticle[] = [
         body: "For a new machine program, define sample quantity, inspection points, packing requirement, spare-parts request and after-sales document needs. Provide target order quantity and delivery destination so MOQ, lead time and shipping options can be discussed. Before repeat purchasing, retain the approved configuration, nameplate, accessories list, manual version and packing record. A complete RFQ should separate confirmed requirements, requested options and fields that still require technical review.",
       },
     ],
+    componentReference: {
+      title: "Welding machine sourcing decision matrix",
+      description:
+        "Separate buyer-approved requirements from supplier-confirmed configuration data. This prevents a marketing name, reference model or requested certificate from being treated as verified technical evidence.",
+      rows: [
+        {
+          name: "Process and Application",
+          assemblyArea: "Buyer requirement",
+          role: "Defines whether the program requires MIG/MAG, TIG, MMA, plasma cutting, stud welding or another documented process and where the machine will be used.",
+          buyerCheck:
+            "Target process, material and documented range, production or repair use, operating environment and required working method.",
+        },
+        {
+          name: "Destination Electrical Input",
+          assemblyArea: "Buyer requirement",
+          role: "Establishes the market-specific power supply and connection the proposed machine must support.",
+          buyerCheck:
+            "Destination country, input voltage, frequency, phase, plug or power connection from the buyer's approved electrical requirement.",
+        },
+        {
+          name: "Output and Duty Requirements",
+          assemblyArea: "Buyer requirement / supplier review",
+          role: "Defines required performance fields for comparison without assuming that an available machine meets them.",
+          buyerCheck:
+            "Documented output range, duty cycle, process modes and any application-specific requirement, with source or evidence status.",
+        },
+        {
+          name: "Machine Configuration",
+          assemblyArea: "Supplier confirmation",
+          role: "Identifies the proposed power source, integrated or separate equipment arrangement and documented control features.",
+          buyerCheck:
+            "Supplier model, configuration data sheet, panel arrangement, cooling or feeder arrangement where applicable, and approved option list.",
+        },
+        {
+          name: "Interfaces and Accessories",
+          assemblyArea: "Joint confirmation",
+          role: "Separates included equipment, optional accessories, connections and commissioning or repeat-order spares.",
+          buyerCheck:
+            "Torch, wire feeder, cables, connectors, holder, clamp, regulator, remote control, spare parts and interface references by line item.",
+          productSlug: "wire-feeder",
+        },
+        {
+          name: "Documents and Market Evidence",
+          assemblyArea: "Supplier evidence review",
+          role: "Records what specification sheets, manuals, labels, test records or certification evidence are available for the exact proposed configuration.",
+          buyerCheck:
+            "Destination requirement, document language, evidence filename or version, supplier status and any field still requiring confirmation.",
+        },
+        {
+          name: "Sample and Order Approval",
+          assemblyArea: "Joint approval",
+          role: "Controls the proposed configuration, labels, accessories, packing and shipment references before repeat ordering.",
+          buyerCheck:
+            "Technical comparison, sample or pre-production review, nameplate proof, accessory list, packing approval and final control record.",
+        },
+      ],
+    },
+    buyerChecklist: {
+      title: "Distributor welding machine RFQ checklist",
+      description:
+        "Prepare the commercial and technical evidence needed to compare a proposed machine configuration without filling gaps from assumptions.",
+      items: [
+        "Define the required welding or cutting process, target application and documented material range.",
+        "Provide destination country, input voltage, frequency, phase and plug or power connection from an approved electrical requirement.",
+        "List output range, duty cycle and process modes only when they are documented buyer requirements.",
+        "Separate included accessories, optional equipment and spare parts, with quantity and interface references for each item.",
+        "State manual, label, nameplate, test record and certification requirements, then request evidence for the exact proposed configuration.",
+        "Define sample, technical comparison, packing, pre-shipment and repeat-order approval checkpoints before purchase confirmation.",
+      ],
+    },
+    rfqFields: [
+      "Required welding / cutting process:",
+      "Target application and documented material range:",
+      "Destination electrical input and connection:",
+      "Documented output / duty / process-mode requirements:",
+      "Required machine configuration and interfaces:",
+      "Included accessories and spare parts:",
+      "Destination-market documents / evidence required:",
+      "Quantity, packing, OEM scope and destination country:",
+    ],
+    buyerTool: {
+      href: "/downloads/arcfort-welding-machine-rfq.xlsx",
+      title: "Welding Machine RFQ Workbook",
+      description:
+        "Use the four-tab XLSX to separate buyer requirements, supplier confirmation, accessories, destination documents and approval checkpoints.",
+      buttonLabel: "Download Machine RFQ Workbook",
+    },
     categorySlugs: ["welding-machines"],
     productSlugs: ["wire-feeder", "stud-welding-gun"],
     faq: [

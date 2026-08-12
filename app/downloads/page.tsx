@@ -32,6 +32,14 @@ const documentTypes = [
 
 const downloadFiles = [
   {
+    title: "Welding Machine RFQ Workbook",
+    type: "XLSX",
+    href: "/downloads/arcfort-welding-machine-rfq.xlsx",
+    description:
+      "Download a structured workbook for welding process, destination electrical input, documented machine requirements, accessories, market documents and approval checkpoints.",
+    note: "Separate buyer requirements from supplier-confirmed data, then upload the workbook with nameplate photos, approved specifications or reference documents.",
+  },
+  {
     title: "Plasma Consumables RFQ Workbook",
     type: "XLSX",
     href: "/downloads/arcfort-plasma-consumables-rfq.xlsx",
@@ -107,20 +115,21 @@ const faq = [
   {
     question: "Can buyers download a product list before sending an inquiry?",
     answer:
-      "Yes. The download center includes a public CSV product list, a general RFQ worksheet, a plasma consumables RFQ workbook and an OEM project brief. Buyers can complete the suitable file and upload it through the RFQ form.",
+      "Yes. The download center includes a public CSV product list, a general RFQ worksheet, welding machine and plasma consumables RFQ workbooks, and an OEM project brief. Buyers can complete the suitable file and upload it through the RFQ form.",
   },
 ] as const;
 
 export const metadata = buildMetadata({
   title: "Download Center for Welding Product Buyers",
   description:
-    "Download ArcFort Weld catalogs, product lists, plasma and general RFQ worksheets, and an OEM project brief for welding and cutting product sourcing.",
+    "Download ArcFort Weld catalogs, product lists, machine and plasma RFQ workbooks, a general worksheet, and an OEM project brief for industrial sourcing.",
   path: "/downloads",
   keywords: [
     "welding product catalog",
     "welding consumables data sheet",
     "plasma cutting consumables catalog",
     "plasma consumables RFQ workbook",
+    "welding machine RFQ workbook",
     "welding RFQ product list",
     "OEM welding project brief",
   ],

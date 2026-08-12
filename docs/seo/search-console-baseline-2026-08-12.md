@@ -79,6 +79,12 @@ link relevant category and guide content to the OEM service, and avoid weakening
 10. Added a plasma consumables RFQ workbook that connects each requested part to a torch reference,
     quantity, evidence ID and compatibility-review status, and linked it from the category, guide
     and Download Center.
+11. Expanded the existing welding machine sourcing checklist with a buyer-versus-supplier decision
+    matrix, distributor evidence checklist and topic-specific RFQ fields instead of changing its
+    near-page-one URL.
+12. Added a welding machine RFQ workbook for destination electrical inputs, documented performance
+    requirements, accessories, market documents and approval checkpoints, with tracked links from
+    the guide, category and Download Center.
 
 ## Measurement Plan
 

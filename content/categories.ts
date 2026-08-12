@@ -620,7 +620,100 @@ export const productCategories: ProductCategory[] = [
       "Confirm welding process, input voltage, output range and target application before RFQ.",
       "Send required accessory list, destination market standards and packaging requirements.",
       "Do not assume certifications or performance data unless official documents are provided.",
+      "Separate buyer requirements from supplier-confirmed configuration data and retain the approved comparison for repeat orders.",
     ],
+    componentGuide: [
+      {
+        name: "Power Source / Machine",
+        role: "Provides the documented welding or cutting process and available machine configuration.",
+        buyerCheck:
+          "Process, destination electrical input, documented output requirements, operating environment and proposed supplier data sheet.",
+      },
+      {
+        name: "Wire Feeder",
+        role: "Advances welding wire toward a compatible MIG/MAG torch where the machine arrangement uses a feeder.",
+        buyerCheck:
+          "Wire range, drive arrangement, control interface, cable connection and integrated or separate configuration from approved references.",
+        productSlug: "wire-feeder",
+      },
+      {
+        name: "Torch or Welding Gun",
+        role: "Connects the operator and welding process to the compatible machine and consumable system.",
+        buyerCheck:
+          "Process, interface, cooling arrangement when documented, cable length and included consumable or spare-part scope.",
+        productSlug: "stud-welding-gun",
+      },
+      {
+        name: "Work Lead and Clamp",
+        role: "Completes part of the welding circuit in the approved machine and cable arrangement.",
+        buyerCheck:
+          "Connector interface, cable requirement, clamp type and whether the item is included, optional or required as a spare.",
+      },
+      {
+        name: "Electrode Holder or Process Accessory",
+        role: "Supports the documented welding process where the proposed machine configuration includes one.",
+        buyerCheck:
+          "Required process, connector, cable reference, rating only when documented and included or optional status.",
+      },
+      {
+        name: "Control, Label and Documentation Set",
+        role: "Defines destination-market operation, identification and evidence for the exact quoted configuration.",
+        buyerCheck:
+          "Panel language, nameplate, manual, labels, test records and certification evidence available for the proposed machine.",
+      },
+    ],
+    selectionVariables: [
+      {
+        label: "Process and application",
+        whyItMatters:
+          "A machine name alone does not define the welding method, material range or working environment the buyer needs.",
+        confirmationMethod:
+          "Buyer process specification, application description and approved existing-equipment reference.",
+      },
+      {
+        label: "Destination electrical input",
+        whyItMatters:
+          "Voltage, frequency, phase and connection requirements vary by market and installation.",
+        confirmationMethod:
+          "Destination-country electrical requirement, site record or approved connection specification.",
+      },
+      {
+        label: "Documented performance requirement",
+        whyItMatters:
+          "Output range, duty cycle and process modes must be compared against supplier data rather than inferred from appearance.",
+        confirmationMethod:
+          "Buyer requirement and the supplier specification sheet for the exact proposed configuration.",
+      },
+      {
+        label: "Interfaces and accessory scope",
+        whyItMatters:
+          "A commercial quotation can differ significantly when torch, feeder, cables, controls or spares are included or optional.",
+        confirmationMethod:
+          "Line-item accessory list, interface drawing, model reference and supplier confirmation.",
+      },
+      {
+        label: "Market documents and approvals",
+        whyItMatters:
+          "A requested certificate or label is not proof that supporting evidence exists for the quoted machine.",
+        confirmationMethod:
+          "Destination requirement, supplier evidence, sample review and controlled approval record.",
+      },
+    ],
+    compatibilityChecklist: [
+      "Record the welding or cutting process, application and destination market before comparing models.",
+      "Provide approved voltage, frequency, phase and plug or power-connection requirements.",
+      "Separate required performance fields from supplier-proposed values and keep both evidence-based.",
+      "List every included or optional accessory, interface and spare part on its own line.",
+      "Review available data sheets, labels, manuals and certification evidence for the exact quoted configuration.",
+      "Retain the approved machine, accessories, documents and packing record before repeat ordering.",
+    ],
+    buyerTool: {
+      href: "/downloads/arcfort-welding-machine-rfq.xlsx",
+      title: "Welding Machine RFQ Workbook",
+      description:
+        "Define the process, destination electrical input, machine requirements, accessories, documents and approval checkpoints in one buyer-ready XLSX.",
+      buttonLabel: "Download Machine RFQ Workbook",
+    },
     features: [
       "Supports machine sourcing discussions",
       "Prepared for OEM and distributor inquiry workflows",
