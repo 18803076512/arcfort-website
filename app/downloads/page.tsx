@@ -32,6 +32,14 @@ const documentTypes = [
 
 const downloadFiles = [
   {
+    title: "TIG Torch Switch Identification Worksheet",
+    type: "CSV",
+    href: "/downloads/arcfort-tig-torch-switch-identification.csv",
+    description:
+      "Organize TIG torch, handle switch, control lead, connector and welding machine evidence before requesting a compatible replacement.",
+    note: "Complete only documented fields, attach clear photos of the handle and both cable ends, and leave unverified electrical details blank.",
+  },
+  {
     title: "Welding Machine RFQ Workbook",
     type: "XLSX",
     href: "/downloads/arcfort-welding-machine-rfq.xlsx",
@@ -122,7 +130,7 @@ const faq = [
 export const metadata = buildMetadata({
   title: "Download Center for Welding Product Buyers",
   description:
-    "Download ArcFort Weld catalogs, product lists, machine and plasma RFQ workbooks, a general worksheet, and an OEM project brief for industrial sourcing.",
+    "Download ArcFort Weld catalogs, product lists and RFQ worksheets for TIG switches, welding machines, plasma consumables and OEM sourcing.",
   path: "/downloads",
   keywords: [
     "welding product catalog",
@@ -130,6 +138,7 @@ export const metadata = buildMetadata({
     "plasma cutting consumables catalog",
     "plasma consumables RFQ workbook",
     "welding machine RFQ workbook",
+    "TIG torch switch identification worksheet",
     "welding RFQ product list",
     "OEM welding project brief",
   ],

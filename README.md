@@ -426,7 +426,8 @@ English language markup, one H1 per HTML page, indexability, Open Graph metadata
 required JSON-LD types, Product rich-result safety, same-page fragment links, image `alt`/`src`
 attributes, sitemap `lastmod` values, every sitemap product image, filtered catalog `noindex`,
 robots.txt, download indexing headers, legacy category redirects and crawlable internal links to
-every sitemap URL. It also reports whether an HTML Search Console verification tag is present and
+every sitemap URL. Retired product redirects and buyer-tool download indexing headers are checked
+as well. It also reports whether an HTML Search Console verification tag is present and
 whether GA4 is configured. An absent HTML tag is only a reminder to confirm DNS-based ownership
 verification separately. Audit a local or preview deployment while still requiring production
 canonical URLs with:
@@ -514,6 +515,8 @@ Generated public files:
   torch references, consumable line items, quantities, evidence files and compatibility review
 - `public/downloads/arcfort-welding-machine-rfq.xlsx` - four-tab welding equipment workbook for
   buyer requirements, supplier confirmation, accessories, market documents and order approval
+- `public/downloads/arcfort-tig-torch-switch-identification.csv` - switch, handle, control-lead and
+  connector evidence worksheet for TIG torch switch replacement review
 
 Refresh the files after SKU updates:
 
@@ -544,6 +547,12 @@ High-value products can add a dedicated buying profile in
 evidence checks, RFQ fields, FAQs and an optional buyer download without adding unconfirmed technical
 values to the core SKU record. The Wire Feeder profile is the first implementation and reuses the
 welding machine RFQ workbook for power-source, interface, accessory and approval review.
+
+When a published SKU is found to have insufficient product evidence, change it to `draft` in the
+source CSV and add a permanent redirect from its former product URL to the closest evidence-based
+category or buyer guide. The TIG Torch Switch route follows this workflow: its previous catalog crop
+showed a normal torch cable termination rather than a dedicated switch, so the route now leads to a
+switch replacement and compatibility guide with a downloadable identification worksheet.
 
 ## Distributor Promotion Workflow
 

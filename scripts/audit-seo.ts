@@ -40,6 +40,7 @@ const activeProducts: SeoRecord[] = arcfortProducts
   .filter((product) => !isLegacyProductPath(product.categorySlug, product.slug));
 const productSlugs = new Set(activeProducts.map((product) => product.slug));
 const legacyCategorySources = new Set<string>();
+const legacyProductSources = new Set<string>();
 
 function checkMetadataLength(owner: string, title: string, description: string) {
   const renderedTitle = composeSeoTitle(title, siteConfig.shortName);
@@ -262,6 +263,34 @@ for (const redirect of legacyCategoryRedirects) {
   }
 
   legacyCategorySources.add(redirect.sourceCategorySlug);
+}
+
+for (const redirect of legacyProductRedirects) {
+  const source = `${redirect.categorySlug}/${redirect.productSlug}`;
+
+  if (!categorySlugs.has(redirect.categorySlug)) {
+    errors.push(`Legacy product redirect source uses missing category "${redirect.categorySlug}".`);
+  }
+
+  if (legacyProductSources.has(source)) {
+    errors.push(`Duplicate legacy product redirect source "${source}".`);
+  }
+
+  if (!redirect.destination.startsWith("/") || redirect.destination.includes("..")) {
+    errors.push(`Legacy product redirect "${source}" has an unsafe destination.`);
+  }
+
+  if (redirect.destination.startsWith("/guides/")) {
+    const destinationGuide = redirect.destination.replace("/guides/", "");
+
+    if (!guides.some((guide) => guide.slug === destinationGuide)) {
+      errors.push(
+        `Legacy product redirect "${source}" points to missing guide "${destinationGuide}".`,
+      );
+    }
+  }
+
+  legacyProductSources.add(source);
 }
 
 for (const guide of guides) {

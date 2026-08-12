@@ -2,6 +2,139 @@ import type { GuideArticle } from "@/lib/content/schemas";
 
 export const guides: GuideArticle[] = [
   {
+    slug: "tig-torch-switch-replacement-compatibility",
+    title: "TIG Torch Switch Replacement and Compatibility Guide",
+    seoTitle: "TIG Torch Switch Replacement & Compatibility Guide",
+    description:
+      "Identify a TIG welding torch switch, control lead and machine-side connection before requesting a compatible replacement.",
+    seoDescription:
+      "Identify a TIG torch switch by handle fit, actuator, wiring and connector. Prepare photos and references for replacement compatibility review.",
+    publishedDate: "2026-08-12",
+    modifiedDate: "2026-08-12",
+    sections: [
+      {
+        title: "Treat the switch as part of the control circuit",
+        body: "A TIG torch switch is a torch-mounted control input, not a universal accessory selected from appearance alone. The switch body must fit the intended handle or mounting position, while its leads and machine-side connection must suit the documented control arrangement. Some assemblies use a separate button and cable; others route control conductors through a complete torch cable assembly. Begin with the complete torch and welding machine references so the supplier can determine which evidence is needed before proposing a replacement.",
+      },
+      {
+        title: "Record the torch handle and actuator",
+        body: "Photograph the complete torch, both sides of the handle and the installed switch before disassembly. Show whether the actuator is a button, rocker, lever or other form only as it appears on the existing assembly. Record the mounting position, retaining method and the space available inside or around the handle. If reliable dimensions can be measured, show them in a photo with a scale; do not complete hidden dimensions or mounting details from memory.",
+      },
+      {
+        title: "Document the control lead",
+        body: "Follow the switch leads from the handle to the point where they terminate. Record the visible conductor count, cable routing, strain relief, overall lead length and any splice or separate control cable. Do not infer voltage, current or contact logic from wire color. Electrical details should come from an approved wiring diagram, equipment documentation or supplier confirmation for the exact proposed item. Clear photos of both ends are more useful than an unverified electrical description.",
+      },
+      {
+        title: "Identify the machine-side connection",
+        body: "Capture the connector body, pin face, keying, locking method and any readable markings. State the welding power source manufacturer and model as a reference, then provide the nameplate or control-socket photo where available. A machine model can narrow the review but does not by itself prove pin assignment or compatibility. When the existing assembly uses loose terminals rather than a plug, photograph the terminal form and retain the original wiring record for technical review.",
+      },
+      {
+        title: "Separate switch and torch termination requests",
+        body: "A torch switch and a normal torch termination are different sourcing items. A switch is the operator control mounted on or near the handle. A torch termination describes the cable, hose, power, gas or control-wire connection at the equipment end. If the buyer needs both, list them as separate RFQ lines and show how they are connected in the existing assembly. This prevents a cable-termination drawing from being mistaken for a switch product and keeps the quotation scope clear.",
+      },
+      {
+        title: "Approve compatibility before repeat orders",
+        body: "Ask the supplier to identify the proposed switch format, mounting arrangement, lead scope and connection basis in the quotation. Keep unresolved fields marked for review until a sample, drawing or documented reference is accepted. For a first order, confirm the exact sample or approved evidence before moving to repeat quantities or private-label packaging. Retain photos of the accepted switch and connector with the purchase record so future orders can be compared against the same control reference.",
+      },
+    ],
+    componentReference: {
+      title: "TIG torch switch identification points",
+      description:
+        "Use these evidence points to separate the handle control, its lead and the machine-side termination during replacement review.",
+      rows: [
+        {
+          name: "Switch Actuator",
+          assemblyArea: "Torch handle exterior",
+          role: "Provides the operator input through the installed button, rocker, lever or other documented form.",
+          buyerCheck:
+            "Front, side and installed views; actuator form; visible markings; operating direction where documented.",
+        },
+        {
+          name: "Switch Body and Mount",
+          assemblyArea: "Inside or on the torch handle",
+          role: "Positions the switch in the handle and interfaces with the retaining features of the existing assembly.",
+          buyerCheck:
+            "Mounting position, retaining method, available space and measured dimensions only when reliably documented.",
+        },
+        {
+          name: "Control Lead",
+          assemblyArea: "Handle to termination",
+          role: "Carries the switch signal through the documented torch control arrangement.",
+          buyerCheck:
+            "Visible conductor count, lead length, routing, strain relief and both termination points; no assumed electrical rating.",
+        },
+        {
+          name: "Machine-Side Connector",
+          assemblyArea: "Equipment end of the control lead",
+          role: "Connects the control lead to the compatible equipment interface where the assembly uses a plug or terminal set.",
+          buyerCheck:
+            "Connector body, pin face, keying, locking method, markings, machine model and control-socket photo.",
+        },
+      ],
+    },
+    buyerChecklist: {
+      title: "Evidence to send for a TIG torch switch quotation",
+      description:
+        "Prepare one evidence set for each switch or torch configuration so the sales team can review the request without guessing compatibility.",
+      items: [
+        "Photograph the complete TIG torch, handle and installed switch before disassembly.",
+        "Show the switch actuator and mounting area from the front, side and rear where accessible.",
+        "Trace the control lead and photograph both terminations, strain relief and any connector markings.",
+        "Provide the welding machine manufacturer, model, nameplate and control-socket photo when available.",
+        "Add measured dimensions only when they can be shown clearly against a scale or drawing.",
+        "State quantity, destination country, packing needs and whether a physical reference sample is available.",
+      ],
+    },
+    rfqFields: [
+      "Complete TIG torch manufacturer / model reference:",
+      "Welding machine manufacturer / model / control-socket reference:",
+      "Switch actuator and mounting description:",
+      "Control lead length and visible conductor count:",
+      "Connector body / pin-face / terminal reference:",
+      "Required quantity and destination country:",
+      "Standard or OEM packaging requirement:",
+      "Attached handle, switch, lead and connector photos:",
+    ],
+    buyerTool: {
+      href: "/downloads/arcfort-tig-torch-switch-identification.csv",
+      title: "TIG Torch Switch Identification Worksheet",
+      description:
+        "Use the CSV worksheet to organize torch, switch, control-lead and connector evidence before compatibility review.",
+      buttonLabel: "Download Switch Worksheet",
+    },
+    categorySlugs: ["tig-torch-parts"],
+    productSlugs: ["tig-welding-torch"],
+    faq: [
+      {
+        question: "Can a TIG torch switch be selected from the torch photo alone?",
+        answer:
+          "A complete torch photo helps identify the family, but reliable replacement review normally also needs the switch mount, control lead, connector and welding machine reference.",
+      },
+      {
+        question: "Is a TIG torch switch the same as a torch cable termination?",
+        answer:
+          "No. The switch is the handle-mounted control input. The termination is the equipment-end connection for the cable, hose, power, gas or control conductors. List both items separately when both are required.",
+      },
+      {
+        question: "Should I provide the pin assignment or electrical rating?",
+        answer:
+          "Provide those values only from an approved wiring diagram or equipment document. Otherwise send clear connector and control-socket photos for supplier review rather than guessing electrical details.",
+      },
+      {
+        question: "Can ArcFort Weld review a physical switch or torch sample?",
+        answer:
+          "Reference-sample review can be discussed. Send photos and the available model information first so the team can confirm the required sample and quotation process.",
+      },
+    ],
+    keywords: [
+      "TIG torch switch",
+      "TIG welding torch switch",
+      "TIG torch trigger switch",
+      "TIG torch switch replacement",
+      "TIG torch control connector",
+    ],
+  },
+  {
     slug: "how-to-prepare-a-welding-parts-rfq",
     title: "How to Prepare a Welding Parts RFQ",
     seoTitle: "How to Prepare a Welding Parts RFQ for B2B Suppliers",
@@ -627,7 +760,6 @@ export const guides: GuideArticle[] = [
           role: "Provides a torch-mounted control input where the torch and welding machine arrangement supports it.",
           buyerCheck:
             "Switch shape, mounting position, lead length and connector or wiring reference from the existing assembly.",
-          productSlug: "tig-torch-switch",
         },
         {
           name: "Cable or Hose Assembly",
@@ -678,7 +810,6 @@ export const guides: GuideArticle[] = [
       "tig-back-cap",
       "tig-tungsten-electrode",
       "tig-welding-torch",
-      "tig-torch-switch",
     ],
     faq: [
       {

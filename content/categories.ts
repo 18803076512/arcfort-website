@@ -263,7 +263,6 @@ export const productCategories: ProductCategory[] = [
         role: "Provides a torch-mounted control input where the torch and machine configuration supports it.",
         buyerCheck:
           "Send the torch model, switch shape, connector or wiring reference and photos of both sides.",
-        productSlug: "tig-torch-switch",
       },
     ],
     selectionVariables: [

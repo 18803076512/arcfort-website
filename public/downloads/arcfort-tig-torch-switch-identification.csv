@@ -1,0 +1,19 @@
+field,buyer_information,evidence_file,supplier_review
+complete_tig_torch_manufacturer_and_model,,,Required when available
+welding_machine_manufacturer_and_model,,,Required when available
+machine_nameplate_and_control_socket,,,Photo or approved document
+switch_actuator_form,,,Photo from front and side
+switch_mounting_position_and_method,,,Photo before disassembly
+switch_body_dimensions,,,Measured value only when reliable
+visible_conductor_count,,,Do not infer electrical rating
+control_lead_length,,,Measured value or Available upon request
+strain_relief_and_cable_routing,,,Photo from handle to termination
+connector_body_and_locking_method,,,Photo from side
+connector_pin_face_or_terminal_form,,,Clear end-on photo
+connector_or_cable_markings,,,Transcribe only readable markings
+approved_wiring_or_pin_reference,,,Leave blank when unavailable
+physical_reference_sample_available,,,Yes or No
+required_quantity,,,Buyer-provided
+destination_country,,,Buyer-provided
+packaging_or_oem_requirement,,,Standard packing or describe requirement
+additional_notes,,,Use unknown for unavailable details

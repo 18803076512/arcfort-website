@@ -30,6 +30,11 @@ export const legacyProductRedirects = [
     productSlug: "tig-gas-lens",
     destination: "/products/tig-torch-parts",
   },
+  {
+    categorySlug: "tig-torch-parts",
+    productSlug: "tig-torch-switch",
+    destination: "/guides/tig-torch-switch-replacement-compatibility",
+  },
 ] as const;
 
 const legacyProductPaths = new Set(

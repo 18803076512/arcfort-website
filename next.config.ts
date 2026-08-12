@@ -131,6 +131,10 @@ const nextConfig: NextConfig = {
         source: "/downloads/arcfort-rfq-template.csv",
         headers: [{ key: "X-Robots-Tag", value: "noindex" }],
       },
+      {
+        source: "/downloads/arcfort-tig-torch-switch-identification.csv",
+        headers: [{ key: "X-Robots-Tag", value: "noindex" }],
+      },
     ];
   },
 };
