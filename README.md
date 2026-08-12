@@ -372,6 +372,10 @@ evidence clearly supports a repositioning. Keep the first viewport focused on pr
 direct contact and RFQ entry, and verify that mobile buyers can see the next content band without a
 full-screen promotional block.
 
+The product center search accepts common buyer terminology as well as exact names and SKUs. Keep
+industry aliases such as `GTAW` / `TIG`, `torch` / `gun`, and `cutting` / `cutter` covered by
+`npm run test:product-search` when expanding the catalog or changing search behavior.
+
 Run the combined production health check without sending an RFQ or email:
 
 ```bash

@@ -1,11 +1,13 @@
 import Link from "next/link";
 import { ProductCatalogTracker } from "@/components/analytics/ProductCatalogTracker";
 import { Breadcrumbs } from "@/components/content/Breadcrumbs";
+import { FaqSection } from "@/components/content/FaqSection";
 import { ProductCard } from "@/components/content/ProductCard";
 import { RfqCta } from "@/components/content/RfqCta";
 import { StructuredData } from "@/components/content/StructuredData";
+import { ProductFinderForm } from "@/components/products/ProductFinderForm";
 import { getAllProductCategories } from "@/lib/content/categories";
-import { breadcrumbJsonLd, collectionPageJsonLd } from "@/lib/content/jsonld";
+import { breadcrumbJsonLd, collectionPageJsonLd, faqJsonLd } from "@/lib/content/jsonld";
 import {
   getProductCatalogPage,
   hasProductCatalogParameters,
@@ -13,10 +15,15 @@ import {
 } from "@/lib/content/product-search";
 import { getAllProducts } from "@/lib/content/products";
 import { buildMetadata } from "@/lib/content/seo";
-import { buildEmailHref } from "@/lib/content/site";
+import { buildEmailHref, buildWhatsAppHref, siteConfig } from "@/lib/content/site";
 
 const productListEmailHref = buildEmailHref({
   subject: "Welding and cutting product list inquiry",
+  message:
+    "Hello ArcFort Weld, I would like to send a welding and cutting product list for quotation.\n\nProduct categories:\nQuantity by item:\nDestination country:\nDrawing, model or sample references:\nPackaging requirements:",
+});
+
+const productListWhatsAppHref = buildWhatsAppHref({
   message:
     "Hello ArcFort Weld, I would like to send a welding and cutting product list for quotation.\n\nProduct categories:\nQuantity by item:\nDestination country:\nDrawing, model or sample references:\nPackaging requirements:",
 });
@@ -84,10 +91,51 @@ const buyerSignals = [
   { label: "Lead Time", value: "7-20 working days" },
 ] as const;
 
+const quickCategoryLinks = [
+  {
+    label: "MIG/MAG Torch Parts",
+    href: "/products/mig-mag-torch-parts",
+    scope: "Contact tips, nozzles, diffusers and liners",
+  },
+  {
+    label: "TIG Torch Parts",
+    href: "/products/tig-torch-parts",
+    scope: "Ceramic cups, collets, gas lenses and torch parts",
+  },
+  {
+    label: "Plasma Consumables",
+    href: "/products/plasma-cutting-consumables",
+    scope: "Electrodes, nozzles, shields and swirl rings",
+  },
+] as const;
+
+const productCenterFaq = [
+  {
+    question: "What product reference should I provide for a welding or cutting inquiry?",
+    answer:
+      "Provide the product or component name, ArcFort SKU when available, torch or machine model, and any existing part number. A clear photo, drawing or reference part helps the team review items that use different market terminology.",
+  },
+  {
+    question: "Can I request several product categories in one RFQ?",
+    answer:
+      "Yes. Distributors and importers can send mixed product lists covering MIG/MAG torch parts, TIG torch parts, plasma cutting consumables, welding consumables, machines and accessories. Include quantity by item and the destination country.",
+  },
+  {
+    question: "How does ArcFort Weld confirm product compatibility?",
+    answer:
+      "Compatibility is reviewed from the torch or machine model, existing part number, drawing, approved sample or clear product photos. Similar product names do not by themselves confirm fit.",
+  },
+  {
+    question: "Are OEM packaging and small trial orders available?",
+    answer:
+      "Small trial orders are accepted for standard products. Logo, private label and customized packaging can be discussed after the product list, artwork, quantities and packing requirements are confirmed.",
+  },
+] as const;
+
 const productCenterMetadata = {
-  title: "Product Center",
+  title: "Welding & Cutting Product Catalog",
   description:
-    "Explore ArcFort Weld welding and cutting product categories for industrial B2B buyers, distributors, importers and repair workshops.",
+    "Source MIG/MAG and TIG torch parts, plasma cutter consumables, welding machines and accessories. Search ArcFort Weld products or send a mixed B2B RFQ.",
   path: "/products",
   keywords: [
     "welding products",
@@ -184,43 +232,45 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
       />
       <StructuredData
         data={collectionPageJsonLd({
-          name: "ArcFort Weld Product Center",
+          name: "ArcFort Weld Welding and Cutting Products",
           description:
-            "Welding and cutting product categories for distributors, importers, wholesalers, repair workshops and OEM buyers.",
+            "MIG/MAG and TIG torch parts, plasma cutter consumables, welding machines, consumables and accessories for distributors, importers, repair workshops and OEM buyers.",
           path: "/products",
+          image: siteConfig.defaultSeoImage,
+          dateModified: siteConfig.contentLastModified,
           items: categories.map((category) => ({
             name: category.title,
             path: `/products/${category.slug}`,
           })),
         })}
       />
+      <StructuredData data={faqJsonLd([...productCenterFaq])} />
 
-      <section className="bg-white py-12 sm:py-16">
+      <section className="bg-white py-5 sm:py-6">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <Breadcrumbs items={[{ label: "Home", href: "/" }, { label: "Products" }]} />
         </div>
       </section>
 
       <section className="bg-arc-midnight text-white">
-        <div className="mx-auto grid max-w-7xl gap-10 px-4 py-14 sm:px-6 sm:py-16 lg:grid-cols-[1fr_0.72fr] lg:items-end lg:px-8">
+        <div className="mx-auto grid max-w-7xl gap-8 px-4 py-10 sm:px-6 sm:py-14 lg:grid-cols-[1fr_0.72fr] lg:items-end lg:px-8">
           <div>
             <p className="text-sm font-bold uppercase leading-6 tracking-[0.14em] text-arc-signal sm:tracking-[0.2em]">
-              Product Center
+              Industrial Product Supply
             </p>
             <h1 className="mt-4 max-w-4xl break-words font-display text-3xl font-black leading-tight sm:text-5xl lg:text-6xl">
-              Welding and cutting products organized for overseas B2B sourcing.
+              Welding Torch Parts, Plasma Consumables & Equipment
             </h1>
             <p className="mt-6 max-w-3xl text-lg leading-8 text-slate-300">
-              ArcFort Weld helps distributors, importers, wholesalers, repair workshops and OEM
-              buyers review welding torch consumables, cutting parts, machines and accessories
-              before sending a clear RFQ.
+              Search MIG/MAG and TIG torch parts, plasma cutter consumables, welding consumables,
+              machines and accessories for distributor, importer, repair and OEM purchasing.
             </p>
             <div className="mt-8 flex flex-col gap-3 sm:flex-row">
               <Link
-                href="#product-categories"
+                href="#product-finder"
                 className="inline-flex w-full items-center justify-center bg-arc-signal px-6 py-3 text-sm font-bold uppercase tracking-[0.16em] text-arc-midnight transition hover:bg-white sm:w-auto"
               >
-                View Categories
+                Find Products
               </Link>
               <Link
                 href="/rfq"
@@ -231,7 +281,7 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
             </div>
           </div>
 
-          <aside className="border border-white/10 bg-white/5 p-5 shadow-industrial">
+          <aside className="hidden border border-white/10 bg-white/5 p-5 shadow-industrial lg:block">
             <p className="text-xs font-bold uppercase tracking-[0.18em] text-arc-signal">
               Current Supply Scope
             </p>
@@ -267,15 +317,77 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
         </div>
       </section>
 
-      <section className="bg-white py-12 sm:py-14">
+      <section id="product-finder" className="scroll-mt-28 bg-white py-10 sm:py-12">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="grid gap-5 lg:grid-cols-3">
+          <div className="grid gap-8 lg:grid-cols-[0.7fr_1.3fr] lg:items-start">
+            <div>
+              <p className="text-sm font-bold uppercase tracking-[0.2em] text-arc-blue">
+                Product Finder
+              </p>
+              <h2 className="mt-3 font-display text-3xl font-black text-arc-midnight">
+                Welding and cutting product finder
+              </h2>
+              <p className="mt-4 text-sm leading-7 text-slate-600">
+                ArcFort Weld product records cover common component names, category references and
+                SKUs used in distributor purchase lists. Include the torch or machine model and a
+                sample photo when market terminology or compatibility is uncertain.
+              </p>
+              <div className="mt-5 flex flex-col gap-2 sm:flex-row lg:flex-col xl:flex-row">
+                <a
+                  href={productListEmailHref}
+                  className="inline-flex min-h-11 flex-1 items-center justify-center border border-arc-blue px-4 text-xs font-bold uppercase tracking-[0.12em] text-arc-blue transition hover:bg-arc-blue hover:text-white"
+                >
+                  Email Product List
+                </a>
+                <a
+                  href={productListWhatsAppHref}
+                  className="inline-flex min-h-11 flex-1 items-center justify-center border border-slate-300 px-4 text-xs font-bold uppercase tracking-[0.12em] text-slate-700 transition hover:border-arc-blue hover:text-arc-blue"
+                >
+                  WhatsApp Product List
+                </a>
+              </div>
+            </div>
+
+            <ProductFinderForm
+              categories={categories.map((category) => ({
+                slug: category.slug,
+                title: category.title,
+                count: productsByCategory.get(category.slug)?.length ?? 0,
+              }))}
+              categorySlug={catalog.categorySlug}
+              hasParameters={hasCatalogParameters}
+              productCount={productCount}
+              query={catalog.query}
+            />
+          </div>
+
+          <nav
+            aria-label="Popular welding and cutting product categories"
+            className="mt-8 grid gap-px border border-slate-200 bg-slate-200 md:grid-cols-3"
+          >
+            {quickCategoryLinks.map((item) => (
+              <Link
+                key={item.href}
+                href={item.href}
+                className="group min-w-0 bg-white p-5 transition hover:bg-arc-frost"
+              >
+                <span className="block font-display text-lg font-black text-arc-midnight transition group-hover:text-arc-blue">
+                  {item.label}
+                </span>
+                <span className="mt-2 block text-xs font-semibold leading-5 text-slate-600">
+                  {item.scope}
+                </span>
+              </Link>
+            ))}
+          </nav>
+
+          <div className="mt-8 grid gap-5 lg:grid-cols-3">
             {procurementSteps.map((item) => (
               <article key={item.step} className="border border-slate-200 bg-white p-6 shadow-sm">
                 <div className="font-display text-4xl font-black text-arc-blue">{item.step}</div>
-                <h2 className="mt-4 font-display text-2xl font-black text-arc-midnight">
+                <h3 className="mt-4 font-display text-2xl font-black text-arc-midnight">
                   {item.title}
-                </h2>
+                </h3>
                 <p className="mt-3 text-sm leading-7 text-slate-600">{item.description}</p>
               </article>
             ))}
@@ -416,85 +528,23 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
           <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
             <div>
               <p className="text-sm font-bold uppercase tracking-[0.2em] text-arc-blue">
-                Product Catalog
+                Product Records
               </p>
               <h2 className="mt-3 font-display text-3xl font-black text-arc-midnight">
-                Search welding and cutting products
+                Available welding and cutting products
               </h2>
               <p className="mt-4 max-w-3xl text-sm leading-7 text-slate-600">
-                Find products by name, SKU or category. Product pages show confirmed fields where
-                available and keep unconfirmed technical data buyer-friendly until references are
-                reviewed.
+                Review published products and add relevant items to your RFQ shortlist. Technical
+                fit is confirmed from a model, drawing, sample or reference part before quotation.
               </p>
             </div>
-            <a
-              href={productListEmailHref}
+            <Link
+              href="#product-finder"
               className="inline-flex w-full items-center justify-center border border-arc-blue px-5 py-3 text-sm font-bold uppercase tracking-[0.14em] text-arc-blue transition hover:bg-arc-blue hover:text-white sm:w-auto"
             >
-              Email Product List
-            </a>
+              Change Search
+            </Link>
           </div>
-
-          <form
-            action="/products"
-            method="get"
-            className="mt-8 grid gap-4 border border-slate-200 bg-arc-frost p-5 shadow-sm sm:p-6 lg:grid-cols-[minmax(0,1.35fr)_minmax(14rem,0.65fr)_auto]"
-          >
-            <div>
-              <label
-                htmlFor="product-search"
-                className="block text-xs font-bold uppercase tracking-[0.16em] text-slate-600"
-              >
-                Product name or SKU
-              </label>
-              <input
-                id="product-search"
-                name="q"
-                type="search"
-                defaultValue={catalog.query}
-                maxLength={100}
-                placeholder="Contact tip, plasma nozzle or AF-MIG-CT-0005"
-                className="mt-2 block min-h-12 w-full border-slate-300 bg-white text-sm text-arc-midnight placeholder:text-slate-400 focus:border-arc-blue focus:ring-arc-blue"
-              />
-            </div>
-            <div>
-              <label
-                htmlFor="product-category"
-                className="block text-xs font-bold uppercase tracking-[0.16em] text-slate-600"
-              >
-                Category
-              </label>
-              <select
-                id="product-category"
-                name="category"
-                defaultValue={catalog.categorySlug}
-                className="mt-2 block min-h-12 w-full border-slate-300 bg-white text-sm font-semibold text-arc-midnight focus:border-arc-blue focus:ring-arc-blue"
-              >
-                <option value="">All categories ({productCount})</option>
-                {categories.map((category) => (
-                  <option key={category.slug} value={category.slug}>
-                    {category.title} ({productsByCategory.get(category.slug)?.length ?? 0})
-                  </option>
-                ))}
-              </select>
-            </div>
-            <div className="flex flex-col gap-2 lg:justify-end">
-              <button
-                type="submit"
-                className="inline-flex min-h-12 w-full items-center justify-center bg-arc-blue px-6 text-sm font-bold uppercase tracking-[0.14em] text-white transition hover:bg-arc-midnight"
-              >
-                Search Products
-              </button>
-              {hasCatalogParameters ? (
-                <Link
-                  href="/products#product-catalog"
-                  className="inline-flex min-h-10 items-center justify-center text-xs font-bold uppercase tracking-[0.14em] text-arc-blue hover:text-arc-copper"
-                >
-                  Clear Filters
-                </Link>
-              ) : null}
-            </div>
-          </form>
 
           <div className="mt-8 flex flex-col gap-3 border-b border-slate-200 pb-5 sm:flex-row sm:items-end sm:justify-between">
             <div>
@@ -628,6 +678,12 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
               )}
             </nav>
           ) : null}
+        </div>
+      </section>
+
+      <section className="bg-white py-14 sm:py-16">
+        <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
+          <FaqSection items={[...productCenterFaq]} title="Product Sourcing FAQ" />
         </div>
       </section>
 

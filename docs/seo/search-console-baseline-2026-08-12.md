@@ -94,6 +94,12 @@ link relevant category and guide content to the OEM service, and avoid weakening
 15. Reduced the mobile hero height, exposed direct email and WhatsApp contact on small screens, linked
     the first-viewport supply scope to commercial category pages and added immediate RFQ / worksheet
     actions after the hero.
+16. Repositioned the product center around welding and cutting product-catalog intent after it recorded
+    30 impressions at average position 33.87, and moved its product finder ahead of supporting buyer
+    content.
+17. Added buyer-language search aliases for observed query variants including plasma cutter
+    consumables, TIG gun parts, GTAW torch components, spare parts and plural component names, with a
+    regression test in the quality workflow.
 
 ## Measurement Plan
 
