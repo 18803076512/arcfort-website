@@ -7,12 +7,12 @@ This report is an internal working checklist. Do not use it to invent product sp
 ## Summary
 
 - Products checked: 43
-- Active public products: 41
-- Draft products: 2
+- Active public products: 40
+- Draft products: 3
 - Products with confirmed data status: 0
 - Products with own-photo image status: 0
-- Products with reviewed own or supplier photos: 41
-- Products requiring a reviewed product photo: 2
+- Products with reviewed own or supplier photos: 40
+- Products requiring a reviewed product photo: 3
 - Active products requiring a reviewed product photo: 0
 - Products with confirmed compatibility status: 0
 - Products with confirmed OEM status: 0
@@ -22,8 +22,8 @@ This report is an internal working checklist. Do not use it to invent product sp
 
 ## Publication Status
 
-- active: 41
-- draft: 2
+- active: 40
+- draft: 3
 
 ## Data Status
 
@@ -31,8 +31,8 @@ This report is an internal working checklist. Do not use it to invent product sp
 
 ## Image Status
 
-- needs_photo: 2
-- supplier_photo: 41
+- needs_photo: 3
+- supplier_photo: 40
 
 ## Compatibility Status
 
@@ -49,6 +49,7 @@ This report is an internal working checklist. Do not use it to invent product sp
 | --- | --- | --- | --- |
 | AF-PLA-RC-0011 | Plasma Retaining Cap | Plasma Cutting Consumables | draft; needs_photo: replace or verify /images/products/plasma-retaining-cap.jpg |
 | AF-ACC-WM-0015 | Welding Magnet | Welding Accessories | draft; needs_photo: replace or verify /images/products/welding-magnet.jpg |
+| AF-TIG-TS-0036 | TIG Torch Switch | TIG Torch Parts | draft; needs_photo: replace or verify /images/products/tig-torch-switch.jpg |
 
 ## Missing Main Images
 

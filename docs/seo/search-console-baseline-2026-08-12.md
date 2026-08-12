@@ -50,8 +50,10 @@ matching category, not split into near-duplicate doorway pages.
 | `/rfq`                                       |           6 |      0 |            17.50 | Preserve the clear quote intent and confirm live email delivery before driving more search traffic.                      |
 
 The MIG torch switch query and product page have appeared around page-one positions but with only one
-or two impressions. Improve the existing product snippet and component context; do not create a
-second switch page.
+or two impressions. Improve the existing MIG product snippet and component context; do not create a
+second MIG switch page. The separate TIG Torch Switch URL recorded 9 impressions at average position
+36, but its assigned catalog crop was later verified as a normal torch cable termination rather than
+a dedicated switch. Product evidence takes priority over preserving an unsupported commercial page.
 
 ### Priority 3: protect commercial winners
 
@@ -100,6 +102,10 @@ link relevant category and guide content to the OEM service, and avoid weakening
 17. Added buyer-language search aliases for observed query variants including plasma cutter
     consumables, TIG gun parts, GTAW torch components, spare parts and plural component names, with a
     regression test in the quality workflow.
+18. Retired the unsupported TIG Torch Switch SKU from the public catalog, permanently redirected its
+    existing URL to a focused replacement and compatibility guide, and added a buyer worksheet for
+    handle, switch, control-lead, connector and machine evidence. This preserves the existing search
+    path without presenting a cable-termination image as a switch product.
 
 ## Measurement Plan
 

@@ -1,7 +1,11 @@
 #!/usr/bin/env node
 
 import { siteConfig } from "../lib/content/site.ts";
-import { isLegacyProductPath, legacyCategoryRedirects } from "../lib/content/product-redirects.ts";
+import {
+  isLegacyProductPath,
+  legacyCategoryRedirects,
+  legacyProductRedirects,
+} from "../lib/content/product-redirects.ts";
 import { arcfortProducts } from "../lib/data/products.ts";
 
 type PageAudit = {
@@ -832,6 +836,13 @@ async function main() {
     }
   }
 
+  for (const redirect of legacyProductRedirects) {
+    await auditPermanentRedirect(
+      `/products/${redirect.categorySlug}/${redirect.productSlug}`,
+      redirect.destination,
+    );
+  }
+
   for (const pdfPath of [
     "/downloads/arcfort-distributor-sourcing-guide.pdf",
     "/downloads/renqiu-ailesen-welding-catalog.pdf",
@@ -855,6 +866,7 @@ async function main() {
   for (const csvPath of [
     "/downloads/arcfort-public-product-list.csv",
     "/downloads/arcfort-rfq-template.csv",
+    "/downloads/arcfort-tig-torch-switch-identification.csv",
   ]) {
     const response = await fetch(new URL(csvPath, `${fetchBaseUrl}/`), {
       redirect: "manual",
@@ -881,6 +893,7 @@ async function main() {
   console.log(`Non-HTML files checked: ${audits.length - htmlAudits.length}`);
   console.log(`Sitemap images checked: ${sitemapImageUrls.length}`);
   console.log(`Legacy category redirects checked: ${legacyCategoryRedirects.length}`);
+  console.log(`Legacy product redirects checked: ${legacyProductRedirects.length}`);
   console.log(
     `Search Console HTML verification tag: ${homeAudit?.googleVerificationTagPresent ? "present" : "absent"}`,
   );
