@@ -74,6 +74,11 @@ link relevant category and guide content to the OEM service, and avoid weakening
    buyer checks and an evidence checklist instead of creating a competing TIG URL.
 8. Added a structured OEM project brief download and tracked its download as a non-PII buyer-tool
    conversion, strengthening the highest-performing commercial pathway.
+9. Expanded the existing plasma parts guide with a front-end component reference, evidence
+   checklist and topic-specific RFQ fields instead of creating another competing plasma URL.
+10. Added a plasma consumables RFQ workbook that connects each requested part to a torch reference,
+    quantity, evidence ID and compatibility-review status, and linked it from the category, guide
+    and Download Center.
 
 ## Measurement Plan
 

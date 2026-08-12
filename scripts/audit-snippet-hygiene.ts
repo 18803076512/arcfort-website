@@ -122,8 +122,14 @@ for (const guide of guides) {
     errors.push(`${relativePath} has an unprotected guide-rfq-workflow region.`);
   }
 
-  if (!html.includes("/downloads/arcfort-rfq-template.csv")) {
-    errors.push(`${relativePath} is missing the RFQ worksheet download.`);
+  const buyerToolHref = guide.buyerTool?.href ?? "/downloads/arcfort-rfq-template.csv";
+
+  if (!html.includes(buyerToolHref)) {
+    errors.push(`${relativePath} is missing its buyer RFQ tool download.`);
+  }
+
+  if (guide.buyerTool && !html.includes(guide.buyerTool.buttonLabel)) {
+    errors.push(`${relativePath} is missing its buyer RFQ tool button label.`);
   }
 
   if (!html.includes(rfqHref)) {

@@ -501,6 +501,8 @@ Generated public files:
 - `public/downloads/arcfort-rfq-template.csv` - buyer worksheet for product list quotation requests
 - `public/downloads/arcfort-oem-project-brief.xlsx` - four-tab OEM project workbook for buyer,
   product-line, packaging, artwork and evidence-file preparation
+- `public/downloads/arcfort-plasma-consumables-rfq.xlsx` - four-tab plasma consumables workbook for
+  torch references, consumable line items, quantities, evidence files and compatibility review
 
 Refresh the files after SKU updates:
 
@@ -514,6 +516,11 @@ unconfirmed certifications or hidden SKU workflow fields.
 The OEM project brief is a buyer-completed preparation file. Its readiness summary uses workbook
 formulas, and its product, model, size, rating, certification and compatibility fields must remain
 buyer-provided or evidence-based. Do not prefill unverified technical claims.
+
+The plasma consumables RFQ workbook follows the same evidence-first rule. Buyers should enter one
+electrode, nozzle, swirl ring, retaining cap, shield, spacer or kit per line, link each line to an
+evidence ID, and use `Reference only`, `Unverified` or `Supplier review required` when fit is not
+documented. The workbook can be uploaded directly through the production RFQ form.
 
 ## Distributor Promotion Workflow
 

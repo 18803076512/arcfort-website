@@ -24,6 +24,10 @@ export default function sitemap(): MetadataRoute.Sitemap {
   ];
   const downloadableRoutes = [
     {
+      path: "/downloads/arcfort-plasma-consumables-rfq.xlsx",
+      lastModified: siteConfig.contentLastModified,
+    },
+    {
       path: "/downloads/arcfort-oem-project-brief.xlsx",
       lastModified: siteConfig.contentLastModified,
     },

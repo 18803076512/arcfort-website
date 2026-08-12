@@ -32,6 +32,14 @@ const documentTypes = [
 
 const downloadFiles = [
   {
+    title: "Plasma Consumables RFQ Workbook",
+    type: "XLSX",
+    href: "/downloads/arcfort-plasma-consumables-rfq.xlsx",
+    description:
+      "Download a structured workbook for plasma torch models, consumable stack line items, quantities, evidence files, compatibility review and packing requirements.",
+    note: "Use one row per electrode, nozzle, swirl ring, retaining cap, shield, spacer or kit, then upload the workbook with labeled photos or drawings.",
+  },
+  {
     title: "OEM Welding Project Brief",
     type: "XLSX",
     href: "/downloads/arcfort-oem-project-brief.xlsx",
@@ -99,19 +107,20 @@ const faq = [
   {
     question: "Can buyers download a product list before sending an inquiry?",
     answer:
-      "Yes. The download center includes a public CSV product list, an RFQ worksheet and an OEM project brief. Buyers can complete the suitable file and upload it through the RFQ form.",
+      "Yes. The download center includes a public CSV product list, a general RFQ worksheet, a plasma consumables RFQ workbook and an OEM project brief. Buyers can complete the suitable file and upload it through the RFQ form.",
   },
 ] as const;
 
 export const metadata = buildMetadata({
   title: "Download Center for Welding Product Buyers",
   description:
-    "Download ArcFort Weld catalogs, product lists, an RFQ worksheet and an OEM project brief for welding and cutting product sourcing.",
+    "Download ArcFort Weld catalogs, product lists, plasma and general RFQ worksheets, and an OEM project brief for welding and cutting product sourcing.",
   path: "/downloads",
   keywords: [
     "welding product catalog",
     "welding consumables data sheet",
     "plasma cutting consumables catalog",
+    "plasma consumables RFQ workbook",
     "welding RFQ product list",
     "OEM welding project brief",
   ],

@@ -162,6 +162,17 @@ const oemProjectBrief = new File([oemProjectBriefBytes], "arcfort-oem-project-br
 assert.equal(validateRfqFiles([oemProjectBrief]), null);
 assert.equal(await validateRfqFileContents([oemProjectBrief]), null);
 
+const plasmaRfqWorkbookBytes = readFileSync("public/downloads/arcfort-plasma-consumables-rfq.xlsx");
+const plasmaRfqWorkbook = new File(
+  [plasmaRfqWorkbookBytes],
+  "arcfort-plasma-consumables-rfq.xlsx",
+  {
+    type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+  },
+);
+assert.equal(validateRfqFiles([plasmaRfqWorkbook]), null);
+assert.equal(await validateRfqFileContents([plasmaRfqWorkbook]), null);
+
 assert.match(
   (await validateRfqFileContents([
     new File([new Uint8Array([0x4d, 0x5a, 0x90, 0x00])], "renamed.pdf"),

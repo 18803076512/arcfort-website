@@ -51,6 +51,10 @@ const downloadAssets: Record<string, { eventName: string; assetKey: string }> = 
     eventName: "buyer_tool_download_click",
     assetKey: "oem_project_brief",
   },
+  "/downloads/arcfort-plasma-consumables-rfq.xlsx": {
+    eventName: "buyer_tool_download_click",
+    assetKey: "plasma_consumables_rfq_workbook",
+  },
 };
 
 type TrackedLinkEvent = {

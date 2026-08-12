@@ -121,6 +121,15 @@ export default async function GuideDetailPage({ params }: GuideRouteProps) {
     ...(guide.rfqFields ?? ["Products or parts requested:"]),
   ].join("\n");
   const guideRfqHref = `/rfq?product=${encodeURIComponent(guideRfqPrompt)}`;
+  const buyerTool =
+    guide.buyerTool ??
+    ({
+      href: "/downloads/arcfort-rfq-template.csv",
+      title: "RFQ Product List Worksheet",
+      description:
+        "Use the CSV worksheet to keep each requested product or variant on a separate quotation line.",
+      buttonLabel: "Download RFQ Worksheet",
+    } as const);
 
   return (
     <>
@@ -180,11 +189,11 @@ export default async function GuideDetailPage({ params }: GuideRouteProps) {
                 Send RFQ
               </Link>
               <a
-                href="/downloads/arcfort-rfq-template.csv"
+                href={buyerTool.href}
                 download
                 className="inline-flex min-h-12 items-center justify-center border border-white/30 px-6 py-3 text-sm font-bold uppercase tracking-[0.16em] text-white transition hover:border-arc-signal hover:text-arc-signal"
               >
-                RFQ Worksheet
+                {buyerTool.buttonLabel}
               </a>
             </div>
           </div>
@@ -418,17 +427,17 @@ export default async function GuideDetailPage({ params }: GuideRouteProps) {
               Turn this guide into a quotation-ready product list.
             </h2>
             <p className="mt-4 max-w-2xl text-sm leading-7 text-slate-600">
-              Download the worksheet, keep each product or variant on a separate row, and upload the
-              completed list with photos, drawings or reference documents. The RFQ form will carry
-              this guide topic into the inquiry for faster sales review.
+              {buyerTool.description} Upload the completed file with photos, drawings or reference
+              documents. The RFQ form will carry this guide topic into the inquiry for faster sales
+              review.
             </p>
             <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
               <a
-                href="/downloads/arcfort-rfq-template.csv"
+                href={buyerTool.href}
                 download
                 className="inline-flex min-h-12 w-full items-center justify-center bg-arc-blue px-5 text-sm font-bold uppercase tracking-[0.14em] text-white transition hover:bg-arc-midnight sm:w-auto"
               >
-                Download RFQ Worksheet
+                {buyerTool.buttonLabel}
               </a>
               <Link
                 href={guideRfqHref}
@@ -442,7 +451,7 @@ export default async function GuideDetailPage({ params }: GuideRouteProps) {
             {[
               {
                 title: "Download",
-                text: "Open the CSV worksheet and keep one requested item, size or model on each row.",
+                text: `Open the ${buyerTool.title} and keep one requested item, size or model on each row.`,
               },
               {
                 title: "Complete",

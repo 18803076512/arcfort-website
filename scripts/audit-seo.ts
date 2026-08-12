@@ -84,6 +84,23 @@ function countWords(value: string) {
   return value.trim().split(/\s+/).filter(Boolean).length;
 }
 
+function checkBuyerTool(owner: string, href?: string) {
+  if (!href) {
+    return;
+  }
+
+  if (!href.startsWith("/downloads/") || href.includes("..")) {
+    errors.push(`${owner} buyer tool must use a safe local /downloads/ path.`);
+    return;
+  }
+
+  const filePath = path.resolve("public", href.replace(/^\/+/, ""));
+
+  if (!existsSync(filePath)) {
+    errors.push(`${owner} buyer tool does not exist: ${href}.`);
+  }
+}
+
 for (const [label, value] of [
   ["contentLastModified", siteConfig.contentLastModified],
   ["aboutLastModified", siteConfig.aboutLastModified],
@@ -188,6 +205,7 @@ for (const category of productCategories) {
     categorySlugs,
     "category",
   );
+  checkBuyerTool(`Category ${category.slug}`, category.buyerTool?.href);
 }
 
 for (const redirect of legacyCategoryRedirects) {
@@ -241,6 +259,7 @@ for (const guide of guides) {
     productSlugs,
     "product",
   );
+  checkBuyerTool(`Guide ${guide.slug}`, guide.buyerTool?.href);
 
   const articleWordCount = guide.sections.reduce(
     (total, section) => total + countWords(`${section.title} ${section.body}`),

@@ -220,7 +220,7 @@ export const guides: GuideArticle[] = [
   {
     slug: "plasma-cutter-consumables-parts-guide",
     title: "Plasma Cutter Consumables and Parts Guide",
-    seoTitle: "Plasma Cutter Consumables & Torch Parts Guide",
+    seoTitle: "Plasma Cutter Consumables & Parts Guide",
     description:
       "A component-by-component guide to plasma electrodes, nozzles, swirl rings, shields, retaining caps and the information buyers need before ordering.",
     seoDescription:
@@ -253,6 +253,90 @@ export const guides: GuideArticle[] = [
         body: "Use one RFQ row for each electrode, nozzle, ring, cap, shield or accessory. Include product name, torch model, verified reference, required quantity, package requirement and a filename that links every photo or drawing to the correct row. State the documented cutting setup only when known from the buyer's approved process. ArcFort Weld can review a mixed plasma consumables list and identify which fields still require a sample, drawing or model confirmation before quotation. Retain the approved sample, matched stack and packing reference as the control record for future repeat orders.",
       },
     ],
+    componentReference: {
+      title: "Plasma cutter consumable stack reference",
+      description:
+        "Use this front-end sequence to name the requested components and preserve their assembly relationship. Part names and functions support RFQ organization; the exact torch model, reference, drawing or sample still controls compatibility review.",
+      rows: [
+        {
+          name: "Electrode",
+          assemblyArea: "Inside the torch front end",
+          role: "Forms part of the internal arc circuit within the documented plasma torch consumable system.",
+          buyerCheck:
+            "Torch model, existing reference, complete profile, connection and the nozzle normally used with it.",
+          productSlug: "plasma-electrode",
+        },
+        {
+          name: "Nozzle or Cutting Tip",
+          assemblyArea: "Around the electrode end",
+          role: "Constrains and directs the plasma arc through geometry selected for the approved torch setup.",
+          buyerCheck:
+            "Torch model, existing reference, opening or rating only when documented, profile and electrode pairing.",
+          productSlug: "plasma-nozzle",
+        },
+        {
+          name: "Swirl Ring",
+          assemblyArea: "Between internal consumables",
+          role: "Supports gas distribution, component alignment and spacing in the compatible torch stack.",
+          buyerCheck:
+            "Torch family, ring geometry, orientation, visible markings and the components installed on both sides.",
+          productSlug: "plasma-swirl-ring",
+        },
+        {
+          name: "Retaining Cap",
+          assemblyArea: "Front-end retaining assembly",
+          role: "Secures the compatible internal consumables in the torch front-end arrangement.",
+          buyerCheck:
+            "Torch model, thread or connection, internal profile, shield arrangement and complete stack photo.",
+        },
+        {
+          name: "Shield or Shield Cap",
+          assemblyArea: "Outer torch front end",
+          role: "Protects compatible front-end components and supports the intended torch-to-work interface.",
+          buyerCheck:
+            "Torch model, shield profile, connection, front opening and retaining-cap or nozzle arrangement.",
+          productSlug: "plasma-shield",
+        },
+        {
+          name: "Spacer or Stand-off Guide",
+          assemblyArea: "Outside the shield area",
+          role: "Supports a repeatable torch stand-off where the documented manual cutting setup uses one.",
+          buyerCheck:
+            "Torch family, attachment style, working position and approved reference or sample geometry.",
+          productSlug: "plasma-torch-spacer",
+        },
+      ],
+    },
+    buyerChecklist: {
+      title: "Plasma consumables evidence checklist",
+      description:
+        "Prepare one traceable evidence set for the complete torch front end before requesting compatibility confirmation.",
+      items: [
+        "Photograph the complete plasma torch, model label and assembled front end before disassembly.",
+        "Lay out the electrode, nozzle, swirl ring, retaining cap, shield and spacer in removal order.",
+        "Capture both ends, connections, profiles and visible markings for every requested component.",
+        "Record current, opening, dimensions or other technical values only when supported by an approved record or reliable measurement.",
+        "Assign an evidence filename to each RFQ line and state whether its model reference is confirmed, reference-only or unverified.",
+        "List quantity by component, required kit or packing format, destination country and trial or repeat-order status.",
+      ],
+    },
+    rfqFields: [
+      "Plasma torch model / label:",
+      "Requested consumable components:",
+      "Existing part references and status:",
+      "Documented cutting setup reference:",
+      "Quantity by component:",
+      "Individual packing or kit requirement:",
+      "Destination country:",
+      "Attached photo / drawing / sample evidence:",
+    ],
+    buyerTool: {
+      href: "/downloads/arcfort-plasma-consumables-rfq.xlsx",
+      title: "Plasma Consumables RFQ Workbook",
+      description:
+        "Use the four-tab XLSX to connect each consumable line to its torch reference, quantity, evidence file and compatibility-review status.",
+      buttonLabel: "Download Plasma RFQ Workbook",
+    },
     categorySlugs: ["plasma-cutting-consumables"],
     productSlugs: [
       "plasma-electrode",
