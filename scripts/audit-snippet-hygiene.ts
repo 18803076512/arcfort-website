@@ -105,7 +105,10 @@ for (const [relativePath, html] of pages) {
 for (const guide of guides) {
   const relativePath = `guides/${guide.slug}.html`;
   const html = readBuiltPage(relativePath);
-  const rfqPrompt = `Reference guide: ${guide.title}\nProducts or parts requested:`;
+  const rfqPrompt = [
+    `Reference guide: ${guide.title}`,
+    ...(guide.rfqFields ?? ["Products or parts requested:"]),
+  ].join("\n");
   const rfqHref = `/rfq?product=${encodeURIComponent(rfqPrompt)}`;
   const workflowTags = (html.match(/<section\b[^>]*>/gi) ?? []).filter(
     (tag) => getAttribute(tag, "data-snippet-region") === "guide-rfq-workflow",

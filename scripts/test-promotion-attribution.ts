@@ -148,6 +148,10 @@ for (const eventName of [
   assert.match(analyticsTrackerSource, new RegExp(`eventName: "${eventName}"`));
 }
 
+assert.match(analyticsTrackerSource, /arcfort-oem-project-brief\.xlsx/);
+assert.match(analyticsTrackerSource, /assetKey: "oem_project_brief"/);
+assert.match(analyticsTrackerSource, /url\.pathname\.split\("\."\)\.at\(-1\)/);
+
 assert.match(analyticsTrackerSource, /link_placement: getLinkPlacement\(anchor\)/);
 
 for (const placement of [

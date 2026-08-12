@@ -180,9 +180,9 @@ export const productCategories: ProductCategory[] = [
     shortTitle: "TIG Parts",
     description:
       "Ceramic cups, collets, collet bodies, gas lenses and TIG torch accessories for industrial welding supply.",
-    seoTitle: "TIG Torch Parts & Consumables",
+    seoTitle: "TIG Welding Torch Parts & Components",
     seoDescription:
-      "Source TIG welding torch parts including ceramic cups, collets, collet bodies, gas lenses, back caps and switches. Confirm fit by model, sample or drawing.",
+      "Source TIG welding torch parts and components including ceramic cups, collets, gas lenses, back caps and switches. Confirm fit by model, sample or drawing.",
     seoIntro:
       "ArcFort Weld organizes TIG torch parts by component role, torch-family reference and the fit details buyers need for repeat purchasing. Ceramic cups, collets, collet bodies, gas lenses, back caps, tungsten electrodes and torch switches should be identified as part of a complete TIG torch assembly. Unknown technical fields are reviewed against a drawing, reference part, sample or model before quotation.",
     productRange: [
@@ -213,6 +213,7 @@ export const productCategories: ProductCategory[] = [
       "Check torch series and cup size before selecting ceramic cups or gas lens parts.",
       "Confirm collet and collet body dimensions for the required tungsten size.",
       "Provide packaging and labeling requirements when preparing distributor programs.",
+      "Use the TIG parts identification guide to name each component and keep the removed front-end stack in assembly order.",
     ],
     componentGuide: [
       {
@@ -311,6 +312,11 @@ export const productCategories: ProductCategory[] = [
     ],
     relatedCategorySlugs: ["mig-mag-torch-parts", "plasma-cutting-consumables"],
     faq: [
+      {
+        question: "What are the main parts of a TIG welding torch?",
+        answer:
+          "Common TIG torch components include a ceramic cup, collet, collet body or gas lens, tungsten electrode, back cap, torch head, handle, switch and cable or hose assembly. The exact arrangement depends on the documented torch system.",
+      },
       {
         question: "What TIG torch information should buyers send?",
         answer:

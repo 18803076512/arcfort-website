@@ -318,8 +318,21 @@ export function productJsonLd(product: Product, category: ProductCategory) {
 export function articleJsonLd(article: GuideArticle, image = siteConfig.defaultSeoImage) {
   const path = `/guides/${article.slug}`;
   const url = absoluteUrl(path);
-  const wordCount = article.sections
-    .map((section) => `${section.title} ${section.body}`)
+  const wordCount = [
+    ...article.sections.map((section) => `${section.title} ${section.body}`),
+    article.componentReference
+      ? [
+          article.componentReference.title,
+          article.componentReference.description,
+          ...article.componentReference.rows.map(
+            (row) => `${row.name} ${row.assemblyArea} ${row.role} ${row.buyerCheck}`,
+          ),
+        ].join(" ")
+      : "",
+    article.buyerChecklist
+      ? `${article.buyerChecklist.title} ${article.buyerChecklist.description} ${article.buyerChecklist.items.join(" ")}`
+      : "",
+  ]
     .join(" ")
     .trim()
     .split(/\s+/)

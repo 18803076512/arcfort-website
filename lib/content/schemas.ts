@@ -144,6 +144,23 @@ export type GuideArticle = {
     title: string;
     body: string;
   }>;
+  componentReference?: {
+    title: string;
+    description: string;
+    rows: Array<{
+      name: string;
+      assemblyArea: string;
+      role: string;
+      buyerCheck: string;
+      productSlug?: string;
+    }>;
+  };
+  buyerChecklist?: {
+    title: string;
+    description: string;
+    items: string[];
+  };
+  rfqFields?: string[];
   categorySlugs: string[];
   productSlugs: string[];
   faq: FaqItem[];

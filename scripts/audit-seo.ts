@@ -234,6 +234,13 @@ for (const guide of guides) {
 
   checkReferences(`Guide ${guide.slug}`, guide.categorySlugs, categorySlugs, "category");
   checkReferences(`Guide ${guide.slug}`, guide.productSlugs, productSlugs, "product");
+  checkReferences(
+    `Guide ${guide.slug} component reference`,
+    guide.componentReference?.rows.flatMap((row) => (row.productSlug ? [row.productSlug] : [])) ??
+      [],
+    productSlugs,
+    "product",
+  );
 
   const articleWordCount = guide.sections.reduce(
     (total, section) => total + countWords(`${section.title} ${section.body}`),

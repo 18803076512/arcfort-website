@@ -70,6 +70,10 @@ link relevant category and guide content to the OEM service, and avoid weakening
 4. Improved the existing MIG torch switch product snippet instead of creating a duplicate page.
 5. Refined the welding machine sourcing checklist snippet for distributor sourcing intent.
 6. Preserved OEM service and private-label guide URLs as the current strongest commercial pathway.
+7. Expanded the existing TIG parts identification guide with an assembly-based component reference,
+   buyer checks and an evidence checklist instead of creating a competing TIG URL.
+8. Added a structured OEM project brief download and tracked its download as a non-PII buyer-tool
+   conversion, strengthening the highest-performing commercial pathway.
 
 ## Measurement Plan
 

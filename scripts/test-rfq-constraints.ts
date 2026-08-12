@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 
 import assert from "node:assert/strict";
+import { readFileSync } from "node:fs";
 import {
   rfqFieldLimits,
   rfqMaxFileSize,
@@ -153,6 +154,13 @@ const validFileFixtures = [
 for (const file of validFileFixtures) {
   assert.equal(await validateRfqFileContents([file]), null);
 }
+
+const oemProjectBriefBytes = readFileSync("public/downloads/arcfort-oem-project-brief.xlsx");
+const oemProjectBrief = new File([oemProjectBriefBytes], "arcfort-oem-project-brief.xlsx", {
+  type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+});
+assert.equal(validateRfqFiles([oemProjectBrief]), null);
+assert.equal(await validateRfqFileContents([oemProjectBrief]), null);
 
 assert.match(
   (await validateRfqFileContents([
