@@ -367,6 +367,11 @@ keyword assumptions. Keep dated baselines under `docs/seo/`, use page and query-
 wait at least 28 days before judging title or content changes. The current baseline and action record
 is `docs/seo/search-console-baseline-2026-08-12.md`.
 
+Homepage search-title changes should preserve the visible H1 and broad supply scope unless the search
+evidence clearly supports a repositioning. Keep the first viewport focused on product categories,
+direct contact and RFQ entry, and verify that mobile buyers can see the next content band without a
+full-screen promotional block.
+
 Run the combined production health check without sending an RFQ or email:
 
 ```bash

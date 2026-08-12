@@ -11,9 +11,9 @@ import { buildMetadata } from "@/lib/content/seo";
 import { buildEmailHref, buildWhatsAppHref, siteConfig } from "@/lib/content/site";
 
 export const metadata = buildMetadata({
-  title: "Welding & Cutting Parts Supplier",
+  title: "Welding Torch Parts & Plasma Consumables",
   description:
-    "Source MIG/MAG and TIG torch parts, plasma cutter consumables, welding machines and OEM welding accessories from ArcFort Weld for global B2B supply.",
+    "Source MIG/MAG and TIG torch parts, plasma cutter consumables, welding machines and OEM accessories from ArcFort Weld for distributor and industrial RFQs.",
   path: "/",
   keywords: [
     "industrial welding solutions",
@@ -107,6 +107,8 @@ export default function Home() {
           description:
             "Industrial welding and cutting product supplier for distributors, importers, OEM buyers, industrial users and repair workshops.",
           path: "/",
+          image: siteConfig.defaultSeoImage,
+          dateModified: siteConfig.contentLastModified,
         })}
       />
       <section className="relative isolate overflow-hidden bg-arc-midnight text-white">
@@ -120,20 +122,20 @@ export default function Home() {
         />
         <div className="absolute inset-0 -z-10 bg-[linear-gradient(90deg,rgba(5,15,28,0.98)_0%,rgba(7,21,36,0.92)_42%,rgba(7,21,36,0.58)_72%,rgba(7,21,36,0.32)_100%)]" />
         <div className="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_78%_24%,rgba(56,189,248,0.22),transparent_34%),linear-gradient(180deg,rgba(7,21,36,0.1),rgba(7,21,36,0.82))]" />
-        <div className="relative mx-auto flex min-h-[calc(100vh-5rem)] max-w-7xl flex-col justify-center px-4 py-16 sm:px-6 lg:px-8">
+        <div className="relative mx-auto flex min-h-[min(42rem,calc(100svh-14rem))] max-w-7xl flex-col justify-center px-4 py-8 sm:min-h-[min(50rem,calc(100vh-8rem))] sm:px-6 sm:py-16 lg:px-8">
           <div className="max-w-3xl">
-            <p className="mb-5 inline-flex max-w-full flex-wrap break-words border-l-4 border-arc-signal bg-white/10 px-4 py-2 text-xs font-semibold uppercase leading-6 tracking-[0.1em] text-arc-signal sm:text-sm sm:tracking-[0.2em]">
+            <p className="mb-3 inline-flex max-w-full flex-wrap break-words border-l-4 border-arc-signal bg-white/10 px-4 py-2 text-xs font-semibold uppercase leading-6 tracking-[0.1em] text-arc-signal sm:mb-5 sm:text-sm sm:tracking-[0.2em]">
               ArcFort Weld | Welding & Cutting Solutions
             </p>
             <h1 className="break-words font-display text-3xl font-black leading-tight sm:text-6xl lg:text-7xl">
               Industrial Welding & Cutting Solutions
             </h1>
-            <p className="mt-7 max-w-2xl break-words text-lg leading-8 text-slate-200">
+            <p className="mt-5 max-w-2xl break-words text-base leading-7 text-slate-200 sm:mt-7 sm:text-lg sm:leading-8">
               Renqiu Ailesen Welding Technology Co., Ltd. supplies welding and cutting machines,
               MIG/MAG torch parts, TIG torch parts, plasma cutting consumables and OEM welding
               accessories for distributors, importers and industrial users.
             </p>
-            <div className="mt-9 flex flex-col gap-3 sm:flex-row">
+            <div className="mt-6 flex flex-col gap-3 sm:mt-9 sm:flex-row">
               <Link
                 href="/products"
                 className="inline-flex w-full items-center justify-center bg-arc-signal px-6 py-3 text-sm font-bold uppercase tracking-[0.16em] text-arc-midnight transition hover:bg-white sm:w-auto"
@@ -147,10 +149,10 @@ export default function Home() {
                 Request a Quote
               </Link>
             </div>
-            <div className="mt-6 hidden flex-col gap-2 text-sm text-slate-300 sm:flex sm:flex-row sm:flex-wrap sm:gap-5">
+            <div className="mt-4 flex flex-col gap-1 text-xs text-slate-300 sm:mt-6 sm:flex-row sm:flex-wrap sm:gap-5 sm:text-sm">
               <a
                 href={buildEmailHref({ subject: "ArcFort Weld homepage product inquiry" })}
-                className="inline-flex min-h-8 items-center font-semibold hover:text-white"
+                className="inline-flex min-h-8 min-w-0 items-center break-all font-semibold hover:text-white sm:break-normal"
               >
                 Email: {siteConfig.email}
               </a>
@@ -162,23 +164,41 @@ export default function Home() {
               </a>
             </div>
           </div>
-
-          <div className="mt-10 grid grid-cols-2 gap-px border border-white/15 bg-white/15 shadow-industrial sm:mt-12 lg:grid-cols-4">
-            {heroSupplySignals.map((item) => (
-              <div key={item} className="bg-arc-midnight/65 p-4 backdrop-blur-sm">
-                <p className="text-xs font-bold uppercase tracking-[0.18em] text-arc-signal">
-                  Supply Scope
-                </p>
-                <p className="mt-2 break-words font-display text-sm font-black leading-5 text-white sm:text-lg sm:leading-normal">
-                  {item}
-                </p>
-              </div>
-            ))}
-          </div>
         </div>
       </section>
 
-      <section className="bg-white py-12 sm:py-14">
+      <section
+        id="home-supply-scope"
+        aria-label="Primary product supply scope"
+        className="border-b border-slate-200 bg-arc-midnight text-white"
+      >
+        <div className="mx-auto grid max-w-7xl grid-cols-2 gap-px bg-white/15 px-0 lg:grid-cols-4">
+          {heroSupplySignals.map((item) => (
+            <Link
+              key={item}
+              href={
+                item === "MIG/MAG Torch Parts"
+                  ? "/products/mig-mag-torch-parts"
+                  : item === "TIG Torch Parts"
+                    ? "/products/tig-torch-parts"
+                    : item === "Plasma Cutting Consumables"
+                      ? "/products/plasma-cutting-consumables"
+                      : "/oem-service"
+              }
+              className="min-w-0 bg-arc-midnight px-4 py-5 transition hover:bg-arc-navy sm:px-6"
+            >
+              <span className="text-[10px] font-bold uppercase tracking-[0.16em] text-arc-signal sm:text-xs">
+                Supply Scope
+              </span>
+              <span className="mt-2 block break-words font-display text-sm font-black leading-5 text-white sm:text-lg sm:leading-normal">
+                {item}
+              </span>
+            </Link>
+          ))}
+        </div>
+      </section>
+
+      <section id="home-rfq-start" className="bg-white py-12 sm:py-14">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="grid gap-6 border border-slate-200 bg-arc-frost p-5 shadow-sm sm:p-6 lg:grid-cols-[0.85fr_1.15fr] lg:items-center">
             <div>
@@ -199,6 +219,21 @@ export default function Home() {
                   <p className="text-sm font-semibold leading-6 text-slate-700">{item}</p>
                 </div>
               ))}
+            </div>
+            <div className="flex flex-col gap-3 border-t border-slate-200 pt-5 sm:flex-row lg:col-span-2">
+              <Link
+                href="/rfq"
+                className="inline-flex min-h-12 w-full items-center justify-center bg-arc-blue px-5 text-sm font-bold uppercase tracking-[0.14em] text-white transition hover:bg-arc-midnight sm:w-auto"
+              >
+                Start Product RFQ
+              </Link>
+              <a
+                href="/downloads/arcfort-rfq-template.csv"
+                download
+                className="inline-flex min-h-12 w-full items-center justify-center border border-arc-blue px-5 text-sm font-bold uppercase tracking-[0.14em] text-arc-blue transition hover:bg-white sm:w-auto"
+              >
+                Download RFQ Worksheet
+              </a>
             </div>
           </div>
         </div>
