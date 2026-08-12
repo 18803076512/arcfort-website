@@ -503,6 +503,8 @@ Generated public files:
   product-line, packaging, artwork and evidence-file preparation
 - `public/downloads/arcfort-plasma-consumables-rfq.xlsx` - four-tab plasma consumables workbook for
   torch references, consumable line items, quantities, evidence files and compatibility review
+- `public/downloads/arcfort-welding-machine-rfq.xlsx` - four-tab welding equipment workbook for
+  buyer requirements, supplier confirmation, accessories, market documents and order approval
 
 Refresh the files after SKU updates:
 
@@ -521,6 +523,12 @@ The plasma consumables RFQ workbook follows the same evidence-first rule. Buyers
 electrode, nozzle, swirl ring, retaining cap, shield, spacer or kit per line, link each line to an
 evidence ID, and use `Reference only`, `Unverified` or `Supplier review required` when fit is not
 documented. The workbook can be uploaded directly through the production RFQ form.
+
+The welding machine RFQ workbook separates the buyer's process, application and destination
+electrical requirements from the supplier's proposed configuration and supporting evidence. Exact
+output, duty cycle, interfaces, certification and other technical fields must remain buyer-provided
+or supplier-confirmed for the quoted machine. The workbook can be uploaded directly through the RFQ
+form with nameplate photos, approved specifications or reference documents.
 
 ## Distributor Promotion Workflow
 

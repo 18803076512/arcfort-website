@@ -24,6 +24,10 @@ export default function sitemap(): MetadataRoute.Sitemap {
   ];
   const downloadableRoutes = [
     {
+      path: "/downloads/arcfort-welding-machine-rfq.xlsx",
+      lastModified: siteConfig.contentLastModified,
+    },
+    {
       path: "/downloads/arcfort-plasma-consumables-rfq.xlsx",
       lastModified: siteConfig.contentLastModified,
     },
