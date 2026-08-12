@@ -440,11 +440,11 @@ export const guides: GuideArticle[] = [
   {
     slug: "tig-torch-parts-names-identification-guide",
     title: "TIG Torch Parts Names and Identification Guide",
-    seoTitle: "TIG Torch Parts Names & Identification Guide",
+    seoTitle: "TIG Torch Parts Names, Components & Identification",
     description:
-      "A photo- and sample-based guide for naming unknown TIG torch parts before compatibility review and quotation.",
+      "A component-by-component reference for naming TIG torch parts, understanding their assembly positions and preparing evidence for compatibility review.",
     seoDescription:
-      "Identify TIG torch parts by assembly zone, part name, photo, marking and sample. Prepare a clear RFQ for cups, collets, gas lenses, caps and switches.",
+      "Identify TIG torch parts and components including ceramic cups, collets, gas lenses, back caps and switches, then prepare evidence for an accurate RFQ.",
     publishedDate: "2026-08-12",
     modifiedDate: "2026-08-12",
     sections: [
@@ -454,7 +454,7 @@ export const guides: GuideArticle[] = [
       },
       {
         title: "Use consistent TIG torch part names",
-        body: "Name each requested item by its function before adding a model reference. Common front-end names include ceramic cup, collet, collet body, gas lens and tungsten electrode. The rear torch-head item is normally described as a back cap. Other service items can include the torch head or body, handle, torch switch, cable or hose assembly and machine-side connector. A descriptive part name is useful for communication, but it is not proof of compatibility.",
+        body: "Name each requested item by its function before adding a model reference. Common front-end TIG welding torch components include the ceramic cup, collet, collet body, gas lens and tungsten electrode. The rear torch-head item is normally described as a back cap. Other service items can include the torch head or body, handle, torch switch, cable or hose assembly and machine-side connector. A descriptive part name is useful for communication, but it is not proof of compatibility.",
       },
       {
         title: "Photograph unknown parts for identification",
@@ -476,6 +476,113 @@ export const guides: GuideArticle[] = [
         title: "Build an identification-ready TIG RFQ",
         body: "Give every part its own line with a provisional name, quantity and evidence reference. Attach the complete-torch photo, label photo, disassembly-order image and any drawing or sample details. Mark which values are confirmed and which require supplier review. Add destination country, standard or OEM packaging request and whether the order is a trial or repeat requirement so product review and commercial quotation can proceed together.",
       },
+    ],
+    componentReference: {
+      title: "TIG torch parts and component reference",
+      description:
+        "Use this assembly-based reference to name each item before comparing dimensions or model information. The component name and function help organize an inquiry; compatibility still requires evidence from the exact torch, drawing, approved reference or sample.",
+      rows: [
+        {
+          name: "Ceramic Cup",
+          assemblyArea: "Torch front end",
+          role: "Surrounds the electrode area and directs shielding gas toward the weld zone.",
+          buyerCheck:
+            "Cup number, connection style, torch family and standard collet-body or gas-lens arrangement.",
+          productSlug: "tig-ceramic-cup-5",
+        },
+        {
+          name: "Collet",
+          assemblyArea: "Inside the torch head",
+          role: "Grips and centers the tungsten electrode when the back cap is tightened.",
+          buyerCheck:
+            "Tungsten diameter, collet length, torch family and matching collet body or gas lens.",
+          productSlug: "tig-collet",
+        },
+        {
+          name: "Collet Body",
+          assemblyArea: "Inside the ceramic cup",
+          role: "Supports the collet and forms part of the shielding-gas path through the torch head.",
+          buyerCheck:
+            "Thread, overall form, tungsten diameter, torch family and ceramic cup arrangement.",
+          productSlug: "tig-collet-body",
+        },
+        {
+          name: "Gas Lens",
+          assemblyArea: "Inside the ceramic cup",
+          role: "Uses an internal screen arrangement to distribute shielding gas before it exits the cup.",
+          buyerCheck:
+            "Gas-lens family, thread, tungsten bore, torch series and compatible cup arrangement.",
+          productSlug: "tig-gas-lens-1-6mm",
+        },
+        {
+          name: "Back Cap",
+          assemblyArea: "Rear of the torch head",
+          role: "Secures the collet system and accommodates the tungsten projecting through the torch head.",
+          buyerCheck: "Rear thread, cap length, torch family and available working clearance.",
+          productSlug: "tig-back-cap",
+        },
+        {
+          name: "Tungsten Electrode",
+          assemblyArea: "Centered through the torch head",
+          role: "Carries the TIG welding arc as a non-consumable electrode in the approved welding setup.",
+          buyerCheck:
+            "Documented diameter, length, type or color reference and the buyer's approved application requirement.",
+          productSlug: "tig-tungsten-electrode",
+        },
+        {
+          name: "Torch Head or Body",
+          assemblyArea: "Front torch assembly",
+          role: "Houses the front-end parts and connects them to the torch cable or hose assembly.",
+          buyerCheck:
+            "Torch family, head form or angle, cooling configuration when documented and cable-side interface.",
+          productSlug: "tig-welding-torch",
+        },
+        {
+          name: "Torch Switch",
+          assemblyArea: "Handle and control area",
+          role: "Provides a torch-mounted control input where the torch and welding machine arrangement supports it.",
+          buyerCheck:
+            "Switch shape, mounting position, lead length and connector or wiring reference from the existing assembly.",
+          productSlug: "tig-torch-switch",
+        },
+        {
+          name: "Cable or Hose Assembly",
+          assemblyArea: "Torch handle to machine",
+          role: "Carries the services required by the documented torch configuration, which can include current, gas, coolant or control wiring.",
+          buyerCheck:
+            "Required length, torch-side connection, machine-side connection and the exact service lines shown by the existing torch.",
+        },
+        {
+          name: "Machine-Side Connector",
+          assemblyArea: "End of the cable assembly",
+          role: "Connects the torch assembly to the compatible welding equipment interface.",
+          buyerCheck:
+            "Connector body, power interface, gas fitting and any control pins from a drawing, sample or approved reference.",
+        },
+      ],
+    },
+    buyerChecklist: {
+      title: "TIG parts identification checklist",
+      description:
+        "Prepare one traceable evidence set before asking a supplier to confirm the requested parts.",
+      items: [
+        "Photograph the complete TIG torch, handle and machine-side connection before disassembly.",
+        "Capture the torch model label and every visible marking without completing unclear values from memory.",
+        "Lay out the ceramic cup, collet body or gas lens, collet, tungsten and back cap in assembly order.",
+        "Show front, side, thread and connection views with a clear scale when a measurement can be taken reliably.",
+        "List every part, size or model on a separate RFQ line with its own quantity and evidence filename.",
+        "Mark model references as confirmed, reference-only or unverified, then state packaging and destination requirements.",
+      ],
+    },
+    rfqFields: [
+      "Torch series / complete torch label:",
+      "Requested TIG torch parts:",
+      "Tungsten diameter if documented:",
+      "Cup / thread / connection references:",
+      "Quantity by item:",
+      "Standard or OEM packaging:",
+      "Destination country:",
+      "Attached photo / drawing / sample reference:",
     ],
     categorySlugs: ["tig-torch-parts"],
     productSlugs: [
@@ -517,6 +624,8 @@ export const guides: GuideArticle[] = [
       "parts of a TIG welding torch",
       "TIG torch components",
       "TIG torch parts diagram",
+      "TIG torch consumables chart",
+      "TIG welding torch components",
     ],
   },
   {

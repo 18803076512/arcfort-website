@@ -499,6 +499,8 @@ Generated public files:
 - `public/downloads/arcfort-public-product-list.csv` - active product list with SKU, product URL
   and RFQ-ready sourcing notes
 - `public/downloads/arcfort-rfq-template.csv` - buyer worksheet for product list quotation requests
+- `public/downloads/arcfort-oem-project-brief.xlsx` - four-tab OEM project workbook for buyer,
+  product-line, packaging, artwork and evidence-file preparation
 
 Refresh the files after SKU updates:
 
@@ -508,6 +510,10 @@ npm run downloads:generate
 
 The public product list must not expose internal notes, private supplier references, prices,
 unconfirmed certifications or hidden SKU workflow fields.
+
+The OEM project brief is a buyer-completed preparation file. Its readiness summary uses workbook
+formulas, and its product, model, size, rating, certification and compatibility fields must remain
+buyer-provided or evidence-based. Do not prefill unverified technical claims.
 
 ## Distributor Promotion Workflow
 

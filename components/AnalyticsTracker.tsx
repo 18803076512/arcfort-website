@@ -47,6 +47,10 @@ const downloadAssets: Record<string, { eventName: string; assetKey: string }> = 
     eventName: "buyer_tool_download_click",
     assetKey: "rfq_template",
   },
+  "/downloads/arcfort-oem-project-brief.xlsx": {
+    eventName: "buyer_tool_download_click",
+    assetKey: "oem_project_brief",
+  },
 };
 
 type TrackedLinkEvent = {
@@ -98,7 +102,7 @@ function getTrackedLinkEvent(href: string): TrackedLinkEvent | null {
         eventName: download.eventName,
         params: {
           asset_key: download.assetKey,
-          file_type: url.pathname.endsWith(".pdf") ? "pdf" : "csv",
+          file_type: url.pathname.split(".").at(-1) ?? "file",
         },
       };
     }

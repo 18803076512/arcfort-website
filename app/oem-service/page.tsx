@@ -37,6 +37,7 @@ const processSteps = [
 ] as const;
 
 const oemRfqHref = "/rfq?product=OEM%20welding%20products%20and%20private%20label%20packaging";
+const oemProjectBriefHref = "/downloads/arcfort-oem-project-brief.xlsx";
 
 const oemSupportLinks = [
   {
@@ -135,6 +136,13 @@ export default function OemServicePage() {
                 >
                   Review Buyer Guide
                 </Link>
+                <a
+                  href={oemProjectBriefHref}
+                  download
+                  className="inline-flex min-h-12 w-full items-center justify-center border border-slate-300 px-5 text-sm font-bold uppercase tracking-[0.14em] text-arc-midnight transition hover:border-arc-blue hover:bg-arc-frost hover:text-arc-blue sm:w-auto"
+                >
+                  Download Project Brief
+                </a>
               </div>
             </div>
             <div className="border-l-4 border-arc-signal bg-arc-frost p-6">
@@ -202,6 +210,20 @@ export default function OemServicePage() {
                 </li>
               ))}
             </ul>
+            <div className="mt-6 border-l-4 border-arc-signal bg-arc-frost p-4">
+              <p className="text-sm font-bold text-arc-midnight">Organize a multi-item project</p>
+              <p className="mt-2 text-xs leading-5 text-slate-600">
+                Use the Excel project brief to keep product lines, reference files, logo, label,
+                packaging and destination requirements in one review record.
+              </p>
+              <a
+                href={oemProjectBriefHref}
+                download
+                className="mt-4 inline-flex text-xs font-bold uppercase tracking-[0.12em] text-arc-blue hover:text-arc-copper"
+              >
+                Download OEM Project Brief
+              </a>
+            </div>
           </article>
         </div>
       </section>
@@ -283,6 +305,13 @@ export default function OemServicePage() {
           >
             Read OEM Guide
           </Link>
+          <a
+            href={oemProjectBriefHref}
+            download
+            className="inline-flex min-h-12 w-full shrink-0 items-center justify-center border border-arc-signal px-6 text-sm font-bold uppercase tracking-[0.14em] text-arc-signal transition hover:bg-arc-signal hover:text-arc-midnight sm:w-auto"
+          >
+            OEM Project Brief
+          </a>
           <Link
             href={oemRfqHref}
             className="inline-flex min-h-12 w-full shrink-0 items-center justify-center border border-white/30 px-6 text-sm font-bold uppercase tracking-[0.14em] text-white transition hover:border-white hover:bg-white/10 sm:w-auto"

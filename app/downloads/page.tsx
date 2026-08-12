@@ -32,6 +32,14 @@ const documentTypes = [
 
 const downloadFiles = [
   {
+    title: "OEM Welding Project Brief",
+    type: "XLSX",
+    href: "/downloads/arcfort-oem-project-brief.xlsx",
+    description:
+      "Download a structured workbook for product lines, buyer references, logo, labels, private packaging, evidence files and commercial requirements.",
+    note: "Complete one row for each product or variant, then upload the workbook with drawings or photos through the RFQ form.",
+  },
+  {
     title: "ArcFort Weld Distributor Sourcing Guide",
     type: "PDF",
     href: "/downloads/arcfort-distributor-sourcing-guide.pdf",
@@ -91,20 +99,21 @@ const faq = [
   {
     question: "Can buyers download a product list before sending an inquiry?",
     answer:
-      "Yes. The download center includes a public CSV product list and an RFQ worksheet. Buyers can fill the worksheet and upload it through the RFQ form.",
+      "Yes. The download center includes a public CSV product list, an RFQ worksheet and an OEM project brief. Buyers can complete the suitable file and upload it through the RFQ form.",
   },
 ] as const;
 
 export const metadata = buildMetadata({
   title: "Download Center for Welding Product Buyers",
   description:
-    "Request ArcFort Weld product catalogs, data sheets, OEM packaging information and RFQ documents for welding and cutting product sourcing.",
+    "Download ArcFort Weld catalogs, product lists, an RFQ worksheet and an OEM project brief for welding and cutting product sourcing.",
   path: "/downloads",
   keywords: [
     "welding product catalog",
     "welding consumables data sheet",
     "plasma cutting consumables catalog",
     "welding RFQ product list",
+    "OEM welding project brief",
   ],
 });
 
@@ -120,7 +129,7 @@ export default function DownloadsPage() {
           collectionPageJsonLd({
             name: "ArcFort Weld Download Center",
             description:
-              "Catalog, product list and RFQ worksheet downloads for welding and cutting product sourcing.",
+              "Catalog, product list, RFQ worksheet and OEM project brief downloads for welding and cutting product sourcing.",
             path: "/downloads",
             items: downloadFiles.map((file) => ({
               name: file.title,

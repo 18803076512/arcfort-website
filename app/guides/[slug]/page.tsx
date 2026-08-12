@@ -114,8 +114,12 @@ export default async function GuideDetailPage({ params }: GuideRouteProps) {
       return { product, category };
     })
     .filter((item): item is { product: Product; category: ProductCategory } => Boolean(item));
+  const relatedProductMap = new Map(relatedProducts.map((item) => [item.product.slug, item]));
   const seoImage = getPreferredSeoImage(relatedProducts.map((item) => item.product));
-  const guideRfqPrompt = `Reference guide: ${guide.title}\nProducts or parts requested:`;
+  const guideRfqPrompt = [
+    `Reference guide: ${guide.title}`,
+    ...(guide.rfqFields ?? ["Products or parts requested:"]),
+  ].join("\n");
   const guideRfqHref = `/rfq?product=${encodeURIComponent(guideRfqPrompt)}`;
 
   return (
@@ -217,6 +221,19 @@ export default async function GuideDetailPage({ params }: GuideRouteProps) {
               Guide Contents
             </p>
             <ol className="mt-5 grid gap-3 sm:grid-cols-2">
+              {guide.componentReference ? (
+                <li>
+                  <a
+                    href="#component-reference"
+                    className="group flex min-h-14 items-center gap-4 border border-slate-200 bg-arc-frost px-4 py-3 transition hover:border-arc-blue hover:bg-white"
+                  >
+                    <span className="font-display text-lg font-black text-arc-blue">REF</span>
+                    <span className="text-sm font-bold leading-6 text-arc-midnight group-hover:text-arc-blue">
+                      {guide.componentReference.title}
+                    </span>
+                  </a>
+                </li>
+              ) : null}
               {guide.sections.map((section, index) => (
                 <li key={section.title}>
                   <a
@@ -236,6 +253,95 @@ export default async function GuideDetailPage({ params }: GuideRouteProps) {
           </nav>
         </div>
       </section>
+
+      {guide.componentReference ? (
+        <section
+          id="component-reference"
+          className="scroll-mt-28 border-b border-slate-200 bg-white py-14 sm:py-16"
+        >
+          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            <div className="grid gap-8 lg:grid-cols-[0.72fr_1.28fr] lg:items-end">
+              <div>
+                <p className="text-sm font-bold uppercase tracking-[0.2em] text-arc-blue">
+                  Component Reference
+                </p>
+                <h2 className="mt-3 font-display text-3xl font-black leading-tight text-arc-midnight sm:text-4xl">
+                  {guide.componentReference.title}
+                </h2>
+              </div>
+              <p className="text-sm leading-7 text-slate-600">
+                {guide.componentReference.description}
+              </p>
+            </div>
+
+            <div className="mt-8 border-y border-slate-200">
+              <div className="hidden grid-cols-[0.7fr_0.7fr_1fr_1.35fr] gap-5 bg-arc-midnight px-5 py-4 text-xs font-bold uppercase tracking-[0.12em] text-white lg:grid">
+                <span>Part name</span>
+                <span>Assembly area</span>
+                <span>Function</span>
+                <span>Buyer should confirm</span>
+              </div>
+              <div className="divide-y divide-slate-200">
+                {guide.componentReference.rows.map((row, index) => {
+                  const relatedProduct = row.productSlug
+                    ? relatedProductMap.get(row.productSlug)
+                    : undefined;
+
+                  return (
+                    <article
+                      key={row.name}
+                      className="grid gap-5 px-1 py-6 sm:px-5 lg:grid-cols-[0.7fr_0.7fr_1fr_1.35fr] lg:items-start"
+                    >
+                      <div>
+                        <span className="text-xs font-black text-arc-blue">
+                          {String(index + 1).padStart(2, "0")}
+                        </span>
+                        <h3 className="mt-2 font-display text-xl font-black text-arc-midnight">
+                          {relatedProduct ? (
+                            <Link
+                              href={`/products/${relatedProduct.category.slug}/${relatedProduct.product.slug}`}
+                              className="transition hover:text-arc-blue"
+                            >
+                              {row.name}
+                            </Link>
+                          ) : (
+                            row.name
+                          )}
+                        </h3>
+                      </div>
+                      <div>
+                        <p className="text-[11px] font-bold uppercase tracking-[0.12em] text-slate-500 lg:hidden">
+                          Assembly area
+                        </p>
+                        <p className="mt-1 text-sm font-semibold leading-6 text-slate-700 lg:mt-0">
+                          {row.assemblyArea}
+                        </p>
+                      </div>
+                      <div>
+                        <p className="text-[11px] font-bold uppercase tracking-[0.12em] text-slate-500 lg:hidden">
+                          Function
+                        </p>
+                        <p className="mt-1 text-sm leading-6 text-slate-600 lg:mt-0">{row.role}</p>
+                      </div>
+                      <div className="border-l-4 border-arc-signal bg-arc-frost p-4">
+                        <p className="text-[11px] font-bold uppercase tracking-[0.12em] text-arc-blue">
+                          Buyer should confirm
+                        </p>
+                        <p className="mt-2 text-sm leading-6 text-slate-700">{row.buyerCheck}</p>
+                      </div>
+                    </article>
+                  );
+                })}
+              </div>
+            </div>
+
+            <p className="mt-5 text-xs leading-5 text-slate-500">
+              This reference explains product families and assembly roles. It does not confirm fit,
+              dimensions, electrical ratings or interchangeability for a specific torch.
+            </p>
+          </div>
+        </section>
+      ) : null}
 
       <section id="guide-content" className="bg-arc-frost py-14 sm:py-16">
         <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
@@ -260,6 +366,43 @@ export default async function GuideDetailPage({ params }: GuideRouteProps) {
           </div>
         </div>
       </section>
+
+      {guide.buyerChecklist ? (
+        <section className="border-y border-slate-200 bg-white py-14 sm:py-16">
+          <div className="mx-auto grid max-w-7xl gap-8 px-4 sm:px-6 lg:grid-cols-[0.72fr_1.28fr] lg:px-8">
+            <div>
+              <p className="text-sm font-bold uppercase tracking-[0.2em] text-arc-blue">
+                Buyer Checklist
+              </p>
+              <h2 className="mt-3 font-display text-3xl font-black leading-tight text-arc-midnight">
+                {guide.buyerChecklist.title}
+              </h2>
+              <p className="mt-4 text-sm leading-7 text-slate-600">
+                {guide.buyerChecklist.description}
+              </p>
+              <Link
+                href={guideRfqHref}
+                className="mt-6 inline-flex min-h-12 w-full items-center justify-center bg-arc-blue px-5 text-sm font-bold uppercase tracking-[0.14em] text-white transition hover:bg-arc-midnight sm:w-auto"
+              >
+                Start This RFQ
+              </Link>
+            </div>
+            <ol className="grid gap-4 sm:grid-cols-2">
+              {guide.buyerChecklist.items.map((item, index) => (
+                <li
+                  key={item}
+                  className="grid grid-cols-[2.5rem_1fr] gap-3 border border-slate-200 bg-arc-frost p-5"
+                >
+                  <span className="font-display text-xl font-black text-arc-blue">
+                    {String(index + 1).padStart(2, "0")}
+                  </span>
+                  <span className="text-sm font-semibold leading-6 text-slate-700">{item}</span>
+                </li>
+              ))}
+            </ol>
+          </div>
+        </section>
+      ) : null}
 
       <section
         data-nosnippet
