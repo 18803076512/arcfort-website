@@ -5,6 +5,7 @@ import { FaqSection } from "@/components/content/FaqSection";
 import { ProductCard } from "@/components/content/ProductCard";
 import { RfqCta } from "@/components/content/RfqCta";
 import { PlasmaConsumablesRfqBuilder } from "@/components/products/PlasmaConsumablesRfqBuilder";
+import { TigTorchPartsRfqBuilder } from "@/components/products/TigTorchPartsRfqBuilder";
 import { getBuyerGuideForCategory } from "@/lib/content/topic-links";
 
 type CategoryPageTemplateProps = {
@@ -35,6 +36,9 @@ export function CategoryPageTemplate({
   );
   const hasPlasmaRfqBuilder =
     category.slug === "plasma-cutting-consumables" && Boolean(category.referenceFamilies?.length);
+  const hasTigRfqBuilder =
+    category.slug === "tig-torch-parts" && Boolean(category.referenceFamilies?.length);
+  const hasCategoryRfqBuilder = hasPlasmaRfqBuilder || hasTigRfqBuilder;
   const categoryStats = [
     { label: "Products", value: `${products.length}` },
     { label: "OEM support", value: "Available" },
@@ -45,7 +49,7 @@ export function CategoryPageTemplate({
     ...(hasTechnicalGuide
       ? [{ href: "#category-component-guide", label: "Parts & Selection" }]
       : []),
-    ...(hasPlasmaRfqBuilder ? [{ href: "#category-rfq-builder", label: "Build RFQ" }] : []),
+    ...(hasCategoryRfqBuilder ? [{ href: "#category-rfq-builder", label: "Build RFQ" }] : []),
     { href: "#category-buyer-guide", label: "Buyer Guide" },
     { href: "#category-product-information", label: "Product Information" },
     { href: "#category-ordering-information", label: "Ordering & OEM" },
@@ -89,13 +93,13 @@ export function CategoryPageTemplate({
               </Link>
               <Link
                 href={
-                  hasPlasmaRfqBuilder
+                  hasCategoryRfqBuilder
                     ? "#category-rfq-builder"
                     : `/rfq?product=${encodeURIComponent(category.title)}`
                 }
                 className="inline-flex w-full items-center justify-center border border-white/30 px-6 py-3 text-sm font-bold uppercase tracking-[0.16em] text-white transition hover:border-white hover:bg-white/10 sm:w-auto"
               >
-                {hasPlasmaRfqBuilder ? "Build Product RFQ" : "Send Category RFQ"}
+                {hasCategoryRfqBuilder ? "Build Product RFQ" : "Send Category RFQ"}
               </Link>
             </div>
           </div>
@@ -324,7 +328,8 @@ export function CategoryPageTemplate({
                 </div>
                 <div className="mt-3 flex flex-col gap-3 text-xs font-semibold leading-5 text-slate-600 sm:flex-row sm:items-center sm:justify-between">
                   <p>
-                    Source: Renqiu Ailesen Welding Technology Co., Ltd. welding catalog, plasma
+                    Source: Renqiu Ailesen Welding Technology Co., Ltd. welding catalog,{" "}
+                    {category.title}
                     section. Catalog family names are sourcing references and are not universal-fit
                     claims.
                   </p>
@@ -343,6 +348,12 @@ export function CategoryPageTemplate({
             {hasPlasmaRfqBuilder && category.referenceFamilies ? (
               <div id="category-rfq-builder" className="scroll-mt-28 pt-8">
                 <PlasmaConsumablesRfqBuilder torchFamilies={category.referenceFamilies} />
+              </div>
+            ) : null}
+
+            {hasTigRfqBuilder && category.referenceFamilies ? (
+              <div id="category-rfq-builder" className="scroll-mt-28 pt-8">
+                <TigTorchPartsRfqBuilder torchFamilies={category.referenceFamilies} />
               </div>
             ) : null}
 
