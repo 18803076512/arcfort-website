@@ -148,4 +148,21 @@ for (const eventName of [
   assert.match(analyticsTrackerSource, new RegExp(`eventName: "${eventName}"`));
 }
 
+assert.match(analyticsTrackerSource, /link_placement: getLinkPlacement\(anchor\)/);
+
+for (const placement of [
+  "sticky_contact",
+  "header",
+  "footer",
+  "sidebar",
+  "navigation",
+  "page_content",
+]) {
+  assert.match(
+    analyticsTrackerSource,
+    new RegExp(`return "${placement}"`),
+    `Tracked links must support the ${placement} placement.`,
+  );
+}
+
 console.log("Promotion attribution and conversion funnel tests passed.");

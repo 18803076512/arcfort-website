@@ -109,6 +109,30 @@ function getTrackedLinkEvent(href: string): TrackedLinkEvent | null {
   return null;
 }
 
+function getLinkPlacement(anchor: HTMLAnchorElement) {
+  if (anchor.closest("[data-sticky-contact-bar]")) {
+    return "sticky_contact";
+  }
+
+  if (anchor.closest("header")) {
+    return "header";
+  }
+
+  if (anchor.closest("footer")) {
+    return "footer";
+  }
+
+  if (anchor.closest("aside")) {
+    return "sidebar";
+  }
+
+  if (anchor.closest("nav")) {
+    return "navigation";
+  }
+
+  return "page_content";
+}
+
 function ensureGtag() {
   window.dataLayer = window.dataLayer || [];
 
@@ -227,7 +251,12 @@ export function AnalyticsTracker() {
       }
 
       const anchor = target.closest<HTMLAnchorElement>("a[href]");
-      const href = anchor?.getAttribute("href");
+
+      if (!anchor) {
+        return;
+      }
+
+      const href = anchor.getAttribute("href");
 
       if (!href) {
         return;
@@ -241,6 +270,7 @@ export function AnalyticsTracker() {
 
       trackAnalyticsEvent(trackedEvent.eventName, {
         ...trackedEvent.params,
+        link_placement: getLinkPlacement(anchor),
         page_path: window.location.pathname,
       });
     }

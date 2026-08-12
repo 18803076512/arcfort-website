@@ -448,6 +448,10 @@ Advertising storage, ad user data and ad personalization remain denied.
 - RFQ link clicks: `rfq_link_click`.
 - Catalog and buyer-tool clicks: `catalog_download_click`, `buyer_tool_download_click`.
 
+Tracked contact, RFQ and download link events include a non-personal `link_placement` value such as
+`header`, `footer`, `sticky_contact`, `navigation`, `sidebar` or `page_content`. This supports CTA
+placement analysis without sending link text, email subjects, product requirements or buyer data.
+
 Visitor names, company names, countries, email addresses, telephone or WhatsApp numbers, messages,
 uploaded file names, search text and raw campaign values are not sent to analytics. After creating
 the GA4 data stream:
