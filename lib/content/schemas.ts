@@ -44,6 +44,13 @@ export type CategorySelectionVariable = {
   confirmationMethod: string;
 };
 
+export type BuyerDownloadTool = {
+  href: string;
+  title: string;
+  description: string;
+  buttonLabel: string;
+};
+
 export type ProductCategory = {
   slug: string;
   code: string;
@@ -61,6 +68,7 @@ export type ProductCategory = {
   componentGuide?: CategoryComponent[];
   selectionVariables?: CategorySelectionVariable[];
   compatibilityChecklist?: string[];
+  buyerTool?: BuyerDownloadTool;
   oemServiceNote: string;
   packagingMoqNote: string;
   features: string[];
@@ -161,6 +169,7 @@ export type GuideArticle = {
     items: string[];
   };
   rfqFields?: string[];
+  buyerTool?: BuyerDownloadTool;
   categorySlugs: string[];
   productSlugs: string[];
   faq: FaqItem[];

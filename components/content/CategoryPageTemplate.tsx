@@ -486,6 +486,26 @@ export function CategoryPageTemplate({
                 </div>
               </div>
             ) : null}
+            {category.buyerTool ? (
+              <div className="border border-white/15 bg-white/5 p-5">
+                <p className="text-xs font-bold uppercase tracking-[0.16em] text-arc-signal">
+                  Buyer RFQ Tool
+                </p>
+                <h3 className="mt-3 font-display text-xl font-black text-white">
+                  {category.buyerTool.title}
+                </h3>
+                <p className="mt-3 text-sm leading-6 text-slate-300">
+                  {category.buyerTool.description}
+                </p>
+                <a
+                  href={category.buyerTool.href}
+                  download
+                  className="mt-5 inline-flex min-h-12 w-full items-center justify-center bg-arc-signal px-5 text-center text-xs font-bold uppercase tracking-[0.12em] text-arc-midnight transition hover:bg-white sm:w-auto"
+                >
+                  {category.buyerTool.buttonLabel}
+                </a>
+              </div>
+            ) : null}
           </div>
         </div>
       </section>

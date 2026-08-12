@@ -150,6 +150,8 @@ for (const eventName of [
 
 assert.match(analyticsTrackerSource, /arcfort-oem-project-brief\.xlsx/);
 assert.match(analyticsTrackerSource, /assetKey: "oem_project_brief"/);
+assert.match(analyticsTrackerSource, /arcfort-plasma-consumables-rfq\.xlsx/);
+assert.match(analyticsTrackerSource, /assetKey: "plasma_consumables_rfq_workbook"/);
 assert.match(analyticsTrackerSource, /url\.pathname\.split\("\."\)\.at\(-1\)/);
 
 assert.match(analyticsTrackerSource, /link_placement: getLinkPlacement\(anchor\)/);

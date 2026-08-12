@@ -468,6 +468,13 @@ export const productCategories: ProductCategory[] = [
       "State only documented operating references; do not estimate a rating from appearance.",
       "Approve a sample or complete matching stack before repeat purchasing.",
     ],
+    buyerTool: {
+      href: "/downloads/arcfort-plasma-consumables-rfq.xlsx",
+      title: "Plasma Consumables RFQ Workbook",
+      description:
+        "Organize torch references, consumable line items, quantities, evidence files, compatibility status and packing requirements in one buyer-ready XLSX.",
+      buttonLabel: "Download Plasma RFQ Workbook",
+    },
     features: [
       "Designed for repeat consumable sourcing",
       "Supports kit and individual item RFQs",
