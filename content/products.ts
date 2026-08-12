@@ -1,6 +1,7 @@
 import { arcfortProducts, type ArcfortProductData } from "@/lib/data/products";
 import { type Product, type SpecRow, type WeldingProcess } from "@/lib/content/schemas";
 import { isUnconfirmedValue } from "@/lib/content/display";
+import { getProductBuyingProfile } from "@/lib/content/product-buying-profiles";
 import { isLegacyProductPath } from "@/lib/content/product-redirects";
 import { siteConfig } from "@/lib/content/site";
 
@@ -94,6 +95,12 @@ function createRelatedProductSlugs(product: ArcfortProductData) {
 }
 
 function createFaq(product: ArcfortProductData) {
+  const buyingProfile = getProductBuyingProfile(product.slug);
+
+  if (buyingProfile?.faq?.length) {
+    return buyingProfile.faq;
+  }
+
   return [
     {
       question: `What information is needed for ${product.name} quotation?`,
@@ -109,6 +116,12 @@ function createFaq(product: ArcfortProductData) {
 }
 
 function createFeatures(product: ArcfortProductData) {
+  const buyingProfile = getProductBuyingProfile(product.slug);
+
+  if (buyingProfile?.features?.length) {
+    return buyingProfile.features;
+  }
+
   return [
     `Prepared for ${product.category} RFQ programs`,
     "Suitable for distributors, importers, industrial users and repair workshops",

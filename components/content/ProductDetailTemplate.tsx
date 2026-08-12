@@ -10,6 +10,7 @@ import { SpecificationTable } from "@/components/content/SpecificationTable";
 import { AddToRfqButton } from "@/components/rfq/AddToRfqButton";
 import { displayConfirmedValue, isLowSignalSpecificationValue } from "@/lib/content/display";
 import { hasPublicProductImage } from "@/lib/content/product-images";
+import { getProductBuyingProfile } from "@/lib/content/product-buying-profiles";
 import { siteConfig } from "@/lib/content/site";
 import { getBuyerGuideForProduct } from "@/lib/content/topic-links";
 
@@ -53,6 +54,33 @@ const confirmationWorkflow = [
     title: "Receive quotation",
     description:
       "ArcFort Weld prepares quotation details after the requested product and commercial requirements are reviewed.",
+  },
+] as const;
+
+const equipmentConfirmationWorkflow = [
+  {
+    step: "01",
+    title: "Define system requirements",
+    description:
+      "Send the process, application, destination electrical requirement and approved equipment or interface references.",
+  },
+  {
+    step: "02",
+    title: "Review proposed configuration",
+    description:
+      "Compare the supplier model, documented performance, interfaces and included equipment against the buyer requirement.",
+  },
+  {
+    step: "03",
+    title: "Align commercial scope",
+    description:
+      "Separate the main equipment, cables, accessories, spare parts, documents, packing and OEM requirements by line item.",
+  },
+  {
+    step: "04",
+    title: "Approve the quotation record",
+    description:
+      "Retain the accepted configuration, evidence, labels, packing and delivery scope for sample and repeat-order control.",
   },
 ] as const;
 
@@ -144,7 +172,20 @@ export function ProductDetailTemplate({
   relatedApplications,
 }: ProductDetailTemplateProps) {
   const buyerGuideLink = getBuyerGuideForProduct(product.slug, category.slug);
-  const rfqHref = `/rfq?product=${encodeURIComponent(product.title)}`;
+  const buyingProfile = getProductBuyingProfile(product.slug);
+  const activeConfirmationWorkflow =
+    product.kind === "welding-equipment" ? equipmentConfirmationWorkflow : confirmationWorkflow;
+  const productRfqPrompt = [
+    `Product: ${product.title}`,
+    `SKU: ${product.sku}`,
+    `Category: ${category.title}`,
+    ...(buyingProfile?.rfqFields ?? [
+      "Required model / size / material:",
+      "Drawing, sample photo or reference part:",
+      "Quantity, packaging and destination country:",
+    ]),
+  ].join("\n");
+  const rfqHref = `/rfq?product=${encodeURIComponent(productRfqPrompt)}`;
   const rfqListItem = {
     sku: product.sku,
     name: product.title,
@@ -161,11 +202,13 @@ export function ProductDetailTemplate({
       `SKU: ${product.sku}`,
       `Category: ${category.title}`,
       "",
-      "Quantity:",
-      "Destination country:",
-      "Required model / size / material:",
-      "Packaging or OEM request:",
-      "Drawing, sample photo or reference part:",
+      ...(buyingProfile?.rfqFields ?? [
+        "Quantity:",
+        "Destination country:",
+        "Required model / size / material:",
+        "Packaging or OEM request:",
+        "Drawing, sample photo or reference part:",
+      ]),
       "",
       "Please confirm quotation, MOQ and lead time.",
     ].join("\n"),
@@ -177,9 +220,11 @@ export function ProductDetailTemplate({
       `Product: ${product.title}`,
       `SKU: ${product.sku}`,
       `Category: ${category.title}`,
-      "Quantity:",
-      "Destination country:",
-      "Packaging or OEM request:",
+      ...(buyingProfile?.rfqFields.slice(0, 4) ?? [
+        "Quantity:",
+        "Destination country:",
+        "Packaging or OEM request:",
+      ]),
     ].join("\n"),
   )}`;
   const publicSpecifications = product.specifications.filter(isPublicDetailRow);
@@ -198,7 +243,9 @@ export function ProductDetailTemplate({
     `Product: ${product.title}`,
     `SKU: ${displayConfirmedValue(product.sku, "Confirm with product details")}`,
     `Category: ${category.title}`,
-    getCategoryConfirmationPrompt(category.slug),
+    ...(buyingProfile
+      ? buyingProfile.rfqFields.slice(0, 3)
+      : [getCategoryConfirmationPrompt(category.slug)]),
     "Add quantity, destination country and standard or OEM packaging requirement.",
   ];
   const tradeDetails = [
@@ -273,6 +320,7 @@ export function ProductDetailTemplate({
   ] as const;
   const productPageSections = [
     { href: "#product-specifications", label: "Specifications" },
+    ...(buyingProfile ? [{ href: "#product-selection", label: "Selection Guide" }] : []),
     { href: "#product-description", label: "Description & Delivery" },
     { href: "#product-applications", label: "Applications" },
     { href: "#product-faq", label: "FAQ & RFQ" },
@@ -489,7 +537,11 @@ export function ProductDetailTemplate({
         className="border-y border-slate-200 bg-white"
       >
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <ol className="grid grid-cols-2 gap-px bg-slate-200 sm:grid-cols-3 lg:grid-cols-5">
+          <ol
+            className={`grid grid-cols-2 gap-px bg-slate-200 sm:grid-cols-3 ${
+              buyingProfile ? "lg:grid-cols-6" : "lg:grid-cols-5"
+            }`}
+          >
             {productPageSections.map((section, index) => (
               <li key={section.href} className="bg-white">
                 <a
@@ -513,16 +565,18 @@ export function ProductDetailTemplate({
                 Buyer Confirmation Workflow
               </p>
               <h2 className="mt-3 font-display text-3xl font-black">
-                Confirm the product before price discussion.
+                {product.kind === "welding-equipment"
+                  ? "Confirm the equipment scope before price comparison."
+                  : "Confirm the product before price discussion."}
               </h2>
               <p className="mt-4 text-sm leading-7 text-slate-300">
-                Welding torch consumables and cutting parts may look similar but differ by thread,
-                size, material, model or packaging. This workflow keeps quotation communication
-                clear for distributors and OEM buyers.
+                {product.kind === "welding-equipment"
+                  ? "Equipment quotations should separate buyer requirements, supplier-confirmed configuration, interfaces, accessories and documents. This workflow keeps distributor and OEM comparisons evidence-based."
+                  : "Welding torch consumables and cutting parts may look similar but differ by thread, size, material, model or packaging. This workflow keeps quotation communication clear for distributors and OEM buyers."}
               </p>
             </div>
             <div className="grid gap-4 sm:grid-cols-2">
-              {confirmationWorkflow.map((item) => (
+              {activeConfirmationWorkflow.map((item) => (
                 <article key={item.step} className="border border-white/10 bg-white/5 p-5">
                   <div className="font-display text-3xl font-black text-arc-signal">
                     {item.step}
@@ -542,6 +596,90 @@ export function ProductDetailTemplate({
           <CompatibilityTable rows={publicCompatibility} />
         </div>
       </section>
+
+      {buyingProfile ? (
+        <section id="product-selection" className="scroll-mt-28 bg-white py-14 sm:py-16">
+          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            <div className="grid gap-6 lg:grid-cols-[1.1fr_0.9fr]">
+              <div>
+                <p className="text-sm font-bold uppercase tracking-[0.2em] text-arc-blue">
+                  {buyingProfile.eyebrow}
+                </p>
+                <h2 className="mt-3 max-w-3xl font-display text-3xl font-black leading-tight text-arc-midnight sm:text-4xl">
+                  {buyingProfile.title}
+                </h2>
+                <p className="mt-4 max-w-3xl text-sm leading-7 text-slate-600">
+                  {buyingProfile.description}
+                </p>
+                <dl className="mt-8 grid gap-4 sm:grid-cols-2">
+                  {buyingProfile.selectionVariables.map((variable, index) => (
+                    <div key={variable.label} className="border border-slate-200 bg-arc-frost p-5">
+                      <div className="flex items-start gap-3">
+                        <span className="font-display text-2xl font-black text-arc-blue">
+                          {String(index + 1).padStart(2, "0")}
+                        </span>
+                        <dt className="font-display text-xl font-black leading-7 text-arc-midnight">
+                          {variable.label}
+                        </dt>
+                      </div>
+                      <dd className="mt-3 text-sm leading-6 text-slate-700">
+                        {variable.whyItMatters}
+                      </dd>
+                      <dd className="mt-4 border-l-4 border-arc-signal bg-white p-3 text-xs font-semibold leading-5 text-arc-blue">
+                        Confirm with: {variable.confirmationMethod}
+                      </dd>
+                    </div>
+                  ))}
+                </dl>
+              </div>
+
+              <aside className="self-start bg-arc-midnight p-5 text-white shadow-industrial sm:p-6 lg:sticky lg:top-28">
+                <p className="text-xs font-bold uppercase tracking-[0.18em] text-arc-signal">
+                  Configuration Evidence
+                </p>
+                <h3 className="mt-3 font-display text-2xl font-black leading-tight">
+                  Prepare these details before RFQ.
+                </h3>
+                <ol className="mt-5 grid gap-3">
+                  {buyingProfile.confirmationChecklist.map((item, index) => (
+                    <li key={item} className="grid grid-cols-[2rem_1fr] gap-3 bg-white/5 p-4">
+                      <span className="font-display font-black text-arc-signal">
+                        {String(index + 1).padStart(2, "0")}
+                      </span>
+                      <span className="text-sm leading-6 text-slate-200">{item}</span>
+                    </li>
+                  ))}
+                </ol>
+                {buyingProfile.buyerTool ? (
+                  <div className="mt-6 border border-white/15 bg-white/5 p-4">
+                    <h4 className="font-display text-lg font-black text-white">
+                      {buyingProfile.buyerTool.title}
+                    </h4>
+                    <p className="mt-2 text-sm leading-6 text-slate-300">
+                      {buyingProfile.buyerTool.description}
+                    </p>
+                    <div className="mt-4 grid gap-3">
+                      <a
+                        href={buyingProfile.buyerTool.href}
+                        download
+                        className="inline-flex min-h-12 items-center justify-center bg-arc-signal px-4 text-center text-xs font-bold uppercase tracking-[0.12em] text-arc-midnight transition hover:bg-white"
+                      >
+                        {buyingProfile.buyerTool.buttonLabel}
+                      </a>
+                      <Link
+                        href={rfqHref}
+                        className="inline-flex min-h-12 items-center justify-center border border-white/25 px-4 text-center text-xs font-bold uppercase tracking-[0.12em] text-white transition hover:border-white hover:bg-white/10"
+                      >
+                        Start Wire Feeder RFQ
+                      </Link>
+                    </div>
+                  </div>
+                ) : null}
+              </aside>
+            </div>
+          </div>
+        </section>
+      ) : null}
 
       <section className="border-y border-slate-200 bg-white py-12 sm:py-14">
         <div className="mx-auto grid max-w-7xl gap-6 px-4 sm:px-6 lg:grid-cols-[0.78fr_1.22fr] lg:items-center lg:px-8">
@@ -720,7 +858,16 @@ export function ProductDetailTemplate({
       <section id="product-faq" className="scroll-mt-28 bg-white py-14 sm:py-16">
         <div className="mx-auto grid max-w-7xl gap-8 px-4 sm:px-6 lg:grid-cols-[1fr_0.95fr] lg:px-8">
           <FaqSection items={product.faq} title="Product FAQ" />
-          <RfqCta title={`Request quotation for ${product.title}`} productName={product.title} />
+          <RfqCta
+            title={`Request quotation for ${product.title}`}
+            description={
+              buyingProfile
+                ? "Send the system references and buyer requirements listed above. ArcFort Weld will review the proposed configuration, included equipment, MOQ and delivery options before quotation."
+                : undefined
+            }
+            productName={product.title}
+            rfqPrompt={productRfqPrompt}
+          />
         </div>
       </section>
 

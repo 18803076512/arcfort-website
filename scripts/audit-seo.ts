@@ -13,6 +13,7 @@ import {
 } from "../lib/content/product-redirects.ts";
 import { composeSeoTitle, SEO_TITLE_MAX_LENGTH } from "../lib/content/seo-title.ts";
 import { organizationIdentity, siteConfig } from "../lib/content/site.ts";
+import { productBuyingProfiles } from "../lib/content/product-buying-profiles.ts";
 import { arcfortProducts } from "../lib/data/products.ts";
 
 type SeoRecord = {
@@ -179,6 +180,41 @@ for (const product of activeProducts) {
   if (product.verifiedDate && !/^\d{4}-\d{2}-\d{2}$/.test(product.verifiedDate)) {
     errors.push(`${product.sku} has an invalid verified date "${product.verifiedDate}".`);
   }
+}
+
+const profileSlugs = new Set<string>();
+
+for (const profile of productBuyingProfiles) {
+  if (profileSlugs.has(profile.productSlug)) {
+    errors.push(`Duplicate product buying profile for "${profile.productSlug}".`);
+  }
+  profileSlugs.add(profile.productSlug);
+
+  if (!productSlugs.has(profile.productSlug)) {
+    errors.push(`Product buying profile references missing product "${profile.productSlug}".`);
+  }
+
+  if (profile.selectionVariables.length < 4) {
+    errors.push(
+      `Product buying profile ${profile.productSlug} has fewer than 4 selection variables.`,
+    );
+  }
+
+  if (profile.confirmationChecklist.length < 4) {
+    errors.push(
+      `Product buying profile ${profile.productSlug} has fewer than 4 confirmation steps.`,
+    );
+  }
+
+  if (profile.rfqFields.length < 4) {
+    errors.push(`Product buying profile ${profile.productSlug} has fewer than 4 RFQ fields.`);
+  }
+
+  if (profile.faq && profile.faq.length < 3) {
+    errors.push(`Product buying profile ${profile.productSlug} has fewer than 3 FAQ items.`);
+  }
+
+  checkBuyerTool(`Product buying profile ${profile.productSlug}`, profile.buyerTool?.href);
 }
 
 const featuredProductSlugs = new Set(homepageFeaturedProductSlugs);

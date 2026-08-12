@@ -51,6 +51,19 @@ export type BuyerDownloadTool = {
   buttonLabel: string;
 };
 
+export type ProductBuyingProfile = {
+  productSlug: string;
+  eyebrow: string;
+  title: string;
+  description: string;
+  selectionVariables: CategorySelectionVariable[];
+  confirmationChecklist: string[];
+  rfqFields: string[];
+  buyerTool?: BuyerDownloadTool;
+  features?: string[];
+  faq?: FaqItem[];
+};
+
 export type ProductCategory = {
   slug: string;
   code: string;

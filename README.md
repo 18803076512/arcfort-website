@@ -530,6 +530,12 @@ output, duty cycle, interfaces, certification and other technical fields must re
 or supplier-confirmed for the quoted machine. The workbook can be uploaded directly through the RFQ
 form with nameplate photos, approved specifications or reference documents.
 
+High-value products can add a dedicated buying profile in
+`lib/content/product-buying-profiles.ts`. A profile supplies product-specific selection variables,
+evidence checks, RFQ fields, FAQs and an optional buyer download without adding unconfirmed technical
+values to the core SKU record. The Wire Feeder profile is the first implementation and reuses the
+welding machine RFQ workbook for power-source, interface, accessory and approval review.
+
 ## Distributor Promotion Workflow
 
 The first measurable promotion campaign targets relevant welding and cutting product distributors,

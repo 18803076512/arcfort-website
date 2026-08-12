@@ -5,29 +5,40 @@ type RfqCtaProps = {
   title?: string;
   description?: string;
   productName?: string;
+  rfqPrompt?: string;
 };
 
 export function RfqCta({
   title = "Need a reliable welding parts supplier?",
   description = "Send your product list, drawings, product photos or reference part details. ArcFort Weld will respond with quotation, MOQ and delivery options after confirmation.",
   productName,
+  rfqPrompt,
 }: RfqCtaProps) {
-  const rfqHref = productName ? `/rfq?product=${encodeURIComponent(productName)}` : "/rfq";
+  const inquiryReference = rfqPrompt ?? productName;
+  const rfqHref = inquiryReference
+    ? `/rfq?product=${encodeURIComponent(inquiryReference)}`
+    : "/rfq";
+  const directInquiryMessage = productName
+    ? [
+        `Hello ArcFort Weld, I would like a quotation for ${productName}.`,
+        "",
+        rfqPrompt ?? "Quantity:\nDestination country:\nModel / drawing / sample reference:",
+      ].join("\n")
+    : undefined;
   const supportDetails = [
     {
       label: "Email",
       value: siteConfig.email,
       href: buildEmailHref({
         subject: productName ? `ArcFort Weld RFQ - ${productName}` : "ArcFort Weld product RFQ",
+        message: directInquiryMessage,
       }),
     },
     {
       label: "WhatsApp",
       value: siteConfig.whatsapp,
       href: buildWhatsAppHref({
-        message: productName
-          ? `Hello ArcFort Weld, I would like a quotation for ${productName}.\n\nQuantity:\nDestination country:\nModel / drawing / sample reference:`
-          : undefined,
+        message: directInquiryMessage,
       }),
     },
     {
