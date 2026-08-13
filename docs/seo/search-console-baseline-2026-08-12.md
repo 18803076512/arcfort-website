@@ -171,6 +171,13 @@ link relevant category and guide content to the OEM service, and avoid weakening
     category and checklist path from the Product Center. Extended the build-time link audit so the
     guide retains contextual entry points from the Product Center, Guides, welding-machine category
     and Wire Feeder product page.
+29. Expanded the existing `/shipping-payment` page after it recorded 5 impressions at average
+    position 9.40. Preserved the indexed URL while aligning its title and first viewport with welding
+    product shipping, payment and export-order intent. Added confirmed payment, MOQ, lead-time and
+    port details; a five-stage order workflow; a buyer-versus-quotation input matrix; order-specific
+    RFQ prefill; and commercial paths to Products, Distributor Supply, OEM Service and Quality
+    Control. Added regression tests and internal-link requirements without presenting freight,
+    Incoterms, certification or shipment dates as fixed facts.
 
 ## Measurement Plan
 

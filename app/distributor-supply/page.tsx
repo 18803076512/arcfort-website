@@ -111,9 +111,10 @@ const resourceLinks = [
     description: "See the incoming, production, packaging and outgoing inspection workflow.",
   },
   {
-    href: "/shipping-payment",
+    href: "/shipping-payment#export-order-workflow",
     title: "Shipping & Payment",
-    description: "Review port, payment, MOQ and regular lead-time information before RFQ.",
+    description:
+      "Review payment stages, lead-time basis, port options and the export-order workflow before RFQ.",
   },
   {
     href: "/guides/how-to-prepare-a-welding-parts-rfq",

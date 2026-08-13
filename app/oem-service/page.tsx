@@ -48,9 +48,10 @@ const oemSupportLinks = [
     description: "Review inspection and packing checkpoints used for order confirmation.",
   },
   {
-    href: "/shipping-payment",
+    href: "/shipping-payment#export-order-workflow",
     title: "Shipping & Payment",
-    description: "Check confirmed payment terms, regular lead time and main port information.",
+    description:
+      "Check payment stages, OEM lead-time basis, packing inputs and the export-order workflow.",
   },
   {
     href: "/downloads",
