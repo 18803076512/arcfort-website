@@ -82,6 +82,11 @@ const sitemapSource = readFileSync("app/sitemap.ts", "utf8");
 
 assert.match(pageSource, /<DistributorRfqBuilder \/>/);
 assert.match(pageSource, /id="distributor-rfq-builder"/);
+assert.match(pageSource, /<a\s+href="\/downloads\/arcfort-distributor-sourcing-guide\.pdf"/);
+assert.doesNotMatch(
+  pageSource,
+  /<Link\s+href="\/downloads\/arcfort-distributor-sourcing-guide\.pdf"/,
+);
 assert.match(componentSource, /data-hide-sticky-contact-when-visible/);
 assert.match(componentSource, /distributor_rfq_builder_start/);
 assert.match(componentSource, /distributor_rfq_builder_continue/);
