@@ -87,6 +87,9 @@ jobs:
       - name: Test robotic MIG/MAG torch content
         run: npm run test:robot-torch
 
+      - name: Test export order terms and conversion paths
+        run: npm run test:export-terms
+
       - name: Lint
         run: npm run lint
 

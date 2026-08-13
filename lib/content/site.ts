@@ -32,6 +32,12 @@ export const siteConfig = {
   paymentTerms: "T/T, 30% deposit before production, 70% balance before shipment",
   moqPolicy: "Small trial orders accepted; OEM MOQ depends on product and packaging requirements",
   leadTime: "7-20 working days for regular orders",
+  regularLeadTime: "Usually 7-20 working days after deposit confirmation for regular orders",
+  sampleLeadTime: "Usually 3-7 working days when materials are available",
+  oemLeadTime:
+    "Usually 20-35 working days depending on quantity, packaging and production schedule",
+  paymentAlternatives:
+    "T/T is preferred, with 30% deposit before production and 70% balance before shipment. L/C at sight can be discussed for large orders; final terms depend on order quantity and cooperation history.",
   oemService: "Logo, packaging, private label, and model customization available",
   sameAs: [] as string[],
 };

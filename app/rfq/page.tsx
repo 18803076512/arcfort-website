@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { Breadcrumbs } from "@/components/content/Breadcrumbs";
 import { StructuredData } from "@/components/content/StructuredData";
 import { breadcrumbJsonLd, webPageJsonLd } from "@/lib/content/jsonld";
@@ -129,6 +130,12 @@ export default async function RfqPage({ searchParams }: RfqPageProps) {
                     </li>
                   ))}
                 </ul>
+                <Link
+                  href="/shipping-payment#export-order-workflow"
+                  className="mt-5 inline-flex min-h-11 items-center text-sm font-bold text-arc-blue underline decoration-arc-signal decoration-2 underline-offset-4 hover:text-arc-midnight"
+                >
+                  Review payment, lead-time and export order terms
+                </Link>
               </div>
 
               <div className="mt-6 grid gap-3 sm:grid-cols-2">

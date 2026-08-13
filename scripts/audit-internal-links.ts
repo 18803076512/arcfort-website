@@ -25,6 +25,10 @@ const dynamicSources: DynamicSource[] = [
     route: "/products",
     sourceFile: path.resolve("app/products/page.tsx"),
   },
+  {
+    route: "/rfq",
+    sourceFile: path.resolve("app/rfq/page.tsx"),
+  },
 ];
 const priorityTargets: PriorityTarget[] = [
   {
@@ -59,6 +63,12 @@ const priorityTargets: PriorityTarget[] = [
       "/products/welding-machines",
       "/products/welding-machines/wire-feeder",
     ],
+  },
+  {
+    path: "/shipping-payment",
+    label: "Shipping and payment commercial page",
+    minimumInboundSources: 6,
+    requiredSources: ["/", "/about", "/contact", "/distributor-supply", "/oem-service", "/rfq"],
   },
 ];
 
@@ -125,7 +135,7 @@ function getInternalLinks(html: string) {
 function getSourceInternalLinks(source: string) {
   const links = new Set<string>();
 
-  for (const match of source.matchAll(/["'`]((?:\/)[a-z0-9][a-z0-9\-./]*)["'`]/gi)) {
+  for (const match of source.matchAll(/["'`]((?:\/)[a-z0-9][a-z0-9\-./#?=&%]*)["'`]/gi)) {
     const normalizedPath = normalizeInternalPath(match[1] ?? "");
 
     if (normalizedPath) {
