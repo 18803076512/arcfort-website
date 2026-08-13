@@ -101,7 +101,7 @@ No items found.
 | AF-TIG-TS-0036 | TIG Torch Switch | material, size, compatible_brand, oem_number, package |
 | AF-MAC-SG-0037 | Stud Welding Gun | material, size, compatible_brand, oem_number, package |
 | AF-ACC-SA-0038 | Stud Welding Accessories | material, size, thread, compatible_brand, oem_number, package |
-| AF-ACC-RT-0039 | Robot Welding Torch | material, size, thread, compatible_brand, oem_number, package |
+| AF-ACC-RT-0039 | Robotic MIG/MAG Welding Torch Front End | material, size, thread, compatible_brand, oem_number, package |
 | AF-CON-SE-0040 | Spot Welding Electrode | size, thread, compatible_brand, oem_number, package |
 | AF-ACC-FA-0041 | Wire Feeder Accessories | material, size, thread, compatible_brand, oem_number, package |
 | AF-ACC-PC-0042 | Welding Protective Cover | material, size, compatible_brand, oem_number, package |

@@ -84,6 +84,9 @@ jobs:
       - name: Test welding machine RFQ builder
         run: npm run test:machine-rfq
 
+      - name: Test robotic MIG/MAG torch content
+        run: npm run test:robot-torch
+
       - name: Lint
         run: npm run lint
 

@@ -11,7 +11,7 @@ export const siteConfig = {
     "Renqiu Ailesen Welding Technology Co., Ltd. operates ArcFort Weld, supplying industrial welding and cutting products for global distributors, importers, OEM buyers and industrial users.",
   contentLastModified: "2026-08-13",
   oemLastModified: "2026-08-13",
-  guidesLastModified: "2026-08-12",
+  guidesLastModified: "2026-08-13",
   aboutLastModified: "2026-08-09",
   distributorLandingLastModified: "2026-08-13",
   contactLastModified: "2026-08-09",

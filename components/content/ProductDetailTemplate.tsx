@@ -149,7 +149,11 @@ function getTechnicalSourceLabel(product: Product) {
   }
 }
 
-function getCategoryConfirmationPrompt(categorySlug: string) {
+function getCategoryConfirmationPrompt(categorySlug: string, productSlug?: string) {
+  if (productSlug === "robot-welding-torch") {
+    return "Send the robot or welding-cell reference, installed torch label, photos of both connection ends, approved interface or neck drawing, cooling and cable-package references, and the current contact tip, holder or diffuser and nozzle stack in assembly order.";
+  }
+
   if (categorySlug === "plasma-cutting-consumables") {
     return "Send the torch model, existing references and a photo of the electrode, nozzle, ring, cap and shield in assembly order. Include a documented cutting-current reference only when available.";
   }
@@ -245,7 +249,7 @@ export function ProductDetailTemplate({
     `Category: ${category.title}`,
     ...(buyingProfile
       ? buyingProfile.rfqFields.slice(0, 3)
-      : [getCategoryConfirmationPrompt(category.slug)]),
+      : [getCategoryConfirmationPrompt(category.slug, product.slug)]),
     "Add quantity, destination country and standard or OEM packaging requirement.",
   ];
   const tradeDetails = [
@@ -513,7 +517,7 @@ export function ProductDetailTemplate({
                     Technical details available upon request
                   </h2>
                   <p className="mt-2 text-sm leading-6 text-slate-700">
-                    {getCategoryConfirmationPrompt(category.slug)}
+                    {getCategoryConfirmationPrompt(category.slug, product.slug)}
                   </p>
                   <div className="mt-3 flex flex-wrap gap-2">
                     {technicalDetailsToConfirm.map((field) => (

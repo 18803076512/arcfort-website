@@ -25,7 +25,7 @@ Audit date: 2026-06-29
 | AF-TIG-TS-0036 | TIG Torch Switch | TIG Torch Parts | PDF page 37 - TIG torch handles and switch-related accessory images are visible near the end of the TIG section. | needs_review |
 | AF-MAC-SG-0037 | Stud Welding Gun | Welding Machines | PDF page 37 - Stud welding gun products are visible in the catalog. | needs_review |
 | AF-ACC-SA-0038 | Stud Welding Accessories | Welding Accessories | PDF pages 37 and 58 - Stud welding accessories and small copper accessory groups are visible in catalog sections. | needs_review |
-| AF-ACC-RT-0039 | Robot Welding Torch | Welding Accessories | PDF pages 48-54 - Robot welding torch assemblies and related torch parts are visible in the robot section. | needs_review |
+| AF-ACC-RT-0039 | Robotic MIG/MAG Welding Torch Front End | Welding Accessories | PDF pages 48-54 - Robotic welding torch neck/front-end assemblies and related removable parts are visible. The evidence does not confirm a complete robot flange, cable package, collision mount, cooling circuit or model compatibility. | needs_review |
 | AF-CON-SE-0040 | Spot Welding Electrode | Welding Consumables | PDF page 58 - Spot welding electrode and cap series are visible on the accessories summary page. | needs_review |
 | AF-ACC-FA-0041 | Wire Feeder Accessories | Welding Accessories | PDF pages 39-41 - Wire feeder accessories, connectors and feeder-related components are visible in the catalog. | needs_review |
 | AF-ACC-PC-0042 | Welding Protective Cover | Welding Accessories | PDF page 58 - Rubber house, canvas hose, leather house, dust prevent cover and protective cover items are visible. | needs_review |
