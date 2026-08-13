@@ -76,6 +76,19 @@ const priorityTargets: PriorityTarget[] = [
     minimumInboundSources: 6,
     requiredSources: ["/", "/contact", "/distributor-supply", "/oem-service", "/rfq"],
   },
+  {
+    path: "/quality-control",
+    label: "Welding product quality control and inspection page",
+    minimumInboundSources: 6,
+    requiredSources: [
+      "/",
+      "/about",
+      "/distributor-supply",
+      "/oem-service",
+      "/shipping-payment",
+      "/rfq",
+    ],
+  },
 ];
 
 function walkHtmlFiles(directory: string): string[] {

@@ -137,6 +137,12 @@ export default async function RfqPage({ searchParams }: RfqPageProps) {
                   Review payment, lead-time and export order terms
                 </Link>
                 <Link
+                  href="/quality-control#inspection-workflow"
+                  className="mt-1 inline-flex min-h-11 items-center text-sm font-bold text-arc-blue underline decoration-arc-signal decoration-2 underline-offset-4 hover:text-arc-midnight"
+                >
+                  Review product confirmation and inspection points
+                </Link>
+                <Link
                   href="/about"
                   className="mt-1 inline-flex min-h-11 items-center text-sm font-bold text-arc-blue underline decoration-arc-signal decoration-2 underline-offset-4 hover:text-arc-midnight"
                 >

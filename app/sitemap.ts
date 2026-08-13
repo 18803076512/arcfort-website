@@ -66,9 +66,11 @@ export default function sitemap(): MetadataRoute.Sitemap {
               ? siteConfig.guidesLastModified
               : route === "/about"
                 ? siteConfig.aboutLastModified
-                : route === "/contact"
-                  ? siteConfig.contactLastModified
-                  : siteConfig.contentLastModified,
+                : route === "/quality-control"
+                  ? siteConfig.qualityLastModified
+                  : route === "/contact"
+                    ? siteConfig.contactLastModified
+                    : siteConfig.contentLastModified,
     })),
     ...downloadableRoutes.map((route) => ({
       url: absoluteUrl(route.path),

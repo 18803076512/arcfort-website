@@ -93,6 +93,9 @@ jobs:
       - name: Test company profile and evidence boundaries
         run: npm run test:company-profile
 
+      - name: Test quality control workflow and evidence boundaries
+        run: npm run test:quality-control
+
       - name: Lint
         run: npm run lint
 
