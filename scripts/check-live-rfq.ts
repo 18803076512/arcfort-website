@@ -29,6 +29,7 @@ type RfqStatusResponse = {
     buyerConfirmationReady?: boolean;
     idempotencyProtected?: boolean;
     idempotencyWindowHours?: number;
+    providerRequestTimeoutSeconds?: number;
     recipient?: string;
   };
   storage?: {
@@ -131,6 +132,9 @@ async function main() {
   console.log(
     `Email idempotency window: ${status.email?.idempotencyWindowHours ?? "unknown"} hours`,
   );
+  console.log(
+    `Email provider request timeout: ${status.email?.providerRequestTimeoutSeconds ?? "unknown"} seconds`,
+  );
   console.log(`Sales recipient: ${status.email?.recipient ?? "not reported"}`);
   console.log(`Storage ready: ${Boolean(status.storage?.ready)}`);
   console.log(`Storage idempotency protected: ${Boolean(status.storage?.idempotencyProtected)}`);
@@ -153,6 +157,10 @@ async function main() {
 
   if (!status.email?.idempotencyProtected || status.email.idempotencyWindowHours !== 24) {
     throw new Error("The live RFQ endpoint does not report 24-hour email idempotency protection.");
+  }
+
+  if (status.email.providerRequestTimeoutSeconds !== 12) {
+    throw new Error("The live RFQ endpoint does not report the required 12-second email timeout.");
   }
 
   if (

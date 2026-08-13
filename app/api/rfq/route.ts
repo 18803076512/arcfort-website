@@ -34,6 +34,7 @@ import {
   isRfqSubmissionTokenCurrent,
   normalizeRfqSubmissionToken,
 } from "@/lib/rfq-idempotency";
+import { fetchRfqEmailProvider, isRfqProviderTimeoutError } from "@/lib/rfq-provider-timeout";
 import { isTrustedRfqRequest } from "@/lib/rfq-request-security";
 import {
   buildRfqStorageObjectUrl,
@@ -43,6 +44,7 @@ import {
 } from "@/lib/rfq-storage";
 
 export const runtime = "nodejs";
+export const maxDuration = 30;
 
 type RfqPayload = RfqTextValues & {
   sourcePath: string;
@@ -303,7 +305,7 @@ async function sendEmailNotification(
 
   const emailAttachments = files.length > 0 ? await buildEmailAttachments(files) : [];
 
-  const response = await fetch("https://api.resend.com/emails", {
+  const response = await fetchRfqEmailProvider("https://api.resend.com/emails", {
     method: "POST",
     headers: {
       Authorization: `Bearer ${apiKey}`,
@@ -330,7 +332,7 @@ async function sendEmailNotification(
   let buyerConfirmationId: string | null = null;
 
   try {
-    const buyerResponse = await fetch("https://api.resend.com/emails", {
+    const buyerResponse = await fetchRfqEmailProvider("https://api.resend.com/emails", {
       method: "POST",
       headers: {
         Authorization: `Bearer ${apiKey}`,
@@ -352,7 +354,12 @@ async function sendEmailNotification(
     if (buyerResponse.ok) {
       buyerConfirmationId = await getResendMessageId(buyerResponse);
     }
-  } catch {
+  } catch (error) {
+    console.error(
+      isRfqProviderTimeoutError(error)
+        ? `[RFQ ${reference}] Resend buyer confirmation timed out.`
+        : `[RFQ ${reference}] Resend buyer confirmation failed.`,
+    );
     buyerConfirmationDelivered = false;
   }
 
@@ -604,7 +611,11 @@ export async function POST(request: Request) {
     }
 
     if (emailResult.status === "rejected") {
-      console.error(`[RFQ ${reference}] Resend email delivery failed.`);
+      console.error(
+        isRfqProviderTimeoutError(emailResult.reason)
+          ? `[RFQ ${reference}] Resend sales email timed out.`
+          : `[RFQ ${reference}] Resend sales email delivery failed.`,
+      );
     }
 
     const storageDelivery: StorageDeliveryResult =
