@@ -99,7 +99,8 @@ const distributorPageSource = readFileSync(
 );
 const contactPageSource = readFileSync(new URL("../app/contact/page.tsx", import.meta.url), "utf8");
 
-assert.match(distributorPageSource, /href="#distributor-rfq-form"/);
+assert.match(distributorPageSource, /href="#distributor-rfq-builder"/);
+assert.match(distributorPageSource, /id="distributor-rfq-builder"/);
 assert.match(distributorPageSource, /id="distributor-rfq"/);
 assert.match(distributorPageSource, /id="distributor-rfq-form"/);
 assert.match(distributorPageSource, /formPlacement="distributor_landing"/);
@@ -149,6 +150,7 @@ for (const eventName of [
 }
 
 assert.match(analyticsTrackerSource, /arcfort-oem-project-brief\.xlsx/);
+assert.match(analyticsTrackerSource, /arcfort-distributor-rfq-workbook\.xlsx/);
 assert.match(analyticsTrackerSource, /assetKey: "oem_project_brief"/);
 assert.match(analyticsTrackerSource, /arcfort-plasma-consumables-rfq\.xlsx/);
 assert.match(analyticsTrackerSource, /assetKey: "plasma_consumables_rfq_workbook"/);

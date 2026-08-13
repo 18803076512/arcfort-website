@@ -72,11 +72,17 @@ jobs:
       - name: Test OEM RFQ builder
         run: npm run test:oem-rfq
 
+      - name: Test distributor RFQ builder and workbook
+        run: npm run test:distributor-rfq
+
       - name: Test plasma consumables RFQ builder
         run: npm run test:plasma-rfq
 
       - name: Test TIG torch parts RFQ builder
         run: npm run test:tig-rfq
+
+      - name: Test welding machine RFQ builder
+        run: npm run test:machine-rfq
 
       - name: Lint
         run: npm run lint

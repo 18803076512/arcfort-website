@@ -31,6 +31,10 @@ const analyticsOnlyConsent: AnalyticsConsentSettings = {
 };
 
 const downloadAssets: Record<string, { eventName: string; assetKey: string }> = {
+  "/downloads/arcfort-distributor-rfq-workbook.xlsx": {
+    eventName: "buyer_tool_download_click",
+    assetKey: "distributor_rfq_workbook",
+  },
   "/downloads/arcfort-distributor-sourcing-guide.pdf": {
     eventName: "buyer_tool_download_click",
     assetKey: "distributor_sourcing_guide",

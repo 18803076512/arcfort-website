@@ -549,6 +549,9 @@ Generated public files:
 - `public/downloads/arcfort-public-product-list.csv` - active product list with SKU, product URL
   and RFQ-ready sourcing notes
 - `public/downloads/arcfort-rfq-template.csv` - buyer worksheet for product list quotation requests
+- `public/downloads/arcfort-distributor-rfq-workbook.xlsx` - four-tab distributor workbook for
+  buyer profile, mixed SKU lines, trial and repeat quantities, packing requirements, evidence files
+  and supplier-review status
 - `public/downloads/arcfort-oem-project-brief.xlsx` - four-tab OEM project workbook for buyer,
   product-line, packaging, artwork and evidence-file preparation
 - `public/downloads/arcfort-plasma-consumables-rfq.xlsx` - four-tab plasma consumables workbook for
@@ -581,6 +584,11 @@ electrical requirements from the supplier's proposed configuration and supportin
 output, duty cycle, interfaces, certification and other technical fields must remain buyer-provided
 or supplier-confirmed for the quoted machine. The workbook can be uploaded directly through the RFQ
 form with nameplate photos, approved specifications or reference documents.
+
+The distributor RFQ workbook is intended for mixed product ranges and larger SKU lists. It keeps
+buyer-provided current references separate from supplier-confirmed fit, uses evidence IDs to connect
+photos or drawings to line items, and separates trial quantities from expected repeat purchasing.
+Upload the completed workbook through the RFQ form with the referenced evidence files.
 
 High-value products can add a dedicated buying profile in
 `lib/content/product-buying-profiles.ts`. A profile supplies product-specific selection variables,

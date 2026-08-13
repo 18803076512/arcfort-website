@@ -186,6 +186,19 @@ const weldingMachineRfqWorkbook = new File(
 assert.equal(validateRfqFiles([weldingMachineRfqWorkbook]), null);
 assert.equal(await validateRfqFileContents([weldingMachineRfqWorkbook]), null);
 
+const distributorRfqWorkbookBytes = readFileSync(
+  "public/downloads/arcfort-distributor-rfq-workbook.xlsx",
+);
+const distributorRfqWorkbook = new File(
+  [distributorRfqWorkbookBytes],
+  "arcfort-distributor-rfq-workbook.xlsx",
+  {
+    type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+  },
+);
+assert.equal(validateRfqFiles([distributorRfqWorkbook]), null);
+assert.equal(await validateRfqFileContents([distributorRfqWorkbook]), null);
+
 assert.match(
   (await validateRfqFileContents([
     new File([new Uint8Array([0x4d, 0x5a, 0x90, 0x00])], "renamed.pdf"),
