@@ -77,7 +77,7 @@ controlled by this company; never associate unrelated companies that use a simil
 - `lib/content/topic-links.ts` - category-to-guide internal linking map
 
 The website currently includes 6 product categories, 43 product records (40 active public products
-and 3 draft records awaiting reviewed images), 6 application pages, 16 buyer guides and dedicated
+and 3 draft records awaiting reviewed images), 6 application pages, 17 buyer guides and dedicated
 trust pages for distributor supply, OEM service, quality control, shipping/payment and document
 requests. Four retained generic starter URLs permanently
 redirect to their current category pages so they do not compete with exact SKU pages. Missing product data must remain explicit
@@ -90,6 +90,13 @@ active product records and guide buyers toward model-, drawing- or sample-based 
 TIG parts identification guide is intentionally separate from the TIG consumable-stack selection
 guide: one helps name unknown parts from photos and samples, while the other checks how known parts
 fit together.
+
+The existing robotic welding torch product URL is retained because Search Console has already
+recorded impressions and a click. Its product-specific buying profile treats the current catalog
+image as evidence of a robotic MIG/MAG torch neck/front-end family only. Buyers must provide the
+installed cell and torch references, interface or neck drawing, cooling and cable arrangement, and
+the consumable stack before a replacement is quoted. Run `npm run test:robot-torch` after changing
+this product, its buying profile or its replacement guide.
 
 The plasma category also provides a company-catalog reference matrix and an interactive RFQ builder.
 The builder carries the buyer's torch family, requested components, visible part reference, quantity

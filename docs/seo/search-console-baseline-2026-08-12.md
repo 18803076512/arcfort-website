@@ -151,6 +151,15 @@ link relevant category and guide content to the OEM service, and avoid weakening
     evidence. Added a four-tab distributor RFQ workbook for larger SKU lists, linked each product
     line to evidence and supplier-review status, and tracked the download without collecting buyer
     inputs or file names.
+26. Expanded the existing `/products/welding-accessories/robot-welding-torch` URL after it recorded
+    11 impressions, 1 click, 9.09% CTR and average position 24.45. Preserved the indexed route while
+    refining the visible product scope to a robotic MIG/MAG torch front end, correcting the process
+    label, and adding evidence-led selection variables for the installed cell, mechanical interface,
+    neck geometry, cooling, cable package and consumable stack. Added a separate replacement guide
+    for informational intent plus a tracked LinkedIn campaign link for relevant automation and
+    welding-distributor outreach. The current catalog image supports a front-end family only and is not
+    treated as evidence of a complete robot flange, cable package, collision mount, rating or model
+    compatibility.
 
 ## Measurement Plan
 
@@ -162,6 +171,8 @@ lag and review the next export no earlier than 2026-09-12. Compare:
 parts` and `MIG welding torch parts`.
 - CTR for the homepage and welding machine sourcing checklist.
 - Clicks and assisted RFQ activity from OEM service and guide pages.
+- Impressions, CTR, average position and RFQ assists for the retained robotic welding torch product
+  URL and its separate replacement guide.
 - Desktop CTR versus mobile CTR.
 - Indexed status and canonical selection for newly added guide URLs.
 

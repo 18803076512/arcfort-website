@@ -1537,4 +1537,112 @@ export const guides: GuideArticle[] = [
       "MIG consumables supplier",
     ],
   },
+  {
+    slug: "robotic-mig-welding-torch-replacement-guide",
+    title: "Robotic MIG/MAG Welding Torch Replacement Guide",
+    seoTitle: "Robotic MIG/MAG Welding Torch Replacement Guide",
+    description:
+      "A B2B guide for documenting robotic MIG/MAG torch interfaces, neck geometry, cooling, cable arrangements and consumables before replacement quotation.",
+    seoDescription:
+      "Prepare a robotic MIG/MAG torch replacement RFQ using installed-system references, interface evidence, neck geometry, cooling, cables and consumable details.",
+    publishedDate: "2026-08-13",
+    modifiedDate: "2026-08-13",
+    sections: [
+      {
+        title: "Define the replacement boundary first",
+        body: "Start by separating the torch front end from the complete robotic welding package. The requested scope may be a torch neck and front-end assembly, loose contact tips and nozzles, a cable package, a mount or another system component. A catalog photo of the torch front end does not confirm that a robot flange, collision mount, cable package, cooling circuit or connector set is included. Put each required item on its own RFQ line so the supplier can identify what is being proposed, what remains outside the quotation and which interfaces still require buyer approval.",
+      },
+      {
+        title: "Record the installed welding cell",
+        body: "Provide the robot or welding-cell asset reference, welding power-source manufacturer and model, wire feeder reference and installed torch label when available. These records establish the system being maintained, but they should not be treated as proof that any visually similar replacement will fit. Add wide photos showing the installed arrangement and close views of labels, connectors and the torch front end. If the cell has approved drawings, spare-parts lists or maintenance records, connect each document to the relevant RFQ line with a traceable evidence ID.",
+      },
+      {
+        title: "Confirm the mechanical interface and neck geometry",
+        body: "Mechanical fit and torch-neck geometry can affect installation and the established torch position in the cell. Photograph both connection ends and provide an approved interface or neck drawing whenever possible. Record verified dimensions only from a controlled drawing or reliable measurement. Tool-center-point, reach, angle and fixture-clearance requirements belong to the buyer's approved automation record and must not be inferred from the product image. Ask the supplier to state the proposed interface and geometry in writing before a trial replacement is approved.",
+      },
+      {
+        title: "Document cooling, cable and connector arrangements",
+        body: "Cooling method, cable-package length, hose routing, power connection, gas path and control or sensor connectors may vary between installations. The front-end image does not confirm these fields. Send clear connector and routing photos, existing cable labels and the cooling-line record available for the cell. Separate a front-end-only request from a complete cable-package request. The quotation should identify every included cable, hose, connector and support component, and should leave unverified ratings or connections open until matching evidence is reviewed.",
+      },
+      {
+        title: "Map the MIG/MAG consumable stack",
+        body: "Arrange the contact tip, tip holder or gas diffuser, insulator, gas nozzle and related front-end parts in installation order. Record the welding wire specification and diameter from the approved welding procedure or current production record. Add visible markings, verified threads or dimensions and photos of both ends without guessing part numbers. These components should be reviewed as one matched front-end system. A nozzle or contact tip that looks similar is not enough to confirm the internal connection, gas path or torch-family compatibility.",
+      },
+      {
+        title: "Plan a controlled trial replacement",
+        body: "For a new replacement source, separate trial quantity from expected repeat spare quantity. Compare the proposed item, interface evidence, included parts, labels and packing against the buyer requirement before installation. The buyer's qualified automation and welding personnel should control installation, alignment, safety checks and production approval. Retain the accepted supplier reference, drawing, photos and approval record for future orders. Do not use a successful visual comparison alone as evidence that all interfaces and operating requirements are confirmed.",
+      },
+      {
+        title: "Prepare the commercial and OEM scope",
+        body: "List quantities for torch front ends and high-consumption spare parts separately, then add destination country, required delivery timing and standard or customized packing. State whether labels, barcodes, logo printing, private-label cartons or spare-part kits are required. Small trial orders can be discussed for standard products; OEM MOQ depends on the confirmed products and packaging plan. Ask for an itemized quotation that records the exact proposed product, supplier-confirmed interfaces, unresolved technical fields, included parts, MOQ, lead time and delivery options.",
+      },
+    ],
+    buyerChecklist: {
+      title: "Robotic torch replacement evidence checklist",
+      description:
+        "Connect every product line to evidence so the supplier can separate an observed reference from a confirmed replacement detail.",
+      items: [
+        "Robot or cell asset reference and welding equipment model",
+        "Installed torch label and complete installation photo",
+        "Photos of both connection ends and all visible markings",
+        "Approved interface or torch-neck drawing with verified geometry",
+        "Cooling, cable-package, hose and connector references",
+        "Contact tip, holder or diffuser, nozzle and wire requirement",
+        "Trial and repeat quantities, destination, packing and OEM scope",
+      ],
+    },
+    rfqFields: [
+      "Robot / welding-cell reference and application:",
+      "Installed welding equipment and torch manufacturer / model:",
+      "Required replacement boundary and included components:",
+      "Mechanical interface and approved neck geometry / drawing:",
+      "Cooling, cable-package length, routing and connectors:",
+      "Consumable stack and documented wire requirement:",
+      "Evidence IDs for photos, drawings, parts lists or sample:",
+      "Trial quantity, repeat quantity, destination, packing and OEM scope:",
+    ],
+    buyerTool: {
+      href: "/downloads/arcfort-distributor-rfq-workbook.xlsx",
+      title: "Distributor and Automation Spare-Parts RFQ Workbook",
+      description:
+        "Organize each torch or consumable line, quantity, buyer reference and evidence ID while keeping supplier confirmation status separate.",
+      buttonLabel: "Download Mixed-Product RFQ Workbook",
+    },
+    categorySlugs: ["welding-accessories", "mig-mag-torch-parts"],
+    productSlugs: ["robot-welding-torch"],
+    faq: [
+      {
+        question: "Can a robotic welding torch replacement be matched from the robot model alone?",
+        answer:
+          "The robot model is useful context, but the installed torch, mechanical interface, neck geometry, cooling, cable connections and consumable stack should also be reviewed.",
+      },
+      {
+        question: "Does a torch front-end photo confirm the complete robotic torch package?",
+        answer:
+          "No. A front-end photo does not confirm the robot flange, collision mount, cable package, cooling circuit, connectors or other system components included in a quotation.",
+      },
+      {
+        question: "Which MIG/MAG consumable details should be sent?",
+        answer:
+          "Send the contact tip, holder or diffuser, gas nozzle and related components in assembly order, plus the documented wire requirement, markings and reliable dimensions when available.",
+      },
+      {
+        question: "Should a trial order be separated from repeat spare quantities?",
+        answer:
+          "Yes. State the trial quantity and expected repeat quantities separately so product approval, packing and future purchasing references can be controlled.",
+      },
+      {
+        question: "Can ArcFort Weld discuss OEM packing for robotic torch spare parts?",
+        answer:
+          "Logo, labels, barcodes, cartons and spare-part kits can be discussed after the product scope, interfaces, quantities and artwork requirements are confirmed.",
+      },
+    ],
+    keywords: [
+      "robotic MIG welding torch",
+      "robot welding torch replacement",
+      "robotic welding torch front end",
+      "automated welding torch spare parts",
+      "robotic MIG torch consumables",
+    ],
+  },
 ];

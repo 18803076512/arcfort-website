@@ -151,6 +151,14 @@ function getSupportedProcesses(product: ArcfortProductData): WeldingProcess[] {
   return ["General Welding"];
 }
 
+function getConsumableProcess(product: ArcfortProductData) {
+  if (product.slug === "robot-welding-torch") {
+    return "MIG/MAG";
+  }
+
+  return processByCategorySlug[product.categorySlug] ?? "General Welding";
+}
+
 function getProductModifiedDate(product: ArcfortProductData) {
   return [siteConfig.productTemplateLastModified, product.verifiedDate]
     .filter((value): value is string => Boolean(value))
@@ -206,7 +214,7 @@ function toProduct(product: ArcfortProductData): Product {
   return {
     ...baseProduct,
     kind: "welding-consumable",
-    process: processByCategorySlug[product.categorySlug] ?? "General Welding",
+    process: getConsumableProcess(product),
     consumableFamily: product.name,
   };
 }

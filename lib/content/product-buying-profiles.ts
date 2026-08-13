@@ -2,6 +2,115 @@ import type { ProductBuyingProfile } from "./schemas.ts";
 
 export const productBuyingProfiles: ProductBuyingProfile[] = [
   {
+    productSlug: "robot-welding-torch",
+    eyebrow: "Robotic Torch Replacement Review",
+    title: "Confirm the installed robotic MIG/MAG torch front end before replacement.",
+    description:
+      "A robotic torch front end affects physical fit, torch position, cable routing and the consumable system used by an automated welding cell. The catalog image confirms a torch-neck and front-end product family, not a universal robot interface or complete cable package. Keep buyer evidence and supplier-confirmed replacement details separate before trial installation or repeat purchasing.",
+    selectionVariables: [
+      {
+        label: "Installed torch and cell reference",
+        whyItMatters:
+          "Robot model, welding equipment and installed torch references narrow the review, but one reference alone may not describe every mounting and connection detail.",
+        confirmationMethod:
+          "Robot or cell asset record, welding power-source model, torch label, existing parts list and clear installation photos.",
+      },
+      {
+        label: "Mechanical interface and torch-neck geometry",
+        whyItMatters:
+          "The connection interface and neck geometry affect physical installation and the established torch position within the cell.",
+        confirmationMethod:
+          "Interface drawing, photos of both ends, verified dimensions and approved tool-center-point or fixture records when available.",
+      },
+      {
+        label: "Cooling and cable arrangement",
+        whyItMatters:
+          "Cooling method, hose and cable routing, connector layout and package length belong to the installed system and cannot be confirmed from the front-end photo.",
+        confirmationMethod:
+          "Existing cable-package label, connector photos, cooling-line record, routing drawing and the supplier data for the exact proposed item.",
+      },
+      {
+        label: "Consumable stack and wire requirement",
+        whyItMatters:
+          "Contact tip, holder or diffuser, gas nozzle and related front-end parts must form a matched system for the installed torch and documented wire requirement.",
+        confirmationMethod:
+          "Parts list, components arranged in assembly order, wire specification, verified markings, photos, drawing or physical sample.",
+      },
+      {
+        label: "Replacement scope",
+        whyItMatters:
+          "A quotation may cover a front end, torch neck, loose consumables or a wider assembly. Comparing prices without separating that scope can create an incomplete replacement order.",
+        confirmationMethod:
+          "Line-item list that distinguishes the torch neck, front-end assembly, cable package, mount, connectors and repeat-order consumables.",
+      },
+      {
+        label: "Trial approval and repeat-order control",
+        whyItMatters:
+          "Automated-cell replacements should be reviewed and approved against the documented cell requirement before a larger spare-parts program is released.",
+        confirmationMethod:
+          "Buyer approval record for the proposed item, interface evidence, installed trial result, approved labels and retained repeat-order reference.",
+      },
+    ],
+    confirmationChecklist: [
+      "Send the robot or cell reference, welding equipment model and installed torch label when available.",
+      "Photograph the complete installed arrangement and both ends of the removed torch front end without hiding connectors or markings.",
+      "Provide an approved interface or neck drawing and verified dimensions instead of estimating geometry from the catalog image.",
+      "State the cooling and cable-package arrangement from existing records, including connectors and routing requirements.",
+      "Arrange the contact tip, holder or diffuser, nozzle and related components in installation order with wire and part references.",
+      "Separate trial quantity, repeat spare quantity, packaging, destination and OEM label requirements by line item.",
+    ],
+    rfqFields: [
+      "Robot / welding-cell reference and application:",
+      "Installed welding equipment and torch manufacturer / model:",
+      "Required scope: torch front end, neck, consumables or wider assembly:",
+      "Mechanical interface and verified neck geometry / drawing:",
+      "Cooling arrangement, cable-package length and connector references:",
+      "Contact tip, holder / diffuser, nozzle and documented wire requirement:",
+      "Photos, drawing, existing parts list or sample reference:",
+      "Trial quantity, repeat quantity, destination, packing and OEM scope:",
+    ],
+    buyerTool: {
+      href: "/downloads/arcfort-distributor-rfq-workbook.xlsx",
+      title: "Distributor and Automation Spare-Parts RFQ Workbook",
+      description:
+        "Use separate product lines and evidence references for torch front ends, consumables, cable-package items and repeat-order spares. Leave compatibility and interface status for supplier review.",
+      buttonLabel: "Download Mixed-Product RFQ Workbook",
+    },
+    features: [
+      "Structured for robotic MIG/MAG torch front-end replacement inquiries",
+      "Installed torch, interface, cooling and consumable evidence reviewed before quotation",
+      "Trial replacement and repeat spare-part quantities separated for purchasing control",
+      "Private-label packing reviewed only after the exact replacement scope is approved",
+    ],
+    faq: [
+      {
+        question: "Can a robotic MIG/MAG torch front end be selected from a photo alone?",
+        answer:
+          "No. A photo helps identify the product family, but interface, torch-neck geometry, cooling, cable connections, consumable stack and installed-system references should be reviewed before a replacement is quoted.",
+      },
+      {
+        question: "What should be included in a robotic welding torch replacement RFQ?",
+        answer:
+          "Send the robot or cell reference, welding equipment and installed torch model, photos of both ends, interface or neck drawing, cooling and cable references, consumable stack, quantities and destination country.",
+      },
+      {
+        question: "Does this page confirm compatibility with a specific robot brand?",
+        answer:
+          "No. The page covers a robotic MIG/MAG torch front-end product family. Compatibility must be confirmed for the requested installation using documented interfaces, existing-part evidence and the exact proposed item.",
+      },
+      {
+        question: "Can loose front-end consumables be quoted with the torch neck?",
+        answer:
+          "Yes. List the torch neck, contact tip, holder or diffuser, gas nozzle and other requested parts as separate line items with their own quantities and evidence references.",
+      },
+      {
+        question: "Can private-label packaging be discussed for robotic torch spare parts?",
+        answer:
+          "Logo, labels, barcodes and carton requirements can be reviewed after the exact products, interfaces, quantities and artwork are confirmed. OEM MOQ depends on the approved product and packaging scope.",
+      },
+    ],
+  },
+  {
     productSlug: "wire-feeder",
     eyebrow: "Wire Feeding System Review",
     title: "Confirm the wire feeder configuration before quotation.",

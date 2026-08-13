@@ -31,6 +31,7 @@
     "test:tig-rfq": "node --experimental-strip-types scripts/test-tig-rfq-builder.ts",
     "test:machine-rfq": "node --experimental-strip-types scripts/test-welding-machine-rfq-builder.ts",
     "test:distributor-rfq": "node --experimental-strip-types scripts/test-distributor-rfq-builder.ts",
+    "test:robot-torch": "node --experimental-strip-types scripts/test-robot-welding-torch-content.ts",
     "test:email-domain": "node --experimental-strip-types scripts/test-email-domain.ts",
     "rfq:check-live": "node --experimental-strip-types scripts/check-live-rfq.ts",
     "email:audit:live": "node --experimental-strip-types scripts/audit-email-domain.ts",
