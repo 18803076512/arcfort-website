@@ -96,16 +96,22 @@ const quickCategoryLinks = [
     label: "MIG/MAG Torch Parts",
     href: "/products/mig-mag-torch-parts",
     scope: "Contact tips, nozzles, diffusers and liners",
+    guideHref: "/guides/mig-contact-tip-size-thread-selection",
+    guideLabel: "Contact Tip Selection Guide",
   },
   {
     label: "TIG Torch Parts",
     href: "/products/tig-torch-parts",
     scope: "Ceramic cups, collets, gas lenses and torch parts",
+    guideHref: "/guides/tig-torch-parts-names-identification-guide",
+    guideLabel: "TIG Parts Identification Guide",
   },
   {
-    label: "Plasma Consumables",
+    label: "Plasma Cutter Consumables",
     href: "/products/plasma-cutting-consumables",
     scope: "Electrodes, nozzles, shields and swirl rings",
+    guideHref: "/guides/plasma-cutter-consumables-parts-guide",
+    guideLabel: "Plasma Consumables Parts Guide",
   },
 ] as const;
 
@@ -362,22 +368,36 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
           </div>
 
           <nav
-            aria-label="Popular welding and cutting product categories"
+            aria-label="Welding torch parts and plasma consumables sourcing paths"
             className="mt-8 grid gap-px border border-slate-200 bg-slate-200 md:grid-cols-3"
           >
             {quickCategoryLinks.map((item) => (
-              <Link
+              <article
                 key={item.href}
-                href={item.href}
-                className="group min-w-0 bg-white p-5 transition hover:bg-arc-frost"
+                className="flex min-w-0 flex-col bg-white p-5 transition hover:bg-arc-frost"
               >
-                <span className="block font-display text-lg font-black text-arc-midnight transition group-hover:text-arc-blue">
+                <Link
+                  href={item.href}
+                  className="font-display text-lg font-black text-arc-midnight transition hover:text-arc-blue"
+                >
                   {item.label}
-                </span>
-                <span className="mt-2 block text-xs font-semibold leading-5 text-slate-600">
-                  {item.scope}
-                </span>
-              </Link>
+                </Link>
+                <p className="mt-2 text-xs font-semibold leading-5 text-slate-600">{item.scope}</p>
+                <div className="mt-5 grid gap-2 border-t border-slate-200 pt-4 sm:grid-cols-2 md:grid-cols-1 xl:grid-cols-2">
+                  <Link
+                    href={item.href}
+                    className="inline-flex min-h-11 items-center justify-center bg-arc-blue px-3 text-center text-[11px] font-bold uppercase tracking-[0.1em] text-white transition hover:bg-arc-midnight"
+                  >
+                    View Category
+                  </Link>
+                  <Link
+                    href={item.guideHref}
+                    className="inline-flex min-h-11 items-center justify-center border border-arc-blue px-3 text-center text-[11px] font-bold uppercase leading-4 tracking-[0.08em] text-arc-blue transition hover:bg-white"
+                  >
+                    {item.guideLabel}
+                  </Link>
+                </div>
+              </article>
             ))}
           </nav>
 
