@@ -1,7 +1,49 @@
+"use client";
+
+import { useEffect, useState } from "react";
+import { usePathname } from "next/navigation";
 import { RfqListLink } from "@/components/rfq/RfqListLink";
 import { buildEmailHref, buildWhatsAppHref } from "@/lib/content/site";
 
 export function StickyContactBar() {
+  const pathname = usePathname();
+  const [formIsVisible, setFormIsVisible] = useState(false);
+
+  useEffect(() => {
+    setFormIsVisible(false);
+    const targets = Array.from(
+      document.querySelectorAll<HTMLElement>("[data-hide-sticky-contact-when-visible]"),
+    );
+
+    if (targets.length === 0) {
+      return;
+    }
+
+    const visibleTargets = new Set<Element>();
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (entry.isIntersecting) {
+            visibleTargets.add(entry.target);
+          } else {
+            visibleTargets.delete(entry.target);
+          }
+        }
+
+        setFormIsVisible(visibleTargets.size > 0);
+      },
+      { threshold: 0.01 },
+    );
+
+    targets.forEach((target) => observer.observe(target));
+
+    return () => observer.disconnect();
+  }, [pathname]);
+
+  if (formIsVisible) {
+    return null;
+  }
+
   return (
     <nav
       data-sticky-contact-bar

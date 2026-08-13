@@ -141,6 +141,11 @@ link relevant category and guide content to the OEM service, and avoid weakening
 23. Added paired category and buyer-guide paths in the Product Center for MIG/MAG, TIG and plasma
     searches. This sends internal links to both commercial category pages and distinct informational
     guides without creating duplicate landing pages or changing the protected OEM page intent.
+24. Added an interactive welding machine sourcing brief to the existing machine category and the
+    near-page-one welding machine sourcing guide. Buyers can carry process, application, documented
+    electrical input, equipment arrangement, accessories, destination, quantity, document requests
+    and packing needs into the validated RFQ form. The workflow records buyer requirements without
+    presenting unverified ratings, compatibility or certification as confirmed facts.
 
 ## Measurement Plan
 

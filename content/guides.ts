@@ -1156,7 +1156,7 @@ export const guides: GuideArticle[] = [
     seoDescription:
       "Use this welding machine sourcing checklist to compare process, input power, documented output requirements, accessories, packing and market needs.",
     publishedDate: "2026-07-26",
-    modifiedDate: "2026-08-12",
+    modifiedDate: "2026-08-13",
     sections: [
       {
         title: "Define the welding or cutting process",

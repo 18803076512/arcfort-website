@@ -5,6 +5,7 @@ import { FaqSection } from "@/components/content/FaqSection";
 import { ProductCard } from "@/components/content/ProductCard";
 import { RfqCta } from "@/components/content/RfqCta";
 import { StructuredData } from "@/components/content/StructuredData";
+import { WeldingMachineRfqBuilder } from "@/components/products/WeldingMachineRfqBuilder";
 import { getAllProductCategories, getRelatedCategories } from "@/lib/content/categories";
 import { getAllGuides, getGuideBySlug } from "@/lib/content/guides";
 import { articleJsonLd, breadcrumbJsonLd, faqJsonLd } from "@/lib/content/jsonld";
@@ -130,6 +131,7 @@ export default async function GuideDetailPage({ params }: GuideRouteProps) {
         "Use the CSV worksheet to keep each requested product or variant on a separate quotation line.",
       buttonLabel: "Download RFQ Worksheet",
     } as const);
+  const hasWeldingMachineRfqBuilder = guide.slug === "welding-machine-sourcing-checklist";
 
   return (
     <>
@@ -409,6 +411,18 @@ export default async function GuideDetailPage({ params }: GuideRouteProps) {
                 </li>
               ))}
             </ol>
+          </div>
+        </section>
+      ) : null}
+
+      {hasWeldingMachineRfqBuilder ? (
+        <section
+          data-nosnippet
+          data-snippet-region="machine-guide-rfq-builder"
+          className="scroll-mt-28 bg-arc-frost py-14 sm:py-16"
+        >
+          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            <WeldingMachineRfqBuilder />
           </div>
         </section>
       ) : null}
