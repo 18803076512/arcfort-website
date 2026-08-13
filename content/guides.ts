@@ -1149,12 +1149,12 @@ export const guides: GuideArticle[] = [
   },
   {
     slug: "welding-machine-sourcing-checklist",
-    title: "Welding Machine RFQ and Sourcing Checklist",
-    seoTitle: "Welding Machine RFQ Checklist for Distributors",
+    title: "Welding Machine Sourcing Checklist and RFQ Guide",
+    seoTitle: "Welding Machine Sourcing & RFQ Checklist",
     description:
-      "A distributor-focused checklist for defining MIG/MAG, TIG, MMA or plasma equipment requirements before a welding machine RFQ.",
+      "A practical checklist for distributors comparing MIG/MAG, TIG, MMA or plasma equipment requirements before sending a welding machine RFQ.",
     seoDescription:
-      "Use this welding machine sourcing checklist to compare process, input power, documented output requirements, accessories, packing and market needs.",
+      "Compare MIG/MAG, TIG, MMA and plasma welding machines by process, input power, accessories, documents and packing before sending a distributor RFQ.",
     publishedDate: "2026-07-26",
     modifiedDate: "2026-08-13",
     sections: [

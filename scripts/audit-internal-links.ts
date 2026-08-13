@@ -11,10 +11,21 @@ type PriorityTarget = {
   requiredSources: string[];
 };
 
+type DynamicSource = {
+  route: string;
+  sourceFile: string;
+};
+
 const appBuildDir = path.resolve(".next/server/app");
 const errors: string[] = [];
 const inboundSources = new Map<string, Set<string>>();
 const sourceLinks = new Map<string, Set<string>>();
+const dynamicSources: DynamicSource[] = [
+  {
+    route: "/products",
+    sourceFile: path.resolve("app/products/page.tsx"),
+  },
+];
 const priorityTargets: PriorityTarget[] = [
   {
     path: "/products/welding-accessories/robot-welding-torch",
@@ -36,6 +47,17 @@ const priorityTargets: PriorityTarget[] = [
       "/products/mig-mag-torch-parts",
       "/applications/automotive",
       "/products/welding-accessories/robot-welding-torch",
+    ],
+  },
+  {
+    path: "/guides/welding-machine-sourcing-checklist",
+    label: "Welding machine sourcing checklist",
+    minimumInboundSources: 5,
+    requiredSources: [
+      "/guides",
+      "/products",
+      "/products/welding-machines",
+      "/products/welding-machines/wire-feeder",
     ],
   },
 ];
@@ -100,6 +122,20 @@ function getInternalLinks(html: string) {
   return links;
 }
 
+function getSourceInternalLinks(source: string) {
+  const links = new Set<string>();
+
+  for (const match of source.matchAll(/["'`]((?:\/)[a-z0-9][a-z0-9\-./]*)["'`]/gi)) {
+    const normalizedPath = normalizeInternalPath(match[1] ?? "");
+
+    if (normalizedPath) {
+      links.add(normalizedPath);
+    }
+  }
+
+  return links;
+}
+
 if (!existsSync(appBuildDir)) {
   throw new Error("Built App Router HTML is missing. Run npm run build before npm run seo:links.");
 }
@@ -124,6 +160,21 @@ for (const filePath of htmlFiles) {
   }
 }
 
+for (const dynamicSource of dynamicSources) {
+  const links = getSourceInternalLinks(readFileSync(dynamicSource.sourceFile, "utf8"));
+  sourceLinks.set(dynamicSource.route, links);
+
+  for (const targetPath of links) {
+    if (targetPath === dynamicSource.route) {
+      continue;
+    }
+
+    const sources = inboundSources.get(targetPath) ?? new Set<string>();
+    sources.add(dynamicSource.route);
+    inboundSources.set(targetPath, sources);
+  }
+}
+
 for (const target of priorityTargets) {
   const sources = inboundSources.get(target.path) ?? new Set<string>();
 
@@ -142,6 +193,7 @@ for (const target of priorityTargets) {
 
 console.log("ArcFort Weld built internal link audit");
 console.log(`HTML pages checked: ${htmlFiles.length}`);
+console.log(`Dynamic source pages checked: ${dynamicSources.length}`);
 
 for (const target of priorityTargets) {
   const sources = [...(inboundSources.get(target.path) ?? [])].sort();

@@ -40,7 +40,7 @@ const guideByCategorySlug: Record<string, BuyerGuideLink> = {
   },
   "welding-machines": {
     href: "/guides/welding-machine-sourcing-checklist",
-    title: "Welding Machine RFQ and Sourcing Checklist",
+    title: "Welding Machine Sourcing Checklist and RFQ Guide",
     description:
       "Define process, electrical requirements, interfaces, accessories and destination-market documents before RFQ.",
   },

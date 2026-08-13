@@ -3,6 +3,7 @@
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import { productCategories } from "../content/categories.ts";
+import { guides } from "../content/guides.ts";
 import {
   buildWeldingMachineRfqHref,
   buildWeldingMachineRfqPrompt,
@@ -16,6 +17,12 @@ assert.ok(category, "Welding machines category must exist.");
 assert.ok(category.componentGuide && category.componentGuide.length >= 5);
 assert.ok(category.selectionVariables && category.selectionVariables.length >= 5);
 assert.equal(category.buyerTool?.href, "/downloads/arcfort-welding-machine-rfq.xlsx");
+
+const guide = guides.find((candidate) => candidate.slug === "welding-machine-sourcing-checklist");
+assert.ok(guide, "Welding machine sourcing checklist must exist.");
+assert.equal(guide.title, "Welding Machine Sourcing Checklist and RFQ Guide");
+assert.equal(guide.seoTitle, "Welding Machine Sourcing & RFQ Checklist");
+assert.match(guide.seoDescription, /MIG\/MAG, TIG, MMA and plasma welding machines/);
 
 const prompt = buildWeldingMachineRfqPrompt({
   processes: ["MIG/MAG welding", "MIG/MAG welding", "TIG welding", "invented process"],
@@ -92,6 +99,10 @@ const stickyContactSource = readFileSync(
   new URL("../components/StickyContactBar.tsx", import.meta.url),
   "utf8",
 );
+const productCenterSource = readFileSync(
+  new URL("../app/products/page.tsx", import.meta.url),
+  "utf8",
+);
 
 assert.match(categoryTemplateSource, /WeldingMachineRfqBuilder/);
 assert.match(categoryTemplateSource, /hasWeldingMachineRfqBuilder/);
@@ -105,5 +116,8 @@ assert.match(guideTemplateSource, /machine-guide-rfq-builder/);
 assert.match(stickyContactSource, /IntersectionObserver/);
 assert.match(stickyContactSource, /data-hide-sticky-contact-when-visible/);
 assert.match(stickyContactSource, /usePathname/);
+assert.match(productCenterSource, /Welding Machines/);
+assert.match(productCenterSource, /Machine Sourcing Checklist/);
+assert.match(productCenterSource, /\/guides\/welding-machine-sourcing-checklist/);
 
 console.log("Welding machine RFQ builder tests passed.");
