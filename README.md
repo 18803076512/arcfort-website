@@ -107,6 +107,12 @@ requested parts, documented wire diameter, visible part or drawing reference, qu
 These labels are inquiry references only; final fit still requires the exact torch label, complete
 front-end stack, drawing, approved sample and connection evidence.
 
+The Welding Machines category and welding machine sourcing checklist include an interactive sourcing
+brief for process, application, documented destination electrical input, machine arrangement,
+accessories, requested documents, destination, quantity and packing. The generated text is carried
+into the validated RFQ form as buyer requirements; it never presents an output rating, interface or
+certification as confirmed supplier data. Run `npm run test:machine-rfq` after changing this workflow.
+
 The OEM Service page includes a decision-based RFQ builder for product scope, customization type,
 available evidence, project stage, quantity, destination market and packing approach. It prepares a
 structured `/rfq` request without sending the inquiry or placing logo files, drawings or proprietary

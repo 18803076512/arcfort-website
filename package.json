@@ -29,6 +29,7 @@
     "test:oem-rfq": "node --experimental-strip-types scripts/test-oem-rfq-builder.ts",
     "test:plasma-rfq": "node --experimental-strip-types scripts/test-plasma-rfq-builder.ts",
     "test:tig-rfq": "node --experimental-strip-types scripts/test-tig-rfq-builder.ts",
+    "test:machine-rfq": "node --experimental-strip-types scripts/test-welding-machine-rfq-builder.ts",
     "rfq:check-live": "node --experimental-strip-types scripts/check-live-rfq.ts",
     "seo:audit": "node --experimental-strip-types scripts/audit-seo.ts",
     "seo:audit:live": "node --experimental-strip-types scripts/audit-live-seo.ts",

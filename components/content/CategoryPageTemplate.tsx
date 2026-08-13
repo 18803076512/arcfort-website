@@ -7,6 +7,7 @@ import { RfqCta } from "@/components/content/RfqCta";
 import { MigTorchPartsRfqBuilder } from "@/components/products/MigTorchPartsRfqBuilder";
 import { PlasmaConsumablesRfqBuilder } from "@/components/products/PlasmaConsumablesRfqBuilder";
 import { TigTorchPartsRfqBuilder } from "@/components/products/TigTorchPartsRfqBuilder";
+import { WeldingMachineRfqBuilder } from "@/components/products/WeldingMachineRfqBuilder";
 import { getBuyerGuideForCategory } from "@/lib/content/topic-links";
 
 type CategoryPageTemplateProps = {
@@ -41,7 +42,9 @@ export function CategoryPageTemplate({
     category.slug === "tig-torch-parts" && Boolean(category.referenceFamilies?.length);
   const hasMigRfqBuilder =
     category.slug === "mig-mag-torch-parts" && Boolean(category.referenceFamilies?.length);
-  const hasCategoryRfqBuilder = hasPlasmaRfqBuilder || hasTigRfqBuilder || hasMigRfqBuilder;
+  const hasWeldingMachineRfqBuilder = category.slug === "welding-machines";
+  const hasCategoryRfqBuilder =
+    hasPlasmaRfqBuilder || hasTigRfqBuilder || hasMigRfqBuilder || hasWeldingMachineRfqBuilder;
   const categoryStats = [
     { label: "Products", value: `${products.length}` },
     { label: "OEM support", value: "Available" },
@@ -363,6 +366,12 @@ export function CategoryPageTemplate({
             {hasMigRfqBuilder && category.referenceFamilies ? (
               <div id="category-rfq-builder" className="scroll-mt-28 pt-8">
                 <MigTorchPartsRfqBuilder torchFamilies={category.referenceFamilies} />
+              </div>
+            ) : null}
+
+            {hasWeldingMachineRfqBuilder ? (
+              <div id="category-rfq-builder" className="scroll-mt-28 pt-8">
+                <WeldingMachineRfqBuilder />
               </div>
             ) : null}
 
