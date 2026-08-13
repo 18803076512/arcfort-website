@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { siteConfig } from "@/lib/content/site";
 import { rfqRateLimitConfig } from "@/lib/rfq-rate-limit";
 import { rfqEmailIdempotencyWindowHours } from "@/lib/rfq-idempotency";
+import { rfqEmailProviderTimeoutSeconds } from "@/lib/rfq-provider-timeout";
 import { rfqStorageConflictColumn } from "@/lib/rfq-storage";
 
 export const dynamic = "force-dynamic";
@@ -81,6 +82,7 @@ export function GET() {
         buyerConfirmationReady: emailReady,
         idempotencyProtected: true,
         idempotencyWindowHours: rfqEmailIdempotencyWindowHours,
+        providerRequestTimeoutSeconds: rfqEmailProviderTimeoutSeconds,
         resendApiKeyConfigured,
         fromConfigured: emailFromConfigured,
         recipientConfigured: emailRecipientConfigured,

@@ -20,6 +20,9 @@ Minimum production target:
 - Buyer sees success only after email delivery or database storage succeeds.
 - Resend and Supabase run independently, so one channel can still capture the inquiry if the other
   provider fails.
+- Each Resend request has a 12-second timeout. A stalled buyer confirmation does not reverse an
+  already accepted sales notification, and a stalled sales request returns a bounded failure before
+  the browser's 45-second limit.
 - Optional Supabase rows and attachment paths are idempotent by RFQ reference. An unchanged retry
   does not create a duplicate row or reset the existing inquiry status.
 - A Supabase-only submission with selected files succeeds only when both the inquiry row and files
@@ -150,6 +153,16 @@ repository and should be confirmed in the Vercel project dashboard.
 
 ## Production Verification Record
 
+Controlled browser verification attempted on 2026-08-13:
+
+- The deployed form did not show a success response within 60 seconds. No automatic retry was made.
+- `/api/rfq/status` continued to report the email configuration as ready, but configuration state
+  does not prove provider acceptance or inbox placement.
+- The matching Resend log and Outlook inbox result remain unknown. This attempt must not be reported
+  as a delivered inquiry.
+- The finding triggered bounded Resend request timeouts so a provider stall cannot leave the buyer
+  without a clear response indefinitely.
+
 API verification performed on 2026-07-26:
 
 - `AF-RFQ-20260726-CDF899D4`: Resend accepted the sales notification and buyer confirmation.
@@ -190,6 +203,7 @@ After Resend is configured, `https://www.arcfortweld.com/api/rfq/status` should 
     "buyerConfirmationReady": true,
     "idempotencyProtected": true,
     "idempotencyWindowHours": 24,
+    "providerRequestTimeoutSeconds": 12,
     "resendApiKeyConfigured": true,
     "fromConfigured": true,
     "recipientConfigured": true,

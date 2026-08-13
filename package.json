@@ -22,7 +22,7 @@
     "products:simple:import": "node --experimental-strip-types scripts/import-simple-products.ts --write --import",
     "products:refresh-copy": "node --experimental-strip-types scripts/refresh-catalog-product-copy.ts",
     "products:refresh-copy:write": "node --experimental-strip-types scripts/refresh-catalog-product-copy.ts --write",
-    "test:rfq": "node --experimental-strip-types scripts/test-rfq-constraints.ts && node --experimental-strip-types scripts/test-rfq-email.ts",
+    "test:rfq": "node --experimental-strip-types scripts/test-rfq-constraints.ts && node --experimental-strip-types scripts/test-rfq-email.ts && node --experimental-strip-types scripts/test-rfq-provider-timeout.ts",
     "test:rfq-email": "node --experimental-strip-types scripts/test-rfq-email.ts",
     "test:product-search": "node --experimental-strip-types scripts/test-product-search.ts",
     "test:mig-rfq": "node --experimental-strip-types scripts/test-mig-rfq-builder.ts",

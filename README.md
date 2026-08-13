@@ -247,6 +247,9 @@ The `/rfq` page includes a responsive inquiry form with:
   and duplicate inquiry rows are ignored by the unique RFQ reference without resetting their status
 - HTML escaping for buyer, attachment and source values before they are rendered in email markup
 - Independent email and storage delivery so one provider failure does not block the other
+- A 12-second timeout for each Resend request so a stalled sales notification or buyer confirmation
+  cannot hold the browser request open indefinitely; sales delivery remains successful when only
+  the optional buyer confirmation times out
 - Prefilled email and WhatsApp fallback when automated delivery is unavailable
 - Backend readiness check at `/api/rfq/status`
 - Lightweight spam protection with same-origin checks, honeypot, timing checks and source-path
@@ -307,7 +310,8 @@ test from the deployed `/rfq` page, then confirm the matching `AF-RFQ-...` refer
 inbox and Resend logs. The command-line checker remains a non-mutating readiness check and does not
 send an inquiry.
 
-The browser waits up to 45 seconds for the RFQ API response. It never retries automatically because
+Each Resend request is bounded to 12 seconds, while the browser waits up to 45 seconds for the full
+RFQ API response. It never retries automatically because
 a delayed response can arrive after the server has already accepted the inquiry. On timeout, all
 entered fields and selected attachments remain in the form. An unchanged manual retry reuses the
 same submission token, RFQ reference, Resend idempotency keys and optional Supabase storage paths;
