@@ -68,6 +68,7 @@ controlled by this company; never associate unrelated companies that use a simil
 - `lib/content/schemas.ts` - reusable TypeScript content schema
 - `lib/content/site.ts` - centralized company, contact, trade, port, payment, MOQ, lead time and OEM information
 - `lib/content/company-profile.ts` - About-page buyer profiles, evidence boundaries, FAQ, due-diligence links and company RFQ prompt
+- `lib/content/quality-control.ts` - order-specific inspection stages, product-family review matrix, evidence options, FAQ and quality RFQ prompt
 - Shared email and WhatsApp link builders in `lib/content/site.ts` prefill product, quantity,
   destination and reference prompts so buyers can start a usable inquiry from any major page.
 - `lib/content/seo.ts` - metadata helper
@@ -89,6 +90,11 @@ The About page is the canonical public company profile for the legal-company and
 relationship. Update confirmed identity and contact facts in `lib/content/site.ts`, keep buyer-facing
 company content in `lib/content/company-profile.ts`, then run `npm run test:company-profile` before
 publishing changes.
+
+The Quality Control page is the buyer-facing reference for product identification, compatibility,
+inspection evidence, packing approval and pre-shipment review. Keep its workflow in
+`lib/content/quality-control.ts`, avoid unsupported inspection or certification claims, and run
+`npm run test:quality-control` before publishing changes.
 
 MIG/MAG, plasma and TIG category records also provide structured component guides, selection variables and
 compatibility evidence checklists. These sections are rendered from `content/categories.ts`, link to

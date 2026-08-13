@@ -34,6 +34,7 @@
     "test:robot-torch": "node --experimental-strip-types scripts/test-robot-welding-torch-content.ts",
     "test:export-terms": "node --experimental-strip-types scripts/test-export-order-terms.ts",
     "test:company-profile": "node --experimental-strip-types scripts/test-company-profile.ts",
+    "test:quality-control": "node --experimental-strip-types scripts/test-quality-control.ts",
     "test:email-domain": "node --experimental-strip-types scripts/test-email-domain.ts",
     "rfq:check-live": "node --experimental-strip-types scripts/check-live-rfq.ts",
     "email:audit:live": "node --experimental-strip-types scripts/audit-email-domain.ts",
