@@ -7,6 +7,7 @@
 - Search type: Web
 - Export range: Past 3 months
 - Exported: 2026-08-12
+- Available daily data: 2026-06-26 through 2026-08-09 (45 days)
 
 This is an early-stage dataset. The device table contains 422 impressions and 8 clicks, while the
 query table contains no clicked queries. Google can omit low-volume queries for privacy, so query
@@ -14,6 +15,13 @@ rows must not be treated as a complete attribution record. Avoid changing URLs o
 pages from one or two impressions.
 
 ## Current Baseline
+
+The daily table totals 8 clicks and 422 impressions, for 1.90% CTR and an
+impression-weighted average position of 37.90. The most recent seven available days generated 3
+clicks from 125 impressions at 2.40% CTR and weighted position 33.32. The preceding seven days
+generated 2 clicks from 79 impressions at 2.53% CTR and weighted position 38.65. Impressions grew
+58.2% and weighted position improved by about 5.3 places, but the click sample remains too small for
+a reliable CTR trend conclusion.
 
 | Segment | Clicks | Impressions |   CTR | Average position |
 | ------- | -----: | ----------: | ----: | ---------------: |
@@ -39,6 +47,12 @@ responsive QA.
 The leading non-brand query families are plasma cutter consumables, plasma cutting consumables,
 plasma torch consumables and TIG torch parts. These terms should be covered naturally within the
 matching category, not split into near-duplicate doorway pages.
+
+The exported query rows contain 135 plasma-related impressions at weighted position 54.31, 48
+TIG-related impressions at weighted position 54.73 and 7 MIG-related impressions at weighted
+position 37.57. These clusters confirm category relevance, but their current positions show that
+ranking and authority are the first constraint. A zero-click rate at positions around 50 is not yet
+enough evidence for repeated title rewrites.
 
 ### Priority 2: improve pages close to page one
 
@@ -124,10 +138,14 @@ link relevant category and guide content to the OEM service, and avoid weakening
     decision-based RFQ builder for product scope, OEM services, buyer evidence, project stage,
     quantity, destination and packing. The builder sends buyers to the existing validated RFQ form
     and does not expose logo files, drawings or proprietary product details to analytics.
+23. Added paired category and buyer-guide paths in the Product Center for MIG/MAG, TIG and plasma
+    searches. This sends internal links to both commercial category pages and distinct informational
+    guides without creating duplicate landing pages or changing the protected OEM page intent.
 
 ## Measurement Plan
 
-Review a fresh Search Console export after at least 28 days and compare:
+Use a clean 28-day post-deployment window beginning 2026-08-14. Allow for Search Console reporting
+lag and review the next export no earlier than 2026-09-12. Compare:
 
 - Impressions, average position and CTR for the three torch/consumable category pages.
 - Query families containing `plasma cutter consumables`, `plasma torch consumables`, `TIG torch

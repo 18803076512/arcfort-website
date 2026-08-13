@@ -25,6 +25,12 @@ const waveDefinitions = [
     expectedWaveId: "uae_wave_03",
     label: "Outreach wave 03",
   },
+  {
+    sourcePath: path.resolve("data/promotion/outreach-wave-04.csv"),
+    draftPath: path.resolve("docs/promotion/outreach-wave-04.md"),
+    expectedWaveId: "saudi_wave_04",
+    label: "Outreach wave 04",
+  },
 ] as const;
 const expectedHeaders = [
   "wave_id",
