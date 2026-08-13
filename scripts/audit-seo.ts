@@ -41,6 +41,15 @@ const activeProducts: SeoRecord[] = arcfortProducts
 const productSlugs = new Set(activeProducts.map((product) => product.slug));
 const legacyCategorySources = new Set<string>();
 const legacyProductSources = new Set<string>();
+const confirmedBusinessIdentity = {
+  legalName: "Renqiu Ailesen Welding Technology Co., Ltd.",
+  chineseName: "任丘市埃勒森焊接科技有限公司",
+  brandName: "ArcFort Weld",
+  email: "arcfortweld@outlook.com",
+  whatsapp: "+86-18803076512",
+  address: "Renqiu City, Cangzhou, Hebei Province, China",
+  url: "https://www.arcfortweld.com",
+} as const;
 
 function checkMetadataLength(owner: string, title: string, description: string) {
   const renderedTitle = composeSeoTitle(title, siteConfig.shortName);
@@ -103,6 +112,29 @@ function checkBuyerTool(owner: string, href?: string) {
   }
 }
 
+function checkBuyerResourceLinks(
+  owner: string,
+  links: Array<{ href: string; title: string; description: string; actionLabel: string }> = [],
+) {
+  const seenHrefs = new Set<string>();
+
+  for (const link of links) {
+    if (!link.href.startsWith("/") || link.href.startsWith("//") || /[?#]/.test(link.href)) {
+      errors.push(`${owner} buyer resource must use a canonical internal path: ${link.href}.`);
+    }
+
+    if (seenHrefs.has(link.href)) {
+      errors.push(`${owner} has a duplicate buyer resource: ${link.href}.`);
+    }
+
+    if (link.title.length < 12 || link.description.length < 60 || link.actionLabel.length < 4) {
+      errors.push(`${owner} buyer resource copy is too thin: ${link.href}.`);
+    }
+
+    seenHrefs.add(link.href);
+  }
+}
+
 for (const [label, value] of [
   ["contentLastModified", siteConfig.contentLastModified],
   ["aboutLastModified", siteConfig.aboutLastModified],
@@ -115,6 +147,20 @@ for (const [label, value] of [
     errors.push(`Site config ${label} has an invalid date "${value}".`);
   } else if (Date.parse(value) > Date.now() + 86_400_000) {
     errors.push(`Site config ${label} has a future date "${value}".`);
+  }
+}
+
+for (const [field, actual, expected] of [
+  ["legalName", siteConfig.legalName, confirmedBusinessIdentity.legalName],
+  ["chineseName", siteConfig.chineseName, confirmedBusinessIdentity.chineseName],
+  ["name", siteConfig.name, confirmedBusinessIdentity.brandName],
+  ["email", siteConfig.email, confirmedBusinessIdentity.email],
+  ["whatsapp", siteConfig.whatsapp, confirmedBusinessIdentity.whatsapp],
+  ["address", siteConfig.address, confirmedBusinessIdentity.address],
+  ["url", siteConfig.url, confirmedBusinessIdentity.url],
+] as const) {
+  if (actual !== expected) {
+    errors.push(`Confirmed business identity mismatch for ${field}: "${actual}".`);
   }
 }
 
@@ -243,6 +289,7 @@ for (const category of productCategories) {
     "category",
   );
   checkBuyerTool(`Category ${category.slug}`, category.buyerTool?.href);
+  checkBuyerResourceLinks(`Category ${category.slug}`, category.buyerResourceSection?.links);
 
   if (category.referenceFamilies) {
     const familyNames = new Set<string>();
@@ -394,6 +441,10 @@ for (const application of applications) {
     application.relatedProductSlugs,
     productSlugs,
     "product",
+  );
+  checkBuyerResourceLinks(
+    `Application ${application.slug}`,
+    application.buyerResourceSection?.links,
   );
 }
 

@@ -1,4 +1,5 @@
-import type { ApplicationPage } from "@/lib/content/schemas";
+import { roboticMigTorchApplicationResourceSection } from "../lib/content/buyer-resource-links.ts";
+import type { ApplicationPage } from "../lib/content/schemas.ts";
 
 export const applications: ApplicationPage[] = [
   {
@@ -54,19 +55,21 @@ export const applications: ApplicationPage[] = [
     seoDescription:
       "Browse automotive welding consumable sourcing content for MIG/MAG torch parts, TIG parts and welding accessories.",
     overview:
-      "Automotive welding buyers often compare consumable fit, repeat order stability and packaging needs. Confirm exact product details before quotation.",
-    industries: ["Automotive repair", "Parts fabrication", "Maintenance workshops"],
+      "Automotive welding buyers often compare consumable fit, repeat-order stability and packaging needs across repair, fabrication and automated production maintenance. Robotic MIG/MAG torch front ends require installed-cell, interface and consumable evidence before a replacement can be reviewed.",
+    industries: ["Automotive repair", "Parts fabrication", "Automated welding cell maintenance"],
     buyerNeeds: [
       "MIG/MAG torch consumables for repeat replacement",
+      "Robotic welding torch front-end evidence for automated cell maintenance",
       "Accessory lists for workshop maintenance",
       "Packaging and quantity details for distributor programs",
     ],
-    relatedCategorySlugs: ["mig-mag-torch-parts", "tig-torch-parts", "welding-consumables"],
+    relatedCategorySlugs: ["mig-mag-torch-parts", "tig-torch-parts", "welding-accessories"],
     relatedProductSlugs: [
       "mig-contact-tip-m6-0-8mm",
       "mig-gas-nozzle-for-mb15",
-      "mig-tip-holder-for-mb15",
+      "robot-welding-torch",
     ],
+    buyerResourceSection: roboticMigTorchApplicationResourceSection,
     faq: [
       {
         question: "Can automotive buyers request mixed welding consumables?",
@@ -78,8 +81,18 @@ export const applications: ApplicationPage[] = [
         answer:
           "Compatibility can be reviewed when buyers provide torch model, reference number, drawing or reference part details.",
       },
+      {
+        question: "What should an automotive robotic torch replacement inquiry include?",
+        answer:
+          "Send the welding-cell reference, installed torch label, photos of both connection ends, approved interface or neck drawing, cooling and cable references, consumable stack and trial quantity.",
+      },
     ],
-    keywords: ["automotive welding consumables", "MIG/MAG torch parts", "welding wire"],
+    keywords: [
+      "automotive welding consumables",
+      "MIG/MAG torch parts",
+      "robotic MIG welding torch",
+      "welding wire",
+    ],
   },
   {
     slug: "pipeline",

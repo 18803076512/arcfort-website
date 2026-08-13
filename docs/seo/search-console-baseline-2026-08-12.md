@@ -160,6 +160,11 @@ link relevant category and guide content to the OEM service, and avoid weakening
     welding-distributor outreach. The current catalog image supports a front-end family only and is not
     treated as evidence of a complete robot flange, cable package, collision mount, rating or model
     compatibility.
+27. Strengthened the internal-link graph around the same robotic MIG/MAG topic. Added contextual
+    product and guide paths from the MIG/MAG category and automotive application page, and added a
+    build-time link audit that requires both priority URLs to retain at least four distinct inbound
+    source pages. This improves discovery and buyer navigation without changing the indexed URLs or
+    creating overlapping pages.
 
 ## Measurement Plan
 

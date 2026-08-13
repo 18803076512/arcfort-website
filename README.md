@@ -98,6 +98,11 @@ installed cell and torch references, interface or neck drawing, cooling and cabl
 the consumable stack before a replacement is quoted. Run `npm run test:robot-torch` after changing
 this product, its buying profile or its replacement guide.
 
+The MIG/MAG category and automotive application page also provide contextual paths to the robotic
+torch product and replacement guide. After `npm run build`, run `npm run seo:links` to verify that
+both priority URLs retain at least four distinct inbound source pages. The same audit protects these
+commercial paths from becoming sitemap-only pages during future layout or content changes.
+
 The plasma category also provides a company-catalog reference matrix and an interactive RFQ builder.
 The builder carries the buyer's torch family, requested components, visible part reference, quantity
 and packing requirement into `/rfq`. Catalog family names remain reference-only until the exact torch

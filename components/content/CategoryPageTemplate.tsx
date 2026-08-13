@@ -1,5 +1,6 @@
 import Link from "next/link";
 import type { ApplicationPage, Product, ProductCategory } from "@/lib/content/schemas";
+import { BuyerResourceLinks } from "@/components/content/BuyerResourceLinks";
 import { Breadcrumbs } from "@/components/content/Breadcrumbs";
 import { FaqSection } from "@/components/content/FaqSection";
 import { ProductCard } from "@/components/content/ProductCard";
@@ -45,6 +46,7 @@ export function CategoryPageTemplate({
   const hasWeldingMachineRfqBuilder = category.slug === "welding-machines";
   const hasCategoryRfqBuilder =
     hasPlasmaRfqBuilder || hasTigRfqBuilder || hasMigRfqBuilder || hasWeldingMachineRfqBuilder;
+  const hasBuyerResourceLinks = Boolean(category.buyerResourceSection?.links.length);
   const categoryStats = [
     { label: "Products", value: `${products.length}` },
     { label: "OEM support", value: "Available" },
@@ -52,6 +54,7 @@ export function CategoryPageTemplate({
   ] as const;
   const categoryPageSections = [
     { href: "#category-products", label: "Products" },
+    ...(hasBuyerResourceLinks ? [{ href: "#category-buyer-resources", label: "Buyer Paths" }] : []),
     ...(hasTechnicalGuide
       ? [{ href: "#category-component-guide", label: "Parts & Selection" }]
       : []),
@@ -143,7 +146,7 @@ export function CategoryPageTemplate({
       >
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <ol
-            className={`grid grid-cols-2 gap-px bg-slate-200 sm:grid-cols-3 ${hasCategoryRfqBuilder ? "lg:grid-cols-4 xl:grid-cols-8" : hasTechnicalGuide ? "lg:grid-cols-7" : "lg:grid-cols-6"}`}
+            className={`grid grid-cols-2 gap-px bg-slate-200 sm:grid-cols-3 ${hasCategoryRfqBuilder && hasBuyerResourceLinks ? "lg:grid-cols-4 xl:grid-cols-9" : hasCategoryRfqBuilder ? "lg:grid-cols-4 xl:grid-cols-8" : hasTechnicalGuide ? "lg:grid-cols-7" : "lg:grid-cols-6"}`}
           >
             {categoryPageSections.map((section, index) => (
               <li key={section.href} className="bg-white">
@@ -212,6 +215,10 @@ export function CategoryPageTemplate({
           </div>
         </div>
       </section>
+
+      {category.buyerResourceSection ? (
+        <BuyerResourceLinks id="category-buyer-resources" {...category.buyerResourceSection} />
+      ) : null}
 
       {hasTechnicalGuide ? (
         <section

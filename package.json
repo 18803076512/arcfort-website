@@ -36,6 +36,7 @@
     "rfq:check-live": "node --experimental-strip-types scripts/check-live-rfq.ts",
     "email:audit:live": "node --experimental-strip-types scripts/audit-email-domain.ts",
     "seo:audit": "node --experimental-strip-types scripts/audit-seo.ts",
+    "seo:links": "node --experimental-strip-types scripts/audit-internal-links.ts",
     "seo:audit:live": "node --experimental-strip-types scripts/audit-live-seo.ts",
     "seo:snippets": "node --experimental-strip-types scripts/audit-snippet-hygiene.ts",
     "security:secrets": "node --experimental-strip-types scripts/check-secret-patterns.ts",
