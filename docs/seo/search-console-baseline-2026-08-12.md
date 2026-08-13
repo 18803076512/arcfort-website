@@ -120,6 +120,10 @@ link relevant category and guide content to the OEM service, and avoid weakening
     200A/350A/500A series products. Added a MIG/MAG-specific RFQ builder for torch arrangement,
     requested front-end parts, documented wire diameter, visible part or drawing reference, quantity
     and packing without treating a catalog series as proof of compatibility.
+22. Strengthened the OEM Service page, the current highest-CTR commercial landing page, with a
+    decision-based RFQ builder for product scope, OEM services, buyer evidence, project stage,
+    quantity, destination and packing. The builder sends buyers to the existing validated RFQ form
+    and does not expose logo files, drawings or proprietary product details to analytics.
 
 ## Measurement Plan
 

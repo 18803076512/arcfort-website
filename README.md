@@ -107,6 +107,11 @@ requested parts, documented wire diameter, visible part or drawing reference, qu
 These labels are inquiry references only; final fit still requires the exact torch label, complete
 front-end stack, drawing, approved sample and connection evidence.
 
+The OEM Service page includes a decision-based RFQ builder for product scope, customization type,
+available evidence, project stage, quantity, destination market and packing approach. It prepares a
+structured `/rfq` request without sending the inquiry or placing logo files, drawings or proprietary
+buyer content in analytics. Buyers upload those files through the validated RFQ form.
+
 The `/products` route supports server-rendered search by product name or SKU, category filtering and
 12-item pagination. Filter and pagination URLs use the product-center canonical and `noindex,follow`
 so buyers can share result URLs without creating duplicate indexable search pages.

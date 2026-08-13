@@ -3,15 +3,30 @@
 This roadmap defines the next improvement sequence for ArcFort Weld. The goal is to make the
 website more professional, easier to index, and stronger for overseas B2B RFQ conversion.
 
-## Current Priority
+## Production Baseline - 2026-08-13
 
-The website already has the core structure: homepage, product center, category pages, product pages,
-RFQ, company pages, application pages, guides, sitemap and robots. The next work should improve
-buyer trust, page depth, product data quality and inquiry conversion.
+The production build currently generates 89 pages and includes 40 indexable products, six product
+categories, six application pages and 16 buyer guides. Product search, category-specific RFQ
+builders, the OEM project builder, canonical metadata, sitemap, robots, structured data and the
+validated RFQ form are in place. The Search Console export dated 2026-08-12 is recorded in
+`docs/seo/search-console-baseline-2026-08-12.md` and should be used as the measurement baseline.
+
+The site is technically ready to acquire inquiries, but four evidence and operational tasks now
+matter more than adding another general page:
+
+1. Confirm that a controlled browser RFQ reaches the sales mailbox and that the buyer confirmation
+   email arrives. Confirm that the Resend credential previously shared outside the deployment
+   environment has been rotated.
+2. Replace the three `needs_photo` draft products with reviewed own or legally usable supplier
+   photos. Review material, dimensions, fitment and source evidence for the 40 active products.
+3. Recheck Search Console after a comparable 28-day period. Improve pages with impressions and weak
+   click-through rate before publishing overlapping guide content.
+4. Measure qualified RFQs, form completion, email clicks and WhatsApp clicks without collecting
+   buyer messages, contact details or file names in analytics.
 
 ## Phase 1 - Global Conversion Foundation
 
-Status: in progress.
+Status: completed and monitored.
 
 - Group the header navigation into cleaner buyer paths.
 - Add a site-wide B2B trust strip with product count, category count, port, OEM, MOQ and lead time.
@@ -19,6 +34,8 @@ Status: in progress.
 - Keep the sticky RFQ, WhatsApp and email contact bar.
 
 ## Phase 2 - Product Center and Category Pages
+
+Status: completed for the current six-category structure; continue from search and RFQ evidence.
 
 Improve the pages that Google and buyers use most:
 
@@ -29,6 +46,8 @@ Improve the pages that Google and buyers use most:
 - Keep all unconfirmed dimensions and compatibility details marked as buyer-confirmed data.
 
 ## Phase 3 - Product Detail Pages
+
+Status: core template completed; real product evidence is the remaining constraint.
 
 Make each product page stronger for RFQ conversion:
 
@@ -41,6 +60,8 @@ Make each product page stronger for RFQ conversion:
 
 ## Phase 4 - Company Trust Pages
 
+Status: core qualification pages completed; evidence-based media can be added when available.
+
 Improve supplier qualification pages:
 
 - About Us: make company positioning, product scope and buyer fit clearer.
@@ -51,6 +72,8 @@ Improve supplier qualification pages:
 
 ## Phase 5 - Content and SEO Expansion
 
+Status: 16 buyer guides and six application pages are live; prioritize measured updates.
+
 Scale organic search content without low-quality pages:
 
 - Add buying guides for contact tips, ceramic cups, plasma electrodes and nozzles.
@@ -59,6 +82,8 @@ Scale organic search content without low-quality pages:
 - Add product comparison and selection articles only when the claims are safe and data-backed.
 
 ## Phase 6 - Real Data and Media
+
+Status: in progress and now the highest-impact content task.
 
 Replace placeholders with confirmed assets:
 
@@ -69,6 +94,8 @@ Replace placeholders with confirmed assets:
 - Do not publish certificates, customer cases or capacity claims unless real proof is provided.
 
 ## Phase 7 - RFQ Backend and Measurement
+
+Status: technically configured; end-to-end mailbox delivery is not yet proven.
 
 Finish conversion tracking:
 
