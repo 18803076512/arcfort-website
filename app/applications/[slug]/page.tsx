@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Breadcrumbs } from "@/components/content/Breadcrumbs";
+import { BuyerResourceLinks } from "@/components/content/BuyerResourceLinks";
 import { FaqSection } from "@/components/content/FaqSection";
 import { ProductCard } from "@/components/content/ProductCard";
 import { RfqCta } from "@/components/content/RfqCta";
@@ -189,6 +190,13 @@ export default async function ApplicationDetailPage({ params }: ApplicationRoute
           </div>
         </div>
       </section>
+
+      {application.buyerResourceSection ? (
+        <BuyerResourceLinks
+          id="application-buyer-resources"
+          {...application.buyerResourceSection}
+        />
+      ) : null}
 
       <section id="application-rfq" className="bg-white py-14 sm:py-16">
         <div className="mx-auto grid max-w-7xl gap-8 px-4 sm:px-6 lg:grid-cols-[1fr_1fr] lg:px-8">

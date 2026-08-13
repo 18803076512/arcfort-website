@@ -2,6 +2,8 @@
 
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
+import { applications } from "../content/applications.ts";
+import { productCategories } from "../content/categories.ts";
 import { guides } from "../content/guides.ts";
 import { getProductBuyingProfile } from "../lib/content/product-buying-profiles.ts";
 import { arcfortProducts } from "../lib/data/products.ts";
@@ -38,6 +40,25 @@ assert.ok(guide.sections.length >= 7);
 assert.ok((guide.buyerChecklist?.items.length ?? 0) >= 7);
 assert.ok((guide.rfqFields?.length ?? 0) >= 8);
 assert.ok(guide.faq.length >= 5);
+
+const expectedBuyerPaths = [
+  "/products/welding-accessories/robot-welding-torch",
+  "/guides/robotic-mig-welding-torch-replacement-guide",
+];
+const migCategory = productCategories.find((category) => category.slug === "mig-mag-torch-parts");
+assert.ok(migCategory, "MIG/MAG category must exist.");
+assert.deepEqual(
+  migCategory.buyerResourceSection?.links.map((link) => link.href),
+  expectedBuyerPaths,
+);
+
+const automotiveApplication = applications.find((application) => application.slug === "automotive");
+assert.ok(automotiveApplication, "Automotive application must exist.");
+assert.deepEqual(
+  automotiveApplication.buyerResourceSection?.links.map((link) => link.href),
+  expectedBuyerPaths,
+);
+assert.ok(automotiveApplication.relatedProductSlugs.includes("robot-welding-torch"));
 
 const publicCopy = [
   data.shortDescription,

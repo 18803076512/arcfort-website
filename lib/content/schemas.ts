@@ -57,6 +57,21 @@ export type BuyerDownloadTool = {
   buttonLabel: string;
 };
 
+export type BuyerResourceLink = {
+  href: string;
+  label: string;
+  title: string;
+  description: string;
+  actionLabel: string;
+};
+
+export type BuyerResourceSection = {
+  eyebrow: string;
+  title: string;
+  description: string;
+  links: BuyerResourceLink[];
+};
+
 export type ProductBuyingProfile = {
   productSlug: string;
   eyebrow: string;
@@ -89,6 +104,7 @@ export type ProductCategory = {
   selectionVariables?: CategorySelectionVariable[];
   compatibilityChecklist?: string[];
   buyerTool?: BuyerDownloadTool;
+  buyerResourceSection?: BuyerResourceSection;
   oemServiceNote: string;
   packagingMoqNote: string;
   features: string[];
@@ -156,6 +172,7 @@ export type ApplicationPage = {
   buyerNeeds: string[];
   relatedCategorySlugs: string[];
   relatedProductSlugs: string[];
+  buyerResourceSection?: BuyerResourceSection;
   faq: FaqItem[];
   keywords: string[];
 };

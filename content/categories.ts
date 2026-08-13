@@ -1,4 +1,5 @@
-import type { ProductCategory } from "@/lib/content/schemas";
+import { roboticMigTorchCategoryResourceSection } from "../lib/content/buyer-resource-links.ts";
+import type { ProductCategory } from "../lib/content/schemas.ts";
 
 export const productCategories: ProductCategory[] = [
   {
@@ -206,6 +207,7 @@ export const productCategories: ProductCategory[] = [
       "Photograph liner ends, cable connections and torch switches separately when they are part of the request.",
       "Approve the complete matched assembly or sample reference before repeat purchasing.",
     ],
+    buyerResourceSection: roboticMigTorchCategoryResourceSection,
     features: [
       "Suitable for distributor product lines",
       "Structured category references for repeat sourcing",
