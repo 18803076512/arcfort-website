@@ -32,6 +32,14 @@ const documentTypes = [
 
 const downloadFiles = [
   {
+    title: "Distributor Mixed-Product RFQ Workbook",
+    type: "XLSX",
+    href: "/downloads/arcfort-distributor-rfq-workbook.xlsx",
+    description:
+      "Prepare buyer profile, mixed SKU lines, trial and repeat quantities, packing requirements, evidence references and supplier-review status.",
+    note: "Use one row per product or variant, link each line to photos, drawings or sample references, and leave unverified technical details for written confirmation.",
+  },
+  {
     title: "TIG Torch Switch Identification Worksheet",
     type: "CSV",
     href: "/downloads/arcfort-tig-torch-switch-identification.csv",
@@ -123,17 +131,18 @@ const faq = [
   {
     question: "Can buyers download a product list before sending an inquiry?",
     answer:
-      "Yes. The download center includes a public CSV product list, a general RFQ worksheet, welding machine and plasma consumables RFQ workbooks, and an OEM project brief. Buyers can complete the suitable file and upload it through the RFQ form.",
+      "Yes. The download center includes a public CSV product list, a general RFQ worksheet, distributor, welding machine and plasma consumables RFQ workbooks, and an OEM project brief. Buyers can complete the suitable file and upload it through the RFQ form.",
   },
 ] as const;
 
 export const metadata = buildMetadata({
   title: "Download Center for Welding Product Buyers",
   description:
-    "Download ArcFort Weld catalogs, product lists and RFQ worksheets for TIG switches, welding machines, plasma consumables and OEM sourcing.",
+    "Download ArcFort Weld catalogs, product lists and RFQ workbooks for distributors, welding machines, plasma consumables and OEM sourcing.",
   path: "/downloads",
   keywords: [
     "welding product catalog",
+    "distributor welding product RFQ workbook",
     "welding consumables data sheet",
     "plasma cutting consumables catalog",
     "plasma consumables RFQ workbook",

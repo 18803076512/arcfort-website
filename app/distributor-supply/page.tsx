@@ -5,6 +5,7 @@ import { FaqSection } from "@/components/content/FaqSection";
 import { RfqCta } from "@/components/content/RfqCta";
 import { StructuredData } from "@/components/content/StructuredData";
 import { RfqForm } from "@/app/rfq/RfqForm";
+import { DistributorRfqBuilder } from "@/components/distributor/DistributorRfqBuilder";
 import { getAllProductCategories } from "@/lib/content/categories";
 import { breadcrumbJsonLd, faqJsonLd, webPageJsonLd } from "@/lib/content/jsonld";
 import { getAllProducts } from "@/lib/content/products";
@@ -97,7 +98,7 @@ const resourceLinks = [
   {
     href: "/downloads",
     title: "Catalog & RFQ Files",
-    description: "Download the welding catalog, public product list and RFQ worksheet.",
+    description: "Download the welding catalog, public product list and distributor RFQ workbook.",
   },
   {
     href: "/oem-service",
@@ -230,7 +231,7 @@ export default function DistributorSupplyPage() {
             </p>
             <div className="mt-8 flex flex-col gap-3 sm:flex-row">
               <a
-                href="#distributor-rfq-form"
+                href="#distributor-rfq-builder"
                 className="inline-flex min-h-12 w-full items-center justify-center bg-arc-signal px-6 text-sm font-bold uppercase tracking-[0.14em] text-arc-midnight transition hover:bg-white sm:w-auto"
               >
                 Start Distributor RFQ
@@ -321,6 +322,24 @@ export default function DistributorSupplyPage() {
               </article>
             ))}
           </div>
+        </div>
+      </section>
+
+      <section className="bg-white py-14 sm:py-16" id="distributor-rfq-builder">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="mb-8 max-w-4xl">
+            <p className="text-sm font-bold uppercase tracking-[0.2em] text-arc-blue">
+              Sourcing Brief
+            </p>
+            <h2 className="mt-3 font-display text-3xl font-black text-arc-midnight sm:text-4xl">
+              Organize the commercial scope before sending line items.
+            </h2>
+            <p className="mt-4 text-sm leading-7 text-slate-600">
+              Use the guided brief for a fast inquiry, or download the workbook when your product
+              list contains many SKUs, variants and evidence files.
+            </p>
+          </div>
+          <DistributorRfqBuilder />
         </div>
       </section>
 
@@ -417,10 +436,10 @@ export default function DistributorSupplyPage() {
               verified records. Unknown details can remain open for sample or drawing review.
             </p>
             <Link
-              href="/downloads/arcfort-rfq-template.csv"
+              href="/downloads/arcfort-distributor-rfq-workbook.xlsx"
               className="mt-6 inline-flex min-h-12 w-full items-center justify-center border border-arc-blue px-5 text-sm font-bold uppercase tracking-[0.14em] text-arc-blue transition hover:bg-arc-blue hover:text-white sm:w-auto"
             >
-              Download RFQ Worksheet
+              Download Distributor Workbook
             </Link>
           </div>
           <ul className="grid gap-3">

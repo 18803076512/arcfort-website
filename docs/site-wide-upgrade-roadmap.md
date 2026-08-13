@@ -24,6 +24,11 @@ matter more than adding another general page:
 4. Measure qualified RFQs, form completion, email clicks and WhatsApp clicks without collecting
    buyer messages, contact details or file names in analytics.
 
+The distributor and importer path now includes a guided mixed-product sourcing brief plus a
+four-tab RFQ workbook for buyer profile, SKU lines, trial and repeat quantities, packing and
+evidence review. Future changes should be driven by real builder, download and qualified-inquiry
+activity rather than adding another overlapping distributor page.
+
 ## Phase 1 - Global Conversion Foundation
 
 Status: completed and monitored.

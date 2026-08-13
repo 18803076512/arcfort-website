@@ -146,6 +146,11 @@ link relevant category and guide content to the OEM service, and avoid weakening
     electrical input, equipment arrangement, accessories, destination, quantity, document requests
     and packing needs into the validated RFQ form. The workflow records buyer requirements without
     presenting unverified ratings, compatibility or certification as confirmed facts.
+25. Strengthened the distributor and importer landing page with a mixed-product sourcing brief for
+    buyer type, product families, trial and repeat quantities, destination, packing and available
+    evidence. Added a four-tab distributor RFQ workbook for larger SKU lists, linked each product
+    line to evidence and supplier-review status, and tracked the download without collecting buyer
+    inputs or file names.
 
 ## Measurement Plan
 
