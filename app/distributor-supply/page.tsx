@@ -236,13 +236,13 @@ export default function DistributorSupplyPage() {
               >
                 Start Distributor RFQ
               </a>
-              <Link
+              <a
                 href="/downloads/arcfort-distributor-sourcing-guide.pdf"
                 download
                 className="inline-flex min-h-12 w-full items-center justify-center border border-white/35 px-6 text-sm font-bold uppercase tracking-[0.14em] text-white transition hover:border-white hover:bg-white/10 sm:w-auto"
               >
                 Download Sourcing Guide
-              </Link>
+              </a>
             </div>
             <div className="mt-8 flex flex-col gap-2 border-t border-white/15 pt-5 text-sm text-slate-300 sm:flex-row sm:gap-6">
               <a href={distributorEmailHref} className="break-words font-semibold hover:text-white">
@@ -522,19 +522,29 @@ export default function DistributorSupplyPage() {
             </h2>
           </div>
           <div className="mt-9 grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6">
-            {resourceLinks.map((item) => (
-              <Link
-                key={item.href}
-                href={item.href}
-                className="group border border-white/15 p-5 transition hover:border-arc-signal hover:bg-white/5"
-              >
-                <h3 className="font-display text-xl font-black text-white">{item.title}</h3>
-                <p className="mt-3 text-sm leading-6 text-slate-300">{item.description}</p>
-                <span className="mt-5 inline-flex text-xs font-bold uppercase tracking-[0.14em] text-arc-signal group-hover:text-white">
-                  Open Resource
-                </span>
-              </Link>
-            ))}
+            {resourceLinks.map((item) => {
+              const content = (
+                <>
+                  <h3 className="font-display text-xl font-black text-white">{item.title}</h3>
+                  <p className="mt-3 text-sm leading-6 text-slate-300">{item.description}</p>
+                  <span className="mt-5 inline-flex text-xs font-bold uppercase tracking-[0.14em] text-arc-signal group-hover:text-white">
+                    Open Resource
+                  </span>
+                </>
+              );
+              const className =
+                "group border border-white/15 p-5 transition hover:border-arc-signal hover:bg-white/5";
+
+              return item.href.endsWith(".pdf") ? (
+                <a key={item.href} href={item.href} download className={className}>
+                  {content}
+                </a>
+              ) : (
+                <Link key={item.href} href={item.href} className={className}>
+                  {content}
+                </Link>
+              );
+            })}
           </div>
         </div>
       </section>
