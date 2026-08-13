@@ -91,6 +91,11 @@ const sourcingSteps = [
 
 const resourceLinks = [
   {
+    href: "/about",
+    title: "Company Profile",
+    description: "Verify the legal company, website brand, location and confirmed contact route.",
+  },
+  {
     href: "/downloads/arcfort-distributor-sourcing-guide.pdf",
     title: "Distributor Sourcing Guide",
     description: "Download the product scope, sourcing process, trade terms and RFQ checklist.",
@@ -522,7 +527,7 @@ export default function DistributorSupplyPage() {
               Check product, inspection and delivery information before inquiry.
             </h2>
           </div>
-          <div className="mt-9 grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6">
+          <div className="mt-9 grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
             {resourceLinks.map((item) => {
               const content = (
                 <>

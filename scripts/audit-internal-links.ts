@@ -70,6 +70,12 @@ const priorityTargets: PriorityTarget[] = [
     minimumInboundSources: 6,
     requiredSources: ["/", "/about", "/contact", "/distributor-supply", "/oem-service", "/rfq"],
   },
+  {
+    path: "/about",
+    label: "Legal company and ArcFort Weld profile page",
+    minimumInboundSources: 6,
+    requiredSources: ["/", "/contact", "/distributor-supply", "/oem-service", "/rfq"],
+  },
 ];
 
 function walkHtmlFiles(directory: string): string[] {

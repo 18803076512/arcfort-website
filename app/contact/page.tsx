@@ -121,6 +121,12 @@ export default function ContactPage() {
                   View Products
                 </Link>
               </div>
+              <Link
+                href="/about"
+                className="mt-5 inline-flex min-h-11 items-center text-sm font-bold text-arc-blue underline decoration-arc-signal decoration-2 underline-offset-4 hover:text-arc-midnight"
+              >
+                Verify company identity and supply scope
+              </Link>
             </div>
 
             <div className="border border-slate-200 bg-arc-frost p-6 shadow-sm sm:p-8">

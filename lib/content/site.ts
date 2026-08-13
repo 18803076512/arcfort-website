@@ -12,7 +12,7 @@ export const siteConfig = {
   contentLastModified: "2026-08-13",
   oemLastModified: "2026-08-13",
   guidesLastModified: "2026-08-13",
-  aboutLastModified: "2026-08-09",
+  aboutLastModified: "2026-08-13",
   distributorLandingLastModified: "2026-08-13",
   contactLastModified: "2026-08-09",
   productTemplateLastModified: "2026-08-12",

@@ -43,6 +43,11 @@ const oemProjectBriefHref = "/downloads/arcfort-oem-project-brief.xlsx";
 
 const oemSupportLinks = [
   {
+    href: "/about",
+    title: "Company Profile",
+    description: "Confirm the legal company, ArcFort Weld brand relationship and business contact.",
+  },
+  {
     href: "/quality-control",
     title: "Quality Control",
     description: "Review inspection and packing checkpoints used for order confirmation.",
@@ -286,7 +291,7 @@ export default function OemServicePage() {
               unconfirmed product, certification or delivery details.
             </p>
           </div>
-          <div className="mt-8 grid gap-4 md:grid-cols-3">
+          <div className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-4">
             {oemSupportLinks.map((item) => (
               <Link
                 key={item.href}
