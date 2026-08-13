@@ -178,6 +178,13 @@ link relevant category and guide content to the OEM service, and avoid weakening
     RFQ prefill; and commercial paths to Products, Distributor Supply, OEM Service and Quality
     Control. Added regression tests and internal-link requirements without presenting freight,
     Incoterms, certification or shipment dates as fixed facts.
+30. Rebuilt `/about` after it recorded 5 impressions at average position 7.00 with no clicks.
+    Preserved the indexed URL while aligning the title and first viewport with the legal company
+    query. Added the ArcFort Weld brand relationship, visible company identity and contact details,
+    live category links, buyer-program routes, a traceable inquiry workflow, confirmed-versus-
+    product-specific evidence boundaries, FAQ structured data and a prefilled company RFQ. Added
+    contextual links from Home, Contact, Distributor Supply, OEM Service and RFQ, plus regression
+    checks that reject unsupported certification, factory-ownership and compatibility claims.
 
 ## Measurement Plan
 

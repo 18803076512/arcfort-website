@@ -90,6 +90,9 @@ jobs:
       - name: Test export order terms and conversion paths
         run: npm run test:export-terms
 
+      - name: Test company profile and evidence boundaries
+        run: npm run test:company-profile
+
       - name: Lint
         run: npm run lint
 

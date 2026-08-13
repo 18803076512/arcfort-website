@@ -61,6 +61,12 @@ const rfqSignals = [
 
 const sourcingSystemLinks = [
   {
+    href: "/about",
+    title: "Company Profile",
+    description:
+      "Verify the legal company, ArcFort Weld brand relationship, location, product scope and contact details.",
+  },
+  {
     href: "/distributor-supply",
     title: "Distributor & Importer Supply",
     description:
@@ -411,7 +417,7 @@ export default function Home() {
               distributors and importers can qualify the supply fit quickly.
             </p>
           </div>
-          <div className="mt-8 grid grid-cols-2 gap-3 sm:mt-10 sm:gap-5 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
+          <div className="mt-8 grid grid-cols-2 gap-3 sm:mt-10 sm:gap-5 md:grid-cols-2 lg:grid-cols-3">
             {sourcingSystemLinks.map((item) => (
               <Link
                 key={item.href}
