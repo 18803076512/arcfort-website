@@ -4,6 +4,7 @@ import { Breadcrumbs } from "@/components/content/Breadcrumbs";
 import { FaqSection } from "@/components/content/FaqSection";
 import { ProductCard } from "@/components/content/ProductCard";
 import { RfqCta } from "@/components/content/RfqCta";
+import { MigTorchPartsRfqBuilder } from "@/components/products/MigTorchPartsRfqBuilder";
 import { PlasmaConsumablesRfqBuilder } from "@/components/products/PlasmaConsumablesRfqBuilder";
 import { TigTorchPartsRfqBuilder } from "@/components/products/TigTorchPartsRfqBuilder";
 import { getBuyerGuideForCategory } from "@/lib/content/topic-links";
@@ -38,7 +39,9 @@ export function CategoryPageTemplate({
     category.slug === "plasma-cutting-consumables" && Boolean(category.referenceFamilies?.length);
   const hasTigRfqBuilder =
     category.slug === "tig-torch-parts" && Boolean(category.referenceFamilies?.length);
-  const hasCategoryRfqBuilder = hasPlasmaRfqBuilder || hasTigRfqBuilder;
+  const hasMigRfqBuilder =
+    category.slug === "mig-mag-torch-parts" && Boolean(category.referenceFamilies?.length);
+  const hasCategoryRfqBuilder = hasPlasmaRfqBuilder || hasTigRfqBuilder || hasMigRfqBuilder;
   const categoryStats = [
     { label: "Products", value: `${products.length}` },
     { label: "OEM support", value: "Available" },
@@ -137,7 +140,7 @@ export function CategoryPageTemplate({
       >
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <ol
-            className={`grid grid-cols-2 gap-px bg-slate-200 sm:grid-cols-3 ${hasPlasmaRfqBuilder ? "lg:grid-cols-4 xl:grid-cols-8" : hasTechnicalGuide ? "lg:grid-cols-7" : "lg:grid-cols-6"}`}
+            className={`grid grid-cols-2 gap-px bg-slate-200 sm:grid-cols-3 ${hasCategoryRfqBuilder ? "lg:grid-cols-4 xl:grid-cols-8" : hasTechnicalGuide ? "lg:grid-cols-7" : "lg:grid-cols-6"}`}
           >
             {categoryPageSections.map((section, index) => (
               <li key={section.href} className="bg-white">
@@ -354,6 +357,12 @@ export function CategoryPageTemplate({
             {hasTigRfqBuilder && category.referenceFamilies ? (
               <div id="category-rfq-builder" className="scroll-mt-28 pt-8">
                 <TigTorchPartsRfqBuilder torchFamilies={category.referenceFamilies} />
+              </div>
+            ) : null}
+
+            {hasMigRfqBuilder && category.referenceFamilies ? (
+              <div id="category-rfq-builder" className="scroll-mt-28 pt-8">
+                <MigTorchPartsRfqBuilder torchFamilies={category.referenceFamilies} />
               </div>
             ) : null}
 

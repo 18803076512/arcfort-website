@@ -115,6 +115,11 @@ link relevant category and guide content to the OEM service, and avoid weakening
     company-catalog reference groups for WP-9/WP-20, WP-17/WP-18/WP-26 and WP-27 series products. Added a TIG-specific
     RFQ builder for front-end arrangement, requested parts, documented tungsten diameter, cup or part
     reference, quantity and packing while keeping final compatibility evidence-based.
+21. Expanded the MIG/MAG torch parts category, which recorded 28 impressions and no clicks, with
+    company-catalog reference groups for 15AK, 24KD/25AK, 36KD/40KD, 501D/602 and ORK
+    200A/350A/500A series products. Added a MIG/MAG-specific RFQ builder for torch arrangement,
+    requested front-end parts, documented wire diameter, visible part or drawing reference, quantity
+    and packing without treating a catalog series as proof of compatibility.
 
 ## Measurement Plan
 

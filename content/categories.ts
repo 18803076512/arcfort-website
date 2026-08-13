@@ -8,15 +8,15 @@ export const productCategories: ProductCategory[] = [
     shortTitle: "MIG/MAG Parts",
     description:
       "Contact tips, gas nozzles, diffusers, liners and torch consumables for MIG/MAG welding applications.",
-    seoTitle: "MIG Welding Torch Parts & Consumables",
+    seoTitle: "MIG/MAG Torch Parts & Consumables",
     seoDescription:
       "Source MIG/MAG welding torch parts including contact tips, tip holders, gas diffusers, nozzles, liners and switches for distributor and repair supply.",
     seoIntro:
-      "ArcFort Weld supplies MIG/MAG torch parts for distributors, importers, OEM buyers and repair workshops that need organized product references for repeat purchasing. Product specifications should be confirmed against torch model, drawing or reference part before quotation.",
+      "ArcFort Weld organizes MIG/MAG torch parts for distributors, importers, OEM buyers and repair workshops that need repeatable product references for purchasing. Buyers can review the 15AK, 24KD/25AK, 36KD/40KD, 501D/602 and ORK company-catalog reference groups, then build an RFQ by torch model, front-end stack, wire diameter, visible part reference and quantity. Catalog series help organize the request but do not replace compatibility confirmation by label, drawing, approved sample or complete component stack.",
     productRange: [
       "MIG/MAG contact tips by thread and wire size",
       "Gas nozzles, tip holders, diffusers and torch liners",
-      "MB series torch consumables and replacement part lists",
+      "Company-catalog torch-series consumables and replacement part lists",
       "OEM packaging and mixed distributor RFQ programs",
     ],
     commonSpecifications: [
@@ -93,6 +93,75 @@ export const productCategories: ProductCategory[] = [
         productSlug: "mig-torch-switch",
       },
     ],
+    referenceFamilies: [
+      {
+        name: "15AK catalog reference group",
+        documentedComponents: [
+          "Gas nozzle",
+          "Contact tip",
+          "Tip holder",
+          "Insulator or holder spring",
+          "Swan neck",
+          "Torch liner",
+        ],
+        buyerCheck:
+          "The company catalog shows more than one 15AK torch arrangement. Send the complete torch and label, keep the nozzle-to-neck parts in removal order, and record only measured or visibly marked wire size, thread and length references before requesting a match.",
+      },
+      {
+        name: "24KD / 25AK catalog reference group",
+        documentedComponents: [
+          "Gas nozzle",
+          "Contact tip",
+          "Tip holder",
+          "Gas diffuser",
+          "Swan neck",
+          "Torch liner",
+        ],
+        buyerCheck:
+          "Do not select from the series name alone. Confirm whether the torch label shows 24KD or 25AK, photograph the assembled and disassembled front end, and provide the documented wire size, nozzle profile, liner ends and rear connector when those parts are required.",
+      },
+      {
+        name: "36KD / 40KD catalog reference group",
+        documentedComponents: [
+          "Gas nozzle",
+          "Contact tip",
+          "Tip holder",
+          "Gas diffuser",
+          "Swan neck",
+          "Torch liner",
+        ],
+        buyerCheck:
+          "These company-catalog series use different documented front-end references from the smaller groups. Provide the exact torch label, cooling arrangement, contact-tip marking, surrounding component stack and connection photos so the requested parts can be reviewed together.",
+      },
+      {
+        name: "501D / 602 catalog reference group",
+        documentedComponents: [
+          "Gas nozzle",
+          "Contact tip",
+          "Tip holder",
+          "Gas diffuser",
+          "Insulator",
+          "Swan neck",
+          "Water and cable connections",
+        ],
+        buyerCheck:
+          "Treat 501D and 602 as separate reference systems inside this catalog group. Confirm the exact label, water-cooled connection layout, complete cable end, front-end parts in assembly order and any visible part or drawing reference before quotation.",
+      },
+      {
+        name: "ORK 200A / 350A / 500A catalog reference group",
+        documentedComponents: [
+          "Gas nozzle",
+          "Contact tip",
+          "Tip holder",
+          "Gas diffuser or insulator",
+          "Swan neck",
+          "Torch liner",
+          "Control and rear connections",
+        ],
+        buyerCheck:
+          "The ORK catalog pages show distinct 200A, 350A and 500A assemblies. Copy the exact series label, show the complete torch and rear connections, and keep the nozzle, tip, holder, diffuser or insulator and neck in order for evidence-based matching.",
+      },
+    ],
     selectionVariables: [
       {
         label: "Torch model and front-end family",
@@ -163,6 +232,11 @@ export const productCategories: ProductCategory[] = [
         question: "What are the main parts of a MIG/MAG welding torch?",
         answer:
           "Common replacement items include the contact tip, tip holder or gas diffuser, gas nozzle, torch liner, swan neck and torch switch. The exact assembly varies by torch system and should be confirmed from a model, drawing or sample.",
+      },
+      {
+        question: "Does selecting a catalog series confirm MIG/MAG torch compatibility?",
+        answer:
+          "No. A catalog series organizes the inquiry only. Final compatibility should be reviewed from the exact torch label, complete front-end stack, visible part reference, drawing, approved sample and connection details.",
       },
     ],
     keywords: [

@@ -25,6 +25,7 @@
     "test:rfq": "node --experimental-strip-types scripts/test-rfq-constraints.ts && node --experimental-strip-types scripts/test-rfq-email.ts",
     "test:rfq-email": "node --experimental-strip-types scripts/test-rfq-email.ts",
     "test:product-search": "node --experimental-strip-types scripts/test-product-search.ts",
+    "test:mig-rfq": "node --experimental-strip-types scripts/test-mig-rfq-builder.ts",
     "test:plasma-rfq": "node --experimental-strip-types scripts/test-plasma-rfq-builder.ts",
     "test:tig-rfq": "node --experimental-strip-types scripts/test-tig-rfq-builder.ts",
     "rfq:check-live": "node --experimental-strip-types scripts/check-live-rfq.ts",
