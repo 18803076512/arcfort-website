@@ -113,6 +113,13 @@ const quickCategoryLinks = [
     guideHref: "/guides/plasma-cutter-consumables-parts-guide",
     guideLabel: "Plasma Consumables Parts Guide",
   },
+  {
+    label: "Welding Machines",
+    href: "/products/welding-machines",
+    scope: "MIG/MAG, TIG, MMA and plasma equipment sourcing",
+    guideHref: "/guides/welding-machine-sourcing-checklist",
+    guideLabel: "Machine Sourcing Checklist",
+  },
 ] as const;
 
 const productCenterFaq = [
@@ -368,8 +375,8 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
           </div>
 
           <nav
-            aria-label="Welding torch parts and plasma consumables sourcing paths"
-            className="mt-8 grid gap-px border border-slate-200 bg-slate-200 md:grid-cols-3"
+            aria-label="Welding and cutting product sourcing paths"
+            className="mt-8 grid gap-px border border-slate-200 bg-slate-200 md:grid-cols-2 xl:grid-cols-4"
           >
             {quickCategoryLinks.map((item) => (
               <article

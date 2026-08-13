@@ -165,6 +165,12 @@ link relevant category and guide content to the OEM service, and avoid weakening
     build-time link audit that requires both priority URLs to retain at least four distinct inbound
     source pages. This improves discovery and buyer navigation without changing the indexed URLs or
     creating overlapping pages.
+28. Refined the existing welding machine sourcing checklist after it recorded 17 impressions at
+    average position 11.18 with no clicks. Kept the indexed URL, aligned the visible and search
+    titles with welding machine sourcing and RFQ-guide intent, and added a paired welding-machine
+    category and checklist path from the Product Center. Extended the build-time link audit so the
+    guide retains contextual entry points from the Product Center, Guides, welding-machine category
+    and Wire Feeder product page.
 
 ## Measurement Plan
 
