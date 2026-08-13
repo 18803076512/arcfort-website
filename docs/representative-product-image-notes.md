@@ -9,14 +9,22 @@ OEM number or final packaging.
 
 ## Representative Images Added
 
-| Product | Image File | Source Image | Status |
-| --- | --- | --- | --- |
+| Product                  | Image File                     | Source Image          | Status                              |
+| ------------------------ | ------------------------------ | --------------------- | ----------------------------------- |
 | MIG Contact Tip M6 0.8mm | `mig-contact-tip-m6-0-8mm.jpg` | `mig-contact-tip.jpg` | Representative product-family image |
 | MIG Contact Tip M6 1.0mm | `mig-contact-tip-m6-1-0mm.jpg` | `mig-contact-tip.jpg` | Representative product-family image |
 | MIG Contact Tip M6 1.2mm | `mig-contact-tip-m6-1-2mm.jpg` | `mig-contact-tip.jpg` | Representative product-family image |
-| MIG Gas Nozzle for MB15 | `mig-gas-nozzle-for-mb15.jpg` | `mig-gas-nozzle.jpg` | Representative product-family image |
-| TIG Ceramic Cup #5 | `tig-ceramic-cup-5.jpg` | `tig-ceramic-cup.jpg` | Representative product-family image |
-| TIG Ceramic Cup #6 | `tig-ceramic-cup-6.jpg` | `tig-ceramic-cup.jpg` | Representative product-family image |
+| MIG Gas Nozzle for MB15  | `mig-gas-nozzle-for-mb15.jpg`  | `mig-gas-nozzle.jpg`  | Representative product-family image |
+| TIG Ceramic Cup #5       | `tig-ceramic-cup-5.jpg`        | `tig-ceramic-cup.jpg` | Representative product-family image |
+| TIG Ceramic Cup #6       | `tig-ceramic-cup-6.jpg`        | `tig-ceramic-cup.jpg` | Representative product-family image |
+
+## Site-Level OEM Visual
+
+`public/images/site/arcfort-oem-consumables-workbench.png` is used on `/oem-service` as a
+representative product-and-packing discussion visual. It shows relevant welding consumable and
+accessory families, but it is not evidence of an exact SKU, confirmed material or compatibility,
+final customer packaging, production facility, capacity or inspection claim. The public caption
+states this boundary next to the image.
 
 ## Buyer-Facing Rule
 

@@ -1,8 +1,10 @@
+import Image from "next/image";
 import Link from "next/link";
 import { Breadcrumbs } from "@/components/content/Breadcrumbs";
 import { FaqSection } from "@/components/content/FaqSection";
 import { RfqCta } from "@/components/content/RfqCta";
 import { StructuredData } from "@/components/content/StructuredData";
+import { OemRfqBuilder } from "@/components/oem/OemRfqBuilder";
 import { breadcrumbJsonLd, faqJsonLd, webPageJsonLd } from "@/lib/content/jsonld";
 import { buildMetadata } from "@/lib/content/seo";
 import { siteConfig } from "@/lib/content/site";
@@ -102,7 +104,7 @@ export default function OemServicePage() {
             description:
               "OEM welding product, logo, private label packaging and model customization support for overseas distributors and importers.",
             path: "/oem-service",
-            dateModified: siteConfig.contentLastModified,
+            dateModified: siteConfig.oemLastModified,
           }),
           faqJsonLd([...faq]),
         ]}
@@ -125,10 +127,10 @@ export default function OemServicePage() {
               </p>
               <div className="mt-7 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
                 <Link
-                  href={oemRfqHref}
+                  href="#oem-rfq-builder"
                   className="inline-flex min-h-12 w-full items-center justify-center bg-arc-blue px-5 text-sm font-bold uppercase tracking-[0.14em] text-white transition hover:bg-arc-midnight sm:w-auto"
                 >
-                  Start OEM RFQ
+                  Build OEM RFQ
                 </Link>
                 <Link
                   href="/guides/oem-welding-products-private-label-guide"
@@ -145,21 +147,39 @@ export default function OemServicePage() {
                 </a>
               </div>
             </div>
-            <div className="border-l-4 border-arc-signal bg-arc-frost p-6">
-              <h2 className="font-display text-2xl font-black text-arc-midnight">
-                What OEM means here
-              </h2>
-              <p className="mt-3 text-sm leading-7 text-slate-700">
-                OEM service is reviewed after product details are confirmed. ArcFort Weld does not
-                claim unverified compatibility, certifications or technical ratings. Buyers can send
-                samples, drawings, photos or packaging artwork for quotation review.
-              </p>
+            <div className="overflow-hidden border border-slate-200 bg-arc-midnight shadow-industrial">
+              <div className="relative aspect-[16/10]">
+                <Image
+                  src="/images/site/arcfort-oem-consumables-workbench.png"
+                  alt="Representative welding torch consumables, cable connectors, clamps and packing references for OEM project discussion"
+                  fill
+                  priority
+                  sizes="(min-width: 1024px) 52vw, 100vw"
+                  className="object-cover"
+                />
+              </div>
+              <div className="border-t border-white/10 p-5 text-white">
+                <p className="text-xs font-bold uppercase tracking-[0.16em] text-arc-signal">
+                  Representative product and packing reference
+                </p>
+                <p className="mt-2 text-sm leading-6 text-slate-300">
+                  Product fit, material, dimensions, logo application and packing format are
+                  reviewed from buyer evidence before quotation. This visual is not proof of an
+                  exact SKU or production facility.
+                </p>
+              </div>
             </div>
           </div>
         </div>
       </section>
 
-      <section className="bg-arc-frost py-14 sm:py-16">
+      <section id="oem-rfq-builder" className="scroll-mt-24 bg-arc-frost py-14 sm:py-16">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <OemRfqBuilder />
+        </div>
+      </section>
+
+      <section className="bg-white py-14 sm:py-16">
         <div className="mx-auto grid max-w-7xl gap-8 px-4 sm:px-6 lg:grid-cols-[0.85fr_1.15fr] lg:px-8">
           <div>
             <p className="text-sm font-bold uppercase tracking-[0.2em] text-arc-blue">
