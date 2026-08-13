@@ -66,6 +66,9 @@ jobs:
       - name: Test product catalog search
         run: npm run test:product-search
 
+      - name: Test MIG/MAG torch parts RFQ builder
+        run: npm run test:mig-rfq
+
       - name: Test plasma consumables RFQ builder
         run: npm run test:plasma-rfq
 

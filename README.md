@@ -84,7 +84,7 @@ redirect to their current category pages so they do not compete with exact SKU p
 instead of inventing specifications, certifications, prices, stock status, factory capacity or
 customer cases.
 
-Plasma and TIG category records also provide structured component guides, selection variables and
+MIG/MAG, plasma and TIG category records also provide structured component guides, selection variables and
 compatibility evidence checklists. These sections are rendered from `content/categories.ts`, link to
 active product records and guide buyers toward model-, drawing- or sample-based confirmation. The
 TIG parts identification guide is intentionally separate from the TIG consumable-stack selection
@@ -100,6 +100,12 @@ The TIG category provides the same evidence-led path for WP-9/WP-20, WP-17/WP-18
 reference groups, with TIG-specific fields for the front-end arrangement, requested parts, documented
 tungsten diameter and cup or part marking. The builder organizes buyer input without asserting that a
 catalog reference group or visually similar component confirms compatibility.
+
+The MIG/MAG category organizes company-catalog references into 15AK, 24KD/25AK, 36KD/40KD,
+501D/602 and ORK 200A/350A/500A groups. Its RFQ builder records the torch or cooling arrangement,
+requested parts, documented wire diameter, visible part or drawing reference, quantity and packing.
+These labels are inquiry references only; final fit still requires the exact torch label, complete
+front-end stack, drawing, approved sample and connection evidence.
 
 The `/products` route supports server-rendered search by product name or SKU, category filtering and
 12-item pagination. Filter and pagination URLs use the product-center canonical and `noindex,follow`
