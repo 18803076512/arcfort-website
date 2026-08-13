@@ -311,6 +311,15 @@ Check the deployed backend without sending an inquiry:
 npm run rfq:check-live
 ```
 
+Audit the Resend sender domain, DKIM, custom MAIL FROM SPF/MX and DMARC records:
+
+```bash
+npm run email:audit:live
+```
+
+The audit treats missing DMARC as an actionable warning while SPF, DKIM and the custom MAIL FROM
+records remain blocking checks. See `docs/rfq-email-delivery.md` before changing the DMARC policy.
+
 BotID requires a browser-generated challenge on protected submissions. Send a controlled production
 test from the deployed `/rfq` page, then confirm the matching `AF-RFQ-...` reference in the sales
 inbox and Resend logs. The command-line checker remains a non-mutating readiness check and does not

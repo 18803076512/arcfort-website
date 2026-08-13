@@ -29,7 +29,7 @@ jobs:
         with:
           node-version: 22
 
-      - name: Check production RFQ, SEO and security health
+      - name: Check production RFQ, email domain, SEO and security health
         run: npm run health:production
 
   incident:
@@ -100,7 +100,7 @@ jobs:
               `Checked at: ${checkedAt}`,
               `Workflow run: ${runUrl}`,
               "",
-              "Review the RFQ readiness, live SEO and security-header output in the linked run.",
+              "Review the RFQ readiness, email-domain authentication, live SEO and security-header output in the linked run.",
               "This issue will close automatically after a successful production health check.",
             ].join("\n");
 

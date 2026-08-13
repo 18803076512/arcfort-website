@@ -31,6 +31,7 @@ type RfqStatusResponse = {
     idempotencyWindowHours?: number;
     providerRequestTimeoutSeconds?: number;
     recipient?: string;
+    senderDomain?: string | null;
   };
   storage?: {
     ready?: boolean;
@@ -136,6 +137,7 @@ async function main() {
     `Email provider request timeout: ${status.email?.providerRequestTimeoutSeconds ?? "unknown"} seconds`,
   );
   console.log(`Sales recipient: ${status.email?.recipient ?? "not reported"}`);
+  console.log(`Sender domain: ${status.email?.senderDomain ?? "not reported"}`);
   console.log(`Storage ready: ${Boolean(status.storage?.ready)}`);
   console.log(`Storage idempotency protected: ${Boolean(status.storage?.idempotencyProtected)}`);
   console.log(`Attachment retry safe: ${Boolean(status.storage?.attachmentRetrySafe)}`);

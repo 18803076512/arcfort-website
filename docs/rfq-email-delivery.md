@@ -26,6 +26,7 @@ Files:
 - `lib/rfq-email.ts` - escaped, branded HTML and plain-text templates for sales and buyer messages.
 - `lib/rfq-qualification.ts` - deterministic quotation-readiness checklist for the sales notification.
 - `scripts/test-rfq-email.ts` - template content and HTML injection regression checks.
+- `scripts/audit-email-domain.ts` - live SPF, custom MAIL FROM, DKIM and DMARC checks.
 - `docs/sales/rfq-response-playbook.md` - manual review and buyer response workflow.
 - `.env.example` - environment variable names only.
 
@@ -115,6 +116,37 @@ Resend can reject or restrict production email sending.
 
 Do not commit the API key or any email password.
 
+## Sender-Domain Authentication
+
+Run the live DNS audit after changing Resend or Cloudflare records:
+
+```bash
+npm run email:audit:live
+```
+
+The audit verifies the current Resend DKIM key plus the `send.arcfortweld.com` SPF and custom MAIL
+FROM MX records. It reports a missing DMARC policy as a warning so production monitoring continues
+while the policy is introduced. Use `-- --strict` only after every warning has been resolved.
+
+Audit observed on 2026-08-13:
+
+- Resend DKIM is published at `resend._domainkey.arcfortweld.com`.
+- The custom MAIL FROM SPF and MX records are published at `send.arcfortweld.com`.
+- `_dmarc.arcfortweld.com` is not published and remains an email-authentication gap.
+
+Add this TXT record in Cloudflare as the cautious first phase:
+
+```text
+Name: _dmarc
+Type: TXT
+Content: v=DMARC1; p=none; adkim=r; aspf=r; pct=100
+```
+
+Keep `p=none` while confirming that legitimate Resend messages align correctly. Do not move to
+`p=quarantine` or `p=reject` until delivery has been monitored and any other legitimate sender has
+been identified. Add aggregate reporting only after a dedicated mailbox or a reviewed DMARC
+monitoring service is available; do not point reports at an unverified address.
+
 ## Optional Supabase Storage
 
 If Supabase variables are also configured, the website will store inquiry records and attachment
@@ -151,6 +183,10 @@ After adding Vercel environment variables and redeploying:
 14. Confirm the buyer message does not promise an unverified response deadline.
 15. If Supabase is configured, confirm the inquiry row and reference appear in `rfq_inquiries`.
 
+BotID Basic intentionally rejects headless or unverified browser sessions. A delivery test must be
+submitted once from a normal buyer browser. Never disable BotID or automatically repeat a timed-out
+submission just to make an automated test pass.
+
 Expected API response after Resend is configured:
 
 ```json
@@ -182,6 +218,8 @@ npm run test:rfq
 - HTTP `503`: no automated delivery provider is configured in that environment.
 - Attachment error: reduce file count, reduce file size, or send large files directly by email.
 - Sender rejected: verify `arcfortweld.com` in Resend and confirm DNS records in Cloudflare.
+- DMARC warning: publish the monitoring policy above, wait for DNS propagation, then rerun
+  `npm run email:audit:live`.
 - `Please reload the RFQ form and try again`: the submission was too fast, too old, or missing
   form timing data. Reload `/rfq` and submit again.
 

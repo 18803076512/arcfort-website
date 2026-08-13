@@ -4,6 +4,7 @@ import { rfqRateLimitConfig } from "@/lib/rfq-rate-limit";
 import { rfqEmailIdempotencyWindowHours } from "@/lib/rfq-idempotency";
 import { rfqEmailProviderTimeoutSeconds } from "@/lib/rfq-provider-timeout";
 import { rfqStorageConflictColumn } from "@/lib/rfq-storage";
+import { getEmailSenderDomain } from "@/lib/email-domain";
 
 export const dynamic = "force-dynamic";
 export const runtime = "nodejs";
@@ -14,7 +15,8 @@ function configured(value: string | undefined) {
 
 export function GET() {
   const resendApiKeyConfigured = configured(process.env.RESEND_API_KEY);
-  const emailFromConfigured = configured(process.env.RFQ_EMAIL_FROM);
+  const emailSenderDomain = getEmailSenderDomain(process.env.RFQ_EMAIL_FROM);
+  const emailFromConfigured = configured(process.env.RFQ_EMAIL_FROM) && Boolean(emailSenderDomain);
   const emailRecipient = process.env.RFQ_EMAIL_RECIPIENT || siteConfig.email;
   const emailRecipientConfigured = configured(emailRecipient);
   const supabaseUrlConfigured = configured(process.env.SUPABASE_URL);
@@ -85,6 +87,7 @@ export function GET() {
         providerRequestTimeoutSeconds: rfqEmailProviderTimeoutSeconds,
         resendApiKeyConfigured,
         fromConfigured: emailFromConfigured,
+        senderDomain: emailSenderDomain ?? null,
         recipientConfigured: emailRecipientConfigured,
         recipient: emailRecipient,
       },
