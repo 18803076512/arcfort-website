@@ -154,6 +154,11 @@ references because none has exact-SKU factory confirmation yet. Use
 Run `npm run technical:validate` and `npm run technical:report` before changing a reference to
 `CONFIRMED` or approving a collected image.
 
+The private Airtable base `ArcFort Weld - 15AK Evidence Intake` is an optional reviewer interface,
+not a product database. Cloud records must be reviewed and transferred deliberately into the
+canonical intake CSV files before repository validation and PR review. See
+`docs/operations/airtable-15ak-evidence-intake.md` for the authority boundary and transfer procedure.
+
 The About page is the canonical public company profile for the legal-company and ArcFort Weld brand
 relationship. Update confirmed identity and contact facts in `lib/content/site.ts`, keep buyer-facing
 company content in `lib/content/company-profile.ts`, then run `npm run test:company-profile` before
@@ -825,6 +830,10 @@ npm run seo:snippets
   company-owned image intake process
 - `docs/operations/15ak-factory-evidence-handoff.md` - low-friction workbook handoff and controlled
   review process for 15AK technical facts, image evidence and P0 provenance decisions
+- `docs/operations/airtable-15ak-evidence-intake.md` - private Airtable intake boundary, verified
+  table scope and controlled repository transfer procedure
+- `knowledge-base/decisions/2026-08-25-airtable-evidence-intake-boundary.md` - decision record keeping
+  cloud evidence collection non-authoritative and repository publication canonical
 - `docs/product-technical-evidence-report.md` - current technical-fact and 15AK evidence readiness
 - `supabase/rfq-schema.sql` - RFQ table and private attachment bucket setup
 - `docs/supabase-rfq-setup.md` - Supabase, Vercel and testing instructions

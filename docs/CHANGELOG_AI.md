@@ -1714,6 +1714,63 @@ candidate without promoting unconfirmed product evidence.
 - Resolve the four P0 image provenance decisions and complete the 15AK factory technical/image
   intake before publishing another series or expanding the active SKU count.
 
+## 2026-08-25 - 15AK Airtable Evidence Intake
+
+**Task**
+
+Created a private, reviewer-friendly Airtable intake for 15AK technical and product-image evidence,
+then documented the boundary that keeps repository data authoritative.
+
+**Files Changed**
+
+- `docs/operations/airtable-15ak-evidence-intake.md` - cloud intake purpose, authority boundary,
+  canonical mapping, transfer procedure and proposed companion file-request configuration.
+- `knowledge-base/decisions/2026-08-25-airtable-evidence-intake-boundary.md` - durable decision against
+  automatic publication or a second source of product truth.
+- `README.md` - linked the Airtable intake workflow from the 15AK evidence and useful-document sections.
+- `docs/CHANGELOG_AI.md` - recorded this operational integration.
+
+**Components Changed**
+
+- None.
+
+**Data Changed**
+
+- Created the private Airtable base `ArcFort Weld - 15AK Evidence Intake` with five workflow records,
+  four P0 image-decision records, 15 technical-review records and 20 image-request records.
+- No public or canonical product data changed. All technical rows remain
+  `NEEDS_FACTORY_CONFIRMATION`; all image requests remain `requested`; all P0 decisions remain
+  `Needs review`.
+
+**Visual Changes**
+
+- None.
+
+**SEO Impact**
+
+- None. Public URLs, metadata, schema, sitemap and indexability states are unchanged.
+
+**Validation**
+
+- Verified Airtable table counts and status distributions after seeding.
+- Confirmed that the base contains no confirmed technical value, approved image or search-eligible
+  publication state.
+- Ran the repository technical-fact, product-image asset and secret-pattern checks after documenting
+  the workflow.
+
+**Known Issues**
+
+- The four P0 image provenance decisions, 15 technical facts and 20 requested image views still need
+  real reviewer evidence.
+- A Dropbox companion file request was not created because its exact folder, title, deadline and
+  open/closed state require explicit owner confirmation.
+- Airtable remains private external account state and has no automatic repository synchronization.
+
+**Next Recommended Step**
+
+- Approve the proposed Dropbox intake configuration, then collect original 15AK product photos and
+  exact-SKU evidence for review and controlled repository transfer.
+
 ## Entry Template
 
 ```markdown
