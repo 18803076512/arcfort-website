@@ -75,8 +75,8 @@ function buildReport() {
     return [
       `### ${seriesLabel(seriesEvidenceId)}`,
       "",
-      "| Position | Component group | Candidate variants | Field facts | Confirmation | Main image |",
-      "| --- | --- | ---: | ---: | --- | --- |",
+      "| Position | Candidate group | Component | Candidate variants | Field facts | Confirmation | Main image |",
+      "| --- | --- | --- | ---: | ---: | --- | --- |",
       ...componentKeys.map((componentKey) => {
         const componentCandidates = candidates.filter((row) => row.component_key === componentKey);
         const facts = result.facts.filter(
@@ -97,7 +97,7 @@ function buildReport() {
           new Set(componentCandidates.map((row) => row.catalog_position)),
         ).join(", ");
 
-        return `| ${escapeTable(positions)} | ${escapeTable(componentCandidates[0]?.component_name ?? componentKey)} | ${componentCandidates.length} | ${facts.length} | ${confirmed}/${componentCandidates.length} | ${approvedMain}/${mainImages.length} |`;
+        return `| ${escapeTable(positions)} | \`${escapeTable(componentKey)}\` | ${escapeTable(componentCandidates[0]?.component_name ?? componentKey)} | ${componentCandidates.length} | ${facts.length} | ${confirmed}/${componentCandidates.length} | ${approvedMain}/${mainImages.length} |`;
       }),
       "",
     ];
@@ -170,10 +170,15 @@ function buildReport() {
     "",
     "## Publication Boundary",
     "",
-    ...reviewedSeriesIds.map(
-      (seriesEvidenceId) =>
-        `- ${seriesLabel(seriesEvidenceId)} remains \`${productSeriesEvidence.find((record) => record.id === seriesEvidenceId)?.publicationStatus ?? "missing"}\` and has no public route created by this component-evidence workflow.`,
-    ),
+    ...reviewedSeriesIds.map((seriesEvidenceId) => {
+      const status = productSeriesEvidence.find(
+        (record) => record.id === seriesEvidenceId,
+      )?.publicationStatus;
+
+      return status === "published"
+        ? `- ${seriesLabel(seriesEvidenceId)} already has a governed public series route. This component-evidence workflow does not publish its unconfirmed candidate rows or expand its public product relationships.`
+        : `- ${seriesLabel(seriesEvidenceId)} remains \`${status ?? "missing"}\` and has no public route created by this component-evidence workflow.`;
+    }),
     "- Catalog grouping does not confirm product-to-series compatibility.",
     "- `DATA_CONFLICT` facts remain `blocked` and cannot move to SKU creation.",
     "- A candidate needs exact-product evidence before receiving a canonical SKU and public image record.",
@@ -181,7 +186,7 @@ function buildReport() {
     "",
     "## Next Evidence Actions",
     "",
-    "1. Resolve every complete-torch and component conflict with an exact supplied-product factory specification, controlled drawing, measurement or test record.",
+    "1. Resolve each recorded conflict with an exact supplied-product factory specification, controlled drawing, measurement or test record.",
     "2. Confirm every nozzle, contact tip and torch-front component separately; shared catalog diagrams must not be treated as exact variant dimensions.",
     "3. Photograph each candidate on a white background and capture the requested interfaces, markings, dimensions and packaging.",
     "4. Record image ownership and usage rights before approval.",

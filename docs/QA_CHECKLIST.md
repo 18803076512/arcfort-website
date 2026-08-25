@@ -90,6 +90,11 @@ and one main-image request. Confirm that `DATA_CONFLICT` facts are `blocked`, SK
 canonical SKU, and no requested/received image is treated as approved. Generated component facts and
 the component evidence report must have no CI drift.
 
+For 15AK, also confirm that the exact-SKU queue (`15ak-product-image-intake.csv`) remains separate
+from the catalog-component queue (`15ak-image-intake.csv`). A series candidate must not replace a
+public product image or specification until an explicit SKU mapping and the normal evidence gates
+have been completed.
+
 For water- or liquid-cooled series, verify that coolant supply/return, gas, power and control roles
 come from a controlled connection drawing or verified marking. A hose color, position or visually
 similar connector must not be used to assign a media function or compatibility relationship.

@@ -150,7 +150,7 @@ The field-level technical registry currently contains 15 company-catalog referen
 products. These values drive the public specification rows but remain visibly qualified as catalog
 references because none has exact-SKU factory confirmation yet. Use
 `data/intake/15ak-technical-confirmation.csv` for factory values and evidence, and
-`data/intake/15ak-image-intake.csv` for company-owned main, detail, dimensional and packaging images.
+`data/intake/15ak-product-image-intake.csv` for company-owned main, detail, dimensional and packaging images.
 Run `npm run technical:validate` and `npm run technical:report` before changing a reference to
 `CONFIRMED` or approving a collected image.
 
@@ -812,6 +812,8 @@ npm run seo:snippets
   Product Grid and product-detail presentation decisions
 - `knowledge-base/products/15ak-mig-mag-series.md` - evidence scope, governed products and missing
   data for the 15AK series
+- `knowledge-base/products/15ak-component-evidence.md` - separate air-valve and standard 15AK
+  catalog component matrices, factory-confirmation queues and publication gates
 - `knowledge-base/compatibility/15ak-reference-mapping.md` - rules for reference and confirmed 15AK
   compatibility relationships
 - `knowledge-base/products/mig-mag-series-evidence-registry.md` - reviewed company-catalog MIG/MAG

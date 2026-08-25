@@ -8,9 +8,9 @@ This internal report tracks company-catalog series evidence separately from publ
 - Published governed series pages: 1
 - Series awaiting product, compatibility or image evidence: 9
 - Public series-to-product relationships: 4
-- Detailed series with component evidence: 5
-- Governed field-level component facts: 359
-- Governed component and variant candidates: 121
+- Detailed series with component evidence: 6
+- Governed field-level component facts: 517
+- Governed component and variant candidates: 167
 - Component data conflicts held from publication: 13
 
 ## Series Matrix
@@ -36,13 +36,14 @@ Do not copy dimensions, compatibility or OEM references from a catalog page into
 
 ## Detailed Component Evidence
 
-| Series                       | Field facts | Candidates | Conflicts | Approved images | Public route  |
-| ---------------------------- | ----------: | ---------: | --------: | --------------- | ------------- |
-| 24KD catalog reference group |          68 |         23 |         3 | 0/34            | Not generated |
-| 25AK catalog reference group |          64 |         21 |         3 | 0/31            | Not generated |
-| 36KD catalog reference group |          69 |         24 |         2 | 0/35            | Not generated |
-| 40KD catalog reference group |          69 |         24 |         2 | 0/35            | Not generated |
-| 501D catalog reference group |          89 |         29 |         3 | 0/46            | Not generated |
+| Series                       | Field facts | Candidates | Conflicts | Approved images | Public route                           |
+| ---------------------------- | ----------: | ---------: | --------: | --------------- | -------------------------------------- |
+| 15AK catalog reference group |         158 |         46 |         0 | 0/58            | Published through governed series data |
+| 24KD catalog reference group |          68 |         23 |         3 | 0/34            | Not generated                          |
+| 25AK catalog reference group |          64 |         21 |         3 | 0/31            | Not generated                          |
+| 36KD catalog reference group |          69 |         24 |         2 | 0/35            | Not generated                          |
+| 40KD catalog reference group |          69 |         24 |         2 | 0/35            | Not generated                          |
+| 501D catalog reference group |          89 |         29 |         3 | 0/46            | Not generated                          |
 
 All source conflicts remain blocked. They include company-catalog values that differ from official OEM references and contradictions within a company-catalog spread. No component candidate in this detailed evidence workflow has been converted into a public SKU or compatibility relationship.
 

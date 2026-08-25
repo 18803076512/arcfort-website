@@ -3,7 +3,7 @@
 ## Purpose
 
 The ArcFort Weld 15AK Factory Evidence Intake workbook is an internal collection aid for four
-priority products:
+priority public products:
 
 - AF-MIG-CT-0004 - MIG Contact Tip M6 0.8mm
 - AF-MIG-CT-0005 - MIG Contact Tip M6 1.0mm
@@ -15,6 +15,11 @@ image shares the same unknown-source risk as the 0.8 mm and 1.0 mm references.
 
 The workbook is not a product database and must not publish or confirm data automatically. The CSV
 files in `data/intake/` and the governed registries remain the repository source of truth.
+
+The catalog also contains two broader 15AK assembly forms. Their 46 component and variant candidates
+are maintained separately in `data/intake/15ak-series-confirmation.csv` with 58 image requests in
+`data/intake/15ak-image-intake.csv`. Those rows are not public SKUs and are not represented by the
+four-product workbook unless a reviewer deliberately adds a corresponding evidence task.
 
 ## Workbook Sections
 
@@ -71,15 +76,19 @@ After a product or factory reviewer completes the workbook:
 
 1. Review every completed row against the attached or referenced evidence.
 2. Transfer accepted technical responses to `data/intake/15ak-technical-confirmation.csv`.
-3. Transfer accepted image responses to `data/intake/15ak-image-intake.csv`.
-4. Update `data/assets/product-image-assets.csv` only after source, rights and exact-product review.
-5. Update canonical product or compatibility data deliberately; do not copy unreviewed workbook
+3. Transfer accepted image responses to `data/intake/15ak-product-image-intake.csv`.
+4. Transfer catalog-component responses to the series files only when the evidence names the exact
+   assembly candidate; do not substitute a similarly named public SKU.
+5. Update `data/assets/product-image-assets.csv` only after source, rights and exact-product review.
+6. Update canonical product or compatibility data deliberately; do not copy unreviewed workbook
    fields into public product records.
-6. Run:
+7. Run:
 
 ```bash
 npm run technical:validate
 npm run technical:report
+npm run series:components:validate
+npm run series:components:report
 npm run images:assets:validate
 npm run products:image-tasks
 npm run images:assets:report
@@ -92,7 +101,8 @@ npm run typecheck
 npm run build
 ```
 
-7. Review the diff and confirm that no draft, conflict or unverified relationship became indexable.
+8. Review the diff and confirm that no draft, candidate, conflict or unverified relationship became
+   indexable.
 
 ## Prohibited Shortcuts
 

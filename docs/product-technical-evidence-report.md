@@ -44,7 +44,7 @@ A row may move to `CONFIRMED` only when it has a confirmed value and qualifying 
 
 ## Product Image Intake
 
-Use `data/intake/15ak-image-intake.csv`. Main, connection/detail, dimensional and packaging images are requested separately so one visually similar photo cannot be used as evidence for every variant.
+Use `data/intake/15ak-product-image-intake.csv`. Main, connection/detail, dimensional and packaging images are requested separately so one visually similar photo cannot be used as evidence for every variant.
 
 ### Image Status
 

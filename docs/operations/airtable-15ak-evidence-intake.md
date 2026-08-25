@@ -9,6 +9,10 @@ source of truth.
 
 No Airtable record may confirm a specification, approve an image or publish a product automatically.
 
+The current base covers the four governed public-product records. The broader 46-candidate 15AK
+component matrix remains repository-only until an external schema and transfer review are explicitly
+approved; do not force those candidate rows into the existing 15 technical or 20 image records.
+
 ## Current Base Structure
 
 The verified base contains five tables:
@@ -49,7 +53,7 @@ out of Git. Repository documentation identifies the base by name only.
 | Airtable table     | Review target                                             | Canonical repository destination               |
 | ------------------ | --------------------------------------------------------- | ---------------------------------------------- |
 | Technical Reviews  | Exact-SKU values and evidence                             | `data/intake/15ak-technical-confirmation.csv`  |
-| Image Requests     | Company-owned or rights-approved image intake             | `data/intake/15ak-image-intake.csv`            |
+| Image Requests     | Company-owned or rights-approved product image intake     | `data/intake/15ak-product-image-intake.csv`    |
 | P0 Image Decisions | Existing active-image provenance and replacement decision | `data/assets/product-image-assets.csv`         |
 | Local Asset Triage | Unassigned files and visual-family sorting                | `data/evidence/local-product-image-triage.csv` |
 | Workflow           | Operating rules only                                      | This document and `AGENTS.md`                  |
@@ -65,18 +69,22 @@ not edit generated runtime registries to bypass the canonical CSV files.
 3. Compare the proposal with the existing catalog reference and record `DATA_CONFLICT` when they
    disagree.
 4. Transfer accepted technical responses to `data/intake/15ak-technical-confirmation.csv`.
-5. Transfer accepted image responses to `data/intake/15ak-image-intake.csv`.
-6. Place approved original image files under the governed local product-image path without changing
+5. Transfer accepted image responses to `data/intake/15ak-product-image-intake.csv`.
+6. Use `data/intake/15ak-series-confirmation.csv` and `data/intake/15ak-image-intake.csv` only for
+   evidence tied to a named catalog assembly candidate, not as a shortcut to a public SKU.
+7. Place approved original image files under the governed local product-image path without changing
    product geometry, markings, threads, holes or connections.
-7. Update `data/assets/product-image-assets.csv` only after provenance, rights and exact-product review.
-8. Regenerate reports and inspect the diff before any product, relationship or image state changes.
-9. Publish only through the repository review, PR and deployment workflow.
+8. Update `data/assets/product-image-assets.csv` only after provenance, rights and exact-product review.
+9. Regenerate reports and inspect the diff before any product, relationship or image state changes.
+10. Publish only through the repository review, PR and deployment workflow.
 
 Run the applicable checks:
 
 ```bash
 npm run technical:validate
 npm run technical:report
+npm run series:components:validate
+npm run series:components:report
 npm run images:assets:validate
 npm run images:triage:validate
 npm run products:image-tasks

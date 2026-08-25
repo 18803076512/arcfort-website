@@ -20,7 +20,12 @@ export const technicalIntakePath = path.join(
   "15ak-technical-confirmation.csv",
 );
 
-export const imageIntakePath = path.join(process.cwd(), "data", "intake", "15ak-image-intake.csv");
+export const imageIntakePath = path.join(
+  process.cwd(),
+  "data",
+  "intake",
+  "15ak-product-image-intake.csv",
+);
 
 export const technicalIntakeHeaders = [
   "record_id",

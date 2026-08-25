@@ -14,8 +14,8 @@ ArcFort Weld is live and indexable. The RFQ path is configured through the email
 - Product categories: 6
 - Governed product series: 1
 - Catalog product-series evidence records: 10
-- Governed series-component facts: 359
-- Governed series-component candidates: 121
+- Governed series-component facts: 517
+- Governed series-component candidates: 167
 - Governed compatibility relationships: 4
 - Governed field-level technical facts: 15
 - Governed product image assets: 46
@@ -66,7 +66,7 @@ ArcFort Weld is live and indexable. The RFQ path is configured through the email
 - Catalog series still in evidence review: 9
 - Series-component facts confirmed: 0
 - Series-component data conflicts blocked: 13
-- Series-component images approved: 0 of 181
+- Series-component images approved: 0 of 239
 - Compatibility relationships confirmed: 0
 - Compatibility relationships retained as reference only: 4
 - Field-level technical facts confirmed: 0

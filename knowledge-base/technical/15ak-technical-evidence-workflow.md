@@ -20,8 +20,12 @@ The current scope covers:
   `DATA_CONFLICT` records.
 - `data/intake/15ak-technical-confirmation.csv` separates catalog references from returned factory
   values.
-- `data/intake/15ak-image-intake.csv` tracks requested main, technical, dimensional and packaging
-  images plus ownership and review evidence.
+- `data/intake/15ak-product-image-intake.csv` tracks requested main, technical, dimensional and
+  packaging images plus ownership and review evidence.
+
+This exact-SKU workflow is separate from the 15AK catalog-component workflow. The latter uses
+`data/intake/15ak-series-confirmation.csv` and `data/intake/15ak-image-intake.csv` for candidates that
+do not yet have confirmed ArcFort Weld SKU mappings.
 
 ## Current Boundary
 
@@ -47,7 +51,8 @@ stop public projection until the conflict is resolved.
 
 ## Image Collection Steps
 
-1. Follow each shot request in `data/intake/15ak-image-intake.csv` using the exact listed product.
+1. Follow each shot request in `data/intake/15ak-product-image-intake.csv` using the exact listed
+   product.
 2. Do not change thread, opening, geometry, color or product markings during editing.
 3. Record source owner, permitted usage, original file name, reviewer and review date.
 4. Move a row to `approved` only after the target file exists and depicts the exact product or variant.

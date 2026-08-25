@@ -265,10 +265,16 @@ specification.
 Use `data/intake/15ak-technical-confirmation.csv` to retain the original catalog reference separately
 from factory-confirmed values. A row may move to `CONFIRMED` only when the exact SKU has a qualifying
 factory record, controlled drawing, approved sample, verified reference or measurement record plus a
-reviewer and date. Use `data/intake/15ak-image-intake.csv` for company-owned image collection; an
+reviewer and date. Use `data/intake/15ak-product-image-intake.csv` for company-owned image collection; an
 image may move to `approved` only after ownership, usage rights, source file, reviewer and date are
 recorded. Run `npm run technical:validate` and `npm run technical:report` after either file or the
 technical registry changes.
+
+The 15AK workflow has two deliberately separate scopes. Exact-SKU technical facts and replacement
+images for the four governed public products use `15ak-technical-confirmation.csv` and
+`15ak-product-image-intake.csv`. Catalog component candidates for the air-valve and standard
+assemblies use `15ak-series-confirmation.csv` and `15ak-image-intake.csv`. Never transfer a
+series-candidate value or image into a public SKU merely because the names look similar.
 
 See `docs/CONTENT_RULES.md` for page requirements, terminology, SEO, market-specific content and
 source handling.

@@ -113,7 +113,7 @@ product fields.
   records and evidence-safe public projection.
 - `content/products.ts` - uses governed technical rows for the four 15AK products while preserving
   legacy product fields as fallback for all other records.
-- `data/intake/15ak-technical-confirmation.csv` and `data/intake/15ak-image-intake.csv` - added
+- `data/intake/15ak-technical-confirmation.csv` and `data/intake/15ak-product-image-intake.csv` - added
   factory-return fields and 20 product photography requests without pre-filling unconfirmed results.
 - `scripts/product-technical-evidence-utils.ts`, `scripts/test-product-technical-facts.ts` and
   `scripts/report-product-technical-evidence.ts` - added validation and readiness reporting.
@@ -1954,6 +1954,74 @@ review starts from reproducible file evidence rather than visual guesswork.
 
 - Ask the image owner or supplier to confirm the two upstream files, then compare dedicated physical
   variants against labeled samples or controlled drawings before replacing the P0 assets.
+
+## 2026-08-25 - 15AK Component Evidence System
+
+**Task**
+
+Converted the two 15AK company-catalog assembly forms into the same governed component, factory
+confirmation and image-intake system used by the later MIG/MAG series.
+
+**Files Changed**
+
+- `data/evidence/product-series-component-facts.csv` - added separate air-valve and standard 15AK
+  component facts with source, verification and lifecycle states.
+- `data/intake/15ak-series-confirmation.csv` - added exact-candidate factory and SKU confirmation
+  rows.
+- `data/intake/15ak-image-intake.csv` - added exact candidate main, connection, marking and
+  dimensional image requests.
+- `data/intake/15ak-product-image-intake.csv` - renamed the existing four-SKU image queue so its
+  scope cannot be confused with the new component queue.
+- `lib/data/product-series-component-facts.ts` - regenerated the internal runtime registry.
+- `scripts/product-technical-evidence-utils.ts` and
+  `scripts/report-product-technical-evidence.ts` - updated the product-level image queue path.
+- `scripts/report-product-series-components.ts` - added candidate-group identifiers and clearer
+  publication-boundary reporting.
+- `docs/product-series-component-evidence-report.md`, `docs/product-series-readiness-report.md`,
+  `docs/product-technical-evidence-report.md` and `docs/acquisition-readiness-report.md` - refreshed
+  internal readiness outputs.
+- `knowledge-base/products/15ak-component-evidence.md` - documented source scope, candidate counts,
+  dual-assembly separation and confirmation gates.
+- `knowledge-base/products/15ak-mig-mag-series.md`,
+  `knowledge-base/technical/15ak-technical-evidence-workflow.md`, operational handoff documents,
+  `AGENTS.md`, `docs/QA_CHECKLIST.md` and `README.md` - documented the separate product and component
+  workflows.
+
+**Components Changed**
+
+- None. The component-evidence registry remains internal and is not projected into public pages.
+
+**Data Changed**
+
+- Added 46 15AK catalog candidates: 23 for the air-valve arrangement and 23 for the standard
+  complete-torch arrangement.
+- Added 158 field-level catalog facts and 58 governed image requests.
+- All new facts and candidates remain `NEEDS_FACTORY_CONFIRMATION`; every image remains `requested`.
+- No new SKU, confirmed compatibility relationship, approved image or public technical claim was
+  created.
+
+**Visual Changes**
+
+- None.
+
+**SEO Impact**
+
+- None. Public routes, product metadata, structured data, sitemap and indexability are unchanged.
+
+**Known Issues**
+
+- None of the 46 candidates has exact-product factory confirmation, an approved SKU mapping or an
+  approved image.
+- Similar component names across the two catalog arrangements must remain separate until controlled
+  evidence proves they are the same supplied part.
+- The private Airtable base still covers the four governed public products only; the broader
+  component matrix has not been externally synchronized.
+
+**Next Recommended Step**
+
+- Have the product owner confirm the two complete 15AK assemblies first, then work through the
+  nozzle, contact-tip, holder and liner candidates using labeled samples, controlled drawings and
+  company-owned images.
 
 ## Entry Template
 
