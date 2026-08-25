@@ -10,6 +10,8 @@ file cannot become trusted merely because it exists in `public/images/products/`
 
 - `data/import/products.csv`: product assignment and requested main/gallery paths.
 - `data/assets/product-image-assets.csv`: canonical evidence and publication status for each path.
+- `data/evidence/local-product-image-triage.csv`: governed review state for files not assigned to a
+  canonical product asset.
 - `lib/data/product-image-assets.ts`: generated runtime registry; never edit manually.
 - `docs/product-image-asset-report.md`: generated replacement and evidence queue.
 - `docs/product-image-source-audit.md`: historical source-review notes.
@@ -62,6 +64,7 @@ npm run images:assets:sync
 npm run images:assets:generate
 npm run images:assets:validate
 npm run images:assets:report
+npm run images:triage:validate
 npm run seo:audit
 npm run build
 ```
@@ -72,8 +75,9 @@ existing row manually so source history is reviewed instead of silently replaced
 
 ## Current Migration Baseline
 
-As of 2026-08-21, the registry covers 46 image references across 43 products. Existing active images
+As of 2026-08-25, the registry covers 46 image references across 43 products. Existing active images
 remain `legacy_reference`; the three missing-photo product assets remain `blocked`. No asset has yet
 been promoted to company-owned, exact-product and rights-approved `search_eligible` status. Use the
 generated report for the live counts and work queue rather than copying these numbers into public
-content.
+content. The separate triage file covers 73 unassigned local files; all remain rights-unconfirmed and
+exact-match unverified.

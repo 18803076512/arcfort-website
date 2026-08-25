@@ -11,13 +11,13 @@ export const productImageAssets: ProductImageAsset[] = [
     altText: "MIG Contact Tip M6 0.8mm, MIG/MAG Torch Parts product reference image",
     sourceKind: "unknown",
     sourceReference:
-      "Current public asset. Original source owner and source file require confirmation.",
+      "Repository lineage audit: the public file before the 2026-08-25 JPEG re-export was byte-identical to /images/products/mig-contact-tip.jpg (Git blob 1876a63cce63de1ba2626d865950a9e13e2bceb1). Original owner, first source and website-use rights remain unknown.",
     ownershipStatus: "unknown",
     usageRightsStatus: "needs_confirmation",
     contentMatchStatus: "product_family_reference",
     publicationStatus: "legacy_reference",
     notesInternal:
-      "Migration record for an existing public reference image. Confirm exact-product match and usage rights before upgrading publication status.",
+      "Migration record for an existing public reference image. Confirm exact-product match and usage rights before upgrading publication status. Repository copy lineage does not prove exact-SKU identity, compatibility, ownership or usage rights.",
   },
   {
     assetId: "img-af-mig-ct-0005-main-01",
@@ -28,13 +28,13 @@ export const productImageAssets: ProductImageAsset[] = [
     altText: "MIG Contact Tip M6 1.0mm, MIG/MAG Torch Parts product reference image",
     sourceKind: "unknown",
     sourceReference:
-      "Current public asset. Original source owner and source file require confirmation.",
+      "Repository lineage audit: the public file before the 2026-08-25 JPEG re-export was byte-identical to /images/products/mig-contact-tip.jpg (Git blob 1876a63cce63de1ba2626d865950a9e13e2bceb1). Original owner, first source and website-use rights remain unknown.",
     ownershipStatus: "unknown",
     usageRightsStatus: "needs_confirmation",
     contentMatchStatus: "product_family_reference",
     publicationStatus: "legacy_reference",
     notesInternal:
-      "Migration record for an existing public reference image. Confirm exact-product match and usage rights before upgrading publication status.",
+      "Migration record for an existing public reference image. Confirm exact-product match and usage rights before upgrading publication status. Repository copy lineage does not prove exact-SKU identity, compatibility, ownership or usage rights.",
   },
   {
     assetId: "img-af-mig-ct-0006-main-01",
@@ -45,13 +45,13 @@ export const productImageAssets: ProductImageAsset[] = [
     altText: "MIG Contact Tip M6 1.2mm, MIG/MAG Torch Parts product reference image",
     sourceKind: "unknown",
     sourceReference:
-      "Current public asset. Original source owner and source file require confirmation.",
+      "Repository lineage audit: the public file before the 2026-08-25 JPEG re-export was byte-identical to /images/products/mig-contact-tip.jpg (Git blob 1876a63cce63de1ba2626d865950a9e13e2bceb1). Original owner, first source and website-use rights remain unknown.",
     ownershipStatus: "unknown",
     usageRightsStatus: "needs_confirmation",
     contentMatchStatus: "product_family_reference",
     publicationStatus: "legacy_reference",
     notesInternal:
-      "Migration record for an existing public reference image. Confirm exact-product match and usage rights before upgrading publication status.",
+      "Migration record for an existing public reference image. Confirm exact-product match and usage rights before upgrading publication status. Repository copy lineage does not prove exact-SKU identity, compatibility, ownership or usage rights.",
   },
   {
     assetId: "img-af-mig-th-0007-main-01",
@@ -82,13 +82,13 @@ export const productImageAssets: ProductImageAsset[] = [
     altText: "MIG Gas Nozzle for MB15, MIG/MAG Torch Parts product reference image",
     sourceKind: "unknown",
     sourceReference:
-      "Current public asset. Original source owner and source file require confirmation.",
+      "Repository lineage audit: the current public file is byte-identical to /images/products/mig-gas-nozzle.jpg (Git blob 756d8bd608a3fed0cd83d0cf51f71bcecfebe674). Original owner, first source and website-use rights remain unknown.",
     ownershipStatus: "unknown",
     usageRightsStatus: "needs_confirmation",
     contentMatchStatus: "product_family_reference",
     publicationStatus: "legacy_reference",
     notesInternal:
-      "Migration record for an existing public reference image. Confirm exact-product match and usage rights before upgrading publication status.",
+      "Migration record for an existing public reference image. Confirm exact-product match and usage rights before upgrading publication status. Repository copy lineage does not prove exact-SKU identity, compatibility, ownership or usage rights.",
   },
   {
     assetId: "img-af-mig-gn-0008-gallery-02",

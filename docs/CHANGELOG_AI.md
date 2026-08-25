@@ -1893,6 +1893,68 @@ into a governed candidate-review system without assigning any file to an exact S
 - Have the product owner review the nine P0 local candidates and collect exact 15AK product photos;
   then transfer only approved files into `data/assets/product-image-assets.csv`.
 
+## 2026-08-25 - P0 Repository Image Lineage
+
+**Task**
+
+Traced the four unresolved P0 public main images to byte-identical repository copies so future source
+review starts from reproducible file evidence rather than visual guesswork.
+
+**Files Changed**
+
+- `data/assets/product-image-assets.csv` - recorded repository-lineage evidence for three contact-tip
+  assets and one gas-nozzle asset without changing their governance states.
+- `data/evidence/local-product-image-triage.csv` - linked the matching contact-tip and gas-nozzle
+  candidates to their Git blob evidence.
+- `lib/data/product-image-assets.ts` - regenerated runtime image evidence data.
+- `knowledge-base/assets/p0-repository-image-lineage.md` - documented method, hashes, findings,
+  evidence boundaries and required resolution.
+- `knowledge-base/assets/product-image-governance.md` - added unassigned candidate governance and the
+  current baseline.
+- `docs/product-image-source-audit.md` - added the P0 lineage conclusion.
+- `docs/product-image-tasks.csv` - regenerated from the updated evidence registry; the asset report
+  was also regenerated and produced no tracked diff.
+- `README.md` - linked the lineage evidence record.
+- `docs/CHANGELOG_AI.md` - recorded this evidence improvement.
+
+**Components Changed**
+
+- None.
+
+**Data Changed**
+
+- The three pre-format-correction contact-tip assets share Git blob
+  `1876a63cce63de1ba2626d865950a9e13e2bceb1` with `mig-contact-tip.jpg`.
+- The current AF-MIG-GN-0008 main asset shares Git blob
+  `756d8bd608a3fed0cd83d0cf51f71bcecfebe674` with `mig-gas-nozzle.jpg`.
+- No source owner, rights, exact-product, compatibility or publication status was upgraded.
+
+**Visual Changes**
+
+- None.
+
+**SEO Impact**
+
+- None. Product and image URLs, metadata, schema and indexability are unchanged.
+
+**Validation**
+
+- Verified exact Git blob identity for the four asset-to-candidate relationships.
+- Regenerated and validated the canonical image asset runtime data, evidence queue and report.
+- Revalidated local candidate coverage and approval gates.
+- Ran product, SEO, lint, TypeScript and production-build checks before publication.
+
+**Known Issues**
+
+- Repository lineage does not identify the original owner or prove website-use rights.
+- Shared contact-tip imagery cannot distinguish the three wire-bore variants.
+- Exact product identity for AF-MIG-GN-0008 remains unverified.
+
+**Next Recommended Step**
+
+- Ask the image owner or supplier to confirm the two upstream files, then compare dedicated physical
+  variants against labeled samples or controlled drawings before replacing the P0 assets.
+
 ## Entry Template
 
 ```markdown

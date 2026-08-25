@@ -838,6 +838,8 @@ npm run seo:snippets
   table scope and controlled repository transfer procedure
 - `data/evidence/local-product-image-triage.csv` - canonical review states for unassigned local
   product-image candidates, including source, rights and exact-match gates
+- `knowledge-base/assets/p0-repository-image-lineage.md` - reproducible Git-blob evidence linking
+  four P0 public assets to repository copies without implying ownership, rights or exact-SKU identity
 - `knowledge-base/decisions/2026-08-25-airtable-evidence-intake-boundary.md` - decision record keeping
   cloud evidence collection non-authoritative and repository publication canonical
 - `docs/product-technical-evidence-report.md` - current technical-fact and 15AK evidence readiness
