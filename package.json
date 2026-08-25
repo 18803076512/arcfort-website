@@ -21,6 +21,7 @@
     "images:assets:sync": "node --experimental-strip-types scripts/manage-product-image-assets.ts --sync --write",
     "images:assets:validate": "node --experimental-strip-types scripts/manage-product-image-assets.ts --check",
     "images:assets:report": "node --experimental-strip-types scripts/report-product-image-assets.ts",
+    "images:triage:validate": "node --experimental-strip-types scripts/validate-local-image-triage.ts",
     "acquisition:report": "node --experimental-strip-types scripts/report-acquisition-readiness.ts",
     "products:simple:preview": "node --experimental-strip-types scripts/import-simple-products.ts",
     "products:simple:generate": "node --experimental-strip-types scripts/import-simple-products.ts --write",

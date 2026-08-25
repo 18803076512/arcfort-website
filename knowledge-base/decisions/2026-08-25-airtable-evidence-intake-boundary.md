@@ -41,9 +41,10 @@ in `docs/operations/airtable-15ak-evidence-intake.md`.
 
 ## Current Scope
 
-The initial base covers five workflow rules, four P0 image decisions, 15 technical-review rows and 20
-image requests. It contains no confirmed technical values, approved images or search-eligible assets
-at initialization.
+The base covers five workflow rules, four P0 image decisions, 15 technical-review rows, 20 image
+requests and 73 unassigned local-image triage records. It contains no confirmed technical values,
+approved images or search-eligible assets at initialization. The canonical local candidate list is
+`data/evidence/local-product-image-triage.csv`; Airtable remains its reviewer-facing mirror.
 
 ## Reconsideration Trigger
 

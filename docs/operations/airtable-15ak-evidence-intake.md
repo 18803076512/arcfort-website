@@ -11,18 +11,20 @@ No Airtable record may confirm a specification, approve an image or publish a pr
 
 ## Current Base Structure
 
-The verified base contains four tables:
+The verified base contains five tables:
 
-| Table | Records | Purpose |
-| --- | ---: | --- |
-| Workflow | 5 | Permanent authority, review and transfer rules |
-| P0 Image Decisions | 4 | Decisions for active main images with unresolved provenance |
-| Technical Reviews | 15 | Field-level 15AK factory-confirmation requests |
-| Image Requests | 20 | Main, technical-detail, dimensional and packaging image requests |
+| Table              | Records | Purpose                                                          |
+| ------------------ | ------: | ---------------------------------------------------------------- |
+| Workflow           |       5 | Permanent authority, review and transfer rules                   |
+| P0 Image Decisions |       4 | Decisions for active main images with unresolved provenance      |
+| Technical Reviews  |      15 | Field-level 15AK factory-confirmation requests                   |
+| Image Requests     |      20 | Main, technical-detail, dimensional and packaging image requests |
+| Local Asset Triage |      73 | Unassigned repository files sorted for evidence review           |
 
 At initialization, all 15 technical rows remain `NEEDS_FACTORY_CONFIRMATION`, all 20 image requests
 remain `requested`, and all four P0 images remain `Needs review`. No record is confirmed, approved or
-search eligible.
+search eligible. The 73 local candidates also remain `needs_confirmation`, `unverified` and
+`needs_review`; visual-family labels do not prove exact-product identity.
 
 Keep the Airtable base ID, access tokens, reviewer contact details and private account information
 out of Git. Repository documentation identifies the base by name only.
@@ -44,12 +46,13 @@ out of Git. Repository documentation identifies the base by name only.
 
 ## Canonical Repository Mapping
 
-| Airtable table | Review target | Canonical repository destination |
-| --- | --- | --- |
-| Technical Reviews | Exact-SKU values and evidence | `data/intake/15ak-technical-confirmation.csv` |
-| Image Requests | Company-owned or rights-approved image intake | `data/intake/15ak-image-intake.csv` |
-| P0 Image Decisions | Existing active-image provenance and replacement decision | `data/assets/product-image-assets.csv` |
-| Workflow | Operating rules only | This document and `AGENTS.md` |
+| Airtable table     | Review target                                             | Canonical repository destination               |
+| ------------------ | --------------------------------------------------------- | ---------------------------------------------- |
+| Technical Reviews  | Exact-SKU values and evidence                             | `data/intake/15ak-technical-confirmation.csv`  |
+| Image Requests     | Company-owned or rights-approved image intake             | `data/intake/15ak-image-intake.csv`            |
+| P0 Image Decisions | Existing active-image provenance and replacement decision | `data/assets/product-image-assets.csv`         |
+| Local Asset Triage | Unassigned files and visual-family sorting                | `data/evidence/local-product-image-triage.csv` |
+| Workflow           | Operating rules only                                      | This document and `AGENTS.md`                  |
 
 Use `docs/product-image-tasks.csv` as the generated review queue when reconciling P0 decisions. Do
 not edit generated runtime registries to bypass the canonical CSV files.
@@ -75,6 +78,7 @@ Run the applicable checks:
 npm run technical:validate
 npm run technical:report
 npm run images:assets:validate
+npm run images:triage:validate
 npm run products:image-tasks
 npm run images:assets:report
 npm run compatibility:validate

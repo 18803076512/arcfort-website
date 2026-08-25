@@ -1824,6 +1824,75 @@ content, without changing public paths or upgrading their evidence status.
 - Collect rights-approved, exact-SKU front, connection/detail and packaging views for the 15AK
   contact-tip variants through the governed evidence intake.
 
+## 2026-08-25 - Unassigned Product Image Triage System
+
+**Task**
+
+Converted the 73 unassigned files in `public/images/products/` from an unstructured folder backlog
+into a governed candidate-review system without assigning any file to an exact SKU.
+
+**Files Changed**
+
+- `data/evidence/local-product-image-triage.csv` - canonical candidate, visual-family, rights,
+  exact-match, review and priority records for every unassigned product-image file.
+- `scripts/validate-local-image-triage.ts` - validates schema, allowed states, file coverage,
+  uniqueness, canonical-registry separation and approval evidence gates.
+- `package.json` - added `npm run images:triage:validate`.
+- `.github/workflows/quality.yml` - added local-image triage validation to the product-image CI gate.
+- `AGENTS.md` - added permanent unassigned-image governance and migration rules.
+- `docs/QA_CHECKLIST.md` - added the triage validator to product/image checks.
+- `docs/operations/airtable-15ak-evidence-intake.md` - documented the fifth Airtable table and its
+  canonical repository mapping.
+- `knowledge-base/decisions/2026-08-25-airtable-evidence-intake-boundary.md` - recorded the expanded
+  cloud-review scope and repository authority.
+- `README.md` - documented the candidate CSV and validation command.
+- `docs/CHANGELOG_AI.md` - recorded this image-evidence workflow.
+
+**Components Changed**
+
+- None.
+
+**Data Changed**
+
+- Added 73 local candidate records: 9 P0, 44 P1 and 20 P2.
+- Visual-family sorting contains 21 MIG/MAG, 22 TIG, 10 plasma, three welding consumable, eight
+  welding accessory, two welding equipment and seven unknown records.
+- Added a matching private Airtable `Local Asset Triage` table with 73 records plus evidence,
+  reviewer and ISO-date fields.
+- All candidates remain `needs_confirmation`, `unverified` and `needs_review`. No canonical product
+  assignment or public image state changed.
+
+**Visual Changes**
+
+- None.
+
+**SEO Impact**
+
+- No route, metadata, schema, sitemap or indexability change. The new gate reduces the risk of an
+  unreviewed local file entering product image SEO.
+
+**Validation**
+
+- Confirmed one triage row for each of the 73 unassigned product-image files.
+- Confirmed zero approved usage-rights records and zero confirmed exact-product matches.
+- Confirmed the three image-blocked drafts still have no safe local replacement candidate.
+- Ran image triage, image registry, product, SEO, lint, TypeScript and production-build checks before
+  publication.
+
+**Known Issues**
+
+- The local filenames and visual-family labels do not establish source ownership or exact-product
+  identity.
+- No Welding Magnet or dedicated TIG Torch Switch photo was found. Several plasma consumable images
+  cannot be identified as a retaining cap without model, drawing or source evidence.
+- The nine P0 local family candidates still need source-owner, rights and labeled-sample or drawing
+  review before any canonical assignment.
+
+**Next Recommended Step**
+
+- Have the product owner review the nine P0 local candidates and collect exact 15AK product photos;
+  then transfer only approved files into `data/assets/product-image-assets.csv`.
+
 ## Entry Template
 
 ```markdown

@@ -47,6 +47,7 @@ jobs:
         run: |
           npm run products:check-images
           npm run images:assets:validate
+          npm run images:triage:validate
           npm run products:image-tasks
 
       - name: Verify generated product files

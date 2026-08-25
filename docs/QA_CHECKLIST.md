@@ -56,6 +56,7 @@ npm run images:assets:sync
 npm run images:assets:generate
 npm run images:assets:validate
 npm run images:assets:report
+npm run images:triage:validate
 npm run technical:validate
 npm run technical:report
 npm run acquisition:report

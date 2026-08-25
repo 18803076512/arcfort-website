@@ -217,6 +217,12 @@ approved usage basis, exact-product match, reviewer and date may become `search_
 `notes_internal` private. Run `npm run images:assets:validate` and `npm run images:assets:report` after
 any canonical product-image, image-path or image-status change.
 
+Keep files that exist under `public/images/products/` but are not assigned to a canonical product in
+`data/evidence/local-product-image-triage.csv`. A visual-family label is an internal sorting aid, not
+proof of exact identity or compatibility. Run `npm run images:triage:validate` after adding, removing
+or assigning a local product-image file. Move a candidate into the canonical asset registry only
+after source owner, website-use rights, exact-product evidence, reviewer and review date are real.
+
 ### Product Series Evidence
 
 Keep catalog-family evidence in `lib/data/product-series-evidence.ts` and public series records in

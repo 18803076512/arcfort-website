@@ -315,6 +315,10 @@ Product image publication rules:
 
 - `data/assets/product-image-assets.csv` is the canonical evidence and publication registry for
   product main/gallery images. `lib/data/product-image-assets.ts` is generated from it.
+- `data/evidence/local-product-image-triage.csv` tracks every unassigned file under
+  `public/images/products/`. Its visual-family labels support review only and must never be treated as
+  exact-SKU or compatibility evidence. Run `npm run images:triage:validate` after adding, removing or
+  assigning local image files.
 - Use `own_photo` only for a confirmed ArcFort or company-owned product photo.
 - Use `supplier_photo` for a reviewed supplier image that clearly matches the published product
   type; keep exact model, dimensions and compatibility unconfirmed unless separately verified.
@@ -832,6 +836,8 @@ npm run seo:snippets
   review process for 15AK technical facts, image evidence and P0 provenance decisions
 - `docs/operations/airtable-15ak-evidence-intake.md` - private Airtable intake boundary, verified
   table scope and controlled repository transfer procedure
+- `data/evidence/local-product-image-triage.csv` - canonical review states for unassigned local
+  product-image candidates, including source, rights and exact-match gates
 - `knowledge-base/decisions/2026-08-25-airtable-evidence-intake-boundary.md` - decision record keeping
   cloud evidence collection non-authoritative and repository publication canonical
 - `docs/product-technical-evidence-report.md` - current technical-fact and 15AK evidence readiness
