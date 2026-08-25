@@ -58,6 +58,33 @@ for (const series of productSeries) {
     errors.push(`${series.name} needs a documented component stack.`);
   }
 
+  if (series.assemblyReferences) {
+    const assemblyIds = new Set<string>();
+
+    for (const assembly of series.assemblyReferences) {
+      if (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(assembly.id) || assemblyIds.has(assembly.id)) {
+        errors.push(`${series.name} has a missing, invalid or duplicate assembly reference ID.`);
+      }
+      assemblyIds.add(assembly.id);
+
+      if (
+        assembly.name.length < 8 ||
+        assembly.sourceLabel.length < 8 ||
+        assembly.description.length < 80 ||
+        assembly.componentGroups.length < 4 ||
+        assembly.buyerCheck.length < 80
+      ) {
+        errors.push(
+          `${series.name} assembly reference ${assembly.id} needs complete buyer guidance.`,
+        );
+      }
+    }
+  }
+
+  if (series.evidenceId === "mig-series-15ak" && series.assemblyReferences?.length !== 2) {
+    errors.push(`${series.name} must keep the two documented catalog arrangements separate.`);
+  }
+
   if (series.selectionVariables.length < 4 || series.confirmationChecklist.length < 4) {
     errors.push(`${series.name} needs a complete selection and compatibility workflow.`);
   }

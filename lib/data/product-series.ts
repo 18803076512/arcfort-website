@@ -10,21 +10,58 @@ export const fifteenAkSeries: ProductSeries = {
   categorySlug: "mig-mag-torch-parts",
   process: "MIG/MAG",
   description:
-    "Review 15AK catalog-reference contact tips, a tip holder and gas nozzle as one MIG/MAG torch-front sourcing group.",
+    "Review 15AK catalog-reference torch-front parts across documented air-valve and standard complete-torch arrangements.",
   overview:
-    "The Renqiu Ailesen company catalog documents a 15AK torch-front reference group containing contact tips, a tip holder, gas nozzle and adjacent components. This page organizes the currently published product records for distributor, repair and OEM inquiries. A series name narrows the review but does not prove universal fit, so buyers should provide the torch label, installed component stack, sample, drawing or measured reference before ordering.",
+    "The Renqiu Ailesen company catalog documents two 15AK sourcing arrangements: an air-valve torch and a standard complete torch. This page separates their assembly paths while linking only the currently governed public product records. A series name narrows the review but does not prove universal fit, so buyers should provide the torch label, installed component stack, sample, drawing or measured reference before ordering.",
   seoTitle: "15AK MIG/MAG Torch Parts & Consumables",
   seoDescription:
-    "Review 15AK MIG/MAG torch parts referenced in the Renqiu Ailesen catalog, including contact tips, a tip holder and gas nozzle. Send model evidence for RFQ.",
+    "Review 15AK MIG/MAG torch parts for documented air-valve and standard arrangements. Compare component groups and send model evidence for RFQ.",
   keywords: [
     "15AK MIG torch parts",
     "15AK contact tip",
     "15AK gas nozzle",
     "15AK tip holder",
+    "15AK air valve torch parts",
     "MIG/MAG torch consumables",
   ],
   referenceFamilyName: fifteenAkSeriesEvidence.name,
   documentedComponents: fifteenAkSeriesEvidence.documentedComponents,
+  assemblyReferences: [
+    {
+      id: "air-valve-arrangement",
+      name: "Air-Valve Torch Arrangement",
+      sourceLabel: "Company catalog pages 7-8",
+      description:
+        "The company catalog separates an air-valve torch arrangement with valve, air-line, switch-line, liner and cable references alongside the torch-front consumables.",
+      componentGroups: [
+        "Complete air-valve torch",
+        "Nozzle and contact-tip options",
+        "Contact tip holder and insulator",
+        "Swan neck and hexagon nut",
+        "Air valve, air line and switch line",
+        "Torch liner and cable assembly",
+      ],
+      buyerCheck:
+        "Confirm the air-valve handle, valve and line connections from the complete torch. Do not select a replacement from the front-end appearance alone.",
+    },
+    {
+      id: "standard-complete-torch-arrangement",
+      name: "Standard Complete-Torch Arrangement",
+      sourceLabel: "Company catalog pages 9-10",
+      description:
+        "The standard arrangement follows a rear-handle and Euro-connector path with cable support, connector hardware and separate liner references.",
+      componentGroups: [
+        "Complete MIG/MAG torch",
+        "Nozzle and contact-tip options",
+        "Holder spring, holder and insulator",
+        "Swan neck and cable-support spring",
+        "Rear handle and adaptor nut",
+        "Euro connector, connector nut and liner",
+      ],
+      buyerCheck:
+        "Confirm the rear handle, machine-side connector and front-end component order on the same torch before requesting a replacement.",
+    },
+  ],
   buyerCheck: fifteenAkSeriesEvidence.buyerCheck,
   compatibilityStatement:
     "15AK is used here as a company-catalog reference family. Final fit must be confirmed from the exact torch label, component stack, connection details, drawing, approved sample or verified reference number.",
@@ -101,6 +138,11 @@ export const fifteenAkSeries: ProductSeries = {
       question: "Can different 15AK gas nozzle profiles be reviewed?",
       answer:
         "Yes. The company catalog shows multiple nozzle profile references. Send the existing nozzle, side and front photographs, opening measurement and connection details so the requested version can be reviewed.",
+    },
+    {
+      question: "How do I identify which documented 15AK arrangement I have?",
+      answer:
+        "Photograph the complete torch, handle and machine-side termination before removing parts. An air-valve arrangement should be reviewed from its valve and line connections, while the standard arrangement should be checked from the rear handle, connector path and complete front-end stack.",
     },
     {
       question: "Is OEM packaging available for 15AK torch parts?",

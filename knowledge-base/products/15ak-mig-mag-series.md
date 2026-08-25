@@ -45,6 +45,24 @@ The four governed public product records continue to use the separate exact-SKU 
 workflow. A matching component name is not evidence that the catalog candidate and public SKU are
 the same supplied part.
 
+## Public Buyer Identification Interface
+
+The public series page now presents the two documented catalog arrangements as separate buyer
+identification paths:
+
+1. Air-Valve Torch Arrangement, sourced from company catalog pages 7-8.
+2. Standard Complete-Torch Arrangement, sourced from company catalog pages 9-10.
+
+Each path names component groups only; it does not publish the internal candidate rows, dimensions,
+ratings or unconfirmed SKU mappings. Its RFQ action carries the selected arrangement, requested
+component position, quantity, torch label and available evidence into the RFQ form. The prefilled
+text explicitly states that the relationship is catalog-reference only and that final fit requires
+evidence.
+
+The comparison is an identification aid, not a compatibility matrix. It must remain responsive,
+keep the two catalog arrangements visually separate and retain the generic component-stack fallback
+for future public series records that do not have arrangement-level source evidence.
+
 ## Buyer Confirmation Requirements
 
 Before final fit is quoted, request the exact torch label or model, the installed front-end component

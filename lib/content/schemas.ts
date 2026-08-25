@@ -292,6 +292,15 @@ export type ProductSeriesReference = {
   relationshipStatus: ProductCompatibilityStatus;
 };
 
+export type ProductSeriesAssemblyReference = {
+  id: string;
+  name: string;
+  sourceLabel: string;
+  description: string;
+  componentGroups: string[];
+  buyerCheck: string;
+};
+
 export type ProductSeries = {
   evidenceId: string;
   slug: string;
@@ -306,6 +315,7 @@ export type ProductSeries = {
   keywords: string[];
   referenceFamilyName: string;
   documentedComponents: string[];
+  assemblyReferences?: ProductSeriesAssemblyReference[];
   buyerCheck: string;
   compatibilityStatement: string;
   productReferences: ProductSeriesReference[];

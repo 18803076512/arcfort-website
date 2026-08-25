@@ -2023,6 +2023,77 @@ confirmation and image-intake system used by the later MIG/MAG series.
   nozzle, contact-tip, holder and liner candidates using labeled samples, controlled drawings and
   company-owned images.
 
+## 2026-08-25 - 15AK Buyer Assembly Identification
+
+**Task**
+
+Converted the governed 15AK air-valve and standard complete-torch catalog evidence into a public,
+responsive buyer-identification interface without publishing unconfirmed specifications or
+compatibility claims.
+
+**Files Changed**
+
+- `lib/content/schemas.ts` - added the reusable product-series assembly-reference contract.
+- `lib/data/product-series.ts` - added the two documented 15AK arrangements, buyer checks, SEO copy
+  and arrangement-identification FAQ.
+- `components/content/SeriesAssemblyComparison.tsx` - added the responsive arrangement comparison
+  and evidence-led RFQ prefill action.
+- `components/content/ProductSeriesPageTemplate.tsx` - integrated the comparison into the shared
+  series page while retaining a fallback for series without arrangement evidence.
+- `scripts/test-product-series.ts` - added assembly-reference identity, completeness and 15AK
+  separation checks.
+- `lib/content/site.ts` - updated the public content modification date.
+- `knowledge-base/products/15ak-mig-mag-series.md` - recorded the public projection and evidence
+  boundary.
+- `docs/CHANGELOG_AI.md` - recorded this phase.
+
+**Components Changed**
+
+- Created `SeriesAssemblyComparison` and added an Arrangements destination to the shared series
+  navigation.
+- No component or buyer function was removed.
+
+**Data Changed**
+
+- Added two public assembly-reference summaries linked to company catalog pages 7-8 and 9-10.
+- No SKU, exact technical value, OEM number, confirmed compatibility, image evidence or commercial
+  term changed.
+
+**Visual Changes**
+
+- The 15AK page now separates air-valve and standard complete-torch paths in a two-column desktop
+  comparison and a divided vertical mobile layout.
+- Component groups, buyer checks and a dedicated RFQ preparation action improve scanability without
+  adding marketplace-style badges or nested cards.
+
+**SEO Impact**
+
+- Improved the existing 15AK page title support, meta description, FAQ and visible long-form buyer
+  guidance while preserving its URL, canonical, breadcrumb, schema and sitemap entry.
+- Added no new indexable route.
+
+**Validation**
+
+- Product-series, series-evidence, component-evidence, compatibility, technical-fact, product,
+  image-asset, image-triage, RFQ, search, SEO, snippet, internal-link, secret and performance checks
+  passed.
+- ESLint, TypeScript and the Next.js production build passed; 91 pages were generated.
+- Playwright verified 360, 390, 768, 1024, 1280 and 1440 pixel widths: both arrangements and the
+  section navigation rendered, responsive dividers switched correctly, the RFQ prefill retained the
+  selected arrangement and evidence boundary, and every state had one H1, no horizontal overflow,
+  no broken image and no browser console error.
+
+**Known Issues**
+
+- Both arrangements remain catalog reference only; none of the 46 component candidates has a
+  confirmed SKU mapping or approved exact-product image.
+- Production deployment and a controlled live RFQ mailbox test are outside this phase.
+
+**Next Recommended Step**
+
+- Collect company-owned complete-torch and connection views for both arrangements, then confirm the
+  complete assemblies before reviewing individual replacement components.
+
 ## Entry Template
 
 ```markdown

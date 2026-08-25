@@ -3,6 +3,7 @@ import Link from "next/link";
 import { Breadcrumbs } from "@/components/content/Breadcrumbs";
 import { FaqSection } from "@/components/content/FaqSection";
 import { ProductGrid } from "@/components/content/ProductGrid";
+import { SeriesAssemblyComparison } from "@/components/content/SeriesAssemblyComparison";
 import { SeriesReferenceTable } from "@/components/content/SeriesReferenceTable";
 import { ButtonLink } from "@/components/ui/ButtonLink";
 import { Container } from "@/components/ui/Container";
@@ -45,6 +46,7 @@ export function ProductSeriesPageTemplate({
   const whatsappHref = buildWhatsAppHref({ message: directInquiryMessage });
   const pageSections = [
     { href: "#series-products", label: "Products" },
+    { href: "#series-arrangements", label: "Arrangements" },
     { href: "#series-reference", label: "Reference" },
     { href: "#series-compatibility", label: "Compatibility" },
     { href: "#series-applications", label: "Applications" },
@@ -170,32 +172,46 @@ export function ProductSeriesPageTemplate({
         </Container>
       </Section>
 
-      <Section className="bg-white" labelledBy="series-system-heading">
-        <Container className="grid gap-10 lg:grid-cols-[0.78fr_1.22fr] lg:gap-16">
-          <div>
-            <p className="section-eyebrow">Documented Component Stack</p>
-            <h2 id="series-system-heading" className="section-title mt-3">
-              Review the complete torch front end, not one isolated part.
-            </h2>
-            <p className="body-large mt-5">{series.overview}</p>
-            <p className="mt-5 text-sm leading-7 text-slate-600">{series.buyerCheck}</p>
-            <p className="mt-5 border-l-2 border-arc-signal pl-4 text-sm leading-7 text-slate-600">
+      <Section
+        id="series-arrangements"
+        className="scroll-mt-28 bg-white"
+        labelledBy="series-system-heading"
+      >
+        <Container>
+          <SectionHeading
+            eyebrow="Documented Assembly Paths"
+            title="Identify the complete torch arrangement before selecting parts."
+            description={series.overview}
+            id="series-system-heading"
+            className="max-w-4xl"
+          />
+          <div className="mt-8 grid gap-6 lg:grid-cols-2 lg:gap-12">
+            <p className="text-sm leading-7 text-slate-600">{series.buyerCheck}</p>
+            <p className="border-l-2 border-arc-signal pl-4 text-sm leading-7 text-slate-600">
               {series.compatibilityStatement}
             </p>
           </div>
-          <ol className="grid gap-x-8 border-t border-arc-line sm:grid-cols-2">
-            {series.documentedComponents.map((component, index) => (
-              <li
-                key={component}
-                className="grid grid-cols-[2.5rem_1fr] items-center gap-3 border-b border-arc-line py-5"
-              >
-                <span className="font-display text-xl font-black text-arc-blue">
-                  {String(index + 1).padStart(2, "0")}
-                </span>
-                <span className="font-bold text-arc-midnight">{component}</span>
-              </li>
-            ))}
-          </ol>
+
+          {series.assemblyReferences?.length ? (
+            <SeriesAssemblyComparison
+              seriesName={series.name}
+              references={series.assemblyReferences}
+            />
+          ) : (
+            <ol className="mt-10 grid gap-x-8 border-t border-arc-line sm:grid-cols-2">
+              {series.documentedComponents.map((component, index) => (
+                <li
+                  key={component}
+                  className="grid grid-cols-[2.5rem_1fr] items-center gap-3 border-b border-arc-line py-5"
+                >
+                  <span className="font-display text-xl font-black text-arc-blue">
+                    {String(index + 1).padStart(2, "0")}
+                  </span>
+                  <span className="font-bold text-arc-midnight">{component}</span>
+                </li>
+              ))}
+            </ol>
+          )}
         </Container>
       </Section>
 
