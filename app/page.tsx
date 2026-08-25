@@ -1,17 +1,31 @@
 import Image from "next/image";
 import Link from "next/link";
-import { ProductCard } from "@/components/content/ProductCard";
+import { ProductGrid } from "@/components/content/ProductGrid";
 import { StructuredData } from "@/components/content/StructuredData";
+import { HomeHero } from "@/components/home/HomeHero";
+import { HomeInquiryCta } from "@/components/home/HomeInquiryCta";
+import { ProductSystemCard } from "@/components/home/ProductSystemCard";
+import { ButtonLink } from "@/components/ui/ButtonLink";
+import { Container } from "@/components/ui/Container";
+import { Section } from "@/components/ui/Section";
+import { SectionHeading } from "@/components/ui/SectionHeading";
+import {
+  homepageAdvantages,
+  homepageIndustrySolutions,
+  homepageProductSystems,
+  homepageQualitySteps,
+  homepageResources,
+} from "@/content/homepage";
 import { getAllApplications } from "@/lib/content/applications";
 import { getAllProductCategories } from "@/lib/content/categories";
 import { selectHomepageFeaturedProducts } from "@/lib/content/featured-products";
 import { webPageJsonLd } from "@/lib/content/jsonld";
 import { getAllProducts } from "@/lib/content/products";
 import { buildMetadata } from "@/lib/content/seo";
-import { buildEmailHref, buildWhatsAppHref, siteConfig } from "@/lib/content/site";
+import { siteConfig } from "@/lib/content/site";
 
 export const metadata = buildMetadata({
-  title: "Welding Torch Parts & Plasma Consumables",
+  title: "Industrial Welding & Cutting Solutions",
   description:
     "Source MIG/MAG and TIG torch parts, plasma cutter consumables, welding machines and OEM accessories from ArcFort Weld for distributor and industrial RFQs.",
   path: "/",
@@ -24,86 +38,20 @@ export const metadata = buildMetadata({
   ],
 });
 
-const advantages = [
-  "Stable supply for repeat purchasing",
-  "OEM, private label and packaging support",
-  "Export packing for international shipments",
-  "Responsive technical and commercial follow-up",
-  "Product customization by drawing or reference part",
-];
-
-const heroSupplySignals = [
-  "MIG/MAG Torch Parts",
-  "TIG Torch Parts",
-  "Plasma Cutting Consumables",
-  "OEM Welding Accessories",
-] as const;
-
-const oemServiceItems = [
-  "Logo printing and private label packaging",
-  "Carton design for distributor programs",
-  "Product model customization by buyer requirement",
-  "Quotation by drawing, product photo or reference part",
-] as const;
-
-const tradeHighlights = [
-  { label: "Main Port", value: siteConfig.mainPort },
-  { label: "Payment", value: siteConfig.paymentTerms },
-  { label: "MOQ", value: siteConfig.moqPolicy },
-  { label: "Lead Time", value: siteConfig.leadTime },
-] as const;
-
-const rfqSignals = [
-  "Product name, model, size and quantity",
-  "Drawing, sample photo or reference part",
-  "Packaging, label and destination country",
-] as const;
-
-const sourcingSystemLinks = [
-  {
-    href: "/about",
-    title: "Company Profile",
-    description:
-      "Verify the legal company, ArcFort Weld brand relationship, location, product scope and contact details.",
-  },
-  {
-    href: "/distributor-supply",
-    title: "Distributor & Importer Supply",
-    description:
-      "Mixed SKU lists, product-reference review and trade information organized for wholesale sourcing.",
-  },
-  {
-    href: "/oem-service",
-    title: "OEM & Private Label",
-    description:
-      "Logo printing, private label packaging and model customization reviewed by confirmed product details.",
-  },
-  {
-    href: "/quality-control",
-    title: "Quality Control",
-    description:
-      "Incoming, production, packaging and outgoing inspection flow for stable export supply.",
-  },
-  {
-    href: "/shipping-payment",
-    title: "Shipping & Payment",
-    description:
-      "Main port, payment term, MOQ policy and lead time information for quotation planning.",
-  },
-  {
-    href: "/downloads",
-    title: "Catalog & RFQ Documents",
-    description:
-      "Request product catalogs, data sheets and RFQ document support based on confirmed product data.",
-  },
-] as const;
-
 export default function Home() {
   const categories = getAllProductCategories();
+  const categoryMap = new Map(categories.map((category) => [category.slug, category]));
   const products = getAllProducts();
   const featuredProducts = selectHomepageFeaturedProducts(products);
-  const applications = getAllApplications();
-  const categoryMap = new Map(categories.map((category) => [category.slug, category]));
+  const featuredProductItems = featuredProducts.flatMap((product) => {
+    const category = categoryMap.get(product.categorySlug);
+
+    return category ? [{ product, category }] : [];
+  });
+  const applicationSlugs = new Set(getAllApplications().map((application) => application.slug));
+  const industrySolutions = homepageIndustrySolutions.filter((item) =>
+    applicationSlugs.has(item.slug),
+  );
 
   return (
     <>
@@ -117,385 +65,272 @@ export default function Home() {
           dateModified: siteConfig.contentLastModified,
         })}
       />
-      <section className="relative isolate overflow-hidden bg-arc-midnight text-white">
-        <Image
-          src="/images/site/arcfort-hero-welding-workshop.png"
-          alt="ArcFort Weld welding and cutting workshop with torch consumables"
-          fill
-          priority
-          sizes="100vw"
-          className="absolute inset-0 -z-20 object-cover"
-        />
-        <div className="absolute inset-0 -z-10 bg-[linear-gradient(90deg,rgba(5,15,28,0.98)_0%,rgba(7,21,36,0.92)_42%,rgba(7,21,36,0.58)_72%,rgba(7,21,36,0.32)_100%)]" />
-        <div className="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_78%_24%,rgba(56,189,248,0.22),transparent_34%),linear-gradient(180deg,rgba(7,21,36,0.1),rgba(7,21,36,0.82))]" />
-        <div className="relative mx-auto flex min-h-[min(42rem,calc(100svh-14rem))] max-w-7xl flex-col justify-center px-4 py-8 sm:min-h-[min(50rem,calc(100vh-8rem))] sm:px-6 sm:py-16 lg:px-8">
-          <div className="max-w-3xl">
-            <p className="mb-3 inline-flex max-w-full flex-wrap break-words border-l-4 border-arc-signal bg-white/10 px-4 py-2 text-xs font-semibold uppercase leading-6 tracking-[0.1em] text-arc-signal sm:mb-5 sm:text-sm sm:tracking-[0.2em]">
-              ArcFort Weld | Welding & Cutting Solutions
-            </p>
-            <h1 className="break-words font-display text-3xl font-black leading-tight sm:text-6xl lg:text-7xl">
-              Industrial Welding & Cutting Solutions
-            </h1>
-            <p className="mt-5 max-w-2xl break-words text-base leading-7 text-slate-200 sm:mt-7 sm:text-lg sm:leading-8">
-              Renqiu Ailesen Welding Technology Co., Ltd. supplies welding and cutting machines,
-              MIG/MAG torch parts, TIG torch parts, plasma cutting consumables and OEM welding
-              accessories for distributors, importers and industrial users.
-            </p>
-            <div className="mt-6 flex flex-col gap-3 sm:mt-9 sm:flex-row">
-              <Link
-                href="/products"
-                className="inline-flex w-full items-center justify-center bg-arc-signal px-6 py-3 text-sm font-bold uppercase tracking-[0.16em] text-arc-midnight transition hover:bg-white sm:w-auto"
-              >
-                View Products
-              </Link>
-              <Link
-                href="/rfq"
-                className="inline-flex w-full items-center justify-center border border-white/40 px-6 py-3 text-sm font-bold uppercase tracking-[0.16em] text-white transition hover:border-white hover:bg-white/10 sm:w-auto"
-              >
-                Request a Quote
-              </Link>
-            </div>
-            <div className="mt-4 flex flex-col gap-1 text-xs text-slate-300 sm:mt-6 sm:flex-row sm:flex-wrap sm:gap-5 sm:text-sm">
-              <a
-                href={buildEmailHref({ subject: "ArcFort Weld homepage product inquiry" })}
-                className="inline-flex min-h-8 min-w-0 items-center break-all font-semibold hover:text-white sm:break-normal"
-              >
-                Email: {siteConfig.email}
-              </a>
-              <a
-                href={buildWhatsAppHref()}
-                className="inline-flex min-h-8 items-center font-semibold hover:text-white"
-              >
-                WhatsApp: {siteConfig.whatsapp}
-              </a>
-            </div>
-          </div>
-        </div>
-      </section>
 
-      <section
-        id="home-supply-scope"
-        aria-label="Primary product supply scope"
-        className="border-b border-slate-200 bg-arc-midnight text-white"
-      >
-        <div className="mx-auto grid max-w-7xl grid-cols-2 gap-px bg-white/15 px-0 lg:grid-cols-4">
-          {heroSupplySignals.map((item) => (
-            <Link
-              key={item}
-              href={
-                item === "MIG/MAG Torch Parts"
-                  ? "/products/mig-mag-torch-parts"
-                  : item === "TIG Torch Parts"
-                    ? "/products/tig-torch-parts"
-                    : item === "Plasma Cutting Consumables"
-                      ? "/products/plasma-cutting-consumables"
-                      : "/oem-service"
-              }
-              className="min-w-0 bg-arc-midnight px-4 py-5 transition hover:bg-arc-navy sm:px-6"
-            >
-              <span className="text-[10px] font-bold uppercase tracking-[0.16em] text-arc-signal sm:text-xs">
-                Supply Scope
-              </span>
-              <span className="mt-2 block break-words font-display text-sm font-black leading-5 text-white sm:text-lg sm:leading-normal">
-                {item}
-              </span>
-            </Link>
-          ))}
-        </div>
-      </section>
+      <HomeHero />
 
-      <section id="home-rfq-start" className="bg-white py-12 sm:py-14">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="grid gap-6 border border-slate-200 bg-arc-frost p-5 shadow-sm sm:p-6 lg:grid-cols-[0.85fr_1.15fr] lg:items-center">
-            <div>
-              <p className="text-sm font-bold uppercase tracking-[0.2em] text-arc-blue">
-                Fast RFQ Preparation
-              </p>
-              <h2 className="mt-3 font-display text-3xl font-black text-arc-midnight">
-                Send product lists, drawings or sample photos for quotation review.
-              </h2>
-              <p className="mt-4 text-sm leading-7 text-slate-600">
-                A clear RFQ helps ArcFort Weld review compatibility, packaging, MOQ and delivery
-                options with fewer follow-up questions.
-              </p>
-            </div>
-            <div className="grid gap-3 sm:grid-cols-3">
-              {rfqSignals.map((item) => (
-                <div key={item} className="border-l-4 border-arc-signal bg-white p-4 shadow-sm">
-                  <p className="text-sm font-semibold leading-6 text-slate-700">{item}</p>
-                </div>
-              ))}
-            </div>
-            <div className="flex flex-col gap-3 border-t border-slate-200 pt-5 sm:flex-row lg:col-span-2">
-              <Link
-                href="/rfq"
-                className="inline-flex min-h-12 w-full items-center justify-center bg-arc-blue px-5 text-sm font-bold uppercase tracking-[0.14em] text-white transition hover:bg-arc-midnight sm:w-auto"
-              >
-                Start Product RFQ
-              </Link>
-              <a
-                href="/downloads/arcfort-rfq-template.csv"
-                download
-                className="inline-flex min-h-12 w-full items-center justify-center border border-arc-blue px-5 text-sm font-bold uppercase tracking-[0.14em] text-arc-blue transition hover:bg-white sm:w-auto"
-              >
-                Download RFQ Worksheet
-              </a>
-            </div>
+      <Section id="product-systems" labelledBy="product-systems-title" className="bg-white">
+        <Container>
+          <div className="flex flex-col gap-7 lg:flex-row lg:items-end lg:justify-between">
+            <SectionHeading
+              id="product-systems-title"
+              eyebrow="Product Systems"
+              title="A connected range for welding and cutting supply."
+              description="Browse equipment, torch assemblies, front-end parts, cutting consumables and workshop accessories by process."
+            />
+            <ButtonLink href="/products" variant="secondary" className="w-full lg:w-auto">
+              View Product Center
+            </ButtonLink>
           </div>
-        </div>
-      </section>
-
-      <section className="bg-arc-frost py-14 sm:py-20">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
-            <div>
-              <p className="text-sm font-bold uppercase tracking-[0.2em] text-arc-blue">
-                Product Categories
-              </p>
-              <h2 className="mt-3 font-display text-3xl font-black text-arc-midnight sm:text-4xl">
-                Industrial Welding Product Supply
-              </h2>
-            </div>
-            <Link
-              href="/products"
-              className="inline-flex items-center justify-center bg-arc-blue px-5 py-3 text-sm font-bold uppercase tracking-[0.14em] text-white transition hover:bg-arc-midnight"
-            >
-              Product Center
-            </Link>
-          </div>
-          <div className="mt-8 grid grid-cols-2 gap-3 sm:mt-10 sm:gap-5 md:grid-cols-3">
-            {categories.map((category) => (
-              <Link
-                href={`/products/${category.slug}`}
-                key={category.slug}
-                className="group min-w-0 border border-slate-200 bg-white p-4 shadow-sm transition hover:-translate-y-1 hover:border-arc-blue hover:shadow-industrial sm:p-6"
-              >
-                <span
-                  data-nosnippet
-                  data-snippet-region="homepage-category-code"
-                  className="flex h-10 w-10 items-center justify-center bg-arc-navy font-display text-sm font-black text-arc-signal sm:h-12 sm:w-12 sm:text-lg"
-                >
-                  {category.code}
-                </span>
-                <h3 className="mt-4 break-words font-display text-base font-black leading-tight text-arc-midnight sm:mt-5 sm:text-2xl">
-                  {category.title}
-                </h3>
-                <p className="mt-3 hidden text-sm leading-6 text-slate-600 sm:block">
-                  {category.description}
-                </p>
-                <span className="mt-4 inline-flex text-[11px] font-bold uppercase tracking-[0.1em] text-arc-blue group-hover:text-arc-copper sm:mt-5 sm:text-sm sm:tracking-[0.14em]">
-                  Explore
-                </span>
-              </Link>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <section className="bg-white py-14 sm:py-20">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <p className="text-sm font-bold uppercase tracking-[0.2em] text-arc-blue">
-            Featured Products
-          </p>
-          <h2 className="mt-3 font-display text-3xl font-black text-arc-midnight sm:text-4xl">
-            Featured Welding & Cutting Products
-          </h2>
-          <div className="mt-8 grid grid-cols-2 gap-3 sm:mt-10 sm:gap-5 lg:grid-cols-3">
-            {featuredProducts.map((product) => {
-              const category = categoryMap.get(product.categorySlug);
+          <div className="mt-10 grid gap-6 md:grid-cols-2 xl:grid-cols-3">
+            {homepageProductSystems.map((system) => {
+              const category = categoryMap.get(system.categorySlug);
 
               if (!category) {
                 return null;
               }
 
               return (
-                <ProductCard key={product.slug} product={product} category={category} denseMobile />
+                <ProductSystemCard
+                  key={system.categorySlug}
+                  href={`/products/${system.categorySlug}`}
+                  title={system.systemName}
+                  range={system.range}
+                  image={system.image}
+                  alt={`${system.systemName} product range from ArcFort Weld`}
+                />
               );
             })}
           </div>
-          <div className="mt-8 flex justify-center">
-            <Link
-              href="/products"
-              className="inline-flex w-full items-center justify-center border border-arc-blue px-5 py-3 text-sm font-bold uppercase tracking-[0.14em] text-arc-blue transition hover:bg-arc-blue hover:text-white sm:w-auto"
-            >
-              View All Products
-            </Link>
-          </div>
-        </div>
-      </section>
+        </Container>
+      </Section>
 
-      <section className="bg-arc-frost py-16 sm:py-20">
-        <div className="mx-auto grid max-w-7xl gap-10 px-4 sm:px-6 lg:grid-cols-[0.85fr_1.15fr] lg:px-8">
-          <div>
-            <p className="text-sm font-bold uppercase tracking-[0.2em] text-arc-blue">
-              Why Choose ArcFort Weld
-            </p>
-            <h2 className="mt-3 font-display text-3xl font-black text-arc-midnight sm:text-4xl">
-              Built for buyers who compare, qualify and reorder.
-            </h2>
-          </div>
-          <div className="grid gap-4 sm:grid-cols-2">
-            {advantages.map((item) => (
-              <div key={item} className="border-l-4 border-arc-signal bg-white p-5 shadow-sm">
-                <p className="font-semibold leading-7 text-slate-800">{item}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <section className="bg-white py-16 sm:py-20">
-        <div className="mx-auto grid max-w-7xl gap-10 px-4 sm:px-6 lg:grid-cols-[1.05fr_0.95fr] lg:items-center lg:px-8">
-          <div className="relative min-h-[320px] overflow-hidden border border-slate-200 bg-arc-midnight shadow-industrial sm:min-h-[420px]">
-            <Image
-              src="/images/site/arcfort-oem-consumables-workbench.png"
-              alt="Welding torch consumables arranged for OEM packaging and distributor sourcing"
-              fill
-              sizes="(min-width: 1024px) 52vw, 100vw"
-              className="object-cover"
+      <Section labelledBy="featured-products-title" className="bg-arc-frost">
+        <Container>
+          <div className="flex flex-col gap-7 lg:flex-row lg:items-end lg:justify-between">
+            <SectionHeading
+              id="featured-products-title"
+              eyebrow="Featured Products"
+              title="Selected welding and cutting products."
+              description="Review active product pages with SKU references, buyer guidance and direct RFQ context."
             />
-            <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(7,21,36,0.02),rgba(7,21,36,0.78))]" />
-            <div className="absolute bottom-0 left-0 right-0 p-5 text-white sm:p-6">
-              <p className="text-xs font-bold uppercase tracking-[0.18em] text-arc-signal">
-                OEM Supply
-              </p>
-              <p className="mt-2 max-w-xl text-sm leading-6 text-slate-100">
-                Samples, drawings, product photos and packaging requirements help confirm quotation
-                details before production.
-              </p>
-            </div>
+            <ButtonLink href="/products" variant="secondary" className="w-full lg:w-auto">
+              Browse All Products
+            </ButtonLink>
           </div>
-          <div>
-            <p className="text-sm font-bold uppercase tracking-[0.2em] text-arc-blue">
-              OEM Service
-            </p>
-            <h2 className="mt-3 font-display text-3xl font-black text-arc-midnight sm:text-4xl">
-              OEM welding products and packaging support for overseas buyers.
-            </h2>
-            <p className="mt-5 text-sm leading-7 text-slate-600">
-              ArcFort Weld supports product customization, logo printing, private label packaging
-              and carton design after product details, quantity and artwork requirements are
-              confirmed.
-            </p>
-            <div className="mt-7 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
-              <Link
-                href="/oem-service"
-                className="inline-flex min-h-12 w-full items-center justify-center bg-arc-blue px-5 text-sm font-bold uppercase tracking-[0.14em] text-white transition hover:bg-arc-midnight sm:w-auto"
-              >
-                Review OEM Service
-              </Link>
-              <Link
-                href="/rfq?product=OEM%20welding%20products%20and%20private%20label%20packaging"
-                className="inline-flex min-h-12 w-full items-center justify-center border border-arc-blue px-5 text-sm font-bold uppercase tracking-[0.14em] text-arc-blue transition hover:bg-arc-frost hover:text-arc-midnight sm:w-auto"
-              >
-                Start OEM RFQ
-              </Link>
-            </div>
-          </div>
-          <div className="grid gap-4 sm:grid-cols-2">
-            {oemServiceItems.map((item) => (
-              <div key={item} className="border-l-4 border-arc-signal bg-arc-frost p-5">
-                <p className="text-sm font-semibold leading-6 text-slate-800">{item}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
+          <ProductGrid items={featuredProductItems} variant="featured" className="mt-10" />
+        </Container>
+      </Section>
 
-      <section className="bg-arc-midnight py-14 text-white sm:py-20">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="max-w-3xl">
-            <p className="text-sm font-bold uppercase tracking-[0.2em] text-arc-signal">
-              Supplier System
-            </p>
-            <h2 className="mt-3 font-display text-3xl font-black sm:text-4xl">
-              Built for industrial buyers who need clear information before inquiry.
-            </h2>
-            <p className="mt-4 text-sm leading-7 text-slate-300">
-              Mature B2B sourcing depends on product scope, OEM options, quality checkpoints,
-              shipping terms and accessible documents. ArcFort Weld keeps these paths visible so
-              distributors and importers can qualify the supply fit quickly.
-            </p>
+      <Section labelledBy="industry-solutions-title" className="bg-arc-midnight text-white">
+        <Container className="grid gap-12 lg:grid-cols-[0.72fr_1.28fr] lg:gap-16">
+          <div>
+            <SectionHeading
+              id="industry-solutions-title"
+              eyebrow="Industries & Applications"
+              title="Product pathways shaped around industrial work."
+              description="Start with the application, then review the relevant product families, selection risks and RFQ information."
+              inverse
+            />
+            <ButtonLink href="/applications" variant="onDark" className="mt-8 w-full sm:w-auto">
+              Explore All Industries
+            </ButtonLink>
           </div>
-          <div className="mt-8 grid grid-cols-2 gap-3 sm:mt-10 sm:gap-5 md:grid-cols-2 lg:grid-cols-3">
-            {sourcingSystemLinks.map((item) => (
+          <div className="grid gap-x-10 md:grid-cols-2">
+            {industrySolutions.map((solution) => (
               <Link
-                key={item.href}
-                href={item.href}
-                className="group min-w-0 border border-white/10 bg-white/5 p-4 transition hover:-translate-y-1 hover:border-arc-signal hover:bg-white/10 sm:p-5"
+                key={solution.slug}
+                href={`/applications/${solution.slug}`}
+                className="group grid grid-cols-[2.5rem_1fr] gap-4 border-t border-white/20 py-6 transition hover:border-white/60"
               >
-                <div className="h-1 w-16 bg-arc-signal" />
-                <h3 className="mt-4 break-words font-display text-lg font-black leading-tight sm:mt-5 sm:text-xl">
-                  {item.title}
-                </h3>
-                <p className="mt-3 hidden text-sm leading-6 text-slate-300 sm:block">
-                  {item.description}
-                </p>
-                <span className="mt-4 inline-flex text-[11px] font-bold uppercase tracking-[0.1em] text-arc-signal group-hover:text-white sm:mt-5 sm:text-sm sm:tracking-[0.14em]">
-                  View Details
+                <span className="text-xs font-bold text-slate-400">{solution.number}</span>
+                <span>
+                  <span className="block font-display text-xl font-black text-white transition group-hover:text-slate-200">
+                    {solution.label}
+                  </span>
+                  <span className="mt-2 block text-sm leading-6 text-slate-300">
+                    {solution.summary}
+                  </span>
                 </span>
               </Link>
             ))}
           </div>
-        </div>
-      </section>
+        </Container>
+      </Section>
 
-      <section className="bg-arc-frost py-16 sm:py-20">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="max-w-3xl">
-            <p className="text-sm font-bold uppercase tracking-[0.2em] text-arc-blue">
-              Export Terms
-            </p>
-            <h2 className="mt-3 font-display text-3xl font-black text-arc-midnight sm:text-4xl">
-              Clear shipping and payment information for quotation planning.
-            </h2>
-          </div>
-          <div className="mt-8 grid grid-cols-2 gap-3 sm:mt-10 sm:gap-5 md:grid-cols-2 lg:grid-cols-4">
-            {tradeHighlights.map((item) => (
-              <article
-                key={item.label}
-                className="min-w-0 border border-slate-200 bg-white p-4 shadow-sm sm:p-5"
-              >
-                <h3 className="text-xs font-bold uppercase tracking-[0.16em] text-arc-blue">
-                  {item.label}
+      <Section labelledBy="why-arcfort-title" className="bg-white">
+        <Container>
+          <SectionHeading
+            id="why-arcfort-title"
+            eyebrow="Why ArcFort Weld"
+            title="Technical clarity before commercial commitment."
+            description="ArcFort Weld organizes product, compatibility, customization and order information so buyers can compare requirements and prepare a more useful inquiry."
+          />
+          <div className="mt-12 grid gap-x-10 gap-y-8 md:grid-cols-2 xl:grid-cols-4">
+            {homepageAdvantages.map((advantage, index) => (
+              <article key={advantage.title} className="border-t-2 border-arc-midnight pt-5">
+                <p className="text-xs font-bold text-arc-blue">0{index + 1}</p>
+                <h3 className="mt-3 font-display text-xl font-black text-arc-midnight">
+                  {advantage.title}
                 </h3>
-                <p className="mt-3 break-words text-xs leading-5 text-slate-700 sm:text-sm sm:leading-6">
-                  {item.value}
-                </p>
+                <p className="mt-3 text-sm leading-6 text-slate-600">{advantage.description}</p>
               </article>
             ))}
           </div>
-        </div>
-      </section>
+          <Link
+            href="/about"
+            className="mt-9 inline-flex min-h-11 items-center text-sm font-bold text-arc-blue transition hover:text-arc-copper"
+          >
+            Read the company profile{" "}
+            <span className="ml-2" aria-hidden="true">
+              &rarr;
+            </span>
+          </Link>
+        </Container>
+      </Section>
 
-      <section className="bg-white py-14 sm:py-20">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <p className="text-sm font-bold uppercase tracking-[0.2em] text-arc-blue">Applications</p>
-          <h2 className="mt-3 font-display text-3xl font-black text-arc-midnight sm:text-4xl">
-            Industrial use cases for welding and cutting supply.
-          </h2>
-          <div className="mt-8 grid grid-cols-2 gap-3 sm:mt-10 sm:gap-4 lg:grid-cols-3">
-            {applications.map((application) => (
-              <Link
-                key={application.slug}
-                href={`/applications/${application.slug}`}
-                className="group min-w-0 bg-arc-midnight p-4 text-white transition hover:-translate-y-1 hover:shadow-industrial sm:p-5"
-              >
-                <div className="h-1 w-16 bg-arc-signal" />
-                <h3 className="mt-4 break-words font-display text-lg font-black leading-tight sm:mt-5 sm:text-xl">
-                  {application.title}
-                </h3>
-                <p className="mt-3 hidden text-sm leading-6 text-slate-300 sm:block">
-                  {application.description}
-                </p>
-                <span className="mt-4 inline-flex text-[11px] font-bold uppercase tracking-[0.1em] text-arc-signal group-hover:text-white sm:mt-5 sm:text-sm sm:tracking-[0.14em]">
-                  View Application
-                </span>
-              </Link>
-            ))}
+      <Section labelledBy="quality-title" className="bg-arc-mist">
+        <Container className="grid gap-10 lg:grid-cols-[1.08fr_0.92fr] lg:items-center lg:gap-16">
+          <figure>
+            <div className="relative aspect-[16/10] overflow-hidden rounded-md bg-white shadow-industrial">
+              <Image
+                src="/images/site/arcfort-oem-consumables-workbench.png"
+                alt="Representative welding consumables, measuring tool and packing preparation workbench"
+                fill
+                sizes="(min-width: 1024px) 55vw, 100vw"
+                className="object-cover"
+              />
+            </div>
+            <figcaption className="mt-3 text-xs leading-5 text-slate-500">
+              <span data-nosnippet>
+                Representative product preparation visual. Order controls depend on the confirmed
+                product and requirement.
+              </span>
+            </figcaption>
+          </figure>
+          <div>
+            <SectionHeading
+              id="quality-title"
+              eyebrow="Manufacturing & Quality"
+              title="Order-specific confirmation, not generic promises."
+              description="Product references, fit evidence, packing requirements and shipment details are reviewed against the quotation and order scope."
+            />
+            <ol className="mt-8 grid gap-0 border-t border-slate-300">
+              {homepageQualitySteps.map((step, index) => (
+                <li
+                  key={step}
+                  className="grid grid-cols-[2.5rem_1fr] items-center gap-4 border-b border-slate-300 py-4"
+                >
+                  <span className="text-xs font-bold text-arc-blue">0{index + 1}</span>
+                  <span className="font-semibold text-arc-midnight">{step}</span>
+                </li>
+              ))}
+            </ol>
+            <ButtonLink
+              href="/quality-control"
+              variant="secondary"
+              className="mt-8 w-full sm:w-auto"
+            >
+              Review Quality Process
+            </ButtonLink>
           </div>
-        </div>
-      </section>
+        </Container>
+      </Section>
+
+      <Section labelledBy="cooperation-title" className="bg-white">
+        <Container>
+          <SectionHeading
+            id="cooperation-title"
+            eyebrow="Cooperation"
+            title="Built for product programs, not one-off listings."
+            description="Prepare private-label requirements or a mixed distributor product list through dedicated buyer workflows."
+          />
+          <div className="mt-12 grid gap-10 border-y border-arc-line py-10 lg:grid-cols-2 lg:divide-x lg:divide-arc-line">
+            <div className="lg:pr-12">
+              <p className="section-eyebrow">OEM / ODM</p>
+              <h3 className="mt-3 font-display text-2xl font-black text-arc-midnight sm:text-3xl">
+                Product and packaging projects with clear approval inputs.
+              </h3>
+              <p className="mt-4 text-base leading-7 text-slate-600">
+                Discuss logo printing, private label packaging, carton design and model
+                customization using samples, drawings, photos or technical requirements.
+              </p>
+              <ButtonLink href="/oem-service" variant="secondary" className="mt-7 w-full sm:w-auto">
+                Explore OEM / ODM
+              </ButtonLink>
+            </div>
+            <div className="border-t border-arc-line pt-10 lg:border-t-0 lg:pl-12 lg:pt-0">
+              <p className="section-eyebrow">Distributor Cooperation</p>
+              <h3 className="mt-3 font-display text-2xl font-black text-arc-midnight sm:text-3xl">
+                Structured support for qualified supply partners.
+              </h3>
+              <p className="mt-4 text-base leading-7 text-slate-600">
+                We welcome qualified welding equipment, industrial supply and hardware partners who
+                need mixed product lists, catalog support and repeat purchasing coordination.
+              </p>
+              <ButtonLink
+                href="/distributor-supply"
+                variant="secondary"
+                className="mt-7 w-full sm:w-auto"
+              >
+                Distributor Cooperation
+              </ButtonLink>
+            </div>
+          </div>
+        </Container>
+      </Section>
+
+      <Section labelledBy="resources-title" className="bg-arc-frost">
+        <Container className="grid gap-14 lg:grid-cols-[1.05fr_0.95fr] lg:gap-20">
+          <div>
+            <SectionHeading
+              id="resources-title"
+              eyebrow="Technical Support & Resources"
+              title="Prepare the right evidence before inquiry."
+              description="Use practical guides, catalogs and RFQ tools to organize product references and reduce avoidable follow-up."
+            />
+            <div className="mt-8 border-t border-slate-300">
+              {homepageResources.map((resource) => (
+                <Link
+                  key={resource.href}
+                  href={resource.href}
+                  className="group grid gap-2 border-b border-slate-300 py-5 sm:grid-cols-[0.75fr_1.25fr] sm:gap-8"
+                >
+                  <span className="font-bold text-arc-midnight transition group-hover:text-arc-blue">
+                    {resource.title}
+                  </span>
+                  <span className="text-sm leading-6 text-slate-600">{resource.description}</span>
+                </Link>
+              ))}
+            </div>
+          </div>
+          <div className="border-t-2 border-arc-midnight pt-6 lg:mt-0">
+            <p className="section-eyebrow">Global Supply</p>
+            <h2 className="mt-3 font-display text-3xl font-black leading-tight text-arc-midnight">
+              One product system, two market pathways.
+            </h2>
+            <div className="mt-8 grid gap-8 sm:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2">
+              <div>
+                <h3 className="font-display text-xl font-black text-arc-midnight">China Market</h3>
+                <p className="mt-3 text-sm leading-6 text-slate-600">
+                  Nationwide supply, distributor cooperation, technical support and OEM / ODM
+                  inquiry coordination without unsupported dealer-network claims.
+                </p>
+              </div>
+              <div>
+                <h3 className="font-display text-xl font-black text-arc-midnight">
+                  International Market
+                </h3>
+                <p className="mt-3 text-sm leading-6 text-slate-600">
+                  Export-oriented RFQ, compatibility review, private-label packaging and shipment
+                  preparation for distributors and OEM buyers.
+                </p>
+              </div>
+            </div>
+          </div>
+        </Container>
+      </Section>
+
+      <HomeInquiryCta />
     </>
   );
 }

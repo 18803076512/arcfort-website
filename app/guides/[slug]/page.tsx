@@ -1,32 +1,38 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Breadcrumbs } from "@/components/content/Breadcrumbs";
+import { BuyerPathList } from "@/components/content/BuyerPathList";
+import {
+  ComponentReferenceTable,
+  type ComponentReferenceRow,
+} from "@/components/content/ComponentReferenceTable";
+import { DownloadCard } from "@/components/content/DownloadCard";
 import { FaqSection } from "@/components/content/FaqSection";
-import { ProductCard } from "@/components/content/ProductCard";
+import { GuideContents } from "@/components/content/GuideContents";
+import { PageSectionNav } from "@/components/content/PageSectionNav";
+import { ProcessSteps } from "@/components/content/ProcessSteps";
+import { ProductGrid } from "@/components/content/ProductGrid";
 import { RfqCta } from "@/components/content/RfqCta";
 import { StructuredData } from "@/components/content/StructuredData";
+import { ButtonLink } from "@/components/ui/ButtonLink";
+import { Container } from "@/components/ui/Container";
+import { Section } from "@/components/ui/Section";
+import { SectionHeading } from "@/components/ui/SectionHeading";
 import { WeldingMachineRfqBuilder } from "@/components/products/WeldingMachineRfqBuilder";
 import { getAllProductCategories, getRelatedCategories } from "@/lib/content/categories";
 import { getAllGuides, getGuideBySlug } from "@/lib/content/guides";
 import { articleJsonLd, breadcrumbJsonLd, faqJsonLd } from "@/lib/content/jsonld";
 import { getAllProducts } from "@/lib/content/products";
+import type { Product, ProductCategory } from "@/lib/content/schemas";
 import { buildMetadata } from "@/lib/content/seo";
 import { getPreferredSeoImage } from "@/lib/content/seo-images";
 import { absoluteUrl, siteConfig } from "@/lib/content/site";
-import type { Product, ProductCategory } from "@/lib/content/schemas";
 
 type GuideRouteProps = {
   params: Promise<{
     slug: string;
   }>;
 };
-
-const rfqReviewPoints = [
-  "Do not guess unknown technical values",
-  "Confirm compatibility by model, drawing, sample or reference part",
-  "Include quantity, packaging and destination country",
-  "Keep OEM, certification and exact rating claims document-based",
-] as const;
 
 const guideDateFormatter = new Intl.DateTimeFormat("en-US", {
   dateStyle: "long",
@@ -131,7 +137,70 @@ export default async function GuideDetailPage({ params }: GuideRouteProps) {
         "Use the CSV worksheet to keep each requested product or variant on a separate quotation line.",
       buttonLabel: "Download RFQ Worksheet",
     } as const);
+  const buyerToolType = buyerTool.href.split(".").pop()?.toUpperCase() ?? "FILE";
   const hasWeldingMachineRfqBuilder = guide.slug === "welding-machine-sourcing-checklist";
+  const contentsItems = guide.sections.map((section) => ({
+    href: `#${getSectionId(section.title)}` as `#${string}`,
+    label: section.title,
+  }));
+  const pageSectionLinks: Array<{ href: `#${string}`; label: string }> = [];
+
+  if (guide.componentReference) {
+    pageSectionLinks.push({ href: "#component-reference", label: "Component Reference" });
+  }
+  pageSectionLinks.push({ href: "#guide-content", label: "Guide" });
+  if (guide.buyerChecklist) {
+    pageSectionLinks.push({ href: "#buyer-checklist", label: "Buyer Checklist" });
+  }
+  pageSectionLinks.push(
+    { href: "#guide-rfq-tool", label: "RFQ Tool" },
+    { href: "#related-products", label: "Related Products" },
+  );
+
+  const componentRows: ComponentReferenceRow[] =
+    guide.componentReference?.rows.map((row) => {
+      const relatedProduct = row.productSlug ? relatedProductMap.get(row.productSlug) : undefined;
+
+      return {
+        name: row.name,
+        assemblyArea: row.assemblyArea,
+        role: row.role,
+        buyerCheck: row.buyerCheck,
+        href: relatedProduct
+          ? `/products/${relatedProduct.category.slug}/${relatedProduct.product.slug}`
+          : undefined,
+      };
+    }) ?? [];
+
+  const categoryPaths = relatedCategories.map((category) => ({
+    href: `/products/${category.slug}`,
+    title: category.title,
+    description: category.description,
+  }));
+  const guidePaths = relatedGuides.map((relatedGuide) => ({
+    href: `/guides/${relatedGuide.slug}`,
+    title: relatedGuide.title,
+    description: relatedGuide.description,
+  }));
+  const rfqToolSteps = [
+    {
+      step: "01",
+      title: "Download",
+      description: `Open the ${buyerTool.title} and keep each requested item or variant on a separate row.`,
+    },
+    {
+      step: "02",
+      title: "Complete",
+      description:
+        "Add quantity, available product references, packing needs and destination country.",
+    },
+    {
+      step: "03",
+      title: "Upload",
+      description:
+        "Attach the completed file with product photos, drawings or reference documents in the RFQ form.",
+    },
+  ] as const;
 
   return (
     <>
@@ -147,8 +216,8 @@ export default async function GuideDetailPage({ params }: GuideRouteProps) {
         ]}
       />
 
-      <section className="bg-white py-12 sm:py-16">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div className="bg-white py-5 sm:py-6">
+        <Container>
           <Breadcrumbs
             items={[
               { label: "Home", href: "/" },
@@ -156,428 +225,246 @@ export default async function GuideDetailPage({ params }: GuideRouteProps) {
               { label: guide.title },
             ]}
           />
-        </div>
-      </section>
+        </Container>
+      </div>
 
       <section className="bg-arc-midnight text-white">
-        <div className="mx-auto grid max-w-7xl gap-10 px-4 py-14 sm:px-6 sm:py-16 lg:grid-cols-[1fr_0.72fr] lg:items-end lg:px-8">
-          <div>
-            <p className="text-sm font-bold uppercase tracking-[0.2em] text-arc-signal">
-              Buyer Guide
-            </p>
-            <h1 className="mt-4 max-w-4xl font-display text-4xl font-black leading-tight sm:text-5xl lg:text-6xl">
+        <Container className="py-14 sm:py-16 lg:py-20">
+          <div className="max-w-5xl">
+            <p className="section-eyebrow !text-arc-signal">Technical Buyer Guide</p>
+            <h1 className="mt-4 max-w-5xl font-display text-4xl font-black leading-tight sm:text-5xl lg:text-6xl">
               {guide.title}
             </h1>
             <p className="mt-6 max-w-3xl text-lg leading-8 text-slate-300">{guide.description}</p>
-            <div className="mt-5 flex flex-wrap gap-x-5 gap-y-2 text-xs font-bold uppercase tracking-[0.12em] text-slate-400">
+            <div
+              data-nosnippet
+              className="mt-5 flex flex-wrap gap-x-5 gap-y-2 text-xs font-bold uppercase text-slate-400"
+            >
               <time dateTime={guide.publishedDate}>
                 Published {formatGuideDate(guide.publishedDate)}
               </time>
               <time dateTime={guide.modifiedDate}>
                 Updated {formatGuideDate(guide.modifiedDate)}
               </time>
+              <Link href="/about" className="transition hover:text-arc-signal">
+                Published by {siteConfig.legalName}
+              </Link>
             </div>
-            <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
-              <Link
-                href="#guide-content"
-                className="inline-flex min-h-12 items-center justify-center bg-arc-signal px-6 py-3 text-sm font-bold uppercase tracking-[0.16em] text-arc-midnight transition hover:bg-white"
-              >
-                Read Guide
-              </Link>
-              <Link
-                href={guideRfqHref}
-                className="inline-flex min-h-12 items-center justify-center border border-white/30 px-6 py-3 text-sm font-bold uppercase tracking-[0.16em] text-white transition hover:border-white hover:bg-white/10"
-              >
-                Send RFQ
-              </Link>
-              <a
-                href={buyerTool.href}
-                download
-                className="inline-flex min-h-12 items-center justify-center border border-white/30 px-6 py-3 text-sm font-bold uppercase tracking-[0.16em] text-white transition hover:border-arc-signal hover:text-arc-signal"
-              >
-                {buyerTool.buttonLabel}
-              </a>
+            <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+              <ButtonLink href="#guide-content">Read Guide</ButtonLink>
+              <ButtonLink href={guideRfqHref} variant="onDark">
+                Request a Quote
+              </ButtonLink>
             </div>
           </div>
-          <aside className="border border-white/10 bg-white/5 p-5 shadow-industrial">
-            <p className="text-xs font-bold uppercase tracking-[0.18em] text-arc-signal">
-              Quotation preparation principles
-            </p>
-            <div className="mt-5 grid gap-3">
-              {rfqReviewPoints.map((point) => (
-                <div key={point} className="border-l-4 border-arc-signal bg-white/5 p-4">
-                  <p className="text-sm font-semibold leading-6 text-slate-200">{point}</p>
-                </div>
-              ))}
-            </div>
-            <div className="mt-5 border-t border-white/10 pt-5">
-              <p className="text-xs font-bold uppercase tracking-[0.16em] text-slate-400">
-                Published by
-              </p>
-              <Link
-                href="/about"
-                className="mt-2 block text-sm font-semibold leading-6 text-white hover:text-arc-signal"
-              >
-                {siteConfig.legalName}
-              </Link>
-            </div>
-          </aside>
-        </div>
+        </Container>
       </section>
 
-      <section className="border-b border-slate-200 bg-white py-10">
-        <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
-          <nav aria-label="Guide contents">
-            <p className="text-xs font-bold uppercase tracking-[0.18em] text-arc-blue">
-              Guide Contents
-            </p>
-            <ol className="mt-5 grid gap-3 sm:grid-cols-2">
-              {guide.componentReference ? (
-                <li>
-                  <a
-                    href="#component-reference"
-                    className="group flex min-h-14 items-center gap-4 border border-slate-200 bg-arc-frost px-4 py-3 transition hover:border-arc-blue hover:bg-white"
-                  >
-                    <span className="font-display text-lg font-black text-arc-blue">REF</span>
-                    <span className="text-sm font-bold leading-6 text-arc-midnight group-hover:text-arc-blue">
-                      {guide.componentReference.title}
-                    </span>
-                  </a>
-                </li>
-              ) : null}
-              {guide.sections.map((section, index) => (
-                <li key={section.title}>
-                  <a
-                    href={`#${getSectionId(section.title)}`}
-                    className="group flex min-h-14 items-center gap-4 border border-slate-200 bg-arc-frost px-4 py-3 transition hover:border-arc-blue hover:bg-white"
-                  >
-                    <span className="font-display text-lg font-black text-arc-blue">
-                      {String(index + 1).padStart(2, "0")}
-                    </span>
-                    <span className="text-sm font-bold leading-6 text-arc-midnight group-hover:text-arc-blue">
-                      {section.title}
-                    </span>
-                  </a>
-                </li>
-              ))}
-            </ol>
-          </nav>
-        </div>
-      </section>
+      <PageSectionNav ariaLabel="Guide detail sections" items={pageSectionLinks} />
 
       {guide.componentReference ? (
-        <section
+        <Section
           id="component-reference"
-          className="scroll-mt-28 border-b border-slate-200 bg-white py-14 sm:py-16"
+          labelledBy="component-reference-title"
+          className="scroll-mt-36 bg-white"
         >
-          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <div className="grid gap-8 lg:grid-cols-[0.72fr_1.28fr] lg:items-end">
-              <div>
-                <p className="text-sm font-bold uppercase tracking-[0.2em] text-arc-blue">
-                  Component Reference
-                </p>
-                <h2 className="mt-3 font-display text-3xl font-black leading-tight text-arc-midnight sm:text-4xl">
-                  {guide.componentReference.title}
-                </h2>
-              </div>
+          <Container>
+            <div className="grid gap-8 lg:grid-cols-[0.72fr_1.28fr] lg:items-end lg:gap-16">
+              <SectionHeading
+                id="component-reference-title"
+                eyebrow="Component Reference"
+                title={guide.componentReference.title}
+              />
               <p className="text-sm leading-7 text-slate-600">
                 {guide.componentReference.description}
               </p>
             </div>
-
-            <div className="mt-8 border-y border-slate-200">
-              <div className="hidden grid-cols-[0.7fr_0.7fr_1fr_1.35fr] gap-5 bg-arc-midnight px-5 py-4 text-xs font-bold uppercase tracking-[0.12em] text-white lg:grid">
-                <span>Part name</span>
-                <span>Assembly area</span>
-                <span>Function</span>
-                <span>Buyer should confirm</span>
-              </div>
-              <div className="divide-y divide-slate-200">
-                {guide.componentReference.rows.map((row, index) => {
-                  const relatedProduct = row.productSlug
-                    ? relatedProductMap.get(row.productSlug)
-                    : undefined;
-
-                  return (
-                    <article
-                      key={row.name}
-                      className="grid gap-5 px-1 py-6 sm:px-5 lg:grid-cols-[0.7fr_0.7fr_1fr_1.35fr] lg:items-start"
-                    >
-                      <div>
-                        <span className="text-xs font-black text-arc-blue">
-                          {String(index + 1).padStart(2, "0")}
-                        </span>
-                        <h3 className="mt-2 font-display text-xl font-black text-arc-midnight">
-                          {relatedProduct ? (
-                            <Link
-                              href={`/products/${relatedProduct.category.slug}/${relatedProduct.product.slug}`}
-                              className="transition hover:text-arc-blue"
-                            >
-                              {row.name}
-                            </Link>
-                          ) : (
-                            row.name
-                          )}
-                        </h3>
-                      </div>
-                      <div>
-                        <p className="text-[11px] font-bold uppercase tracking-[0.12em] text-slate-500 lg:hidden">
-                          Assembly area
-                        </p>
-                        <p className="mt-1 text-sm font-semibold leading-6 text-slate-700 lg:mt-0">
-                          {row.assemblyArea}
-                        </p>
-                      </div>
-                      <div>
-                        <p className="text-[11px] font-bold uppercase tracking-[0.12em] text-slate-500 lg:hidden">
-                          Function
-                        </p>
-                        <p className="mt-1 text-sm leading-6 text-slate-600 lg:mt-0">{row.role}</p>
-                      </div>
-                      <div className="border-l-4 border-arc-signal bg-arc-frost p-4">
-                        <p className="text-[11px] font-bold uppercase tracking-[0.12em] text-arc-blue">
-                          Buyer should confirm
-                        </p>
-                        <p className="mt-2 text-sm leading-6 text-slate-700">{row.buyerCheck}</p>
-                      </div>
-                    </article>
-                  );
-                })}
-              </div>
+            <div className="mt-8">
+              <ComponentReferenceTable rows={componentRows} />
             </div>
-
             <p className="mt-5 text-xs leading-5 text-slate-500">
               This reference explains product families and assembly roles. It does not confirm fit,
               dimensions, electrical ratings or interchangeability for a specific torch.
             </p>
-          </div>
-        </section>
+          </Container>
+        </Section>
       ) : null}
 
-      <section id="guide-content" className="bg-arc-frost py-14 sm:py-16">
-        <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
-          <div className="grid gap-6">
-            {guide.sections.map((section, index) => (
-              <article
-                key={section.title}
-                id={getSectionId(section.title)}
-                className="scroll-mt-28 grid gap-5 border border-slate-200 bg-white p-6 shadow-sm sm:grid-cols-[5rem_1fr] sm:items-start"
-              >
-                <div className="font-display text-4xl font-black text-arc-blue">
-                  {String(index + 1).padStart(2, "0")}
-                </div>
-                <div>
-                  <h2 className="font-display text-2xl font-black text-arc-midnight">
-                    {section.title}
-                  </h2>
-                  <p className="mt-3 text-sm leading-7 text-slate-600">{section.body}</p>
-                </div>
-              </article>
-            ))}
+      <Section
+        id="guide-content"
+        labelledBy="guide-content-title"
+        className="scroll-mt-36 bg-arc-frost"
+      >
+        <Container>
+          <div className="mb-10 max-w-4xl">
+            <p className="section-eyebrow">Technical Guidance</p>
+            <h2 id="guide-content-title" className="section-title mt-3">
+              Read the selection and sourcing process in order.
+            </h2>
+            <p className="body-large mt-5">
+              Use the article to identify the evidence needed for review. Confirm the exact supplied
+              product separately through quotation, drawing, sample or approved reference.
+            </p>
           </div>
-        </div>
-      </section>
+          <div className="grid gap-8 lg:grid-cols-[16rem_minmax(0,1fr)] lg:gap-14">
+            <GuideContents items={contentsItems} />
+            <div className="divide-y divide-arc-line border-y border-arc-line bg-white px-5 sm:px-8">
+              {guide.sections.map((section, index) => (
+                <article
+                  key={section.title}
+                  id={getSectionId(section.title)}
+                  className="scroll-mt-36 grid gap-4 py-8 sm:grid-cols-[4rem_1fr] sm:gap-6 sm:py-10"
+                >
+                  <span className="font-display text-3xl font-black text-arc-blue">
+                    {String(index + 1).padStart(2, "0")}
+                  </span>
+                  <div>
+                    <h3 className="font-display text-2xl font-black leading-tight text-arc-midnight sm:text-3xl">
+                      {section.title}
+                    </h3>
+                    <p className="mt-4 text-base leading-8 text-slate-600">{section.body}</p>
+                  </div>
+                </article>
+              ))}
+            </div>
+          </div>
+        </Container>
+      </Section>
 
       {guide.buyerChecklist ? (
-        <section className="border-y border-slate-200 bg-white py-14 sm:py-16">
-          <div className="mx-auto grid max-w-7xl gap-8 px-4 sm:px-6 lg:grid-cols-[0.72fr_1.28fr] lg:px-8">
+        <Section
+          id="buyer-checklist"
+          labelledBy="buyer-checklist-title"
+          className="scroll-mt-36 bg-white"
+        >
+          <Container className="grid gap-10 lg:grid-cols-[0.72fr_1.28fr] lg:gap-16">
             <div>
-              <p className="text-sm font-bold uppercase tracking-[0.2em] text-arc-blue">
-                Buyer Checklist
-              </p>
-              <h2 className="mt-3 font-display text-3xl font-black leading-tight text-arc-midnight">
-                {guide.buyerChecklist.title}
-              </h2>
-              <p className="mt-4 text-sm leading-7 text-slate-600">
-                {guide.buyerChecklist.description}
-              </p>
-              <Link
-                href={guideRfqHref}
-                className="mt-6 inline-flex min-h-12 w-full items-center justify-center bg-arc-blue px-5 text-sm font-bold uppercase tracking-[0.14em] text-white transition hover:bg-arc-midnight sm:w-auto"
-              >
+              <SectionHeading
+                id="buyer-checklist-title"
+                eyebrow="Buyer Checklist"
+                title={guide.buyerChecklist.title}
+                description={guide.buyerChecklist.description}
+              />
+              <ButtonLink href={guideRfqHref} className="mt-7 w-full sm:w-auto">
                 Start This RFQ
-              </Link>
+              </ButtonLink>
             </div>
-            <ol className="grid gap-4 sm:grid-cols-2">
+            <ol className="divide-y divide-arc-line border-y border-arc-line">
               {guide.buyerChecklist.items.map((item, index) => (
                 <li
                   key={item}
-                  className="grid grid-cols-[2.5rem_1fr] gap-3 border border-slate-200 bg-arc-frost p-5"
+                  className="grid grid-cols-[2.5rem_1fr] gap-4 py-5 text-sm font-semibold leading-7 text-slate-700"
                 >
                   <span className="font-display text-xl font-black text-arc-blue">
                     {String(index + 1).padStart(2, "0")}
                   </span>
-                  <span className="text-sm font-semibold leading-6 text-slate-700">{item}</span>
+                  <span>{item}</span>
                 </li>
               ))}
             </ol>
-          </div>
-        </section>
+          </Container>
+        </Section>
       ) : null}
 
       {hasWeldingMachineRfqBuilder ? (
         <section
           data-nosnippet
           data-snippet-region="machine-guide-rfq-builder"
-          className="scroll-mt-28 bg-arc-frost py-14 sm:py-16"
+          className="section-space bg-arc-frost"
         >
-          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <Container>
             <WeldingMachineRfqBuilder />
-          </div>
+          </Container>
         </section>
       ) : null}
 
       <section
+        id="guide-rfq-tool"
         data-nosnippet
         data-snippet-region="guide-rfq-workflow"
-        className="border-y border-slate-200 bg-white py-14 sm:py-16"
+        className="scroll-mt-36 border-y border-arc-line bg-white py-14 sm:py-16"
       >
-        <div className="mx-auto grid max-w-7xl gap-8 px-4 sm:px-6 lg:grid-cols-[0.82fr_1.18fr] lg:items-center lg:px-8">
-          <div>
-            <p className="text-sm font-bold uppercase tracking-[0.2em] text-arc-blue">
-              Buyer RFQ Tool
-            </p>
-            <h2 className="mt-3 font-display text-3xl font-black leading-tight text-arc-midnight">
-              Turn this guide into a quotation-ready product list.
-            </h2>
-            <p className="mt-4 max-w-2xl text-sm leading-7 text-slate-600">
-              {buyerTool.description} Upload the completed file with photos, drawings or reference
-              documents. The RFQ form will carry this guide topic into the inquiry for faster sales
-              review.
-            </p>
-            <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
-              <a
-                href={buyerTool.href}
-                download
-                className="inline-flex min-h-12 w-full items-center justify-center bg-arc-blue px-5 text-sm font-bold uppercase tracking-[0.14em] text-white transition hover:bg-arc-midnight sm:w-auto"
-              >
-                {buyerTool.buttonLabel}
-              </a>
-              <Link
-                href={guideRfqHref}
-                className="inline-flex min-h-12 w-full items-center justify-center border border-arc-blue px-5 text-sm font-bold uppercase tracking-[0.14em] text-arc-blue transition hover:bg-arc-frost hover:text-arc-midnight sm:w-auto"
-              >
-                Upload and Request Quote
-              </Link>
-            </div>
+        <Container>
+          <div className="grid gap-8 lg:grid-cols-[0.72fr_1.28fr] lg:items-end lg:gap-16">
+            <SectionHeading
+              eyebrow="Buyer RFQ Tool"
+              title="Turn this guide into a quotation-ready product list."
+              description="Complete only documented values, then attach the available photos, drawings or reference files for technical review."
+            />
+            <DownloadCard
+              title={buyerTool.title}
+              type={buyerToolType}
+              href={buyerTool.href}
+              description={buyerTool.description}
+              note="Keep each requested item or variant on a separate line and leave unknown technical values open for confirmation."
+              actionLabel={buyerTool.buttonLabel}
+            />
           </div>
-          <ol className="grid gap-4 sm:grid-cols-3">
-            {[
-              {
-                title: "Download",
-                text: `Open the ${buyerTool.title} and keep one requested item, size or model on each row.`,
-              },
-              {
-                title: "Complete",
-                text: "Add quantity, available references, packaging needs and destination country.",
-              },
-              {
-                title: "Upload",
-                text: "Attach the worksheet, product photos or drawings through the secure RFQ form.",
-              },
-            ].map((step, index) => (
-              <li key={step.title} className="border-l-4 border-arc-signal bg-arc-frost p-5">
-                <span className="font-display text-2xl font-black text-arc-blue">
-                  {String(index + 1).padStart(2, "0")}
-                </span>
-                <h3 className="mt-3 font-display text-xl font-black text-arc-midnight">
-                  {step.title}
-                </h3>
-                <p className="mt-2 text-sm leading-6 text-slate-600">{step.text}</p>
-              </li>
-            ))}
-          </ol>
-        </div>
+          <div className="mt-10 grid gap-8 lg:grid-cols-[1fr_auto] lg:items-end">
+            <ProcessSteps items={rfqToolSteps} />
+            <ButtonLink href={guideRfqHref} className="w-full lg:w-auto">
+              Upload and Request Quote
+            </ButtonLink>
+          </div>
+        </Container>
       </section>
 
-      <section className="bg-white py-14 sm:py-16">
-        <div className="mx-auto grid max-w-7xl gap-8 px-4 sm:px-6 lg:grid-cols-[0.85fr_1.15fr] lg:px-8">
-          <div className="border border-slate-200 bg-white p-6 shadow-sm">
-            <h2 className="font-display text-2xl font-black text-arc-midnight">
-              Related Categories
-            </h2>
-            <p className="mt-3 text-sm leading-7 text-slate-600">
-              Use these categories to compare product families before sending an RFQ.
-            </p>
-            <div className="mt-5 grid gap-3">
-              {relatedCategories.map((category) => (
-                <Link
-                  key={category.slug}
-                  href={`/products/${category.slug}`}
-                  className="border border-slate-100 p-4 transition hover:border-arc-blue hover:bg-arc-frost"
-                >
-                  <div className="text-xs font-bold uppercase tracking-[0.16em] text-arc-blue">
-                    {category.code}
-                  </div>
-                  <div className="mt-2 font-display text-xl font-black text-arc-midnight">
-                    {category.title}
-                  </div>
-                  <p className="mt-2 text-sm leading-6 text-slate-600">{category.description}</p>
-                </Link>
-              ))}
+      <Section
+        id="related-products"
+        labelledBy="related-products-title"
+        className="scroll-mt-36 bg-arc-frost"
+      >
+        <Container>
+          <SectionHeading
+            id="related-products-title"
+            eyebrow="Product Research"
+            title="Compare the product families behind this guide."
+            description="Use category pages for range-level selection and product pages for the currently published item records."
+            className="max-w-4xl"
+          />
+          <div className="mt-10 grid gap-12 lg:grid-cols-[0.7fr_1.3fr] lg:gap-16">
+            <div>
+              <h3 className="font-display text-2xl font-black text-arc-midnight">
+                Related Categories
+              </h3>
+              <div className="mt-4">
+                <BuyerPathList items={categoryPaths} ariaLabel="Related product categories" />
+              </div>
+            </div>
+            <div>
+              <h3 className="font-display text-2xl font-black text-arc-midnight">
+                Related Products
+              </h3>
+              <ProductGrid items={relatedProducts} className="mt-5" />
             </div>
           </div>
+        </Container>
+      </Section>
 
-          <div>
-            <p className="text-sm font-bold uppercase tracking-[0.2em] text-arc-blue">
-              Related Products
-            </p>
-            <h2 className="mt-3 font-display text-3xl font-black text-arc-midnight">
-              Product pages to compare
-            </h2>
-            <div className="mt-5 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-              {relatedProducts.map((item) => (
-                <ProductCard
-                  key={item.product.slug}
-                  product={item.product}
-                  category={item.category}
-                />
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {relatedGuides.length > 0 ? (
-        <section className="bg-arc-midnight py-14 text-white sm:py-16">
-          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <p className="text-sm font-bold uppercase tracking-[0.2em] text-arc-signal">
-              Continue Research
-            </p>
-            <h2 className="mt-3 font-display text-3xl font-black">Related buyer guides</h2>
-            <div className="mt-7 grid gap-4 md:grid-cols-3">
-              {relatedGuides.map((relatedGuide) => (
-                <Link
-                  key={relatedGuide.slug}
-                  href={`/guides/${relatedGuide.slug}`}
-                  className="border border-white/15 bg-white/5 p-5 transition hover:border-arc-signal hover:bg-white/10"
-                >
-                  <div className="text-xs font-bold uppercase tracking-[0.16em] text-arc-signal">
-                    Buyer Guide
-                  </div>
-                  <h3 className="mt-3 font-display text-xl font-black leading-tight text-white">
-                    {relatedGuide.title}
-                  </h3>
-                  <p className="mt-3 text-sm leading-6 text-slate-300">
-                    {relatedGuide.description}
-                  </p>
-                </Link>
-              ))}
-            </div>
-          </div>
-        </section>
+      {guidePaths.length > 0 ? (
+        <Section className="bg-arc-midnight text-white">
+          <Container className="grid gap-10 lg:grid-cols-[0.72fr_1.28fr] lg:gap-16">
+            <SectionHeading
+              eyebrow="Continue Research"
+              title="Related buyer guides"
+              description="Continue with another guide that shares the same product or compatibility context."
+              inverse
+            />
+            <BuyerPathList items={guidePaths} inverse ariaLabel="Related buyer guides" />
+          </Container>
+        </Section>
       ) : null}
 
-      <section className="bg-arc-frost py-14 sm:py-16">
-        <div className="mx-auto grid max-w-7xl gap-8 px-4 sm:px-6 lg:grid-cols-[1fr_0.95fr] lg:px-8">
+      <Section className="bg-white">
+        <Container className="grid gap-8 lg:grid-cols-[1fr_0.95fr] lg:items-start">
           <FaqSection items={guide.faq} title="Guide FAQ" />
           <RfqCta
             title="Ready to prepare your RFQ?"
             description="Send product names, photos, drawings, quantity, packaging requirements and destination country. ArcFort Weld will review confirmed details before quotation."
             productName={guideRfqPrompt}
           />
-        </div>
-      </section>
+        </Container>
+      </Section>
     </>
   );
 }

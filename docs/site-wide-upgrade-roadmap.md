@@ -5,20 +5,22 @@ website more professional, easier to index, and stronger for overseas B2B RFQ co
 
 ## Production Baseline - 2026-08-13
 
-The production build currently generates 89 pages and includes 40 indexable products, six product
-categories, six application pages and 16 buyer guides. Product search, category-specific RFQ
-builders, the OEM project builder, canonical metadata, sitemap, robots, structured data and the
-validated RFQ form are in place. The Search Console export dated 2026-08-12 is recorded in
+The production build currently generates 91 pages and includes 40 indexable products, six product
+categories, one governed 15AK product-series page, six application pages and 17 buyer guides.
+Product search, category-specific RFQ builders, the OEM project builder, canonical metadata,
+sitemap, robots, structured data and the validated RFQ form are in place. The Search Console export
+dated 2026-08-12 is recorded in
 `docs/seo/search-console-baseline-2026-08-12.md` and should be used as the measurement baseline.
 
 The site is technically ready to acquire inquiries, but four evidence and operational tasks now
 matter more than adding another general page:
 
-1. Confirm that a controlled browser RFQ reaches the sales mailbox and that the buyer confirmation
-   email arrives. Confirm that the Resend credential previously shared outside the deployment
-   environment has been rotated.
-2. Replace the three `needs_photo` draft products with reviewed own or legally usable supplier
-   photos. Review material, dimensions, fitment and source evidence for the 40 active products.
+1. Confirm matching controlled-test references in the sales and buyer-confirmation mailboxes.
+   Confirm that the Resend credential previously shared outside the deployment environment has been
+   rotated. Provider acceptance and production email readiness are already verified.
+2. Record source and usage-right evidence for active supplier images, replace the three
+   `needs_photo` draft products with exact-product photos, and review material, dimensions, fitment
+   and source evidence for the 40 active products.
 3. Recheck Search Console after a comparable 28-day period. Improve pages with impressions and weak
    click-through rate before publishing overlapping guide content.
 4. Measure qualified RFQs, form completion, email clicks and WhatsApp clicks without collecting

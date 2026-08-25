@@ -1,19 +1,42 @@
 import Image from "next/image";
 import Link from "next/link";
 import { Breadcrumbs } from "@/components/content/Breadcrumbs";
+import { BuyerPathList } from "@/components/content/BuyerPathList";
 import { FaqSection } from "@/components/content/FaqSection";
+import { PageSectionNav } from "@/components/content/PageSectionNav";
+import { ProcessSteps } from "@/components/content/ProcessSteps";
 import { RfqCta } from "@/components/content/RfqCta";
 import { StructuredData } from "@/components/content/StructuredData";
 import { OemRfqBuilder } from "@/components/oem/OemRfqBuilder";
+import { ButtonLink } from "@/components/ui/ButtonLink";
+import { Container } from "@/components/ui/Container";
+import { Section } from "@/components/ui/Section";
+import { SectionHeading } from "@/components/ui/SectionHeading";
 import { breadcrumbJsonLd, faqJsonLd, webPageJsonLd } from "@/lib/content/jsonld";
 import { buildMetadata } from "@/lib/content/seo";
 import { siteConfig } from "@/lib/content/site";
 
 const oemPrograms = [
-  "Logo printing for selected welding consumables, torch parts and accessories",
-  "Private label packaging for distributor and importer programs",
-  "Carton design and export packing review after artwork and quantity are confirmed",
-  "Product model customization based on sample, drawing, photo or technical requirement",
+  {
+    title: "Product customization",
+    description:
+      "Review product and model requirements from buyer samples, drawings, photos or technical documents.",
+  },
+  {
+    title: "Logo and private label",
+    description:
+      "Discuss logo position, label content and private-label presentation for selected product families.",
+  },
+  {
+    title: "Packaging development",
+    description:
+      "Coordinate packing unit, label, barcode, inner packaging, carton artwork and shipping marks.",
+  },
+  {
+    title: "Approval records",
+    description:
+      "Keep the approved product reference, artwork version, packing basis and order details traceable.",
+  },
 ] as const;
 
 const productScope = [
@@ -27,41 +50,62 @@ const productScope = [
 const rfqChecklist = [
   "Target product name, model, size, material and quantity",
   "Sample photo, drawing, reference part or current product label",
-  "Logo file, label size, carton style and private label requirement",
+  "Logo file, label size, carton style and private-label requirement",
   "Destination country, shipping plan and expected delivery schedule",
 ] as const;
 
 const processSteps = [
-  "Review buyer product list and customization request",
-  "Confirm technical details, packaging artwork and quantity",
-  "Prepare quotation, MOQ and lead time options",
-  "Confirm sample, production and export packing details before shipment",
+  {
+    step: "01",
+    title: "Review the project brief",
+    description:
+      "Separate each product line and record customization, quantity, destination and available evidence.",
+  },
+  {
+    step: "02",
+    title: "Confirm the product basis",
+    description:
+      "Review the sample, drawing, current part or documented reference before approving customization.",
+  },
+  {
+    step: "03",
+    title: "Approve artwork and packing",
+    description:
+      "Lock the logo, label, barcode, packing unit, carton artwork and shipping-mark versions in writing.",
+  },
+  {
+    step: "04",
+    title: "Confirm quotation and order",
+    description:
+      "Review MOQ, lead-time basis, sample requirements, payment terms and export preparation for the quoted scope.",
+  },
 ] as const;
-
-const oemRfqHref = "/rfq?product=OEM%20welding%20products%20and%20private%20label%20packaging";
-const oemProjectBriefHref = "/downloads/arcfort-oem-project-brief.xlsx";
 
 const oemSupportLinks = [
   {
     href: "/about",
     title: "Company Profile",
-    description: "Confirm the legal company, ArcFort Weld brand relationship and business contact.",
+    description: "Verify the legal company, ArcFort Weld brand and confirmed business identity.",
+  },
+  {
+    href: "/guides/oem-welding-products-private-label-guide",
+    title: "OEM Buyer Guide",
+    description: "Plan product approval, artwork control, packing and repeat-order records.",
   },
   {
     href: "/quality-control",
-    title: "Quality Control",
-    description: "Review inspection and packing checkpoints used for order confirmation.",
+    title: "Quality Coordination",
+    description: "Review product-reference, packing and pre-shipment control points.",
   },
   {
     href: "/shipping-payment#export-order-workflow",
     title: "Shipping & Payment",
-    description:
-      "Check payment stages, OEM lead-time basis, packing inputs and the export-order workflow.",
+    description: "Check payment stages, lead-time basis and the export-order workflow.",
   },
   {
     href: "/downloads",
-    title: "Catalog & RFQ Files",
-    description: "Use the company catalog and RFQ worksheet to prepare an item-by-item request.",
+    title: "Catalogs & RFQ Files",
+    description: "Use the company catalog and worksheets to prepare an itemized request.",
   },
 ] as const;
 
@@ -82,6 +126,16 @@ const faq = [
       "OEM MOQ depends on product type, model, packaging requirement and customization scope. Standard products can support small trial orders when available.",
   },
 ] as const;
+
+const sectionLinks = [
+  { href: "#oem-scope", label: "OEM Scope" },
+  { href: "#oem-process", label: "Approval Process" },
+  { href: "#oem-rfq-builder", label: "RFQ Builder" },
+  { href: "#oem-project-files", label: "Project Files" },
+  { href: "#oem-faq", label: "FAQ" },
+] as const;
+
+const oemProjectBriefHref = "/downloads/arcfort-oem-project-brief.xlsx";
 
 export const metadata = buildMetadata({
   title: "OEM Welding Products and Private Label Service",
@@ -116,246 +170,183 @@ export default function OemServicePage() {
         ]}
       />
 
-      <section className="bg-white py-12 sm:py-16">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <Breadcrumbs items={[{ label: "Home", href: "/" }, { label: "OEM Service" }]} />
-          <div className="mt-8 grid gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:items-end">
-            <div>
-              <p className="text-sm font-bold uppercase tracking-[0.2em] text-arc-blue">
-                OEM Service
-              </p>
-              <h1 className="mt-3 font-display text-4xl font-black leading-tight text-arc-midnight sm:text-5xl">
-                OEM welding products for distributors and importers.
-              </h1>
-              <p className="mt-5 text-lg leading-8 text-slate-600">
-                {siteConfig.legalName} supports the {siteConfig.name} brand website for practical
-                OEM sourcing, private label packaging and welding product customization.
-              </p>
-              <div className="mt-7 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
-                <Link
-                  href="#oem-rfq-builder"
-                  className="inline-flex min-h-12 w-full items-center justify-center bg-arc-blue px-5 text-sm font-bold uppercase tracking-[0.14em] text-white transition hover:bg-arc-midnight sm:w-auto"
-                >
-                  Build OEM RFQ
-                </Link>
-                <Link
-                  href="/guides/oem-welding-products-private-label-guide"
-                  className="inline-flex min-h-12 w-full items-center justify-center border border-arc-blue px-5 text-sm font-bold uppercase tracking-[0.14em] text-arc-blue transition hover:bg-arc-frost sm:w-auto"
-                >
-                  Review Buyer Guide
-                </Link>
-                <a
-                  href={oemProjectBriefHref}
-                  download
-                  className="inline-flex min-h-12 w-full items-center justify-center border border-slate-300 px-5 text-sm font-bold uppercase tracking-[0.14em] text-arc-midnight transition hover:border-arc-blue hover:bg-arc-frost hover:text-arc-blue sm:w-auto"
-                >
-                  Download Project Brief
-                </a>
-              </div>
-            </div>
-            <div className="overflow-hidden border border-slate-200 bg-arc-midnight shadow-industrial">
-              <div className="relative aspect-[16/10]">
-                <Image
-                  src="/images/site/arcfort-oem-consumables-workbench.png"
-                  alt="Representative welding torch consumables, cable connectors, clamps and packing references for OEM project discussion"
-                  fill
-                  priority
-                  sizes="(min-width: 1024px) 52vw, 100vw"
-                  className="object-cover"
-                />
-              </div>
-              <div className="border-t border-white/10 p-5 text-white">
-                <p className="text-xs font-bold uppercase tracking-[0.16em] text-arc-signal">
-                  Representative product and packing reference
-                </p>
-                <p className="mt-2 text-sm leading-6 text-slate-300">
-                  Product fit, material, dimensions, logo application and packing format are
-                  reviewed from buyer evidence before quotation. This visual is not proof of an
-                  exact SKU or production facility.
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+      <div className="border-b border-arc-line bg-white py-4">
+        <Container>
+          <Breadcrumbs items={[{ label: "Home", href: "/" }, { label: "OEM / ODM" }]} />
+        </Container>
+      </div>
 
-      <section id="oem-rfq-builder" className="scroll-mt-24 bg-arc-frost py-14 sm:py-16">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <OemRfqBuilder />
-        </div>
-      </section>
-
-      <section className="bg-white py-14 sm:py-16">
-        <div className="mx-auto grid max-w-7xl gap-8 px-4 sm:px-6 lg:grid-cols-[0.85fr_1.15fr] lg:px-8">
+      <section className="bg-arc-midnight text-white">
+        <Container className="grid min-h-[620px] gap-10 py-14 sm:py-16 lg:grid-cols-[1.02fr_0.98fr] lg:items-center lg:py-20">
           <div>
-            <p className="text-sm font-bold uppercase tracking-[0.2em] text-arc-blue">
-              OEM Programs
+            <p className="section-eyebrow !text-slate-300">OEM / ODM Welding Products</p>
+            <h1 className="mt-5 max-w-3xl font-display text-4xl font-black leading-[1.06] text-white sm:text-5xl lg:text-6xl">
+              Build a welding product range around an approved reference.
+            </h1>
+            <p className="body-large mt-6 max-w-2xl text-slate-200">
+              ArcFort Weld supports product customization, logo application, private-label packing
+              and carton development for distributors, importers and OEM buyers.
             </p>
-            <h2 className="mt-3 font-display text-3xl font-black text-arc-midnight">
-              Customization that supports repeat B2B orders
-            </h2>
+            <p className="mt-5 max-w-2xl text-sm leading-7 text-slate-300">
+              Feasibility, MOQ and timing depend on the product, evidence, artwork, quantity and
+              packing scope reviewed for the project.
+            </p>
+            <div className="mt-9 flex flex-col gap-3 sm:flex-row">
+              <ButtonLink href="#oem-rfq-builder">Build an OEM Brief</ButtonLink>
+              <a href={oemProjectBriefHref} download className="button-base button-on-dark">
+                Download Project Brief
+              </a>
+            </div>
           </div>
-          <div className="grid gap-4 sm:grid-cols-2">
-            {oemPrograms.map((item) => (
-              <div key={item} className="border-l-4 border-arc-signal bg-white p-5 shadow-sm">
-                <p className="text-sm font-semibold leading-6 text-slate-700">{item}</p>
-              </div>
-            ))}
+
+          <div className="relative aspect-[5/4] overflow-hidden bg-white">
+            <Image
+              src="/images/site/arcfort-oem-consumables-workbench.png"
+              alt="Representative welding product and packing references for OEM project discussion"
+              fill
+              priority
+              sizes="(min-width: 1024px) 46vw, 100vw"
+              className="object-cover"
+              quality={90}
+            />
+            <p
+              data-nosnippet
+              className="absolute bottom-0 left-0 right-0 bg-arc-midnight/90 px-4 py-3 text-xs font-semibold text-slate-200"
+            >
+              {
+                "Representative product and packing reference. This visual is not proof of an exact SKU or production facility."
+              }
+            </p>
           </div>
-        </div>
+        </Container>
       </section>
 
-      <section className="bg-white py-14 sm:py-16">
-        <div className="mx-auto grid max-w-7xl gap-8 px-4 sm:px-6 lg:grid-cols-2 lg:px-8">
-          <article className="border border-slate-200 bg-white p-6 shadow-sm">
-            <h2 className="font-display text-2xl font-black text-arc-midnight">
-              Product Scope for OEM Discussion
-            </h2>
-            <div className="mt-5 grid gap-3">
+      <PageSectionNav ariaLabel="OEM service page sections" items={sectionLinks} />
+
+      <Section id="oem-scope" labelledBy="oem-scope-title" className="scroll-mt-32 bg-white">
+        <Container>
+          <div className="grid gap-10 lg:grid-cols-[0.68fr_1.32fr]">
+            <SectionHeading
+              id="oem-scope-title"
+              eyebrow="OEM Scope"
+              title="Control the product and presentation as one project."
+              description="Customization should begin only after the base item and the buyer's commercial requirements are clearly separated."
+            />
+            <dl className="divide-y divide-arc-line border-y border-arc-line">
+              {oemPrograms.map((item) => (
+                <div key={item.title} className="grid gap-2 py-6 sm:grid-cols-[190px_1fr] sm:gap-8">
+                  <dt className="font-display text-xl font-black text-arc-midnight">
+                    {item.title}
+                  </dt>
+                  <dd className="text-sm leading-7 text-slate-600">{item.description}</dd>
+                </div>
+              ))}
+            </dl>
+          </div>
+
+          <div className="mt-14 border-t border-arc-line pt-8">
+            <p className="caption text-arc-blue">Product Families</p>
+            <div className="mt-4 grid gap-x-10 sm:grid-cols-2 lg:grid-cols-3">
               {productScope.map((item) => (
                 <Link
                   key={item.href}
                   href={item.href}
-                  className="border border-slate-100 bg-slate-50 p-4 text-sm font-semibold text-slate-700 transition hover:border-arc-blue hover:text-arc-blue"
+                  className="flex min-h-16 items-center justify-between border-b border-arc-line font-bold text-arc-midnight transition hover:text-arc-blue"
                 >
                   {item.label}
+                  <span className="text-arc-blue" aria-hidden="true">
+                    &rarr;
+                  </span>
                 </Link>
               ))}
             </div>
-          </article>
+          </div>
+        </Container>
+      </Section>
 
-          <article className="border border-slate-200 bg-white p-6 shadow-sm">
-            <h2 className="font-display text-2xl font-black text-arc-midnight">
-              What Buyers Should Send
-            </h2>
-            <ul className="mt-5 grid gap-4">
-              {rfqChecklist.map((item) => (
-                <li key={item} className="flex gap-3 text-sm leading-6 text-slate-700">
-                  <span className="mt-2 h-1.5 w-1.5 shrink-0 bg-arc-signal" />
-                  <span>{item}</span>
-                </li>
-              ))}
-            </ul>
-            <div className="mt-6 border-l-4 border-arc-signal bg-arc-frost p-4">
-              <p className="text-sm font-bold text-arc-midnight">Organize a multi-item project</p>
-              <p className="mt-2 text-xs leading-5 text-slate-600">
-                Use the Excel project brief to keep product lines, reference files, logo, label,
-                packaging and destination requirements in one review record.
-              </p>
-              <a
-                href={oemProjectBriefHref}
-                download
-                className="mt-4 inline-flex text-xs font-bold uppercase tracking-[0.12em] text-arc-blue hover:text-arc-copper"
+      <Section
+        id="oem-process"
+        labelledBy="oem-process-title"
+        className="scroll-mt-32 border-y border-arc-line bg-arc-frost"
+      >
+        <Container className="grid gap-10 lg:grid-cols-[0.68fr_1.32fr]">
+          <SectionHeading
+            id="oem-process-title"
+            eyebrow="Approval Process"
+            title="Move from buyer evidence to a controlled order record."
+            description="Unknown product, artwork and packing details remain open until they are confirmed in the quotation or approval record."
+          />
+          <ProcessSteps items={processSteps} />
+        </Container>
+      </Section>
+
+      <Section id="oem-rfq-builder" className="scroll-mt-32 bg-white">
+        <Container>
+          <OemRfqBuilder />
+        </Container>
+      </Section>
+
+      <Section
+        id="oem-project-files"
+        labelledBy="oem-project-files-title"
+        className="scroll-mt-32 border-y border-arc-line bg-arc-frost"
+      >
+        <Container>
+          <div className="grid overflow-hidden border border-arc-line lg:grid-cols-[1.18fr_0.82fr]">
+            <div className="p-6 sm:p-8">
+              <p className="section-eyebrow">Project Inputs</p>
+              <h2
+                id="oem-project-files-title"
+                className="mt-3 font-display text-3xl font-black text-arc-midnight"
               >
+                Give every product and artwork file a clear reference.
+              </h2>
+              <ol className="mt-7 divide-y divide-arc-line border-y border-arc-line">
+                {rfqChecklist.map((item, index) => (
+                  <li key={item} className="grid grid-cols-[36px_1fr] gap-3 py-4">
+                    <span className="font-display font-black text-arc-blue">{index + 1}</span>
+                    <span className="text-sm font-semibold leading-6 text-slate-700">{item}</span>
+                  </li>
+                ))}
+              </ol>
+            </div>
+            <div className="flex flex-col justify-between bg-arc-midnight p-6 text-white sm:p-8">
+              <div>
+                <p className="caption text-slate-300">OEM Project Brief</p>
+                <h2 className="mt-3 font-display text-2xl font-black">
+                  Organize multi-item projects before quotation.
+                </h2>
+                <p className="mt-4 text-sm leading-7 text-slate-300">
+                  The workbook keeps product lines, source files, logo, label, packing and
+                  destination requirements in one review record.
+                </p>
+              </div>
+              <a href={oemProjectBriefHref} download className="button-base button-primary mt-8">
                 Download OEM Project Brief
               </a>
             </div>
-          </article>
-        </div>
-      </section>
+          </div>
 
-      <section className="bg-arc-frost py-14 sm:py-16">
-        <div className="mx-auto grid max-w-7xl gap-8 px-4 sm:px-6 lg:grid-cols-[0.8fr_1.2fr] lg:px-8">
-          <div>
-            <p className="text-sm font-bold uppercase tracking-[0.2em] text-arc-blue">
-              OEM Process
-            </p>
-            <h2 className="mt-3 font-display text-3xl font-black text-arc-midnight">
-              From product list to export-ready quotation
-            </h2>
+          <div className="mt-14">
+            <SectionHeading
+              eyebrow="Supporting Decisions"
+              title="Review quality, delivery and documentation with the OEM scope."
+            />
+            <BuyerPathList items={oemSupportLinks} ariaLabel="OEM project supporting buyer paths" />
           </div>
-          <div className="grid gap-4 sm:grid-cols-2">
-            {processSteps.map((step, index) => (
-              <div key={step} className="border border-slate-200 bg-white p-5 shadow-sm">
-                <div className="text-xs font-bold uppercase tracking-[0.16em] text-arc-blue">
-                  Step {index + 1}
-                </div>
-                <p className="mt-3 text-sm font-semibold leading-6 text-slate-700">{step}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
+        </Container>
+      </Section>
 
-      <section className="border-y border-slate-200 bg-white py-14 sm:py-16">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="max-w-3xl">
-            <p className="text-sm font-bold uppercase tracking-[0.2em] text-arc-blue">
-              OEM Order Planning
-            </p>
-            <h2 className="mt-3 font-display text-3xl font-black text-arc-midnight">
-              Verify products, packing and trade terms together.
-            </h2>
-            <p className="mt-4 text-sm leading-7 text-slate-600">
-              Use these supporting pages to prepare a quotation-ready OEM program without assuming
-              unconfirmed product, certification or delivery details.
-            </p>
-          </div>
-          <div className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-            {oemSupportLinks.map((item) => (
-              <Link
-                key={item.href}
-                href={item.href}
-                className="group border border-slate-200 bg-arc-frost p-5 transition hover:border-arc-blue hover:bg-white hover:shadow-industrial"
-              >
-                <h3 className="font-display text-xl font-black text-arc-midnight group-hover:text-arc-blue">
-                  {item.title}
-                </h3>
-                <p className="mt-3 text-sm leading-6 text-slate-600">{item.description}</p>
-                <span className="mt-5 inline-flex text-xs font-bold uppercase tracking-[0.14em] text-arc-blue group-hover:text-arc-copper">
-                  Review Details
-                </span>
-              </Link>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <section className="bg-arc-midnight py-12 text-white sm:py-14">
-        <div className="mx-auto flex max-w-7xl flex-col gap-6 px-4 sm:px-6 lg:flex-row lg:items-center lg:justify-between lg:px-8">
-          <div className="max-w-3xl">
-            <p className="text-xs font-bold uppercase tracking-[0.18em] text-arc-signal">
-              OEM Buyer Guide
-            </p>
-            <h2 className="mt-3 font-display text-3xl font-black leading-tight">
-              Plan product approval, artwork and repeat-order records.
-            </h2>
-            <p className="mt-3 text-sm leading-7 text-slate-300">
-              Review the full OEM workflow before sending logo files, private label requirements and
-              carton artwork.
-            </p>
-          </div>
-          <Link
-            href="/guides/oem-welding-products-private-label-guide"
-            className="inline-flex min-h-12 w-full shrink-0 items-center justify-center bg-arc-signal px-6 text-sm font-bold uppercase tracking-[0.14em] text-arc-midnight transition hover:bg-white sm:w-auto"
-          >
-            Read OEM Guide
-          </Link>
-          <a
-            href={oemProjectBriefHref}
-            download
-            className="inline-flex min-h-12 w-full shrink-0 items-center justify-center border border-arc-signal px-6 text-sm font-bold uppercase tracking-[0.14em] text-arc-signal transition hover:bg-arc-signal hover:text-arc-midnight sm:w-auto"
-          >
-            OEM Project Brief
-          </a>
-          <Link
-            href={oemRfqHref}
-            className="inline-flex min-h-12 w-full shrink-0 items-center justify-center border border-white/30 px-6 text-sm font-bold uppercase tracking-[0.14em] text-white transition hover:border-white hover:bg-white/10 sm:w-auto"
-          >
-            Send OEM RFQ
-          </Link>
-        </div>
-      </section>
-
-      <section className="bg-white py-14 sm:py-16">
-        <div className="mx-auto grid max-w-7xl gap-8 px-4 sm:px-6 lg:grid-cols-[1fr_0.9fr] lg:px-8">
-          <FaqSection items={[...faq]} />
+      <Section id="oem-faq" className="scroll-mt-32 bg-white">
+        <Container className="grid gap-8 lg:grid-cols-[0.9fr_1.1fr]">
+          <FaqSection items={[...faq]} title="OEM / ODM FAQ" />
           <RfqCta
-            title="Need OEM welding products?"
-            description="Send product list, sample photos, drawings, logo artwork and packaging requirements. ArcFort Weld will review the details before quotation."
+            title="Planning an OEM welding product program?"
+            description="Send the product list, sample or drawing, logo artwork, packing requirement, quantity and destination for project review."
+            productName="OEM welding products and private-label project"
           />
-        </div>
-      </section>
+        </Container>
+      </Section>
     </>
   );
 }

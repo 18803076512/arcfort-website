@@ -1,32 +1,37 @@
-import Link from "next/link";
 import { Breadcrumbs } from "@/components/content/Breadcrumbs";
+import { BuyerPathList } from "@/components/content/BuyerPathList";
+import { DownloadCard } from "@/components/content/DownloadCard";
 import { FaqSection } from "@/components/content/FaqSection";
+import { PageSectionNav } from "@/components/content/PageSectionNav";
 import { RfqCta } from "@/components/content/RfqCta";
 import { StructuredData } from "@/components/content/StructuredData";
+import { ButtonLink } from "@/components/ui/ButtonLink";
+import { Container } from "@/components/ui/Container";
+import { Section } from "@/components/ui/Section";
+import { SectionHeading } from "@/components/ui/SectionHeading";
 import { breadcrumbJsonLd, collectionPageJsonLd, faqJsonLd } from "@/lib/content/jsonld";
 import { buildMetadata } from "@/lib/content/seo";
-import { siteConfig } from "@/lib/content/site";
 
 const documentTypes = [
   {
     title: "Product Catalog Request",
     description:
-      "Send the product category, target market and item list. ArcFort Weld can prepare suitable catalog references for quotation discussion.",
+      "Send the product category, target market and item list so suitable catalog references can be reviewed for the quotation.",
   },
   {
     title: "Product Data Sheet Request",
     description:
-      "For exact dimensions or technical details, send the product model, reference part or drawing so the data can be confirmed before use.",
+      "Send the product model, reference part, drawing or sample evidence when exact technical data is required.",
   },
   {
     title: "OEM Packaging Information",
     description:
-      "Private label packaging, carton marks and label layouts can be reviewed after artwork, quantity and product list are confirmed.",
+      "Provide the product list, quantity, logo, label and carton requirements for private-label review.",
   },
   {
-    title: "RFQ Product List",
+    title: "Custom RFQ Product List",
     description:
-      "Buyers can send Excel, CSV, PDF, Word documents, product photos or drawings through the RFQ form or by email.",
+      "Upload an Excel, CSV, PDF or Word product list when the public worksheets do not match the project.",
   },
 ] as const;
 
@@ -37,7 +42,7 @@ const downloadFiles = [
     href: "/downloads/arcfort-distributor-rfq-workbook.xlsx",
     description:
       "Prepare buyer profile, mixed SKU lines, trial and repeat quantities, packing requirements, evidence references and supplier-review status.",
-    note: "Use one row per product or variant, link each line to photos, drawings or sample references, and leave unverified technical details for written confirmation.",
+    note: "Use one row per product or variant and leave unverified technical details for written confirmation.",
   },
   {
     title: "TIG Torch Switch Identification Worksheet",
@@ -45,71 +50,94 @@ const downloadFiles = [
     href: "/downloads/arcfort-tig-torch-switch-identification.csv",
     description:
       "Organize TIG torch, handle switch, control lead, connector and welding machine evidence before requesting a compatible replacement.",
-    note: "Complete only documented fields, attach clear photos of the handle and both cable ends, and leave unverified electrical details blank.",
+    note: "Complete only documented fields and attach clear photos of the handle and both cable ends.",
   },
   {
     title: "Welding Machine RFQ Workbook",
     type: "XLSX",
     href: "/downloads/arcfort-welding-machine-rfq.xlsx",
     description:
-      "Download a structured workbook for welding process, destination electrical input, documented machine requirements, accessories, market documents and approval checkpoints.",
-    note: "Separate buyer requirements from supplier-confirmed data, then upload the workbook with nameplate photos, approved specifications or reference documents.",
+      "Record welding process, destination electrical input, documented machine requirements, accessories, market documents and approval checkpoints.",
+    note: "Separate buyer requirements from supplier-confirmed data and include supporting nameplate or specification references.",
   },
   {
     title: "Plasma Consumables RFQ Workbook",
     type: "XLSX",
     href: "/downloads/arcfort-plasma-consumables-rfq.xlsx",
     description:
-      "Download a structured workbook for plasma torch models, consumable stack line items, quantities, evidence files, compatibility review and packing requirements.",
-    note: "Use one row per electrode, nozzle, swirl ring, retaining cap, shield, spacer or kit, then upload the workbook with labeled photos or drawings.",
+      "Record plasma torch models, consumable stack line items, quantities, evidence files, compatibility review and packing requirements.",
+    note: "Use one row per electrode, nozzle, swirl ring, retaining cap, shield, spacer or kit.",
   },
   {
     title: "OEM Welding Project Brief",
     type: "XLSX",
     href: "/downloads/arcfort-oem-project-brief.xlsx",
     description:
-      "Download a structured workbook for product lines, buyer references, logo, labels, private packaging, evidence files and commercial requirements.",
-    note: "Complete one row for each product or variant, then upload the workbook with drawings or photos through the RFQ form.",
+      "Define product lines, buyer references, logo, labels, private packaging, evidence files and commercial requirements.",
+    note: "Complete one row for each product or variant and attach the available drawing or product photo.",
   },
   {
     title: "ArcFort Weld Distributor Sourcing Guide",
     type: "PDF",
     href: "/downloads/arcfort-distributor-sourcing-guide.pdf",
     description:
-      "Download a concise guide to ArcFort Weld product families, sourcing workflow, confirmed trade terms and distributor RFQ preparation.",
-    note: "Use the checklist to prepare product references, quantities, drawings, packaging requirements and destination details before quotation.",
+      "Review ArcFort Weld product families, sourcing workflow, confirmed trade terms and distributor RFQ preparation.",
+    note: "Use the checklist to prepare references, quantities, drawings, packaging and destination details.",
   },
   {
     title: "Renqiu Ailesen Welding Catalog",
     type: "PDF",
     href: "/downloads/renqiu-ailesen-welding-catalog.pdf",
     description:
-      "Download the Renqiu Ailesen welding product catalog for MIG/MAG, TIG, MMA, plasma cutting and welding accessories sourcing reference.",
-    note: "Use this catalog as a sourcing reference. Final quotation details should be confirmed by model, sample, drawing, quantity and destination.",
+      "Review MIG/MAG, TIG, MMA, plasma cutting and welding accessory product references from the company catalog.",
+    note: "Final quotation details are confirmed by model, sample, drawing, quantity and destination.",
   },
   {
     title: "Public Product List",
     type: "CSV",
     href: "/downloads/arcfort-public-product-list.csv",
     description:
-      "Download the current ArcFort Weld product list with SKU, category, product URL and RFQ-ready sourcing notes.",
-    note: "Use this file to shortlist products before sending quantity, model and packaging details.",
+      "Download the current ArcFort Weld list with SKU, category, product URL and RFQ preparation notes.",
+    note: "Use this file to shortlist products before adding quantity, model and packaging details.",
   },
   {
     title: "RFQ Product List Worksheet",
     type: "CSV",
     href: "/downloads/arcfort-rfq-template.csv",
     description:
-      "Download a buyer worksheet for organizing product name, reference part, quantity, material, packaging and destination details.",
-    note: "Fill this worksheet and upload it through the RFQ form for faster quotation review.",
+      "Organize product name, reference part, quantity, material, packaging and destination details.",
+    note: "Complete the worksheet and upload it through the RFQ form for structured review.",
   },
 ] as const;
 
-const quickLinks = [
-  { href: "/products", label: "Browse Products" },
-  { href: "/rfq", label: "Upload Product List" },
-  { href: "/oem-service", label: "OEM Service" },
-  { href: "/contact", label: "Contact Sales" },
+const sectionLinks = [
+  { href: "#catalogs", label: "Catalogs" },
+  { href: "#rfq-files", label: "RFQ Workbooks" },
+  { href: "#document-requests", label: "Document Requests" },
+  { href: "#download-faq", label: "FAQ" },
+] as const;
+
+const buyerShortcuts = [
+  {
+    href: "/products",
+    title: "Browse Product Systems",
+    description: "Review categories and published product records before building a shortlist.",
+  },
+  {
+    href: "/rfq",
+    title: "Upload a Completed File",
+    description: "Send a workbook, product list, drawing or product photo through the RFQ form.",
+  },
+  {
+    href: "/oem-service",
+    title: "Prepare an OEM Project",
+    description: "Define the base product, artwork, packaging and approval basis.",
+  },
+  {
+    href: "/contact",
+    title: "Contact Sales",
+    description: "Use business email or WhatsApp when a file is too large for the website form.",
+  },
 ] as const;
 
 const faq = [
@@ -121,7 +149,7 @@ const faq = [
   {
     question: "Can ArcFort Weld provide exact product data sheets?",
     answer:
-      "Exact data sheets require confirmed product model, drawing, sample or reference part information. Unconfirmed specifications are not published as final technical data.",
+      "Exact data sheets require a confirmed product model, drawing, sample or reference part. Unverified specifications are not issued as final product data.",
   },
   {
     question: "What file types can buyers send for RFQ?",
@@ -129,9 +157,9 @@ const faq = [
       "The RFQ form accepts PDF, Excel, CSV, Word, JPG and PNG files. Large files can also be sent by email or WhatsApp after initial contact.",
   },
   {
-    question: "Can buyers download a product list before sending an inquiry?",
+    question: "Which worksheet should a distributor use?",
     answer:
-      "Yes. The download center includes a public CSV product list, a general RFQ worksheet, distributor, welding machine and plasma consumables RFQ workbooks, and an OEM project brief. Buyers can complete the suitable file and upload it through the RFQ form.",
+      "Use the Distributor Mixed-Product RFQ Workbook for multi-category product lists. Use a product-specific workbook when a machine, plasma consumable set or OEM project needs more focused fields.",
   },
 ] as const;
 
@@ -143,17 +171,24 @@ export const metadata = buildMetadata({
   keywords: [
     "welding product catalog",
     "distributor welding product RFQ workbook",
-    "welding consumables data sheet",
-    "plasma cutting consumables catalog",
     "plasma consumables RFQ workbook",
     "welding machine RFQ workbook",
-    "TIG torch switch identification worksheet",
     "welding RFQ product list",
     "OEM welding project brief",
   ],
 });
 
 export default function DownloadsPage() {
+  const catalogFiles = downloadFiles.filter((file) => file.type === "PDF");
+  const rfqFiles = downloadFiles.filter((file) => file.type !== "PDF");
+  const requestLinks = documentTypes.map((item) => ({
+    href: `/rfq?product=${encodeURIComponent(
+      `${item.title}\nRequested product category / model:\nDocument purpose:\nQuantity and destination:\nReference, drawing or sample available:`,
+    )}`,
+    title: item.title,
+    description: item.description,
+  }));
+
   return (
     <>
       <StructuredData
@@ -176,131 +211,117 @@ export default function DownloadsPage() {
         ]}
       />
 
-      <section className="bg-white py-12 sm:py-16">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div className="bg-white py-5 sm:py-6">
+        <Container>
           <Breadcrumbs items={[{ label: "Home", href: "/" }, { label: "Downloads" }]} />
-          <div className="mt-8 grid gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:items-end">
-            <div>
-              <p className="text-sm font-bold uppercase leading-6 tracking-[0.14em] text-arc-blue sm:tracking-[0.2em]">
-                Download Center
-              </p>
-              <h1 className="mt-3 break-words font-display text-3xl font-black leading-tight text-arc-midnight sm:text-5xl">
-                Catalog and RFQ documents for welding product sourcing.
-              </h1>
-              <p className="mt-5 text-lg leading-8 text-slate-600">
-                Request product catalogs, data sheets and OEM packaging information for ArcFort Weld
-                welding machines, cutting machines, torch consumables and welding accessories.
-              </p>
-            </div>
-            <div className="border-l-4 border-arc-signal bg-arc-frost p-6">
-              <h2 className="font-display text-2xl font-black text-arc-midnight">
-                Accurate documents need confirmed data
-              </h2>
-              <p className="mt-3 text-sm leading-7 text-slate-700">
-                ArcFort Weld does not publish unverified technical specifications as final data.
-                Send product model, sample photo, drawing or reference part details to request
-                suitable documents for your RFQ.
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
+        </Container>
+      </div>
 
-      <section className="bg-arc-frost py-14 sm:py-16">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="mb-8 grid gap-5 lg:grid-cols-[0.8fr_1.2fr] lg:items-end">
-            <div>
-              <p className="text-sm font-bold uppercase leading-6 tracking-[0.14em] text-arc-blue sm:tracking-[0.2em]">
-                Buyer Downloads
-              </p>
-              <h2 className="mt-3 font-display text-3xl font-black text-arc-midnight">
-                Download working files for faster quotation review.
-              </h2>
-            </div>
-            <p className="text-sm leading-7 text-slate-600">
-              These files are prepared for distributors, importers and repair workshops that need to
-              organize multiple welding consumables, torch parts or cutting parts before RFQ.
-            </p>
-          </div>
-          <div className="mb-10 grid gap-5 md:grid-cols-2">
-            {downloadFiles.map((file) => (
-              <article key={file.href} className="border border-slate-200 bg-white p-6 shadow-sm">
-                <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
-                  <h2 className="break-words font-display text-2xl font-black text-arc-midnight">
-                    {file.title}
-                  </h2>
-                  <span className="inline-flex w-fit bg-arc-midnight px-3 py-1 text-xs font-black uppercase tracking-[0.14em] text-white">
-                    {file.type}
-                  </span>
-                </div>
-                <p className="mt-3 text-sm leading-7 text-slate-600">{file.description}</p>
-                <p className="mt-3 border-l-4 border-arc-signal bg-arc-frost p-3 text-xs font-semibold leading-5 text-slate-700">
-                  {file.note}
-                </p>
-                <a
-                  href={file.href}
-                  download
-                  className="mt-5 inline-flex w-full items-center justify-center bg-arc-blue px-5 py-3 text-sm font-bold uppercase tracking-[0.14em] text-white transition hover:bg-arc-midnight sm:w-auto"
-                >
-                  Download {file.type}
-                </a>
-              </article>
-            ))}
-          </div>
-          <div className="grid gap-5 md:grid-cols-2">
-            {documentTypes.map((item) => (
-              <article key={item.title} className="border border-slate-200 bg-white p-6 shadow-sm">
-                <h2 className="font-display text-2xl font-black text-arc-midnight">{item.title}</h2>
-                <p className="mt-3 text-sm leading-7 text-slate-600">{item.description}</p>
-                <Link
-                  href="/rfq"
-                  className="mt-5 inline-flex text-sm font-bold uppercase tracking-[0.14em] text-arc-blue hover:text-arc-copper"
-                >
-                  Request Document
-                </Link>
-              </article>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <section className="bg-white py-14 sm:py-16">
-        <div className="mx-auto grid max-w-7xl gap-8 px-4 sm:px-6 lg:grid-cols-[0.85fr_1.15fr] lg:px-8">
+      <section className="bg-arc-midnight text-white">
+        <Container className="grid gap-10 py-14 sm:py-16 lg:grid-cols-[1fr_0.72fr] lg:items-end lg:py-20">
           <div>
-            <p className="text-sm font-bold uppercase leading-6 tracking-[0.14em] text-arc-blue sm:tracking-[0.2em]">
-              Buyer Shortcuts
+            <p className="section-eyebrow !text-arc-signal">Technical Resource Center</p>
+            <h1 className="mt-4 max-w-4xl font-display text-4xl font-black leading-tight sm:text-5xl lg:text-6xl">
+              Catalogs and RFQ files for welding product sourcing.
+            </h1>
+            <p className="mt-6 max-w-3xl text-lg leading-8 text-slate-300">
+              Download product references and structured buyer workbooks for torch consumables,
+              plasma cutting parts, welding machines, distributor orders and OEM projects.
             </p>
-            <h2 className="mt-3 font-display text-3xl font-black text-arc-midnight">
-              Move from document request to RFQ faster.
+            <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+              <ButtonLink href="#catalogs">Open Catalogs</ButtonLink>
+              <ButtonLink href="#rfq-files" variant="onDark">
+                Find RFQ Worksheet
+              </ButtonLink>
+            </div>
+          </div>
+          <div className="border-l-4 border-arc-signal pl-6">
+            <h2 className="font-display text-2xl font-black text-white">
+              Use documents as a sourcing reference.
             </h2>
-            <p className="mt-4 text-sm leading-7 text-slate-600">
-              For urgent sourcing, email {siteConfig.email} or send product photos by WhatsApp at{" "}
-              {siteConfig.whatsapp}.
+            <p className="mt-3 text-sm leading-7 text-slate-300">
+              Exact dimensions, material, compatibility and compliance documents require a
+              product-specific reference, drawing, sample or approved specification before use.
             </p>
           </div>
-          <div className="grid gap-4 sm:grid-cols-2">
-            {quickLinks.map((item) => (
-              <Link
-                key={item.href}
-                href={item.href}
-                className="border border-slate-200 bg-arc-frost p-5 font-semibold text-arc-midnight transition hover:border-arc-blue hover:text-arc-blue"
-              >
-                {item.label}
-              </Link>
-            ))}
-          </div>
-        </div>
+        </Container>
       </section>
 
-      <section className="bg-arc-frost py-14 sm:py-16">
-        <div className="mx-auto grid max-w-7xl gap-8 px-4 sm:px-6 lg:grid-cols-[1fr_0.9fr] lg:px-8">
-          <FaqSection items={[...faq]} />
-          <RfqCta
-            title="Need product documents for quotation?"
-            description="Send category, model, quantity, drawing or sample photo. ArcFort Weld will review the requested documents and RFQ information."
+      <PageSectionNav ariaLabel="Download center sections" items={sectionLinks} />
+
+      <Section id="catalogs" labelledBy="catalogs-title" className="bg-white">
+        <Container>
+          <SectionHeading
+            id="catalogs-title"
+            eyebrow="Catalogs & Reference Guides"
+            title="Start with the available product and sourcing references."
+            description="These public PDFs support initial range review. Use the RFQ workbooks below to identify the exact items needed."
+            className="max-w-4xl"
           />
-        </div>
-      </section>
+          <div className="mt-8">
+            {catalogFiles.map((file) => (
+              <DownloadCard key={file.href} {...file} />
+            ))}
+          </div>
+        </Container>
+      </Section>
+
+      <Section id="rfq-files" labelledBy="rfq-files-title" className="bg-arc-frost">
+        <Container>
+          <SectionHeading
+            id="rfq-files-title"
+            eyebrow="RFQ Workbooks & Worksheets"
+            title="Prepare a cleaner line-item inquiry."
+            description="Choose the workbook closest to the purchasing task, complete only documented values and attach the supporting product evidence."
+            className="max-w-4xl"
+          />
+          <div className="mt-8">
+            {rfqFiles.map((file) => (
+              <DownloadCard key={file.href} {...file} />
+            ))}
+          </div>
+        </Container>
+      </Section>
+
+      <Section id="document-requests" labelledBy="document-requests-title" className="bg-white">
+        <Container className="grid gap-10 lg:grid-cols-[0.72fr_1.28fr] lg:gap-16">
+          <SectionHeading
+            id="document-requests-title"
+            eyebrow="Product-Specific Documents"
+            title="Request what the public library cannot confirm."
+            description="Tell the sales team which product, market and quotation decision the document must support."
+          />
+          <BuyerPathList items={requestLinks} ariaLabel="Product document request options" />
+        </Container>
+      </Section>
+
+      <Section className="bg-arc-midnight text-white">
+        <Container className="grid gap-10 lg:grid-cols-[0.72fr_1.28fr] lg:gap-16">
+          <SectionHeading
+            eyebrow="Next Buyer Step"
+            title="Move from a working file to technical review."
+            description="Shortlist the product family, prepare the available evidence and send one itemized inquiry."
+            inverse
+          />
+          <BuyerPathList
+            items={buyerShortcuts}
+            inverse
+            ariaLabel="Download center buyer shortcuts"
+          />
+        </Container>
+      </Section>
+
+      <Section id="download-faq" className="bg-arc-frost">
+        <Container className="grid gap-8 lg:grid-cols-[1fr_0.9fr] lg:items-start">
+          <div>
+            <FaqSection items={[...faq]} title="Download Center FAQ" />
+          </div>
+          <RfqCta
+            title="Need a product-specific document?"
+            description="Send the category, model, quantity, drawing or sample photo and explain which purchasing decision the document must support."
+          />
+        </Container>
+      </Section>
     </>
   );
 }

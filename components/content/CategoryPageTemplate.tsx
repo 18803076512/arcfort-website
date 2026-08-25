@@ -3,12 +3,16 @@ import type { ApplicationPage, Product, ProductCategory } from "@/lib/content/sc
 import { BuyerResourceLinks } from "@/components/content/BuyerResourceLinks";
 import { Breadcrumbs } from "@/components/content/Breadcrumbs";
 import { FaqSection } from "@/components/content/FaqSection";
-import { ProductCard } from "@/components/content/ProductCard";
+import { ProductGrid } from "@/components/content/ProductGrid";
 import { RfqCta } from "@/components/content/RfqCta";
 import { MigTorchPartsRfqBuilder } from "@/components/products/MigTorchPartsRfqBuilder";
 import { PlasmaConsumablesRfqBuilder } from "@/components/products/PlasmaConsumablesRfqBuilder";
 import { TigTorchPartsRfqBuilder } from "@/components/products/TigTorchPartsRfqBuilder";
 import { WeldingMachineRfqBuilder } from "@/components/products/WeldingMachineRfqBuilder";
+import { ButtonLink } from "@/components/ui/ButtonLink";
+import { Container } from "@/components/ui/Container";
+import { Section } from "@/components/ui/Section";
+import { SectionHeading } from "@/components/ui/SectionHeading";
 import { getBuyerGuideForCategory } from "@/lib/content/topic-links";
 
 type CategoryPageTemplateProps = {
@@ -21,7 +25,7 @@ type CategoryPageTemplateProps = {
 const rfqEssentials = [
   "Product name, model, drawing or reference part",
   "Size, thread, material, quantity and packaging requirement",
-  "Destination country, expected lead time and OEM request",
+  "Destination country, delivery target and OEM request",
 ] as const;
 
 export function CategoryPageTemplate({
@@ -46,30 +50,21 @@ export function CategoryPageTemplate({
   const hasWeldingMachineRfqBuilder = category.slug === "welding-machines";
   const hasCategoryRfqBuilder =
     hasPlasmaRfqBuilder || hasTigRfqBuilder || hasMigRfqBuilder || hasWeldingMachineRfqBuilder;
-  const hasBuyerResourceLinks = Boolean(category.buyerResourceSection?.links.length);
-  const categoryStats = [
-    { label: "Products", value: `${products.length}` },
-    { label: "OEM support", value: "Available" },
-    { label: "Trial orders", value: "Accepted" },
-  ] as const;
+  const hasTechnicalSection = hasTechnicalGuide || hasCategoryRfqBuilder;
   const categoryPageSections = [
     { href: "#category-products", label: "Products" },
-    ...(hasBuyerResourceLinks ? [{ href: "#category-buyer-resources", label: "Buyer Paths" }] : []),
-    ...(hasTechnicalGuide
+    ...(hasTechnicalSection
       ? [{ href: "#category-component-guide", label: "Parts & Selection" }]
       : []),
-    ...(hasCategoryRfqBuilder ? [{ href: "#category-rfq-builder", label: "Build RFQ" }] : []),
     { href: "#category-buyer-guide", label: "Buyer Guide" },
-    { href: "#category-product-information", label: "Product Information" },
-    { href: "#category-ordering-information", label: "Ordering & OEM" },
     { href: "#category-applications", label: "Applications" },
     { href: "#category-faq", label: "FAQ & Related" },
   ] as const;
 
   return (
     <>
-      <section className="bg-white py-12 sm:py-16">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div className="border-b border-arc-line bg-white py-5">
+        <Container>
           <Breadcrumbs
             items={[
               { label: "Home", href: "/" },
@@ -77,171 +72,132 @@ export function CategoryPageTemplate({
               { label: category.title },
             ]}
           />
-        </div>
-      </section>
+        </Container>
+      </div>
 
       <section className="bg-arc-midnight text-white">
-        <div className="mx-auto grid max-w-7xl gap-10 px-4 py-14 sm:px-6 sm:py-16 lg:grid-cols-[1fr_0.72fr] lg:items-end lg:px-8">
-          <div>
-            <p className="text-sm font-bold uppercase leading-6 tracking-[0.14em] text-arc-signal sm:tracking-[0.2em]">
-              Product Category
-            </p>
-            <h1 className="mt-4 max-w-4xl break-words font-display text-3xl font-black leading-tight sm:text-5xl lg:text-6xl">
-              {category.title}
-            </h1>
-            <p className="mt-6 max-w-3xl text-lg leading-8 text-slate-300">
-              {category.description}
-            </p>
-            <p className="mt-4 max-w-3xl text-sm leading-7 text-slate-400">{category.seoIntro}</p>
-            <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-              <Link
-                href="#category-products"
-                className="inline-flex w-full items-center justify-center bg-arc-signal px-6 py-3 text-sm font-bold uppercase tracking-[0.16em] text-arc-midnight transition hover:bg-white sm:w-auto"
-              >
-                View Products
-              </Link>
-              <Link
-                href={
-                  hasCategoryRfqBuilder
-                    ? "#category-rfq-builder"
-                    : `/rfq?product=${encodeURIComponent(category.title)}`
-                }
-                className="inline-flex w-full items-center justify-center border border-white/30 px-6 py-3 text-sm font-bold uppercase tracking-[0.16em] text-white transition hover:border-white hover:bg-white/10 sm:w-auto"
-              >
-                {hasCategoryRfqBuilder ? "Build Product RFQ" : "Send Category RFQ"}
-              </Link>
-            </div>
+        <Container className="py-12 sm:py-16 lg:py-20">
+          <p className="section-eyebrow !text-slate-300">Product Category</p>
+          <h1 className="mt-4 max-w-5xl font-display text-4xl font-black leading-[1.06] sm:text-5xl lg:text-6xl">
+            {category.title}
+          </h1>
+          <p className="body-large mt-6 max-w-3xl !text-slate-300">{category.description}</p>
+          <p className="mt-4 max-w-3xl text-sm leading-7 text-slate-400">{category.seoIntro}</p>
+          <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+            <ButtonLink href="#category-products" className="w-full sm:w-auto">
+              View Products
+            </ButtonLink>
+            <ButtonLink
+              href={
+                hasCategoryRfqBuilder
+                  ? "#category-rfq-builder"
+                  : `/rfq?product=${encodeURIComponent(category.title)}`
+              }
+              variant="onDark"
+              className="w-full sm:w-auto"
+            >
+              {hasCategoryRfqBuilder ? "Build Product RFQ" : "Send Category RFQ"}
+            </ButtonLink>
           </div>
-
-          <aside className="border border-white/10 bg-white/5 p-5 shadow-industrial">
-            <p className="text-xs font-bold uppercase tracking-[0.18em] text-arc-signal">
-              Buyer confirmation
-            </p>
-            <div className="mt-5 grid grid-cols-3 gap-px border border-white/10 bg-white/10">
-              {categoryStats.map((item) => (
-                <div key={item.label} className="bg-arc-midnight p-4">
-                  <div className="font-display text-2xl font-black text-arc-signal">
-                    {item.value}
-                  </div>
-                  <div className="mt-1 text-[11px] font-bold uppercase tracking-[0.14em] text-slate-300">
-                    {item.label}
-                  </div>
-                </div>
-              ))}
-            </div>
-            <div className="mt-5 grid gap-3">
-              {rfqEssentials.map((item) => (
-                <div key={item} className="border-l-4 border-arc-signal bg-white/5 p-4">
-                  <p className="text-sm font-semibold leading-6 text-slate-200">{item}</p>
-                </div>
-              ))}
-            </div>
-          </aside>
-        </div>
+          <ol className="mt-10 grid border-t border-white/15 sm:grid-cols-3 sm:divide-x sm:divide-white/15">
+            {rfqEssentials.map((item, index) => (
+              <li
+                key={item}
+                className="grid grid-cols-[2.5rem_1fr] gap-3 border-b border-white/15 py-4 sm:border-b-0 sm:px-5 sm:first:pl-0"
+              >
+                <span className="font-display font-black text-arc-signal">
+                  {String(index + 1).padStart(2, "0")}
+                </span>
+                <span className="text-sm leading-6 text-slate-300">{item}</span>
+              </li>
+            ))}
+          </ol>
+        </Container>
       </section>
 
       <nav
         aria-label={`${category.title} page sections`}
-        className="border-y border-slate-200 bg-white"
+        className="sticky top-[var(--header-height)] z-20 border-b border-arc-line bg-white/95 backdrop-blur"
       >
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <ol
-            className={`grid grid-cols-2 gap-px bg-slate-200 sm:grid-cols-3 ${hasCategoryRfqBuilder && hasBuyerResourceLinks ? "lg:grid-cols-4 xl:grid-cols-9" : hasCategoryRfqBuilder ? "lg:grid-cols-4 xl:grid-cols-8" : hasTechnicalGuide ? "lg:grid-cols-7" : "lg:grid-cols-6"}`}
-          >
-            {categoryPageSections.map((section, index) => (
-              <li key={section.href} className="bg-white">
+        <Container>
+          <ol className="flex min-h-14 items-center gap-6 overflow-x-auto">
+            {categoryPageSections.map((section) => (
+              <li key={section.href} className="shrink-0">
                 <a
                   href={section.href}
-                  className="flex min-h-14 items-center justify-center gap-2 px-3 py-3 text-center text-xs font-bold uppercase leading-5 tracking-[0.1em] text-arc-midnight transition hover:bg-arc-frost hover:text-arc-blue"
+                  className="flex min-h-14 items-center text-xs font-bold uppercase tracking-[0.1em] text-arc-midnight transition hover:text-arc-blue"
                 >
-                  <span className="text-arc-blue">{String(index + 1).padStart(2, "0")}</span>
-                  <span>{section.label}</span>
+                  {section.label}
                 </a>
               </li>
             ))}
           </ol>
-        </div>
+        </Container>
       </nav>
 
-      <section id="category-products" className="scroll-mt-28 bg-arc-frost py-14 sm:py-16">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
-            <div>
-              <p className="text-sm font-bold uppercase tracking-[0.2em] text-arc-blue">
-                Product Range
-              </p>
-              <h2 className="mt-3 font-display text-3xl font-black text-arc-midnight">
-                {category.shortTitle} available for quotation
-              </h2>
-              <p className="mt-4 max-w-3xl text-sm leading-7 text-slate-600">
-                Product listings show current sourcing references. Missing dimensions or
-                compatibility fields should be confirmed by sample, drawing or model number.
-              </p>
-            </div>
-            <Link
+      <Section id="category-products" labelledBy="category-products-title" className="bg-arc-frost">
+        <Container>
+          <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
+            <SectionHeading
+              id="category-products-title"
+              eyebrow="Product Range"
+              title={`${category.shortTitle} available for inquiry.`}
+              description="Published products show current sourcing references. Dimensions and compatibility should be checked against the requested model, drawing or sample before quotation."
+            />
+            <ButtonLink
               href={`/rfq?product=${encodeURIComponent(category.title)}`}
-              className="inline-flex w-full items-center justify-center bg-arc-blue px-5 py-3 text-sm font-bold uppercase tracking-[0.14em] text-white transition hover:bg-arc-midnight sm:w-auto"
+              className="w-full lg:w-auto"
             >
-              Request Quote
-            </Link>
+              Request Category Quote
+            </ButtonLink>
           </div>
-          <div className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-            {products.map((product) => (
-              <ProductCard key={product.slug} product={product} category={category} />
-            ))}
-            {products.length === 0
-              ? category.productRange.map((item) => (
-                  <Link
-                    key={item}
-                    href={`/rfq?product=${encodeURIComponent(`${category.title} - ${item}`)}`}
-                    className="group border border-slate-200 bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:border-arc-blue hover:shadow-industrial"
-                  >
-                    <div className="text-xs font-bold uppercase tracking-[0.16em] text-arc-blue">
-                      RFQ Product Group
-                    </div>
-                    <h3 className="mt-3 font-display text-xl font-black leading-tight text-arc-midnight">
-                      {item}
-                    </h3>
-                    <p className="mt-3 text-sm leading-6 text-slate-600">
-                      Send model, quantity, drawing, photo or package requirement for quotation
-                      confirmation.
-                    </p>
-                    <span className="mt-5 inline-flex text-sm font-bold uppercase tracking-[0.14em] text-arc-blue group-hover:text-arc-copper">
-                      Send RFQ
+          {products.length > 0 ? (
+            <ProductGrid
+              items={products.map((product) => ({ product, category }))}
+              className="mt-10"
+            />
+          ) : (
+            <div className="mt-10 grid gap-px border border-arc-line bg-arc-line md:grid-cols-2">
+              {category.productRange.map((item) => (
+                <Link
+                  key={item}
+                  href={`/rfq?product=${encodeURIComponent(`${category.title} - ${item}`)}`}
+                  className="bg-white p-6 transition hover:bg-arc-frost"
+                >
+                  <h3 className="font-display text-xl font-black text-arc-midnight">{item}</h3>
+                  <span className="mt-4 inline-flex text-sm font-bold text-arc-blue">
+                    Send product reference{" "}
+                    <span className="ml-2" aria-hidden="true">
+                      &rarr;
                     </span>
-                  </Link>
-                ))
-              : null}
-          </div>
-        </div>
-      </section>
+                  </span>
+                </Link>
+              ))}
+            </div>
+          )}
+        </Container>
+      </Section>
 
       {category.buyerResourceSection ? (
         <BuyerResourceLinks id="category-buyer-resources" {...category.buyerResourceSection} />
       ) : null}
 
-      {hasTechnicalGuide ? (
-        <section
+      {hasTechnicalSection ? (
+        <Section
           id="category-component-guide"
-          className="scroll-mt-28 border-y border-slate-200 bg-white py-14 sm:py-16"
+          labelledBy="category-component-guide-title"
+          className="border-y border-arc-line bg-white"
         >
-          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <div className="max-w-4xl">
-              <p className="text-sm font-bold uppercase tracking-[0.2em] text-arc-blue">
-                Component Identification
-              </p>
-              <h2 className="mt-3 font-display text-3xl font-black leading-tight text-arc-midnight sm:text-4xl">
-                Understand the parts before confirming compatibility.
-              </h2>
-              <p className="mt-4 text-sm leading-7 text-slate-600">
-                Similar-looking welding and cutting parts can use different dimensions, threads or
-                assembly relationships. Use this component index to prepare an RFQ, then confirm the
-                exact product from a torch model, drawing, sample or approved reference.
-              </p>
-            </div>
+          <Container>
+            <SectionHeading
+              id="category-component-guide-title"
+              eyebrow="Parts & Selection"
+              title="Identify the assembly before confirming fit."
+              description="Similar-looking parts can use different dimensions, threads or assembly relationships. Use the product family as a sourcing reference, then confirm the exact item from evidence."
+            />
 
             {category.componentGuide?.length ? (
-              <div className="mt-8 grid gap-4 lg:grid-cols-2">
+              <div className="mt-10 grid border-t-2 border-arc-midnight lg:grid-cols-2 lg:gap-x-10">
                 {category.componentGuide.map((component, index) => {
                   const linkedProduct = component.productSlug
                     ? products.find((product) => product.slug === component.productSlug)
@@ -250,17 +206,17 @@ export function CategoryPageTemplate({
                   return (
                     <article
                       key={component.name}
-                      className="grid gap-4 border border-slate-200 bg-white p-5 shadow-sm sm:grid-cols-[3.5rem_1fr]"
+                      className="grid gap-3 border-b border-arc-line py-5 sm:grid-cols-[3rem_1fr]"
                     >
-                      <div className="font-display text-3xl font-black text-arc-blue">
+                      <span className="font-display text-xl font-black text-arc-blue">
                         {String(index + 1).padStart(2, "0")}
-                      </div>
+                      </span>
                       <div>
                         <h3 className="font-display text-xl font-black text-arc-midnight">
                           {linkedProduct ? (
                             <Link
                               href={`/products/${category.slug}/${linkedProduct.slug}`}
-                              className="transition hover:text-arc-blue"
+                              className="hover:text-arc-blue"
                             >
                               {component.name}
                             </Link>
@@ -268,15 +224,11 @@ export function CategoryPageTemplate({
                             component.name
                           )}
                         </h3>
-                        <p className="mt-3 text-sm leading-6 text-slate-700">{component.role}</p>
-                        <div className="mt-4 border-l-4 border-arc-signal bg-arc-frost p-4">
-                          <p className="text-[11px] font-bold uppercase tracking-[0.16em] text-arc-blue">
-                            Buyer check
-                          </p>
-                          <p className="mt-2 text-sm leading-6 text-slate-700">
-                            {component.buyerCheck}
-                          </p>
-                        </div>
+                        <p className="mt-2 text-sm leading-6 text-slate-700">{component.role}</p>
+                        <p className="mt-3 text-sm leading-6 text-slate-500">
+                          <strong className="text-arc-midnight">Buyer check:</strong>{" "}
+                          {component.buyerCheck}
+                        </p>
                       </div>
                     </article>
                   );
@@ -285,414 +237,362 @@ export function CategoryPageTemplate({
             ) : null}
 
             {category.referenceFamilies?.length ? (
-              <div className="mt-10">
-                <div className="max-w-4xl">
-                  <p className="text-xs font-bold uppercase tracking-[0.18em] text-arc-blue">
-                    Company Catalog Reference
+              <details className="mt-10 border-y border-arc-line">
+                <summary className="flex min-h-16 cursor-pointer items-center justify-between gap-5 py-4 font-display text-xl font-black text-arc-midnight">
+                  <span>
+                    Company Catalog Reference: Product Families ({category.referenceFamilies.length}
+                    )
+                  </span>
+                  <span className="text-arc-blue" aria-hidden="true">
+                    +
+                  </span>
+                </summary>
+                <div className="border-t border-arc-line pb-6">
+                  <p className="max-w-4xl py-5 text-sm leading-7 text-slate-600">
+                    These company-catalog family names help organize an inquiry. They are not
+                    universal-fit claims; confirm the torch label, part reference, sample, drawing
+                    or approved component stack.
                   </p>
-                  <h3 className="mt-3 font-display text-2xl font-black leading-tight text-arc-midnight sm:text-3xl">
-                    Torch families and documented consumable stacks
-                  </h3>
-                  <p className="mt-3 text-sm leading-7 text-slate-600">
-                    The Renqiu Ailesen company catalog shows the following product-family
-                    breakdowns. Use them to organize an inquiry; final compatibility still requires
-                    the exact torch label, part reference, sample, drawing or approved stack.
-                  </p>
-                </div>
-                <div className="mt-6 overflow-hidden border border-slate-200 bg-white shadow-sm">
-                  <div className="hidden grid-cols-[0.55fr_1.05fr_1.4fr] bg-arc-midnight text-xs font-bold uppercase tracking-[0.14em] text-white md:grid">
-                    <div className="p-4">Catalog family</div>
-                    <div className="border-l border-white/10 p-4">Documented components</div>
-                    <div className="border-l border-white/10 p-4">Buyer confirmation</div>
-                  </div>
-                  <div className="divide-y divide-slate-200">
-                    {category.referenceFamilies.map((family) => (
-                      <article
-                        key={family.name}
-                        className="grid gap-4 p-4 md:grid-cols-[0.55fr_1.05fr_1.4fr] md:gap-0 md:p-0"
-                      >
-                        <div className="md:p-4">
-                          <p className="text-[11px] font-bold uppercase tracking-[0.14em] text-slate-500 md:hidden">
-                            Catalog family
-                          </p>
-                          <h4 className="mt-1 font-display text-xl font-black text-arc-midnight md:mt-0">
-                            {family.name}
-                          </h4>
-                        </div>
-                        <div className="md:border-l md:border-slate-200 md:p-4">
-                          <p className="text-[11px] font-bold uppercase tracking-[0.14em] text-slate-500 md:hidden">
-                            Documented components
-                          </p>
-                          <p className="mt-1 text-sm font-semibold leading-6 text-slate-700 md:mt-0">
+                  <div className="overflow-hidden border border-arc-line">
+                    <div className="hidden grid-cols-[0.55fr_1.05fr_1.4fr] bg-arc-midnight text-xs font-bold uppercase tracking-[0.12em] text-white md:grid">
+                      <div className="p-4">Catalog family</div>
+                      <div className="border-l border-white/10 p-4">Documented components</div>
+                      <div className="border-l border-white/10 p-4">Buyer confirmation</div>
+                    </div>
+                    <div className="divide-y divide-arc-line">
+                      {category.referenceFamilies.map((family) => (
+                        <article
+                          key={family.name}
+                          className="grid gap-3 p-4 md:grid-cols-[0.55fr_1.05fr_1.4fr] md:gap-0 md:p-0"
+                        >
+                          <div className="md:p-4">
+                            <h4 className="font-display text-lg font-black text-arc-midnight">
+                              {family.seriesSlug ? (
+                                <Link
+                                  href={`/products/${category.slug}/series/${family.seriesSlug}`}
+                                  className="hover:text-arc-blue"
+                                >
+                                  {family.name}
+                                </Link>
+                              ) : (
+                                family.name
+                              )}
+                            </h4>
+                          </div>
+                          <p className="text-sm font-semibold leading-6 text-slate-700 md:border-l md:border-arc-line md:p-4">
                             {family.documentedComponents.join(", ")}
                           </p>
-                        </div>
-                        <div className="border-l-4 border-arc-signal bg-arc-frost p-4 md:border-y-0 md:border-l md:border-slate-200 md:bg-transparent">
-                          <p className="text-[11px] font-bold uppercase tracking-[0.14em] text-slate-500 md:hidden">
-                            Buyer confirmation
-                          </p>
-                          <p className="mt-1 text-sm leading-6 text-slate-700 md:mt-0">
+                          <p className="text-sm leading-6 text-slate-600 md:border-l md:border-arc-line md:p-4">
                             {family.buyerCheck}
                           </p>
-                        </div>
-                      </article>
-                    ))}
+                        </article>
+                      ))}
+                    </div>
                   </div>
-                </div>
-                <div className="mt-3 flex flex-col gap-3 text-xs font-semibold leading-5 text-slate-600 sm:flex-row sm:items-center sm:justify-between">
-                  <p>
-                    Source: Renqiu Ailesen Welding Technology Co., Ltd. welding catalog,{" "}
-                    {category.title}
-                    section. Catalog family names are sourcing references and are not universal-fit
-                    claims.
-                  </p>
                   <a
                     href="/downloads/renqiu-ailesen-welding-catalog.pdf"
                     target="_blank"
                     rel="noreferrer"
-                    className="inline-flex min-h-10 shrink-0 items-center justify-center border border-arc-blue px-4 text-center font-bold uppercase tracking-[0.12em] text-arc-blue transition hover:bg-arc-frost"
+                    className="mt-5 inline-flex min-h-11 items-center text-sm font-bold text-arc-blue hover:text-arc-copper"
                   >
-                    Open Company Catalog
+                    Open company catalog{" "}
+                    <span className="ml-2" aria-hidden="true">
+                      &rarr;
+                    </span>
                   </a>
                 </div>
-              </div>
+              </details>
             ) : null}
 
             {hasPlasmaRfqBuilder && category.referenceFamilies ? (
-              <div id="category-rfq-builder" className="scroll-mt-28 pt-8">
+              <div id="category-rfq-builder" className="scroll-mt-28 pt-10">
                 <PlasmaConsumablesRfqBuilder torchFamilies={category.referenceFamilies} />
               </div>
             ) : null}
-
             {hasTigRfqBuilder && category.referenceFamilies ? (
-              <div id="category-rfq-builder" className="scroll-mt-28 pt-8">
+              <div id="category-rfq-builder" className="scroll-mt-28 pt-10">
                 <TigTorchPartsRfqBuilder torchFamilies={category.referenceFamilies} />
               </div>
             ) : null}
-
             {hasMigRfqBuilder && category.referenceFamilies ? (
-              <div id="category-rfq-builder" className="scroll-mt-28 pt-8">
+              <div id="category-rfq-builder" className="scroll-mt-28 pt-10">
                 <MigTorchPartsRfqBuilder torchFamilies={category.referenceFamilies} />
               </div>
             ) : null}
-
             {hasWeldingMachineRfqBuilder ? (
-              <div id="category-rfq-builder" className="scroll-mt-28 pt-8">
+              <div id="category-rfq-builder" className="scroll-mt-28 pt-10">
                 <WeldingMachineRfqBuilder />
               </div>
             ) : null}
 
-            <div className="mt-8 grid gap-6 lg:grid-cols-[1.15fr_0.85fr]">
-              {category.selectionVariables?.length ? (
-                <div className="border border-slate-200 bg-arc-frost p-5 sm:p-6">
-                  <p className="text-xs font-bold uppercase tracking-[0.18em] text-arc-blue">
-                    Selection Variables
-                  </p>
-                  <h3 className="mt-3 font-display text-2xl font-black text-arc-midnight">
-                    Details that change the product match
-                  </h3>
-                  <dl className="mt-5 grid gap-3">
-                    {category.selectionVariables.map((variable) => (
-                      <div key={variable.label} className="border border-slate-200 bg-white p-4">
-                        <dt className="font-display text-lg font-black text-arc-midnight">
-                          {variable.label}
-                        </dt>
-                        <dd className="mt-2 text-sm leading-6 text-slate-600">
-                          {variable.whyItMatters}
-                        </dd>
-                        <dd className="mt-3 text-xs font-semibold leading-5 text-arc-blue">
-                          Confirm with: {variable.confirmationMethod}
-                        </dd>
-                      </div>
-                    ))}
-                  </dl>
-                </div>
-              ) : null}
-
-              {category.compatibilityChecklist?.length ? (
-                <aside className="border border-slate-200 bg-arc-midnight p-5 text-white shadow-industrial sm:p-6">
-                  <p className="text-xs font-bold uppercase tracking-[0.18em] text-arc-signal">
-                    Compatibility Workflow
-                  </p>
-                  <h3 className="mt-3 font-display text-2xl font-black">
-                    Prepare evidence before quotation
-                  </h3>
-                  <ol className="mt-5 grid gap-3">
-                    {category.compatibilityChecklist.map((item, index) => (
-                      <li key={item} className="grid grid-cols-[2rem_1fr] gap-3 bg-white/5 p-4">
-                        <span className="font-display font-black text-arc-signal">
-                          {String(index + 1).padStart(2, "0")}
-                        </span>
-                        <span className="text-sm leading-6 text-slate-200">{item}</span>
-                      </li>
-                    ))}
-                  </ol>
-                  <div className="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2">
+            {category.selectionVariables?.length || category.compatibilityChecklist?.length ? (
+              <div className="mt-10 grid gap-10 border-t border-arc-line pt-10 lg:grid-cols-2">
+                {category.selectionVariables?.length ? (
+                  <div>
+                    <h3 className="font-display text-2xl font-black text-arc-midnight">
+                      Selection variables
+                    </h3>
+                    <dl className="mt-5 border-t-2 border-arc-midnight">
+                      {category.selectionVariables.map((variable) => (
+                        <div key={variable.label} className="border-b border-arc-line py-4">
+                          <dt className="font-bold text-arc-midnight">{variable.label}</dt>
+                          <dd className="mt-2 text-sm leading-6 text-slate-600">
+                            {variable.whyItMatters}
+                          </dd>
+                          <dd className="mt-2 text-sm font-semibold text-arc-blue">
+                            Confirm with: {variable.confirmationMethod}
+                          </dd>
+                        </div>
+                      ))}
+                    </dl>
+                  </div>
+                ) : null}
+                {category.compatibilityChecklist?.length ? (
+                  <div className="bg-arc-midnight p-6 text-white sm:p-8">
+                    <h3 className="font-display text-2xl font-black">Compatibility evidence</h3>
+                    <ol className="mt-5 border-t border-white/15">
+                      {category.compatibilityChecklist.map((item, index) => (
+                        <li
+                          key={item}
+                          className="grid grid-cols-[2.5rem_1fr] gap-3 border-b border-white/15 py-4"
+                        >
+                          <span className="font-display font-black text-arc-signal">
+                            {String(index + 1).padStart(2, "0")}
+                          </span>
+                          <span className="text-sm leading-6 text-slate-300">{item}</span>
+                        </li>
+                      ))}
+                    </ol>
                     <Link
                       href={buyerGuideLink.href}
-                      className="inline-flex min-h-12 items-center justify-center bg-arc-signal px-4 text-center text-xs font-bold uppercase tracking-[0.12em] text-arc-midnight transition hover:bg-white"
+                      className="mt-6 inline-flex min-h-11 items-center font-bold text-arc-signal hover:text-white"
                     >
-                      Read Identification Guide
-                    </Link>
-                    <Link
-                      href={`/rfq?product=${encodeURIComponent(category.title)}`}
-                      className="inline-flex min-h-12 items-center justify-center border border-white/30 px-4 text-center text-xs font-bold uppercase tracking-[0.12em] text-white transition hover:border-white hover:bg-white/10"
-                    >
-                      Send Evidence for Review
+                      Read identification guide{" "}
+                      <span className="ml-2" aria-hidden="true">
+                        &rarr;
+                      </span>
                     </Link>
                   </div>
-                </aside>
+                ) : null}
+              </div>
+            ) : null}
+          </Container>
+        </Section>
+      ) : null}
+
+      <Section
+        id="category-buyer-guide"
+        labelledBy="category-buyer-guide-title"
+        className="bg-white"
+      >
+        <Container>
+          <div className="grid gap-10 lg:grid-cols-[0.7fr_1.3fr]">
+            <SectionHeading
+              id="category-buyer-guide-title"
+              eyebrow="Buyer Guide"
+              title={`How to choose ${category.shortTitle}.`}
+              description="Use these checks to prepare a sourcing request. Confirmed drawings, samples and approved references remain the basis for final product matching."
+            />
+            <ol className="border-t-2 border-arc-midnight">
+              {category.buyerGuide.map((item, index) => (
+                <li
+                  key={item}
+                  className="grid gap-3 border-b border-arc-line py-5 sm:grid-cols-[3rem_1fr]"
+                >
+                  <span className="font-display text-xl font-black text-arc-blue">
+                    {String(index + 1).padStart(2, "0")}
+                  </span>
+                  <p className="text-sm font-semibold leading-7 text-slate-700">{item}</p>
+                </li>
+              ))}
+            </ol>
+          </div>
+
+          <div className="mt-12 grid gap-8 border-t border-arc-line pt-10 lg:grid-cols-3">
+            <article>
+              <h3 className="font-display text-2xl font-black text-arc-midnight">Product range</h3>
+              <ul className="mt-5 grid gap-3">
+                {category.productRange.map((item) => (
+                  <li
+                    key={item}
+                    className="border-l-2 border-arc-blue pl-4 text-sm leading-6 text-slate-700"
+                  >
+                    {item}
+                  </li>
+                ))}
+              </ul>
+            </article>
+            <article>
+              <h3 className="font-display text-2xl font-black text-arc-midnight">
+                Specifications to confirm
+              </h3>
+              <ul className="mt-5 grid gap-3">
+                {category.commonSpecifications.map((item) => (
+                  <li
+                    key={item}
+                    className="border-l-2 border-arc-line pl-4 text-sm leading-6 text-slate-700"
+                  >
+                    {item}
+                  </li>
+                ))}
+              </ul>
+            </article>
+            <article>
+              <h3 className="font-display text-2xl font-black text-arc-midnight">
+                Compatibility, packing & OEM
+              </h3>
+              <p className="mt-5 text-sm leading-7 text-slate-600">{category.compatibilityNote}</p>
+              <p className="mt-4 text-sm leading-7 text-slate-600">{category.packagingMoqNote}</p>
+              <p className="mt-4 text-sm leading-7 text-slate-600">{category.oemServiceNote}</p>
+              <Link
+                href="/oem-service"
+                className="mt-5 inline-flex min-h-11 items-center text-sm font-bold text-arc-blue hover:text-arc-copper"
+              >
+                Review OEM service{" "}
+                <span className="ml-2" aria-hidden="true">
+                  &rarr;
+                </span>
+              </Link>
+            </article>
+          </div>
+
+          {category.features.length > 0 ? (
+            <div className="mt-10 border-y border-arc-line py-6">
+              <p className="caption">Supply considerations</p>
+              <ul className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+                {category.features.map((feature) => (
+                  <li key={feature} className="flex gap-3 text-sm leading-6 text-slate-700">
+                    <span className="mt-2 h-1.5 w-1.5 shrink-0 bg-arc-signal" />
+                    <span>{feature}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ) : null}
+        </Container>
+      </Section>
+
+      <Section
+        id="category-applications"
+        labelledBy="category-applications-title"
+        className="bg-arc-midnight text-white"
+      >
+        <Container>
+          <div className="grid gap-10 lg:grid-cols-[0.68fr_1.32fr]">
+            <SectionHeading
+              id="category-applications-title"
+              eyebrow="Applications"
+              title="Industrial sourcing scenarios."
+              description="Product families support distributor programs, repeat maintenance purchasing and industrial welding or cutting requirements."
+              inverse
+            />
+            <div>
+              <div className="grid border-t border-white/15 sm:grid-cols-2">
+                {category.applications.map((application) => (
+                  <p
+                    key={application}
+                    className="border-b border-white/15 py-4 text-sm font-semibold leading-7 text-slate-200 sm:odd:pr-5 sm:even:border-l sm:even:border-white/15 sm:even:pl-5"
+                  >
+                    {application}
+                  </p>
+                ))}
+              </div>
+              {relatedApplications.length > 0 ? (
+                <div className="mt-8">
+                  <p className="caption !text-slate-300">Related application pages</p>
+                  <div className="mt-4 flex flex-wrap gap-x-6 gap-y-3">
+                    {relatedApplications.map((application) => (
+                      <Link
+                        key={application.slug}
+                        href={`/applications/${application.slug}`}
+                        className="text-sm font-bold text-arc-signal hover:text-white"
+                      >
+                        {application.title} <span aria-hidden="true">&rarr;</span>
+                      </Link>
+                    ))}
+                  </div>
+                </div>
+              ) : null}
+              {category.buyerTool ? (
+                <div className="mt-8 border-t border-white/15 pt-6">
+                  <h3 className="font-display text-xl font-black">{category.buyerTool.title}</h3>
+                  <p className="mt-2 max-w-2xl text-sm leading-6 text-slate-300">
+                    {category.buyerTool.description}
+                  </p>
+                  <a
+                    href={category.buyerTool.href}
+                    download
+                    className="mt-5 inline-flex min-h-11 items-center font-bold text-arc-signal hover:text-white"
+                  >
+                    {category.buyerTool.buttonLabel}{" "}
+                    <span className="ml-2" aria-hidden="true">
+                      &darr;
+                    </span>
+                  </a>
+                </div>
               ) : null}
             </div>
           </div>
-        </section>
-      ) : null}
+        </Container>
+      </Section>
 
-      <section id="category-buyer-guide" className="scroll-mt-28 bg-white py-14 sm:py-16">
-        <div className="mx-auto grid max-w-7xl gap-8 px-4 sm:px-6 lg:grid-cols-[0.78fr_1.22fr] lg:px-8">
-          <div className="lg:sticky lg:top-28">
-            <p className="text-sm font-bold uppercase tracking-[0.2em] text-arc-blue">
-              Category Buyer Guide
-            </p>
-            <h2 className="mt-3 font-display text-3xl font-black text-arc-midnight">
-              How buyers should choose {category.shortTitle}
-            </h2>
-            <p className="mt-4 text-sm leading-7 text-slate-600">
-              Industrial purchasing is safer when each small fit detail is checked before quotation.
-              Use this section as a sourcing checklist, not as a substitute for confirmed drawings
-              or samples.
-            </p>
-          </div>
-          <div className="grid gap-5">
-            {category.buyerGuide.map((item, index) => (
-              <article
-                key={item}
-                className="grid gap-4 border border-slate-200 bg-white p-5 shadow-sm sm:grid-cols-[4rem_1fr] sm:items-start"
+      <Section id="category-faq" labelledBy="category-related-title" className="bg-arc-frost">
+        <Container>
+          <div className="grid gap-10 lg:grid-cols-[1.15fr_0.85fr]">
+            <FaqSection items={category.faq} />
+            <aside>
+              <h2
+                id="category-related-title"
+                className="font-display text-2xl font-black text-arc-midnight"
               >
-                <div className="font-display text-4xl font-black text-arc-blue">
-                  {String(index + 1).padStart(2, "0")}
-                </div>
-                <p className="text-sm font-semibold leading-7 text-slate-700">{item}</p>
-              </article>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <section
-        id="category-product-information"
-        className="scroll-mt-28 bg-arc-frost py-14 sm:py-16"
-      >
-        <div className="mx-auto grid max-w-7xl gap-8 px-4 sm:px-6 lg:grid-cols-2 lg:px-8">
-          <article className="border border-slate-200 bg-white p-5 shadow-sm sm:p-6">
-            <p className="text-sm font-bold uppercase tracking-[0.2em] text-arc-blue">
-              What Buyers Can Source
-            </p>
-            <h2 className="mt-3 font-display text-2xl font-black text-arc-midnight">
-              Product range
-            </h2>
-            <div className="mt-5 grid gap-3">
-              {category.productRange.map((item) => (
-                <div key={item} className="border-l-4 border-arc-signal bg-arc-frost p-4">
-                  <p className="text-sm font-semibold leading-6 text-slate-700">{item}</p>
-                </div>
-              ))}
-            </div>
-          </article>
-
-          <article className="border border-slate-200 bg-white p-5 shadow-sm sm:p-6">
-            <p className="text-sm font-bold uppercase tracking-[0.2em] text-arc-blue">
-              Details To Confirm
-            </p>
-            <h2 className="mt-3 font-display text-2xl font-black text-arc-midnight">
-              Common specifications
-            </h2>
-            <div className="mt-5 grid gap-3">
-              {category.commonSpecifications.map((item) => (
-                <div key={item} className="border border-slate-100 bg-slate-50 p-4">
-                  <p className="text-sm leading-6 text-slate-700">{item}</p>
-                </div>
-              ))}
-            </div>
-          </article>
-        </div>
-      </section>
-
-      <section id="category-ordering-information" className="scroll-mt-28 bg-white py-14 sm:py-16">
-        <div className="mx-auto grid max-w-7xl gap-5 px-4 sm:px-6 lg:grid-cols-3 lg:px-8">
-          <article className="border border-slate-200 bg-white p-5 shadow-sm sm:p-6">
-            <p className="text-sm font-bold uppercase tracking-[0.2em] text-arc-blue">
-              Compatibility
-            </p>
-            <h2 className="mt-3 font-display text-2xl font-black text-arc-midnight">
-              Fit and model confirmation
-            </h2>
-            <p className="mt-4 text-sm leading-7 text-slate-600">{category.compatibilityNote}</p>
-          </article>
-
-          <article className="border border-slate-200 bg-white p-5 shadow-sm sm:p-6">
-            <p className="text-sm font-bold uppercase tracking-[0.2em] text-arc-blue">
-              OEM Service
-            </p>
-            <h2 className="mt-3 font-display text-2xl font-black text-arc-midnight">
-              Packaging and brand support
-            </h2>
-            <p className="mt-4 text-sm leading-7 text-slate-600">{category.oemServiceNote}</p>
-            <Link
-              href="/oem-service"
-              className="mt-5 inline-flex text-sm font-bold uppercase tracking-[0.14em] text-arc-blue hover:text-arc-copper"
-            >
-              Review OEM Service
-            </Link>
-          </article>
-
-          <article className="border border-slate-200 bg-white p-5 shadow-sm sm:p-6">
-            <p className="text-sm font-bold uppercase tracking-[0.2em] text-arc-blue">
-              Packaging & MOQ
-            </p>
-            <h2 className="mt-3 font-display text-2xl font-black text-arc-midnight">
-              Trial order and export packing
-            </h2>
-            <p className="mt-4 text-sm leading-7 text-slate-600">{category.packagingMoqNote}</p>
-            <Link
-              href={`/rfq?product=${encodeURIComponent(category.title)}`}
-              className="mt-5 inline-flex text-sm font-bold uppercase tracking-[0.14em] text-arc-blue hover:text-arc-copper"
-            >
-              Send Category RFQ
-            </Link>
-          </article>
-        </div>
-      </section>
-
-      <section
-        id="category-applications"
-        className="scroll-mt-28 bg-arc-midnight py-14 text-white sm:py-16"
-      >
-        <div className="mx-auto grid max-w-7xl gap-8 px-4 sm:px-6 lg:grid-cols-[0.8fr_1.2fr] lg:px-8">
-          <div>
-            <p className="text-sm font-bold uppercase tracking-[0.2em] text-arc-signal">
-              Applications
-            </p>
-            <h2 className="mt-3 font-display text-3xl font-black">Industrial sourcing scenarios</h2>
-            <p className="mt-4 text-sm leading-7 text-slate-300">
-              These products support repeat purchasing, maintenance supply and overseas B2B
-              distributor programs.
-            </p>
-          </div>
-          <div className="grid gap-7">
-            <div className="grid gap-4 sm:grid-cols-2">
-              {category.applications.map((application) => (
-                <div key={application} className="border-l-4 border-arc-signal bg-white/5 p-5">
-                  <p className="font-semibold leading-7 text-slate-100">{application}</p>
-                </div>
-              ))}
-            </div>
-            {relatedApplications.length > 0 ? (
-              <div>
-                <p className="text-xs font-bold uppercase tracking-[0.16em] text-arc-signal">
-                  Related Application Pages
-                </p>
-                <div className="mt-4 grid gap-3 sm:grid-cols-3">
-                  {relatedApplications.map((application) => (
-                    <Link
-                      key={application.slug}
-                      href={`/applications/${application.slug}`}
-                      className="border border-white/15 bg-white/5 p-4 transition hover:border-arc-signal hover:bg-white/10"
-                    >
-                      <h3 className="font-display text-lg font-black text-white">
-                        {application.title}
-                      </h3>
-                      <p className="mt-2 text-xs leading-5 text-slate-300">
-                        {application.description}
-                      </p>
-                    </Link>
-                  ))}
-                </div>
-              </div>
-            ) : null}
-            {category.buyerTool ? (
-              <div className="border border-white/15 bg-white/5 p-5">
-                <p className="text-xs font-bold uppercase tracking-[0.16em] text-arc-signal">
-                  Buyer RFQ Tool
-                </p>
-                <h3 className="mt-3 font-display text-xl font-black text-white">
-                  {category.buyerTool.title}
-                </h3>
-                <p className="mt-3 text-sm leading-6 text-slate-300">
-                  {category.buyerTool.description}
-                </p>
-                <a
-                  href={category.buyerTool.href}
-                  download
-                  className="mt-5 inline-flex min-h-12 w-full items-center justify-center bg-arc-signal px-5 text-center text-xs font-bold uppercase tracking-[0.12em] text-arc-midnight transition hover:bg-white sm:w-auto"
-                >
-                  {category.buyerTool.buttonLabel}
-                </a>
-              </div>
-            ) : null}
-          </div>
-        </div>
-      </section>
-
-      <section id="category-faq" className="scroll-mt-28 bg-arc-frost py-14 sm:py-16">
-        <div className="mx-auto grid max-w-7xl gap-8 px-4 sm:px-6 lg:grid-cols-[1fr_0.85fr] lg:px-8">
-          <FaqSection items={category.faq} />
-          <div className="border border-slate-200 bg-white p-5 shadow-sm sm:p-6">
-            <h2 className="font-display text-2xl font-black text-arc-midnight">
-              Related Categories
-            </h2>
-            <p className="mt-3 text-sm leading-7 text-slate-600">
-              Buyers often compare related consumables, accessories and machine categories when
-              preparing mixed RFQ lists.
-            </p>
-            <div className="mt-5 grid gap-3">
-              {relatedCategories.map((relatedCategory) => (
-                <Link
-                  key={relatedCategory.slug}
-                  href={`/products/${relatedCategory.slug}`}
-                  className="border border-slate-100 p-4 transition hover:border-arc-blue hover:bg-arc-frost"
-                >
-                  <div
-                    data-nosnippet
-                    data-snippet-region="related-category-code"
-                    className="text-xs font-bold uppercase tracking-[0.16em] text-arc-blue"
+                Related categories
+              </h2>
+              <div className="mt-5 border-t-2 border-arc-midnight">
+                {relatedCategories.map((relatedCategory) => (
+                  <Link
+                    key={relatedCategory.slug}
+                    href={`/products/${relatedCategory.slug}`}
+                    className="group flex items-center justify-between gap-5 border-b border-arc-line py-4"
                   >
-                    {relatedCategory.code}
-                  </div>
-                  <div className="mt-2 font-display text-xl font-black text-arc-midnight">
-                    {relatedCategory.title}
-                  </div>
+                    <span className="flex min-w-0 items-center gap-4">
+                      <span
+                        data-nosnippet
+                        data-snippet-region="related-category-code"
+                        className="shrink-0 text-xs font-bold uppercase text-arc-blue"
+                      >
+                        {relatedCategory.code}
+                      </span>
+                      <span className="font-display text-lg font-black text-arc-midnight group-hover:text-arc-blue">
+                        {relatedCategory.title}
+                      </span>
+                    </span>
+                    <span className="text-arc-blue" aria-hidden="true">
+                      &rarr;
+                    </span>
+                  </Link>
+                ))}
+              </div>
+              <div className="mt-8 border-t border-arc-line pt-6">
+                <p className="caption">Related buyer guide</p>
+                <Link href={buyerGuideLink.href} className="group mt-3 block">
+                  <h3 className="font-display text-xl font-black text-arc-midnight group-hover:text-arc-blue">
+                    {buyerGuideLink.title}
+                  </h3>
                   <p className="mt-2 text-sm leading-6 text-slate-600">
-                    {relatedCategory.description}
+                    {buyerGuideLink.description}
                   </p>
                 </Link>
-              ))}
-            </div>
-            <div className="mt-6 border-t border-slate-200 pt-6">
-              <p className="text-xs font-bold uppercase tracking-[0.16em] text-arc-blue">
-                Related Buyer Guide
-              </p>
-              <Link href={buyerGuideLink.href} className="group mt-3 block">
-                <h3 className="font-display text-xl font-black text-arc-midnight group-hover:text-arc-blue">
-                  {buyerGuideLink.title}
-                </h3>
-                <p className="mt-2 text-sm leading-6 text-slate-600">
-                  {buyerGuideLink.description}
-                </p>
-                <span className="mt-4 inline-flex text-sm font-bold uppercase tracking-[0.14em] text-arc-blue group-hover:text-arc-copper">
-                  Read Buyer Guide
-                </span>
-              </Link>
-            </div>
+              </div>
+            </aside>
           </div>
-        </div>
-      </section>
+        </Container>
+      </Section>
 
-      <section className="bg-white py-14 sm:py-16">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <Section className="bg-white">
+        <Container>
           <RfqCta title={`Need ${category.shortTitle}?`} />
-        </div>
-      </section>
+        </Container>
+      </Section>
     </>
   );
 }

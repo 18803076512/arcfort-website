@@ -14,6 +14,7 @@ import {
 import { composeSeoTitle, SEO_TITLE_MAX_LENGTH } from "../lib/content/seo-title.ts";
 import { organizationIdentity, siteConfig } from "../lib/content/site.ts";
 import { productBuyingProfiles } from "../lib/content/product-buying-profiles.ts";
+import { productSeries } from "../lib/data/product-series.ts";
 import { arcfortProducts } from "../lib/data/products.ts";
 
 type SeoRecord = {
@@ -39,6 +40,7 @@ const activeProducts: SeoRecord[] = arcfortProducts
   .filter((product) => (product.status ?? "active") === "active")
   .filter((product) => !isLegacyProductPath(product.categorySlug, product.slug));
 const productSlugs = new Set(activeProducts.map((product) => product.slug));
+const productSeriesRoutes = new Set<string>();
 const legacyCategorySources = new Set<string>();
 const legacyProductSources = new Set<string>();
 const confirmedBusinessIdentity = {
@@ -312,7 +314,59 @@ for (const category of productCategories) {
           `Category ${category.slug} reference family "${family.name}" needs a clearer buyer check.`,
         );
       }
+
+      if (
+        family.seriesSlug &&
+        !productSeries.some(
+          (series) => series.categorySlug === category.slug && series.slug === family.seriesSlug,
+        )
+      ) {
+        errors.push(
+          `Category ${category.slug} references missing product series "${family.seriesSlug}".`,
+        );
+      }
     }
+  }
+}
+
+for (const series of productSeries) {
+  const route = `${series.categorySlug}/${series.slug}`;
+
+  if (productSeriesRoutes.has(route)) {
+    errors.push(`Duplicate product-series route "${route}".`);
+  }
+
+  productSeriesRoutes.add(route);
+  checkMetadataLength(`Product series ${route}`, series.seoTitle, series.seoDescription);
+
+  if (!categorySlugs.has(series.categorySlug)) {
+    errors.push(`Product series ${route} references missing category "${series.categorySlug}".`);
+  }
+
+  checkReferences(
+    `Product series ${route}`,
+    series.productReferences.map((reference) => reference.productSlug),
+    productSlugs,
+    "active product",
+  );
+  checkReferences(
+    `Product series ${route}`,
+    series.relatedGuideSlugs,
+    new Set(guides.map((guide) => guide.slug)),
+    "guide",
+  );
+  checkBuyerTool(`Product series ${route}`, series.catalogUrl);
+
+  if (series.faq.length < 3) {
+    errors.push(`Product series ${route} has fewer than 3 FAQ items.`);
+  }
+
+  if (series.verificationStatus === "DATA_CONFLICT") {
+    errors.push(`Product series ${route} cannot be indexable with DATA_CONFLICT status.`);
+  }
+
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(series.reviewedDate)) {
+    errors.push(`Product series ${route} has an invalid reviewed date.`);
   }
 }
 
@@ -483,6 +537,7 @@ if (thinDescriptions > 0) {
 console.log("ArcFort Weld SEO audit");
 console.log(`Indexable product pages: ${activeProducts.length}`);
 console.log(`Product categories: ${productCategories.length}`);
+console.log(`Product series pages: ${productSeries.length}`);
 console.log(`Application pages: ${applications.length}`);
 console.log(`Buyer guides: ${guides.length}`);
 console.log(`Legacy category redirects: ${legacyCategoryRedirects.length}`);

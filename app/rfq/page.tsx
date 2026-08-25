@@ -1,6 +1,10 @@
-import Link from "next/link";
 import { Breadcrumbs } from "@/components/content/Breadcrumbs";
+import { BuyerPathList } from "@/components/content/BuyerPathList";
+import { ProcessSteps } from "@/components/content/ProcessSteps";
 import { StructuredData } from "@/components/content/StructuredData";
+import { Container } from "@/components/ui/Container";
+import { Section } from "@/components/ui/Section";
+import { SectionHeading } from "@/components/ui/SectionHeading";
 import { breadcrumbJsonLd, webPageJsonLd } from "@/lib/content/jsonld";
 import { buildMetadata } from "@/lib/content/seo";
 import { buildEmailHref, buildWhatsAppHref, siteConfig } from "@/lib/content/site";
@@ -14,57 +18,61 @@ type RfqPageProps = {
 };
 
 const inquiryChecklist = [
-  "Product name, model, size and material requirement",
-  "Drawing, product photo, reference part details or part number",
-  "Compatible brand, compatible model or OEM number when available",
-  "Required quantity, packaging requirement and destination country",
-  "Expected delivery schedule or distributor program details",
-];
+  "Product name, model, size, thread or existing reference",
+  "Drawing, product photo, label, sample details or part number",
+  "Quantity by item and standard or customized packing requirement",
+  "Destination country, target schedule and required market documents",
+] as const;
 
 const processSteps = [
-  "Submit product list",
-  "Confirm technical details",
-  "Receive quotation options",
-  "Discuss MOQ and delivery",
-];
-
-const submissionChannels = [
   {
-    title: "Website RFQ Form",
+    step: "01",
+    title: "Submit the product list",
     description:
-      "Best for structured inquiries with required fields, product requirements and attachments.",
-    href: undefined,
+      "Enter one item or a mixed-product requirement and attach the available evidence files.",
   },
   {
-    title: "Business Email",
+    step: "02",
+    title: "Clarify technical details",
     description:
-      "Best for detailed product lists, drawings, quotation sheets and large sourcing discussions.",
-    href: buildEmailHref({ subject: "ArcFort Weld RFQ by email" }),
+      "Open questions about model, dimensions, material, compatibility or documentation are reviewed.",
   },
   {
-    title: "WhatsApp",
+    step: "03",
+    title: "Review quotation options",
     description:
-      "Best for quick product photos, model checks, sample discussion and urgent follow-up.",
-    href: buildWhatsAppHref(),
+      "Confirm the quoted item, quantity basis, packing, lead time, payment terms and open fields.",
+  },
+  {
+    step: "04",
+    title: "Approve the order basis",
+    description:
+      "Align product evidence, artwork, packing and shipment requirements before order execution.",
   },
 ] as const;
 
-const rfqBusinessInfo = [
+const relatedResources = [
   {
-    label: "Business Email",
-    value: siteConfig.email,
-    href: buildEmailHref({ subject: "ArcFort Weld RFQ by email" }),
+    href: "/downloads",
+    title: "RFQ Workbooks",
+    description: "Download a structured file for distributor, machine, plasma or OEM requirements.",
   },
-  { label: "WhatsApp", value: siteConfig.whatsapp, href: buildWhatsAppHref() },
-  { label: "Main Port", value: siteConfig.mainPort },
-  { label: "MOQ Policy", value: siteConfig.moqPolicy },
-  { label: "Lead Time", value: siteConfig.leadTime },
-  { label: "Payment Terms", value: siteConfig.paymentTerms },
   {
-    label: "Backup Contact",
-    value: "For urgent inquiries or large files, send the same RFQ details by email or WhatsApp.",
+    href: "/quality-control#inspection-workflow",
+    title: "Quality Coordination",
+    description: "Review product evidence, approval points and order-specific inspection planning.",
   },
-];
+  {
+    href: "/shipping-payment#export-order-workflow",
+    title: "Shipping & Payment",
+    description: "Review confirmed payment, lead-time, MOQ and export-order information.",
+  },
+  {
+    href: "/about",
+    title: "Company Profile",
+    description: "Verify the legal company, business location, brand and supply scope.",
+  },
+] as const;
 
 export const metadata = buildMetadata({
   title: "Request a Quote",
@@ -83,153 +91,139 @@ export default async function RfqPage({ searchParams }: RfqPageProps) {
   const params = await searchParams;
   const initialProduct = typeof params.product === "string" ? params.product : "";
   const initialQuantity = typeof params.quantity === "string" ? params.quantity : "";
+  const emailHref = buildEmailHref({ subject: "ArcFort Weld RFQ by email" });
+  const whatsappHref = buildWhatsAppHref();
 
   return (
     <>
       <StructuredData
-        data={breadcrumbJsonLd([
-          { name: "Home", path: "/" },
-          { name: "Request a Quote", path: "/rfq" },
-        ])}
-      />
-      <StructuredData
-        data={webPageJsonLd({
-          name: "Request a Quote",
-          description:
-            "RFQ form for ArcFort Weld welding torch parts, plasma cutting consumables, welding accessories and OEM sourcing programs.",
-          path: "/rfq",
-        })}
+        data={[
+          breadcrumbJsonLd([
+            { name: "Home", path: "/" },
+            { name: "Request a Quote", path: "/rfq" },
+          ]),
+          webPageJsonLd({
+            name: "Request a Quote",
+            description:
+              "RFQ form for ArcFort Weld welding torch parts, plasma cutting consumables, welding accessories and OEM sourcing programs.",
+            path: "/rfq",
+          }),
+        ]}
       />
 
-      <section data-disable-sticky-contact-bar className="bg-white py-12 sm:py-16">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div className="bg-white py-5 sm:py-6">
+        <Container>
           <Breadcrumbs items={[{ label: "Home", href: "/" }, { label: "Request a Quote" }]} />
-          <div className="mt-8 max-w-4xl">
-            <p className="text-sm font-bold uppercase tracking-[0.2em] text-arc-blue">RFQ Center</p>
-            <h1 className="mt-3 font-display text-4xl font-black leading-tight text-arc-midnight sm:text-5xl">
-              Request a Quote
+        </Container>
+      </div>
+
+      <section className="bg-arc-midnight text-white">
+        <Container className="grid gap-10 py-14 sm:py-16 lg:grid-cols-[1fr_0.7fr] lg:items-end lg:gap-16 lg:py-20">
+          <div>
+            <p className="section-eyebrow !text-arc-signal">RFQ Center</p>
+            <h1 className="mt-4 max-w-4xl font-display text-4xl font-black leading-tight sm:text-5xl lg:text-6xl">
+              Request a welding and cutting product quotation.
             </h1>
-            <p className="mt-5 text-lg leading-8 text-slate-600">
-              Send us your product list, model, size, material requirement, quantity, drawing,
-              product photo, packaging requirement and destination country. ArcFort Weld will
-              provide quotation, MOQ and delivery options after technical confirmation.
+            <p className="mt-6 max-w-3xl text-lg leading-8 text-slate-300">
+              Send your product list, model or reference, quantity, destination and available
+              drawing, photo or sample evidence. ArcFort Weld will review the technical and
+              commercial basis before quotation.
             </p>
           </div>
-
-          <div className="mt-8 grid gap-10 lg:grid-cols-[0.85fr_1.15fr] lg:items-start">
-            <div className="order-2 lg:order-1">
-              <div className="border-l-4 border-arc-signal bg-arc-frost p-5">
-                <h2 className="font-display text-2xl font-black text-arc-midnight">
-                  What to include
-                </h2>
-                <ul className="mt-4 grid gap-3">
-                  {inquiryChecklist.map((item) => (
-                    <li key={item} className="flex gap-3 text-sm leading-6 text-slate-700">
-                      <span className="mt-2 h-1.5 w-1.5 shrink-0 bg-arc-signal" />
-                      <span>{item}</span>
-                    </li>
-                  ))}
-                </ul>
-                <Link
-                  href="/shipping-payment#export-order-workflow"
-                  className="mt-5 inline-flex min-h-11 items-center text-sm font-bold text-arc-blue underline decoration-arc-signal decoration-2 underline-offset-4 hover:text-arc-midnight"
-                >
-                  Review payment, lead-time and export order terms
-                </Link>
-                <Link
-                  href="/quality-control#inspection-workflow"
-                  className="mt-1 inline-flex min-h-11 items-center text-sm font-bold text-arc-blue underline decoration-arc-signal decoration-2 underline-offset-4 hover:text-arc-midnight"
-                >
-                  Review product confirmation and inspection points
-                </Link>
-                <Link
-                  href="/about"
-                  className="mt-1 inline-flex min-h-11 items-center text-sm font-bold text-arc-blue underline decoration-arc-signal decoration-2 underline-offset-4 hover:text-arc-midnight"
-                >
-                  Review legal company and ArcFort Weld profile
-                </Link>
-              </div>
-
-              <div className="mt-6 grid gap-3 sm:grid-cols-2">
-                {processSteps.map((step, index) => (
-                  <div key={step} className="border border-slate-200 bg-white p-4 shadow-sm">
-                    <div className="text-xs font-bold uppercase tracking-[0.16em] text-arc-blue">
-                      Step {index + 1}
-                    </div>
-                    <div className="mt-2 font-semibold text-arc-midnight">{step}</div>
-                  </div>
-                ))}
-              </div>
-
-              <div className="mt-6 border border-slate-200 bg-white p-5 shadow-sm">
-                <h2 className="font-display text-2xl font-black text-arc-midnight">
-                  Three ways to send an inquiry
-                </h2>
-                <div className="mt-5 grid gap-4">
-                  {submissionChannels.map((channel) => {
-                    const content = (
-                      <>
-                        <div className="text-xs font-bold uppercase tracking-[0.16em] text-arc-blue">
-                          {channel.title}
-                        </div>
-                        <p className="mt-2 text-sm leading-6 text-slate-700">
-                          {channel.description}
-                        </p>
-                      </>
-                    );
-
-                    return channel.href ? (
-                      <a
-                        key={channel.title}
-                        href={channel.href}
-                        className="block border-l-4 border-arc-signal bg-arc-frost p-4 transition hover:bg-white"
-                      >
-                        {content}
-                      </a>
-                    ) : (
-                      <div
-                        key={channel.title}
-                        className="border-l-4 border-arc-signal bg-arc-frost p-4"
-                      >
-                        {content}
-                      </div>
-                    );
-                  })}
-                </div>
-              </div>
-
-              <div className="mt-6 border border-slate-200 bg-white p-5 shadow-sm">
-                <h2 className="font-display text-2xl font-black text-arc-midnight">
-                  Business Information
-                </h2>
-                <div className="mt-5 grid gap-4">
-                  {rfqBusinessInfo.map((item) => (
-                    <div key={item.label} className="border-l-4 border-arc-signal bg-arc-frost p-4">
-                      <div className="text-xs font-bold uppercase tracking-[0.16em] text-arc-blue">
-                        {item.label}
-                      </div>
-                      {item.href ? (
-                        <a
-                          href={item.href}
-                          className="mt-2 block text-sm font-semibold leading-6 text-arc-midnight hover:text-arc-blue"
-                        >
-                          {item.value}
-                        </a>
-                      ) : (
-                        <p className="mt-2 text-sm leading-6 text-slate-700">{item.value}</p>
-                      )}
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
-
-            <div className="order-1 lg:order-2">
-              <RfqForm initialProduct={initialProduct} initialQuantity={initialQuantity} />
-            </div>
+          <div className="border-l-4 border-arc-signal pl-6">
+            <p className="text-xs font-bold uppercase text-slate-400">Direct Alternatives</p>
+            <a
+              href={emailHref}
+              className="mt-4 block break-all text-base font-bold text-white transition hover:text-arc-signal"
+            >
+              {siteConfig.email}
+            </a>
+            <a
+              href={whatsappHref}
+              className="mt-3 block text-base font-bold text-white transition hover:text-arc-signal"
+            >
+              WhatsApp {siteConfig.whatsapp}
+            </a>
+            <p className="mt-4 text-sm leading-6 text-slate-400">
+              Use email or WhatsApp for files above the website upload limit or for follow-up on an
+              existing RFQ reference.
+            </p>
           </div>
-        </div>
+        </Container>
       </section>
+
+      <section
+        data-disable-sticky-contact-bar
+        className="section-space bg-arc-frost"
+        aria-labelledby="rfq-form-title"
+      >
+        <Container className="grid gap-10 lg:grid-cols-[minmax(0,1.32fr)_minmax(19rem,0.68fr)] lg:items-start lg:gap-12">
+          <div className="min-w-0">
+            <div className="mb-7">
+              <p className="section-eyebrow">Submit Your Requirements</p>
+              <h2 id="rfq-form-title" className="section-title mt-3">
+                One form for product, quantity and evidence.
+              </h2>
+              <p className="body-large mt-4 max-w-3xl">
+                Selected product pages are carried into the form automatically. You can also enter a
+                general requirement or upload a completed product list.
+              </p>
+            </div>
+            <RfqForm initialProduct={initialProduct} initialQuantity={initialQuantity} />
+          </div>
+
+          <aside className="lg:sticky lg:top-28">
+            <h2 className="font-display text-2xl font-black text-arc-midnight">
+              What makes an RFQ reviewable
+            </h2>
+            <ul className="mt-5 divide-y divide-arc-line border-y border-arc-line">
+              {inquiryChecklist.map((item) => (
+                <li
+                  key={item}
+                  className="grid grid-cols-[1rem_1fr] gap-3 py-4 text-sm leading-6 text-slate-700"
+                >
+                  <span className="font-black text-arc-blue" aria-hidden="true">
+                    +
+                  </span>
+                  <span>{item}</span>
+                </li>
+              ))}
+            </ul>
+            <div className="mt-7 border-l-4 border-arc-signal bg-white p-5">
+              <h3 className="font-display text-xl font-black text-arc-midnight">
+                Compatibility needs evidence
+              </h3>
+              <p className="mt-3 text-sm leading-6 text-slate-600">
+                A family name or visual similarity does not confirm fit. Send the torch or machine
+                model, current part, drawing, sample or measured reference available for review.
+              </p>
+            </div>
+          </aside>
+        </Container>
+      </section>
+
+      <Section labelledBy="rfq-process-title" className="bg-white">
+        <Container className="grid gap-10 lg:grid-cols-[0.72fr_1.28fr] lg:gap-16">
+          <SectionHeading
+            id="rfq-process-title"
+            eyebrow="After Submission"
+            title="A clear path from inquiry to approved order basis."
+            description="The workflow keeps buyer-supplied evidence, open questions and supplier-confirmed terms separate."
+          />
+          <ProcessSteps items={processSteps} />
+        </Container>
+      </Section>
+
+      <Section className="border-t border-arc-line bg-arc-frost">
+        <Container className="grid gap-10 lg:grid-cols-[0.72fr_1.28fr] lg:gap-16">
+          <SectionHeading
+            eyebrow="Supporting Information"
+            title="Prepare the evidence behind the RFQ."
+            description="Use the available working files and company pages when the inquiry needs more structure or supplier review."
+          />
+          <BuyerPathList items={relatedResources} ariaLabel="RFQ supporting resources" />
+        </Container>
+      </Section>
     </>
   );
 }

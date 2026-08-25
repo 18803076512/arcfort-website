@@ -1,11 +1,15 @@
 # Product Image Source Audit
 
-Audit date: 2026-06-29
+Initial audit date: 2026-06-29
+
+Asset-registry migration review: 2026-08-21
 
 This checklist records the temporary main images assigned to catalog-derived product-family pages.
-These images were selected from local product photos or from the Renqiu Ailesen welding catalog PDF.
-They are suitable to replace blank placeholders, but they should still be replaced with confirmed
-white-background product photos when available.
+These images were selected from local product files or from the Renqiu Ailesen welding catalog PDF.
+They remain migration-period product-family references. File existence or visual similarity does not
+prove exact-product identity, ownership or public usage rights. The canonical state and replacement
+queue now live in `data/assets/product-image-assets.csv` and
+`docs/product-image-asset-report.md`.
 
 ## Updated Product Images
 
@@ -40,6 +44,7 @@ references remain unverified and must still be confirmed through RFQ details.
 | AF-TIG-CC-0007 | TIG Ceramic Cup #5      | `/images/products/tig-ceramic-cup-5.jpg`       | `瓷嘴0.jpg`                    |
 | AF-TIG-CC-0008 | TIG Ceramic Cup #6      | `/images/products/tig-ceramic-cup-6.jpg`       | `瓷嘴0.jpg`                    |
 | AF-TIG-CL-0009 | TIG Collet              | `/images/products/tig-collet.jpg`              | `钨极夹.jpg`                   |
+| AF-TIG-CB-0005 | TIG Collet Body         | `/images/products/tig-collet-body-reference.jpg` | `氩弧焊配件.jpg`             |
 | AF-TIG-BC-0011 | TIG Back Cap            | `/images/products/tig-back-cap.jpg`            | `微信图片_20240411190132.jpg`  |
 | AF-TIG-TE-0012 | TIG Tungsten Electrode  | `/images/products/tig-tungsten-electrode.jpg`  | `微信图片_20240411190131.jpg`  |
 | AF-PLA-EL-0007 | Plasma Electrode        | `/images/products/plasma-electrode.jpg`        | `微信图片_202404111901331.jpg` |
@@ -53,7 +58,13 @@ references remain unverified and must still be confirmed through RFQ details.
 
 ## Replacement Priority
 
-1. Replace `mig-torch-switch.jpg` with a dedicated MIG switch photo. Provide a dedicated TIG switch photo and source evidence before reactivating `AF-TIG-TS-0036`.
+1. Replace `mig-torch-switch.jpg` with a dedicated MIG switch photo. Provide a dedicated TIG switch
+   photo and source evidence before reactivating `AF-TIG-TS-0036`.
 2. Replace the remaining `needs_photo` SKU images with confirmed white-background product photos.
-3. Replace PDF crops with clean white-background product photos where possible.
-4. Keep file names aligned with `data/import/products.csv` so image checks and product pages continue to work.
+3. Replace `tig-collet-body-reference.jpg` with a dedicated exact-product collet-body image. The
+   previous assignment reused the MIG diffuser image and was removed on 2026-08-21; the current TIG
+   accessory-group image is reference-only.
+4. Confirm source ownership and website usage rights for every migration-period image.
+5. Replace PDF crops and low-resolution references with exact-product views where possible.
+6. Keep file names aligned with `data/import/products.csv` and update the asset registry so image
+   checks, product pages and search metadata continue to use the intended file.

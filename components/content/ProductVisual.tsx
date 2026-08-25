@@ -1,11 +1,11 @@
 import Image from "next/image";
-import { hasPublicProductImage } from "@/lib/content/product-images";
+import { getDisplayEligibleProductImageAssets } from "@/lib/content/product-images";
 import type { ProductImageStatus } from "@/lib/content/schemas";
 
 type ProductVisualProps = {
+  sku: string;
+  slug: string;
   label: string;
-  title: string;
-  category: string;
   mainImage?: string;
   imageStatus?: ProductImageStatus;
   compact?: boolean;
@@ -13,87 +13,48 @@ type ProductVisualProps = {
 };
 
 export function ProductVisual({
+  sku,
+  slug,
   label,
-  title,
-  category,
   mainImage,
   imageStatus,
   compact = false,
   denseMobile = false,
 }: ProductVisualProps) {
-  const visualTitle = compact ? "Welding & Cutting Consumable" : title;
-  const visualCategory = compact ? "RFQ" : category;
   const hasReviewedImage = imageStatus === "own_photo" || imageStatus === "supplier_photo";
-  const shouldRenderImage = hasReviewedImage && hasPublicProductImage(mainImage);
-  const imageNote = compact
-    ? "Photo on request"
-    : "Product photo, drawing or model reference can be reviewed before quotation.";
-  const imageAlt = `${title}, ${category} product reference from ArcFort Weld`;
-  const productImage = mainImage ? (
-    <Image
-      src={mainImage}
-      alt={imageAlt}
-      fill
-      sizes={
-        denseMobile
-          ? "(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 46vw"
-          : compact
-            ? "(min-width: 1024px) 33vw, 100vw"
-            : "(min-width: 1024px) 45vw, 100vw"
-      }
-      className={`object-contain ${denseMobile ? "p-3 sm:p-7" : "p-5 sm:p-7"}`}
-      priority={!compact}
-      quality={88}
-    />
-  ) : null;
+  const [mainAsset] = hasReviewedImage
+    ? getDisplayEligibleProductImageAssets({
+        sku,
+        slug,
+        mainImage: mainImage ?? "",
+        galleryImages: [],
+        imageStatus,
+      })
+    : [];
+  const shouldRenderImage = Boolean(mainAsset);
+  const visualClass = compact ? "aspect-[8/9]" : "aspect-[5/4]";
 
-  if (shouldRenderImage && mainImage) {
+  if (shouldRenderImage && mainAsset) {
     return (
-      <div data-nosnippet data-snippet-region="product-visual">
-        <figure className="overflow-hidden border border-slate-200 bg-white shadow-sm">
-          <div className={`relative bg-white ${compact ? "aspect-[4/3]" : "aspect-[5/4]"}`}>
-            {compact ? (
-              productImage
-            ) : (
-              <a
-                href={mainImage}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="group/image relative block h-full w-full"
-                aria-label={`Open full-size image of ${title}`}
-              >
-                {productImage}
-                <span className="absolute right-3 top-3 border border-slate-200 bg-white/95 px-3 py-2 text-[11px] font-bold uppercase tracking-[0.12em] text-arc-blue shadow-sm transition group-hover/image:border-arc-blue group-hover/image:bg-arc-blue group-hover/image:text-white">
-                  View Full Image
-                </span>
-              </a>
-            )}
-          </div>
-          <figcaption
-            className={`border-t border-slate-200 bg-arc-frost ${
-              denseMobile ? "px-2 py-2 sm:px-5 sm:py-3" : "px-4 py-3 sm:px-5"
+      <div data-nosnippet data-snippet-region="product-visual" className="bg-white">
+        <div className={`relative ${visualClass}`}>
+          <Image
+            src={mainAsset.publicPath}
+            alt={mainAsset.altText}
+            fill
+            sizes={
+              denseMobile
+                ? "(min-width: 1280px) 22vw, (min-width: 640px) 46vw, 46vw"
+                : compact
+                  ? "(min-width: 1024px) 30vw, (min-width: 640px) 46vw, 100vw"
+                  : "(min-width: 1024px) 45vw, 100vw"
+            }
+            className={`object-contain transition duration-300 group-hover:scale-[1.02] ${
+              denseMobile ? "p-3 sm:p-7" : "p-6 sm:p-8"
             }`}
-          >
-            <div className="flex min-w-0 items-center justify-between gap-3">
-              <span
-                className={`inline-flex shrink-0 bg-arc-signal py-1 font-display font-black text-arc-midnight ${
-                  denseMobile ? "px-2 text-sm sm:px-3 sm:text-base" : "px-3 text-base"
-                }`}
-              >
-                {label}
-              </span>
-              <span
-                className={`min-w-0 truncate text-right font-bold uppercase text-arc-blue ${
-                  denseMobile
-                    ? "text-[10px] tracking-[0.08em] sm:text-xs sm:tracking-[0.14em]"
-                    : "text-xs tracking-[0.14em]"
-                }`}
-              >
-                {visualCategory}
-              </span>
-            </div>
-          </figcaption>
-        </figure>
+            quality={88}
+          />
+        </div>
       </div>
     );
   }
@@ -102,32 +63,18 @@ export function ProductVisual({
     <div
       data-nosnippet
       data-snippet-region="product-visual"
-      className={`relative overflow-hidden border border-slate-200 bg-arc-midnight text-white ${
-        compact ? "aspect-[4/3]" : "aspect-[5/4]"
-      }`}
+      className={`relative flex ${visualClass} items-center justify-center border-b border-arc-line bg-arc-frost p-5`}
     >
-      <div className="absolute inset-0 bg-[linear-gradient(135deg,rgba(11,35,65,0.98)_0%,rgba(15,76,129,0.88)_52%,rgba(217,230,242,0.32)_100%)]" />
-      <div className="absolute inset-0 opacity-35 [background-image:linear-gradient(90deg,rgba(255,255,255,0.12)_1px,transparent_1px),linear-gradient(rgba(255,255,255,0.12)_1px,transparent_1px)] [background-size:36px_36px]" />
-      <div className="absolute -right-16 -top-16 h-44 w-44 border-[28px] border-white/10" />
-      <div className="absolute bottom-0 left-0 h-24 w-full bg-[repeating-linear-gradient(135deg,rgba(246,180,69,0.35)_0,rgba(246,180,69,0.35)_2px,transparent_2px,transparent_14px)]" />
-      <div className="relative flex h-full flex-col justify-between p-5 sm:p-6">
-        <div className="flex items-center justify-between gap-4">
-          <span className="inline-flex bg-arc-signal px-3 py-1 font-display text-lg font-black text-arc-midnight">
-            {label}
-          </span>
-          <span className="text-right text-xs font-bold uppercase tracking-[0.16em] text-slate-200">
-            {visualCategory}
-          </span>
-        </div>
-        <div>
-          <div className="h-1 w-20 bg-arc-signal" />
-          <p className="mt-4 max-w-sm font-display text-xl font-black leading-tight sm:text-2xl">
-            {visualTitle}
-          </p>
-          <p className="mt-3 max-w-sm text-sm font-semibold leading-6 text-slate-200">
-            {imageNote}
-          </p>
-        </div>
+      <div className="max-w-xs text-center">
+        <span className="mx-auto flex h-11 w-11 items-center justify-center border border-arc-midnight bg-white font-display text-sm font-black text-arc-midnight">
+          {label}
+        </span>
+        <p className="mt-4 font-display text-lg font-black leading-tight text-arc-midnight">
+          Product image pending
+        </p>
+        <p className="mt-2 text-sm leading-5 text-slate-500">
+          Request the current product reference.
+        </p>
       </div>
     </div>
   );

@@ -10,6 +10,7 @@ build
 
 # local review and generated working files
 tmp/
+.tmp/
 output/
 outputs/
 

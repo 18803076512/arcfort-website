@@ -19,11 +19,12 @@ Use this checklist before switching the website to production traffic.
 - Company address: Renqiu City, Cangzhou, Hebei Province, China.
 - Main port: Tianjin Xingang Port / Tianjin Port, China.
 - Alternative ports: Qingdao Port or Ningbo Port are available upon request.
-- Reviewed product images: 41 active products; 2 draft products still need reviewed photos as of
-  2026-08-09.
+- Product-image publication status: all 40 active records have existing files marked as own or
+  supplier photos; 3 draft products still need exact-product photos as of 2026-08-13. Supplier-image
+  provenance and usage rights still require a central evidence record.
 - Public product list CSV: available in `/downloads`.
 - Product catalog PDF: available at `/downloads/renqiu-ailesen-welding-catalog.pdf`.
-- Product records: 43; 41 are active public SKU pages and 2 remain draft pending reviewed images.
+- Product records: 43; 40 are active public SKU pages and 3 remain draft pending reviewed images.
 - Product specifications: pending by product.
 - MOQ and lead time by product: covered by policy, pending by exact product and order quantity.
 
@@ -42,7 +43,8 @@ Use this checklist before switching the website to production traffic.
 
 ## RFQ Email Delivery
 
-- Production status reports `email.ready:true`.
+- Production status reported `productionReady:true`, `email.ready:true`, buyer-confirmation readiness
+  and attachment-delivery readiness on 2026-08-13.
 - Resend accepted a controlled sales notification and buyer confirmation on 2026-07-26.
 - Resend accepted one controlled JPG attachment in the sales notification on 2026-07-26.
 - Confirm the matching test references in the Outlook inbox or Resend logs.
@@ -73,10 +75,11 @@ Use this checklist before switching the website to production traffic.
 - Confirm product category metadata.
 - Confirm product detail metadata.
 - Confirm application and guide metadata.
-- Configure `GOOGLE_SITE_VERIFICATION` in Vercel after Google Search Console provides the token.
-- Submit sitemap in Google Search Console after launch.
-- IndexNow accepted the deployed sitemap with HTTP 200 on 2026-08-01; resubmit after indexable URL
-  changes.
+- Search Console performance data is available for the `arcfortweld.com` property. The export dated
+  2026-08-12 contains 8 clicks and 422 impressions through 2026-08-09.
+- Confirm the current ownership-verification method and sitemap submission inside Search Console.
+  `GOOGLE_SITE_VERIFICATION` is only required when HTML-tag verification is the chosen method.
+- IndexNow accepted the latest changed-page submission with HTTP 200 on 2026-08-13.
 - Confirm no invented certifications, prices, stock status, factory capacity or customer cases are published.
 
 ## Analytics and Conversion Tracking
@@ -105,9 +108,11 @@ Use this checklist before switching the website to production traffic.
 - Review confirmed business data before major website updates.
 - Use the private outreach workbook to execute and record the three manually reviewed distributor waves;
   do not commit buyer replies or contact details.
-- Replace the remaining placeholder images for `AF-PLA-RC-0011` Plasma Retaining Cap and
-  `AF-ACC-WM-0015` Welding Magnet with reviewed product photos.
-- Upload official PDF catalog.
+- Replace the remaining placeholder or non-product images for `AF-PLA-RC-0011` Plasma Retaining Cap,
+  `AF-ACC-WM-0015` Welding Magnet and `AF-TIG-TS-0036` TIG Torch Switch with exact-product photos.
+- Confirm source and usage-right records for active supplier images, especially product records whose
+  `source_type` remains `unknown`.
 - Refresh public download files with `npm run downloads:generate` after SKU updates.
 - Import confirmed SKU data using `docs/product-sku-template.csv`.
-- Add analytics only after privacy requirements are reviewed.
+- Review `docs/acquisition-readiness-report.md` and update its non-sensitive production evidence
+  after mailbox, analytics, DNS or provider-console checks.

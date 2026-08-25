@@ -59,11 +59,32 @@ controlled by this company; never associate unrelated companies that use a simil
 
 ## Content Architecture
 
+- `app/globals.css` and `tailwind.config.ts` - shared industrial brand colors, typography roles,
+  spacing, container, radius, shadow and interaction tokens
+- `components/ui/` - reusable container, section, section-heading and button primitives
+- `components/navigation/` - scalable desktop product mega menu, secondary navigation menus and
+  deliberate mobile navigation
+- `components/home/` - homepage hero, product-system cards and final qualified-inquiry CTA
+- `content/homepage.ts` - homepage product-system, industry, advantage, quality and resource content
 - `content/categories.ts` - product category SEO content
 - `lib/data/products.ts` - CMS-ready mock product data source for Sanity or Supabase migration
 - `content/products.ts` - adapter that maps product data into the current page schema
 - `content/applications.ts` - application page content
 - `content/guides.ts` - buyer guide and article content
+- `lib/data/product-series.ts` - governed product-series records, evidence boundaries and RFQ fields
+- `lib/data/product-series-evidence.ts` - company-catalog series source pages, publication gates,
+  image evidence and missing-data records
+- `data/evidence/product-series-component-facts.csv` - canonical field-level catalog evidence for
+  component and variant candidates under series review
+- `lib/data/product-series-component-facts.ts` - generated runtime projection of series-component
+  evidence; never edit it directly
+- `lib/data/compatibility-relationships.ts` - canonical product, series, torch, machine and reference
+  relationship records
+- `lib/content/compatibility.ts` - evidence-safe compatibility selectors and public series projections
+- `lib/data/product-technical-facts.ts` - field-level technical references with evidence and
+  verification status
+- `lib/content/product-technical-facts.ts` - evidence-safe product specification projection
+- `lib/content/product-series.ts` - series selectors, route builders and product relationship resolver
 - `docs/content-research/` - internal source records used to verify technical buyer-guide claims
 - `lib/content/schemas.ts` - reusable TypeScript content schema
 - `lib/content/site.ts` - centralized company, contact, trade, port, payment, MOQ, lead time and OEM information
@@ -85,6 +106,53 @@ requests. Four retained generic starter URLs permanently
 redirect to their current category pages so they do not compete with exact SKU pages. Missing product data must remain explicit
 instead of inventing specifications, certifications, prices, stock status, factory capacity or
 customer cases.
+
+The V2 Phase 1 presentation layer is intentionally separate from product and SEO data. The global
+Header, Product Mega Menu, homepage and Footer consume stable routes and canonical content sources;
+visual changes must not rewrite product facts, URL identifiers, structured data or RFQ behavior.
+The homepage uses one full-bleed representative industrial visual and labels it as representative,
+not as evidence of ArcFort Weld facilities or exact products. Product-system and featured-product
+sections remain data-driven so future Sanity or Supabase migration does not require a page rewrite.
+
+V2 Phase 2 applies the same presentation system to the Product Center, category pages and product
+details without changing canonical URLs or product evidence. The Product Center now follows a
+search, product-system, catalog, RFQ-preparation and FAQ sequence. Category pages keep all
+server-rendered SEO content and RFQ builders but group company-catalog reference families in an
+expandable evidence section. Product details use the reviewed image registry, a reusable gallery,
+shared technical tables and a concise quotation CTA. Product cards show only the family, product
+name, SKU, one useful selection cue and buyer actions; technical truth remains in the canonical
+product source.
+
+The company-catalog series registry currently covers 10 distinct MIG/MAG references: 15AK, 24KD,
+25AK, 36KD, 40KD, 501D, 602 and ORK 200A/350A/500A. Only 15AK currently has a governed public series
+page. The other records remain RFQ choices in `evidence_review` until canonical products, reviewed
+images and product-to-series relationships are available. Keep exact technical values in the
+canonical product source and run `npm run series:validate`, `npm run test:product-series` and
+`npm run series:report` before publication.
+
+The detailed series-component workflow currently covers 24KD, 25AK, 36KD, 40KD and 501D. Together
+they contain 359 sourced catalog facts, 121 component/variant candidates and 181 exact-image
+requests. Thirteen source fields are held as `DATA_CONFLICT`: twelve complete-torch fields differ
+from official OEM references and one 36KD cylindrical-nozzle value conflicts within the company
+catalog itself. No candidate in this workflow is a public SKU and these reviews create no public
+series route. Maintain
+the matching `data/intake/*-series-confirmation.csv` and
+`data/intake/*-image-intake.csv` files, then run `npm run series:components:generate`,
+`npm run series:components:validate` and `npm run series:components:report`.
+
+The compatibility registry currently contains four 15AK product-to-series relationships. All remain
+`reference_only` because company-catalog grouping does not prove final fit. Add relationship evidence
+in `lib/data/compatibility-relationships.ts`, never duplicate it in a page component, and run
+`npm run compatibility:validate` plus `npm run compatibility:report` before changing any public
+compatibility status.
+
+The field-level technical registry currently contains 15 company-catalog references for four 15AK
+products. These values drive the public specification rows but remain visibly qualified as catalog
+references because none has exact-SKU factory confirmation yet. Use
+`data/intake/15ak-technical-confirmation.csv` for factory values and evidence, and
+`data/intake/15ak-image-intake.csv` for company-owned main, detail, dimensional and packaging images.
+Run `npm run technical:validate` and `npm run technical:report` before changing a reference to
+`CONFIRMED` or approving a collected image.
 
 The About page is the canonical public company profile for the legal-company and ArcFort Weld brand
 relationship. Update confirmed identity and contact facts in `lib/content/site.ts`, keep buyer-facing
@@ -178,12 +246,16 @@ Simple workflow:
 3. Run `npm run products:simple:preview` to check generated data without writing files.
 4. Run `npm run products:simple:generate` to generate `data/import/products.csv`.
 5. Run `npm run products:check-images`.
-6. Run `npm run products:image-tasks` when product photos are missing.
-7. Run `npm run products:report` to generate the internal product readiness checklist.
-8. Run `npm run products:simple:import` to update `lib/data/products.ts`.
-9. Run `npm run downloads:generate` to refresh public buyer download files.
-10. Run `npm run seo:audit`.
-11. Run `npm run build`.
+6. Run `npm run products:image-tasks` to refresh the full image evidence queue.
+7. Run `npm run images:assets:sync`, review the appended rows in
+   `data/assets/product-image-assets.csv`, then run `npm run images:assets:validate`.
+8. Run `npm run products:report` and `npm run images:assets:report` to refresh internal readiness
+   checklists.
+9. Run `npm run acquisition:report` to refresh the acquisition, evidence and external-control report.
+10. Run `npm run products:simple:import` to update `lib/data/products.ts`.
+11. Run `npm run downloads:generate` to refresh public buyer download files.
+12. Run `npm run seo:audit`.
+13. Run `npm run build`.
 
 To preview the reusable first 30 SKU worksheet without replacing the active simple CSV:
 
@@ -215,13 +287,16 @@ Full CSV workflow:
 3. Put product images in `public/images/products/`.
 4. Run `npm run products:validate`.
 5. Run `npm run products:check-images`.
-6. Run `npm run products:image-tasks` when product photos are missing.
-7. Run `npm run products:report`.
-8. Run `npm run products:import`.
-9. Run `npm run downloads:generate`.
-10. Run `npm run seo:audit`.
-11. Run `npm run build`.
-12. Submit a pull request.
+6. Run `npm run products:image-tasks` to refresh the full image evidence queue.
+7. Run `npm run images:assets:sync`, then review and update the appended image evidence rows.
+8. Run `npm run images:assets:validate`, `npm run products:report` and
+   `npm run images:assets:report`.
+9. Run `npm run acquisition:report`.
+10. Run `npm run products:import`.
+11. Run `npm run downloads:generate`.
+12. Run `npm run seo:audit`.
+13. Run `npm run build`.
+14. Submit a pull request.
 
 Use these values when data is uncertain:
 
@@ -233,6 +308,8 @@ Use these values when data is uncertain:
 
 Product image publication rules:
 
+- `data/assets/product-image-assets.csv` is the canonical evidence and publication registry for
+  product main/gallery images. `lib/data/product-image-assets.ts` is generated from it.
 - Use `own_photo` only for a confirmed ArcFort or company-owned product photo.
 - Use `supplier_photo` for a reviewed supplier image that clearly matches the published product
   type; keep exact model, dimensions and compatibility unconfirmed unless separately verified.
@@ -240,10 +317,25 @@ Product image publication rules:
   cannot confirm the published SKU.
 - Keep products with `needs_photo` or `placeholder` image status as `draft`; only publish them after
   the product type is supported by a reviewed own or supplier photo.
-- Only `own_photo` and `supplier_photo` images are eligible for product Open Graph metadata,
-  Product JSON-LD and image sitemap entries.
+- The product must use `own_photo` or `supplier_photo`, and the exact path must also have a permitted
+  asset-registry publication status, before it can enter product Open Graph metadata, Product JSON-LD
+  or image sitemap entries.
+- `legacy_reference` preserves a previously published reference image during migration. It does not
+  prove exact-product identity or approved usage rights. New `search_eligible` rows require an exact
+  product match, approved usage basis, known source/owner, reviewer and review date.
 - Keep the original image source in `source_reference` and record `verified_by` and
   `verified_date`; these internal fields are not exposed on public pages.
+- Run `npm run images:assets:report` to review unknown sources, rights gaps, blocked assets,
+  resolution priorities, duplicate content and unassigned local files.
+- Run `npm run products:image-tasks` to generate `docs/product-image-tasks.csv` from the governed
+  registry. The queue covers source ownership, website-use rights, exact-SKU matching, resolution,
+  blocked assets and reviewer evidence instead of reporting only missing files.
+- Image-task priority is deterministic: `P0` is an active main image with unknown provenance; `P1`
+  covers main or blocked MIG/MAG, TIG and plasma assets; `P2` covers the remaining active assets;
+  `P3` is reserved for lower-priority draft or secondary assets.
+- Re-export or rename files whose extension does not match the detected image content. Keep the
+  registry path, canonical product data and generated asset file synchronized through the reviewed
+  image workflow.
 
 ## RFQ System
 
@@ -702,6 +794,38 @@ npm run seo:snippets
 
 ## Useful Documents
 
+- `AGENTS.md` - permanent repository mission, workflow and evidence safeguards
+- `docs/DESIGN_SYSTEM.md` - shared industrial brand tokens, layout and component standards
+- `docs/CONTENT_RULES.md` - company, product, market, SEO and RFQ content rules
+- `docs/QA_CHECKLIST.md` - visual, technical, mobile, data and release quality gates
+- `docs/CHANGELOG_AI.md` - major Codex implementation decisions and unresolved issues
+- `knowledge-base/decisions/2026-08-21-product-presentation-phase-2.md` - reusable Product Card,
+  Product Grid and product-detail presentation decisions
+- `knowledge-base/products/15ak-mig-mag-series.md` - evidence scope, governed products and missing
+  data for the 15AK series
+- `knowledge-base/compatibility/15ak-reference-mapping.md` - rules for reference and confirmed 15AK
+  compatibility relationships
+- `knowledge-base/products/mig-mag-series-evidence-registry.md` - reviewed company-catalog MIG/MAG
+  series sources and publication boundaries
+- `knowledge-base/products/24kd-series-evidence.md` - field-level 24KD catalog evidence, data
+  conflicts, candidate intake and publication boundary
+- `knowledge-base/products/25ak-series-evidence.md` - field-level 25AK catalog evidence, data
+  conflicts, candidate intake and publication boundary
+- `knowledge-base/products/36kd-series-evidence.md` - field-level 36KD catalog evidence, external and
+  internal source conflicts, candidate intake and publication boundary
+- `knowledge-base/products/40kd-series-evidence.md` - field-level 40KD catalog evidence, rating and
+  duty-cycle conflicts, candidate intake and publication boundary
+- `knowledge-base/products/501d-series-evidence.md` - field-level 501D water-cooled evidence, media
+  connection governance, source conflicts, candidate intake and publication boundary
+- `knowledge-base/compatibility/mig-mag-series-publication-gate.md` - reusable rules for converting a
+  catalog family into governed public product relationships
+- `knowledge-base/compatibility/compatibility-registry.md` - relationship model, confirmation evidence
+  and current 15AK status
+- `knowledge-base/technical/15ak-technical-evidence-workflow.md` - field-level confirmation and
+  company-owned image intake process
+- `docs/operations/15ak-factory-evidence-handoff.md` - low-friction workbook handoff and controlled
+  review process for 15AK technical facts, image evidence and P0 provenance decisions
+- `docs/product-technical-evidence-report.md` - current technical-fact and 15AK evidence readiness
 - `supabase/rfq-schema.sql` - RFQ table and private attachment bucket setup
 - `docs/supabase-rfq-setup.md` - Supabase, Vercel and testing instructions
 - `docs/rfq-email-delivery.md` - Resend email delivery setup for RFQ notifications and attachments
@@ -712,9 +836,18 @@ npm run seo:snippets
 - `docs/arcfort-product-information-table.csv` - 12-product B2B information table with missing data notes
 - `docs/product-image-checklist.csv` - legacy starter-product image planning worksheet
 - `docs/first-30-sku-image-checklist.csv` - original first-30-SKU image planning worksheet
-- `docs/product-image-tasks.csv` - generated missing image task list with target filenames and shot guidance
+- `docs/product-image-tasks.csv` - generated product-image evidence queue covering provenance,
+  rights, exact-SKU matching, resolution, replacement priority and capture guidance
 - `docs/representative-product-image-notes.md` - representative product-family image usage notes
 - `docs/product-readiness-report.md` - generated product data, image and confirmation status checklist
+- `docs/product-series-readiness-report.md` - generated catalog-series evidence, publication and
+  missing-data checklist
+- `docs/product-series-component-evidence-report.md` - generated detailed-series component matrices,
+  conflicts, factory confirmation and image-intake status
+- `docs/compatibility-readiness-report.md` - generated relationship status and confirmation-evidence
+  checklist
+- `docs/acquisition-readiness-report.md` - generated acquisition-channel, RFQ, product-evidence, content-coverage and external-confirmation report
+- `docs/operations/acquisition-production-evidence.json` - non-sensitive production, mailbox, Search Console, analytics and security evidence states used by the acquisition report
 - `docs/site-wide-upgrade-roadmap.md` - phased roadmap for improving page quality, SEO and RFQ conversion
 - `docs/product-image-shooting-guide.md` - product photo shooting and editing guide
 - `docs/catalog-product-data-audit.md` - Renqiu Ailesen PDF catalog review notes and imported product-family evidence
@@ -760,6 +893,7 @@ npm run products:validate
 npm run products:check-images
 npm run products:image-tasks
 npm run products:report
+npm run acquisition:report
 npm run seo:audit
 npm run test:rfq
 npm run downloads:generate

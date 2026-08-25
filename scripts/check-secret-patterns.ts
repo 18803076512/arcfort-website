@@ -147,12 +147,16 @@ function runSelfTest() {
   }
 }
 
-function getTrackedFiles() {
-  const output = execFileSync("git", ["ls-files", "-z"], {
-    cwd: process.cwd(),
-    encoding: "utf8",
-    maxBuffer: 16 * 1024 * 1024,
-  });
+function getRepositoryFiles() {
+  const output = execFileSync(
+    "git",
+    ["ls-files", "-z", "--cached", "--others", "--exclude-standard"],
+    {
+      cwd: process.cwd(),
+      encoding: "utf8",
+      maxBuffer: 16 * 1024 * 1024,
+    },
+  );
 
   return output.split("\0").filter(Boolean);
 }
@@ -163,7 +167,7 @@ function main() {
   const findings: SecretFinding[] = [];
   let scannedFiles = 0;
 
-  for (const file of getTrackedFiles()) {
+  for (const file of getRepositoryFiles()) {
     if (binaryExtensions.has(extname(file).toLowerCase())) {
       continue;
     }
@@ -184,7 +188,7 @@ function main() {
     ).values(),
   );
 
-  console.log("ArcFort Weld tracked-file secret scan");
+  console.log("ArcFort Weld tracked and untracked repository-file secret scan");
   console.log(`Text files scanned: ${scannedFiles}`);
 
   if (uniqueFindings.length > 0) {
@@ -201,7 +205,7 @@ function main() {
     return;
   }
 
-  console.log("No high-confidence secret patterns found in tracked text files.");
+  console.log("No high-confidence secret patterns found in repository text files.");
 }
 
 main();

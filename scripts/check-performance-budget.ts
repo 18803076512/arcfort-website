@@ -27,6 +27,11 @@ const routeBudgets: RouteBudget[] = [
     maxGzipBytes: 150 * kibibyte,
   },
   {
+    label: "Product Series",
+    route: "/products/[category]/series/[series]/page",
+    maxGzipBytes: 150 * kibibyte,
+  },
+  {
     label: "Distributor Landing",
     route: "/distributor-supply/page",
     maxGzipBytes: 150 * kibibyte,

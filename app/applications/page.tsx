@@ -1,33 +1,33 @@
-import Link from "next/link";
+import Image from "next/image";
 import { Breadcrumbs } from "@/components/content/Breadcrumbs";
+import { IndustrySolutionCard } from "@/components/content/IndustrySolutionCard";
 import { RfqCta } from "@/components/content/RfqCta";
 import { StructuredData } from "@/components/content/StructuredData";
+import { ButtonLink } from "@/components/ui/ButtonLink";
+import { Container } from "@/components/ui/Container";
+import { Section } from "@/components/ui/Section";
+import { SectionHeading } from "@/components/ui/SectionHeading";
 import { getAllApplications } from "@/lib/content/applications";
 import { breadcrumbJsonLd, collectionPageJsonLd } from "@/lib/content/jsonld";
+import { getDisplayEligibleProductImageAssets } from "@/lib/content/product-images";
+import { getAllProducts } from "@/lib/content/products";
 import { buildMetadata } from "@/lib/content/seo";
-
-const applicationSignals = [
-  { label: "Industry RFQ", value: "Product lists by use case" },
-  { label: "Compatibility", value: "Confirmed by model or sample" },
-  { label: "OEM", value: "Packaging and label support" },
-  { label: "Supply Scope", value: "Welding and cutting products" },
-] as const;
 
 const sourcingSteps = [
   {
-    title: "Identify the application",
+    title: "Define the working context",
     description:
-      "Start from the buyer's industry, repair workflow or production use case before choosing parts.",
+      "Tell us the industry, welding or cutting process, installed equipment and replacement objective.",
   },
   {
-    title: "Map required product families",
+    title: "Document the product reference",
     description:
-      "Connect the application to MIG/MAG, TIG, plasma cutting, consumables, machines or accessories.",
+      "Share the model, drawing, current part, assembly photos or verified dimensions needed for review.",
   },
   {
-    title: "Confirm product references",
+    title: "Prepare a quote-ready list",
     description:
-      "Use drawings, photos, model numbers or samples to confirm compatibility before quotation.",
+      "Separate each product, quantity, packing requirement and destination so the quotation scope is clear.",
   },
 ] as const;
 
@@ -46,6 +46,35 @@ export const metadata = buildMetadata({
 
 export default function ApplicationsPage() {
   const applications = getAllApplications();
+  const productsBySlug = new Map(getAllProducts().map((product) => [product.slug, product]));
+  const usedVisualPaths = new Set<string>();
+  const applicationCards = applications.map((application) => {
+    const visualCandidates = application.relatedProductSlugs
+      .map((slug) => productsBySlug.get(slug))
+      .filter((product) => Boolean(product))
+      .map((product) => ({
+        product,
+        asset: product ? getDisplayEligibleProductImageAssets(product)[0] : undefined,
+      }));
+    const visual =
+      visualCandidates.find((item) => item.asset && !usedVisualPaths.has(item.asset.publicPath)) ??
+      visualCandidates.find((item) => item.asset);
+
+    if (visual?.asset) {
+      usedVisualPaths.add(visual.asset.publicPath);
+    }
+
+    return {
+      application,
+      image:
+        visual?.product && visual.asset
+          ? {
+              src: visual.asset.publicPath,
+              alt: `${visual.product.title} product reference for ${application.title}`,
+            }
+          : undefined,
+    };
+  });
 
   return (
     <>
@@ -68,135 +97,111 @@ export default function ApplicationsPage() {
         })}
       />
 
-      <section className="bg-white py-12 sm:py-16">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div className="border-b border-arc-line bg-white py-4">
+        <Container>
           <Breadcrumbs items={[{ label: "Home", href: "/" }, { label: "Applications" }]} />
-        </div>
-      </section>
+        </Container>
+      </div>
 
-      <section className="bg-arc-midnight text-white">
-        <div className="mx-auto grid max-w-7xl gap-10 px-4 py-14 sm:px-6 sm:py-16 lg:grid-cols-[1fr_0.75fr] lg:items-end lg:px-8">
-          <div>
-            <p className="text-sm font-bold uppercase tracking-[0.2em] text-arc-signal">
-              Applications
-            </p>
-            <h1 className="mt-4 max-w-4xl font-display text-4xl font-black leading-tight sm:text-5xl lg:text-6xl">
-              Welding and cutting supply by industrial use case.
+      <section className="relative isolate min-h-[620px] overflow-hidden bg-arc-midnight text-white sm:min-h-[680px]">
+        <Image
+          src="/images/site/arcfort-hero-welding-workshop.png"
+          alt="Representative welding and cutting workshop application"
+          fill
+          priority
+          sizes="100vw"
+          className="object-cover object-center"
+          quality={90}
+        />
+        <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(11,31,51,0.97)_0%,rgba(11,31,51,0.88)_42%,rgba(11,31,51,0.32)_76%,rgba(11,31,51,0.16)_100%)]" />
+        <Container className="relative flex min-h-[620px] items-center py-16 sm:min-h-[680px] sm:py-20">
+          <div className="max-w-3xl">
+            <p className="section-eyebrow !text-slate-300">Industrial Applications</p>
+            <h1 className="mt-5 max-w-3xl font-display text-4xl font-black leading-[1.06] text-white sm:text-5xl lg:text-6xl">
+              Welding and cutting supply built around real working conditions.
             </h1>
-            <p className="mt-6 max-w-3xl text-lg leading-8 text-slate-300">
-              Application pages help distributors, importers, repair workshops and OEM buyers
-              connect real working scenarios with suitable welding torch parts, cutting consumables
-              and workshop accessories.
+            <p className="body-large mt-6 max-w-2xl text-slate-200">
+              Match MIG/MAG, TIG, plasma cutting and workshop product families to the equipment,
+              replacement cycle and purchasing requirements of your industry.
             </p>
-            <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-              <Link
-                href="#application-list"
-                className="inline-flex items-center justify-center bg-arc-signal px-6 py-3 text-sm font-bold uppercase tracking-[0.16em] text-arc-midnight transition hover:bg-white"
-              >
-                View Applications
-              </Link>
-              <Link
-                href="/rfq"
-                className="inline-flex items-center justify-center border border-white/30 px-6 py-3 text-sm font-bold uppercase tracking-[0.16em] text-white transition hover:border-white hover:bg-white/10"
-              >
-                Send Application RFQ
-              </Link>
+            <div className="mt-9 flex flex-col gap-3 sm:flex-row">
+              <ButtonLink href="#industry-solutions">Explore Applications</ButtonLink>
+              <ButtonLink href="/rfq" variant="onDark">
+                Request Application Review
+              </ButtonLink>
             </div>
           </div>
-          <aside className="grid gap-px border border-white/10 bg-white/10 sm:grid-cols-2">
-            {applicationSignals.map((item) => (
-              <div key={item.label} className="bg-arc-midnight p-5">
-                <div className="text-xs font-bold uppercase tracking-[0.16em] text-arc-signal">
-                  {item.label}
-                </div>
-                <div className="mt-2 text-sm font-semibold leading-6 text-slate-200">
-                  {item.value}
-                </div>
-              </div>
-            ))}
-          </aside>
-        </div>
+        </Container>
+        <p
+          data-nosnippet
+          className="absolute bottom-4 right-4 max-w-xs bg-arc-midnight/80 px-3 py-2 text-right text-xs font-semibold text-slate-200 sm:bottom-6 sm:right-6"
+        >
+          Representative industrial application visual
+        </p>
       </section>
 
-      <section className="bg-white py-14 sm:py-16">
-        <div className="mx-auto grid max-w-7xl gap-6 px-4 sm:px-6 lg:grid-cols-3 lg:px-8">
-          {sourcingSteps.map((step, index) => (
-            <article key={step.title} className="border border-slate-200 bg-white p-6 shadow-sm">
-              <div className="font-display text-4xl font-black text-arc-blue">
-                {String(index + 1).padStart(2, "0")}
-              </div>
-              <h2 className="mt-4 font-display text-2xl font-black text-arc-midnight">
-                {step.title}
-              </h2>
-              <p className="mt-3 text-sm leading-7 text-slate-600">{step.description}</p>
-            </article>
-          ))}
-        </div>
-      </section>
-
-      <section id="application-list" className="bg-arc-frost py-14 sm:py-16">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
-            <div>
-              <p className="text-sm font-bold uppercase tracking-[0.2em] text-arc-blue">
-                Industry Paths
-              </p>
-              <h2 className="mt-3 font-display text-3xl font-black text-arc-midnight">
-                Application pages for industrial sourcing
-              </h2>
-              <p className="mt-4 max-w-3xl text-sm leading-7 text-slate-600">
-                Choose the closest industry scenario, then follow the related categories and product
-                references to prepare a practical RFQ.
-              </p>
-            </div>
-            <Link
-              href="/products"
-              className="inline-flex items-center justify-center bg-arc-blue px-5 py-3 text-sm font-bold uppercase tracking-[0.14em] text-white transition hover:bg-arc-midnight"
-            >
-              Product Center
-            </Link>
+      <Section id="industry-solutions" labelledBy="industry-solutions-title" className="bg-white">
+        <Container>
+          <div className="grid gap-8 lg:grid-cols-[0.72fr_1.28fr] lg:items-end">
+            <SectionHeading
+              id="industry-solutions-title"
+              eyebrow="Industry Solutions"
+              title="Start with the way the product will be used."
+            />
+            <p className="body-large max-w-2xl lg:justify-self-end">
+              Each application path connects operating context with relevant product systems,
+              selection risks and the evidence buyers should provide before quotation.
+            </p>
           </div>
-          <div className="mt-8 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
-            {applications.map((application) => (
-              <Link
+          <div className="mt-10 grid gap-5 md:grid-cols-2 xl:grid-cols-3">
+            {applicationCards.map(({ application, image }) => (
+              <IndustrySolutionCard
                 key={application.slug}
-                href={`/applications/${application.slug}`}
-                className="group border border-slate-200 bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:border-arc-blue hover:shadow-industrial"
-              >
-                <div className="flex items-start justify-between gap-4">
-                  <div className="h-1 w-16 bg-arc-signal" />
-                  <span className="text-xs font-bold uppercase tracking-[0.16em] text-slate-600">
-                    Application
-                  </span>
-                </div>
-                <h2 className="mt-5 font-display text-2xl font-black text-arc-midnight">
-                  {application.title}
-                </h2>
-                <p className="mt-3 text-sm leading-6 text-slate-600">{application.description}</p>
-                <div className="mt-5 grid gap-2">
-                  {application.buyerNeeds.slice(0, 2).map((need) => (
-                    <div key={need} className="border-l-4 border-arc-signal bg-arc-frost p-3">
-                      <p className="text-xs font-semibold leading-5 text-slate-700">{need}</p>
-                    </div>
-                  ))}
-                </div>
-                <span className="mt-5 inline-flex text-sm font-bold uppercase tracking-[0.14em] text-arc-blue group-hover:text-arc-copper">
-                  View Application
-                </span>
-              </Link>
+                application={application}
+                image={image}
+              />
             ))}
           </div>
-        </div>
-      </section>
+        </Container>
+      </Section>
 
-      <section className="bg-white py-14 sm:py-16">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <Section labelledBy="application-rfq-title" className="border-y border-arc-line bg-arc-frost">
+        <Container>
+          <div className="grid gap-10 lg:grid-cols-[0.68fr_1.32fr]">
+            <SectionHeading
+              id="application-rfq-title"
+              eyebrow="From Application to RFQ"
+              title="Give the quotation team evidence, not assumptions."
+              description="A useful RFQ identifies the working context, the current part or equipment, and the commercial scope of every line item."
+            />
+            <ol className="divide-y divide-arc-line border-y border-arc-line">
+              {sourcingSteps.map((step, index) => (
+                <li key={step.title} className="grid gap-3 py-6 sm:grid-cols-[72px_1fr] sm:gap-6">
+                  <span className="font-display text-3xl font-black text-arc-blue">
+                    {String(index + 1).padStart(2, "0")}
+                  </span>
+                  <div>
+                    <h2 className="font-display text-xl font-black text-arc-midnight">
+                      {step.title}
+                    </h2>
+                    <p className="mt-2 text-sm leading-7 text-slate-600">{step.description}</p>
+                  </div>
+                </li>
+              ))}
+            </ol>
+          </div>
+        </Container>
+      </Section>
+
+      <Section className="bg-white">
+        <Container>
           <RfqCta
-            title="Need application-based sourcing support?"
-            description="Send the application, product list, current part photos, drawings, quantity and destination country. ArcFort Weld will help review suitable product categories for quotation."
+            title="Need application-based product support?"
+            description="Send the working process, installed equipment, current part references, quantity and destination. ArcFort Weld will review the relevant product systems before quotation."
+            rfqPrompt="Industrial application sourcing request"
           />
-        </div>
-      </section>
+        </Container>
+      </Section>
     </>
   );
 }

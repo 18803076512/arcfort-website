@@ -44,13 +44,24 @@ jobs:
         run: npm run products:simple:preview
 
       - name: Check product images
-        run: npm run products:check-images
+        run: |
+          npm run products:check-images
+          npm run images:assets:validate
+          npm run products:image-tasks
 
       - name: Verify generated product files
         run: |
           npm run products:import
           npm run products:report
-          git diff --exit-code -- lib/data/products.ts docs/product-readiness-report.md
+          npm run series:components:generate
+          npm run series:components:report
+          npm run series:report
+          npm run compatibility:report
+          npm run technical:report
+          npm run images:assets:generate
+          npm run images:assets:report
+          npm run acquisition:report
+          git diff --exit-code -- lib/data/products.ts lib/data/product-image-assets.ts lib/data/product-series-component-facts.ts docs/product-readiness-report.md docs/product-image-tasks.csv docs/product-series-component-evidence-report.md docs/product-series-readiness-report.md docs/compatibility-readiness-report.md docs/product-technical-evidence-report.md docs/product-image-asset-report.md docs/acquisition-readiness-report.md
 
       - name: Verify promotion campaign links
         run: |
@@ -65,6 +76,14 @@ jobs:
 
       - name: Test product catalog search
         run: npm run test:product-search
+
+      - name: Validate product-series evidence and public relationships
+        run: |
+          npm run series:validate
+          npm run series:components:validate
+          npm run compatibility:validate
+          npm run technical:validate
+          npm run test:product-series
 
       - name: Test MIG/MAG torch parts RFQ builder
         run: npm run test:mig-rfq

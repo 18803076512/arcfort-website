@@ -2,10 +2,16 @@ import Link from "next/link";
 import { ProductCatalogTracker } from "@/components/analytics/ProductCatalogTracker";
 import { Breadcrumbs } from "@/components/content/Breadcrumbs";
 import { FaqSection } from "@/components/content/FaqSection";
-import { ProductCard } from "@/components/content/ProductCard";
+import { ProductGrid } from "@/components/content/ProductGrid";
 import { RfqCta } from "@/components/content/RfqCta";
 import { StructuredData } from "@/components/content/StructuredData";
+import { ProductSystemCard } from "@/components/home/ProductSystemCard";
 import { ProductFinderForm } from "@/components/products/ProductFinderForm";
+import { ButtonLink } from "@/components/ui/ButtonLink";
+import { Container } from "@/components/ui/Container";
+import { Section } from "@/components/ui/Section";
+import { SectionHeading } from "@/components/ui/SectionHeading";
+import { homepageProductSystems } from "@/content/homepage";
 import { getAllProductCategories } from "@/lib/content/categories";
 import { breadcrumbJsonLd, collectionPageJsonLd, faqJsonLd } from "@/lib/content/jsonld";
 import {
@@ -17,109 +23,51 @@ import { getAllProducts } from "@/lib/content/products";
 import { buildMetadata } from "@/lib/content/seo";
 import { buildEmailHref, buildWhatsAppHref, siteConfig } from "@/lib/content/site";
 
-const productListEmailHref = buildEmailHref({
-  subject: "Welding and cutting product list inquiry",
-  message:
-    "Hello ArcFort Weld, I would like to send a welding and cutting product list for quotation.\n\nProduct categories:\nQuantity by item:\nDestination country:\nDrawing, model or sample references:\nPackaging requirements:",
-});
-
-const productListWhatsAppHref = buildWhatsAppHref({
-  message:
-    "Hello ArcFort Weld, I would like to send a welding and cutting product list for quotation.\n\nProduct categories:\nQuantity by item:\nDestination country:\nDrawing, model or sample references:\nPackaging requirements:",
-});
-
 type ProductsPageProps = {
   searchParams: Promise<ProductCatalogSearchParams>;
 };
 
-const rfqChecklist = [
-  "Product name, SKU, model or reference part",
-  "Size, thread, material and package requirement",
-  "Compatible torch, machine model or drawing when available",
-  "Quantity, destination country and expected delivery schedule",
-] as const;
+const productListMessage =
+  "Hello ArcFort Weld, I would like to send a welding and cutting product list for quotation.\n\nProduct categories:\nQuantity by item:\nDestination country:\nDrawing, model or sample references:\nPackaging requirements:";
+
+const productListEmailHref = buildEmailHref({
+  subject: "Welding and cutting product list inquiry",
+  message: productListMessage,
+});
+
+const productListWhatsAppHref = buildWhatsAppHref({ message: productListMessage });
 
 const procurementSteps = [
   {
     step: "01",
-    title: "Choose product family",
+    title: "Identify the product",
     description:
-      "Start from MIG/MAG, TIG, plasma cutting, welding consumables, machines or accessories.",
+      "Use the product name, SKU, torch or machine model, and an existing part reference where available.",
   },
   {
     step: "02",
-    title: "Confirm technical fit",
+    title: "Confirm the technical fit",
     description:
-      "Use sample photos, drawings, model numbers or reference parts to avoid wrong consumables.",
+      "Share dimensions, thread, material, drawings, sample photos or an approved reference part.",
   },
   {
     step: "03",
-    title: "Send RFQ details",
+    title: "Define the order",
     description:
-      "Share quantity, packaging, destination country and delivery expectation for quotation review.",
+      "Add quantity by item, packaging or OEM requirements, destination country and delivery target.",
   },
 ] as const;
 
 const buyerServiceLinks = [
+  { href: "/products/welding-machines", label: "Welding Machines" },
   {
-    href: "/oem-service",
-    title: "OEM & Private Label",
-    description:
-      "Logo, packaging and model customization reviewed after product details are confirmed.",
+    href: "/guides/welding-machine-sourcing-checklist",
+    label: "Machine Sourcing Checklist",
   },
-  {
-    href: "/quality-control",
-    title: "Quality Control",
-    description: "Inspection flow for materials, production, packaging and outgoing shipment.",
-  },
-  {
-    href: "/shipping-payment",
-    title: "Shipping & Payment",
-    description: "Main port, payment term, MOQ policy and lead time for export RFQs.",
-  },
-  {
-    href: "/downloads",
-    title: "Catalog Request",
-    description: "Request category catalogs or product data sheets based on confirmed models.",
-  },
-] as const;
-
-const buyerSignals = [
-  { label: "Main Port", value: "Tianjin Port" },
-  { label: "Payment", value: "T/T payment terms" },
-  { label: "OEM", value: "Logo and packaging" },
-  { label: "Lead Time", value: "7-20 working days" },
-] as const;
-
-const quickCategoryLinks = [
-  {
-    label: "MIG/MAG Torch Parts",
-    href: "/products/mig-mag-torch-parts",
-    scope: "Contact tips, nozzles, diffusers and liners",
-    guideHref: "/guides/mig-contact-tip-size-thread-selection",
-    guideLabel: "Contact Tip Selection Guide",
-  },
-  {
-    label: "TIG Torch Parts",
-    href: "/products/tig-torch-parts",
-    scope: "Ceramic cups, collets, gas lenses and torch parts",
-    guideHref: "/guides/tig-torch-parts-names-identification-guide",
-    guideLabel: "TIG Parts Identification Guide",
-  },
-  {
-    label: "Plasma Cutter Consumables",
-    href: "/products/plasma-cutting-consumables",
-    scope: "Electrodes, nozzles, shields and swirl rings",
-    guideHref: "/guides/plasma-cutter-consumables-parts-guide",
-    guideLabel: "Plasma Consumables Parts Guide",
-  },
-  {
-    label: "Welding Machines",
-    href: "/products/welding-machines",
-    scope: "MIG/MAG, TIG, MMA and plasma equipment sourcing",
-    guideHref: "/guides/welding-machine-sourcing-checklist",
-    guideLabel: "Machine Sourcing Checklist",
-  },
+  { href: "/oem-service", label: "OEM / ODM" },
+  { href: "/quality-control", label: "Quality Control" },
+  { href: "/shipping-payment", label: "Shipping & Payment" },
+  { href: "/downloads", label: "Catalogs & RFQ Tools" },
 ] as const;
 
 const productCenterFaq = [
@@ -169,17 +117,9 @@ function buildCatalogHref({
 }) {
   const params = new URLSearchParams();
 
-  if (query) {
-    params.set("q", query);
-  }
-
-  if (categorySlug) {
-    params.set("category", categorySlug);
-  }
-
-  if (page > 1) {
-    params.set("page", String(page));
-  }
+  if (query) params.set("q", query);
+  if (categorySlug) params.set("category", categorySlug);
+  if (page > 1) params.set("page", String(page));
 
   const queryString = params.toString();
   return `${queryString ? `/products?${queryString}` : "/products"}#product-catalog`;
@@ -189,9 +129,7 @@ function getPaginationPages(currentPage: number, totalPages: number) {
   const pages = new Set([1, totalPages]);
 
   for (let page = currentPage - 2; page <= currentPage + 2; page += 1) {
-    if (page >= 1 && page <= totalPages) {
-      pages.add(page);
-    }
+    if (page >= 1 && page <= totalPages) pages.add(page);
   }
 
   return [...pages].sort((left, right) => left - right);
@@ -209,6 +147,7 @@ export async function generateMetadata({ searchParams }: ProductsPageProps) {
 export default async function ProductsPage({ searchParams }: ProductsPageProps) {
   const resolvedSearchParams = await searchParams;
   const categories = getAllProductCategories();
+  const categoryMap = new Map(categories.map((category) => [category.slug, category]));
   const products = getAllProducts();
   const productsByCategory = new Map(
     categories.map((category) => [
@@ -222,8 +161,6 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
     searchParams: resolvedSearchParams,
   });
   const paginationPages = getPaginationPages(catalog.currentPage, catalog.totalPages);
-  const productCount = products.length;
-  const categoryCount = categories.length;
   const hasCatalogParameters = hasProductCatalogParameters(resolvedSearchParams);
 
   return (
@@ -259,108 +196,53 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
       />
       <StructuredData data={faqJsonLd([...productCenterFaq])} />
 
-      <section className="bg-white py-5 sm:py-6">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div className="border-b border-arc-line bg-white py-5">
+        <Container>
           <Breadcrumbs items={[{ label: "Home", href: "/" }, { label: "Products" }]} />
-        </div>
-      </section>
+        </Container>
+      </div>
 
       <section className="bg-arc-midnight text-white">
-        <div className="mx-auto grid max-w-7xl gap-8 px-4 py-10 sm:px-6 sm:py-14 lg:grid-cols-[1fr_0.72fr] lg:items-end lg:px-8">
-          <div>
-            <p className="text-sm font-bold uppercase leading-6 tracking-[0.14em] text-arc-signal sm:tracking-[0.2em]">
-              Industrial Product Supply
-            </p>
-            <h1 className="mt-4 max-w-4xl break-words font-display text-3xl font-black leading-tight sm:text-5xl lg:text-6xl">
-              Welding Torch Parts, Plasma Consumables & Equipment
-            </h1>
-            <p className="mt-6 max-w-3xl text-lg leading-8 text-slate-300">
-              Search MIG/MAG and TIG torch parts, plasma cutter consumables, welding consumables,
-              machines and accessories for distributor, importer, repair and OEM purchasing.
-            </p>
-            <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-              <Link
-                href="#product-finder"
-                className="inline-flex w-full items-center justify-center bg-arc-signal px-6 py-3 text-sm font-bold uppercase tracking-[0.16em] text-arc-midnight transition hover:bg-white sm:w-auto"
-              >
-                Find Products
-              </Link>
-              <Link
-                href="/rfq"
-                className="inline-flex w-full items-center justify-center border border-white/30 px-6 py-3 text-sm font-bold uppercase tracking-[0.16em] text-white transition hover:border-white hover:bg-white/10 sm:w-auto"
-              >
-                Request a Quote
-              </Link>
-            </div>
+        <Container className="py-12 sm:py-16 lg:py-20">
+          <p className="section-eyebrow !text-slate-300">Industrial Product Supply</p>
+          <h1 className="mt-4 max-w-5xl font-display text-4xl font-black leading-[1.06] sm:text-5xl lg:text-6xl">
+            Welding Torch Parts, Cutting Consumables & Equipment
+          </h1>
+          <p className="body-large mt-6 max-w-3xl !text-slate-300">
+            Source MIG/MAG and TIG torch parts, plasma cutting consumables, welding machines,
+            consumables and workshop accessories for distribution, repair, industrial use and OEM
+            purchasing.
+          </p>
+          <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+            <ButtonLink href="#product-finder" className="w-full sm:w-auto">
+              Find Products
+            </ButtonLink>
+            <ButtonLink href="/rfq" variant="onDark" className="w-full sm:w-auto">
+              Request a Quote
+            </ButtonLink>
           </div>
-
-          <aside className="hidden border border-white/10 bg-white/5 p-5 shadow-industrial lg:block">
-            <p className="text-xs font-bold uppercase tracking-[0.18em] text-arc-signal">
-              Current Supply Scope
-            </p>
-            <div className="mt-5 grid grid-cols-2 gap-px border border-white/10 bg-white/10">
-              <div className="bg-arc-midnight p-4">
-                <div className="font-display text-4xl font-black text-arc-signal">
-                  {categoryCount}
-                </div>
-                <div className="mt-1 text-xs font-bold uppercase tracking-[0.14em] text-slate-300">
-                  Categories
-                </div>
-              </div>
-              <div className="bg-arc-midnight p-4">
-                <div className="font-display text-4xl font-black text-arc-signal">
-                  {productCount}
-                </div>
-                <div className="mt-1 text-xs font-bold uppercase tracking-[0.14em] text-slate-300">
-                  Product items
-                </div>
-              </div>
-            </div>
-            <div className="mt-5 grid gap-3">
-              {buyerSignals.map((item) => (
-                <div key={item.label} className="border-l-4 border-arc-signal bg-white/5 p-4">
-                  <div className="text-[11px] font-bold uppercase tracking-[0.16em] text-slate-400">
-                    {item.label}
-                  </div>
-                  <div className="mt-1 text-sm font-bold text-white">{item.value}</div>
-                </div>
-              ))}
-            </div>
-          </aside>
-        </div>
+        </Container>
       </section>
 
-      <section id="product-finder" className="scroll-mt-28 bg-white py-10 sm:py-12">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="grid gap-8 lg:grid-cols-[0.7fr_1.3fr] lg:items-start">
+      <Section id="product-finder" labelledBy="product-finder-title" className="bg-white">
+        <Container>
+          <div className="grid gap-8 lg:grid-cols-[0.82fr_1.18fr] lg:items-start">
             <div>
-              <p className="text-sm font-bold uppercase tracking-[0.2em] text-arc-blue">
-                Product Finder
-              </p>
-              <h2 className="mt-3 font-display text-3xl font-black text-arc-midnight">
-                Welding and cutting product finder
-              </h2>
-              <p className="mt-4 text-sm leading-7 text-slate-600">
-                ArcFort Weld product records cover common component names, category references and
-                SKUs used in distributor purchase lists. Include the torch or machine model and a
-                sample photo when market terminology or compatibility is uncertain.
-              </p>
-              <div className="mt-5 flex flex-col gap-2 sm:flex-row lg:flex-col xl:flex-row">
-                <a
-                  href={productListEmailHref}
-                  className="inline-flex min-h-11 flex-1 items-center justify-center border border-arc-blue px-4 text-xs font-bold uppercase tracking-[0.12em] text-arc-blue transition hover:bg-arc-blue hover:text-white"
-                >
-                  Email Product List
+              <SectionHeading
+                id="product-finder-title"
+                eyebrow="Product Finder"
+                title="Search by product, component or SKU."
+                description="Use the closest known reference. A torch label, drawing, sample photo or existing part helps confirm products that use different market names."
+              />
+              <div className="mt-6 flex flex-wrap gap-x-5 gap-y-2 text-sm font-bold">
+                <a href={productListEmailHref} className="text-arc-blue hover:text-arc-copper">
+                  Email a product list
                 </a>
-                <a
-                  href={productListWhatsAppHref}
-                  className="inline-flex min-h-11 flex-1 items-center justify-center border border-slate-300 px-4 text-xs font-bold uppercase tracking-[0.12em] text-slate-700 transition hover:border-arc-blue hover:text-arc-blue"
-                >
-                  WhatsApp Product List
+                <a href={productListWhatsAppHref} className="text-arc-blue hover:text-arc-copper">
+                  Send by WhatsApp
                 </a>
               </div>
             </div>
-
             <ProductFinderForm
               categories={categories.map((category) => ({
                 slug: category.slug,
@@ -369,268 +251,107 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
               }))}
               categorySlug={catalog.categorySlug}
               hasParameters={hasCatalogParameters}
-              productCount={productCount}
+              productCount={products.length}
               query={catalog.query}
             />
           </div>
+        </Container>
+      </Section>
 
-          <nav
-            aria-label="Welding and cutting product sourcing paths"
-            className="mt-8 grid gap-px border border-slate-200 bg-slate-200 md:grid-cols-2 xl:grid-cols-4"
-          >
-            {quickCategoryLinks.map((item) => (
-              <article
-                key={item.href}
-                className="flex min-w-0 flex-col bg-white p-5 transition hover:bg-arc-frost"
-              >
-                <Link
-                  href={item.href}
-                  className="font-display text-lg font-black text-arc-midnight transition hover:text-arc-blue"
-                >
-                  {item.label}
-                </Link>
-                <p className="mt-2 text-xs font-semibold leading-5 text-slate-600">{item.scope}</p>
-                <div className="mt-5 grid gap-2 border-t border-slate-200 pt-4 sm:grid-cols-2 md:grid-cols-1 xl:grid-cols-2">
-                  <Link
-                    href={item.href}
-                    className="inline-flex min-h-11 items-center justify-center bg-arc-blue px-3 text-center text-[11px] font-bold uppercase tracking-[0.1em] text-white transition hover:bg-arc-midnight"
-                  >
-                    View Category
-                  </Link>
-                  <Link
-                    href={item.guideHref}
-                    className="inline-flex min-h-11 items-center justify-center border border-arc-blue px-3 text-center text-[11px] font-bold uppercase leading-4 tracking-[0.08em] text-arc-blue transition hover:bg-white"
-                  >
-                    {item.guideLabel}
-                  </Link>
-                </div>
-              </article>
-            ))}
-          </nav>
+      <Section
+        id="product-categories"
+        labelledBy="product-categories-title"
+        className="bg-arc-frost"
+      >
+        <Container>
+          <SectionHeading
+            id="product-categories-title"
+            eyebrow="Product Systems"
+            title="Browse by welding and cutting process."
+            description="Move from equipment and torch assemblies to front-end parts, replacement consumables and workshop accessories."
+          />
+          <div className="mt-10 grid gap-6 md:grid-cols-2 xl:grid-cols-3">
+            {homepageProductSystems.map((system) => {
+              const category = categoryMap.get(system.categorySlug);
+              if (!category) return null;
 
-          <div className="mt-8 grid gap-5 lg:grid-cols-3">
-            {procurementSteps.map((item) => (
-              <article key={item.step} className="border border-slate-200 bg-white p-6 shadow-sm">
-                <div className="font-display text-4xl font-black text-arc-blue">{item.step}</div>
-                <h3 className="mt-4 font-display text-2xl font-black text-arc-midnight">
-                  {item.title}
-                </h3>
-                <p className="mt-3 text-sm leading-7 text-slate-600">{item.description}</p>
-              </article>
-            ))}
+              return (
+                <ProductSystemCard
+                  key={system.categorySlug}
+                  href={`/products/${system.categorySlug}`}
+                  title={system.systemName}
+                  range={system.range}
+                  image={system.image}
+                  alt={`${system.systemName} product range from ArcFort Weld`}
+                />
+              );
+            })}
           </div>
-        </div>
-      </section>
+        </Container>
+      </Section>
 
-      <section id="product-categories" className="bg-arc-frost py-14 sm:py-16">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="grid gap-8 lg:grid-cols-[0.72fr_1.28fr] lg:items-start">
-            <div className="lg:sticky lg:top-28">
-              <p className="text-sm font-bold uppercase tracking-[0.2em] text-arc-blue">
-                Category Selection
-              </p>
-              <h2 className="mt-3 font-display text-3xl font-black text-arc-midnight">
-                Product Categories
-              </h2>
-              <p className="mt-4 text-sm leading-7 text-slate-600">
-                Choose the closest category first. If compatibility or dimensions are not confirmed,
-                send a photo, drawing or sample detail and the product can be reviewed before quote.
-              </p>
-              <Link
-                href="/rfq"
-                className="mt-6 inline-flex w-full items-center justify-center bg-arc-blue px-5 py-3 text-sm font-bold uppercase tracking-[0.14em] text-white transition hover:bg-arc-midnight sm:w-auto"
-              >
-                Send Mixed RFQ
-              </Link>
-            </div>
-            <div className="grid gap-5 md:grid-cols-2">
-              {categories.map((category) => {
-                const categoryProducts = productsByCategory.get(category.slug) ?? [];
-
-                return (
-                  <article
-                    key={category.slug}
-                    className="border border-slate-200 bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:border-arc-blue hover:shadow-industrial"
-                  >
-                    <div className="flex items-start justify-between gap-4">
-                      <span className="flex h-12 w-12 items-center justify-center bg-arc-midnight font-display text-lg font-black text-arc-signal">
-                        {category.code}
-                      </span>
-                      <span className="text-right text-xs font-bold uppercase tracking-[0.16em] text-slate-600">
-                        {categoryProducts.length} products
-                      </span>
-                    </div>
-                    <h3 className="mt-5 font-display text-2xl font-black text-arc-midnight">
-                      {category.title}
-                    </h3>
-                    <p className="mt-3 text-sm leading-6 text-slate-600">{category.description}</p>
-                    <div className="mt-5 grid gap-2">
-                      {category.productRange.slice(0, 2).map((item) => (
-                        <div key={item} className="border-l-4 border-arc-signal bg-arc-frost p-3">
-                          <p className="text-xs font-semibold leading-5 text-slate-700">{item}</p>
-                        </div>
-                      ))}
-                    </div>
-                    <div className="mt-5 flex flex-col gap-2 sm:flex-row">
-                      <Link
-                        href={`/products/${category.slug}`}
-                        className="inline-flex flex-1 items-center justify-center bg-arc-blue px-4 py-3 text-xs font-bold uppercase tracking-[0.14em] text-white transition hover:bg-arc-midnight"
-                      >
-                        View Products
-                      </Link>
-                      <Link
-                        href={`/rfq?product=${encodeURIComponent(category.title)}`}
-                        className="inline-flex flex-1 items-center justify-center border border-arc-blue px-4 py-3 text-xs font-bold uppercase tracking-[0.14em] text-arc-blue transition hover:bg-arc-blue hover:text-white"
-                      >
-                        Category RFQ
-                      </Link>
-                    </div>
-                  </article>
-                );
-              })}
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section className="bg-white py-14 sm:py-16">
-        <div className="mx-auto grid max-w-7xl gap-8 px-4 sm:px-6 lg:grid-cols-[0.85fr_1.15fr] lg:px-8">
-          <div>
-            <p className="text-sm font-bold uppercase tracking-[0.2em] text-arc-blue">
-              RFQ Checklist
-            </p>
-            <h2 className="mt-3 font-display text-3xl font-black text-arc-midnight">
-              Prepare these details for faster quotation.
-            </h2>
-            <p className="mt-4 text-sm leading-7 text-slate-600">
-              Welding torch consumables and cutting parts often depend on small fit details. A clear
-              RFQ helps avoid wrong parts and speeds up quotation review.
-            </p>
-          </div>
-          <div className="grid gap-4 sm:grid-cols-2">
-            {rfqChecklist.map((item) => (
-              <div key={item} className="border-l-4 border-arc-signal bg-arc-frost p-5">
-                <p className="text-sm font-semibold leading-6 text-slate-700">{item}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <section className="bg-arc-midnight py-14 text-white sm:py-16">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="max-w-3xl">
-            <p className="text-sm font-bold uppercase tracking-[0.2em] text-arc-signal">
-              Buyer Support
-            </p>
-            <h2 className="mt-3 font-display text-3xl font-black">
-              Service pages that help buyers qualify the supplier.
-            </h2>
-            <p className="mt-4 text-sm leading-7 text-slate-300">
-              Export buyers usually check OEM support, inspection steps, shipping terms and
-              available documents before starting repeat purchasing.
-            </p>
-          </div>
-          <div className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-            {buyerServiceLinks.map((item) => (
-              <Link
-                key={item.href}
-                href={item.href}
-                className="group border border-white/10 bg-white/5 p-5 transition hover:-translate-y-1 hover:border-arc-signal hover:bg-white/10"
-              >
-                <div className="h-1 w-16 bg-arc-signal" />
-                <h3 className="mt-5 font-display text-xl font-black text-white">{item.title}</h3>
-                <p className="mt-3 text-sm leading-6 text-slate-300">{item.description}</p>
-                <span className="mt-5 inline-flex text-sm font-bold uppercase tracking-[0.14em] text-arc-signal group-hover:text-white">
-                  View Details
-                </span>
-              </Link>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <section id="product-catalog" className="scroll-mt-28 bg-white py-14 sm:py-16">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
-            <div>
-              <p className="text-sm font-bold uppercase tracking-[0.2em] text-arc-blue">
-                Product Records
-              </p>
-              <h2 className="mt-3 font-display text-3xl font-black text-arc-midnight">
-                Available welding and cutting products
-              </h2>
-              <p className="mt-4 max-w-3xl text-sm leading-7 text-slate-600">
-                Review published products and add relevant items to your RFQ shortlist. Technical
-                fit is confirmed from a model, drawing, sample or reference part before quotation.
-              </p>
-            </div>
-            <Link
-              href="#product-finder"
-              className="inline-flex w-full items-center justify-center border border-arc-blue px-5 py-3 text-sm font-bold uppercase tracking-[0.14em] text-arc-blue transition hover:bg-arc-blue hover:text-white sm:w-auto"
-            >
+      <Section id="product-catalog" labelledBy="product-catalog-title" className="bg-white">
+        <Container>
+          <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
+            <SectionHeading
+              id="product-catalog-title"
+              eyebrow="Product Catalog"
+              title="Published products available for inquiry."
+              description="Review current product records and add relevant items to an RFQ. Final fit is checked from the requested model, drawing, sample or reference part."
+            />
+            <ButtonLink href="#product-finder" variant="secondary" className="w-full lg:w-auto">
               Change Search
-            </Link>
+            </ButtonLink>
           </div>
 
-          <div className="mt-8 flex flex-col gap-3 border-b border-slate-200 pb-5 sm:flex-row sm:items-end sm:justify-between">
+          <div className="mt-8 flex flex-col gap-3 border-y border-arc-line py-4 sm:flex-row sm:items-end sm:justify-between">
             <div>
-              <p className="text-sm font-black text-arc-midnight">
+              <p className="font-bold text-arc-midnight">
                 {catalog.totalMatches === 0
                   ? "No matching products"
                   : `Showing ${catalog.startIndex}-${catalog.endIndex} of ${catalog.totalMatches} products`}
               </p>
               {catalog.query || catalog.selectedCategory ? (
-                <p className="mt-1 text-xs font-semibold leading-5 text-slate-500">
-                  {catalog.query ? `Search: "${catalog.query}"` : "All product names"}
+                <p className="mt-1 text-sm text-slate-500">
+                  {catalog.query ? `Search: “${catalog.query}”` : "All product names"}
                   {catalog.selectedCategory
                     ? ` | Category: ${catalog.selectedCategory.title}`
                     : " | All categories"}
                 </p>
-              ) : (
-                <p className="mt-1 text-xs font-semibold text-slate-500">
-                  All active product records
-                </p>
-              )}
+              ) : null}
             </div>
-            <p className="text-xs font-bold uppercase tracking-[0.14em] text-slate-600">
+            <p className="caption">
               Page {catalog.currentPage} of {catalog.totalPages}
             </p>
           </div>
 
           {catalog.items.length > 0 ? (
-            <div className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-              {catalog.items.map(({ product, category }) => (
-                <ProductCard key={product.slug} product={product} category={category} />
-              ))}
-            </div>
+            <ProductGrid items={catalog.items} className="mt-8" />
           ) : (
-            <div className="mt-8 grid gap-6 border border-slate-200 bg-arc-frost p-6 sm:p-8 lg:grid-cols-[1fr_auto] lg:items-center">
-              <div>
-                <h3 className="font-display text-2xl font-black text-arc-midnight">
-                  Send the product reference for review
-                </h3>
-                <p className="mt-3 max-w-3xl text-sm leading-7 text-slate-600">
-                  The requested item may use a different market name or may not be published yet.
-                  Send the SKU, drawing, current part photo, model reference and quantity for
-                  quotation review.
-                </p>
-              </div>
-              <div className="flex flex-col gap-3 sm:flex-row lg:flex-col">
-                <Link
+            <div className="mt-8 border-l-4 border-arc-signal bg-arc-frost p-6 sm:p-8">
+              <h3 className="font-display text-2xl font-black text-arc-midnight">
+                Send the product reference for review
+              </h3>
+              <p className="mt-3 max-w-3xl text-sm leading-7 text-slate-600">
+                The item may use another market name or may not be published yet. Send the SKU,
+                drawing, current part photo, model reference and quantity for quotation review.
+              </p>
+              <div className="mt-6 flex flex-col gap-3 sm:flex-row">
+                <ButtonLink
                   href={`/rfq?product=${encodeURIComponent(
                     catalog.query || catalog.selectedCategory?.title || "Product reference",
                   )}`}
-                  className="inline-flex min-h-12 items-center justify-center bg-arc-blue px-6 text-sm font-bold uppercase tracking-[0.14em] text-white transition hover:bg-arc-midnight"
+                  className="w-full sm:w-auto"
                 >
                   Send Product RFQ
-                </Link>
-                <Link
+                </ButtonLink>
+                <ButtonLink
                   href="/products#product-catalog"
-                  className="inline-flex min-h-12 items-center justify-center border border-arc-blue px-6 text-sm font-bold uppercase tracking-[0.14em] text-arc-blue transition hover:bg-arc-blue hover:text-white"
+                  variant="secondary"
+                  className="w-full sm:w-auto"
                 >
                   View All Products
-                </Link>
+                </ButtonLink>
               </div>
             </div>
           )}
@@ -648,21 +369,17 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
                     page: catalog.currentPage - 1,
                   })}
                   rel="prev"
-                  className="inline-flex min-h-11 items-center justify-center border border-slate-300 px-4 text-xs font-bold uppercase tracking-[0.12em] text-slate-700 transition hover:border-arc-blue hover:text-arc-blue"
+                  className="button-base button-secondary min-h-11 px-4"
                 >
                   Previous
                 </Link>
-              ) : (
-                <span className="inline-flex min-h-11 items-center justify-center border border-slate-200 px-4 text-xs font-bold uppercase tracking-[0.12em] text-slate-500">
-                  Previous
-                </span>
-              )}
+              ) : null}
 
               {paginationPages.map((page, index) => [
                 index > 0 && page - paginationPages[index - 1] > 1 ? (
                   <span
                     key={`gap-${page}`}
-                    className="inline-flex h-11 w-8 items-center justify-center text-slate-400"
+                    className="flex h-11 w-8 items-center justify-center text-slate-400"
                   >
                     ...
                   </span>
@@ -678,8 +395,8 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
                   aria-label={`Product page ${page}`}
                   className={
                     page === catalog.currentPage
-                      ? "inline-flex h-11 w-11 items-center justify-center bg-arc-midnight text-sm font-black text-white"
-                      : "inline-flex h-11 w-11 items-center justify-center border border-slate-300 text-sm font-bold text-slate-700 transition hover:border-arc-blue hover:text-arc-blue"
+                      ? "flex h-11 w-11 items-center justify-center bg-arc-midnight text-sm font-black text-white"
+                      : "flex h-11 w-11 items-center justify-center border border-arc-line text-sm font-bold text-slate-700 hover:border-arc-blue hover:text-arc-blue"
                   }
                 >
                   {page}
@@ -694,31 +411,68 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
                     page: catalog.currentPage + 1,
                   })}
                   rel="next"
-                  className="inline-flex min-h-11 items-center justify-center border border-slate-300 px-4 text-xs font-bold uppercase tracking-[0.12em] text-slate-700 transition hover:border-arc-blue hover:text-arc-blue"
+                  className="button-base button-secondary min-h-11 px-4"
                 >
                   Next
                 </Link>
-              ) : (
-                <span className="inline-flex min-h-11 items-center justify-center border border-slate-200 px-4 text-xs font-bold uppercase tracking-[0.12em] text-slate-500">
-                  Next
-                </span>
-              )}
+              ) : null}
             </nav>
           ) : null}
-        </div>
-      </section>
+        </Container>
+      </Section>
 
-      <section className="bg-white py-14 sm:py-16">
-        <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
+      <Section labelledBy="rfq-preparation-title" className="border-y border-arc-line bg-arc-frost">
+        <Container>
+          <div className="grid gap-10 lg:grid-cols-[0.7fr_1.3fr]">
+            <SectionHeading
+              id="rfq-preparation-title"
+              eyebrow="RFQ Preparation"
+              title="Provide enough detail for a useful quotation."
+              description="Small fit differences matter in torch and cutting consumables. These three checks reduce avoidable product mismatches."
+            />
+            <ol className="border-t-2 border-arc-midnight">
+              {procurementSteps.map((item) => (
+                <li
+                  key={item.step}
+                  className="grid gap-3 border-b border-arc-line py-5 sm:grid-cols-[3rem_12rem_1fr] sm:items-start"
+                >
+                  <span className="font-display text-xl font-black text-arc-blue">{item.step}</span>
+                  <h3 className="font-display text-lg font-black text-arc-midnight">
+                    {item.title}
+                  </h3>
+                  <p className="text-sm leading-6 text-slate-600">{item.description}</p>
+                </li>
+              ))}
+            </ol>
+          </div>
+          <nav
+            aria-label="Product sourcing support"
+            className="mt-9 flex flex-wrap gap-x-6 gap-y-3 border-t border-arc-line pt-6"
+          >
+            {buyerServiceLinks.map((item) => (
+              <Link
+                key={item.href}
+                href={item.href}
+                className="text-sm font-bold text-arc-blue hover:text-arc-copper"
+              >
+                {item.label} <span aria-hidden="true">&rarr;</span>
+              </Link>
+            ))}
+          </nav>
+        </Container>
+      </Section>
+
+      <Section labelledBy="product-faq-title" className="bg-white">
+        <Container className="max-w-5xl">
           <FaqSection items={[...productCenterFaq]} title="Product Sourcing FAQ" />
-        </div>
-      </section>
+        </Container>
+      </Section>
 
-      <section className="bg-arc-frost py-14 sm:py-16">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <Section className="bg-arc-frost">
+        <Container>
           <RfqCta />
-        </div>
-      </section>
+        </Container>
+      </Section>
     </>
   );
 }

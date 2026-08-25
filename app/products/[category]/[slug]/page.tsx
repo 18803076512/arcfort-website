@@ -11,6 +11,7 @@ import {
   getRelatedProducts,
 } from "@/lib/content/products";
 import { getSearchEligibleProductImages } from "@/lib/content/product-images";
+import { getProductSeriesForProduct } from "@/lib/content/product-series";
 import { buildMetadata } from "@/lib/content/seo";
 
 type ProductRouteProps = {
@@ -76,6 +77,7 @@ export default async function ProductDetailPage({ params }: ProductRouteProps) {
       } => Boolean(relatedProduct),
     );
   const relatedApplications = getApplicationsForProduct(product.slug, category.slug);
+  const relatedSeries = getProductSeriesForProduct(product.slug);
 
   return (
     <>
@@ -97,6 +99,7 @@ export default async function ProductDetailPage({ params }: ProductRouteProps) {
         category={category}
         relatedProducts={relatedProducts}
         relatedApplications={relatedApplications}
+        relatedSeries={relatedSeries}
       />
     </>
   );

@@ -1,11 +1,18 @@
 import Image from "next/image";
 import Link from "next/link";
+import { RfqForm } from "@/app/rfq/RfqForm";
 import { Breadcrumbs } from "@/components/content/Breadcrumbs";
+import { BuyerPathList } from "@/components/content/BuyerPathList";
 import { FaqSection } from "@/components/content/FaqSection";
+import { PageSectionNav } from "@/components/content/PageSectionNav";
+import { ProcessSteps } from "@/components/content/ProcessSteps";
 import { RfqCta } from "@/components/content/RfqCta";
 import { StructuredData } from "@/components/content/StructuredData";
-import { RfqForm } from "@/app/rfq/RfqForm";
 import { DistributorRfqBuilder } from "@/components/distributor/DistributorRfqBuilder";
+import { ButtonLink } from "@/components/ui/ButtonLink";
+import { Container } from "@/components/ui/Container";
+import { Section } from "@/components/ui/Section";
+import { SectionHeading } from "@/components/ui/SectionHeading";
 import { getAllProductCategories } from "@/lib/content/categories";
 import { breadcrumbJsonLd, faqJsonLd, webPageJsonLd } from "@/lib/content/jsonld";
 import { getAllProducts } from "@/lib/content/products";
@@ -31,29 +38,29 @@ const buyerProfiles = [
 
 const distributorSupport = [
   {
-    title: "Mixed Product Lists",
+    title: "Mixed product lists",
     description:
       "Combine MIG/MAG, TIG, plasma cutting, welding consumables, machines and accessories in one itemized RFQ.",
   },
   {
-    title: "Product Reference Review",
+    title: "Product reference review",
     description:
-      "Use model numbers, drawings, current-part photos or samples when dimensions and compatibility require confirmation.",
+      "Use model numbers, drawings, current-part photos or samples where dimensions and compatibility require confirmation.",
   },
   {
-    title: "Trial Order Discussion",
+    title: "Trial and repeat planning",
     description:
-      "Small trial orders are accepted for standard products, subject to product type and current order requirements.",
+      "Discuss small trial orders for standard products and retain approved references for repeat purchasing.",
   },
   {
-    title: "OEM & Private Label",
+    title: "OEM and private label",
     description:
-      "Logo, label, packaging, carton and model customization can be reviewed with quantity and artwork requirements.",
+      "Review logo, label, packaging, carton and model customization with quantity and artwork requirements.",
   },
   {
-    title: "Export Packing",
+    title: "Export packing coordination",
     description:
-      "Standard export packing or customized packaging can be discussed by product family, quantity and destination.",
+      "Define packing unit, labeling and carton requirements by product family, quantity and destination.",
   },
 ] as const;
 
@@ -69,13 +76,13 @@ const inquiryChecklist = [
 const sourcingSteps = [
   {
     step: "01",
-    title: "Send the product list",
+    title: "Submit the product list",
     description: "Share item references, quantities, destination and available technical evidence.",
   },
   {
     step: "02",
     title: "Confirm product details",
-    description: "Review compatibility, dimensions, packing and any fields that remain uncertain.",
+    description: "Review fit, dimensions, packing and any fields that remain uncertain.",
   },
   {
     step: "03",
@@ -84,8 +91,9 @@ const sourcingSteps = [
   },
   {
     step: "04",
-    title: "Plan trial or repeat orders",
-    description: "Keep approved references and packaging details organized for future purchasing.",
+    title: "Control repeat orders",
+    description:
+      "Keep approved product, image, packing and artwork references for future purchasing.",
   },
 ] as const;
 
@@ -93,7 +101,7 @@ const resourceLinks = [
   {
     href: "/about",
     title: "Company Profile",
-    description: "Verify the legal company, website brand, location and confirmed contact route.",
+    description: "Verify the legal company, ArcFort Weld brand, location and contact routes.",
   },
   {
     href: "/downloads/arcfort-distributor-sourcing-guide.pdf",
@@ -102,29 +110,28 @@ const resourceLinks = [
   },
   {
     href: "/downloads",
-    title: "Catalog & RFQ Files",
-    description: "Download the welding catalog, public product list and distributor RFQ workbook.",
+    title: "Catalogs & RFQ Files",
+    description: "Download the company catalog, public product list and distributor workbook.",
   },
   {
     href: "/oem-service",
-    title: "OEM Service",
-    description: "Review logo, private label, carton and model customization requirements.",
+    title: "OEM / ODM",
+    description: "Review logo, private-label packaging, carton and model customization inputs.",
   },
   {
     href: "/quality-control",
-    title: "Quality Control",
-    description: "See the incoming, production, packaging and outgoing inspection workflow.",
+    title: "Quality Coordination",
+    description: "Review product-reference, packing and pre-shipment control points by order.",
   },
   {
     href: "/shipping-payment#export-order-workflow",
     title: "Shipping & Payment",
-    description:
-      "Review payment stages, lead-time basis, port options and the export-order workflow before RFQ.",
+    description: "Review payment stages, lead-time basis, port options and export-order workflow.",
   },
   {
     href: "/guides/how-to-prepare-a-welding-parts-rfq",
     title: "RFQ Preparation Guide",
-    description: "Prepare traceable line items, compatibility evidence and packaging details.",
+    description: "Prepare traceable line items, compatibility evidence and packing details.",
   },
 ] as const;
 
@@ -152,8 +159,16 @@ const faq = [
   {
     question: "Does an inquiry create an exclusive distributor appointment?",
     answer:
-      "No. A website inquiry starts product and commercial review only. Any territory or distributor arrangement would require separate written commercial agreement.",
+      "No. A website inquiry starts product and commercial review only. Any territory or distributor arrangement would require a separate written commercial agreement.",
   },
+] as const;
+
+const sectionLinks = [
+  { href: "#product-families", label: "Product Range" },
+  { href: "#distributor-rfq-builder", label: "Sourcing Brief" },
+  { href: "#distributor-rfq", label: "Direct Inquiry" },
+  { href: "#program-support", label: "Program Support" },
+  { href: "#distributor-faq", label: "FAQ" },
 ] as const;
 
 export const metadata = buildMetadata({
@@ -211,178 +226,128 @@ export default function DistributorSupplyPage() {
       <section className="relative isolate overflow-hidden bg-arc-midnight text-white">
         <Image
           src="/images/site/arcfort-oem-consumables-workbench.png"
-          alt="Welding torch consumables arranged for distributor product sourcing"
+          alt="Representative welding product references for distributor sourcing"
           fill
           priority
           sizes="100vw"
           className="absolute inset-0 -z-20 object-cover"
+          quality={90}
         />
-        <div className="absolute inset-0 -z-10 bg-arc-midnight/90" />
-        <div className="mx-auto flex min-h-[34rem] max-w-7xl flex-col justify-center px-4 py-14 sm:px-6 sm:py-16 lg:px-8">
+        <div className="absolute inset-0 -z-10 bg-[linear-gradient(90deg,rgba(11,31,51,0.98)_0%,rgba(11,31,51,0.92)_48%,rgba(11,31,51,0.55)_100%)]" />
+        <Container className="flex min-h-[650px] flex-col justify-center py-14 sm:py-16 lg:py-20">
           <Breadcrumbs
             items={[{ label: "Home", href: "/" }, { label: "Distributor Supply" }]}
             inverse
           />
-          <div className="mt-8 max-w-4xl">
-            <p className="text-sm font-bold uppercase leading-6 tracking-[0.14em] text-arc-signal sm:tracking-[0.2em]">
-              Distributor & Importer Supply
-            </p>
-            <h1 className="mt-4 break-words font-display text-3xl font-black leading-tight sm:text-5xl lg:text-6xl">
-              Welding products for distributors, importers and wholesalers.
+          <div className="mt-10 max-w-4xl">
+            <p className="section-eyebrow !text-slate-300">Distributor & Importer Supply</p>
+            <h1 className="mt-5 max-w-4xl font-display text-4xl font-black leading-[1.06] text-white sm:text-5xl lg:text-6xl">
+              Build a welding product range for resale and repeat purchasing.
             </h1>
-            <p className="mt-6 max-w-3xl text-lg leading-8 text-slate-200">
-              Build a mixed welding and cutting product inquiry with traceable SKU references,
-              compatibility evidence, quantities and packaging requirements. ArcFort Weld reviews
-              the details before quotation.
+            <p className="body-large mt-6 max-w-3xl text-slate-200">
+              Prepare mixed MIG/MAG, TIG, plasma cutting, welding consumable, machine and accessory
+              inquiries with traceable item references, quantities and packing requirements.
             </p>
-            <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-              <a
-                href="#distributor-rfq-builder"
-                className="inline-flex min-h-12 w-full items-center justify-center bg-arc-signal px-6 text-sm font-bold uppercase tracking-[0.14em] text-arc-midnight transition hover:bg-white sm:w-auto"
-              >
-                Start Distributor RFQ
-              </a>
+            <div className="mt-9 flex flex-col gap-3 sm:flex-row">
+              <ButtonLink href="#distributor-rfq-builder">Start a Sourcing Brief</ButtonLink>
               <a
                 href="/downloads/arcfort-distributor-sourcing-guide.pdf"
                 download
-                className="inline-flex min-h-12 w-full items-center justify-center border border-white/35 px-6 text-sm font-bold uppercase tracking-[0.14em] text-white transition hover:border-white hover:bg-white/10 sm:w-auto"
+                className="button-base button-on-dark"
               >
                 Download Sourcing Guide
               </a>
             </div>
-            <div className="mt-8 flex flex-col gap-2 border-t border-white/15 pt-5 text-sm text-slate-300 sm:flex-row sm:gap-6">
-              <a href={distributorEmailHref} className="break-words font-semibold hover:text-white">
-                {siteConfig.email}
-              </a>
-              <a href={distributorWhatsAppHref} className="font-semibold hover:text-white">
-                WhatsApp {siteConfig.whatsapp}
-              </a>
+          </div>
+        </Container>
+        <p
+          data-nosnippet
+          className="absolute bottom-4 right-4 max-w-xs bg-arc-midnight/85 px-3 py-2 text-right text-xs font-semibold text-slate-200 sm:bottom-6 sm:right-6"
+        >
+          Representative product sourcing visual; exact products require line-item review
+        </p>
+      </section>
+
+      <PageSectionNav ariaLabel="Distributor supply page sections" items={sectionLinks} />
+
+      <Section
+        id="product-families"
+        labelledBy="product-families-title"
+        className="scroll-mt-32 bg-white"
+      >
+        <Container>
+          <div className="grid gap-10 lg:grid-cols-[0.68fr_1.32fr]">
+            <div>
+              <SectionHeading
+                id="product-families-title"
+                eyebrow="Product Range"
+                title="Source across six welding and cutting systems."
+                description="Use one quotation list, but keep every model, size, quantity and current reference on a separate line."
+              />
+              <p className="mt-8 caption text-arc-blue">Suitable Buyer Profiles</p>
+              <ul className="mt-3 divide-y divide-arc-line border-y border-arc-line">
+                {buyerProfiles.map((profile) => (
+                  <li key={profile} className="py-3 text-sm font-semibold text-slate-700">
+                    {profile}
+                  </li>
+                ))}
+              </ul>
+            </div>
+            <div className="grid gap-x-10 sm:grid-cols-2">
+              {categories.map((category) => (
+                <Link
+                  key={category.slug}
+                  href={`/products/${category.slug}`}
+                  className="group border-t border-arc-line py-6"
+                >
+                  <div className="flex items-start justify-between gap-5">
+                    <span className="caption text-arc-blue">{category.code}</span>
+                    <span data-nosnippet className="text-xs font-semibold text-slate-500">
+                      {productCounts.get(category.slug) ?? 0} published references
+                    </span>
+                  </div>
+                  <h2 className="mt-3 font-display text-xl font-black text-arc-midnight group-hover:text-arc-blue">
+                    {category.title}
+                  </h2>
+                  <p className="mt-2 text-sm leading-6 text-slate-600">{category.description}</p>
+                </Link>
+              ))}
             </div>
           </div>
-        </div>
-      </section>
+        </Container>
+      </Section>
 
-      <section className="bg-white py-14 sm:py-16">
-        <div className="mx-auto grid max-w-7xl gap-8 px-4 sm:px-6 lg:grid-cols-[0.82fr_1.18fr] lg:px-8">
-          <div>
-            <p className="text-sm font-bold uppercase tracking-[0.2em] text-arc-blue">
-              Buyer Profile
-            </p>
-            <h2 className="mt-3 font-display text-3xl font-black text-arc-midnight sm:text-4xl">
-              A sourcing route for resale and repeat purchasing.
-            </h2>
-            <p className="mt-4 text-sm leading-7 text-slate-600">
-              This page brings together the information an overseas buyer normally needs before
-              requesting a mixed-product quotation. It is not a claim of exclusive appointment or
-              guaranteed territory.
-            </p>
-          </div>
-          <div className="grid gap-4 sm:grid-cols-2">
-            {buyerProfiles.map((profile) => (
-              <div key={profile} className="border-l-4 border-arc-signal bg-arc-frost p-5">
-                <p className="text-sm font-semibold leading-6 text-slate-700">{profile}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <section className="bg-arc-frost py-14 sm:py-16" id="product-families">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="max-w-4xl">
-            <p className="text-sm font-bold uppercase tracking-[0.2em] text-arc-blue">
-              Product Families
-            </p>
-            <h2 className="mt-3 font-display text-3xl font-black text-arc-midnight sm:text-4xl">
-              Build one RFQ across six welding and cutting categories.
-            </h2>
-            <p className="mt-4 text-sm leading-7 text-slate-600">
-              Open a category to review current SKU pages, buyer guides and the technical fields
-              that should be confirmed before ordering.
-            </p>
-          </div>
-          <div className="mt-9 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
-            {categories.map((category) => (
-              <article
-                key={category.slug}
-                className="border border-slate-200 bg-white p-6 shadow-sm"
-              >
-                <div className="flex items-start justify-between gap-4">
-                  <span className="inline-flex h-12 w-12 items-center justify-center bg-arc-midnight font-display text-base font-black text-arc-signal">
-                    {category.code}
-                  </span>
-                  <span className="text-right text-xs font-bold uppercase tracking-[0.14em] text-slate-500">
-                    {productCounts.get(category.slug) ?? 0} products
-                  </span>
-                </div>
-                <h3 className="mt-5 font-display text-2xl font-black text-arc-midnight">
-                  {category.title}
-                </h3>
-                <p className="mt-3 text-sm leading-7 text-slate-600">{category.description}</p>
-                <Link
-                  href={`/products/${category.slug}`}
-                  className="mt-5 inline-flex min-h-11 items-center text-sm font-bold uppercase tracking-[0.14em] text-arc-blue hover:text-arc-copper"
-                >
-                  Review Category
-                </Link>
-              </article>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <section className="bg-white py-14 sm:py-16" id="distributor-rfq-builder">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="mb-8 max-w-4xl">
-            <p className="text-sm font-bold uppercase tracking-[0.2em] text-arc-blue">
-              Sourcing Brief
-            </p>
-            <h2 className="mt-3 font-display text-3xl font-black text-arc-midnight sm:text-4xl">
-              Organize the commercial scope before sending line items.
-            </h2>
-            <p className="mt-4 text-sm leading-7 text-slate-600">
-              Use the guided brief for a fast inquiry, or download the workbook when your product
-              list contains many SKUs, variants and evidence files.
-            </p>
-          </div>
-          <DistributorRfqBuilder />
-        </div>
-      </section>
-
-      <section
-        id="distributor-rfq"
-        className="scroll-mt-24 bg-arc-frost py-14 text-arc-midnight sm:py-16"
-        aria-labelledby="distributor-rfq-title"
+      <Section
+        id="distributor-rfq-builder"
+        labelledBy="sourcing-brief-title"
+        className="scroll-mt-32 border-y border-arc-line bg-arc-frost"
       >
-        <div className="mx-auto grid max-w-7xl gap-10 px-4 sm:px-6 lg:grid-cols-[0.7fr_1.3fr] lg:items-start lg:px-8">
+        <Container>
+          <SectionHeading
+            id="sourcing-brief-title"
+            eyebrow="Sourcing Brief"
+            title="Organize the commercial scope before sending line items."
+            description="Use the guided brief for a fast inquiry, or use the distributor workbook when the product list contains many SKUs and reference files."
+            className="mb-9 max-w-4xl"
+          />
+          <DistributorRfqBuilder />
+        </Container>
+      </Section>
+
+      <Section
+        id="distributor-rfq"
+        labelledBy="distributor-rfq-title"
+        className="scroll-mt-32 bg-white"
+      >
+        <Container className="grid gap-10 lg:grid-cols-[0.68fr_1.32fr] lg:items-start">
           <div className="lg:sticky lg:top-36">
-            <p className="text-sm font-bold uppercase tracking-[0.2em] text-arc-blue">
-              Direct Distributor Inquiry
-            </p>
-            <h2
+            <SectionHeading
               id="distributor-rfq-title"
-              className="mt-3 font-display text-3xl font-black leading-tight sm:text-4xl"
-            >
-              Send one product group or a mixed sourcing list.
-            </h2>
-            <p className="mt-5 text-sm leading-7 text-slate-600">
-              Submit the current part reference, quantity and destination first. Add a drawing,
-              product list or clear sample photos when dimensions or compatibility require review.
-            </p>
-            <ul className="mt-7 grid gap-3 text-sm leading-6 text-slate-700">
-              {[
-                "MIG/MAG, TIG, plasma, machine and accessory lines can be combined.",
-                "Small trial orders can be discussed for standard products.",
-                "Compatibility is checked from buyer-supplied evidence before confirmation.",
-                "Logo, private label, carton and model customization can be reviewed.",
-              ].map((item) => (
-                <li key={item} className="flex gap-3 border-l-4 border-arc-signal bg-white p-4">
-                  <span className="font-display font-black text-arc-blue">+</span>
-                  <span>{item}</span>
-                </li>
-              ))}
-            </ul>
-            <div className="mt-7 border-t border-slate-300 pt-5 text-sm leading-7 text-slate-600">
+              eyebrow="Direct Inquiry"
+              title="Send one product group or a mixed sourcing list."
+              description="Attach drawings, product lists or clear current-part photos when dimensions or compatibility require review."
+            />
+            <div className="mt-7 border-t border-arc-line pt-5 text-sm leading-7 text-slate-600">
               <a
                 href={distributorEmailHref}
                 className="block break-words font-bold text-arc-blue hover:text-arc-midnight"
@@ -397,174 +362,117 @@ export default function DistributorSupplyPage() {
               </a>
             </div>
           </div>
-          <div id="distributor-rfq-form" className="scroll-mt-24 lg:scroll-mt-36">
+          <div id="distributor-rfq-form" className="scroll-mt-32">
             <RfqForm
               initialProduct="Distributor mixed welding and cutting product inquiry"
               formPlacement="distributor_landing"
             />
           </div>
-        </div>
-      </section>
+        </Container>
+      </Section>
 
-      <section className="bg-arc-midnight py-14 text-white sm:py-16">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="max-w-4xl">
-            <p className="text-sm font-bold uppercase tracking-[0.2em] text-arc-signal">
-              Distributor RFQ Support
-            </p>
-            <h2 className="mt-3 font-display text-3xl font-black sm:text-4xl">
-              Practical support for item selection, packing and repeat purchasing.
-            </h2>
-          </div>
-          <div className="mt-9 grid gap-px border border-white/10 bg-white/10 md:grid-cols-2 lg:grid-cols-5">
-            {distributorSupport.map((item) => (
-              <article key={item.title} className="bg-arc-midnight p-5">
-                <div className="h-1 w-14 bg-arc-signal" />
-                <h3 className="mt-5 font-display text-xl font-black text-white">{item.title}</h3>
-                <p className="mt-3 text-sm leading-6 text-slate-300">{item.description}</p>
-              </article>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <section className="bg-white py-14 sm:py-16">
-        <div className="mx-auto grid max-w-7xl gap-10 px-4 sm:px-6 lg:grid-cols-[0.95fr_1.05fr] lg:px-8">
-          <div>
-            <p className="text-sm font-bold uppercase tracking-[0.2em] text-arc-blue">
-              Inquiry Checklist
-            </p>
-            <h2 className="mt-3 font-display text-3xl font-black text-arc-midnight sm:text-4xl">
-              Send enough information to make every line item traceable.
-            </h2>
-            <p className="mt-4 text-sm leading-7 text-slate-600">
-              Exact dimensions, material grades, compatibility and certifications should come from
-              verified records. Unknown details can remain open for sample or drawing review.
-            </p>
-            <Link
-              href="/downloads/arcfort-distributor-rfq-workbook.xlsx"
-              className="mt-6 inline-flex min-h-12 w-full items-center justify-center border border-arc-blue px-5 text-sm font-bold uppercase tracking-[0.14em] text-arc-blue transition hover:bg-arc-blue hover:text-white sm:w-auto"
-            >
-              Download Distributor Workbook
-            </Link>
-          </div>
-          <ul className="grid gap-3">
-            {inquiryChecklist.map((item) => (
-              <li
-                key={item}
-                className="flex gap-3 border-l-4 border-arc-signal bg-arc-frost p-4 text-sm leading-6 text-slate-700"
-              >
-                <span className="font-display font-black text-arc-blue">+</span>
-                <span>{item}</span>
-              </li>
-            ))}
-          </ul>
-        </div>
-      </section>
-
-      <section className="bg-arc-frost py-14 sm:py-16">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="grid gap-8 lg:grid-cols-[0.72fr_1.28fr] lg:items-start">
-            <div>
-              <p className="text-sm font-bold uppercase tracking-[0.2em] text-arc-blue">
-                Commercial Reference
-              </p>
-              <h2 className="mt-3 font-display text-3xl font-black text-arc-midnight">
-                Confirm trade details with the requested product list.
-              </h2>
-              <p className="mt-4 text-sm leading-7 text-slate-600">
-                These are current company policies for RFQ planning. Final terms depend on the
-                product, quantity, packaging and cooperation requirements.
-              </p>
-            </div>
-            <dl className="grid gap-4 sm:grid-cols-2">
-              {tradeDetails.map((item) => (
-                <div key={item.label} className="border border-slate-200 bg-white p-5 shadow-sm">
-                  <dt className="text-xs font-bold uppercase tracking-[0.16em] text-arc-blue">
-                    {item.label}
+      <Section
+        id="program-support"
+        labelledBy="program-support-title"
+        className="scroll-mt-32 border-y border-arc-line bg-arc-frost"
+      >
+        <Container>
+          <div className="grid gap-10 lg:grid-cols-[0.68fr_1.32fr]">
+            <SectionHeading
+              id="program-support-title"
+              eyebrow="Program Support"
+              title="Keep product decisions and commercial terms traceable."
+              description="ArcFort Weld reviews product scope, evidence, packing and order conditions before quotation; an inquiry does not create territory exclusivity."
+            />
+            <dl className="divide-y divide-arc-line border-y border-arc-line">
+              {distributorSupport.map((item) => (
+                <div key={item.title} className="grid gap-2 py-6 sm:grid-cols-[190px_1fr] sm:gap-8">
+                  <dt className="font-display text-xl font-black text-arc-midnight">
+                    {item.title}
                   </dt>
-                  <dd className="mt-2 text-sm font-semibold leading-6 text-slate-700">
-                    {item.value}
-                  </dd>
+                  <dd className="text-sm leading-7 text-slate-600">{item.description}</dd>
                 </div>
               ))}
             </dl>
           </div>
-        </div>
-      </section>
 
-      <section className="bg-white py-14 sm:py-16">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="max-w-4xl">
-            <p className="text-sm font-bold uppercase tracking-[0.2em] text-arc-blue">
-              Sourcing Process
-            </p>
-            <h2 className="mt-3 font-display text-3xl font-black text-arc-midnight sm:text-4xl">
-              Move from a mixed item list to a reviewed quotation.
-            </h2>
+          <div className="mt-14 grid overflow-hidden border border-arc-line lg:grid-cols-[1.15fr_0.85fr]">
+            <div className="bg-white p-6 sm:p-8">
+              <p className="section-eyebrow">Inquiry Checklist</p>
+              <h2 className="mt-3 font-display text-2xl font-black text-arc-midnight sm:text-3xl">
+                Make every line item identifiable and quotable.
+              </h2>
+              <ol className="mt-7 divide-y divide-arc-line border-y border-arc-line">
+                {inquiryChecklist.map((item, index) => (
+                  <li key={item} className="grid grid-cols-[36px_1fr] gap-3 py-4">
+                    <span className="font-display font-black text-arc-blue">{index + 1}</span>
+                    <span className="text-sm font-semibold leading-6 text-slate-700">{item}</span>
+                  </li>
+                ))}
+              </ol>
+              <a
+                href="/downloads/arcfort-distributor-rfq-workbook.xlsx"
+                download
+                className="button-base button-secondary mt-7"
+              >
+                Download Distributor Workbook
+              </a>
+            </div>
+            <div className="bg-arc-midnight p-6 text-white sm:p-8">
+              <p className="caption text-slate-300">Commercial Basis</p>
+              <dl className="mt-5 divide-y divide-white/15 border-y border-white/15">
+                {tradeDetails.map((item) => (
+                  <div key={item.label} className="py-4">
+                    <dt className="text-xs font-bold uppercase text-slate-400">{item.label}</dt>
+                    <dd className="mt-2 text-sm font-semibold leading-6 text-white">
+                      {item.value}
+                    </dd>
+                  </div>
+                ))}
+              </dl>
+              <ButtonLink href="/shipping-payment" variant="onDark" className="mt-7 w-full">
+                Review Order Terms
+              </ButtonLink>
+            </div>
           </div>
-          <div className="mt-9 grid gap-5 md:grid-cols-2 lg:grid-cols-4">
-            {sourcingSteps.map((item) => (
-              <article key={item.step} className="border-t-4 border-arc-signal bg-arc-frost p-5">
-                <div className="font-display text-4xl font-black text-arc-blue">{item.step}</div>
-                <h3 className="mt-4 font-display text-xl font-black text-arc-midnight">
-                  {item.title}
-                </h3>
-                <p className="mt-3 text-sm leading-6 text-slate-600">{item.description}</p>
-              </article>
-            ))}
-          </div>
-        </div>
-      </section>
+        </Container>
+      </Section>
 
-      <section className="bg-arc-midnight py-14 text-white sm:py-16">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="max-w-4xl">
-            <p className="text-sm font-bold uppercase tracking-[0.2em] text-arc-signal">
-              Buyer Resources
-            </p>
-            <h2 className="mt-3 font-display text-3xl font-black sm:text-4xl">
-              Check product, inspection and delivery information before inquiry.
-            </h2>
-          </div>
-          <div className="mt-9 grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-            {resourceLinks.map((item) => {
-              const content = (
-                <>
-                  <h3 className="font-display text-xl font-black text-white">{item.title}</h3>
-                  <p className="mt-3 text-sm leading-6 text-slate-300">{item.description}</p>
-                  <span className="mt-5 inline-flex text-xs font-bold uppercase tracking-[0.14em] text-arc-signal group-hover:text-white">
-                    Open Resource
-                  </span>
-                </>
-              );
-              const className =
-                "group border border-white/15 p-5 transition hover:border-arc-signal hover:bg-white/5";
+      <Section labelledBy="sourcing-process-title" className="bg-white">
+        <Container className="grid gap-10 lg:grid-cols-[0.68fr_1.32fr]">
+          <SectionHeading
+            id="sourcing-process-title"
+            eyebrow="Sourcing Process"
+            title="Move from a mixed list to a reviewed quotation."
+            description="Approved references and packing details become the control points for later repeat orders."
+          />
+          <ProcessSteps items={sourcingSteps} />
+        </Container>
+      </Section>
 
-              return item.href.endsWith(".pdf") ? (
-                <a key={item.href} href={item.href} download className={className}>
-                  {content}
-                </a>
-              ) : (
-                <Link key={item.href} href={item.href} className={className}>
-                  {content}
-                </Link>
-              );
-            })}
-          </div>
-        </div>
-      </section>
+      <Section labelledBy="distributor-resources-title" className="bg-arc-midnight text-white">
+        <Container>
+          <SectionHeading
+            id="distributor-resources-title"
+            eyebrow="Buyer Resources"
+            title="Verify the company, products and order process."
+            description="Use the supporting pages and controlled downloads before sending a large or customized sourcing request."
+            inverse
+          />
+          <BuyerPathList items={resourceLinks} inverse ariaLabel="Distributor buyer resources" />
+        </Container>
+      </Section>
 
-      <section className="bg-arc-frost py-14 sm:py-16">
-        <div className="mx-auto grid max-w-7xl gap-8 px-4 sm:px-6 lg:grid-cols-[1fr_0.9fr] lg:px-8">
+      <Section id="distributor-faq" className="scroll-mt-32 bg-white">
+        <Container className="grid gap-8 lg:grid-cols-[0.9fr_1.1fr]">
           <FaqSection items={[...faq]} title="Distributor Supply FAQ" />
           <RfqCta
             title="Preparing a distributor product list?"
-            description="Send item references, quantities, destination, drawings or current-part photos. ArcFort Weld will review technical and commercial details before quotation."
+            description="Send item references, quantities, destination, drawings or current-part photos for technical and commercial review."
             productName="Distributor welding product program"
           />
-        </div>
-      </section>
+        </Container>
+      </Section>
     </>
   );
 }

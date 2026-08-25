@@ -1,6 +1,5 @@
 import type { Metadata, Viewport } from "next";
 import type { ReactNode } from "react";
-import { BuyerTrustStrip } from "@/components/BuyerTrustStrip";
 import { AnalyticsTracker } from "@/components/AnalyticsTracker";
 import { StructuredData } from "@/components/content/StructuredData";
 import { Footer } from "@/components/Footer";
@@ -86,7 +85,7 @@ export const metadata: Metadata = {
 
 export const viewport: Viewport = {
   colorScheme: "light",
-  themeColor: "#071524",
+  themeColor: "#0B1F33",
 };
 
 export default function RootLayout({ children }: Readonly<{ children: ReactNode }>) {
@@ -95,7 +94,7 @@ export default function RootLayout({ children }: Readonly<{ children: ReactNode 
       <body className="font-sans antialiased">
         <a
           href="#main-content"
-          className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100] focus:bg-arc-signal focus:px-4 focus:py-3 focus:text-sm focus:font-bold focus:uppercase focus:tracking-[0.12em] focus:text-arc-midnight"
+          className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100] focus:bg-arc-signal focus:px-4 focus:py-3 focus:text-sm focus:font-bold focus:text-white"
         >
           Skip to content
         </a>
@@ -103,7 +102,6 @@ export default function RootLayout({ children }: Readonly<{ children: ReactNode 
         <SourceAttributionTracker />
         <AnalyticsTracker />
         <Header />
-        <BuyerTrustStrip />
         <main id="main-content" tabIndex={-1}>
           {children}
         </main>
