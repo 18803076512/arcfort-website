@@ -4,6 +4,15 @@ Initial audit date: 2026-06-29
 
 Asset-registry migration review: 2026-08-21
 
+Contact-tip file-format review: 2026-08-25
+
+The three existing 750 x 750 contact-tip references for AF-MIG-CT-0004, AF-MIG-CT-0005 and
+AF-MIG-CT-0006 were loss-minimized re-exports from PNG content to real JPEG encoding while retaining
+their public `.jpg` paths. The visible composition, dimensions and evidence state did not change.
+They remain duplicate family-level references with unknown original provenance and require
+variant-specific, rights-approved replacements. A file-format correction is not evidence of
+ownership, exact-SKU identity or compatibility.
+
 This checklist records the temporary main images assigned to catalog-derived product-family pages.
 These images were selected from local product files or from the Renqiu Ailesen welding catalog PDF.
 They remain migration-period product-family references. File existence or visual similarity does not

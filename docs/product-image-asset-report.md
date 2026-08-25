@@ -18,7 +18,7 @@ Generated from `data/assets/product-image-assets.csv`. This is an internal evide
 - Assets with unknown source: 9
 - Assets below 1000 px on at least one side: 38
 - Assets below 600 px on at least one side: 1
-- Assets whose extension does not match file content: 3
+- Assets whose extension does not match file content: 0
 - Duplicate-content groups: 2
 - Unassigned files in `public/images/products/`: 73
 
@@ -129,11 +129,7 @@ Generated from `data/assets/product-image-assets.csv`. This is an internal evide
 
 ## File Format Corrections
 
-| SKU            | Product slug             | Role | Public path                                     | Required action                                                                                    |
-| -------------- | ------------------------ | ---- | ----------------------------------------------- | -------------------------------------------------------------------------------------------------- |
-| AF-MIG-CT-0004 | mig-contact-tip-m6-0-8mm | main | `/images/products/mig-contact-tip-m6-0-8mm.jpg` | .jpg extension with detected PNG content; re-export or rename through the reviewed image workflow. |
-| AF-MIG-CT-0005 | mig-contact-tip-m6-1-0mm | main | `/images/products/mig-contact-tip-m6-1-0mm.jpg` | .jpg extension with detected PNG content; re-export or rename through the reviewed image workflow. |
-| AF-MIG-CT-0006 | mig-contact-tip-m6-1-2mm | main | `/images/products/mig-contact-tip-m6-1-2mm.jpg` | .jpg extension with detected PNG content; re-export or rename through the reviewed image workflow. |
+No assets in this state.
 
 ## Duplicate Content
 

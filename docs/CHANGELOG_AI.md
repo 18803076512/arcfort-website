@@ -1771,6 +1771,59 @@ then documented the boundary that keeps repository data authoritative.
 - Approve the proposed Dropbox intake configuration, then collect original 15AK product photos and
   exact-SKU evidence for review and controlled repository transfer.
 
+## 2026-08-25 - Contact Tip Image Encoding Correction
+
+**Task**
+
+Corrected three contact-tip image files whose `.jpg` extension did not match their PNG-encoded
+content, without changing public paths or upgrading their evidence status.
+
+**Files Changed**
+
+- `public/images/products/mig-contact-tip-m6-0-8mm.jpg` - re-exported as real JPEG at 750 x 750.
+- `public/images/products/mig-contact-tip-m6-1-0mm.jpg` - re-exported as real JPEG at 750 x 750.
+- `public/images/products/mig-contact-tip-m6-1-2mm.jpg` - re-exported as real JPEG at 750 x 750.
+- `docs/product-image-tasks.csv` - regenerated the governed image action queue.
+- `docs/product-image-asset-report.md` - regenerated the image asset readiness report.
+- `docs/product-image-source-audit.md` - recorded the correction and unchanged evidence boundary.
+- `docs/CHANGELOG_AI.md` - recorded this controlled asset correction.
+
+**Components Changed**
+
+- None.
+
+**Data Changed**
+
+- No product field, image path, publication state, source, ownership or usage-rights state changed.
+- File-format correction count decreased from three to zero.
+
+**Visual Changes**
+
+- None intended. Dimensions, crop and composition remain unchanged.
+
+**SEO Impact**
+
+- Existing image URLs and product URLs are preserved. Correct MIME-compatible encoding reduces the
+  risk of image processing or caching inconsistencies.
+
+**Validation**
+
+- Product image asset validation passed for 46 assets with zero file-format corrections.
+- Product image task and asset reports regenerated without upgrading any evidence state.
+- Product, SEO, lint, TypeScript and production-build checks were run before publication.
+
+**Known Issues**
+
+- The three files still reuse the same family-level visual and remain unresolved P0 provenance
+  decisions.
+- Forty-three legacy public reference assets still require explicit usage-rights confirmation.
+- Two duplicate-content groups still need variant-specific replacements.
+
+**Next Recommended Step**
+
+- Collect rights-approved, exact-SKU front, connection/detail and packaging views for the 15AK
+  contact-tip variants through the governed evidence intake.
+
 ## Entry Template
 
 ```markdown
