@@ -16,6 +16,20 @@ file cannot become trusted merely because it exists in `public/images/products/`
 - `docs/product-image-asset-report.md`: generated replacement and evidence queue.
 - `docs/product-image-source-audit.md`: historical source-review notes.
 
+## Local Triage Review Board
+
+Run `npm run images:triage:board` to generate
+`output/reports/local-product-image-triage.html`. This ignored, local-only artifact renders every
+unassigned candidate with its image, stable candidate ID, visual-family label, priority, rights
+state, exact-match state and review status. Reviewers can filter and open the original file without
+turning the candidate into a public product asset.
+
+The board deliberately excludes `notes_internal`, cannot write to the CSV and contains no approval
+shortcut. Its visual-family labels remain sorting aids only. After reviewing the original and its
+supporting evidence, update `data/evidence/local-product-image-triage.csv`, run
+`npm run images:triage:validate`, and transfer an approved exact-product file to
+`data/assets/product-image-assets.csv` through the controlled replacement workflow.
+
 ## Evidence Dimensions
 
 Each asset records separate answers to four questions:
@@ -65,6 +79,7 @@ npm run images:assets:generate
 npm run images:assets:validate
 npm run images:assets:report
 npm run images:triage:validate
+npm run images:triage:board
 npm run seo:audit
 npm run build
 ```

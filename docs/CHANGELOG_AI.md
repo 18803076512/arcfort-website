@@ -2156,6 +2156,67 @@ product-technical and product-image queues without changing any canonical or pub
 - Send the workbook and separate photo-shot instructions to the factory reviewer, beginning with the
   two complete 15AK torch arrangements and their machine-side connections.
 
+## 2026-08-27 - Local Product Image Triage Review Board
+
+**Task**
+
+Converted the governed 73-file local product-image backlog into a private visual review surface so
+source, usage rights and exact-product identity can be reviewed more efficiently without weakening
+the canonical publication gate.
+
+**Files Changed**
+
+- `scripts/local-image-triage-utils.ts` - added the shared CSV model, allowed states and file listing.
+- `scripts/validate-local-image-triage.ts` - reused the shared model while preserving validation.
+- `scripts/generate-local-image-triage-board.ts` - generated the private, filterable HTML review board.
+- `package.json` - added `images:triage:board`.
+- `README.md` - documented the local reviewer workflow.
+- `knowledge-base/assets/product-image-governance.md` - recorded the authority and transfer boundary.
+- `docs/CHANGELOG_AI.md` - recorded this phase.
+
+**Components Changed**
+
+- Added an internal review board with summary counts, priority/family/status filters, original-file
+  links and browser-read image dimensions. No public website component or route changed.
+
+**Data Changed**
+
+- Projected all 73 existing triage rows into the generated board.
+- No candidate, source, usage right, exact match, review status, product assignment or publication
+  state changed.
+- `notes_internal` remains excluded from the review artifact.
+
+**Visual Changes**
+
+- Added a restrained industrial-blue local tool with responsive image grids and an evidence-first
+  review workflow. No public website visual changed.
+
+**SEO Impact**
+
+- None. The generated board is ignored under `output/`, carries `noindex,nofollow` and is not a
+  public route.
+
+**Validation**
+
+- Validated all 73 triage rows and 73 unassigned files with the existing governance gate: 9 P0, 44
+  P1 and 20 P2; no candidate was rights-approved or exact-match confirmed.
+- Generated the review board and verified 73 rendered candidates, no `notes_internal` exposure and
+  correct nine-record P0 filtering.
+- Ran browser checks at 360, 768 and 1440 CSS pixels: one H1, zero broken images, zero horizontal
+  overflow and zero console errors.
+- Visually reviewed the desktop overview plus the mobile filters and first P0 product card.
+
+**Known Issues**
+
+- All 73 candidates still require real source, usage-rights and exact-product decisions.
+- The board is intentionally read-only; approved decisions must be reconciled through the canonical
+  CSV and asset-registry workflow.
+
+**Next Recommended Step**
+
+- Review the nine P0 candidates first, record real evidence, and move only approved exact-product
+  assets into the canonical registry.
+
 ## Entry Template
 
 ```markdown

@@ -340,6 +340,9 @@ Product image publication rules:
   `verified_date`; these internal fields are not exposed on public pages.
 - Run `npm run images:assets:report` to review unknown sources, rights gaps, blocked assets,
   resolution priorities, duplicate content and unassigned local files.
+- Run `npm run images:triage:board` to validate the 73 unassigned local candidates and generate the
+  private, filterable review board at `output/reports/local-product-image-triage.html`. The board is
+  read-only, omits `notes_internal` and never assigns or approves an image automatically.
 - Run `npm run products:image-tasks` to generate `docs/product-image-tasks.csv` from the governed
   registry. The queue covers source ownership, website-use rights, exact-SKU matching, resolution,
   blocked assets and reviewer evidence instead of reporting only missing files.

@@ -1,34 +1,24 @@
 #!/usr/bin/env node
 
-import { existsSync, readFileSync, readdirSync } from "node:fs";
+import { existsSync } from "node:fs";
 import path from "node:path";
-import { parseCsv } from "./product-import-utils.ts";
 import { readImageAssetRows } from "./product-image-asset-utils.ts";
+import {
+  allowedLocalImageCandidateScopes,
+  allowedLocalImageExactMatches,
+  allowedLocalImagePriorities,
+  allowedLocalImageReviewStates,
+  allowedLocalImageRights,
+  allowedLocalImageVisualFamilies,
+  countLocalImageTriageBy,
+  listLocalProductImageFiles,
+  localImageTriageHeaders,
+  localImageTriagePath,
+  readLocalImageTriageRows,
+  type LocalImageTriageHeader,
+} from "./local-image-triage-utils.ts";
 
-const triagePath = path.join(process.cwd(), "data", "evidence", "local-product-image-triage.csv");
-const productImageDirectory = path.join(process.cwd(), "public", "images", "products");
-
-const headers = [
-  "candidate_id",
-  "file_name",
-  "public_path",
-  "visual_family",
-  "candidate_scope",
-  "source_owner",
-  "usage_rights_status",
-  "exact_match_status",
-  "review_status",
-  "priority",
-  "evidence_reference",
-  "reviewed_by",
-  "reviewed_date",
-  "notes_internal",
-] as const;
-
-type Header = (typeof headers)[number];
-type TriageRow = Record<Header, string>;
-
-const requiredFields: Header[] = [
+const requiredFields: LocalImageTriageHeader[] = [
   "candidate_id",
   "file_name",
   "public_path",
@@ -40,63 +30,20 @@ const requiredFields: Header[] = [
   "priority",
   "notes_internal",
 ];
-const allowedVisualFamilies = [
-  "MIG/MAG",
-  "TIG",
-  "Plasma",
-  "Welding Consumables",
-  "Welding Accessories",
-  "Welding Equipment",
-  "Unknown",
-] as const;
-const allowedCandidateScopes = [
-  "product_family_reference",
-  "unknown_identity",
-  "not_suitable",
-] as const;
-const allowedRights = ["needs_confirmation", "approved", "rejected"] as const;
-const allowedExactMatches = ["unverified", "confirmed", "no_match", "data_conflict"] as const;
-const allowedReviewStates = ["needs_review", "hold", "rejected", "approved"] as const;
-const allowedPriorities = ["P0", "P1", "P2"] as const;
 const isoDatePattern = /^\d{4}-\d{2}-\d{2}$/;
 
-function listProductImageFiles() {
-  return readdirSync(productImageDirectory, { withFileTypes: true })
-    .filter((entry) => entry.isFile() && /\.(?:jpe?g|png|webp|avif)$/i.test(entry.name))
-    .map((entry) => `/images/products/${entry.name}`)
-    .sort((left, right) => left.localeCompare(right));
-}
-
-function countBy(rows: TriageRow[], field: Header) {
-  return rows.reduce<Record<string, number>>((counts, row) => {
-    const value = row[field] || "(blank)";
-    counts[value] = (counts[value] ?? 0) + 1;
-    return counts;
-  }, {});
-}
-
-if (!existsSync(triagePath)) {
-  console.error(`Local image triage file is missing: ${triagePath}`);
+if (!existsSync(localImageTriagePath)) {
+  console.error(`Local image triage file is missing: ${localImageTriagePath}`);
   process.exit(1);
 }
 
-const parsed = parseCsv(readFileSync(triagePath, "utf8"));
-const actualHeaders = parsed[0]?.map((header) => header.trim()) ?? [];
+const { headers: actualHeaders, rows } = readLocalImageTriageRows();
 const errors: string[] = [];
 const warnings: string[] = [];
 
-if (actualHeaders.join("|") !== headers.join("|")) {
-  errors.push(`CSV headers must exactly match: ${headers.join(",")}`);
+if (actualHeaders.join("|") !== localImageTriageHeaders.join("|")) {
+  errors.push(`CSV headers must exactly match: ${localImageTriageHeaders.join(",")}`);
 }
-
-const rows = parsed
-  .slice(1)
-  .map(
-    (cells) =>
-      Object.fromEntries(
-        headers.map((header) => [header, cells[actualHeaders.indexOf(header)]?.trim() ?? ""]),
-      ) as TriageRow,
-  );
 const ids = new Set<string>();
 const paths = new Set<string>();
 
@@ -131,27 +78,45 @@ for (const [offset, row] of rows.entries()) {
   }
 
   if (
-    !allowedVisualFamilies.includes(row.visual_family as (typeof allowedVisualFamilies)[number])
+    !allowedLocalImageVisualFamilies.includes(
+      row.visual_family as (typeof allowedLocalImageVisualFamilies)[number],
+    )
   ) {
     errors.push(`Row ${rowNumber}: invalid visual_family ${row.visual_family}.`);
   }
   if (
-    !allowedCandidateScopes.includes(row.candidate_scope as (typeof allowedCandidateScopes)[number])
+    !allowedLocalImageCandidateScopes.includes(
+      row.candidate_scope as (typeof allowedLocalImageCandidateScopes)[number],
+    )
   ) {
     errors.push(`Row ${rowNumber}: invalid candidate_scope ${row.candidate_scope}.`);
   }
-  if (!allowedRights.includes(row.usage_rights_status as (typeof allowedRights)[number])) {
+  if (
+    !allowedLocalImageRights.includes(
+      row.usage_rights_status as (typeof allowedLocalImageRights)[number],
+    )
+  ) {
     errors.push(`Row ${rowNumber}: invalid usage_rights_status ${row.usage_rights_status}.`);
   }
   if (
-    !allowedExactMatches.includes(row.exact_match_status as (typeof allowedExactMatches)[number])
+    !allowedLocalImageExactMatches.includes(
+      row.exact_match_status as (typeof allowedLocalImageExactMatches)[number],
+    )
   ) {
     errors.push(`Row ${rowNumber}: invalid exact_match_status ${row.exact_match_status}.`);
   }
-  if (!allowedReviewStates.includes(row.review_status as (typeof allowedReviewStates)[number])) {
+  if (
+    !allowedLocalImageReviewStates.includes(
+      row.review_status as (typeof allowedLocalImageReviewStates)[number],
+    )
+  ) {
     errors.push(`Row ${rowNumber}: invalid review_status ${row.review_status}.`);
   }
-  if (!allowedPriorities.includes(row.priority as (typeof allowedPriorities)[number])) {
+  if (
+    !allowedLocalImagePriorities.includes(
+      row.priority as (typeof allowedLocalImagePriorities)[number],
+    )
+  ) {
     errors.push(`Row ${rowNumber}: invalid priority ${row.priority}.`);
   }
   if (row.reviewed_date && !isoDatePattern.test(row.reviewed_date)) {
@@ -189,7 +154,7 @@ if (registry.issues.some((issue) => issue.level === "error")) {
   errors.push("Canonical image asset registry contains structural errors.");
 }
 const assignedPaths = new Set(registry.rows.map((row) => row.public_path.toLowerCase()));
-const unassignedPaths = listProductImageFiles().filter(
+const unassignedPaths = listLocalProductImageFiles().filter(
   (publicPath) => !assignedPaths.has(publicPath.toLowerCase()),
 );
 
@@ -216,8 +181,8 @@ if (rows.every((row) => row.exact_match_status !== "confirmed")) {
 console.log("ArcFort Weld local product-image triage");
 console.log(`Rows checked: ${rows.length}`);
 console.log(`Unassigned product-image files: ${unassignedPaths.length}`);
-console.log(`Priority: ${JSON.stringify(countBy(rows, "priority"))}`);
-console.log(`Visual family: ${JSON.stringify(countBy(rows, "visual_family"))}`);
+console.log(`Priority: ${JSON.stringify(countLocalImageTriageBy(rows, "priority"))}`);
+console.log(`Visual family: ${JSON.stringify(countLocalImageTriageBy(rows, "visual_family"))}`);
 
 if (warnings.length > 0) {
   console.log("Warnings:");
