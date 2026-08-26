@@ -63,6 +63,22 @@ not edit generated runtime registries to bypass the canonical CSV files.
 
 ## Controlled Transfer Procedure
 
+### Complementary Factory Workbook
+
+The private Airtable base and the local `ArcFort-Weld-15AK-Evidence-Intake.xlsx` workbook are two
+reviewer interfaces over the same governed intake model. Neither is authoritative and neither may
+sync automatically into public data.
+
+The combined workbook covers 46 assembly candidates, 58 component image requests, 15 product
+technical rows and 20 product image requests. It excludes internal notes and uses formulas to count
+only evidence-complete rows as review-ready. See
+`docs/operations/15ak-factory-evidence-handoff.md` for its sheet structure and controlled return
+procedure.
+
+Do not import the workbook into Airtable as an uncontrolled table expansion. The broader Airtable
+schema still requires explicit external approval and a reviewed mapping for stable IDs, evidence
+fields and attachment handling.
+
 1. Export or review only the Airtable records that a named reviewer has completed.
 2. Open the referenced evidence and confirm that it belongs to the exact SKU or explicitly scoped
    variant.

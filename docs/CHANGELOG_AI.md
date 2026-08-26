@@ -2094,6 +2094,68 @@ compatibility claims.
 - Collect company-owned complete-torch and connection views for both arrangements, then confirm the
   complete assemblies before reviewing individual replacement components.
 
+## 2026-08-25 - Combined 15AK Factory Evidence Workbook
+
+**Task**
+
+Created one internal Excel handoff that combines the governed 15AK assembly, component-image,
+product-technical and product-image queues without changing any canonical or public status.
+
+**Files Changed**
+
+- `docs/operations/15ak-factory-evidence-handoff.md` - updated the sheet model, evidence gates and
+  controlled reconciliation procedure for the combined workbook.
+- `docs/operations/airtable-15ak-evidence-intake.md` - documented the non-authoritative boundary
+  between the workbook, Airtable and canonical repository data.
+- `knowledge-base/products/15ak-component-evidence.md` - recorded the reusable reviewer projection.
+- `README.md` - linked the combined factory handoff from the 15AK evidence workflow.
+- `docs/CHANGELOG_AI.md` - recorded this phase.
+
+**Components Changed**
+
+- None. The workbook is an internal evidence-collection artifact and does not add a public website
+  component or route.
+
+**Data Changed**
+
+- Projected 46 assembly candidates, 58 component-image requests, 15 product-technical rows and 20
+  product-image requests into five Excel sheets.
+- No field moved to `CONFIRMED`; no image moved to `approved`; no SKU, compatibility relationship,
+  technical value, image path or publication state changed.
+- Every `notes_internal` field was omitted from the workbook.
+
+**Visual Changes**
+
+- Added a restrained industrial-blue Start Here sheet, formula-driven queue summary, frozen data
+  headers, pale-orange reviewer-input columns, validation dropdowns and status formatting.
+- No public website visual changed.
+
+**SEO Impact**
+
+- None. The workbook remains in the ignored local `outputs/` directory and is not available under a
+  public or indexable URL.
+
+**Validation**
+
+- Reopened the exported XLSX and verified five sheets with 30, 51, 63, 20 and 25 used rows.
+- Verified source queue counts of 46, 58, 15 and 20, preserved cross-sheet formulas, zero spreadsheet
+  formula errors and zero `notes_internal` exposure.
+- Rendered and visually reviewed all five worksheets for hierarchy, wrapping, input fields and status
+  controls.
+
+**Known Issues**
+
+- The workbook remains empty of confirmed factory responses and approved exact-product images.
+- Returned workbooks still require field-by-field repository reconciliation; no direct import is
+  allowed.
+- Broader Airtable synchronization and Dropbox file collection still require explicit owner
+  approval.
+
+**Next Recommended Step**
+
+- Send the workbook and separate photo-shot instructions to the factory reviewer, beginning with the
+  two complete 15AK torch arrangements and their machine-side connections.
+
 ## Entry Template
 
 ```markdown

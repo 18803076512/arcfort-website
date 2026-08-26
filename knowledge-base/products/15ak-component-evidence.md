@@ -72,3 +72,14 @@ not confirmed ArcFort Weld specifications.
 
 Run `npm run series:components:validate`, `npm run series:components:report`, product, compatibility,
 image, SEO and build checks before any publication decision.
+
+## Reviewer Workbook
+
+The local `ArcFort-Weld-15AK-Evidence-Intake.xlsx` workbook projects the 46 candidates, 58 component
+image requests and the separate exact-SKU product queues into one factory-review surface. It keeps
+stable IDs, catalog reference text and confirmation requirements visible while highlighting only
+reviewer-input cells.
+
+The workbook is not canonical data, excludes internal notes and cannot promote a candidate, image or
+technical fact automatically. Reconcile returned rows by stable ID through
+`docs/operations/15ak-factory-evidence-handoff.md` before changing any CSV or public state.

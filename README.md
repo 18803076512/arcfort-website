@@ -158,6 +158,10 @@ The private Airtable base `ArcFort Weld - 15AK Evidence Intake` is an optional r
 not a product database. Cloud records must be reviewed and transferred deliberately into the
 canonical intake CSV files before repository validation and PR review. See
 `docs/operations/airtable-15ak-evidence-intake.md` for the authority boundary and transfer procedure.
+The local `ArcFort-Weld-15AK-Evidence-Intake.xlsx` workbook provides a combined factory handoff for
+the 46 component candidates, 58 component image requests, 15 product technical rows and 20 product
+image requests. It remains an ignored working artifact; use
+`docs/operations/15ak-factory-evidence-handoff.md` for controlled reconciliation.
 
 The About page is the canonical public company profile for the legal-company and ArcFort Weld brand
 relationship. Update confirmed identity and contact facts in `lib/content/site.ts`, keep buyer-facing

@@ -1,34 +1,49 @@
-# 15AK Factory Evidence Handoff
+# 15AK Factory Evidence Workbook Handoff
 
 ## Purpose
 
-The ArcFort Weld 15AK Factory Evidence Intake workbook is an internal collection aid for four
-priority public products:
+The current ArcFort Weld 15AK Evidence Intake workbook is an internal collection aid that combines
+the two documented catalog arrangements and the four governed public products in one reviewer
+surface. Its five sheets contain:
 
-- AF-MIG-CT-0004 - MIG Contact Tip M6 0.8mm
-- AF-MIG-CT-0005 - MIG Contact Tip M6 1.0mm
-- AF-MIG-TH-0007 - MIG Tip Holder for MB15
-- AF-MIG-GN-0008 - MIG Gas Nozzle for MB15
+- 46 assembly and component confirmation rows.
+- 58 component and complete-torch image requests.
+- 15 exact-SKU technical confirmation rows.
+- 20 exact-SKU product image requests.
 
-It also contains P0 provenance decisions for AF-MIG-CT-0006 because the active 1.2 mm contact-tip
-image shares the same unknown-source risk as the 0.8 mm and 1.0 mm references.
+The generated local artifact is named `ArcFort-Weld-15AK-Evidence-Intake.xlsx`. It is kept under the
+ignored `outputs/` workspace, not under `public/downloads/`, and must not be distributed as a public
+catalog or indexed resource. The workbook deliberately omits every `notes_internal` field.
 
 The workbook is not a product database and must not publish or confirm data automatically. The CSV
 files in `data/intake/` and the governed registries remain the repository source of truth.
 
-The catalog also contains two broader 15AK assembly forms. Their 46 component and variant candidates
-are maintained separately in `data/intake/15ak-series-confirmation.csv` with 58 image requests in
-`data/intake/15ak-image-intake.csv`. Those rows are not public SKUs and are not represented by the
-four-product workbook unless a reviewer deliberately adds a corresponding evidence task.
+The older local `arcfort-15ak-factory-evidence-intake.xlsx` remains a historical four-product helper.
+Do not use it for the 46-candidate component matrix or delete it without an explicit archive
+decision. The current combined workbook supersedes it for new 15AK evidence collection.
 
 ## Workbook Sections
 
-### Review Summary
+### Start Here
 
-Shows unresolved P0 provenance decisions, confirmed technical-fact count and approved image-request
-count. The values are formulas linked to the working sheets.
+Shows the legal company, series scope, authority boundary, queue counts, controlled review workflow
+and non-negotiable evidence rules. Formula-driven counts distinguish total rows, review-ready rows
+and conflicts or blocked image decisions.
 
-### Technical Facts
+### Assembly Confirmation
+
+Contains the 46 air-valve and standard complete-torch candidates. Pale-orange columns collect the
+factory product name, proposed or existing SKU, technical values, commercial values, evidence,
+status, reviewer and date. The two arrangements must remain separate until exact-product evidence
+proves a shared component.
+
+### Component Images
+
+Contains 58 exact-candidate requests for complete layouts, main views, connection details, markings
+and dimensional evidence. An approved row requires source owner, website-use rights basis, original
+file name, reviewer, date and the governed local file.
+
+### Product Technical
 
 Contains 15 company-catalog reference values and blank reviewer fields. A row may move to
 `CONFIRMED` only when all of these are present:
@@ -41,20 +56,14 @@ Contains 15 company-catalog reference values and blank reviewer fields. A row ma
 
 Use `DATA_CONFLICT` when evidence disagrees. Do not choose a convenient value.
 
-### Image Evidence
+### Product Images
 
 Contains 20 requested views across the four products. Record the original file, source owner,
 website-use basis, review status, reviewer and date. Main, connection, dimensional and packaging
 views must identify the same exact SKU or approved physical variant.
 
-### P0 Image Decisions
-
-Contains four active main images with unknown provenance. Choose one controlled decision:
-
-- Replace the asset with a company-owned or rights-approved exact-product image.
-- Approve the existing asset only after source, owner, usage basis and exact-SKU evidence are real.
-- Retire the asset and hold the product from image-led publication.
-- Keep `Needs review` until evidence is available.
+P0 provenance decisions for the existing active main images remain in the canonical image registry
+and the private Airtable review surface. They are not duplicated in the combined workbook.
 
 ## Accepted Evidence
 
@@ -74,15 +83,19 @@ field or compatibility relationship.
 
 After a product or factory reviewer completes the workbook:
 
-1. Review every completed row against the attached or referenced evidence.
-2. Transfer accepted technical responses to `data/intake/15ak-technical-confirmation.csv`.
-3. Transfer accepted image responses to `data/intake/15ak-product-image-intake.csv`.
-4. Transfer catalog-component responses to the series files only when the evidence names the exact
+1. Preserve every Candidate ID, Request ID, Record ID and SKU; do not rename rows in Excel.
+2. Review every completed row against the separately attached or referenced evidence.
+3. Transfer accepted assembly responses to `data/intake/15ak-series-confirmation.csv`.
+4. Transfer accepted component-image responses to `data/intake/15ak-image-intake.csv`.
+5. Transfer accepted product technical responses to
+   `data/intake/15ak-technical-confirmation.csv`.
+6. Transfer accepted product image responses to `data/intake/15ak-product-image-intake.csv`.
+7. Transfer catalog-component responses only when the evidence names the exact
    assembly candidate; do not substitute a similarly named public SKU.
-5. Update `data/assets/product-image-assets.csv` only after source, rights and exact-product review.
-6. Update canonical product or compatibility data deliberately; do not copy unreviewed workbook
+8. Update `data/assets/product-image-assets.csv` only after source, rights and exact-product review.
+9. Update canonical product or compatibility data deliberately; do not copy unreviewed workbook
    fields into public product records.
-7. Run:
+10. Run:
 
 ```bash
 npm run technical:validate
@@ -101,8 +114,11 @@ npm run typecheck
 npm run build
 ```
 
-8. Review the diff and confirm that no draft, candidate, conflict or unverified relationship became
-   indexable.
+11. Review the diff and confirm that no draft, candidate, conflict or unverified relationship became
+    indexable.
+
+Do not import the workbook directly into the canonical CSV files. Reconciliation must be keyed by
+the stable row identifiers and reviewed field by field.
 
 ## Prohibited Shortcuts
 
