@@ -163,6 +163,11 @@ the 46 component candidates, 58 component image requests, 15 product technical r
 image requests. It remains an ignored working artifact; use
 `docs/operations/15ak-factory-evidence-handoff.md` for controlled reconciliation.
 
+The local `ArcFort-Weld-MIG-MAG-Series-Evidence-Intake.xlsx` workbook combines the governed 24KD,
+25AK, 36KD, 40KD and 501D review queues: 121 component candidates, 181 image requests and 13 blocked
+source conflicts. It remains an ignored reviewer artifact and creates no products or public routes.
+Use `docs/operations/mig-mag-series-evidence-handoff.md` for the controlled return procedure.
+
 The About page is the canonical public company profile for the legal-company and ArcFort Weld brand
 relationship. Update confirmed identity and contact facts in `lib/content/site.ts`, keep buyer-facing
 company content in `lib/content/company-profile.ts`, then run `npm run test:company-profile` before
@@ -843,6 +848,8 @@ npm run seo:snippets
   company-owned image intake process
 - `docs/operations/15ak-factory-evidence-handoff.md` - low-friction workbook handoff and controlled
   review process for 15AK technical facts, image evidence and P0 provenance decisions
+- `docs/operations/mig-mag-series-evidence-handoff.md` - combined 24KD, 25AK, 36KD, 40KD and 501D
+  factory-review workbook boundary, conflict handling and controlled repository reconciliation
 - `docs/operations/airtable-15ak-evidence-intake.md` - private Airtable intake boundary, verified
   table scope and controlled repository transfer procedure
 - `data/evidence/local-product-image-triage.csv` - canonical review states for unassigned local

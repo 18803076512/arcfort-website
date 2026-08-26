@@ -2217,6 +2217,69 @@ the canonical publication gate.
 - Review the nine P0 candidates first, record real evidence, and move only approved exact-product
   assets into the canonical registry.
 
+## 2026-08-27 - MIG/MAG Series Factory Evidence Workbook
+
+**Task**
+
+Combined the governed 24KD, 25AK, 36KD, 40KD and 501D evidence queues into one internal factory
+workbook so candidate identity, exact-item imagery and source conflicts can be reviewed without
+creating premature products or public series pages.
+
+**Files Changed**
+
+- `docs/operations/mig-mag-series-evidence-handoff.md` - documented workbook scope, evidence gates,
+  conflict resolution and controlled reconciliation.
+- `knowledge-base/products/mig-mag-series-evidence-registry.md` - recorded the reusable factory-review
+  projection and authority boundary.
+- `README.md` - linked the combined MIG/MAG series evidence handoff.
+- `docs/CHANGELOG_AI.md` - recorded this phase.
+
+**Components Changed**
+
+- None. The workbook is an internal evidence-collection artifact and adds no public website component
+  or route.
+
+**Data Changed**
+
+- Projected 121 component candidates, 181 candidate-specific image requests and 13 controlled source
+  conflicts into five Excel sheets.
+- No SKU, technical value, compatibility relationship, image path, review state, series publication
+  state or public content changed.
+- Every `notes_internal` field was omitted from the workbook.
+
+**Visual Changes**
+
+- Added a restrained industrial-blue Start Here sheet, formula-driven series summary, frozen data
+  headers, pale-orange reviewer-input columns, validation dropdowns and red conflict controls.
+- No public website visual changed.
+
+**SEO Impact**
+
+- None. The workbook remains under the ignored `outputs/` directory and does not create an indexable
+  route, metadata or sitemap entry.
+
+**Validation**
+
+- Reopened the exported XLSX and verified five sheets with 30, 10, 126, 186 and 18 used rows.
+- Reconciled source counts of 121 candidates, 181 image requests and 13 conflicts, including per-series
+  counts of 23/21/24/24/29 candidates and 34/31/35/35/46 image requests.
+- Verified preserved cross-sheet formulas, zero spreadsheet formula errors and zero
+  `notes_internal` exposure.
+- Rendered and visually reviewed every worksheet for hierarchy, wrapping, frozen identifiers, input
+  areas and conflict visibility.
+
+**Known Issues**
+
+- All five series remain in `evidence_review`; no candidate has a confirmed SKU mapping or approved
+  exact-product image.
+- The 13 source conflicts remain blocked until exact-variant Level A evidence is returned.
+- Returned workbooks require field-by-field reconciliation; no direct import is allowed.
+
+**Next Recommended Step**
+
+- Send the workbook to the factory reviewer and resolve the 13 conflict rows before creating the
+  first 24KD canonical products.
+
 ## Entry Template
 
 ```markdown

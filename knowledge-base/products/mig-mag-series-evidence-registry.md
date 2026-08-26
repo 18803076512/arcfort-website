@@ -10,18 +10,18 @@ Source document: Renqiu Ailesen welding catalog PDF. Public copy:
 
 ## Reviewed Series
 
-| Series | PDF page | Catalog pages | Current public status |
-| --- | ---: | --- | --- |
-| ORK 200A | 4 | 1-2 | Evidence review |
-| ORK 350A | 5 | 3-4 | Evidence review |
-| ORK 500A | 6 | 5-6 | Evidence review |
-| 15AK | 7-8 | 7-10 | Published with reference-only relationships |
-| 24KD | 9 | 11-12 | Evidence review |
-| 25AK | 10 | 13-14 | Evidence review |
-| 36KD | 11 | 15-16 | Evidence review |
-| 40KD | 12 | 17-18 | Evidence review |
-| 501D | 13 | 19-20 | Evidence review |
-| 602 | 14 | 21-22 | Evidence review |
+| Series   | PDF page | Catalog pages | Current public status                       |
+| -------- | -------: | ------------- | ------------------------------------------- |
+| ORK 200A |        4 | 1-2           | Evidence review                             |
+| ORK 350A |        5 | 3-4           | Evidence review                             |
+| ORK 500A |        6 | 5-6           | Evidence review                             |
+| 15AK     |      7-8 | 7-10          | Published with reference-only relationships |
+| 24KD     |        9 | 11-12         | Evidence review                             |
+| 25AK     |       10 | 13-14         | Evidence review                             |
+| 36KD     |       11 | 15-16         | Evidence review                             |
+| 40KD     |       12 | 17-18         | Evidence review                             |
+| 501D     |       13 | 19-20         | Evidence review                             |
+| 602      |       14 | 21-22         | Evidence review                             |
 
 The registry records only the visible component-family scope and source pages. It does not import
 ratings, dimensions, material grades, compatibility or OEM references as confirmed ArcFort Weld
@@ -32,6 +32,17 @@ product specifications.
 Only 15AK has canonical active products, reviewed product images and governed relationships required
 by the current public series template. The other nine records are available as exact catalog-series
 choices in the MIG/MAG RFQ builder but do not create indexable series pages.
+
+## Factory Review Workbook
+
+The local `ArcFort-Weld-MIG-MAG-Series-Evidence-Intake.xlsx` workbook projects the governed 24KD,
+25AK, 36KD, 40KD and 501D queues into one factory-review surface. It contains 121 component
+candidates, 181 candidate-specific image requests and 13 controlled source conflicts.
+
+The workbook is not canonical data, excludes internal notes and cannot promote a candidate, fact,
+image or relationship automatically. Review-ready formulas only indicate that the required handoff
+fields are populated. Reconcile returned rows by stable Candidate ID, Request ID and Fact ID through
+`docs/operations/mig-mag-series-evidence-handoff.md` before changing any repository state.
 
 ## Required Evidence For Expansion
 
