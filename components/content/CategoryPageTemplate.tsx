@@ -82,7 +82,6 @@ export function CategoryPageTemplate({
             {category.title}
           </h1>
           <p className="body-large mt-6 max-w-3xl !text-slate-300">{category.description}</p>
-          <p className="mt-4 max-w-3xl text-sm leading-7 text-slate-400">{category.seoIntro}</p>
           <div className="mt-8 flex flex-col gap-3 sm:flex-row">
             <ButtonLink href="#category-products" className="w-full sm:w-auto">
               View Products
@@ -99,19 +98,6 @@ export function CategoryPageTemplate({
               {hasCategoryRfqBuilder ? "Build Product RFQ" : "Send Category RFQ"}
             </ButtonLink>
           </div>
-          <ol className="mt-10 grid border-t border-white/15 sm:grid-cols-3 sm:divide-x sm:divide-white/15">
-            {rfqEssentials.map((item, index) => (
-              <li
-                key={item}
-                className="grid grid-cols-[2.5rem_1fr] gap-3 border-b border-white/15 py-4 sm:border-b-0 sm:px-5 sm:first:pl-0"
-              >
-                <span className="font-display font-black text-arc-signal">
-                  {String(index + 1).padStart(2, "0")}
-                </span>
-                <span className="text-sm leading-6 text-slate-300">{item}</span>
-              </li>
-            ))}
-          </ol>
         </Container>
       </section>
 
@@ -175,6 +161,34 @@ export function CategoryPageTemplate({
               ))}
             </div>
           )}
+
+          <div className="mt-12 grid gap-8 border-t border-arc-line pt-8 lg:grid-cols-[0.9fr_1.1fr] lg:gap-14">
+            <div>
+              <p className="section-eyebrow">Category Sourcing Overview</p>
+              <h3 className="mt-3 font-display text-2xl font-black text-arc-midnight sm:text-3xl">
+                Define the product before confirming supply.
+              </h3>
+              <p className="mt-4 max-w-2xl text-sm leading-7 text-slate-600">{category.seoIntro}</p>
+            </div>
+            <div>
+              <h3 className="font-display text-xl font-black text-arc-midnight sm:text-2xl">
+                What to include in your inquiry
+              </h3>
+              <ol className="mt-4 border-t-2 border-arc-midnight">
+                {rfqEssentials.map((item, index) => (
+                  <li
+                    key={item}
+                    className="grid grid-cols-[2.5rem_1fr] gap-3 border-b border-arc-line py-4"
+                  >
+                    <span className="font-display font-black text-arc-copper">
+                      {String(index + 1).padStart(2, "0")}
+                    </span>
+                    <span className="text-sm font-semibold leading-6 text-slate-700">{item}</span>
+                  </li>
+                ))}
+              </ol>
+            </div>
+          </div>
         </Container>
       </Section>
 

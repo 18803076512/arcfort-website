@@ -2280,6 +2280,62 @@ creating premature products or public series pages.
 - Send the workbook to the factory reviewer and resolve the 13 conflict rows before creating the
   first 24KD canonical products.
 
+## 2026-08-27 - Product Category Mobile Hierarchy
+
+**Task**
+
+Reduced the first-screen content load across all six product-category pages so buyers reach the
+published product range and selection paths sooner, while preserving the complete indexable category
+copy and RFQ preparation guidance.
+
+**Files Changed**
+
+- `components/content/CategoryPageTemplate.tsx` - simplified the category hero and moved the full
+  sourcing overview and inquiry checklist below the product grid.
+- `docs/CHANGELOG_AI.md` - recorded this controlled category-page batch.
+
+**Components Changed**
+
+- Changed the shared `CategoryPageTemplate`; no component was created or removed.
+
+**Data Changed**
+
+- None. Product, category, technical, compatibility, image, company and commercial data remain
+  unchanged.
+
+**Visual Changes**
+
+- Category heroes now contain one category message, one concise description and two buyer actions.
+- Long SEO copy and the three-part inquiry checklist now form a restrained sourcing overview after
+  the product grid instead of delaying products in the first viewport.
+- At 360px, the six product sections now begin between 625px and 663px from the page top.
+
+**SEO Impact**
+
+- Preserved all category URLs, metadata, canonicals, structured data, internal links and visible SEO
+  copy.
+- Moved rather than removed the category introduction, keeping it in server-rendered HTML after the
+  primary product range.
+
+**Validation**
+
+- Passed ESLint, TypeScript and the Next.js production build with 91 generated pages.
+- Passed SEO, internal-link, snippet-hygiene, performance-budget and secret scans.
+- Browser-tested all six categories at 360, 390, 768, 1024, 1280 and 1440 CSS pixels: every route
+  returned 200 with one H1, no horizontal overflow, no broken images and no console errors.
+- Visually reviewed the MIG/MAG category hero and relocated sourcing overview at mobile, tablet and
+  desktop widths.
+
+**Known Issues**
+
+- Product imagery remains the main publication bottleneck: many records still use governed
+  family-level references while exact-product rights and identity evidence are pending.
+
+**Next Recommended Step**
+
+- Resolve the P0 product-image evidence queue and promote only approved exact-product assets into the
+  canonical registry.
+
 ## Entry Template
 
 ```markdown
