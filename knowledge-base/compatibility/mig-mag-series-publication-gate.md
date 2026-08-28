@@ -27,3 +27,14 @@ A product-series record may become public only when all of the following are tru
 
 Do not promote a record because the page would be useful for SEO. Product and compatibility evidence
 must come first.
+
+## Automated Enforcement
+
+`lib/content/product-series-publication.ts` evaluates each candidate against the evidence record,
+canonical products, image-asset registry and compatibility registry. A candidate enters the public
+`productSeries` collection only when every linked product has a `search_eligible` main image with
+approved usage rights, exact-product match, source owner, source file, reviewer and review date.
+
+Held series URLs use a temporary redirect to the parent category. This prevents a misleading or
+404 page while preserving the option to restore the same canonical URL after evidence approval.
+`npm run series:validate` must fail if a record is marked `published` without satisfying this gate.

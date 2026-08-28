@@ -58,10 +58,12 @@ The MIG/MAG catalog review now has a canonical structured registry in
 `lib/data/product-series-evidence.ts`. It records 10 distinct catalog families and their source pages:
 15AK, 24KD, 25AK, 36KD, 40KD, 501D, 602 and ORK 200A/350A/500A.
 
-Only 15AK currently meets the repository gate for a governed public series page. The other nine
-records remain `evidence_review`: they can help a buyer identify the catalog series in an RFQ, but do
-not generate public series routes until exact product records, reviewed images and product-to-series
-relationships exist. See `docs/product-series-readiness-report.md` for the generated work queue.
+All 10 records currently remain `evidence_review`: they can help a buyer identify the catalog series
+in an RFQ, but do not generate indexable series routes until exact product records, rights-approved
+exact-product images and governed product-to-series relationships pass the publication gate. The
+prepared 15AK candidate is retained, and its former URL temporarily redirects to the MIG/MAG
+category while image evidence is collected. See `docs/product-series-readiness-report.md` for the
+generated work queue.
 
 ## Plasma Consumable Evidence Review
 

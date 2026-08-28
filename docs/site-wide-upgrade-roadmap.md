@@ -3,14 +3,22 @@
 This roadmap defines the next improvement sequence for ArcFort Weld. The goal is to make the
 website more professional, easier to index, and stronger for overseas B2B RFQ conversion.
 
-## Production Baseline - 2026-08-13
+## Recorded Production Baseline - 2026-08-13
 
-The production build currently generates 91 pages and includes 40 indexable products, six product
-categories, one governed 15AK product-series page, six application pages and 17 buyer guides.
+The recorded 2026-08-13 production build generated 91 pages and included 40 indexable products, six
+product categories, one 15AK product-series page, six application pages and 17 buyer guides.
 Product search, category-specific RFQ builders, the OEM project builder, canonical metadata,
 sitemap, robots, structured data and the validated RFQ form are in place. The Search Console export
 dated 2026-08-12 is recorded in
 `docs/seo/search-console-baseline-2026-08-12.md` and should be used as the measurement baseline.
+
+## Current V2 Branch - 2026-08-28
+
+The current validated branch generates 90 pages with 40 indexable products, six categories, six
+applications and 17 buyer guides. No product-series page is currently indexable. The prepared 15AK
+candidate is held in `evidence_review` because its linked images remain family-level legacy
+references without approved rights and exact-product evidence. Its former URL temporarily redirects
+to the MIG/MAG category until the automated series publication gate passes.
 
 The site is technically ready to acquire inquiries, but four evidence and operational tasks now
 matter more than adding another general page:

@@ -9,9 +9,7 @@ import type {
 export type ProductSeriesPublicationStatus = "published" | "evidence_review" | "blocked";
 
 export type ProductSeriesImageEvidenceStatus =
-  | "reviewed_product_images"
-  | "catalog_page_only"
-  | "needs_photos";
+  "reviewed_product_images" | "catalog_page_only" | "needs_photos";
 
 export type ProductSeriesEvidence = {
   id: string;
@@ -148,7 +146,6 @@ export const productSeriesEvidence: ProductSeriesEvidence[] = [
     id: "mig-series-15ak",
     name: "15AK catalog reference group",
     seriesSlug: "15ak-mig-mag-torch-parts",
-    publicSeriesSlug: "15ak-mig-mag-torch-parts",
     sourceReference:
       "Renqiu Ailesen welding catalog PDF pages 7-8 (catalog pages 7-10), 15AK air-valve and standard product-family sections.",
     pdfPages: [7, 8],
@@ -160,8 +157,8 @@ export const productSeriesEvidence: ProductSeriesEvidence[] = [
     ],
     buyerCheck:
       "The company catalog shows more than one 15AK torch arrangement. Send the complete torch and label, keep the nozzle-to-neck parts in removal order, and record only measured or visibly marked wire size, thread and length references before requesting a match.",
-    publicationStatus: "published",
-    imageEvidenceStatus: "reviewed_product_images",
+    publicationStatus: "evidence_review",
+    imageEvidenceStatus: "needs_photos",
   }),
   createEvidenceRecord({
     id: "mig-series-24kd",
@@ -278,6 +275,5 @@ export const migMagCatalogReferenceFamilies: CategoryReferenceFamily[] =
     name: record.name,
     documentedComponents: record.documentedComponents,
     buyerCheck: record.buyerCheck,
-    seriesSlug:
-      record.publicationStatus === "published" ? record.publicSeriesSlug : undefined,
+    seriesSlug: record.publicationStatus === "published" ? record.publicSeriesSlug : undefined,
   }));

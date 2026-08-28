@@ -4,14 +4,22 @@ import assert from "node:assert/strict";
 import { existsSync } from "node:fs";
 import path from "node:path";
 import { productCategories } from "../content/categories.ts";
-import { productSeries } from "../lib/data/product-series.ts";
+import { getProductSeriesPublicationIssues } from "../lib/content/product-series-publication.ts";
+import { compatibilityRelationships } from "../lib/data/compatibility-relationships.ts";
+import { productImageAssets } from "../lib/data/product-image-assets.ts";
+import { productSeries, productSeriesCandidates } from "../lib/data/product-series.ts";
 import { productSeriesEvidence } from "../lib/data/product-series-evidence.ts";
+import { arcfortProducts } from "../lib/data/products.ts";
 
 const requiredCoreSeries = ["15AK", "24KD", "25AK", "36KD", "40KD", "501D", "602"];
 const migCategory = productCategories.find((category) => category.slug === "mig-mag-torch-parts");
 
 assert.ok(migCategory, "MIG/MAG category must exist.");
-assert.equal(productSeriesEvidence.length, 10, "The reviewed MIG/MAG catalog set must contain 10 records.");
+assert.equal(
+  productSeriesEvidence.length,
+  10,
+  "The reviewed MIG/MAG catalog set must contain 10 records.",
+);
 assert.equal(
   new Set(productSeriesEvidence.map((record) => record.id)).size,
   productSeriesEvidence.length,
@@ -53,10 +61,28 @@ for (const record of productSeriesEvidence) {
   assert.ok(record.reviewedBy.length >= 10);
 
   const matchingPublicSeries = productSeries.find((series) => series.evidenceId === record.id);
+  const matchingCandidate = productSeriesCandidates.find(
+    (series) => series.evidenceId === record.id,
+  );
+  const publicationIssues = matchingCandidate
+    ? getProductSeriesPublicationIssues({
+        series: matchingCandidate,
+        evidence: record,
+        products: arcfortProducts,
+        imageAssets: productImageAssets,
+        relationships: compatibilityRelationships,
+      })
+    : [];
 
   if (record.publicationStatus === "published") {
     assert.ok(record.publicSeriesSlug, `${record.name} needs a public route slug.`);
     assert.equal(record.imageEvidenceStatus, "reviewed_product_images");
+    assert.ok(matchingCandidate, `${record.name} needs a governed ProductSeries candidate.`);
+    assert.deepEqual(
+      publicationIssues,
+      [],
+      `${record.name} does not satisfy the exact-image and relationship publication gate.`,
+    );
     assert.ok(matchingPublicSeries, `${record.name} needs a governed public ProductSeries record.`);
     assert.equal(matchingPublicSeries.slug, record.publicSeriesSlug);
     assert.equal(matchingPublicSeries.sourceReference, record.sourceReference);
@@ -69,6 +95,13 @@ for (const record of productSeriesEvidence) {
       undefined,
       `${record.name} must not generate a public series page before publication approval.`,
     );
+
+    if (matchingCandidate && record.imageEvidenceStatus === "needs_photos") {
+      assert.ok(
+        publicationIssues.some((issue) => issue.includes("rights-approved")),
+        `${record.name} is marked needs_photos but has no exact-image publication issue.`,
+      );
+    }
   }
 
   if (record.publicationStatus === "blocked") {
@@ -102,7 +135,12 @@ for (const series of productSeries) {
   assert.equal(evidence.publicationStatus, "published");
 }
 
-const catalogPath = path.join(process.cwd(), "public", "downloads", "renqiu-ailesen-welding-catalog.pdf");
+const catalogPath = path.join(
+  process.cwd(),
+  "public",
+  "downloads",
+  "renqiu-ailesen-welding-catalog.pdf",
+);
 assert.ok(existsSync(catalogPath), "The public company catalog must exist.");
 
 console.log("Product-series evidence validation passed.");

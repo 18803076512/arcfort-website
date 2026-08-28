@@ -39,6 +39,10 @@ function buildReport() {
   const detailedSeriesIds = Array.from(
     new Set(componentEvidence.facts.map((fact) => fact.seriesEvidenceId)),
   ).sort();
+  const publicationBoundary =
+    productSeries.length === 0
+      ? "No catalog series currently satisfies the complete public-series gate. All reviewed family names may be used as bounded RFQ choices, but they must not generate indexable series pages until canonical products, rights-approved exact-product images and governed relationships pass validation."
+      : `${productSeries.map((series) => series.name).join(", ")} ${productSeries.length === 1 ? "is" : "are"} currently published through the governed series registry. All other reviewed family names may be used as bounded RFQ choices, but they must not generate indexable series pages until the complete publication gate passes.`;
 
   return [
     "# Product Series Readiness Report",
@@ -70,7 +74,7 @@ function buildReport() {
     "",
     "## Publication Boundary",
     "",
-    "Only the 15AK record currently has a governed public series page. The remaining records can be used as exact catalog-series choices in an RFQ, but they must not generate public series pages until the required product records, reviewed images and product-to-series relationships exist.",
+    publicationBoundary,
     "",
     "Do not copy dimensions, compatibility or OEM references from a catalog page into an ArcFort Weld product record without retaining the source and verification boundary. Final fit still requires a torch label, drawing, approved sample, measured evidence or factory confirmation.",
     "",

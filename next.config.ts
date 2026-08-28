@@ -1,6 +1,10 @@
 import type { NextConfig } from "next";
 import { withBotId } from "botid/next/config";
-import { legacyCategoryRedirects, legacyProductRedirects } from "./lib/content/product-redirects";
+import {
+  heldProductSeriesRedirects,
+  legacyCategoryRedirects,
+  legacyProductRedirects,
+} from "./lib/content/product-redirects";
 import { siteConfig } from "./lib/content/site";
 
 const isDevelopment = process.env.NODE_ENV === "development";
@@ -97,6 +101,11 @@ const nextConfig: NextConfig = {
         source: `/products/${categorySlug}/${productSlug}`,
         destination,
         permanent: true,
+      })),
+      ...heldProductSeriesRedirects.map(({ categorySlug, seriesSlug, destination }) => ({
+        source: `/products/${categorySlug}/series/${seriesSlug}`,
+        destination,
+        permanent: false,
       })),
     ];
   },

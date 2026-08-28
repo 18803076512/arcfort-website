@@ -4,7 +4,7 @@
 
 Convert the two 15AK assembly forms shown in the Renqiu Ailesen company catalog into an auditable
 factory-confirmation and image-collection queue. This record does not create a SKU, confirm a
-BINZEL relationship or expand the public 15AK series page.
+BINZEL relationship or automatically restore the prepared 15AK series page.
 
 ## Sources
 

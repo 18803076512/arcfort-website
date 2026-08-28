@@ -2,11 +2,14 @@
 
 ## Purpose
 
-This record defines the evidence boundary for the public 15AK catalog-reference series page:
+This record defines the evidence boundary for the prepared 15AK catalog-reference series candidate:
 
 `/products/mig-mag-torch-parts/series/15ak-mig-mag-torch-parts`
 
-It is a sourcing and product-identification aid. It is not a universal compatibility claim.
+The URL currently uses a temporary redirect to the MIG/MAG category because the linked product
+images do not yet prove approved usage rights and exact-product identity. The candidate content is
+retained for restoration after the publication gate passes. It is a sourcing and
+product-identification aid, not a universal compatibility claim.
 
 ## Evidence Source
 
@@ -45,10 +48,10 @@ The four governed public product records continue to use the separate exact-SKU 
 workflow. A matching component name is not evidence that the catalog candidate and public SKU are
 the same supplied part.
 
-## Public Buyer Identification Interface
+## Prepared Buyer Identification Interface
 
-The public series page now presents the two documented catalog arrangements as separate buyer
-identification paths:
+The retained series candidate presents the two documented catalog arrangements as separate buyer
+identification paths when it becomes publication eligible:
 
 1. Air-Valve Torch Arrangement, sourced from company catalog pages 7-8.
 2. Standard Complete-Torch Arrangement, sourced from company catalog pages 9-10.
@@ -59,9 +62,22 @@ component position, quantity, torch label and available evidence into the RFQ fo
 text explicitly states that the relationship is catalog-reference only and that final fit requires
 evidence.
 
-The comparison is an identification aid, not a compatibility matrix. It must remain responsive,
-keep the two catalog arrangements visually separate and retain the generic component-stack fallback
-for future public series records that do not have arrangement-level source evidence.
+The comparison is an identification aid, not a compatibility matrix. When restored, it must remain
+responsive, keep the two catalog arrangements visually separate and retain the generic
+component-stack fallback for future public series records that do not have arrangement-level source
+evidence.
+
+## Publication Hold
+
+- Evidence status: `evidence_review`
+- Image evidence status: `needs_photos`
+- Public-series collection: excluded
+- Sitemap and primary navigation: excluded
+- Former series URL: temporary redirect to `/products/mig-mag-torch-parts`
+
+Restore the page only when every linked product has a rights-approved, exact-product,
+search-eligible main image with source owner, source file, reviewer and review date, and all
+relationship and build checks pass.
 
 ## Buyer Confirmation Requirements
 

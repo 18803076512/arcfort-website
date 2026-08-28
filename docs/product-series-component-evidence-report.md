@@ -17,7 +17,7 @@ This internal report converts reviewed company-catalog series spreads into trace
 
 | Series                       | Field facts | Candidates | Conflicts | Candidate confirmation | Approved images | Public status   |
 | ---------------------------- | ----------: | ---------: | --------: | ---------------------- | --------------- | --------------- |
-| 15AK catalog reference group |         158 |         46 |         0 | 0/46                   | 0/58            | published       |
+| 15AK catalog reference group |         158 |         46 |         0 | 0/46                   | 0/58            | evidence review |
 | 24KD catalog reference group |          68 |         23 |         3 | 0/23                   | 0/34            | evidence review |
 | 25AK catalog reference group |          64 |         21 |         3 | 0/21                   | 0/31            | evidence review |
 | 36KD catalog reference group |          69 |         24 |         2 | 0/24                   | 0/35            | evidence review |
@@ -196,7 +196,7 @@ Approved images require an identified source owner, documented usage rights, ori
 
 ## Publication Boundary
 
-- 15AK catalog reference group already has a governed public series route. This component-evidence workflow does not publish its unconfirmed candidate rows or expand its public product relationships.
+- 15AK catalog reference group remains `evidence_review` and has no public route created by this component-evidence workflow.
 - 24KD catalog reference group remains `evidence_review` and has no public route created by this component-evidence workflow.
 - 25AK catalog reference group remains `evidence_review` and has no public route created by this component-evidence workflow.
 - 36KD catalog reference group remains `evidence_review` and has no public route created by this component-evidence workflow.

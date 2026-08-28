@@ -15,10 +15,6 @@ export const productNavigationGroups: ProductNavigationGroup[] = [
     title: "MIG/MAG",
     href: "/products/mig-mag-torch-parts",
     items: [
-      {
-        href: "/products/mig-mag-torch-parts/series/15ak-mig-mag-torch-parts",
-        label: "15AK Series",
-      },
       { href: "/products/mig-mag-torch-parts/mig-mag-welding-torch", label: "Welding Torches" },
       { href: "/products/mig-mag-torch-parts/mig-contact-tip-m6-1-0mm", label: "Contact Tips" },
       { href: "/products/mig-mag-torch-parts/mig-tip-holder-for-mb15", label: "Tip Holders" },

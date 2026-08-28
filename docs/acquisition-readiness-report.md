@@ -12,7 +12,7 @@ ArcFort Weld is live and indexable. The RFQ path is configured through the email
 - Active public products: 40
 - Draft products held from publication: 3
 - Product categories: 6
-- Governed product series: 1
+- Governed product series: 0
 - Catalog product-series evidence records: 10
 - Governed series-component facts: 517
 - Governed series-component candidates: 167
@@ -31,7 +31,7 @@ ArcFort Weld is live and indexable. The RFQ path is configured through the email
 | Organic search    | Search Console export for 2026-06-26 through 2026-08-09                                              | 8 clicks and 422 impressions recorded                                                                              | Compare a clean 28-day post-change window on or after 2026-09-12                                                 |
 | Website RFQ       | Production status and controlled provider acceptance                                                 | Email delivery mode; sales notification, buyer confirmation and attachments are configured                         | Confirm matching references in the sales and buyer inboxes                                                       |
 | Email / WhatsApp  | arcfortweld@outlook.com and +86-18803076512 are visible across major buyer paths                     | Direct fallback contacts available                                                                                 | Track non-PII click and qualified-inquiry outcomes                                                               |
-| Product catalog   | 40 active pages across 6 categories, 1 governed public series and 10 catalog-series evidence records | Active records have registered migration-period or approved image files; drafts and unready series remain excluded | Replace legacy references with rights-approved exact-product views, then verify product and series relationships |
+| Product catalog   | 40 active pages across 6 categories, 0 governed public series and 10 catalog-series evidence records | Active records have registered migration-period or approved image files; drafts and unready series remain excluded | Replace legacy references with rights-approved exact-product views, then verify product and series relationships |
 | Distributor / OEM | Dedicated service pages, builders and buyer workbooks                                                | Operational buyer preparation paths are published                                                                  | Review completed workbooks and qualified RFQs, not page count                                                    |
 
 ## RFQ And Delivery Evidence
@@ -60,10 +60,10 @@ ArcFort Weld is live and indexable. The RFQ path is configured through the email
 - Products with confirmed technical data status: 0
 - Products with confirmed compatibility status: 0
 - Products with confirmed OEM status: 0
-- Governed product-series records: 1
-- Governed series-to-product relationships: 4
+- Governed product-series records: 0
+- Governed series-to-product relationships: 0
 - Company-catalog series evidence records: 10
-- Catalog series still in evidence review: 9
+- Catalog series still in evidence review: 10
 - Series-component facts confirmed: 0
 - Series-component data conflicts blocked: 13
 - Series-component images approved: 0 of 239

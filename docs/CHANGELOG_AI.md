@@ -2336,6 +2336,79 @@ copy and RFQ preparation guidance.
 - Resolve the P0 product-image evidence queue and promote only approved exact-product assets into the
   canonical registry.
 
+## 2026-08-28 - 15AK Series Publication Gate Correction
+
+**Task**
+
+Corrected the mismatch between the 15AK series publication state and its real image evidence, then
+added an automated gate so an indexable series page cannot be created from family-level legacy
+images with unresolved usage rights.
+
+**Files Changed**
+
+- `lib/content/product-series-publication.ts` - added the canonical product, image and relationship
+  publication evaluator.
+- `lib/data/product-series-evidence.ts` and `lib/data/product-series.ts` - retained the 15AK
+  candidate while moving it back to evidence review and filtering public series through the gate.
+- `lib/content/product-redirects.ts`, `lib/content/site-navigation.ts` and `next.config.ts` - removed
+  the premature navigation entry and added a recoverable temporary redirect.
+- `scripts/test-product-series-evidence.ts` and `scripts/audit-seo.ts` - enforce image evidence and
+  held-series redirect rules.
+- `README.md`, `docs/catalog-product-data-audit.md`, `docs/site-wide-upgrade-roadmap.md`, three
+  generated readiness reports and the 15AK/MIG-MAG knowledge-base records - synchronized the current
+  publication boundary and restoration requirements.
+- `knowledge-base/decisions/2026-08-28-15ak-publication-gate-correction.md` - recorded the reusable
+  evidence decision.
+
+**Components Changed**
+
+- No UI component was created or removed. The desktop product navigation data no longer exposes the
+  held 15AK route.
+
+**Data Changed**
+
+- Changed 15AK from `published` to `evidence_review` and from `reviewed_product_images` to
+  `needs_photos`.
+- Public product-series count changed from one to zero; the full 15AK candidate, 10 catalog evidence
+  records, four reference-only relationships and 15 technical facts remain intact.
+
+**Visual Changes**
+
+- Removed the direct 15AK item from the desktop Products mega menu.
+- The MIG/MAG category still presents 15AK as a bounded catalog-reference RFQ choice without a
+  misleading public-series link.
+
+**SEO Impact**
+
+- Removed the unready 15AK series URL from the Sitemap and public internal links.
+- Added a temporary 307 redirect from the stable series URL to the MIG/MAG category so the held page
+  does not return 404 and can be restored at the same URL after evidence approval.
+- Production output changed from 91 to 90 generated pages; product, category and guide URLs remain
+  unchanged.
+
+**Validation**
+
+- Passed ESLint, TypeScript and the Next.js production build with 90 generated pages.
+- Passed product-series evidence, public-series, compatibility, series-component, technical,
+  product CSV and image-asset validation.
+- Regenerated product-series, component and acquisition readiness reports.
+- Passed SEO, built internal-link, snippet-hygiene, performance-budget and secret scans.
+- Verified the held URL returns 307 to the MIG/MAG category, Sitemap excludes the series URL, and
+  360px/1440px category checks have one H1, no held link, no overflow, no broken image and no console
+  error.
+
+**Known Issues**
+
+- The four linked 15AK products still lack rights-approved, exact-product main images.
+- All four 15AK relationships remain reference-only and all 15 governed technical facts still need
+  exact-SKU confirmation.
+- The wider asset registry still contains 43 legacy public references requiring rights review.
+
+**Next Recommended Step**
+
+- Collect and approve exact 15AK main, connection-detail and packaging images for the four canonical
+  products, then rerun the gate before restoring the series URL.
+
 ## Entry Template
 
 ```markdown

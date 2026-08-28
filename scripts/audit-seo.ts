@@ -7,6 +7,7 @@ import { productCategories } from "../content/categories.ts";
 import { guides } from "../content/guides.ts";
 import { homepageFeaturedProductSlugs } from "../lib/content/featured-products.ts";
 import {
+  heldProductSeriesRedirects,
   isLegacyProductPath,
   legacyCategoryRedirects,
   legacyProductRedirects,
@@ -43,6 +44,7 @@ const productSlugs = new Set(activeProducts.map((product) => product.slug));
 const productSeriesRoutes = new Set<string>();
 const legacyCategorySources = new Set<string>();
 const legacyProductSources = new Set<string>();
+const heldProductSeriesSources = new Set<string>();
 const confirmedBusinessIdentity = {
   legalName: "Renqiu Ailesen Welding Technology Co., Ltd.",
   chineseName: "任丘市埃勒森焊接科技有限公司",
@@ -418,6 +420,28 @@ for (const redirect of legacyProductRedirects) {
   legacyProductSources.add(source);
 }
 
+for (const redirect of heldProductSeriesRedirects) {
+  const source = `${redirect.categorySlug}/${redirect.seriesSlug}`;
+
+  if (!categorySlugs.has(redirect.categorySlug)) {
+    errors.push(`Held product-series redirect uses missing category "${redirect.categorySlug}".`);
+  }
+
+  if (heldProductSeriesSources.has(source)) {
+    errors.push(`Duplicate held product-series redirect source "${source}".`);
+  }
+
+  if (productSeriesRoutes.has(source)) {
+    errors.push(`Held product-series redirect "${source}" conflicts with a published series.`);
+  }
+
+  if (redirect.destination !== `/products/${redirect.categorySlug}`) {
+    errors.push(`Held product-series redirect "${source}" must return to its category page.`);
+  }
+
+  heldProductSeriesSources.add(source);
+}
+
 for (const guide of guides) {
   const normalizedSeoTitle = guide.seoTitle.toLowerCase();
   const normalizedSeoDescription = guide.seoDescription.toLowerCase();
@@ -542,6 +566,7 @@ console.log(`Application pages: ${applications.length}`);
 console.log(`Buyer guides: ${guides.length}`);
 console.log(`Legacy category redirects: ${legacyCategoryRedirects.length}`);
 console.log(`Legacy product redirects: ${legacyProductRedirects.length}`);
+console.log(`Held product-series redirects: ${heldProductSeriesRedirects.length}`);
 
 if (errors.length > 0) {
   console.error(`\nErrors (${errors.length})`);

@@ -1,8 +1,15 @@
 import type { ProductSeries } from "../content/schemas.ts";
 import { getProductSeriesReferencesForEvidence } from "../content/compatibility.ts";
-import { fifteenAkSeriesEvidence } from "./product-series-evidence.ts";
+import {
+  getProductSeriesEvidenceById,
+  fifteenAkSeriesEvidence,
+} from "./product-series-evidence.ts";
+import { getProductSeriesPublicationIssues } from "../content/product-series-publication.ts";
+import { compatibilityRelationships } from "./compatibility-relationships.ts";
+import { productImageAssets } from "./product-image-assets.ts";
+import { arcfortProducts } from "./products.ts";
 
-export const fifteenAkSeries: ProductSeries = {
+export const fifteenAkSeriesCandidate: ProductSeries = {
   evidenceId: fifteenAkSeriesEvidence.id,
   slug: "15ak-mig-mag-torch-parts",
   name: "15AK MIG/MAG Torch Parts",
@@ -159,4 +166,22 @@ export const fifteenAkSeries: ProductSeries = {
   reviewedDate: fifteenAkSeriesEvidence.reviewedDate,
 };
 
-export const productSeries: ProductSeries[] = [fifteenAkSeries];
+export const productSeriesCandidates: ProductSeries[] = [fifteenAkSeriesCandidate];
+
+export const productSeries: ProductSeries[] = productSeriesCandidates.filter((series) => {
+  const evidence = getProductSeriesEvidenceById(series.evidenceId);
+
+  if (!evidence) {
+    return false;
+  }
+
+  return (
+    getProductSeriesPublicationIssues({
+      series,
+      evidence,
+      products: arcfortProducts,
+      imageAssets: productImageAssets,
+      relationships: compatibilityRelationships,
+    }).length === 0
+  );
+});

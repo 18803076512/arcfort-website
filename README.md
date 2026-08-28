@@ -124,11 +124,13 @@ name, SKU, one useful selection cue and buyer actions; technical truth remains i
 product source.
 
 The company-catalog series registry currently covers 10 distinct MIG/MAG references: 15AK, 24KD,
-25AK, 36KD, 40KD, 501D, 602 and ORK 200A/350A/500A. Only 15AK currently has a governed public series
-page. The other records remain RFQ choices in `evidence_review` until canonical products, reviewed
-images and product-to-series relationships are available. Keep exact technical values in the
-canonical product source and run `npm run series:validate`, `npm run test:product-series` and
-`npm run series:report` before publication.
+25AK, 36KD, 40KD, 501D, 602 and ORK 200A/350A/500A. All 10 records currently remain RFQ choices in
+`evidence_review`; none generates an indexable series page. The prepared 15AK candidate is retained
+internally, while its former URL temporarily redirects to the MIG/MAG category until every linked
+product has a rights-approved, exact-product main image and the governed relationships pass the
+publication gate. Keep exact technical values in the canonical product source and run
+`npm run series:validate`, `npm run test:product-series` and `npm run series:report` before
+publication.
 
 The detailed series-component workflow currently covers 24KD, 25AK, 36KD, 40KD and 501D. Together
 they contain 359 sourced catalog facts, 121 component/variant candidates and 181 exact-image

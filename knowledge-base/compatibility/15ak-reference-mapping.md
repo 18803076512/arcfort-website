@@ -2,17 +2,19 @@
 
 ## Core Rule
 
-A shared catalog group does not prove universal fit. The current 15AK page groups four products for
-buyer review, but every product-to-series relationship remains `reference_only`.
+A shared catalog group does not prove universal fit. The 15AK registry associates four canonical
+products with the catalog family for internal review, but every product-to-series relationship
+remains `reference_only`. The prepared series page is currently held from publication until its
+exact-product image evidence passes the public-series gate.
 
 ## Current Relationship Matrix
 
-| Product | Evidence | Public status | Final fit |
-| --- | --- | --- | --- |
+| Product                  | Evidence        | Public status     | Final fit         |
+| ------------------------ | --------------- | ----------------- | ----------------- |
 | MIG Contact Tip M6 0.8mm | Company catalog | Catalog reference | Evidence required |
 | MIG Contact Tip M6 1.0mm | Company catalog | Catalog reference | Evidence required |
-| MIG Tip Holder for MB15 | Company catalog | Catalog reference | Evidence required |
-| MIG Gas Nozzle for MB15 | Company catalog | Catalog reference | Evidence required |
+| MIG Tip Holder for MB15  | Company catalog | Catalog reference | Evidence required |
+| MIG Gas Nozzle for MB15  | Company catalog | Catalog reference | Evidence required |
 
 ## Confirmation Inputs
 
