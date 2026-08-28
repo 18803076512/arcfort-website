@@ -99,6 +99,12 @@ For water- or liquid-cooled series, verify that coolant supply/return, gas, powe
 come from a controlled connection drawing or verified marking. A hose color, position or visually
 similar connector must not be used to assign a media function or compatibility relationship.
 
+For an internal factory-review workbook, reconcile per-series and total candidate, image-request and
+conflict counts against the canonical CSV files. Confirm that stable IDs are preserved,
+`notes_internal` is omitted, formulas contain no spreadsheet errors and blocked/conflict rows remain
+visibly blocked. A completed workbook must be reconciled field by field and must not directly import,
+publish or confirm repository data.
+
 When the import source changed, also run the applicable preview/import workflow and verify generated
 files have no unexpected drift.
 

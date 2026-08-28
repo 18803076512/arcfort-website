@@ -41,10 +41,10 @@ gates pass.
 ## Factory Review Workbook
 
 The local `ArcFort-Weld-MIG-MAG-Series-Evidence-Intake.xlsx` workbook projects the governed 24KD,
-25AK, 36KD, 40KD and 501D queues into one factory-review surface. It contains 121 component
-candidates, 181 candidate-specific image requests and 13 controlled source conflicts. The 602 queue
-is newer than this ignored workbook and remains in `data/intake/602-series-confirmation.csv` and
-`data/intake/602-image-intake.csv` until a deliberate workbook refresh is completed.
+25AK, 36KD, 40KD, 501D and blocked 602 queues into one factory-review surface. It contains 143
+component candidates, 218 candidate-specific image requests and 14 controlled source conflicts.
+The 602 rows remain blocked because the company catalog page conflicts between a 501D header and 602
+tables; their presence in the workbook is not a resolution or publication decision.
 
 The workbook is not canonical data, excludes internal notes and cannot promote a candidate, fact,
 image or relationship automatically. Review-ready formulas only indicate that the required handoff

@@ -3,8 +3,8 @@
 ## Purpose
 
 `ArcFort-Weld-MIG-MAG-Series-Evidence-Intake.xlsx` is an internal factory-review workbook for the
-24KD, 25AK, 36KD, 40KD and 501D catalog evidence groups. It combines the existing controlled
-confirmation, image and conflict queues in one reviewer surface:
+24KD, 25AK, 36KD, 40KD, 501D and blocked 602 catalog evidence groups. It combines the existing
+controlled confirmation, image and conflict queues in one reviewer surface:
 
 | Series | Component candidates | Image requests | Source conflicts |
 | ------ | -------------------: | -------------: | ---------------: |
@@ -13,23 +13,26 @@ confirmation, image and conflict queues in one reviewer surface:
 | 36KD   |                   24 |             35 |                2 |
 | 40KD   |                   24 |             35 |                2 |
 | 501D   |                   29 |             46 |                3 |
-| Total  |                  121 |            181 |               13 |
+| 602    |                   22 |             37 |                1 |
+| Total  |                  143 |            218 |               14 |
 
 The workbook is kept under the ignored `outputs/` workspace. It is not a public catalog, product
 database or website download. It deliberately omits every `notes_internal` field.
 
-## Newer 602 Queue
+## 602 Blocked Scope
 
-The current workbook predates the 602 catalog-identity review. The canonical repository now also
-contains 22 candidates, 37 image requests and one blocked identity conflict in:
+The workbook now includes the 22 candidates, 37 image requests and one blocked identity conflict
+from:
 
 - `data/intake/602-series-confirmation.csv`
 - `data/intake/602-image-intake.csv`
 - `data/evidence/product-series-component-facts.csv`
 
-Review those records directly until the workbook is deliberately regenerated. Do not add 602 rows
-to a returned five-series workbook by copying adjacent 501D values: the company page itself conflicts
-between a 501D header and 602 table, so exact identity requires factory evidence.
+These rows exist to collect resolution evidence, not to select a catalog value. The company page
+conflicts between a 501D header and 602 complete-torch and technical tables. Do not resolve that
+identity by copying adjacent 501D values, by treating the table as automatically authoritative or by
+using visual similarity. Exact identity requires a factory record, controlled drawing, approved
+sample, verified reference or confirmed measurement tied to the reviewed variant.
 
 Repository CSV files and governed TypeScript registries remain authoritative. Completing a workbook
 row does not create a SKU, confirm a specification, approve an image, establish compatibility or
@@ -39,9 +42,9 @@ publish a series page.
 
 ### Start Here
 
-Defines the legal company, five-series scope, queue totals, controlled review process and evidence
+Defines the legal company, six-series scope, queue totals, controlled review process and evidence
 rules. Formula-driven counts show review-ready and blocked/conflict states without changing source
-data.
+data. The 602 warning remains visible in this section.
 
 ### Series Summary
 
@@ -50,13 +53,14 @@ on the completed evidence fields in the workbook. They are a handoff check, not 
 
 ### Component Confirmation
 
-Contains 121 stable candidate rows sourced from:
+Contains 143 stable candidate rows sourced from:
 
 - `data/intake/24kd-series-confirmation.csv`
 - `data/intake/25ak-series-confirmation.csv`
 - `data/intake/36kd-series-confirmation.csv`
 - `data/intake/40kd-series-confirmation.csv`
 - `data/intake/501d-series-confirmation.csv`
+- `data/intake/602-series-confirmation.csv`
 
 Pale-orange columns collect factory names, proposed SKU identifiers, technical and commercial values,
 evidence, reviewer and date. `REVIEW READY` requires a `CONFIRMED` decision plus evidence type,
@@ -64,13 +68,13 @@ evidence reference, reviewer and ISO date. It does not bypass repository review.
 
 ### Image Intake
 
-Contains 181 candidate-specific requests sourced from the five corresponding `*-image-intake.csv`
+Contains 218 candidate-specific requests sourced from the six corresponding `*-image-intake.csv`
 files. An approved row requires source owner, website-use basis, original file name, reviewer and ISO
 date. A received file alone does not prove ownership, rights or exact-product identity.
 
 ### Conflict Register
 
-Contains the 13 `DATA_CONFLICT` facts from
+Contains the 14 `DATA_CONFLICT` facts from
 `data/evidence/product-series-component-facts.csv`. Each row preserves the company-catalog value,
 comparison value, both references and the conflict explanation. A row remains blocked until all of
 these are present:
@@ -144,7 +148,8 @@ IDs and reviewed field by field.
 
 ## Publication Boundary
 
-All five series remain `evidence_review`. The workbook does not create public routes, metadata,
-structured data, sitemap entries or RFQ compatibility claims. Publish a series only after canonical
-products, reviewed exact-product imagery and governed relationships satisfy the existing series
-publication gate.
+24KD, 25AK, 36KD, 40KD and 501D remain `evidence_review`; 602 remains `blocked`. The workbook does not
+create public routes, metadata, structured data, sitemap entries or RFQ compatibility claims.
+Publish a series only after canonical products, reviewed exact-product imagery and governed
+relationships satisfy the existing series publication gate. Resolve the 602 page-identity conflict
+before evaluating it for any later publication state.

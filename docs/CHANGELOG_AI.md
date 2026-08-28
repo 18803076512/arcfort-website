@@ -4,6 +4,81 @@ This append-only log records major Codex decisions so future sessions can unders
 why it changed and which risks remain. Add the newest entry at the top, below this introduction. Do
 not include secrets, buyer PII, private prospect data or unconfirmed claims.
 
+## 2026-08-29 - Six-Series MIG/MAG Factory Evidence Workbook
+
+**Task**
+
+Regenerated the private MIG/MAG factory-review workbook from the canonical series confirmation,
+image-intake and conflict queues so 602 can be reviewed in the same controlled surface without
+weakening its blocked catalog-identity boundary.
+
+**Files Changed**
+
+- `README.md` - updated the private workbook scope and current queue totals.
+- `docs/operations/mig-mag-series-evidence-handoff.md` - documented the six-series workbook,
+  per-series counts, 602 conflict handling and controlled return procedure.
+- `knowledge-base/products/mig-mag-series-evidence-registry.md` - synchronized the long-term series
+  evidence record with the refreshed workbook.
+- `docs/QA_CHECKLIST.md` - added a reusable factory-review workbook reconciliation gate.
+- `docs/CHANGELOG_AI.md` - recorded this batch.
+- `outputs/019eb6d1-0ad6-7fd1-b285-3ffd5cf0b73d/ArcFort-Weld-MIG-MAG-Series-Evidence-Intake.xlsx`
+  - refreshed the ignored local reviewer artifact; it is not tracked or published.
+
+**Components Changed**
+
+- No website component, route or public download changed.
+
+**Data Changed**
+
+- The workbook now projects six governed queues: 143 component candidates, 218 image requests and
+  14 controlled source conflicts.
+- Added the existing 22 602 candidates, 37 image requests and one identity conflict to the private
+  reviewer surface.
+- No canonical CSV value, SKU, technical fact, relationship, product image status or publication
+  state changed.
+
+**Visual Changes**
+
+- The five-sheet workbook retains industrial-blue hierarchy, wrapped technical cells, frozen review
+  headers, restrained input highlighting and visible blocked/conflict states.
+- The 602 rows use the same controlled review formatting as the existing series and include a clear
+  page-identity warning.
+
+**SEO Impact**
+
+- None. The workbook remains private and ignored. No product page, series route, metadata, structured
+  data, sitemap entry or RFQ claim changed.
+
+**Validation**
+
+- Workbook verification passed for six series, 143 candidates, 218 image requests and 14 conflicts;
+  formulas, data validation, queue totals and visible 602 blocked states were checked against the
+  canonical queues.
+- Series component validation passed for 589 facts, 189 candidates, 276 image requests and all seven
+  confirmation/image-intake file pairs with no errors or warnings.
+- Product-series evidence validation passed with ten reviewed catalog records: zero published, nine
+  in evidence review and one blocked.
+- Compatibility validation retained four reference-only relationships, zero confirmed
+  relationships and no 602 public relationship.
+- MIG/MAG RFQ and SEO audits passed; the SEO audit retained 40 indexable products, six categories and
+  zero public series pages.
+- ESLint, TypeScript, repository secret scanning and the Next.js production build passed. The build
+  generated 90 pages.
+
+**Known Issues**
+
+- The workbook still contains no factory-confirmed candidate responses or approved exact-product
+  images.
+- The 501D/602 page-identity conflict is unresolved and 602 remains `blocked` / `DATA_CONFLICT`.
+- Returned workbooks require stable-ID, field-by-field repository reconciliation; direct import is
+  intentionally prohibited.
+
+**Next Recommended Step**
+
+- Have the factory or product owner resolve the 602 page identity with a controlled record, drawing,
+  approved sample, verified reference or confirmed measurement before reviewing its component and
+  image rows for SKU creation.
+
 ## 2026-08-21 - V2 Phase 7 Product Image Asset Governance
 
 **Task**
