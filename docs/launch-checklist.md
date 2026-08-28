@@ -98,8 +98,12 @@ Use this checklist before switching the website to production traffic.
   runs from GitHub Actions.
 - `npm run health:production` verifies RFQ readiness and audits all live sitemap URLs without
   sending an inquiry or email.
+- `npm run test:live-audit` verifies bounded retries locally. Transient network and selected
+  retryable HTTP failures may retry; deterministic and persistent failures must still surface.
 - Treat a failed scheduled run as an operational alert: inspect the failed RFQ or SEO step, confirm
   the deployed site, and restore the lead channel before publishing additional changes.
+- Confirm the sender-domain DKIM, SPF, custom MAIL FROM MX and DMARC state separately. Do not describe
+  DMARC as configured until the DNS record is published and the email-domain audit passes.
 - Keep GitHub Actions notifications enabled for the repository owner so failed scheduled runs are
   visible outside the Actions page.
 

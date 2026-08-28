@@ -545,6 +545,22 @@ After deployment, audit every sitemap URL against the live site:
 npm run seo:audit:live
 ```
 
+The live audit uses a bounded read-only retry policy for transient network failures and HTTP
+`408`, `425`, `429`, `500`, `502`, `503` and `504` responses. It does not retry deterministic results
+such as `404`, and a persistent transient status still fails the audit. Defaults are four concurrent
+requests, three attempts, a 20-second per-attempt timeout and bounded exponential backoff. Test the
+retry boundary without contacting production with:
+
+```bash
+npm run test:live-audit
+```
+
+For diagnosis, the live audit accepts `--batch-size`, `--request-attempts`,
+`--request-timeout-ms`, `--retry-base-delay-ms` and `--max-request-failures`. The default failure
+budget stops the audit after eight final network or retryable-status failures so a broad outage
+cannot consume the full scheduled-job window. Do not increase these values to conceal a real
+production failure.
+
 Search performance improvements should follow exported Search Console evidence rather than isolated
 keyword assumptions. Keep dated baselines under `docs/seo/`, use page and query-cluster trends, and
 wait at least 28 days before judging title or content changes. The current baseline and action record
@@ -569,6 +585,9 @@ GitHub Actions runs the same non-mutating production health check every six hour
 opens or updates one `[Production] ArcFort Weld health check failed` issue with the Actions run link;
 the next successful run adds a recovery note and closes that issue. The health job keeps read-only
 repository access, while only the separate incident job receives `issues: write` permission.
+Email-domain checks use the same bounded retry helper for DNS-over-HTTPS. DKIM, SPF and custom MAIL
+FROM MX are currently present; DMARC remains missing and requires an approved DNS change before it
+can be recorded as configured.
 
 ## Performance Budgets
 

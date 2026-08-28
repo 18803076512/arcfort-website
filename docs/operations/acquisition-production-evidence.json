@@ -1,12 +1,15 @@
 {
-  "asOf": "2026-08-13",
+  "asOf": "2026-08-29",
   "production": {
     "url": "https://www.arcfortweld.com",
     "deploymentVerified": true,
     "sitemapUrlCount": 88,
-    "indexNowLastAccepted": "2026-08-13"
+    "indexNowLastAccepted": "2026-08-13",
+    "liveSeoAuditChecked": "2026-08-29",
+    "securityHeadersChecked": "2026-08-29"
   },
   "rfq": {
+    "statusChecked": "2026-08-29",
     "productionReady": true,
     "deliveryMode": "email",
     "salesEmailReady": true,
@@ -34,7 +37,11 @@
   },
   "securityOperations": {
     "resendCredentialRotatedAfterExternalExposure": null,
-    "dmarcStatusConfirmed": null,
+    "emailAuthenticationChecked": "2026-08-29",
+    "dkimRecordPresent": true,
+    "spfRecordPresent": true,
+    "mailFromMxRecordPresent": true,
+    "dmarcStatusConfirmed": false,
     "supplierImageUsageRightsConfirmed": null
   }
 }

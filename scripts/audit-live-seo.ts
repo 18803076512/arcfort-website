@@ -7,6 +7,7 @@ import {
   legacyProductRedirects,
 } from "../lib/content/product-redirects.ts";
 import { arcfortProducts } from "../lib/data/products.ts";
+import { defaultRetryableHttpStatuses, fetchReadOnlyWithRetry } from "./live-audit-fetch.ts";
 
 type PageAudit = {
   canonicalUrl: string;
@@ -53,9 +54,16 @@ type SitemapEntry = {
 const args = process.argv.slice(2);
 const canonicalBaseUrl = normalizeBaseUrl(getArgValue("--canonical-base-url") ?? siteConfig.url);
 const fetchBaseUrl = normalizeBaseUrl(getArgValue("--fetch-base-url") ?? canonicalBaseUrl);
-const batchSize = 8;
+const batchSize = getPositiveIntegerArg("--batch-size", 4);
+const requestAttempts = getPositiveIntegerArg("--request-attempts", 3);
+const requestTimeoutMs = getPositiveIntegerArg("--request-timeout-ms", 20_000);
+const retryBaseDelayMs = getPositiveIntegerArg("--retry-base-delay-ms", 500);
+const maxTerminalRequestFailures = getPositiveIntegerArg("--max-request-failures", 8);
 const errors: string[] = [];
 const warnings: string[] = [];
+const retriedUrls = new Set<string>();
+let retryAttemptCount = 0;
+let terminalRequestFailureCount = 0;
 
 function getArgValue(flag: string) {
   const index = args.indexOf(flag);
@@ -66,6 +74,53 @@ function getArgValue(flag: string) {
 
   const inlineValue = args.find((argument) => argument.startsWith(`${flag}=`));
   return inlineValue?.slice(flag.length + 1);
+}
+
+function getPositiveIntegerArg(flag: string, fallback: number) {
+  const value = getArgValue(flag);
+
+  if (value === undefined) {
+    return fallback;
+  }
+
+  const parsed = Number(value);
+
+  if (!Number.isInteger(parsed) || parsed <= 0) {
+    throw new Error(`${flag} must be a positive integer.`);
+  }
+
+  return parsed;
+}
+
+async function auditFetch<T = undefined>(
+  input: Parameters<typeof fetch>[0],
+  init: Parameters<typeof fetch>[1] = {},
+  read?: (response: Response) => Promise<T>,
+) {
+  return fetchReadOnlyWithRetry(input, init, {
+    attempts: requestAttempts,
+    timeoutMs: requestTimeoutMs,
+    baseDelayMs: retryBaseDelayMs,
+    read,
+    onRetry: (event) => {
+      retryAttemptCount += 1;
+      retriedUrls.add(event.url);
+    },
+  });
+}
+
+function recordTerminalRequestFailure(status?: number) {
+  if (status === undefined || defaultRetryableHttpStatuses.has(status)) {
+    terminalRequestFailureCount += 1;
+  }
+}
+
+function enforceRequestFailureBudget() {
+  if (terminalRequestFailureCount >= maxTerminalRequestFailures) {
+    throw new Error(
+      `Live audit stopped after ${terminalRequestFailureCount} terminal network or retryable-status failures; limit ${maxTerminalRequestFailures}.`,
+    );
+  }
 }
 
 function normalizeBaseUrl(value: string) {
@@ -256,10 +311,14 @@ function normalizeComparableUrl(value: string) {
 
 async function auditUrl(canonicalUrl: string): Promise<PageAudit> {
   const requestedUrl = toFetchUrl(canonicalUrl);
-  const response = await fetch(requestedUrl, {
-    redirect: "follow",
-    signal: AbortSignal.timeout(20_000),
-  });
+  const { response, data: html } = await auditFetch<string>(
+    requestedUrl,
+    { redirect: "follow" },
+    (result) =>
+      (result.headers.get("content-type") ?? "").includes("text/html")
+        ? result.text()
+        : Promise.resolve(""),
+  );
   const contentType = response.headers.get("content-type") ?? "";
   const baseAudit = {
     canonicalUrl,
@@ -273,7 +332,6 @@ async function auditUrl(canonicalUrl: string): Promise<PageAudit> {
     return baseAudit;
   }
 
-  const html = await response.text();
   const robots = [
     response.headers.get("x-robots-tag") ?? undefined,
     getMetaContent(html, "robots"),
@@ -321,9 +379,9 @@ async function auditUrl(canonicalUrl: string): Promise<PageAudit> {
 
 async function auditImage(canonicalUrl: string) {
   const requestedUrl = toFetchUrl(canonicalUrl);
-  const response = await fetch(requestedUrl, {
+  const { response } = await auditFetch(requestedUrl, {
+    method: "HEAD",
     redirect: "follow",
-    signal: AbortSignal.timeout(20_000),
   });
 
   return {
@@ -336,10 +394,11 @@ async function auditImage(canonicalUrl: string) {
 }
 
 async function auditCampaignSocialImage(canonicalUrl: string, label: string) {
-  const response = await fetch(toFetchUrl(canonicalUrl), {
-    redirect: "follow",
-    signal: AbortSignal.timeout(20_000),
-  });
+  const { response, data: buffer } = await auditFetch<ArrayBuffer>(
+    toFetchUrl(canonicalUrl),
+    { redirect: "follow" },
+    (result) => result.arrayBuffer(),
+  );
   const contentType = response.headers.get("content-type") ?? "";
 
   if (response.status !== 200) {
@@ -352,7 +411,7 @@ async function auditCampaignSocialImage(canonicalUrl: string, label: string) {
     return;
   }
 
-  const bytes = new Uint8Array(await response.arrayBuffer());
+  const bytes = new Uint8Array(buffer);
   const isPng =
     bytes.length >= 24 &&
     bytes[0] === 0x89 &&
@@ -376,9 +435,9 @@ async function auditCampaignSocialImage(canonicalUrl: string, label: string) {
 
 async function auditPermanentRedirect(sourcePath: string, destinationPath: string) {
   const requestedUrl = new URL(sourcePath, `${fetchBaseUrl}/`).toString();
-  const response = await fetch(requestedUrl, {
+  const { response } = await auditFetch(requestedUrl, {
+    method: "HEAD",
     redirect: "manual",
-    signal: AbortSignal.timeout(20_000),
   });
   const location = response.headers.get("location");
   const resolvedLocation = location ? new URL(location, requestedUrl) : null;
@@ -580,15 +639,16 @@ function checkHtmlPage(row: PageAudit) {
 
 async function main() {
   const sitemapUrl = `${fetchBaseUrl}/sitemap.xml`;
-  const sitemapResponse = await fetch(sitemapUrl, {
-    signal: AbortSignal.timeout(20_000),
-  });
+  const { response: sitemapResponse, data: sitemapXml } = await auditFetch<string>(
+    sitemapUrl,
+    {},
+    (response) => response.text(),
+  );
 
   if (!sitemapResponse.ok) {
     throw new Error(`Sitemap returned HTTP ${sitemapResponse.status}: ${sitemapUrl}`);
   }
 
-  const sitemapXml = await sitemapResponse.text();
   const sitemapEntries: SitemapEntry[] = [...sitemapXml.matchAll(/<url>([\s\S]*?)<\/url>/gi)].map(
     (match) => {
       const block = match[1];
@@ -673,6 +733,7 @@ async function main() {
         try {
           return await auditUrl(url);
         } catch (error) {
+          recordTerminalRequestFailure();
           errors.push(
             `Request failed: ${url} (${error instanceof Error ? error.message : String(error)}).`,
           );
@@ -680,6 +741,13 @@ async function main() {
         }
       }),
     );
+
+    for (const row of batchResults) {
+      if (row) {
+        recordTerminalRequestFailure(row.status);
+      }
+    }
+    enforceRequestFailureBudget();
 
     audits.push(...batchResults.filter((row): row is PageAudit => Boolean(row)));
   }
@@ -717,6 +785,7 @@ async function main() {
         try {
           return await auditImage(url);
         } catch (error) {
+          recordTerminalRequestFailure();
           errors.push(
             `Image request failed: ${url} (${error instanceof Error ? error.message : String(error)}).`,
           );
@@ -724,6 +793,13 @@ async function main() {
         }
       }),
     );
+
+    for (const row of batchResults) {
+      if (row) {
+        recordTerminalRequestFailure(row.status);
+      }
+    }
+    enforceRequestFailureBudget();
 
     for (const image of batchResults.filter((result): result is NonNullable<typeof result> =>
       Boolean(result),
@@ -775,10 +851,11 @@ async function main() {
   checkDuplicates(htmlAudits, "title");
   checkDuplicates(htmlAudits, "description");
 
-  const robotsResponse = await fetch(`${fetchBaseUrl}/robots.txt`, {
-    signal: AbortSignal.timeout(20_000),
-  });
-  const robotsText = await robotsResponse.text();
+  const { response: robotsResponse, data: robotsText } = await auditFetch<string>(
+    `${fetchBaseUrl}/robots.txt`,
+    {},
+    (response) => response.text(),
+  );
 
   if (!robotsResponse.ok) {
     errors.push(`robots.txt returned HTTP ${robotsResponse.status}.`);
@@ -848,9 +925,9 @@ async function main() {
     "/downloads/renqiu-ailesen-welding-catalog.pdf",
   ]) {
     const pdfCanonicalUrl = `${canonicalBaseUrl}${pdfPath}`;
-    const pdfResponse = await fetch(toFetchUrl(pdfCanonicalUrl), {
+    const { response: pdfResponse } = await auditFetch(toFetchUrl(pdfCanonicalUrl), {
+      method: "HEAD",
       redirect: "manual",
-      signal: AbortSignal.timeout(20_000),
     });
     const pdfCanonicalHeader = pdfResponse.headers.get("link") ?? "";
 
@@ -868,9 +945,9 @@ async function main() {
     "/downloads/arcfort-rfq-template.csv",
     "/downloads/arcfort-tig-torch-switch-identification.csv",
   ]) {
-    const response = await fetch(new URL(csvPath, `${fetchBaseUrl}/`), {
+    const { response } = await auditFetch(new URL(csvPath, `${fetchBaseUrl}/`), {
+      method: "HEAD",
       redirect: "manual",
-      signal: AbortSignal.timeout(20_000),
     });
 
     if (response.status !== 200) {
@@ -894,6 +971,10 @@ async function main() {
   console.log(`Sitemap images checked: ${sitemapImageUrls.length}`);
   console.log(`Legacy category redirects checked: ${legacyCategoryRedirects.length}`);
   console.log(`Legacy product redirects checked: ${legacyProductRedirects.length}`);
+  console.log(
+    `Transient retries: ${retryAttemptCount} attempt${retryAttemptCount === 1 ? "" : "s"} across ${retriedUrls.size} URL${retriedUrls.size === 1 ? "" : "s"}`,
+  );
+  console.log(`Terminal request failures: ${terminalRequestFailureCount}`);
   console.log(
     `Search Console HTML verification tag: ${homeAudit?.googleVerificationTagPresent ? "present" : "absent"}`,
   );

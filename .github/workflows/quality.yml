@@ -72,6 +72,9 @@ jobs:
       - name: Audit SEO content
         run: npm run seo:audit
 
+      - name: Test bounded production-audit retries
+        run: npm run test:live-audit
+
       - name: Test RFQ constraints
         run: npm run test:rfq
 

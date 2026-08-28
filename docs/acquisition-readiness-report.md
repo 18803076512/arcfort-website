@@ -1,6 +1,6 @@
 # Acquisition Readiness Report
 
-Evidence date: 2026-08-13. This internal report separates repository facts, verified production behavior and business evidence that still requires external confirmation.
+Evidence date: 2026-08-29. This internal report separates repository facts, verified production behavior and business evidence that still requires external confirmation.
 
 ## Executive Status
 
@@ -9,6 +9,8 @@ ArcFort Weld is live and indexable. The RFQ path is configured through the email
 - Production deployment verified: Yes
 - Canonical production URL: https://www.arcfortweld.com
 - Production sitemap URLs: 88
+- Live SEO audit checked: 2026-08-29
+- Security headers checked: 2026-08-29
 - Active public products: 40
 - Draft products held from publication: 3
 - Product categories: 6
@@ -36,6 +38,7 @@ ArcFort Weld is live and indexable. The RFQ path is configured through the email
 
 ## RFQ And Delivery Evidence
 
+- Production status checked: 2026-08-29
 - Delivery mode: email
 - Sales email configured: Yes
 - Buyer confirmation configured: Yes
@@ -92,13 +95,22 @@ Draft product pages remain excluded from static generation and sitemap publicati
 | Welding Machines           |               2 |            1 |            1 |
 | Welding Accessories        |               9 |            5 |            6 |
 
+## Email Domain Authentication
+
+- Public DNS checked: 2026-08-29
+- DKIM public key: Present
+- SPF for custom MAIL FROM: Present
+- Custom MAIL FROM MX: Present
+- DMARC: Confirmed missing or invalid
+
+The public sender records support the configured Resend/Amazon SES path. DMARC remains a separate DNS control and must not be described as configured until the record is published and rechecked.
+
 ## External Confirmations
 
 - Search Console sitemap submission: Needs external confirmation
 - GA4 Realtime page views: Needs external confirmation
 - GA4 RFQ conversion event: Needs external confirmation
 - Resend credential rotation after external exposure: Needs external confirmation
-- DMARC record and policy: Needs external confirmation
 - Supplier-image provenance and usage rights: Needs external confirmation
 
 These items cannot be proven from public page content or repository files. Update the evidence JSON only after checking the relevant provider console, DNS record or mailbox.
@@ -106,14 +118,15 @@ These items cannot be proven from public page content or repository files. Updat
 ## Highest-Impact Next Actions
 
 1. Confirm that the exposed Resend credential has been rotated, then record only the confirmation state, never the key.
-2. Confirm one matching RFQ reference in the sales mailbox and one in the buyer-confirmation mailbox.
-3. Work through `docs/product-image-asset-report.md`: confirm source and usage rights, then replace migration-period references with exact-product images.
-4. Supply exact, legally usable product photos for the three blocked draft SKUs; do not publish their current placeholders as product evidence.
-5. Complete the 15AK evidence intake, resolve the 602 page-identity conflict and work through the detailed 24KD/25AK/36KD/40KD/501D/602 component confirmation and image queues in `docs/product-series-component-evidence-report.md` before publishing another series.
-6. Confirm material, dimensions, interfaces and fitment for active products from drawings, samples or approved supplier/company records.
-7. Confirm GA4 Realtime and `rfq_submit_success` / lead events without recording buyer PII.
-8. Export Search Console again on or after 2026-09-12; prioritize high-impression low-click existing URLs before adding overlapping content.
-9. Configure Supabase only if searchable inquiry history, attachment retention or multi-user sales operations are needed.
+2. Add a monitoring-mode DMARC TXT record only after DNS-change approval, then rerun the email-domain audit.
+3. Confirm one matching RFQ reference in the sales mailbox and one in the buyer-confirmation mailbox.
+4. Work through `docs/product-image-asset-report.md`: confirm source and usage rights, then replace migration-period references with exact-product images.
+5. Supply exact, legally usable product photos for the three blocked draft SKUs; do not publish their current placeholders as product evidence.
+6. Complete the 15AK evidence intake, resolve the 602 page-identity conflict and work through the detailed 24KD/25AK/36KD/40KD/501D/602 component confirmation and image queues in `docs/product-series-component-evidence-report.md` before publishing another series.
+7. Confirm material, dimensions, interfaces and fitment for active products from drawings, samples or approved supplier/company records.
+8. Confirm GA4 Realtime and `rfq_submit_success` / lead events without recording buyer PII.
+9. Export Search Console again on or after 2026-09-12; prioritize high-impression low-click existing URLs before adding overlapping content.
+10. Configure Supabase only if searchable inquiry history, attachment retention or multi-user sales operations are needed.
 
 ## Update Workflow
 

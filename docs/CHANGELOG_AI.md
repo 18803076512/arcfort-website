@@ -4,6 +4,79 @@ This append-only log records major Codex decisions so future sessions can unders
 why it changed and which risks remain. Add the newest entry at the top, below this introduction. Do
 not include secrets, buyer PII, private prospect data or unconfirmed claims.
 
+## 2026-08-29 - Bounded Production Health Retries And DNS Evidence
+
+**Task**
+
+Reduced false production-health incidents by adding bounded retries for read-only live SEO and
+DNS-over-HTTPS checks, while preserving final HTTP failures as blocking results. Refreshed the
+non-sensitive acquisition evidence from live RFQ, SEO, security-header and public email-DNS checks.
+
+**Files Changed**
+
+- `scripts/live-audit-fetch.ts` - added the shared read-only retry, per-attempt timeout, response-body
+  consumption and bounded backoff implementation.
+- `scripts/test-live-audit-fetch.ts` - added local transport/status retry tests without contacting
+  production.
+- `scripts/audit-live-seo.ts` - added bounded retries, lower concurrency, retry metrics and an early
+  terminal-failure budget.
+- `scripts/audit-email-domain.ts` - routed DNS-over-HTTPS checks through the same retry boundary.
+- `package.json` and `.github/workflows/quality.yml` - added `test:live-audit` and its CI gate.
+- `docs/operations/acquisition-production-evidence.json`,
+  `scripts/report-acquisition-readiness.ts` and `docs/acquisition-readiness-report.md` - recorded and
+  projected the 2026-08-29 production and sender-domain evidence.
+- `README.md`, `docs/launch-checklist.md` and `docs/QA_CHECKLIST.md` - documented retry controls,
+  operational limits and email-authentication review.
+- `docs/CHANGELOG_AI.md` - recorded this batch.
+
+**Components Changed**
+
+- No public page, component, route, RFQ handler or deployment configuration changed.
+
+**Data Changed**
+
+- Recorded successful read-only checks for production RFQ readiness, 88 Sitemap URLs and required
+  security headers on 2026-08-29.
+- Recorded public DKIM, SPF and custom MAIL FROM MX as present.
+- Recorded DMARC as confirmed missing. No DNS record was created or modified.
+- Mailbox placement, Resend credential rotation, GA4, Search Console submission and image rights
+  remain unconfirmed.
+
+**Visual Changes**
+
+- None.
+
+**SEO Impact**
+
+- No public metadata, canonical, structured data, Sitemap entry or indexed page changed.
+- The live SEO monitor can now recover from limited network or retryable HTTP failures without
+  masking a deterministic or persistent production error.
+
+**Validation**
+
+- Local bounded-retry tests passed for transient `503`, connection reset, response-body timeout,
+  non-retryable `404`, persistent `503` and non-read-only method protection.
+- Live SEO passed across 88 Sitemap URLs and 43 Sitemap images after two transient retries.
+- Email-domain audit verified DKIM, SPF and custom MAIL FROM MX; DMARC remained the only DNS warning.
+- Production RFQ status and live security-header checks passed without sending an inquiry or email.
+- ESLint, TypeScript, the repository secret scan and the Next.js production build passed; the build
+  generated 90 pages.
+- Built internal links, snippet hygiene and performance budgets passed. The live SEO audit recorded
+  zero terminal request failures.
+
+**Known Issues**
+
+- DMARC is absent at `_dmarc.arcfortweld.com` and requires an approved DNS change.
+- Actual sales/buyer inbox placement and exposed Resend credential rotation remain externally
+  unconfirmed.
+- GA4 is inactive; Search Console HTML verification is absent and DNS-based ownership remains
+  externally unconfirmed.
+
+**Next Recommended Step**
+
+- After operator approval, add a monitoring-mode DMARC record, rerun the email-domain audit and then
+  confirm one controlled RFQ reference in both the sales and buyer-confirmation inboxes.
+
 ## 2026-08-29 - Six-Series MIG/MAG Factory Evidence Workbook
 
 **Task**

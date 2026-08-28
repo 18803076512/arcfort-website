@@ -220,6 +220,17 @@ npm run build
 npm run performance:budget
 ```
 
+For production health-monitoring or live-audit changes, also run:
+
+```bash
+npm run test:live-audit
+npm run health:production
+```
+
+Confirm that retries are limited to read-only requests and transient transport/status failures.
+Deterministic HTTP errors and a retryable status that persists through the final attempt must still
+fail the corresponding audit.
+
 Also run focused tests for the changed domain. Available examples include:
 
 ```bash
@@ -273,6 +284,8 @@ npm run security:secrets
 - [ ] Verify homepage, affected pages, canonical URLs and key assets on production.
 - [ ] Verify `sitemap.xml` and `robots.txt`.
 - [ ] Check `/api/rfq/status` and report email, buyer confirmation, attachments and storage separately.
+- [ ] Confirm DKIM, SPF, custom MAIL FROM MX and DMARC independently; public DNS state does not prove
+      inbox placement or credential rotation.
 - [ ] Complete one controlled browser RFQ delivery check when RFQ behavior changed.
 - [ ] Run `npm run security:audit:live`.
 - [ ] Run `npm run indexing:submit -- --dry-run`.

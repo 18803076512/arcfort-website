@@ -58,6 +58,7 @@
     "seo:audit": "node --experimental-strip-types scripts/audit-seo.ts",
     "seo:links": "node --experimental-strip-types scripts/audit-internal-links.ts",
     "seo:audit:live": "node --experimental-strip-types scripts/audit-live-seo.ts",
+    "test:live-audit": "node --experimental-strip-types scripts/test-live-audit-fetch.ts",
     "seo:snippets": "node --experimental-strip-types scripts/audit-snippet-hygiene.ts",
     "security:secrets": "node --experimental-strip-types scripts/check-secret-patterns.ts",
     "security:audit:live": "node --experimental-strip-types scripts/check-live-security-headers.ts",

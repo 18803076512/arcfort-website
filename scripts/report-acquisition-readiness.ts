@@ -29,8 +29,11 @@ type AcquisitionEvidence = {
     deploymentVerified: boolean;
     sitemapUrlCount: number;
     indexNowLastAccepted: string;
+    liveSeoAuditChecked: string;
+    securityHeadersChecked: string;
   };
   rfq: {
+    statusChecked: string;
     productionReady: boolean;
     deliveryMode: string;
     salesEmailReady: boolean;
@@ -58,6 +61,10 @@ type AcquisitionEvidence = {
   };
   securityOperations: {
     resendCredentialRotatedAfterExternalExposure: EvidenceState;
+    emailAuthenticationChecked: string;
+    dkimRecordPresent: boolean;
+    spfRecordPresent: boolean;
+    mailFromMxRecordPresent: boolean;
     dmarcStatusConfirmed: EvidenceState;
     supplierImageUsageRightsConfirmed: EvidenceState;
   };
@@ -106,11 +113,15 @@ function validateEvidence(evidence: AcquisitionEvidence) {
   const dates = [
     evidence.asOf,
     evidence.production.indexNowLastAccepted,
+    evidence.production.liveSeoAuditChecked,
+    evidence.production.securityHeadersChecked,
+    evidence.rfq.statusChecked,
     evidence.rfq.providerAcceptanceVerified,
     evidence.searchConsole.exported,
     evidence.searchConsole.dataStart,
     evidence.searchConsole.dataEnd,
     evidence.searchConsole.nextComparableReviewOnOrAfter,
+    evidence.securityOperations.emailAuthenticationChecked,
   ];
 
   if (dates.some((value) => !isIsoDate(value))) {
@@ -259,6 +270,8 @@ function buildReport(rows: ProductImportRow[], evidence: AcquisitionEvidence) {
     `- Production deployment verified: ${evidence.production.deploymentVerified ? "Yes" : "No"}`,
     `- Canonical production URL: ${evidence.production.url}`,
     `- Production sitemap URLs: ${evidence.production.sitemapUrlCount}`,
+    `- Live SEO audit checked: ${evidence.production.liveSeoAuditChecked}`,
+    `- Security headers checked: ${evidence.production.securityHeadersChecked}`,
     `- Active public products: ${activeRows.length}`,
     `- Draft products held from publication: ${draftRows.length}`,
     `- Product categories: ${productCategories.length}`,
@@ -286,6 +299,7 @@ function buildReport(rows: ProductImportRow[], evidence: AcquisitionEvidence) {
     "",
     "## RFQ And Delivery Evidence",
     "",
+    `- Production status checked: ${evidence.rfq.statusChecked}`,
     `- Delivery mode: ${evidence.rfq.deliveryMode}`,
     `- Sales email configured: ${evidence.rfq.salesEmailReady ? "Yes" : "No"}`,
     `- Buyer confirmation configured: ${evidence.rfq.buyerConfirmationReady ? "Yes" : "No"}`,
@@ -331,13 +345,22 @@ function buildReport(rows: ProductImportRow[], evidence: AcquisitionEvidence) {
     "",
     formatCoverage(rows),
     "",
+    "## Email Domain Authentication",
+    "",
+    `- Public DNS checked: ${evidence.securityOperations.emailAuthenticationChecked}`,
+    `- DKIM public key: ${evidence.securityOperations.dkimRecordPresent ? "Present" : "Missing"}`,
+    `- SPF for custom MAIL FROM: ${evidence.securityOperations.spfRecordPresent ? "Present" : "Missing"}`,
+    `- Custom MAIL FROM MX: ${evidence.securityOperations.mailFromMxRecordPresent ? "Present" : "Missing"}`,
+    `- DMARC: ${evidenceLabel(evidence.securityOperations.dmarcStatusConfirmed, "Present and valid", "Confirmed missing or invalid")}`,
+    "",
+    "The public sender records support the configured Resend/Amazon SES path. DMARC remains a separate DNS control and must not be described as configured until the record is published and rechecked.",
+    "",
     "## External Confirmations",
     "",
     `- Search Console sitemap submission: ${evidenceLabel(evidence.searchConsole.sitemapSubmissionConfirmed, "Confirmed", "Not submitted")}`,
     `- GA4 Realtime page views: ${evidenceLabel(evidence.analytics.ga4RealtimeConfirmed, "Confirmed", "Not configured")}`,
     `- GA4 RFQ conversion event: ${evidenceLabel(evidence.analytics.rfqConversionEventConfirmed, "Confirmed", "Not configured")}`,
     `- Resend credential rotation after external exposure: ${evidenceLabel(evidence.securityOperations.resendCredentialRotatedAfterExternalExposure, "Confirmed", "Not rotated")}`,
-    `- DMARC record and policy: ${evidenceLabel(evidence.securityOperations.dmarcStatusConfirmed, "Confirmed", "Missing or invalid")}`,
     `- Supplier-image provenance and usage rights: ${evidenceLabel(evidence.securityOperations.supplierImageUsageRightsConfirmed, "Confirmed and documented", "Not confirmed")}`,
     "",
     "These items cannot be proven from public page content or repository files. Update the evidence JSON only after checking the relevant provider console, DNS record or mailbox.",
@@ -345,14 +368,15 @@ function buildReport(rows: ProductImportRow[], evidence: AcquisitionEvidence) {
     "## Highest-Impact Next Actions",
     "",
     "1. Confirm that the exposed Resend credential has been rotated, then record only the confirmation state, never the key.",
-    "2. Confirm one matching RFQ reference in the sales mailbox and one in the buyer-confirmation mailbox.",
-    "3. Work through `docs/product-image-asset-report.md`: confirm source and usage rights, then replace migration-period references with exact-product images.",
-    "4. Supply exact, legally usable product photos for the three blocked draft SKUs; do not publish their current placeholders as product evidence.",
-    "5. Complete the 15AK evidence intake, resolve the 602 page-identity conflict and work through the detailed 24KD/25AK/36KD/40KD/501D/602 component confirmation and image queues in `docs/product-series-component-evidence-report.md` before publishing another series.",
-    "6. Confirm material, dimensions, interfaces and fitment for active products from drawings, samples or approved supplier/company records.",
-    "7. Confirm GA4 Realtime and `rfq_submit_success` / lead events without recording buyer PII.",
-    `8. Export Search Console again on or after ${evidence.searchConsole.nextComparableReviewOnOrAfter}; prioritize high-impression low-click existing URLs before adding overlapping content.`,
-    "9. Configure Supabase only if searchable inquiry history, attachment retention or multi-user sales operations are needed.",
+    "2. Add a monitoring-mode DMARC TXT record only after DNS-change approval, then rerun the email-domain audit.",
+    "3. Confirm one matching RFQ reference in the sales mailbox and one in the buyer-confirmation mailbox.",
+    "4. Work through `docs/product-image-asset-report.md`: confirm source and usage rights, then replace migration-period references with exact-product images.",
+    "5. Supply exact, legally usable product photos for the three blocked draft SKUs; do not publish their current placeholders as product evidence.",
+    "6. Complete the 15AK evidence intake, resolve the 602 page-identity conflict and work through the detailed 24KD/25AK/36KD/40KD/501D/602 component confirmation and image queues in `docs/product-series-component-evidence-report.md` before publishing another series.",
+    "7. Confirm material, dimensions, interfaces and fitment for active products from drawings, samples or approved supplier/company records.",
+    "8. Confirm GA4 Realtime and `rfq_submit_success` / lead events without recording buyer PII.",
+    `9. Export Search Console again on or after ${evidence.searchConsole.nextComparableReviewOnOrAfter}; prioritize high-impression low-click existing URLs before adding overlapping content.`,
+    "10. Configure Supabase only if searchable inquiry history, attachment retention or multi-user sales operations are needed.",
     "",
     "## Update Workflow",
     "",
