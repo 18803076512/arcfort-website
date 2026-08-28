@@ -58,12 +58,13 @@ The MIG/MAG catalog review now has a canonical structured registry in
 `lib/data/product-series-evidence.ts`. It records 10 distinct catalog families and their source pages:
 15AK, 24KD, 25AK, 36KD, 40KD, 501D, 602 and ORK 200A/350A/500A.
 
-All 10 records currently remain `evidence_review`: they can help a buyer identify the catalog series
+Nine records currently remain `evidence_review`: they can help a buyer identify the catalog series
 in an RFQ, but do not generate indexable series routes until exact product records, rights-approved
-exact-product images and governed product-to-series relationships pass the publication gate. The
-prepared 15AK candidate is retained, and its former URL temporarily redirects to the MIG/MAG
-category while image evidence is collected. See `docs/product-series-readiness-report.md` for the
-generated work queue.
+exact-product images and governed product-to-series relationships pass the publication gate. The 602
+record is `blocked` because its company-catalog page contains a 501D/602 identity conflict, so it is
+excluded from public category and RFQ choices. The prepared 15AK candidate is retained, and its former
+URL temporarily redirects to the MIG/MAG category while image evidence is collected. See
+`docs/product-series-readiness-report.md` for the generated work queue.
 
 ## Plasma Consumable Evidence Review
 
@@ -176,6 +177,24 @@ Use `data/intake/501d-series-confirmation.csv` for factory confirmation and
 `data/intake/501d-image-intake.csv` for exact-product image collection. The 501D evidence record stays
 in `evidence_review`; it has no public series route, compatibility relationship or canonical
 component SKU mapping.
+
+## 602 Component Evidence And Identity Conflict
+
+PDF page 14 (catalog pages 21-22) has been decomposed into 72 field-level source records and 22
+component/variant candidates with 37 exact-image requests. The queue preserves complete 3 m and 5 m
+torch candidates, one nozzle, seven contact tips, tip holder, two diffusers, swan neck, cable and
+connector hardware, two liners and a separately governed rear-media connection set.
+
+The page header identifies `ORK 501D Water Cooled MIG/MAG Welding Torch`, while the technical table
+and complete-torch rows identify `ORK 602`. This company-source contradiction is retained as
+`DATA_CONFLICT`. The official ABICOR BINZEL spare-parts source confirms that an MB 602 reference
+family exists, but it does not resolve which ArcFort Weld supplied product this page depicts.
+
+The 602 evidence record is therefore `blocked`, excluded from public category and RFQ choices, and
+has no public series route, SKU mapping or compatibility relationship. Use
+`data/intake/602-series-confirmation.csv` and `data/intake/602-image-intake.csv` only to collect
+factory identity, controlled water/media connection evidence and exact-product images. Do not infer
+coolant, gas, power or control roles from hose color or position.
 
 ## Data Still Missing
 

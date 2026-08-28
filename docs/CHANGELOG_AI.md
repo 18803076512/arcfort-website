@@ -2409,6 +2409,85 @@ images with unresolved usage rights.
 - Collect and approve exact 15AK main, connection-detail and packaging images for the four canonical
   products, then rerun the gate before restoring the series URL.
 
+## 2026-08-28 - 602 Catalog Identity Conflict And Evidence Queue
+
+**Task**
+
+Reviewed company-catalog PDF page 14 against the official OEM reference, preserved its 602 component
+content as governed internal evidence, and blocked the series because the same company page uses a
+501D header and 602 complete-torch/technical tables.
+
+**Files Changed**
+
+- `data/evidence/product-series-component-facts.csv` - added 72 sourced 602 facts, including one
+  explicit company-catalog identity conflict and four separately labeled OEM reference facts.
+- `data/intake/602-series-confirmation.csv` and `data/intake/602-image-intake.csv` - added 22 stable
+  component candidates and 37 exact-image requests for factory review.
+- `lib/data/product-series-component-facts.ts` - regenerated the runtime evidence projection.
+- `lib/data/product-series-evidence.ts` - marked 602 `DATA_CONFLICT` / `blocked`, recorded the missing
+  resolution evidence and excluded blocked records from public category/RFQ projection.
+- `scripts/test-product-series-evidence.ts`, `scripts/test-mig-rfq-builder.ts` and
+  `scripts/audit-seo.ts` - added blocked-series privacy and projection gates.
+- `scripts/report-product-series-readiness.ts` and `scripts/report-acquisition-readiness.ts` - added
+  blocked-series counts and 602 resolution guidance.
+- `knowledge-base/products/602-series-evidence.md` and
+  `knowledge-base/decisions/2026-08-28-602-catalog-identity-conflict.md` - documented sources,
+  conflict boundary, candidates and reversal conditions.
+- `README.md`, `docs/catalog-product-data-audit.md`, `docs/site-wide-upgrade-roadmap.md`,
+  `docs/operations/mig-mag-series-evidence-handoff.md`, the MIG/MAG registry and generated readiness
+  reports - synchronized totals and the public/private boundary.
+
+**Components Changed**
+
+- No UI component was created or removed. The MIG/MAG category and RFQ builder now receive nine
+  non-blocked catalog-reference families instead of all ten evidence records.
+
+**Data Changed**
+
+- Added 72 field facts, 22 candidates and 37 image requests for the 602 review queue.
+- Detailed-series totals are now 589 facts, 189 candidates and 276 image requests across seven
+  series; 14 facts remain blocked as `DATA_CONFLICT`.
+- Changed 602 from `evidence_review` / `NEEDS_FACTORY_CONFIRMATION` to `blocked` /
+  `DATA_CONFLICT` and removed it from buyer-facing family choices.
+- Added no SKU, compatibility relationship, approved image or confirmed ArcFort Weld technical
+  value.
+
+**Visual Changes**
+
+- The ambiguous 602 family is no longer visible in the MIG/MAG catalog-reference list or RFQ
+  selector. No layout or styling changed.
+
+**SEO Impact**
+
+- No URL, metadata, schema, sitemap or robots change. No 602 series page existed or was generated.
+- The ambiguous family name and source wording are absent from the built MIG/MAG public page while
+  the evidence remains available internally.
+
+**Validation**
+
+- Passed ESLint, TypeScript and the Next.js production build with 90 generated pages.
+- Passed product-series evidence, public-series, series-component, MIG/MAG RFQ, compatibility,
+  technical, product CSV and image-asset validation.
+- Regenerated component, series, acquisition, compatibility, technical, product and image readiness
+  reports.
+- Passed SEO, built internal-link, snippet-hygiene, performance-budget and secret scans.
+- Confirmed the built MIG/MAG category contains no 602 catalog-reference, conflicting page-header or
+  602 complete-torch wording.
+
+**Known Issues**
+
+- Factory evidence has not resolved whether the company-catalog page header, table, imagery or more
+  than one element is incorrect.
+- No exact-product 602 image, controlled water/media connection drawing, canonical SKU or governed
+  compatibility relationship is approved.
+- The ignored five-series factory workbook predates this queue; the canonical 602 CSVs must be
+  reviewed directly until the workbook is deliberately regenerated.
+
+**Next Recommended Step**
+
+- Obtain a factory-signed page identity decision and controlled 602 water/media connection drawing,
+  then reconcile candidates and images by stable IDs before considering any public projection.
+
 ## Entry Template
 
 ```markdown

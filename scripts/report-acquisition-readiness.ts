@@ -196,6 +196,9 @@ function buildReport(rows: ProductImportRow[], evidence: AcquisitionEvidence) {
   const seriesEvidenceReviewCount = productSeriesEvidence.filter(
     (record) => record.publicationStatus === "evidence_review",
   ).length;
+  const blockedSeriesEvidenceCount = productSeriesEvidence.filter(
+    (record) => record.publicationStatus === "blocked",
+  ).length;
   const seriesComponentConflictCount = productSeriesComponentFacts.filter(
     (fact) => fact.verificationStatus === "DATA_CONFLICT",
   ).length;
@@ -311,6 +314,7 @@ function buildReport(rows: ProductImportRow[], evidence: AcquisitionEvidence) {
     `- Governed series-to-product relationships: ${productSeries.reduce((total, series) => total + series.productReferences.length, 0)}`,
     `- Company-catalog series evidence records: ${productSeriesEvidence.length}`,
     `- Catalog series still in evidence review: ${seriesEvidenceReviewCount}`,
+    `- Catalog series blocked by source conflict: ${blockedSeriesEvidenceCount}`,
     `- Series-component facts confirmed: ${confirmedSeriesComponentCount}`,
     `- Series-component data conflicts blocked: ${seriesComponentConflictCount}`,
     `- Series-component images approved: ${approvedSeriesComponentImageCount} of ${componentEvidence.imageRows.length}`,
@@ -344,7 +348,7 @@ function buildReport(rows: ProductImportRow[], evidence: AcquisitionEvidence) {
     "2. Confirm one matching RFQ reference in the sales mailbox and one in the buyer-confirmation mailbox.",
     "3. Work through `docs/product-image-asset-report.md`: confirm source and usage rights, then replace migration-period references with exact-product images.",
     "4. Supply exact, legally usable product photos for the three blocked draft SKUs; do not publish their current placeholders as product evidence.",
-    "5. Complete the 15AK evidence intake and resolve the detailed 24KD/25AK/36KD/40KD/501D component conflicts, candidate confirmations and image queues in `docs/product-series-component-evidence-report.md` before publishing another series.",
+    "5. Complete the 15AK evidence intake, resolve the 602 page-identity conflict and work through the detailed 24KD/25AK/36KD/40KD/501D/602 component confirmation and image queues in `docs/product-series-component-evidence-report.md` before publishing another series.",
     "6. Confirm material, dimensions, interfaces and fitment for active products from drawings, samples or approved supplier/company records.",
     "7. Confirm GA4 Realtime and `rfq_submit_success` / lead events without recording buyer PII.",
     `8. Export Search Console again on or after ${evidence.searchConsole.nextComparableReviewOnOrAfter}; prioritize high-impression low-click existing URLs before adding overlapping content.`,

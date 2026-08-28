@@ -18,6 +18,19 @@ confirmation, image and conflict queues in one reviewer surface:
 The workbook is kept under the ignored `outputs/` workspace. It is not a public catalog, product
 database or website download. It deliberately omits every `notes_internal` field.
 
+## Newer 602 Queue
+
+The current workbook predates the 602 catalog-identity review. The canonical repository now also
+contains 22 candidates, 37 image requests and one blocked identity conflict in:
+
+- `data/intake/602-series-confirmation.csv`
+- `data/intake/602-image-intake.csv`
+- `data/evidence/product-series-component-facts.csv`
+
+Review those records directly until the workbook is deliberately regenerated. Do not add 602 rows
+to a returned five-series workbook by copying adjacent 501D values: the company page itself conflicts
+between a 501D header and 602 table, so exact identity requires factory evidence.
+
 Repository CSV files and governed TypeScript registries remain authoritative. Completing a workbook
 row does not create a SKU, confirm a specification, approve an image, establish compatibility or
 publish a series page.

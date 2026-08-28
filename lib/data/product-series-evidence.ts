@@ -87,6 +87,12 @@ function createEvidenceRecord(
     | "reviewedBy"
     | "reviewedDate"
   >,
+  overrides: Partial<
+    Pick<
+      ProductSeriesEvidence,
+      "verificationStatus" | "missingEvidence" | "reviewedBy" | "reviewedDate"
+    >
+  > = {},
 ): ProductSeriesEvidence {
   return {
     ...record,
@@ -94,11 +100,11 @@ function createEvidenceRecord(
     process: "MIG/MAG",
     sourceType: "official_catalog",
     sourceLevel: "A",
-    verificationStatus: "NEEDS_FACTORY_CONFIRMATION",
+    verificationStatus: overrides.verificationStatus ?? "NEEDS_FACTORY_CONFIRMATION",
     catalogUrl,
-    missingEvidence: [...commonMissingEvidence],
-    reviewedBy,
-    reviewedDate,
+    missingEvidence: overrides.missingEvidence ?? [...commonMissingEvidence],
+    reviewedBy: overrides.reviewedBy ?? reviewedBy,
+    reviewedDate: overrides.reviewedDate ?? reviewedDate,
   };
 }
 
@@ -225,19 +231,32 @@ export const productSeriesEvidence: ProductSeriesEvidence[] = [
     publicationStatus: "evidence_review",
     imageEvidenceStatus: "catalog_page_only",
   }),
-  createEvidenceRecord({
-    id: "mig-series-602",
-    name: "602 catalog reference group",
-    seriesSlug: "602-mig-mag-torch-parts",
-    sourceReference:
-      "Renqiu Ailesen welding catalog PDF page 14 (catalog pages 21-22), 602 water-cooled product-family section.",
-    pdfPages: [14],
-    catalogPages: [21, 22],
-    documentedComponents: waterCooledComponents,
-    buyerCheck: createBuyerCheck("602", "the water-cooled connection layout"),
-    publicationStatus: "evidence_review",
-    imageEvidenceStatus: "catalog_page_only",
-  }),
+  createEvidenceRecord(
+    {
+      id: "mig-series-602",
+      name: "602 catalog reference group",
+      seriesSlug: "602-mig-mag-torch-parts",
+      sourceReference:
+        "Renqiu Ailesen welding catalog PDF page 14 (catalog pages 21-22), internally conflicting ORK 501D header and ORK 602 complete-torch, technical and wear-parts tables.",
+      pdfPages: [14],
+      catalogPages: [21, 22],
+      documentedComponents: waterCooledComponents,
+      buyerCheck:
+        "Keep this record internal until factory evidence resolves the page's ORK 501D header versus ORK 602 table. Then confirm the exact torch label, complete water-cooled connection layout, contact-tip marking, nozzle profile, front-end stack, liner ends and rear connections from a controlled drawing, approved sample or verified record.",
+      publicationStatus: "blocked",
+      imageEvidenceStatus: "catalog_page_only",
+    },
+    {
+      verificationStatus: "DATA_CONFLICT",
+      missingEvidence: [
+        "Factory resolution of the catalog page header (ORK 501D) versus the complete-torch and technical table designation (ORK 602)",
+        "Exact supplied-product identity and controlled water-cooled connection drawing",
+        ...commonMissingEvidence,
+      ],
+      reviewedBy: "Official company catalog and OEM catalog review",
+      reviewedDate: "2026-08-28",
+    },
+  ),
 ];
 
 export function getProductSeriesEvidenceById(evidenceId: string) {
@@ -270,10 +289,13 @@ const migMagBuyerSeriesEvidenceIds = [
 ] as const;
 
 export const migMagCatalogReferenceFamilies: CategoryReferenceFamily[] =
-  migMagBuyerSeriesEvidenceIds.map(requireProductSeriesEvidence).map((record) => ({
-    evidenceId: record.id,
-    name: record.name,
-    documentedComponents: record.documentedComponents,
-    buyerCheck: record.buyerCheck,
-    seriesSlug: record.publicationStatus === "published" ? record.publicSeriesSlug : undefined,
-  }));
+  migMagBuyerSeriesEvidenceIds
+    .map(requireProductSeriesEvidence)
+    .filter((record) => record.publicationStatus !== "blocked")
+    .map((record) => ({
+      evidenceId: record.id,
+      name: record.name,
+      documentedComponents: record.documentedComponents,
+      buyerCheck: record.buyerCheck,
+      seriesSlug: record.publicationStatus === "published" ? record.publicSeriesSlug : undefined,
+    }));

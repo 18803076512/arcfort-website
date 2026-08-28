@@ -20,6 +20,11 @@ candidate is held in `evidence_review` because its linked images remain family-l
 references without approved rights and exact-product evidence. Its former URL temporarily redirects
 to the MIG/MAG category until the automated series publication gate passes.
 
+The 602 company-catalog record is separately `blocked`: PDF page 14 uses an ORK 501D header while
+the technical and complete-torch table identifies ORK 602. Its 72 governed facts, 22 candidates and
+37 image requests remain internal until factory evidence resolves the page identity and exact
+water-cooled interfaces. It is excluded from public category and RFQ choices.
+
 The site is technically ready to acquire inquiries, but four evidence and operational tasks now
 matter more than adding another general page:
 

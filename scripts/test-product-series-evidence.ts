@@ -7,6 +7,7 @@ import { productCategories } from "../content/categories.ts";
 import { getProductSeriesPublicationIssues } from "../lib/content/product-series-publication.ts";
 import { compatibilityRelationships } from "../lib/data/compatibility-relationships.ts";
 import { productImageAssets } from "../lib/data/product-image-assets.ts";
+import { productSeriesComponentFacts } from "../lib/data/product-series-component-facts.ts";
 import { productSeries, productSeriesCandidates } from "../lib/data/product-series.ts";
 import { productSeriesEvidence } from "../lib/data/product-series-evidence.ts";
 import { arcfortProducts } from "../lib/data/products.ts";
@@ -45,7 +46,9 @@ for (const record of productSeriesEvidence) {
   assert.equal(record.process, "MIG/MAG");
   assert.equal(record.sourceType, "official_catalog");
   assert.equal(record.sourceLevel, "A");
-  assert.notEqual(record.verificationStatus, "DATA_CONFLICT");
+  if (record.publicationStatus !== "blocked") {
+    assert.notEqual(record.verificationStatus, "DATA_CONFLICT");
+  }
   assert.match(record.sourceReference, /Renqiu Ailesen welding catalog PDF page/);
   assert.ok(record.pdfPages.length > 0 && record.pdfPages.every((page) => page >= 1 && page <= 58));
   assert.ok(
@@ -106,14 +109,30 @@ for (const record of productSeriesEvidence) {
 
   if (record.publicationStatus === "blocked") {
     assert.equal(record.verificationStatus, "DATA_CONFLICT");
+    assert.ok(
+      productSeriesComponentFacts.some(
+        (fact) =>
+          fact.seriesEvidenceId === record.id && fact.verificationStatus === "DATA_CONFLICT",
+      ),
+      `${record.name} is blocked but has no governed DATA_CONFLICT fact.`,
+    );
   }
 }
 
+const buyerEligibleEvidence = productSeriesEvidence.filter(
+  (record) => record.publicationStatus !== "blocked",
+);
 const referencedEvidenceIds = migCategory.referenceFamilies?.map((family) => family.evidenceId);
 assert.deepEqual(
-  new Set(referencedEvidenceIds).size,
-  productSeriesEvidence.length,
-  "Every catalog evidence record must appear once in the MIG/MAG category family list.",
+  new Set(referencedEvidenceIds),
+  new Set(buyerEligibleEvidence.map((record) => record.id)),
+  "Every non-blocked catalog evidence record must appear once in the MIG/MAG category family list.",
+);
+assert.ok(
+  productSeriesEvidence
+    .filter((record) => record.publicationStatus === "blocked")
+    .every((record) => !referencedEvidenceIds?.includes(record.id)),
+  "Blocked catalog evidence must remain private and absent from buyer-facing family choices.",
 );
 
 for (const family of migCategory.referenceFamilies ?? []) {
@@ -150,4 +169,7 @@ console.log(
 );
 console.log(
   `Evidence review: ${productSeriesEvidence.filter((record) => record.publicationStatus === "evidence_review").length}`,
+);
+console.log(
+  `Blocked: ${productSeriesEvidence.filter((record) => record.publicationStatus === "blocked").length}`,
 );

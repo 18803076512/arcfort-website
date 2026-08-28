@@ -15,6 +15,7 @@ import {
 import { composeSeoTitle, SEO_TITLE_MAX_LENGTH } from "../lib/content/seo-title.ts";
 import { organizationIdentity, siteConfig } from "../lib/content/site.ts";
 import { productBuyingProfiles } from "../lib/content/product-buying-profiles.ts";
+import { productSeriesEvidence } from "../lib/data/product-series-evidence.ts";
 import { productSeries } from "../lib/data/product-series.ts";
 import { arcfortProducts } from "../lib/data/products.ts";
 
@@ -304,6 +305,15 @@ for (const category of productCategories) {
       }
 
       familyNames.add(family.name);
+
+      const seriesEvidence = family.evidenceId
+        ? productSeriesEvidence.find((record) => record.id === family.evidenceId)
+        : undefined;
+      if (seriesEvidence?.publicationStatus === "blocked") {
+        errors.push(
+          `Category ${category.slug} publicly exposes blocked reference family "${family.name}".`,
+        );
+      }
 
       if (family.documentedComponents.length < 2) {
         errors.push(

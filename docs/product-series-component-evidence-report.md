@@ -4,14 +4,14 @@ This internal report converts reviewed company-catalog series spreads into trace
 
 ## Summary
 
-- Detailed series reviewed: 6
-- Field-level catalog facts: 517
-- Component and variant candidates: 167
+- Detailed series reviewed: 7
+- Field-level catalog facts: 589
+- Component and variant candidates: 189
 - Confirmed facts: 0
 - Facts ready for or mapped to a SKU: 0
-- Data conflicts: 13
-- Completed candidate confirmations: 0 of 167
-- Approved image requests: 0 of 239
+- Data conflicts: 14
+- Completed candidate confirmations: 0 of 189
+- Approved image requests: 0 of 276
 
 ## Series Overview
 
@@ -23,6 +23,7 @@ This internal report converts reviewed company-catalog series spreads into trace
 | 36KD catalog reference group |          69 |         24 |         2 | 0/24                   | 0/35            | evidence review |
 | 40KD catalog reference group |          69 |         24 |         2 | 0/24                   | 0/35            | evidence review |
 | 501D catalog reference group |          89 |         29 |         3 | 0/29                   | 0/46            | evidence review |
+| 602 catalog reference group  |          72 |         22 |         1 | 0/22                   | 0/37            | blocked         |
 
 ## Component Matrices
 
@@ -142,23 +143,42 @@ This internal report converts reviewed company-catalog series spreads into trace
 | 4        | `tip-holder`                | Contact Tip Holder                          |                  2 |           5 | 0/2          | 0/2        |
 | 12       | `torch-liner`               | Torch Liner                                 |                  2 |           6 | 0/2          | 0/2        |
 
+### 602 catalog reference group
+
+| Position         | Candidate group             | Component                                   | Candidate variants | Field facts | Confirmation | Main image |
+| ---------------- | --------------------------- | ------------------------------------------- | -----------------: | ----------: | ------------ | ---------- |
+| 8                | `adaptor-nut`               | Adaptor Nut                                 |                  1 |           1 | 0/1          | 0/1        |
+| 6                | `cable-support-spring`      | Cable Support Spring                        |                  1 |           1 | 0/1          | 0/1        |
+| 9                | `central-connector`         | Central Connector                           |                  1 |           1 | 0/1          | 0/1        |
+| assembly         | `complete-torch`            | Complete Water-Cooled MIG/MAG Welding Torch |                  2 |           4 | 0/2          | 0/2        |
+| 10               | `connector-nut`             | Connector Nut                               |                  1 |           2 | 0/1          | 0/1        |
+| 2                | `contact-tip`               | Contact Tip                                 |                  7 |          35 | 0/7          | 0/7        |
+| 4                | `gas-diffuser`              | Gas Diffuser                                |                  2 |           4 | 0/2          | 0/2        |
+| 1                | `gas-nozzle`                | Gas Nozzle                                  |                  1 |           2 | 0/1          | 0/1        |
+| 7                | `rear-handle`               | Rear Handle                                 |                  1 |           1 | 0/1          | 0/1        |
+| assembly drawing | `rear-media-connection-set` | Rear Media Connection Set                   |                  1 |           1 | 0/1          | 0/1        |
+| 5                | `swan-neck`                 | Swan Neck                                   |                  1 |           1 | 0/1          | 0/1        |
+| 3                | `tip-holder`                | Contact Tip Holder                          |                  1 |           3 | 0/1          | 0/1        |
+| 11               | `torch-liner`               | Torch Liner                                 |                  2 |           6 | 0/2          | 0/2        |
+
 ## Catalog And Comparison-Source Conflicts
 
-| Series                       | Field              | Company catalog reference     | Comparison-source value       | Publication decision                                          |
-| ---------------------------- | ------------------ | ----------------------------- | ----------------------------- | ------------------------------------------------------------- |
-| 24KD catalog reference group | Catalog Rating     | 100 A CO2 / 100 A mixed gases | 250 A CO2 / 220 A mixed gases | Blocked until the exact supplied product has Level A evidence |
-| 24KD catalog reference group | Catalog Duty Cycle | 35 %                          | 60%                           | Blocked until the exact supplied product has Level A evidence |
-| 24KD catalog reference group | Catalog Wire Size  | 0.6-1.0 mm                    | 0.8-1.2 mm                    | Blocked until the exact supplied product has Level A evidence |
-| 25AK catalog reference group | Catalog Rating     | 100 A CO2 / 100 A mixed gases | 230 A CO2 / 200 A mixed gases | Blocked until the exact supplied product has Level A evidence |
-| 25AK catalog reference group | Catalog Duty Cycle | 35 %                          | 60%                           | Blocked until the exact supplied product has Level A evidence |
-| 25AK catalog reference group | Catalog Wire Size  | 0.6-1.0 mm                    | 0.8-1.2 mm                    | Blocked until the exact supplied product has Level A evidence |
-| 36KD catalog reference group | Catalog Rating     | 340 A CO2 / 320 A mixed gases | 320 A CO2 / 290 A mixed gases | Blocked until the exact supplied product has Level A evidence |
-| 36KD catalog reference group | Opening Diameter   | 19 mm                         | 20 mm                         | Blocked until the exact supplied product has Level A evidence |
-| 40KD catalog reference group | Catalog Rating     | 380 A CO2 / 360 A mixed gases | 350 A CO2 / 320 A mixed gases | Blocked until the exact supplied product has Level A evidence |
-| 40KD catalog reference group | Catalog Duty Cycle | 60 %                          | 35%                           | Blocked until the exact supplied product has Level A evidence |
-| 501D catalog reference group | Catalog Rating     | 380 A CO2 / 360 A mixed gases | 500 A CO2 / 450 A mixed gases | Blocked until the exact supplied product has Level A evidence |
-| 501D catalog reference group | Catalog Duty Cycle | 60 %                          | 100%                          | Blocked until the exact supplied product has Level A evidence |
-| 501D catalog reference group | Catalog Wire Size  | 1.0-2.4 mm                    | 1.0-1.6 mm                    | Blocked until the exact supplied product has Level A evidence |
+| Series                       | Field                           | Company catalog reference                   | Comparison-source value                               | Publication decision                                          |
+| ---------------------------- | ------------------------------- | ------------------------------------------- | ----------------------------------------------------- | ------------------------------------------------------------- |
+| 24KD catalog reference group | Catalog Rating                  | 100 A CO2 / 100 A mixed gases               | 250 A CO2 / 220 A mixed gases                         | Blocked until the exact supplied product has Level A evidence |
+| 24KD catalog reference group | Catalog Duty Cycle              | 35 %                                        | 60%                                                   | Blocked until the exact supplied product has Level A evidence |
+| 24KD catalog reference group | Catalog Wire Size               | 0.6-1.0 mm                                  | 0.8-1.2 mm                                            | Blocked until the exact supplied product has Level A evidence |
+| 25AK catalog reference group | Catalog Rating                  | 100 A CO2 / 100 A mixed gases               | 230 A CO2 / 200 A mixed gases                         | Blocked until the exact supplied product has Level A evidence |
+| 25AK catalog reference group | Catalog Duty Cycle              | 35 %                                        | 60%                                                   | Blocked until the exact supplied product has Level A evidence |
+| 25AK catalog reference group | Catalog Wire Size               | 0.6-1.0 mm                                  | 0.8-1.2 mm                                            | Blocked until the exact supplied product has Level A evidence |
+| 36KD catalog reference group | Catalog Rating                  | 340 A CO2 / 320 A mixed gases               | 320 A CO2 / 290 A mixed gases                         | Blocked until the exact supplied product has Level A evidence |
+| 36KD catalog reference group | Opening Diameter                | 19 mm                                       | 20 mm                                                 | Blocked until the exact supplied product has Level A evidence |
+| 40KD catalog reference group | Catalog Rating                  | 380 A CO2 / 360 A mixed gases               | 350 A CO2 / 320 A mixed gases                         | Blocked until the exact supplied product has Level A evidence |
+| 40KD catalog reference group | Catalog Duty Cycle              | 60 %                                        | 35%                                                   | Blocked until the exact supplied product has Level A evidence |
+| 501D catalog reference group | Catalog Rating                  | 380 A CO2 / 360 A mixed gases               | 500 A CO2 / 450 A mixed gases                         | Blocked until the exact supplied product has Level A evidence |
+| 501D catalog reference group | Catalog Duty Cycle              | 60 %                                        | 100%                                                  | Blocked until the exact supplied product has Level A evidence |
+| 501D catalog reference group | Catalog Wire Size               | 1.0-2.4 mm                                  | 1.0-1.6 mm                                            | Blocked until the exact supplied product has Level A evidence |
+| 602 catalog reference group  | Company Catalog Series Identity | ORK 501D Water Cooled MIG/MAG Welding Torch | ORK 602 Complete Torch 3M / ORK 602 Complete Torch 5M | Blocked until the exact supplied product has Level A evidence |
 
 Conflicts may compare a company-catalog value with an official OEM reference or preserve contradictory values within the same company document. No disputed value is published as an ArcFort Weld specification until exact-product Level A evidence resolves it.
 
@@ -172,10 +192,11 @@ Complete the matching intake file against the exact supplied part. Preserve the 
 - `data/intake/36kd-series-confirmation.csv`
 - `data/intake/40kd-series-confirmation.csv`
 - `data/intake/501d-series-confirmation.csv`
+- `data/intake/602-series-confirmation.csv`
 
 ### Confirmation Status
 
-- NEEDS_FACTORY_CONFIRMATION: 167
+- NEEDS_FACTORY_CONFIRMATION: 189
 
 ## Image Intake
 
@@ -187,10 +208,11 @@ Each candidate has one independent main-image request. Technical, dimension and 
 - `data/intake/36kd-image-intake.csv`
 - `data/intake/40kd-image-intake.csv`
 - `data/intake/501d-image-intake.csv`
+- `data/intake/602-image-intake.csv`
 
 ### Image Status
 
-- requested: 239
+- requested: 276
 
 Approved images require an identified source owner, documented usage rights, original file name, reviewer, review date and an existing file under the series-specific intake directory. Requested or received files are never added to the public image registry automatically.
 
@@ -202,6 +224,7 @@ Approved images require an identified source owner, documented usage rights, ori
 - 36KD catalog reference group remains `evidence_review` and has no public route created by this component-evidence workflow.
 - 40KD catalog reference group remains `evidence_review` and has no public route created by this component-evidence workflow.
 - 501D catalog reference group remains `evidence_review` and has no public route created by this component-evidence workflow.
+- 602 catalog reference group remains `blocked` and has no public route created by this component-evidence workflow.
 - Catalog grouping does not confirm product-to-series compatibility.
 - `DATA_CONFLICT` facts remain `blocked` and cannot move to SKU creation.
 - A candidate needs exact-product evidence before receiving a canonical SKU and public image record.

@@ -6,27 +6,28 @@ This internal report tracks company-catalog series evidence separately from publ
 
 - Catalog series reviewed: 10
 - Published governed series pages: 0
-- Series awaiting product, compatibility or image evidence: 10
+- Series awaiting product, compatibility or image evidence: 9
+- Series blocked by unresolved source conflict: 1
 - Public series-to-product relationships: 0
-- Detailed series with component evidence: 6
-- Governed field-level component facts: 517
-- Governed component and variant candidates: 167
-- Component data conflicts held from publication: 13
+- Detailed series with component evidence: 7
+- Governed field-level component facts: 589
+- Governed component and variant candidates: 189
+- Component data conflicts held from publication: 14
 
 ## Series Matrix
 
-| Series                           | Company catalog evidence      | Public status   | Image evidence    | Public product relationships |
-| -------------------------------- | ----------------------------- | --------------- | ----------------- | ---------------------------: |
-| ORK 200A catalog reference group | PDF 4; catalog 1, 2           | Evidence review | catalog page only |                            0 |
-| ORK 350A catalog reference group | PDF 5; catalog 3, 4           | Evidence review | catalog page only |                            0 |
-| ORK 500A catalog reference group | PDF 6; catalog 5, 6           | Evidence review | catalog page only |                            0 |
-| 15AK catalog reference group     | PDF 7, 8; catalog 7, 8, 9, 10 | Evidence review | needs photos      |                            0 |
-| 24KD catalog reference group     | PDF 9; catalog 11, 12         | Evidence review | catalog page only |                            0 |
-| 25AK catalog reference group     | PDF 10; catalog 13, 14        | Evidence review | catalog page only |                            0 |
-| 36KD catalog reference group     | PDF 11; catalog 15, 16        | Evidence review | catalog page only |                            0 |
-| 40KD catalog reference group     | PDF 12; catalog 17, 18        | Evidence review | catalog page only |                            0 |
-| 501D catalog reference group     | PDF 13; catalog 19, 20        | Evidence review | catalog page only |                            0 |
-| 602 catalog reference group      | PDF 14; catalog 21, 22        | Evidence review | catalog page only |                            0 |
+| Series                           | Company catalog evidence      | Public status            | Image evidence    | Public product relationships |
+| -------------------------------- | ----------------------------- | ------------------------ | ----------------- | ---------------------------: |
+| ORK 200A catalog reference group | PDF 4; catalog 1, 2           | Evidence review          | catalog page only |                            0 |
+| ORK 350A catalog reference group | PDF 5; catalog 3, 4           | Evidence review          | catalog page only |                            0 |
+| ORK 500A catalog reference group | PDF 6; catalog 5, 6           | Evidence review          | catalog page only |                            0 |
+| 15AK catalog reference group     | PDF 7, 8; catalog 7, 8, 9, 10 | Evidence review          | needs photos      |                            0 |
+| 24KD catalog reference group     | PDF 9; catalog 11, 12         | Evidence review          | catalog page only |                            0 |
+| 25AK catalog reference group     | PDF 10; catalog 13, 14        | Evidence review          | catalog page only |                            0 |
+| 36KD catalog reference group     | PDF 11; catalog 15, 16        | Evidence review          | catalog page only |                            0 |
+| 40KD catalog reference group     | PDF 12; catalog 17, 18        | Evidence review          | catalog page only |                            0 |
+| 501D catalog reference group     | PDF 13; catalog 19, 20        | Evidence review          | catalog page only |                            0 |
+| 602 catalog reference group      | PDF 14; catalog 21, 22        | Blocked by data conflict | catalog page only |                            0 |
 
 ## Publication Boundary
 
@@ -44,6 +45,7 @@ Do not copy dimensions, compatibility or OEM references from a catalog page into
 | 36KD catalog reference group |          69 |         24 |         2 | 0/35            | Not generated |
 | 40KD catalog reference group |          69 |         24 |         2 | 0/35            | Not generated |
 | 501D catalog reference group |          89 |         29 |         3 | 0/46            | Not generated |
+| 602 catalog reference group  |          72 |         22 |         1 | 0/37            | Not generated |
 
 All source conflicts remain blocked. They include company-catalog values that differ from official OEM references and contradictions within a company-catalog spread. No component candidate in this detailed evidence workflow has been converted into a public SKU or compatibility relationship.
 
@@ -125,8 +127,10 @@ Source: Renqiu Ailesen welding catalog PDF page 13 (catalog pages 19-20), 501D w
 
 ### 602 catalog reference group
 
-Source: Renqiu Ailesen welding catalog PDF page 14 (catalog pages 21-22), 602 water-cooled product-family section.
+Source: Renqiu Ailesen welding catalog PDF page 14 (catalog pages 21-22), internally conflicting ORK 501D header and ORK 602 complete-torch, technical and wear-parts tables.
 
+- Factory resolution of the catalog page header (ORK 501D) versus the complete-torch and technical table designation (ORK 602)
+- Exact supplied-product identity and controlled water-cooled connection drawing
 - Exact product-to-series SKU mapping for every documented component
 - Approved sample, drawing or factory-confirmed final fitment record
 - Company-owned or legally usable individual product and connection-detail images

@@ -21,7 +21,7 @@ Source document: Renqiu Ailesen welding catalog PDF. Public copy:
 | 36KD     |       11 | 15-16         | Evidence review                         |
 | 40KD     |       12 | 17-18         | Evidence review                         |
 | 501D     |       13 | 19-20         | Evidence review                         |
-| 602      |       14 | 21-22         | Evidence review                         |
+| 602      |       14 | 21-22         | Blocked - catalog identity conflict     |
 
 The registry records only the visible component-family scope and source pages. It does not import
 ratings, dimensions, material grades, compatibility or OEM references as confirmed ArcFort Weld
@@ -29,18 +29,22 @@ product specifications.
 
 ## Current Public Boundary
 
-No MIG/MAG series currently meets the complete public-series gate. All 10 records remain available
-as exact catalog-series choices in the MIG/MAG RFQ builder but do not create indexable series pages.
-The prepared 15AK candidate has canonical products and four governed reference-only relationships,
-but its linked main images remain `legacy_reference` with unresolved usage rights or exact-product
-identity. Its former public URL temporarily redirects to the MIG/MAG category and can be restored
-after the image and relationship gates pass.
+No MIG/MAG series currently meets the complete public-series gate. Nine non-blocked records remain
+available as bounded catalog-series choices in the MIG/MAG RFQ builder but do not create indexable
+series pages. The 602 record is private because PDF page 14 uses a 501D header while the same page's
+complete-torch and technical table identifies 602. The prepared 15AK candidate has canonical
+products and four governed reference-only relationships, but its linked main images remain
+`legacy_reference` with unresolved usage rights or exact-product identity. Its former public URL
+temporarily redirects to the MIG/MAG category and can be restored after the image and relationship
+gates pass.
 
 ## Factory Review Workbook
 
 The local `ArcFort-Weld-MIG-MAG-Series-Evidence-Intake.xlsx` workbook projects the governed 24KD,
 25AK, 36KD, 40KD and 501D queues into one factory-review surface. It contains 121 component
-candidates, 181 candidate-specific image requests and 13 controlled source conflicts.
+candidates, 181 candidate-specific image requests and 13 controlled source conflicts. The 602 queue
+is newer than this ignored workbook and remains in `data/intake/602-series-confirmation.csv` and
+`data/intake/602-image-intake.csv` until a deliberate workbook refresh is completed.
 
 The workbook is not canonical data, excludes internal notes and cannot promote a candidate, fact,
 image or relationship automatically. Review-ready formulas only indicate that the required handoff

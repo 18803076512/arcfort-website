@@ -33,6 +33,9 @@ function buildReport() {
   const reviewCount = productSeriesEvidence.filter(
     (record) => record.publicationStatus === "evidence_review",
   ).length;
+  const blockedCount = productSeriesEvidence.filter(
+    (record) => record.publicationStatus === "blocked",
+  ).length;
   const componentConflictCount = componentEvidence.facts.filter(
     (fact) => fact.verificationStatus === "DATA_CONFLICT",
   ).length;
@@ -54,6 +57,7 @@ function buildReport() {
     `- Catalog series reviewed: ${productSeriesEvidence.length}`,
     `- Published governed series pages: ${publishedCount}`,
     `- Series awaiting product, compatibility or image evidence: ${reviewCount}`,
+    `- Series blocked by unresolved source conflict: ${blockedCount}`,
     `- Public series-to-product relationships: ${productSeries.reduce((total, series) => total + series.productReferences.length, 0)}`,
     `- Detailed series with component evidence: ${detailedSeriesIds.length}`,
     `- Governed field-level component facts: ${componentEvidence.facts.length}`,

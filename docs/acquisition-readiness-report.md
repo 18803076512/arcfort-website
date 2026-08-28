@@ -14,8 +14,8 @@ ArcFort Weld is live and indexable. The RFQ path is configured through the email
 - Product categories: 6
 - Governed product series: 0
 - Catalog product-series evidence records: 10
-- Governed series-component facts: 517
-- Governed series-component candidates: 167
+- Governed series-component facts: 589
+- Governed series-component candidates: 189
 - Governed compatibility relationships: 4
 - Governed field-level technical facts: 15
 - Governed product image assets: 46
@@ -63,10 +63,11 @@ ArcFort Weld is live and indexable. The RFQ path is configured through the email
 - Governed product-series records: 0
 - Governed series-to-product relationships: 0
 - Company-catalog series evidence records: 10
-- Catalog series still in evidence review: 10
+- Catalog series still in evidence review: 9
+- Catalog series blocked by source conflict: 1
 - Series-component facts confirmed: 0
-- Series-component data conflicts blocked: 13
-- Series-component images approved: 0 of 239
+- Series-component data conflicts blocked: 14
+- Series-component images approved: 0 of 276
 - Compatibility relationships confirmed: 0
 - Compatibility relationships retained as reference only: 4
 - Field-level technical facts confirmed: 0
@@ -108,7 +109,7 @@ These items cannot be proven from public page content or repository files. Updat
 2. Confirm one matching RFQ reference in the sales mailbox and one in the buyer-confirmation mailbox.
 3. Work through `docs/product-image-asset-report.md`: confirm source and usage rights, then replace migration-period references with exact-product images.
 4. Supply exact, legally usable product photos for the three blocked draft SKUs; do not publish their current placeholders as product evidence.
-5. Complete the 15AK evidence intake and resolve the detailed 24KD/25AK/36KD/40KD/501D component conflicts, candidate confirmations and image queues in `docs/product-series-component-evidence-report.md` before publishing another series.
+5. Complete the 15AK evidence intake, resolve the 602 page-identity conflict and work through the detailed 24KD/25AK/36KD/40KD/501D/602 component confirmation and image queues in `docs/product-series-component-evidence-report.md` before publishing another series.
 6. Confirm material, dimensions, interfaces and fitment for active products from drawings, samples or approved supplier/company records.
 7. Confirm GA4 Realtime and `rfq_submit_success` / lead events without recording buyer PII.
 8. Export Search Console again on or after 2026-09-12; prioritize high-impression low-click existing URLs before adding overlapping content.

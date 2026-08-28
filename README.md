@@ -124,20 +124,20 @@ name, SKU, one useful selection cue and buyer actions; technical truth remains i
 product source.
 
 The company-catalog series registry currently covers 10 distinct MIG/MAG references: 15AK, 24KD,
-25AK, 36KD, 40KD, 501D, 602 and ORK 200A/350A/500A. All 10 records currently remain RFQ choices in
-`evidence_review`; none generates an indexable series page. The prepared 15AK candidate is retained
-internally, while its former URL temporarily redirects to the MIG/MAG category until every linked
-product has a rights-approved, exact-product main image and the governed relationships pass the
-publication gate. Keep exact technical values in the canonical product source and run
+25AK, 36KD, 40KD, 501D, 602 and ORK 200A/350A/500A. Nine records remain bounded RFQ choices in
+`evidence_review`; 602 is `blocked` and private because its catalog page uses a 501D header while the
+same page's complete-torch and technical table identifies 602. None generates an indexable series
+page. The prepared 15AK candidate is retained internally, while its former URL temporarily redirects
+to the MIG/MAG category until every linked product has a rights-approved, exact-product main image
+and the governed relationships pass the publication gate. Keep exact technical values in the
+canonical product source and run
 `npm run series:validate`, `npm run test:product-series` and `npm run series:report` before
 publication.
 
-The detailed series-component workflow currently covers 24KD, 25AK, 36KD, 40KD and 501D. Together
-they contain 359 sourced catalog facts, 121 component/variant candidates and 181 exact-image
-requests. Thirteen source fields are held as `DATA_CONFLICT`: twelve complete-torch fields differ
-from official OEM references and one 36KD cylindrical-nozzle value conflicts within the company
-catalog itself. No candidate in this workflow is a public SKU and these reviews create no public
-series route. Maintain
+The detailed series-component workflow currently covers 15AK, 24KD, 25AK, 36KD, 40KD, 501D and 602. Together they contain 589 sourced catalog/OEM-reference facts, 189 component/variant candidates
+and 276 exact-image requests. Fourteen source fields are held as `DATA_CONFLICT`: thirteen existing
+technical or dimensional conflicts plus the 602 page-identity contradiction. No candidate in this
+workflow is a public SKU and these reviews create no public series route. Maintain
 the matching `data/intake/*-series-confirmation.csv` and
 `data/intake/*-image-intake.csv` files, then run `npm run series:components:generate`,
 `npm run series:components:validate` and `npm run series:components:report`.
@@ -165,9 +165,11 @@ the 46 component candidates, 58 component image requests, 15 product technical r
 image requests. It remains an ignored working artifact; use
 `docs/operations/15ak-factory-evidence-handoff.md` for controlled reconciliation.
 
-The local `ArcFort-Weld-MIG-MAG-Series-Evidence-Intake.xlsx` workbook combines the governed 24KD,
-25AK, 36KD, 40KD and 501D review queues: 121 component candidates, 181 image requests and 13 blocked
-source conflicts. It remains an ignored reviewer artifact and creates no products or public routes.
+The local `ArcFort-Weld-MIG-MAG-Series-Evidence-Intake.xlsx` workbook still combines the governed
+24KD, 25AK, 36KD, 40KD and 501D review queues: 121 component candidates, 181 image requests and 13
+blocked source conflicts. The new 602 queue remains in its canonical repository CSV files until the
+internal workbook is deliberately regenerated; do not treat the older workbook as complete 602
+coverage. It remains an ignored reviewer artifact and creates no products or public routes.
 Use `docs/operations/mig-mag-series-evidence-handoff.md` for the controlled return procedure.
 
 The About page is the canonical public company profile for the legal-company and ArcFort Weld brand
@@ -209,11 +211,12 @@ reference groups, with TIG-specific fields for the front-end arrangement, reques
 tungsten diameter and cup or part marking. The builder organizes buyer input without asserting that a
 catalog reference group or visually similar component confirms compatibility.
 
-The MIG/MAG category organizes company-catalog references into 15AK, 24KD/25AK, 36KD/40KD,
-501D/602 and ORK 200A/350A/500A groups. Its RFQ builder records the torch or cooling arrangement,
-requested parts, documented wire diameter, visible part or drawing reference, quantity and packing.
-These labels are inquiry references only; final fit still requires the exact torch label, complete
-front-end stack, drawing, approved sample and connection evidence.
+The MIG/MAG category organizes buyer-facing company-catalog references into 15AK, 24KD/25AK,
+36KD/40KD, 501D and ORK 200A/350A/500A groups. The internally conflicting 602 record remains private
+until factory evidence resolves its page identity. The RFQ builder records the torch or cooling
+arrangement, requested parts, documented wire diameter, visible part or drawing reference, quantity
+and packing. These labels are inquiry references only; final fit still requires the exact torch
+label, complete front-end stack, drawing, approved sample and connection evidence.
 
 The Welding Machines category and welding machine sourcing checklist include an interactive sourcing
 brief for process, application, documented destination electrical input, machine arrangement,
@@ -842,6 +845,8 @@ npm run seo:snippets
   duty-cycle conflicts, candidate intake and publication boundary
 - `knowledge-base/products/501d-series-evidence.md` - field-level 501D water-cooled evidence, media
   connection governance, source conflicts, candidate intake and publication boundary
+- `knowledge-base/products/602-series-evidence.md` - blocked 501D/602 catalog identity conflict,
+  field-level 602 candidates, water-cooled interface controls and evidence requirements
 - `knowledge-base/compatibility/mig-mag-series-publication-gate.md` - reusable rules for converting a
   catalog family into governed public product relationships
 - `knowledge-base/compatibility/compatibility-registry.md` - relationship model, confirmation evidence
@@ -851,7 +856,8 @@ npm run seo:snippets
 - `docs/operations/15ak-factory-evidence-handoff.md` - low-friction workbook handoff and controlled
   review process for 15AK technical facts, image evidence and P0 provenance decisions
 - `docs/operations/mig-mag-series-evidence-handoff.md` - combined 24KD, 25AK, 36KD, 40KD and 501D
-  factory-review workbook boundary, conflict handling and controlled repository reconciliation
+  factory-review workbook boundary, the separate newer 602 queue, conflict handling and controlled
+  repository reconciliation
 - `docs/operations/airtable-15ak-evidence-intake.md` - private Airtable intake boundary, verified
   table scope and controlled repository transfer procedure
 - `data/evidence/local-product-image-triage.csv` - canonical review states for unassigned local
