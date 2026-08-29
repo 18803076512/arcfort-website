@@ -1,8 +1,74 @@
 # ArcFort Weld AI Change Log
 
-This append-only log records major Codex decisions so future sessions can understand what changed,
+This append-only log records substantial Codex work so future sessions can understand what changed,
 why it changed and which risks remain. Add the newest entry at the top, below this introduction. Do
 not include secrets, buyer PII, private prospect data or unconfirmed claims.
+
+## Required Entry Schema
+
+Every substantial completed task must add one dated entry containing:
+
+- Date
+- Task
+- Files Changed
+- Data Changed
+- SEO Impact
+- Known Issues
+- Reusable Knowledge Added
+- Next Recommended Action
+
+Components Changed, Visual Changes, Validation and Deployment may be added when relevant. Entries
+created before this schema remain valid historical records and must not be rewritten only for
+formatting consistency.
+
+## 2026-08-30 - Permanent Repository Rules Harmonization
+
+**Task**
+
+Reviewed the permanent repository rules against Goal Mode and the active knowledge-base decisions.
+Established one consistent pre-task reading order, document ownership model, autonomy and approval
+boundary, product-data prohibition list, QA selection model and change-log contract.
+
+**Files Changed**
+
+- `AGENTS.md` - added Goal Mode authority, mandatory pre-task inspection, explicit document
+  responsibilities, safe autonomy, approval boundaries, production safety, knowledge retention and
+  the required change-log fields.
+- `docs/CODEX_GOAL.md` - aligned its hierarchy with the permanent repository rules and decision
+  records.
+- `docs/DESIGN_SYSTEM.md` - clarified its visual-only ownership and Goal Mode reading prerequisites.
+- `docs/CONTENT_RULES.md` - clarified its content/data ownership and expanded the permanent
+  no-invention list.
+- `docs/QA_CHECKLIST.md` - added scope-based check selection, Goal Mode/knowledge reading, duplicate
+  SKU/slug gates, critical-data checks and reusable-knowledge reporting.
+- `docs/CHANGELOG_AI.md` - defined the mandatory future entry schema and recorded this task.
+
+**Data Changed**
+
+- No company fact, product record, technical value, compatibility relationship, image state, route
+  or publication status changed.
+
+**SEO Impact**
+
+- None. No public URL, metadata, structured data, internal link, Sitemap entry, robots rule or
+  indexable content changed.
+
+**Known Issues**
+
+- The rules intentionally reference future company, SEO and sales knowledge-base areas that remain
+  to be created in the next evidence-infrastructure phase.
+- Existing historical change-log entries use earlier schemas and were left unchanged.
+
+**Reusable Knowledge Added**
+
+- The repository now defines where each rule belongs, what every substantial task must read, which
+  actions are autonomous and which require approval, and how validation must match the changed
+  surface.
+
+**Next Recommended Action**
+
+- Create the governed company-claim and company-media evidence registries defined in
+  `docs/CODEX_GOAL.md`, then complete the existing 15AK Level A evidence intake.
 
 ## 2026-08-30 - Codex Goal Mode Initialization
 

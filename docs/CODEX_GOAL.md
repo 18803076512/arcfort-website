@@ -12,10 +12,12 @@ collection of isolated pages.
 Operational rules remain authoritative in this order:
 
 1. `AGENTS.md`
-2. `docs/DESIGN_SYSTEM.md`
-3. `docs/CONTENT_RULES.md`
-4. `docs/QA_CHECKLIST.md`
-5. The current task prompt
+2. `docs/CODEX_GOAL.md` for long-term direction and phase priorities
+3. Relevant, non-superseded records in `knowledge-base/decisions/`
+4. `docs/DESIGN_SYSTEM.md` for visual and interaction decisions
+5. `docs/CONTENT_RULES.md` for claims, data presentation and SEO copy
+6. `docs/QA_CHECKLIST.md` for applicable completion evidence
+7. The current task prompt
 
 This file records the destination, current baseline, priorities and phase gates. It does not relax
 the evidence, security, SEO, RFQ or approval controls in those files.

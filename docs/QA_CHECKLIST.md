@@ -1,18 +1,43 @@
 # ArcFort Weld QA Checklist
 
-Use this checklist after reading `AGENTS.md`. Select every gate affected by the task. A major task is
-not complete until applicable checks pass or the final report clearly identifies a check that could
-not run and why.
+This document owns ArcFort Weld check selection and completion evidence. Before validating a
+substantial task, read `AGENTS.md`, `docs/CODEX_GOAL.md`, relevant knowledge-base evidence and
+decisions, and the applicable design/content rules. Select every gate affected by the task. A
+substantial task is not complete until applicable checks pass or the final report identifies the
+exact check that could not run, why and what risk remains.
+
+## Check Selection
+
+Checks must match the changed surface. Do not use a narrow check to prove a broad claim, and do not
+run an unrelated check merely to create the appearance of validation.
+
+- Documentation/rule-only changes: validate formatting, cross-references, hierarchy consistency,
+  contradictions, `git diff --check` and secret scanning. Build, lint and typecheck are not required
+  unless the documentation is generated, imported by runtime code or changes executable examples.
+- Frontend, component, route or site-image changes: run lint, typecheck, build, performance checks
+  and representative responsive/visual review.
+- Product, category, series, compatibility or media-data changes: run the matching domain validators,
+  generation drift checks, reports, SEO checks and build gates listed below.
+- RFQ, API, email, storage or security changes: run focused tests, server-side validation checks,
+  secret scanning and the applicable production-readiness checks.
+- Deployment or external-provider changes: verify both repository state and the actual destination;
+  local success does not prove live behavior.
 
 ## 1. Scope And Change Safety
 
-- [ ] Read `AGENTS.md`, `docs/DESIGN_SYSTEM.md`, `docs/CONTENT_RULES.md` and this checklist.
+- [ ] Read `AGENTS.md` and `docs/CODEX_GOAL.md`.
+- [ ] Read relevant `knowledge-base/` records and non-superseded previous decisions.
+- [ ] Read the applicable sections of `docs/DESIGN_SYSTEM.md`, `docs/CONTENT_RULES.md` and this
+      checklist.
 - [ ] Inspect relevant pages, components, styles, schemas, data and tests before editing.
 - [ ] Check `git status`; identify and preserve unrelated user files and changes.
 - [ ] State objective, affected components/files, risks and implementation sequence.
 - [ ] Keep the batch to one global system, page family, component family or product series.
 - [ ] Avoid route, data-schema or dependency changes unless required by buyer/business value.
-- [ ] Append a task record to `docs/CHANGELOG_AI.md` for major work.
+- [ ] Append a task record to `docs/CHANGELOG_AI.md` for substantial completed work.
+- [ ] Confirm the task remains aligned with the current Goal Mode phase and approval boundary.
+- [ ] For rule changes, confirm hierarchy, document ownership and cross-references agree across all
+      affected rule files.
 
 ## 2. Business Identity And Claims
 
@@ -28,6 +53,10 @@ not run and why.
 ## 3. Product Data And Images
 
 - [ ] Canonical SKU/category/slug identifiers remain stable unless a migration is planned.
+- [ ] No duplicate SKU or duplicate product slug exists in the canonical product source.
+- [ ] Category slugs and product routes resolve to governed existing categories.
+- [ ] Missing critical identity, technical, media or governance data is reported and cannot silently
+      pass a publication gate.
 - [ ] Exact technical values include a traceable source and verification status.
 - [ ] Governed field-level values are projected from `lib/data/product-technical-facts.ts`, not copied
       into page components.
@@ -169,6 +198,7 @@ Record screenshot paths or the exact reason visual verification could not run.
 
 ## 7. SEO And Discoverability
 
+- [ ] Routing, redirects, dynamic/static route generation and not-found behavior remain correct.
 - [ ] Existing public URLs remain stable or have explicit redirects.
 - [ ] Each important page has a unique title, meta description, canonical and one H1.
 - [ ] Visible title/product/category names match metadata.
@@ -283,6 +313,8 @@ npm run security:secrets
 - [ ] Confirm no draft or unreviewed product became indexable.
 - [ ] Confirm no SEO route or structured-data regression.
 - [ ] Confirm the AI change-log entry accurately describes this batch.
+- [ ] Confirm reusable knowledge was stored in the correct canonical/knowledge-base location or
+      explicitly report that none was added.
 - [ ] Summarize missing evidence and operational risks.
 
 ## 12. Post-Deployment Review
@@ -311,6 +343,7 @@ Every task should report:
 - Checks run and results
 - Remaining placeholders/drafts
 - Missing company/product evidence
+- Reusable knowledge added, or `None`
 - Deployment/live verification status
 - Highest-impact next recommended step
 

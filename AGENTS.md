@@ -1,22 +1,62 @@
 # ArcFort Weld Repository Rules
 
-These are the permanent execution rules for this repository. They apply to every future Codex task
-unless the user explicitly overrides a rule for a clearly stated task. Record any override and its
-scope in the final report and in `docs/CHANGELOG_AI.md` when the task is major.
+These are the permanent execution rules for this repository and the entry point for ArcFort Weld
+Goal Mode. They apply to every future Codex task unless the user explicitly overrides a rule for a
+clearly stated task. Record any override, its scope and its consequences in the final report and in
+`docs/CHANGELOG_AI.md` when the task is substantial.
 
 ## Rule Priority
 
-Read these files before planning any major task. Within the repository, apply them in this order:
+Within the repository, apply instructions in this order:
 
 1. `AGENTS.md`
-2. `docs/DESIGN_SYSTEM.md`
-3. `docs/CONTENT_RULES.md`
-4. `docs/QA_CHECKLIST.md`
-5. The current task prompt
+2. `docs/CODEX_GOAL.md`
+3. Relevant, non-superseded records in `knowledge-base/decisions/`
+4. `docs/DESIGN_SYSTEM.md` for visual and interaction decisions
+5. `docs/CONTENT_RULES.md` for claims, product data, SEO copy and market messaging
+6. `docs/QA_CHECKLIST.md` for applicable completion evidence
+7. The current task prompt
 
-The current task defines the requested outcome. The repository rules define how that outcome is
-implemented safely and consistently. A short prompt does not silently cancel these rules. When a
-direct conflict remains, stop and report it unless the user has explicitly scoped an override.
+The current task defines the requested outcome and scope. The higher repository rules define how it
+is implemented safely and consistently. A short prompt does not silently cancel them. A clear,
+explicit user override may change a repository rule for the stated task only; it does not authorize
+an action prohibited by platform safety requirements. When a direct conflict remains, stop and
+report it rather than selecting the more convenient instruction.
+
+Canonical structured data and source evidence decide factual truth. A prose rule, design mockup,
+page component or old chat message cannot override a governed source record. When an older decision
+is superseded, create a dated replacement decision and link the prior record instead of silently
+rewriting history.
+
+### Document Responsibilities
+
+- `AGENTS.md` owns mandatory workflow, autonomy, approvals, evidence boundaries, production safety,
+  knowledge retention and reporting.
+- `docs/CODEX_GOAL.md` owns the long-term destination, priorities, current baseline and phase gates.
+- `docs/DESIGN_SYSTEM.md` owns visual, interaction and responsive standards.
+- `docs/CONTENT_RULES.md` owns public claims, product/content structures, terminology and SEO copy.
+- `docs/QA_CHECKLIST.md` owns check selection and completion evidence.
+- `knowledge-base/` owns reusable evidence, scoped operating knowledge and dated decisions.
+- `docs/CHANGELOG_AI.md` is the append-only history of substantial completed work.
+
+Keep detailed rules in their owning document and cross-reference them elsewhere. Do not maintain
+slightly different copies of the same rule in several files.
+
+## Required Pre-Task Inspection
+
+Before planning every substantial task, read in this sequence:
+
+1. `AGENTS.md`
+2. `docs/CODEX_GOAL.md`
+3. Relevant files under `knowledge-base/`
+4. Relevant previous records under `knowledge-base/decisions/`
+5. The applicable design, content and QA sections
+6. The affected implementation, canonical data, schemas, tests and operational evidence
+7. `git status` and the current branch state
+
+A task is substantial when it changes runtime behavior, public content, product/company data,
+routes, SEO, RFQ, media, dependencies, security, deployment, a reusable system or a governance
+decision. A trivial read-only status answer does not require loading unrelated documents.
 
 ## Mission
 
@@ -36,6 +76,17 @@ Use this decision order:
 Do not optimize for page count, keyword volume, visual novelty or feature count at the expense of
 buyer value. Every important change should help a buyer understand the offer, assess fit, navigate a
 product system or submit a more useful inquiry.
+
+## Goal Mode Requirement
+
+Every substantial task operates under `docs/CODEX_GOAL.md`. Compare the requested outcome with the
+current authoritative state, choose the highest-value safe batch inside the task scope and preserve
+movement toward the long-term product, evidence, media, compatibility, acquisition and sales system.
+
+Do not substitute a smaller but strategically misaligned result merely because it is easier to
+implement or test. Do not continue into an unrelated phase after the requested or meaningful phase
+boundary. If verified data, an owner decision or external authorization blocks the next material
+step, finish all remaining safe work, record the exact blocker and stop without inventing a result.
 
 ## Confirmed Identity
 
@@ -67,29 +118,12 @@ supporting evidence. "Industrial welding and cutting supplier" is the safe defau
 
 ## Brand Positioning
 
-ArcFort Weld is being developed as a modern nationwide welding and cutting industrial brand for the
-China market while retaining international B2B export capability.
+Use the positioning, product scope and market priorities in `docs/CODEX_GOAL.md`. Apply the visual
+direction in `docs/DESIGN_SYSTEM.md` and the public language rules in `docs/CONTENT_RULES.md`.
 
-The website must feel like:
-
-- A serious industrial brand
-- A professional engineering company
-- A scalable national supplier
-- A modern manufacturing enterprise
-- An international B2B supplier
-
-It must not feel like a generic export site, Alibaba listing, cheap template, AI-generated website,
-SaaS startup or flashy consumer brand. Use a premium industrial, modern engineering, technical,
-clean, structured, confident and international visual language.
-
-Core product scope:
-
-- MIG/MAG torch parts and consumables
-- TIG torch parts and consumables
-- Plasma cutting consumables
-- Welding consumables
-- Welding machines and cutting machines
-- Welding accessories and OEM welding products
+ArcFort Weld must read as a serious industrial brand and international engineering supplier, never
+as a generic export template, marketplace listing, SaaS startup or unsupported factory claim. Do not
+duplicate detailed visual or market rules here.
 
 ## Mandatory Workflow
 
@@ -97,23 +131,25 @@ Core product scope:
 
 Before changing code or content:
 
-- Read these repository rules and the relevant implementation files.
+- Complete the required pre-task reading sequence above.
 - Identify existing components and design tokens.
 - Identify product/content data sources and governance states.
 - Identify routing, metadata, structured data, sitemap and internal-link dependencies.
 - Identify RFQ, contact, analytics, security and deployment dependencies.
-- Inspect `git status` and preserve unrelated user changes.
+- Inspect current tests, operational evidence and prior decisions that could invalidate the change.
+- Preserve unrelated user changes and generated evidence that belongs to another task.
 
 Never rewrite blindly.
 
 ### 2. Plan
 
-Before a major change, state:
+Before a substantial change, state:
 
 - Objective
 - Components affected
 - Files affected
 - Data, SEO, RFQ and compatibility risks
+- Production, security, evidence and rollback implications
 - Implementation and verification sequence
 
 Make the plan clear before implementation. A plan is not a substitute for implementation.
@@ -153,23 +189,68 @@ Every completed task report must include:
 - SEO impact
 - Checks run and results
 - Missing evidence, unresolved issues and remaining drafts/placeholders
+- Reusable knowledge added or an explicit statement that none was added
 - Deployment and live-verification status when relevant
 - One recommended next step with the highest buyer or acquisition value
 
 ### 6. Record And Stop
 
-After every major task, append a dated entry to `docs/CHANGELOG_AI.md` with the task, files,
-components, data, SEO impact, known issues and next recommended step.
+After every substantial completed task, append a dated entry to `docs/CHANGELOG_AI.md` containing:
+
+- Date
+- Task
+- Files Changed
+- Data Changed
+- SEO Impact
+- Known Issues
+- Reusable Knowledge Added
+- Next Recommended Action
+
+Additional fields such as Components Changed, Visual Changes, Validation and Deployment may be
+included when relevant. Do not rewrite older log history solely to adopt a newer template.
 
 Stop after the requested phase. Do not automatically continue into the next development phase unless
 the user explicitly requests it.
 
+## Safe Autonomous Execution And Approval Boundaries
+
+Codex may autonomously perform low-risk, reversible work inside the current task, including:
+
+- Inspecting repository and public read-only evidence
+- Refactoring within established contracts
+- Improving UI consistency, accessibility, responsive behavior and performance
+- Organizing data, adding validation and reporting missing evidence
+- Strengthening metadata, structured data and internal links without changing public URLs
+- Creating drafts, intake templates, tests, documentation and knowledge-base records
+- Running local validation and preparing a reviewed local commit when authorized
+
+Stop and request owner approval before:
+
+- Publishing an unverified technical, compatibility, certification, capacity or company claim
+- Changing confirmed legal identity, pricing, payment, MOQ, lead-time or commercial policy
+- Changing production DNS, email-provider, analytics, storage, billing or account permissions
+- Performing a major URL migration, destructive data migration or large production-data deletion
+- Replacing canonical product evidence with a weaker source
+- Enabling a paid service or materially increasing recurring cost
+- Merging, deploying or making another external write when the current authorization does not
+  clearly cover the exact destination and action
+
+An approval for one provider, repository, branch, environment or data batch does not authorize a
+different one. Keep external writes narrowly scoped, report the destination and verify the resulting
+state. Never treat silence, a previous unrelated approval or tool availability as approval.
+
 ## Evidence And Product Data
 
-Never invent or imply exact product specifications, dimensions, ratings, material grades, OEM
-numbers, confirmed compatibility, certifications, prices, stock, capacity, export volume, customers,
-reviews, projects, awards, market share, branch offices, distributor counts, service centers or
-delivery guarantees.
+Never invent or imply:
+
+- Dimensions, threads, materials, material grades, weights or unverified product geometry
+- OEM/reference numbers or confirmed compatibility
+- Packaging quantities, product-specific MOQ or product-specific lead time
+- Electrical parameters, duty cycle, output, performance or exact technical ratings
+- Certifications, test reports or compliance status
+- Factory size, production capacity, equipment, staff, stock or export volume
+- Prices, discounts, customers, cases, reviews, projects, awards or market share
+- Branch offices, distributor counts, service centers or delivery guarantees
 
 Use evidence in this order:
 
@@ -281,35 +362,39 @@ source handling.
 
 ## Visual And Experience Governance
 
-Follow `docs/DESIGN_SYSTEM.md`. Preserve a restrained industrial-blue system with disciplined use of
-engineering orange for primary actions only. Prioritize strong whitespace, product photography,
-clear hierarchy, clean grids, restrained shadows and consistent typography.
-
-Avoid excessive badges, pills, boxes, gradients, round cards, decorative icons, animation and
-microcopy. Do not use glassmorphism, neon, glow, particles, heavy parallax or constant motion. If
-hierarchy and spacing communicate the information, do not add another visual container.
-
-The homepage is a brand page, not a database dump. Product imagery should dominate product cards.
-The header must keep the primary navigation focused on Products, Solutions, Industries, OEM / ODM,
-Distributors, Resources and About, with Contact and Request Quote as actions. Do not put MOQ, ports,
-payment, lead time or product counts in primary navigation.
-
-Design specifically for desktop, laptop, tablet and mobile. Mobile must not be compressed desktop.
-Maintain semantic headings, visible focus, keyboard navigation, form labels, sufficient contrast,
-readable technical tables and tap targets of approximately 44 by 44 CSS pixels where practical.
+Follow `docs/DESIGN_SYSTEM.md`; do not maintain a second detailed design system here. Visual work
+must use governed imagery, preserve buyer-readable technical data and remain deliberately usable on
+desktop, laptop, tablet and mobile. Maintain accessibility, performance and existing reusable
+component contracts while changing the site in controlled batches.
 
 ## China And International Architecture
 
-Prepare for separate `/zh/` and `/en/` experiences sharing the product database, technical data and
-design system. Do not create these routes casually or change existing URLs without a migration plan.
+Follow the market architecture in `docs/CODEX_GOAL.md` and the market-specific language rules in
+`docs/CONTENT_RULES.md`. Shared product identities and verified technical facts must remain canonical.
+Do not create `/zh/` or `/en/`, machine-translate positioning or change existing URLs without a
+reviewed information-architecture, migration and SEO plan.
 
-- China messaging may emphasize 全国供货, 经销商合作, 产品体系, 技术支持, OEM/ODM and 工业客户支持.
-- International messaging may emphasize distributor supply, OEM, export, compatibility, RFQ and
-  shipping.
+## Knowledge-Base Retention
 
-Do not machine-translate market-specific positioning. "Nationwide Supply", 全国供货, "Distributor
-Cooperation", 经销商合作, "Technical Support", 技术支持, "OEM / ODM" and 工业客户支持 are allowed.
-Do not claim a dealer network until real dealer evidence exists.
+Do not leave reusable company, product, technical, compatibility, media, SEO, sales or governance
+knowledge only in chat history. After a substantial task, decide whether new verified information or
+a durable decision belongs in `knowledge-base/`.
+
+Use these ownership areas:
+
+- `knowledge-base/company/`: confirmed identity, capability and company-evidence interpretation
+- `knowledge-base/products/`: product-family and product-system evidence
+- `knowledge-base/technical/`: measurement, specification and technical review workflows
+- `knowledge-base/compatibility/`: fitment evidence and relationship rules
+- `knowledge-base/assets/`: product and company media provenance, rights and review methods
+- `knowledge-base/seo/`: durable search baselines, query decisions and indexing lessons
+- `knowledge-base/sales/`: RFQ qualification and delivery evidence without buyer PII
+- `knowledge-base/decisions/`: dated choices, alternatives, consequences and reversal conditions
+
+Create a dated decision record when changing a publication gate, source-of-truth boundary, URL
+policy, compatibility rule or other choice future work could otherwise reverse accidentally. Link
+the canonical evidence and record its review date. Never store secrets, buyer PII, private prospect
+data or unsupported claims in the knowledge base.
 
 ## SEO And Conversion Protection
 
@@ -328,7 +413,7 @@ routing, uploads, validation and fallback contacts. Never claim the RFQ channel 
 browser submission reaches the configured sales mailbox. Never include buyer PII in analytics,
 idempotency keys, URLs, logs or public reports.
 
-## Security And Reliability
+## Production Safety, Security And Reliability
 
 - Never hardcode API keys, passwords, private tokens, database credentials or email credentials.
 - Rotate any credential exposed in chat, logs, source or another external channel.
@@ -340,6 +425,13 @@ idempotency keys, URLs, logs or public reports.
   approval.
 - Preserve RFQ email/storage idempotency and stable inquiry references.
 - Keep production health monitoring read-only and free of secrets or buyer data.
+- Inspect the target branch, environment, migration scope and rollback path before a production
+  change.
+- Do not push, merge, deploy, modify DNS/provider settings or run destructive production operations
+  without authorization covering that exact action and destination.
+- Do not claim deployment, indexing, analytics, email delivery or inbox placement from local code or
+  provider acceptance alone. Verify each external state through the appropriate live evidence.
+- Never use production buyer data for development tests. Use synthetic non-sensitive fixtures.
 
 ## Engineering And SKU Workflow
 

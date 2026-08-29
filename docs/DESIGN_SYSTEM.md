@@ -1,14 +1,26 @@
 # ArcFort Weld Design System
 
-This document is the visual and interaction standard for ArcFort Weld. Read `AGENTS.md` first. Use
-this system for all new UI and bring existing UI toward it in controlled page or component batches.
-Do not trigger an uncontrolled full-site redesign merely because an older component differs.
+This document owns ArcFort Weld visual, interaction and responsive standards. Before substantial UI
+work, read `AGENTS.md`, `docs/CODEX_GOAL.md`, relevant knowledge-base evidence and decisions, then
+the applicable content and QA rules. Use this system for all new UI and bring existing UI toward it
+in controlled page or component batches. Do not trigger an uncontrolled full-site redesign merely
+because an older component differs.
+
+Business claims, product facts, compatibility and SEO copy remain governed by
+`docs/CONTENT_RULES.md`; completion evidence remains governed by `docs/QA_CHECKLIST.md`. A visual
+mockup cannot create or upgrade a factual claim, image-rights state or publication status.
 
 ## Design Intent
 
 The interface should communicate a premium industrial brand, modern engineering discipline,
 technical competence, operational stability and international B2B readiness. It should not resemble
 a marketplace listing, low-cost export template, SaaS dashboard or consumer campaign.
+
+Direction: premium industrial brand, modern engineering, clean, professional, technical, structured
+and international. Avoid generic export templates, Alibaba-like presentation, AI-looking layouts,
+excessive cards or badges, excessive gradients, glass effects and unnecessary animation. Prefer real
+approved imagery, strong whitespace, clear typography, professional industrial composition and
+technical-data readability.
 
 The visual test is simple: a buyer should understand the product system, company role and next action
 within three seconds, without being asked to process decorative noise.

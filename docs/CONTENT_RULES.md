@@ -1,8 +1,13 @@
 # ArcFort Weld Content Rules
 
-This document governs business claims, product data, English/Chinese market messaging, SEO content
-and conversion copy. Read `AGENTS.md` before using it. Factual accuracy is more important than fluent
-copy.
+This document owns business claims, product data presentation, English/Chinese market messaging, SEO
+content and conversion copy. Before substantial content work, read `AGENTS.md`,
+`docs/CODEX_GOAL.md`, relevant knowledge-base evidence and decisions, then the applicable design and
+QA rules. Factual accuracy is more important than fluent copy.
+
+Visual treatment belongs to `docs/DESIGN_SYSTEM.md`; check selection belongs to
+`docs/QA_CHECKLIST.md`. Content must project canonical evidence rather than create a parallel source
+of truth in page copy.
 
 ## Audience And Purpose
 
@@ -105,11 +110,11 @@ Verification statuses:
 
 Never invent or imply:
 
-- Dimensions, threads, material grades, weight or electrical ratings
-- Duty cycle, performance or exact technical limits
+- Dimensions, threads, materials, material grades, weights or unverified product geometry
 - OEM/reference numbers or exact compatibility
 - Packaging quantities or product-specific MOQ/lead time without evidence
-- Certification or compliance status
+- Electrical parameters, duty cycle, output, performance or exact technical ratings
+- Certification, test-report or compliance status
 - Price, stock, discounts or delivery guarantees
 - Production capacity, factory size, equipment count, staff count or export volume
 - Customers, cases, reviews, awards, partners or distributor coverage
