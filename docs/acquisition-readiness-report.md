@@ -28,13 +28,13 @@ ArcFort Weld is live and indexable. The RFQ path is configured through the email
 
 ## Acquisition Channels
 
-| Channel           | Evidence                                                                                             | Current status                                                                                                     | Next control                                                                                                     |
-| ----------------- | ---------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------ | ---------------------------------------------------------------------------------------------------------------- |
-| Organic search    | Search Console export for 2026-06-26 through 2026-08-09                                              | 8 clicks and 422 impressions recorded                                                                              | Compare a clean 28-day post-change window on or after 2026-09-12                                                 |
-| Website RFQ       | Production status and controlled provider acceptance                                                 | Email delivery mode; sales notification, buyer confirmation and attachments are configured                         | Confirm matching references in the sales and buyer inboxes                                                       |
-| Email / WhatsApp  | arcfortweld@outlook.com and +86-18803076512 are visible across major buyer paths                     | Direct fallback contacts available                                                                                 | Track non-PII click and qualified-inquiry outcomes                                                               |
-| Product catalog   | 40 active pages across 6 categories, 0 governed public series and 10 catalog-series evidence records | Active records have registered migration-period or approved image files; drafts and unready series remain excluded | Replace legacy references with rights-approved exact-product views, then verify product and series relationships |
-| Distributor / OEM | Dedicated service pages, builders and buyer workbooks                                                | Operational buyer preparation paths are published                                                                  | Review completed workbooks and qualified RFQs, not page count                                                    |
+| Channel           | Evidence                                                                                             | Current status                                                                                   | Next control                                                                                                     |
+| ----------------- | ---------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------ | ---------------------------------------------------------------------------------------------------------------- |
+| Organic search    | Search Console export for 2026-06-26 through 2026-08-09                                              | 8 clicks and 422 impressions recorded                                                            | Compare a clean 28-day post-change window on or after 2026-09-12                                                 |
+| Website RFQ       | Production status and controlled provider acceptance                                                 | Email delivery mode; sales notification, buyer confirmation and attachments are configured       | Confirm matching references in the sales and buyer inboxes                                                       |
+| Email / WhatsApp  | arcfortweld@outlook.com and +86-18803076512 are visible across major buyer paths                     | Direct fallback contacts available                                                               | Track non-PII click and qualified-inquiry outcomes                                                               |
+| Product catalog   | 40 active pages across 6 categories, 0 governed public series and 10 catalog-series evidence records | 40 active products retain legacy-reference main images; 0 have search-eligible exact main images | Replace legacy references with rights-approved exact-product views, then verify product and series relationships |
+| Distributor / OEM | Dedicated service pages, builders and buyer workbooks                                                | Operational buyer preparation paths are published                                                | Review completed workbooks and qualified RFQs, not page count                                                    |
 
 ## RFQ And Delivery Evidence
 
@@ -51,8 +51,11 @@ ArcFort Weld is live and indexable. The RFQ path is configured through the email
 ## Product Evidence
 
 - Total product records: 43
-- Active products with existing publication-eligible image files: 40
-- Active products without publication-eligible image files: 0
+- Active products with registered public main-image files: 40
+- Active products without registered public main-image files: 0
+- Active products using retained legacy-reference main images: 40
+- Active products with search-eligible exact main images: 0
+- Active products still requiring exact main-image evidence: 40
 - Active products whose structured source type is still `unknown`: 18
 - Registered image assets: 46
 - Search-eligible exact image assets: 0

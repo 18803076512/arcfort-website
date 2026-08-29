@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
+import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import path from "node:path";
 import { format } from "prettier";
 import { applications } from "../content/applications.ts";
@@ -8,7 +8,6 @@ import { productCategories } from "../content/categories.ts";
 import { guides } from "../content/guides.ts";
 import { siteConfig } from "../lib/content/site.ts";
 import { compatibilityRelationships } from "../lib/data/compatibility-relationships.ts";
-import { productImageAssets } from "../lib/data/product-image-assets.ts";
 import { productSeriesComponentFacts } from "../lib/data/product-series-component-facts.ts";
 import { productTechnicalFacts } from "../lib/data/product-technical-facts.ts";
 import { productSeries } from "../lib/data/product-series.ts";
@@ -18,6 +17,11 @@ import {
   validateCsvFile,
   type ProductImportRow,
 } from "./product-import-utils.ts";
+import {
+  validateProductImageAssets,
+  type ProductImageAssetValidation,
+} from "./product-image-asset-utils.ts";
+import { assessProductMainImageEvidence } from "./product-image-readiness-utils.ts";
 import { validateProductSeriesComponentEvidence } from "./product-series-component-utils.ts";
 
 type EvidenceState = boolean | null;
@@ -84,25 +88,6 @@ function evidenceLabel(value: EvidenceState, trueLabel: string, falseLabel: stri
   }
 
   return "Needs external confirmation";
-}
-
-function hasPublicationEligibleImage(row: ProductImportRow) {
-  const validStatus = row.image_status === "own_photo" || row.image_status === "supplier_photo";
-  const imagePath = row.main_image.replace(/^\//, "");
-  const registeredAsset = productImageAssets.find(
-    (asset) =>
-      asset.sku === row.sku &&
-      asset.role === "main" &&
-      asset.publicPath === row.main_image &&
-      (asset.publicationStatus === "search_eligible" ||
-        asset.publicationStatus === "legacy_reference"),
-  );
-
-  return (
-    validStatus &&
-    Boolean(registeredAsset) &&
-    existsSync(path.join(process.cwd(), "public", imagePath))
-  );
 }
 
 function isIsoDate(value: string) {
@@ -188,7 +173,11 @@ function formatCoverage(rows: ProductImportRow[]) {
   ].join("\n");
 }
 
-function buildReport(rows: ProductImportRow[], evidence: AcquisitionEvidence) {
+function buildReport(
+  rows: ProductImportRow[],
+  evidence: AcquisitionEvidence,
+  imageAssets: ProductImageAssetValidation,
+) {
   const componentEvidence = validateProductSeriesComponentEvidence();
   if (componentEvidence.errors.length > 0) {
     errors.push(
@@ -197,8 +186,27 @@ function buildReport(rows: ProductImportRow[], evidence: AcquisitionEvidence) {
   }
   const activeRows = rows.filter((row) => row.status === "active");
   const draftRows = rows.filter((row) => row.status === "draft");
-  const activeRowsWithoutEligibleImages = activeRows.filter(
-    (row) => !hasPublicationEligibleImage(row),
+  const mainImageEvidence = new Map(
+    rows.map((row) => [
+      row.sku,
+      assessProductMainImageEvidence(
+        row,
+        imageAssets.rows,
+        (publicPath) => imageAssets.inspections.get(publicPath)?.exists ?? false,
+      ),
+    ]),
+  );
+  const activeRowsWithRegisteredPublicMainImages = activeRows.filter(
+    (row) => mainImageEvidence.get(row.sku)?.hasRegisteredPublicMainImage,
+  );
+  const activeRowsWithSearchEligibleExactMainImages = activeRows.filter(
+    (row) => mainImageEvidence.get(row.sku)?.hasSearchEligibleExactMainImage,
+  );
+  const activeRowsUsingLegacyMainImages = activeRows.filter(
+    (row) => mainImageEvidence.get(row.sku)?.asset?.publication_status === "legacy_reference",
+  );
+  const activeRowsWithoutRegisteredPublicMainImages = activeRows.filter(
+    (row) => !mainImageEvidence.get(row.sku)?.hasRegisteredPublicMainImage,
   );
   const activeRowsWithUnknownSources = activeRows.filter((row) => row.source_type === "unknown");
   const confirmedDataRows = rows.filter((row) => row.data_status === "confirmed");
@@ -231,26 +239,26 @@ function buildReport(rows: ProductImportRow[], evidence: AcquisitionEvidence) {
   const referenceTechnicalFactCount = productTechnicalFacts.filter(
     (fact) => fact.verificationStatus !== "CONFIRMED",
   ).length;
-  const legacyImageAssetCount = productImageAssets.filter(
-    (asset) => asset.publicationStatus === "legacy_reference",
+  const legacyImageAssetCount = imageAssets.rows.filter(
+    (asset) => asset.publication_status === "legacy_reference",
   ).length;
-  const searchEligibleImageAssetCount = productImageAssets.filter(
-    (asset) => asset.publicationStatus === "search_eligible",
+  const searchEligibleImageAssetCount = imageAssets.rows.filter(
+    (asset) => asset.publication_status === "search_eligible",
   ).length;
-  const blockedImageAssetCount = productImageAssets.filter(
-    (asset) => asset.publicationStatus === "blocked",
+  const blockedImageAssetCount = imageAssets.rows.filter(
+    (asset) => asset.publication_status === "blocked",
   ).length;
-  const unknownSourceImageAssetCount = productImageAssets.filter(
-    (asset) => asset.sourceKind === "unknown",
+  const unknownSourceImageAssetCount = imageAssets.rows.filter(
+    (asset) => asset.source_kind === "unknown",
   ).length;
-  const approvedRightsImageAssetCount = productImageAssets.filter(
-    (asset) => asset.usageRightsStatus === "approved",
+  const approvedRightsImageAssetCount = imageAssets.rows.filter(
+    (asset) => asset.usage_rights_status === "approved",
   ).length;
   const ctrPercent = `${(evidence.searchConsole.ctr * 100).toFixed(2)}%`;
 
-  if (activeRowsWithoutEligibleImages.length > 0) {
+  if (activeRowsWithoutRegisteredPublicMainImages.length > 0) {
     errors.push(
-      `${activeRowsWithoutEligibleImages.length} active products do not have an existing image with a publication-eligible status.`,
+      `${activeRowsWithoutRegisteredPublicMainImages.length} active products do not have an existing registered public main image.`,
     );
   }
 
@@ -281,7 +289,7 @@ function buildReport(rows: ProductImportRow[], evidence: AcquisitionEvidence) {
     `- Governed series-component candidates: ${componentEvidence.confirmationRows.length}`,
     `- Governed compatibility relationships: ${compatibilityRelationships.length}`,
     `- Governed field-level technical facts: ${productTechnicalFacts.length}`,
-    `- Governed product image assets: ${productImageAssets.length}`,
+    `- Governed product image assets: ${imageAssets.rows.length}`,
     `- Application pages: ${applications.length}`,
     `- Buyer guides: ${guides.length}`,
     `- RFQ production-ready status: ${evidence.rfq.productionReady ? "Yes" : "No"}`,
@@ -294,7 +302,7 @@ function buildReport(rows: ProductImportRow[], evidence: AcquisitionEvidence) {
     `| Organic search | Search Console export for ${evidence.searchConsole.dataStart} through ${evidence.searchConsole.dataEnd} | ${evidence.searchConsole.clicks} clicks and ${evidence.searchConsole.impressions} impressions recorded | Compare a clean 28-day post-change window on or after ${evidence.searchConsole.nextComparableReviewOnOrAfter} |`,
     `| Website RFQ | Production status and controlled provider acceptance | Email delivery mode; sales notification, buyer confirmation and attachments are configured | Confirm matching references in the sales and buyer inboxes |`,
     `| Email / WhatsApp | ${siteConfig.email} and ${siteConfig.whatsapp} are visible across major buyer paths | Direct fallback contacts available | Track non-PII click and qualified-inquiry outcomes |`,
-    `| Product catalog | ${activeRows.length} active pages across ${productCategories.length} categories, ${productSeries.length} governed public series and ${productSeriesEvidence.length} catalog-series evidence records | Active records have registered migration-period or approved image files; drafts and unready series remain excluded | Replace legacy references with rights-approved exact-product views, then verify product and series relationships |`,
+    `| Product catalog | ${activeRows.length} active pages across ${productCategories.length} categories, ${productSeries.length} governed public series and ${productSeriesEvidence.length} catalog-series evidence records | ${activeRowsUsingLegacyMainImages.length} active products retain legacy-reference main images; ${activeRowsWithSearchEligibleExactMainImages.length} have search-eligible exact main images | Replace legacy references with rights-approved exact-product views, then verify product and series relationships |`,
     `| Distributor / OEM | Dedicated service pages, builders and buyer workbooks | Operational buyer preparation paths are published | Review completed workbooks and qualified RFQs, not page count |`,
     "",
     "## RFQ And Delivery Evidence",
@@ -312,10 +320,13 @@ function buildReport(rows: ProductImportRow[], evidence: AcquisitionEvidence) {
     "## Product Evidence",
     "",
     `- Total product records: ${rows.length}`,
-    `- Active products with existing publication-eligible image files: ${activeRows.filter(hasPublicationEligibleImage).length}`,
-    `- Active products without publication-eligible image files: ${activeRowsWithoutEligibleImages.length}`,
+    `- Active products with registered public main-image files: ${activeRowsWithRegisteredPublicMainImages.length}`,
+    `- Active products without registered public main-image files: ${activeRowsWithoutRegisteredPublicMainImages.length}`,
+    `- Active products using retained legacy-reference main images: ${activeRowsUsingLegacyMainImages.length}`,
+    `- Active products with search-eligible exact main images: ${activeRowsWithSearchEligibleExactMainImages.length}`,
+    `- Active products still requiring exact main-image evidence: ${activeRows.length - activeRowsWithSearchEligibleExactMainImages.length}`,
     `- Active products whose structured source type is still \`unknown\`: ${activeRowsWithUnknownSources.length}`,
-    `- Registered image assets: ${productImageAssets.length}`,
+    `- Registered image assets: ${imageAssets.rows.length}`,
     `- Search-eligible exact image assets: ${searchEligibleImageAssetCount}`,
     `- Legacy public reference image assets: ${legacyImageAssetCount}`,
     `- Blocked image assets: ${blockedImageAssetCount}`,
@@ -397,8 +408,14 @@ if (validation.errors.length > 0) {
 }
 
 const evidence = JSON.parse(readFileSync(evidencePath, "utf8")) as AcquisitionEvidence;
+const imageAssets = validateProductImageAssets();
 validateEvidence(evidence);
-const report = buildReport(validation.rows, evidence);
+if (imageAssets.errors.length > 0) {
+  errors.push(
+    `${imageAssets.errors.length} product image asset validation error(s) must be resolved.`,
+  );
+}
+const report = buildReport(validation.rows, evidence, imageAssets);
 
 if (errors.length > 0) {
   console.error(`Acquisition readiness errors (${errors.length})`);
@@ -421,6 +438,6 @@ console.log(
 );
 console.log(`Compatibility relationships: ${compatibilityRelationships.length}`);
 console.log(`Field-level technical facts: ${productTechnicalFacts.length}`);
-console.log(`Product image assets: ${productImageAssets.length}`);
+console.log(`Product image assets: ${imageAssets.rows.length}`);
 console.log(`Applications: ${applications.length}`);
 console.log(`Buyer guides: ${guides.length}`);

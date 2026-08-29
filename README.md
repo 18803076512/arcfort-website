@@ -351,6 +351,12 @@ Product image publication rules:
   `verified_date`; these internal fields are not exposed on public pages.
 - Run `npm run images:assets:report` to review unknown sources, rights gaps, blocked assets,
   resolution priorities, duplicate content and unassigned local files.
+- `npm run products:report` reconciles the product CSV with the canonical image asset registry. A CSV
+  value of `own_photo` or `supplier_photo` is workflow metadata only; it must not be counted as an
+  approved exact-product image unless the matching registry row satisfies every `search_eligible`
+  evidence control.
+- Run `npm run test:image-readiness` after changing the shared main-image evidence rules. The test
+  keeps retained `legacy_reference` images distinct from rights-approved exact-product images.
 - Run `npm run images:triage:board` to validate the 73 unassigned local candidates and generate the
   private, filterable review board at `output/reports/local-product-image-triage.html`. The board is
   read-only, omits `notes_internal` and never assigns or approves an image automatically.

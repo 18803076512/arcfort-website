@@ -47,6 +47,7 @@ jobs:
         run: |
           npm run products:check-images
           npm run images:assets:validate
+          npm run test:image-readiness
           npm run images:triage:validate
           npm run products:image-tasks
 

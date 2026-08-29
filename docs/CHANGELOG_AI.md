@@ -4,6 +4,80 @@ This append-only log records major Codex decisions so future sessions can unders
 why it changed and which risks remain. Add the newest entry at the top, below this introduction. Do
 not include secrets, buyer PII, private prospect data or unconfirmed claims.
 
+## 2026-08-29 - Product Main-Image Evidence Reconciliation
+
+**Task**
+
+Corrected the internal readiness language that previously treated the product CSV's
+`own_photo`/`supplier_photo` workflow states as reviewed image evidence. Both product and acquisition
+reports now use the canonical image asset registry to distinguish a retained public reference from
+a rights-approved, exact-product, search-eligible main image.
+
+**Files Changed**
+
+- `scripts/product-image-readiness-utils.ts` - added one shared, evidence-complete main-image
+  assessment with explicit missing controls.
+- `scripts/product-image-asset-utils.ts` - allowed report callers to bind asset validation to an
+  explicit product CSV instead of silently falling back to the default source.
+- `scripts/test-product-image-readiness.ts` - added regression coverage for exact, legacy,
+  incomplete, unregistered and missing-file states.
+- `scripts/report-product-readiness.ts` and `docs/product-readiness-report.md` - reconciled CSV and
+  asset-registry states and generated the active-SKU evidence gap queue.
+- `scripts/report-acquisition-readiness.ts` and `docs/acquisition-readiness-report.md` - replaced
+  ambiguous image readiness counts with registered-public, retained-legacy and search-eligible exact
+  main-image counts.
+- `package.json` and `.github/workflows/quality.yml` - added the image-readiness regression gate.
+- `README.md` and `docs/QA_CHECKLIST.md` - documented the evidence boundary and required check.
+- `docs/CHANGELOG_AI.md` - recorded this batch.
+
+**Components Changed**
+
+- No public page, route, component, RFQ handler or deployment setting changed.
+
+**Data Changed**
+
+- No product fact, image file, image assignment, rights state or publication state changed.
+- The generated reports now state that all 40 active products retain registered legacy-reference
+  main images, zero active products have search-eligible exact main images and three draft main
+  images remain blocked.
+- The product report lists the specific missing controls for each active SKU without upgrading any
+  evidence state.
+
+**Visual Changes**
+
+- None on the public website.
+
+**SEO Impact**
+
+- No URL, metadata, structured data, sitemap entry, image path or indexation state changed.
+- The corrected internal evidence counts reduce the risk of treating family-reference imagery as
+  exact-product image-search evidence in a later publication decision.
+
+**Validation**
+
+- Product main-image classification tests passed for exact, legacy, incomplete, unregistered and
+  missing-file cases.
+- Product and acquisition reports regenerated from 43 products and 46 governed image assets.
+- Product CSV, product-file, canonical image-asset and 73-file local-triage checks passed. The three
+  existing draft-image warnings and 43 legacy-rights warnings remain intentionally visible.
+- ESLint, TypeScript and the 350-file repository secret scan passed.
+- Static SEO, built internal links across 80 HTML and two dynamic source pages, snippet hygiene and
+  performance budgets passed.
+- The Next.js production build passed with 90 generated pages.
+
+**Known Issues**
+
+- Zero active products currently have a rights-approved, exact-product, search-eligible main image.
+- Four active main images have unknown provenance; three draft products remain blocked for dedicated
+  exact-product images.
+- No product data status, compatibility status or OEM status is confirmed yet.
+
+**Next Recommended Step**
+
+- Collect company-owned exact-product main images for the four active unknown-provenance SKUs and the
+  three blocked draft SKUs, then record source, rights, exact match, reviewer and date before any
+  registry upgrade.
+
 ## 2026-08-29 - Bounded Production Health Retries And DNS Evidence
 
 **Task**

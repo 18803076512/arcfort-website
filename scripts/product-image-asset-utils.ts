@@ -78,6 +78,11 @@ export type ProductImageAssetValidation = {
   warnings: ProductImageAssetIssue[];
 };
 
+export type ProductImageAssetValidationOptions = {
+  productInputPath?: string;
+  registryPath?: string;
+};
+
 type SourceEvidence = {
   sourceKind: ProductImageSourceKind;
   sourceReference: string;
@@ -364,9 +369,13 @@ function isBlockedProduct(product: ProductImportRow) {
   );
 }
 
-export function validateProductImageAssets(): ProductImageAssetValidation {
+export function validateProductImageAssets(
+  options: ProductImageAssetValidationOptions = {},
+): ProductImageAssetValidation {
   const issues: ProductImageAssetIssue[] = [];
-  const productValidation = validateCsvFile(resolveValidationInputPath());
+  const productValidation = validateCsvFile(
+    options.productInputPath ?? resolveValidationInputPath(),
+  );
   issues.push(
     ...productValidation.errors.map((issue) => ({
       level: "error" as const,
@@ -375,7 +384,7 @@ export function validateProductImageAssets(): ProductImageAssetValidation {
   );
   const products = productValidation.rows;
   const productBySlug = new Map(products.map((product) => [product.slug, product]));
-  const registry = readImageAssetRows();
+  const registry = readImageAssetRows(options.registryPath ?? imageAssetRegistryPath);
   issues.push(...registry.issues);
   const rows = registry.rows;
   const seenIds = new Set<string>();

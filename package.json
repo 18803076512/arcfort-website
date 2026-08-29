@@ -21,6 +21,7 @@
     "images:assets:sync": "node --experimental-strip-types scripts/manage-product-image-assets.ts --sync --write",
     "images:assets:validate": "node --experimental-strip-types scripts/manage-product-image-assets.ts --check",
     "images:assets:report": "node --experimental-strip-types scripts/report-product-image-assets.ts",
+    "test:image-readiness": "node --experimental-strip-types scripts/test-product-image-readiness.ts",
     "images:triage:validate": "node --experimental-strip-types scripts/validate-local-image-triage.ts",
     "images:triage:board": "npm run images:triage:validate && node --experimental-strip-types scripts/generate-local-image-triage-board.ts",
     "acquisition:report": "node --experimental-strip-types scripts/report-acquisition-readiness.ts",
