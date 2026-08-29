@@ -4,6 +4,53 @@ This append-only log records major Codex decisions so future sessions can unders
 why it changed and which risks remain. Add the newest entry at the top, below this introduction. Do
 not include secrets, buyer PII, private prospect data or unconfirmed claims.
 
+## 2026-08-30 - Codex Goal Mode Initialization
+
+**Task**
+
+Inspected the repository architecture, product and media governance, knowledge base, SEO system,
+RFQ dependencies and current evidence baseline. Added one long-term Goal Mode document that connects
+future work to a verified product-data, compatibility, media, acquisition and sales-support system.
+
+**Files Changed**
+
+- `docs/CODEX_GOAL.md` - recorded the long-term operating goal, canonical source map, current
+  evidence baseline, staged SKU milestones, infrastructure gaps, execution boundaries and next
+  evidence setup phase.
+- `docs/CHANGELOG_AI.md` - recorded this initialization batch.
+
+**Components Changed**
+
+- No public component, route, RFQ handler, data adapter or deployment setting changed.
+
+**Data Changed**
+
+- No company fact, product record, technical value, compatibility relationship, image assignment or
+  publication status changed.
+- The baseline documents 43 products, 40 active products, three drafts, zero confirmed technical
+  facts, zero confirmed compatibility relationships and zero exact search-eligible product images.
+
+**Visual Changes**
+
+- None.
+
+**SEO Impact**
+
+- None. No URL, metadata, structured data, Sitemap entry, robots rule or public content changed.
+
+**Known Issues**
+
+- Verified product and company evidence remains the principal acquisition constraint.
+- The knowledge base has no dedicated company, SEO or sales area yet.
+- Company media has no canonical evidence registry.
+- RFQ inbox placement, credential rotation, DMARC, GA4 conversion evidence and Search Console
+  submission still require owner-side confirmation.
+
+**Next Recommended Step**
+
+- Build the governed company-claim and company-media registries, then complete the existing 15AK
+  factory confirmation and exact-image intake before another major public-site phase.
+
 ## 2026-08-29 - P0 MIG Local Image Lineage Extension
 
 **Task**
