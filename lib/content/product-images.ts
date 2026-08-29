@@ -2,6 +2,7 @@ import { existsSync } from "node:fs";
 import path from "node:path";
 import { productImageAssets } from "@/lib/data/product-image-assets";
 import type { ProductImageAsset } from "@/lib/content/schemas";
+import { isSearchEligibleProductImageAsset } from "@/lib/content/product-image-evidence";
 
 export function hasPublicProductImage(imagePath?: string) {
   if (!imagePath?.startsWith("/images/products/")) {
@@ -38,9 +39,16 @@ function getProductImageAssets(product: ProductImageSource) {
 }
 
 export function getDisplayEligibleProductImageAssets(product: ProductImageSource) {
-  return getProductImageAssets(product).filter((asset) =>
-    ["search_eligible", "legacy_reference", "display_only"].includes(asset.publicationStatus),
-  );
+  return getProductImageAssets(product).filter((asset) => {
+    if (asset.publicationStatus === "search_eligible") {
+      return isSearchEligibleProductImageAsset(asset);
+    }
+
+    return (
+      ["legacy_reference", "display_only"].includes(asset.publicationStatus) &&
+      asset.contentMatchStatus !== "rejected"
+    );
+  });
 }
 
 export function getDisplayEligibleProductImages(product: ProductImageSource) {
@@ -49,7 +57,7 @@ export function getDisplayEligibleProductImages(product: ProductImageSource) {
 
 export function getSearchEligibleProductImages(product: ProductImageSource) {
   return getProductImageAssets(product)
-    .filter((asset) => ["search_eligible", "legacy_reference"].includes(asset.publicationStatus))
+    .filter(isSearchEligibleProductImageAsset)
     .map((asset) => asset.publicPath);
 }
 

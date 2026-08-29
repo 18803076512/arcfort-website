@@ -48,6 +48,7 @@ jobs:
           npm run products:check-images
           npm run images:assets:validate
           npm run test:image-readiness
+          npm run test:image-presentation
           npm run images:triage:validate
           npm run products:image-tasks
 
@@ -131,6 +132,9 @@ jobs:
 
       - name: Audit built internal links
         run: npm run seo:links
+
+      - name: Audit built product image evidence
+        run: npm run seo:images
 
       - name: Audit search snippets and social preview
         run: npm run seo:snippets

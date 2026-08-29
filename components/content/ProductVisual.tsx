@@ -1,4 +1,8 @@
 import Image from "next/image";
+import {
+  getProductImageDisclosureLabel,
+  getProductImageEvidenceState,
+} from "@/lib/content/product-image-evidence";
 import { getDisplayEligibleProductImageAssets } from "@/lib/content/product-images";
 import type { ProductImageStatus } from "@/lib/content/schemas";
 
@@ -21,8 +25,8 @@ export function ProductVisual({
   compact = false,
   denseMobile = false,
 }: ProductVisualProps) {
-  const hasReviewedImage = imageStatus === "own_photo" || imageStatus === "supplier_photo";
-  const [mainAsset] = hasReviewedImage
+  const hasDisplayCandidate = imageStatus === "own_photo" || imageStatus === "supplier_photo";
+  const [mainAsset] = hasDisplayCandidate
     ? getDisplayEligibleProductImageAssets({
         sku,
         slug,
@@ -35,26 +39,33 @@ export function ProductVisual({
   const visualClass = compact ? "aspect-[8/9]" : "aspect-[5/4]";
 
   if (shouldRenderImage && mainAsset) {
+    const imageDisclosure = getProductImageDisclosureLabel(getProductImageEvidenceState(mainAsset));
+
     return (
       <div data-nosnippet data-snippet-region="product-visual" className="bg-white">
-        <div className={`relative ${visualClass}`}>
-          <Image
-            src={mainAsset.publicPath}
-            alt={mainAsset.altText}
-            fill
-            sizes={
-              denseMobile
-                ? "(min-width: 1280px) 22vw, (min-width: 640px) 46vw, 46vw"
-                : compact
-                  ? "(min-width: 1024px) 30vw, (min-width: 640px) 46vw, 100vw"
-                  : "(min-width: 1024px) 45vw, 100vw"
-            }
-            className={`object-contain transition duration-300 group-hover:scale-[1.02] ${
-              denseMobile ? "p-3 sm:p-7" : "p-6 sm:p-8"
-            }`}
-            quality={88}
-          />
-        </div>
+        <figure>
+          <div className={`relative ${visualClass}`}>
+            <Image
+              src={mainAsset.publicPath}
+              alt={mainAsset.altText}
+              fill
+              sizes={
+                denseMobile
+                  ? "(min-width: 1280px) 22vw, (min-width: 640px) 46vw, 46vw"
+                  : compact
+                    ? "(min-width: 1024px) 30vw, (min-width: 640px) 46vw, 100vw"
+                    : "(min-width: 1024px) 45vw, 100vw"
+              }
+              className={`object-contain transition duration-300 group-hover:scale-[1.02] ${
+                denseMobile ? "p-3 sm:p-7" : "p-6 sm:p-8"
+              }`}
+              quality={88}
+            />
+          </div>
+          <figcaption className="flex min-h-9 items-center border-t border-arc-line px-3 py-2 text-xs font-semibold leading-4 text-slate-500 sm:px-4">
+            {imageDisclosure}
+          </figcaption>
+        </figure>
       </div>
     );
   }

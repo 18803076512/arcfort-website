@@ -43,6 +43,8 @@ not run and why.
 - [ ] Every canonical main/gallery path has one matching product-image asset-registry row.
 - [ ] `search_eligible` assets have exact-product match, approved rights, source owner, reviewer and date.
 - [ ] `legacy_reference` assets are not described as confirmed exact-product or rights-approved images.
+- [ ] `legacy_reference` and `display_only` assets are excluded from Open Graph, structured-data and
+      image-sitemap projection.
 - [ ] Product and acquisition reports distinguish CSV `image_status` from canonical asset evidence.
 - [ ] Real product geometry, thread, holes, dimensions, shape and connections were not altered.
 - [ ] Internal notes and source-only governance fields are not exposed publicly.
@@ -58,6 +60,7 @@ npm run images:assets:generate
 npm run images:assets:validate
 npm run images:assets:report
 npm run test:image-readiness
+npm run test:image-presentation
 npm run images:triage:validate
 npm run technical:validate
 npm run technical:report
@@ -183,6 +186,7 @@ Run for important content, route or SEO changes:
 ```bash
 npm run seo:audit
 npm run seo:links
+npm run seo:images
 npm run seo:snippets
 ```
 

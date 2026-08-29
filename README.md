@@ -341,12 +341,14 @@ Product image publication rules:
   cannot confirm the published SKU.
 - Keep products with `needs_photo` or `placeholder` image status as `draft`; only publish them after
   the product type is supported by a reviewed own or supplier photo.
-- The product must use `own_photo` or `supplier_photo`, and the exact path must also have a permitted
-  asset-registry publication status, before it can enter product Open Graph metadata, Product JSON-LD
-  or image sitemap entries.
+- The product must use `own_photo` or `supplier_photo`, and the exact asset-registry row must pass the
+  complete `search_eligible` evidence gate before it can enter product Open Graph metadata, Product
+  JSON-LD or image sitemap entries.
 - `legacy_reference` preserves a previously published reference image during migration. It does not
-  prove exact-product identity or approved usage rights. New `search_eligible` rows require an exact
-  product match, approved usage basis, known source/owner, reviewer and review date.
+  prove exact-product identity or approved usage rights. It remains visibly labeled as a reference
+  in buyer-facing product presentation and is excluded from search metadata. New `search_eligible`
+  rows require an exact product match, approved usage basis, known source/owner and source file,
+  reviewer and ISO review date.
 - Keep the original image source in `source_reference` and record `verified_by` and
   `verified_date`; these internal fields are not exposed on public pages.
 - Run `npm run images:assets:report` to review unknown sources, rights gaps, blocked assets,
@@ -357,6 +359,11 @@ Product image publication rules:
   evidence control.
 - Run `npm run test:image-readiness` after changing the shared main-image evidence rules. The test
   keeps retained `legacy_reference` images distinct from rights-approved exact-product images.
+- Run `npm run test:image-presentation` after changing product cards, galleries or search-image
+  projection. The test prevents retained family references from entering metadata, Product JSON-LD
+  or image sitemap projection as reviewed exact-product images.
+- Run `npm run seo:images` after `npm run build` to inspect every built public product page and the
+  generated sitemap for evidence disclosure and search-image eligibility drift.
 - Run `npm run images:triage:board` to validate the 73 unassigned local candidates and generate the
   private, filterable review board at `output/reports/local-product-image-triage.html`. The board is
   read-only, omits `notes_internal` and never assigns or approves an image automatically.

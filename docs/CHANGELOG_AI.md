@@ -2710,6 +2710,79 @@ content as governed internal evidence, and blocked the series because the same c
 - Obtain a factory-signed page identity decision and controlled 602 water/media connection drawing,
   then reconcile candidates and images by stable IDs before considering any public projection.
 
+## 2026-08-29 - Public Product Image Evidence Projection
+
+**Task**
+
+Separated retained product-family reference images from rights-approved exact-product images across
+buyer-facing cards, galleries and search-image projection.
+
+**Files Changed**
+
+- `lib/content/product-image-evidence.ts` - added the shared exact-image evidence gate and public
+  disclosure states.
+- `lib/content/product-images.ts` - limited search-image projection to fully evidenced
+  `search_eligible` assets while retaining governed legacy references for labeled display.
+- `components/content/ProductVisual.tsx`, `ProductGallery.tsx` and `ProductGalleryViewer.tsx` - added
+  compact card disclosure and centralized gallery disclosure without exposing internal evidence.
+- `scripts/test-product-image-presentation.ts`, `package.json` and `.github/workflows/quality.yml` -
+  added a focused regression test and CI gate.
+- `scripts/audit-built-product-image-evidence.ts` - added a post-build audit across public product
+  HTML, social metadata, structured data and the image sitemap.
+- `README.md` and `docs/QA_CHECKLIST.md` - documented the public-display and search-index boundary.
+
+**Components Changed**
+
+- Changed `ProductVisual` cards to show a restrained image-evidence caption.
+- Changed `ProductGalleryViewer` to receive only a public evidence state instead of registry status
+  fields.
+- Created no new public page or route and removed no component.
+
+**Data Changed**
+
+- No product facts, image files, asset assignments or registry statuses changed.
+- Existing `legacy_reference` assets remain buyer-facing migration references but no longer enter
+  product metadata, structured data or image sitemap projection.
+
+**Visual Changes**
+
+- Product cards now distinguish family reference imagery from future reviewed exact-product imagery
+  with a small caption below the image.
+- Existing detail-gallery captions retain the same buyer meaning through one shared evidence helper.
+
+**SEO Impact**
+
+- Product URLs, canonicals, titles, descriptions and page content remain unchanged.
+- Only fully evidenced `search_eligible` images may now enter Open Graph metadata, Product/WebPage
+  JSON-LD or image sitemap entries. Current legacy references are intentionally excluded.
+
+**Validation**
+
+- Passed the focused public image-presentation test, shared image-readiness test, canonical image
+  registry validation and product image-file check. The expected three draft-product image warnings
+  remain non-blocking.
+- Passed ESLint, TypeScript, product CSV validation, source SEO audit, built internal-link audit,
+  snippet hygiene, performance budget and tracked/untracked secret scanning.
+- Passed the Next.js production build with 90 generated pages.
+- Passed the post-build image-evidence audit across 43 public assets: every legacy reference is
+  disclosed, none enters social metadata, structured data or the image sitemap, and zero assets are
+  currently projected as rights-approved exact search images.
+- Inspected homepage/category product cards and a representative product detail page at 360, 390,
+  768, 1024, 1280 and 1440 CSS pixels in the local production server. No horizontal overflow,
+  caption clipping, action overflow or browser-console error was found. Temporary review screenshots
+  were inspected in the browser and were not retained as repository artifacts.
+
+**Known Issues**
+
+- No current product image has completed the approved-rights, exact-product and source-owner evidence
+  gate, so product-specific search-image projection remains empty until reviewed assets are supplied.
+- Retained legacy images still require source, usage-rights and exact-SKU review or replacement.
+
+**Next Recommended Step**
+
+- Resolve the four P0 unknown-provenance main images, beginning with the three M6 contact-tip variants,
+  using original source files or newly captured exact-product photography.
+
 ## Entry Template
 
 ```markdown

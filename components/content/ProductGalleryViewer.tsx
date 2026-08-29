@@ -2,14 +2,18 @@
 
 import Image from "next/image";
 import { useState } from "react";
+import {
+  getProductImageDisclosureLabel,
+  type ProductImageEvidenceState,
+} from "@/lib/content/product-image-evidence";
+import type { ProductImageAssetRole } from "@/lib/content/schemas";
 
 export type ProductGalleryImage = {
   assetId: string;
   publicPath: string;
   altText: string;
-  role: string;
-  contentMatchStatus: "exact_product" | "product_family_reference" | "needs_review" | "rejected";
-  publicationStatus: "search_eligible" | "legacy_reference" | "display_only" | "blocked";
+  role: ProductImageAssetRole;
+  evidenceState: ProductImageEvidenceState;
 };
 
 type ProductGalleryViewerProps = {
@@ -17,25 +21,8 @@ type ProductGalleryViewerProps = {
   productTitle: string;
 };
 
-function formatRole(role: string) {
-  return role.replaceAll("_", " ").replace(/\b\w/g, (character) => character.toUpperCase());
-}
-
 function getImageDisclosure(image: ProductGalleryImage) {
-  const role = formatRole(image.role);
-
-  if (
-    image.contentMatchStatus === "exact_product" &&
-    image.publicationStatus === "search_eligible"
-  ) {
-    return `${role} reviewed product image`;
-  }
-
-  if (image.contentMatchStatus === "product_family_reference") {
-    return `${role} product-family reference image`;
-  }
-
-  return `${role} buyer reference image`;
+  return getProductImageDisclosureLabel(image.evidenceState, image.role);
 }
 
 export function ProductGalleryViewer({ images, productTitle }: ProductGalleryViewerProps) {
