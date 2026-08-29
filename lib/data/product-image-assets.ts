@@ -11,13 +11,16 @@ export const productImageAssets: ProductImageAsset[] = [
     altText: "MIG Contact Tip M6 0.8mm, MIG/MAG Torch Parts product reference image",
     sourceKind: "unknown",
     sourceReference:
-      "Repository lineage audit: the public file before the 2026-08-25 JPEG re-export was byte-identical to /images/products/mig-contact-tip.jpg (Git blob 1876a63cce63de1ba2626d865950a9e13e2bceb1). Original owner, first source and website-use rights remain unknown.",
+      "Local lineage audit (2026-08-29): the pre-re-export repository image is byte-identical to a 750 x 750 PNG named 15AK导电嘴.png (SHA-256 717F02E9C5D58BB8600685F3A8C16ADB99AD9E8F831817BDCAA60F87DD8ECED0; file modified 2021-12-07). This establishes a local source filename and older file copy only. Original owner, first source, website-use rights and exact 0.8/1.0/1.2 mm identity remain unknown.",
+    sourceFile: "15AK导电嘴.png",
     ownershipStatus: "unknown",
     usageRightsStatus: "needs_confirmation",
     contentMatchStatus: "product_family_reference",
     publicationStatus: "legacy_reference",
+    reviewedBy: "Codex local lineage audit",
+    reviewedDate: "2026-08-29",
     notesInternal:
-      "Migration record for an existing public reference image. Confirm exact-product match and usage rights before upgrading publication status. Repository copy lineage does not prove exact-SKU identity, compatibility, ownership or usage rights.",
+      "Migration record for an existing public reference image. Confirm exact-product match and usage rights before upgrading publication status. Local-file and repository lineage do not prove exact-SKU identity, compatibility, ownership or usage rights.",
   },
   {
     assetId: "img-af-mig-ct-0005-main-01",
@@ -28,13 +31,16 @@ export const productImageAssets: ProductImageAsset[] = [
     altText: "MIG Contact Tip M6 1.0mm, MIG/MAG Torch Parts product reference image",
     sourceKind: "unknown",
     sourceReference:
-      "Repository lineage audit: the public file before the 2026-08-25 JPEG re-export was byte-identical to /images/products/mig-contact-tip.jpg (Git blob 1876a63cce63de1ba2626d865950a9e13e2bceb1). Original owner, first source and website-use rights remain unknown.",
+      "Local lineage audit (2026-08-29): the pre-re-export repository image is byte-identical to a 750 x 750 PNG named 15AK导电嘴.png (SHA-256 717F02E9C5D58BB8600685F3A8C16ADB99AD9E8F831817BDCAA60F87DD8ECED0; file modified 2021-12-07). This establishes a local source filename and older file copy only. Original owner, first source, website-use rights and exact 0.8/1.0/1.2 mm identity remain unknown.",
+    sourceFile: "15AK导电嘴.png",
     ownershipStatus: "unknown",
     usageRightsStatus: "needs_confirmation",
     contentMatchStatus: "product_family_reference",
     publicationStatus: "legacy_reference",
+    reviewedBy: "Codex local lineage audit",
+    reviewedDate: "2026-08-29",
     notesInternal:
-      "Migration record for an existing public reference image. Confirm exact-product match and usage rights before upgrading publication status. Repository copy lineage does not prove exact-SKU identity, compatibility, ownership or usage rights.",
+      "Migration record for an existing public reference image. Confirm exact-product match and usage rights before upgrading publication status. Local-file and repository lineage do not prove exact-SKU identity, compatibility, ownership or usage rights.",
   },
   {
     assetId: "img-af-mig-ct-0006-main-01",
@@ -45,13 +51,16 @@ export const productImageAssets: ProductImageAsset[] = [
     altText: "MIG Contact Tip M6 1.2mm, MIG/MAG Torch Parts product reference image",
     sourceKind: "unknown",
     sourceReference:
-      "Repository lineage audit: the public file before the 2026-08-25 JPEG re-export was byte-identical to /images/products/mig-contact-tip.jpg (Git blob 1876a63cce63de1ba2626d865950a9e13e2bceb1). Original owner, first source and website-use rights remain unknown.",
+      "Local lineage audit (2026-08-29): the pre-re-export repository image is byte-identical to a 750 x 750 PNG named 15AK导电嘴.png (SHA-256 717F02E9C5D58BB8600685F3A8C16ADB99AD9E8F831817BDCAA60F87DD8ECED0; file modified 2021-12-07). This establishes a local source filename and older file copy only. Original owner, first source, website-use rights and exact 0.8/1.0/1.2 mm identity remain unknown.",
+    sourceFile: "15AK导电嘴.png",
     ownershipStatus: "unknown",
     usageRightsStatus: "needs_confirmation",
     contentMatchStatus: "product_family_reference",
     publicationStatus: "legacy_reference",
+    reviewedBy: "Codex local lineage audit",
+    reviewedDate: "2026-08-29",
     notesInternal:
-      "Migration record for an existing public reference image. Confirm exact-product match and usage rights before upgrading publication status. Repository copy lineage does not prove exact-SKU identity, compatibility, ownership or usage rights.",
+      "Migration record for an existing public reference image. Confirm exact-product match and usage rights before upgrading publication status. Local-file and repository lineage do not prove exact-SKU identity, compatibility, ownership or usage rights.",
   },
   {
     assetId: "img-af-mig-th-0007-main-01",

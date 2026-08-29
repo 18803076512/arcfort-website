@@ -27,6 +27,28 @@ The three current contact-tip JPEG files remain visual derivatives of the same r
 but the historical blob is used for the exact byte-identity statement because the controlled
 format correction changed their encoding.
 
+## Local Archive Extension
+
+Date: 2026-08-29
+
+The follow-up audit searched the available local image archives using SHA-256 byte comparison plus
+average-hash and difference-hash comparison. The search covered the product repository, local image
+folders and available messaging-file archives. Private workstation paths and account identifiers are
+not retained in the repository.
+
+| Subject                                | Reproducible evidence                                                                                                                 | Result                                                                                           |
+| -------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------ |
+| Contact-tip family reference           | `15AK导电嘴.png`, 750 x 750 PNG, SHA-256 `717F02E9C5D58BB8600685F3A8C16ADB99AD9E8F831817BDCAA60F87DD8ECED0`, file modified 2021-12-07 | Byte-identical older local copy of `/images/products/mig-contact-tip.jpg`                        |
+| AF-MIG-GN-0008 main and gallery images | Exact-byte and perceptual-hash comparison against available local images                                                              | No external exact or credible near-duplicate source found; only repository aliases were returned |
+
+Visual review rejected the nearest nozzle search results because they depicted mixed nozzle
+families, tip holders, swan necks, plasma parts or other component groups. A similar silhouette,
+white background or Chinese filename is not evidence of MB15 identity.
+
+The contact-tip match establishes a local source filename and an older file timestamp. It still does
+not identify the creator or owner, grant website-use rights, or distinguish the 0.8 mm, 1.0 mm and
+1.2 mm variants. No asset status was promoted by this extension.
+
 ## Evidence Boundary
 
 These findings prove only repository file lineage. They do not prove:

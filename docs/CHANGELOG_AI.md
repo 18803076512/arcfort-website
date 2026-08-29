@@ -4,6 +4,60 @@ This append-only log records major Codex decisions so future sessions can unders
 why it changed and which risks remain. Add the newest entry at the top, below this introduction. Do
 not include secrets, buyer PII, private prospect data or unconfirmed claims.
 
+## 2026-08-29 - P0 MIG Local Image Lineage Extension
+
+**Task**
+
+Extended the P0 product-image provenance audit beyond repository history by comparing the unresolved
+contact-tip and MB15-nozzle assets with available local image archives. Recorded only reproducible
+file-lineage evidence and kept ownership, usage-rights and exact-product gates unchanged.
+
+**Files Changed**
+
+- `data/assets/product-image-assets.csv` - recorded the older local source filename, file hash and
+  review date for the three shared contact-tip references.
+- `data/evidence/local-product-image-triage.csv` - attached the same local-lineage evidence to the
+  unassigned repository contact-tip candidate.
+- `knowledge-base/assets/p0-repository-image-lineage.md` - documented the local exact-hash and
+  perceptual-hash method, the contact-tip match and the bounded no-match result for the nozzle set.
+- `lib/data/product-image-assets.ts` and `docs/product-image-tasks.csv` - regenerated from canonical
+  evidence after validation.
+- `docs/CHANGELOG_AI.md` - recorded this evidence batch.
+
+**Components Changed**
+
+- No public component, route, RFQ handler or deployment setting changed.
+
+**Data Changed**
+
+- The historical contact-tip image now has a traceable local source filename (`15AK导电嘴.png`),
+  750 x 750 PNG dimensions, SHA-256 fingerprint and older file timestamp.
+- The three contact-tip asset records remain `unknown`, `needs_confirmation`,
+  `product_family_reference` and `legacy_reference`.
+- No credible external source copy was found for the MB15 gas-nozzle main or gallery images. Their
+  evidence states remain unchanged.
+
+**Visual Changes**
+
+- None. No image file or public rendering changed.
+
+**SEO Impact**
+
+- None. Legacy references remain excluded from Open Graph, Product structured data and image sitemap
+  projection.
+
+**Known Issues**
+
+- Source ownership and website-use rights for all four P0 main images remain unresolved.
+- The shared contact-tip image does not prove the 0.8 mm, 1.0 mm or 1.2 mm variant.
+- The gas-nozzle images do not prove exact MB15 identity.
+
+**Next Recommended Step**
+
+- Capture or obtain company-authorized exact-product views for the four P0 SKUs, including labels or
+  controlled sample/drawing evidence, then record owner, usage basis, reviewer and date before any
+  search-eligibility upgrade.
+
 ## 2026-08-29 - Product Main-Image Evidence Reconciliation
 
 **Task**
