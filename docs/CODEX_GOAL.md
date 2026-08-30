@@ -136,6 +136,7 @@ general page or a larger unreviewed SKU count.
 - Production evidence: `docs/operations/acquisition-production-evidence.json`
 - Acquisition baseline: `docs/acquisition-readiness-report.md`
 - Durable research and decisions: `knowledge-base/`
+- Reusable workflow skills: `.agents/skills/` and `docs/SKILLS_INDEX.md`
 
 Do not bypass these sources by hardcoding independent public facts in a page component.
 

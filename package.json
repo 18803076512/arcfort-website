@@ -26,6 +26,7 @@
     "images:triage:validate": "node --experimental-strip-types scripts/validate-local-image-triage.ts",
     "images:triage:board": "npm run images:triage:validate && node --experimental-strip-types scripts/generate-local-image-triage-board.ts",
     "acquisition:report": "node --experimental-strip-types scripts/report-acquisition-readiness.ts",
+    "skills:validate": "node --experimental-strip-types scripts/validate-core-skills.ts",
     "products:simple:preview": "node --experimental-strip-types scripts/import-simple-products.ts",
     "products:simple:generate": "node --experimental-strip-types scripts/import-simple-products.ts --write",
     "products:simple:import": "node --experimental-strip-types scripts/import-simple-products.ts --write --import",

@@ -14,6 +14,9 @@ run an unrelated check merely to create the appearance of validation.
 - Documentation/rule-only changes: validate formatting, cross-references, hierarchy consistency,
   contradictions, `git diff --check` and secret scanning. Build, lint and typecheck are not required
   unless the documentation is generated, imported by runtime code or changes executable examples.
+- Repository-skill changes: run `npm run skills:validate`, validate each changed `SKILL.md`
+  frontmatter/description, review trigger overlap and confirm every mutation and approval boundary.
+  Run focused tests for any executable helper added to a skill.
 - Frontend, component, route or site-image changes: run lint, typecheck, build, performance checks
   and representative responsive/visual review.
 - Product, category, series, compatibility or media-data changes: run the matching domain validators,
@@ -38,6 +41,8 @@ run an unrelated check merely to create the appearance of validation.
 - [ ] Confirm the task remains aligned with the current Goal Mode phase and approval boundary.
 - [ ] For rule changes, confirm hierarchy, document ownership and cross-references agree across all
       affected rule files.
+- [ ] For skill changes, confirm `docs/SKILLS_INDEX.md`, handoffs, output contracts and approval
+      boundaries remain synchronized.
 
 ## 2. Business Identity And Claims
 

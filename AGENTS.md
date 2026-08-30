@@ -212,6 +212,20 @@ included when relevant. Do not rewrite older log history solely to adopt a newer
 Stop after the requested phase. Do not automatically continue into the next development phase unless
 the user explicitly requests it.
 
+## Repository Skills
+
+Reusable ArcFort Weld workflow skills live under `.agents/skills/` and are indexed in
+`docs/SKILLS_INDEX.md`. For a substantial task matching a skill trigger, load that skill after the
+mandatory pre-task inspection and before implementation. Invoke it explicitly as `$skill-name` when
+the user names the workflow; otherwise select the smallest matching skill set automatically.
+
+Skills implement repeatable workflows but sit below all repository rules, canonical evidence and
+non-superseded decisions. They do not grant permission, confirm missing data or authorize publication.
+When work spans several skills, preserve each output contract and use the handoff order in the index;
+do not let a downstream skill rewrite an upstream evidence state.
+
+Run `npm run skills:validate` after adding or changing a core skill or the skills index.
+
 ## Safe Autonomous Execution And Approval Boundaries
 
 Codex may autonomously perform low-risk, reversible work inside the current task, including:

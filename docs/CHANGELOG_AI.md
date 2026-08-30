@@ -21,6 +21,71 @@ Components Changed, Visual Changes, Validation and Deployment may be added when 
 created before this schema remain valid historical records and must not be rewritten only for
 formatting consistency.
 
+## 2026-08-30 - Core Workflow Skill System
+
+**Task**
+
+Created seven repository-scoped ArcFort Weld workflow skills for governed product ingestion,
+technical verification, compatibility mapping, product media, publication preparation, SEO
+architecture and final release QA. Defined explicit handoff contracts, mutation boundaries,
+approval gates and stop conditions without publishing or changing any product.
+
+**Files Changed**
+
+- `.agents/skills/product-data-ingestion/SKILL.md` - defined evidence-preserving ingestion for
+  spreadsheets, PDFs, technical sheets, measurements and product lists.
+- `.agents/skills/technical-verification/SKILL.md` - defined field-level verification statuses and
+  source requirements.
+- `.agents/skills/compatibility-mapping/SKILL.md` - defined governed compatibility relationships and
+  evidence thresholds.
+- `.agents/skills/product-media-manager/SKILL.md` - defined SKU media roles, rights, exact-match and
+  geometry-protection controls.
+- `.agents/skills/product-publishing/SKILL.md` - defined preparation and explicitly approved publish
+  modes using only publishable verified inputs.
+- `.agents/skills/seo-architecture/SKILL.md` - defined intent, URL ownership, internal linking and
+  cannibalization controls.
+- `.agents/skills/release-qa/SKILL.md` - defined the final `PASS`, `PASS_WITH_WARNINGS` and `BLOCKED`
+  release gate.
+- `docs/SKILLS_INDEX.md` - indexed skill triggers, inputs, outputs, mutation rights, publication
+  rights, approval requirements and handoffs.
+- `scripts/validate-core-skills.ts` and `package.json` - added a dependency-free structural skill
+  validation command.
+- `AGENTS.md`, `docs/CODEX_GOAL.md` and `docs/QA_CHECKLIST.md` - connected repository skills to the
+  permanent workflow, canonical source map and QA selection rules.
+- `docs/CHANGELOG_AI.md` - recorded this controlled setup batch.
+
+**Data Changed**
+
+- No company fact, product record, technical value, compatibility relationship, media assignment,
+  publication status or database record changed.
+
+**SEO Impact**
+
+- No public URL, metadata, schema, internal link, Sitemap entry, robots rule or indexable page
+  changed. The SEO skill now protects these surfaces in future architecture work.
+
+**Known Issues**
+
+- The optional external `skill-creator` quick validator requires PyYAML, which is not present in the
+  bundled Python runtime. The repository validator covers the required frontmatter, sections,
+  contracts, index links and domain-specific controls without adding a project dependency.
+- The skills define controlled capabilities only; no external database connector or publishing
+  transport is granted by them.
+
+**Reusable Knowledge Added**
+
+- Repository-local skills live under `.agents/skills/` and are invoked explicitly with
+  `$skill-name` or selected automatically from precise trigger descriptions.
+- Workflow ownership is now explicit: ingestion owns candidate structure, technical verification
+  owns facts, compatibility mapping owns relationships, media management owns assets, SEO owns
+  search architecture, publishing assembles approved inputs and release QA owns the final verdict.
+
+**Next Recommended Action**
+
+- Use `$product-data-ingestion` on one bounded, evidence-backed factory product sheet and keep the
+  resulting records in review state; do not publish until the downstream verification, media and QA
+  gates pass.
+
 ## 2026-08-30 - Permanent Repository Rules Harmonization
 
 **Task**
