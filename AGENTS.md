@@ -294,6 +294,12 @@ For missing facts, use buyer-friendly wording such as "Available upon request", 
 details", "Can be confirmed by sample or drawing", `TBD`, `needs_review` or `unknown`. Group public
 unknowns under "Technical details available upon request" instead of repeating placeholders.
 
+Keep company claims in `data/evidence/company-claims.csv`. Only an `approved`, `CONFIRMED` Level A
+record with source, reviewer and date may become a factual public company claim. Keep company and
+site-level media in `data/assets/company-media-assets.csv`. A generated or representative visual is
+not factory, production, inspection, shipment or customer evidence. Run
+`npm run company:evidence:validate` and `npm run goal:report` after either registry changes.
+
 Keep one canonical structured product source ready for later migration to Sanity or Supabase. Do not
 hardcode independent product facts in page components. Preserve stable SKU, category and slug
 identifiers.

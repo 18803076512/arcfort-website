@@ -21,6 +21,446 @@ Components Changed, Visual Changes, Validation and Deployment may be added when 
 created before this schema remain valid historical records and must not be rewritten only for
 formatting consistency.
 
+## 2026-09-02 - Product Intelligence Milestone 1 Release-Audit Hardening
+
+**Task**
+
+Audited the exact uncommitted Product Intelligence Console V1 Milestone 1 candidate, closed four
+fail-open or operational failure paths, reran all non-container quality gates and corrected the
+documentation so the earlier 68-test runtime record is not presented as proof of the current
+74-assertion working tree. This batch did not start Console UI or change the public data source.
+
+**Files Changed**
+
+- `lib/supabase/product-intelligence-config.ts` and
+  `scripts/console/test-product-intelligence-config.ts` - restricted local writes to HTTP loopback
+  destinations and retained exact project-reference matching for hosted staging.
+- `lib/supabase/product-intelligence-rest.ts` and
+  `scripts/console/test-product-intelligence-rest.ts` - rejected empty-filter `selectOne` and
+  `update` operations so a caller cannot accidentally address an entire table.
+- `scripts/console/apply-shadow-catalog.ts` - marked an import batch `FAILED` when any post-creation
+  import, reconciliation or exact-parity step fails without masking the original error.
+- `supabase/migrations/202608300003_product_intelligence_readiness.sql` and
+  `202608310005_product_intelligence_workflow_guards.sql` - blocked readiness on unconfirmed legacy
+  data, missing or unresolved technical evidence, compatibility conflicts, missing exact eligible
+  main media and unapproved SEO; required at least one applicable critical field before verification;
+  and aligned publisher SEO approval with RLS.
+- `supabase/tests/database/product_intelligence_workflow_guards.test.sql` and
+  `scripts/console/validate-product-intelligence-migrations.ts` - expanded fail-closed workflow
+  coverage from 16 to 22 assertions and added static checks for the new gates.
+- `package.json` and `.github/workflows/quality.yml` - added the REST guard test to the local and CI
+  validation surfaces.
+- `README.md`, `docs/CODEX_GOAL.md`,
+  `docs/operations/product-intelligence-console-milestone-1.md`,
+  `scripts/report-goal-progress.ts` and `docs/goal-progress-report.md` - separated historical runtime
+  evidence from the current candidate and made fresh local replay the first next action.
+
+**Components Changed**
+
+- No public page, component, route, RFQ endpoint or browser bundle behavior changed.
+
+**Data Changed**
+
+- No canonical product, company, technical, compatibility, media or public SEO value changed.
+- The deterministic shadow projection still contains 43 products and the same source revision
+  `f185ebc9ebba875bc59141b872780297804fef894866108fa14d65bf995fc41b`.
+- Two consecutive generations retained SHA-256
+  `4D98BC4678F6C75FAF03D03BD569CAB3B1170276333C1F4C794456F1201909F7`.
+
+**SEO Impact**
+
+- No public URL, canonical, metadata, schema, sitemap, robots rule or indexable content changed.
+- Shadow database readiness now requires an approved or published SEO record instead of treating a
+  generated shadow record as publication approval.
+
+**Validation**
+
+- Console domain, destination, REST, migration and shadow validators passed; five migrations and 28
+  governed tables were checked statically.
+- Company evidence, product CSV, image, series, compatibility, technical, RFQ, promotion, search and
+  SEO tests passed with only the already-governed media/evidence warnings.
+- Secret scanning checked 407 repository text files and found no high-confidence secret pattern.
+- Focused Prettier, ESLint, TypeScript, deterministic generated-artifact checks and `git diff
+--check` passed.
+- Next.js `15.5.22` production build passed with 90 generated pages. Built internal-link,
+  product-image evidence, snippet and performance-budget audits also passed.
+- The current PostgreSQL reset, 74 declared pgTAP assertions, generated-type drift check and double
+  database import were not run because Docker Desktop `4.88.1` crashes before engine startup on the
+  host's AF_UNIX runtime socket failure.
+- Codex Security could not create a durable automated diff scan: the original Chinese path caused a
+  GBK decode failure, and an equivalent ASCII-path working copy was incorrectly rejected as a bare or
+  unresolved worktree before a `scanId` was created. Manual trust-boundary review and repository
+  secret scanning were completed, but automated semantic-scan coverage remains unavailable.
+
+**Known Issues**
+
+- `$release-qa` status is `BLOCKED` because applicable database tests for the exact current candidate
+  are unrun. No local commit was created.
+- A named, authorized hosted non-production Supabase project and exact staging parity are still
+  required before Milestone 2.
+- Product and company evidence gaps remain unchanged: zero strict verified SKUs, zero confirmed
+  compatibility relationships, zero confirmed exact-SKU technical facts, and zero rights-approved
+  exact main product images.
+
+**Reusable Knowledge Added**
+
+- Recorded destination-label bypass, empty-filter mutation, incomplete-batch status, vacuous critical
+  verification and shadow-SEO approval as required regression cases for later Console work.
+- Recorded that historical database evidence is candidate-specific and cannot validate later SQL or
+  test edits.
+
+**Deployment**
+
+- None. No commit, push, merge, hosted database write, public deployment or provider setting changed.
+
+**Next Recommended Action**
+
+- Restore a Docker-compatible local runtime, then run database reset, all 74 pgTAP assertions,
+  generated-type drift validation and two exact-row shadow imports for this same candidate before
+  creating the local Milestone 1 commit.
+
+## 2026-09-01 - Company Evidence Governance And Goal Progress Baseline
+
+**Task**
+
+Added fail-closed company-claim and company-media governance, recorded durable company, search and
+RFQ operating baselines, and generated a deterministic Goal progress report for the 100, 300, 500
+and 1,000 verified-SKU milestones. This batch improves evidence control without publishing new
+claims or starting Product Intelligence Console Milestone 2.
+
+**Files Changed**
+
+- `data/evidence/company-claims.csv` and `data/assets/company-media-assets.csv` - created canonical
+  claim and company-media evidence registries.
+- `scripts/company-evidence-utils.ts`, `scripts/validate-company-evidence.ts` and
+  `scripts/test-company-evidence.ts` - added governed parsing, fail-closed validation and negative
+  evidence-state tests.
+- `scripts/report-goal-progress.ts` and `docs/goal-progress-report.md` - added a deterministic Goal
+  baseline report and milestone-gap calculations.
+- `knowledge-base/company/company-profile-evidence.md`,
+  `knowledge-base/seo/search-console-baseline.md` and
+  `knowledge-base/sales/rfq-delivery-and-qualification.md` - retained reusable operating evidence
+  outside chat history.
+- `AGENTS.md`, `docs/CODEX_GOAL.md`, `docs/CONTENT_RULES.md`, `docs/QA_CHECKLIST.md` and `README.md` -
+  documented the new sources of truth, publication gates and operating commands.
+- `package.json` and `.github/workflows/quality.yml` - added company-evidence validation, negative
+  tests and Goal-report drift detection to the local and CI workflows.
+
+**Components Changed**
+
+- No public component, page, route or RFQ behavior changed.
+
+**Data Changed**
+
+- Registered 22 company claims: 16 Level A confirmed claims are approved and six unsupported claim
+  topics remain explicitly blocked.
+- Registered three current site visuals as representative legacy references; none is approved as
+  real company, factory, production, inspection, packing or shipment evidence.
+- Recorded the current structured baseline: 43 products, zero strict verified SKUs, 15 governed
+  technical facts with zero confirmed values, four reference relationships with zero confirmed
+  relationships, 46 product-image assets with zero search-eligible exact main images, and 589 series
+  component facts including 14 unresolved conflicts.
+
+**SEO Impact**
+
+- No public URL, canonical, metadata, schema, sitemap, robots rule or indexable content changed.
+- Preserved the Search Console baseline of eight clicks, 422 impressions and 1.90% CTR for
+  2026-06-26 through 2026-08-09 as evidence for later acquisition decisions.
+
+**Validation**
+
+- Company evidence validation passed with expected warnings for three representative-only visuals.
+- Negative evidence tests passed and proved that weak-source claims, generated company visuals,
+  unresolved conflicts and duplicate claim IDs fail closed.
+- Product validation, canonical image-asset validation, Console domain/config/migration validation,
+  deterministic shadow validation, Goal-report determinism, Prettier, ESLint, TypeScript, secret
+  scanning, `git diff --check` and the Next.js production build passed. The build generated 90 pages.
+
+**Known Issues**
+
+- Product Intelligence Console Milestone 1 still requires exact-parity replay in a named,
+  authorized hosted non-production Supabase project before Milestone 2 may begin.
+- The local Docker Desktop engine currently returns HTTP 500 after a Windows/WSL socket failure, so
+  the final local generated-database-type drift rerun could not be repeated in this batch. Previous
+  clean local migration, pgTAP and generated-type evidence remains recorded.
+- Forty-three legacy product-image references still require usage-rights review, two duplicate image
+  content groups remain, and no exact main product image is search eligible.
+- No technical fact, compatibility relationship or company/factory image has yet passed its strict
+  publication gate. Owner-side RFQ inbox delivery, credential rotation, GA4 and Search Console
+  sitemap evidence also remain unconfirmed.
+
+**Reusable Knowledge Added**
+
+- Added canonical company-claim and company-media registries, durable company/SEO/RFQ evidence
+  notes, and a reproducible Goal progress report suitable for CI drift checks.
+
+**Deployment**
+
+- None. No hosted database, public website, provider account or production configuration changed.
+
+**Next Recommended Action**
+
+- Authorize a dedicated hosted non-production Supabase project for Milestone 1 parity replay, then
+  collect Level A 15AK technical evidence and rights-cleared exact product/company photography.
+
+## 2026-08-31 - Product Intelligence Local Runtime And Idempotent Import Proof
+
+**Task**
+
+Installed and stabilized the local Docker/WSL runtime, executed the complete Supabase Milestone 1
+schema, corrected runtime-only import and authorization defects, generated official database types
+and proved the deterministic shadow import can reconcile twice with exact source-field parity.
+
+**Files Changed**
+
+- `scripts/console/build-shadow-catalog.ts` and `validate-shadow-catalog.ts` - deduplicated identical
+  technical-evidence links, rejected duplicate composite links and validated SEO product subjects.
+- `scripts/console/apply-local-shadow-catalog.ts` - replaced the Windows shell wrapper with a direct,
+  argument-safe Node invocation of the pinned Supabase CLI.
+- `lib/domain/catalog/shadow-catalog.ts` - aligned shadow SEO records with the database
+  `entity_type` contract.
+- `lib/supabase/product-intelligence-rest.ts` - accepted successful empty PostgREST responses and
+  used a TypeScript-compatible explicit class field; added paginated reads and filtered updates for
+  exact import reconciliation.
+- `lib/domain/catalog/shadow-parity.ts` and `scripts/console/apply-shadow-catalog.ts` - added
+  deterministic per-row, per-source-field parity across all 17 imported tables and fail-closed batch
+  status when destination drift is detected.
+- `scripts/console/sync-database-types.ts`, `package.json` and `.github/workflows/quality.yml` - added
+  generated-type drift detection and made CI prove two consecutive exact-parity imports.
+- `lib/supabase/product-intelligence-config.ts`, `.env.example` and
+  `scripts/console/test-product-intelligence-config.ts` - required the authorized staging project
+  reference to match the direct HTTPS destination before a hosted shadow write can begin.
+- `lib/supabase/database.types.ts` - generated the full TypeScript schema from the verified local
+  PostgreSQL database.
+- `supabase/migrations/202608300002_product_intelligence_security.sql`,
+  `202608300003_product_intelligence_readiness.sql` and
+  `202608310005_product_intelligence_workflow_guards.sql` - supported current JSON JWT claims,
+  corrected enum reconciliation and allowed controlled service-role lifecycle validation.
+- `supabase/tests/database/` - strengthened immutable-evidence coverage and added the service-job,
+  JWT-claims, reconciliation and idempotent-upsert permission tests.
+- `supabase/product-catalog-schema.sql`, `docs/supabase-product-catalog-setup.md` and
+  `docs/product-data-workflow.md` - fail-closed the superseded schema prototype and redirected old
+  setup instructions to the versioned Product Intelligence migrations.
+- `.gitignore`, `README.md`, `docs/CODEX_GOAL.md` and this operations runbook - recorded the verified
+  local state and retained hosted parity gate.
+
+**Components Changed**
+
+- No public component, page or route changed. Milestone 2 Console UI was not started.
+
+**Data Changed**
+
+- Created only an isolated local shadow database. It contains 43 products, 604 technical values,
+  617 technical-evidence links, 43 SEO rows and 46 media rows for the deterministic source revision.
+- Preserved all 14 `DATA_CONFLICT` facts and zero confirmed technical, compatibility or
+  search-eligible media states. Canonical repository data and the public website remain unchanged.
+
+**SEO Impact**
+
+- None. No public URL, metadata, schema, canonical, sitemap, robots rule or indexable content changed.
+
+**Validation**
+
+- Docker Desktop `4.88.1`, Engine `29.7.2` and WSL `2.7.12.0` ran the isolated local stack.
+- `supabase db reset --local` applied all five migrations and seed data successfully.
+- Five pgTAP files passed all 68 schema, RLS, lifecycle, workflow and service-job tests.
+- The complete shadow import reconciled twice at revision `f185ebc9ebba`, comparing all governed
+  source fields across 17 imported tables and proving current-baseline idempotency.
+- A synthetic unexpected SEO row passed aggregate reconciliation but was rejected by exact-row
+  parity; the importer exited non-zero and marked the batch `FAILED`. A clean reset and two imports
+  then passed again.
+- The deprecated schema draft failed closed and created no legacy product table.
+- Generated database types match the clean migrated schema through the automated drift check.
+- Catalog-domain, static migration, deterministic shadow, ESLint, TypeScript, secret scan and the
+  Next.js production build all pass; the build generated 90 pages.
+
+**Known Issues**
+
+- The full Milestone 1 exit remains blocked until this batch is reviewed/committed and the exact
+  snapshot reconciles in a named, dedicated hosted non-production Supabase project.
+- Windows build `26200` currently needs Docker AI/inference disabled on this workstation because of
+  an upstream AF_UNIX socket failure. Renamed stale socket directories were retained outside the
+  repository and were not deleted.
+- Existing product evidence blockers remain unchanged: zero confirmed technical facts, zero
+  confirmed compatibility and zero search-eligible exact-product media.
+
+**Reusable Knowledge Added**
+
+- PostgREST service jobs must read `request.jwt.claims` as well as the legacy single-role setting.
+- Shadow link tables require deterministic composite-key deduplication before PostgREST upsert.
+- Importers must prove both clean first-run reconciliation and a second idempotent run.
+- Aggregate counts are insufficient migration evidence; imported source columns need deterministic
+  multiset parity so status changes, duplicates and unexpected rows cannot hide behind equal counts.
+- A staging label is not destination evidence; guarded writes must also match the exact authorized
+  project reference to the direct service hostname.
+- Superseded executable database drafts must remain fail-closed and cannot coexist as an alternate
+  installation path beside the governed migration chain.
+
+**Deployment**
+
+- Local development only. No hosted Supabase, production database, website deployment, DNS or
+  provider configuration was changed.
+
+**Next Recommended Action**
+
+- Review and commit this batch, then name and explicitly authorize one dedicated Supabase staging
+  project for dry-run, migration replay, pgTAP and shadow reconciliation parity.
+
+## 2026-08-31 - Product Intelligence Console V1 Milestone 1 Repository Foundation
+
+**Task**
+
+Implemented the approved D0-D7 Milestone 1 data foundation for Product Intelligence Console V1.
+Added a versioned Supabase schema, human verification and lifecycle guards, versioned release QA,
+forced RLS, private evidence storage policies, a deterministic repository-to-database shadow
+projection, guarded import and reconciliation tooling, database tests and CI coverage. The existing
+repository remains canonical and the public website continues to use its current static product
+adapters.
+
+**Files Changed**
+
+- `supabase/config.toml`, `supabase/seed.sql`, `supabase/migrations/` and `supabase/tests/database/`
+  - added the local database configuration, 28-table governed schema, five
+    security/readiness/storage/workflow migrations and pgTAP schema, lifecycle, RLS and workflow
+    tests.
+- `lib/domain/catalog/` - added lifecycle, verification and deterministic shadow-catalog domain
+  logic.
+- `lib/supabase/` - added the Milestone 1 import contract, guarded environment configuration and
+  server-only REST transport.
+- `scripts/console/` - added shadow generation, validation, guarded apply/reconciliation, local
+  apply, domain tests and static migration validation.
+- `generated/console/product-intelligence-shadow-v1.json` - added the deterministic, private
+  repository shadow snapshot.
+- `.env.example`, `.gitignore`, `package.json`, `package-lock.json` and
+  `.github/workflows/quality.yml` - documented isolated Product Intelligence variables, pinned the
+  Supabase CLI and added local/CI validation commands.
+- `docs/product-intelligence-console-v1-architecture.md`,
+  `docs/operations/product-intelligence-console-milestone-1.md`, `docs/CODEX_GOAL.md`, `README.md`
+  and `knowledge-base/decisions/2026-08-30-product-intelligence-console-v1-foundation.md` - recorded
+  the approved decisions, authority boundary, operations, rollback and milestone exit gates.
+
+**Components Changed**
+
+- No public website component or route changed.
+- Added backend domain modules and operational commands only; the protected Console UI remains a
+  Milestone 2 concern.
+
+**Data Changed**
+
+- Generated a non-public shadow projection for 43 canonical CSV products, 6 categories, 10 series,
+  589 component facts, 15 exact-SKU technical facts, 4 compatibility relationships and 46 governed
+  media assets.
+- Preserved 14 `DATA_CONFLICT` component facts, zero confirmed technical facts, zero confirmed
+  compatibility relationships and zero search-eligible assets. No reference evidence was promoted.
+- Did not write to a local, staging or production database and did not change canonical product,
+  company, RFQ or publication data.
+
+**SEO Impact**
+
+- None. No public URL, canonical, metadata, schema, internal link, sitemap, robots rule or indexable
+  content changed. The public site has no runtime dependency on the new database.
+
+**Validation**
+
+- Passed full ESLint and TypeScript checks.
+- Passed product CSV, series component, technical evidence, compatibility, media asset, local image
+  triage, secret, catalog-domain, migration and shadow reconciliation validations. All migration and
+  pgTAP SQL files also passed PostgreSQL syntax parsing.
+- Passed the production Next.js build with 90 generated pages, the built internal-link and SEO
+  audits, and the existing performance budgets.
+- The deterministic shadow baseline contains 43 products and source revision
+  `f185ebc9ebba875bc59141b872780297804fef894866108fa14d65bf995fc41b`.
+- Supabase CLI `2.116.0` parsed the project configuration. Database reset, pgTAP execution, official
+  type generation and an actual shadow write were not run because this host has no Docker/Podman
+  runtime and no named hosted non-production project was authorized.
+- `$release-qa` result for the Milestone 1 exit is `BLOCKED`: repository checks pass, but database
+  runtime and hosted shadow-parity evidence are applicable critical gates and remain unverified.
+
+**Known Issues**
+
+- Milestone 1 has not met its runtime exit gate until migrations and pgTAP tests pass in a real local
+  stack, CLI database types are reviewed and the snapshot reconciles in a named hosted
+  non-production Supabase project.
+- Three SKUs remain `needs_photo`; 43 legacy public reference assets still need explicit usage-rights
+  confirmation, two image groups reuse identical content, and 73 local candidates have neither
+  approved website rights nor confirmed exact-product identity.
+- Four legacy starter records remain in generated `lib/data/products.ts` but not in the canonical
+  product CSV. They remain draft-only and were deliberately excluded from the shadow baseline.
+- The production dependency audit still reports one moderate and three high advisories in the
+  existing Next.js/PostCSS/Sharp/Nanoid tree. A framework-major upgrade is outside this controlled
+  data-foundation batch and must be assessed separately.
+
+**Reusable Knowledge Added**
+
+- The repository now has an approved shadow-authority boundary, explicit catalog lifecycle,
+  field-level evidence model, compatibility evidence model, append-only audit strategy, private
+  media policy and deterministic import/reconciliation contract.
+- `docs/operations/product-intelligence-console-milestone-1.md` is the runbook for local and hosted
+  non-production verification without exposing service-role credentials or changing the public
+  catalog.
+
+**Next Recommended Action**
+
+- Start Docker Desktop/Podman for an isolated local Supabase run, then execute database reset,
+  pgTAP tests, local shadow reconciliation and CLI type generation. After local evidence passes,
+  name and authorize one dedicated hosted non-production Supabase project for the same replay.
+
+## 2026-08-30 - Product Intelligence Console V1 Architecture Proposal
+
+**Task**
+
+Inspected the current website, product pipeline, evidence registries, media governance, Supabase
+drafts, authentication state, deployment flow and operational checks. Produced an architecture-first
+proposal for a protected Product Intelligence Console V1 and stopped before implementation as
+required.
+
+**Files Changed**
+
+- `docs/product-intelligence-console-v1-architecture.md` - recorded the current-state audit,
+  reusable systems, refactoring boundaries, proposed data model, authentication and publication
+  architecture, migration/rollback plan, milestones, risks and owner decision gates.
+- `docs/CODEX_GOAL.md` - added the proposal to the canonical source map without changing the current
+  source-of-truth boundary.
+- `docs/CHANGELOG_AI.md` - recorded this architecture milestone.
+
+**Data Changed**
+
+- No company, product, technical, compatibility, packaging, media, SEO or RFQ record changed.
+- No database, Supabase project, authentication account, release candidate or publication state was
+  created.
+
+**SEO Impact**
+
+- None. No public route, canonical, metadata, schema, internal link, sitemap, robots rule or
+  indexable content changed.
+
+**Known Issues**
+
+- The current Goal Mode still prioritizes company and 15AK evidence before a database backend. The
+  proposed Console V1 implementation phase requires an explicit owner decision and a dated Goal
+  Mode decision before code or schema work begins.
+- Supabase, console placement, authentication, authority transition, release projection, media
+  storage and environment decisions remain proposals pending owner approval.
+- All 43 product records remain `needs_review`; current governed technical, compatibility and media
+  evidence still contains no confirmed technical fact, confirmed relationship or search-eligible
+  exact-product image.
+- The existing `supabase/product-catalog-schema.sql` is not sufficient for Console V1 and must not be
+  applied as the approved schema.
+
+**Reusable Knowledge Added**
+
+- The repository now has one architecture proposal explaining how to preserve the current static
+  website and evidence gates while introducing a central database, human approvals, audit history,
+  private previews and immutable release snapshots.
+- The proposed migration keeps repository sources canonical during shadow mode and limits the first
+  authority cutover to an owner-approved 15AK scope.
+
+**Next Recommended Action**
+
+- Resolve decisions D0-D7 in `docs/product-intelligence-console-v1-architecture.md`, record the
+  approved Goal Mode phase, then implement Milestone 1 only: versioned schema, RLS tests,
+  audit/lifecycle foundations and a read-only shadow import.
+
 ## 2026-08-30 - Core Workflow Skill System
 
 **Task**

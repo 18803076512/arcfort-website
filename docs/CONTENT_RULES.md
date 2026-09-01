@@ -328,6 +328,16 @@ time explanations on relevant inner pages. Avoid demo, sample, template or unfin
 
 ## Company And Trust Pages
 
+Use `data/evidence/company-claims.csv` as the governed claim register and `lib/content/site.ts` as its
+current runtime projection. An approved public claim requires Level A evidence, `CONFIRMED` status,
+source reference, reviewer and review date. Keep blocked topics out of public copy rather than
+softening them into an unsupported implication.
+
+Use `data/assets/company-media-assets.csv` for site-level media. Only a reviewed company-owned photo
+with approved rights and a matching subject may be described as company evidence. Generated,
+representative or legacy-reference visuals may support layout only and must not imply a real factory,
+process, shipment, customer or exact product.
+
 The About page should explain the legal company, ArcFort Weld brand, confirmed location, product
 scope, target buyers, OEM services and China/international supply role. Do not claim ownership,
 certification, capacity or history beyond evidence.

@@ -34,6 +34,60 @@ controlled by this company; never associate unrelated companies that use a simil
 - TailwindCSS
 - ESLint
 - Prettier
+- Supabase Product Intelligence foundation (shadow mode; not a public website dependency)
+
+## Product Intelligence Console V1
+
+The approved Product Intelligence architecture adds a dedicated Supabase Postgres, Auth and private
+Storage foundation without changing the website's current product source. Milestone 1 is data-only:
+there is no `/console` UI yet, no public signup and no direct database-to-website publishing.
+
+Key files:
+
+- `supabase/migrations/` - versioned relational schema, lifecycle, human verification, release QA,
+  audit, RLS, readiness and private storage policies
+- `supabase/tests/database/` - pgTAP schema, lifecycle, RLS and workflow-guard tests
+- `lib/domain/catalog/` - shared lifecycle, verification and shadow-data contracts
+- `lib/supabase/database.types.ts` - Supabase CLI types generated from the verified local schema
+- `scripts/console/` - deterministic shadow generation, validation and guarded staging import
+- `generated/console/product-intelligence-shadow-v1.json` - reviewed repository shadow projection;
+  never serve this internal file publicly
+- `docs/operations/product-intelligence-console-milestone-1.md` - local, staging, import and rollback
+  procedure
+- `data/evidence/company-claims.csv` - governed company claims and blocked unsupported topics
+- `data/assets/company-media-assets.csv` - company/site media provenance and evidence status
+- `docs/goal-progress-report.md` - generated 100/300/500/1000 SKU and evidence progress report
+
+Routine repository checks:
+
+```bash
+npm run console:shadow:generate
+npm run console:shadow:validate
+npm run console:domain:test
+npm run console:config:test
+npm run console:migrations:validate
+npm run console:db:types:check
+npm run company:evidence:validate
+npm run company:evidence:test
+npm run goal:report
+```
+
+The database type check requires the local Supabase stack to be running. Use
+`npm run console:db:types` after an intentional schema change, review the generated type diff and
+commit it with the matching migration.
+
+The guarded `npm run console:shadow:apply` command writes only when a named local or staging Supabase
+destination and explicit shadow-write environment flag are configured. It is not a production
+publication command. Repository CSV and governed registries remain canonical until a later approved
+15AK cutover.
+
+The 2026-08-31 local runtime proof applied all five migrations, passed 68 pgTAP checks and reconciled
+all source-controlled fields across 17 imported tables twice for the complete 43-product shadow
+snapshot. The second run verifies repeatable imports; a negative unexpected-row test verifies the
+fail-closed path. That historical proof predates the current readiness and SEO-policy hardening. The
+current files declare 74 pgTAP assertions and require a fresh database reset, test run, generated-type
+drift check and double shadow replay. Hosted staging parity is still required before Milestone 2 or
+any source-of-truth cutover.
 
 ## Pages
 
@@ -935,8 +989,8 @@ npm run seo:snippets
 - `docs/sku-template-guide.md` - SKU template filling guide and first batch recommendation
 - `docs/first-30-sku-preparation.md` - first 30 SKU worksheet workflow and data confirmation guide
 - `docs/product-data-workflow.md` - product CSV workflow and validation rules
-- `supabase/product-catalog-schema.sql` - future product catalog database schema
-- `docs/supabase-product-catalog-setup.md` - product catalog database setup instructions
+- `supabase/product-catalog-schema.sql` - blocked historical schema prototype; do not apply
+- `docs/supabase-product-catalog-setup.md` - redirect to the governed Product Intelligence runbook
 
 ## Getting Started
 

@@ -14,6 +14,50 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  product-intelligence-database:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      CI: true
+      SUPABASE_TELEMETRY_DISABLED: 1
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v7
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Start local Product Intelligence services
+        run: >-
+          npx supabase start
+          --exclude studio,imgproxy,edge-runtime,logflare,vector,supavisor,realtime
+
+      - name: Prove migrations are reproducible
+        run: npm run console:db:reset
+
+      - name: Test schema, lifecycle and RLS
+        run: npm run console:db:test
+
+      - name: Verify generated database types
+        run: npm run console:db:types:check
+
+      - name: Apply and reconcile repository shadow data
+        run: npm run console:shadow:apply:local
+
+      - name: Prove idempotent exact-row reconciliation
+        run: npm run console:shadow:apply:local
+
+      - name: Stop local Product Intelligence services
+        if: always()
+        run: npx supabase stop --no-backup
+
   quality:
     runs-on: ubuntu-latest
     timeout-minutes: 15
@@ -40,6 +84,19 @@ jobs:
       - name: Validate product data
         run: npm run products:validate
 
+      - name: Validate company claims and media evidence
+        run: |
+          npm run company:evidence:validate
+          npm run company:evidence:test
+
+      - name: Validate Product Intelligence foundation
+        run: |
+          npm run console:domain:test
+          npm run console:config:test
+          npm run console:rest:test
+          npm run console:migrations:validate
+          npm run console:shadow:validate
+
       - name: Preview safe simple SKU merge
         run: npm run products:simple:preview
 
@@ -64,7 +121,8 @@ jobs:
           npm run images:assets:generate
           npm run images:assets:report
           npm run acquisition:report
-          git diff --exit-code -- lib/data/products.ts lib/data/product-image-assets.ts lib/data/product-series-component-facts.ts docs/product-readiness-report.md docs/product-image-tasks.csv docs/product-series-component-evidence-report.md docs/product-series-readiness-report.md docs/compatibility-readiness-report.md docs/product-technical-evidence-report.md docs/product-image-asset-report.md docs/acquisition-readiness-report.md
+          npm run goal:report
+          git diff --exit-code -- lib/data/products.ts lib/data/product-image-assets.ts lib/data/product-series-component-facts.ts docs/product-readiness-report.md docs/product-image-tasks.csv docs/product-series-component-evidence-report.md docs/product-series-readiness-report.md docs/compatibility-readiness-report.md docs/product-technical-evidence-report.md docs/product-image-asset-report.md docs/acquisition-readiness-report.md docs/goal-progress-report.md
 
       - name: Verify promotion campaign links
         run: |

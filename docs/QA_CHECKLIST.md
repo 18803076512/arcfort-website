@@ -101,6 +101,20 @@ npm run technical:report
 npm run acquisition:report
 ```
 
+For company claims, company media or Goal Mode progress changes, also run:
+
+```bash
+npm run company:evidence:validate
+npm run company:evidence:test
+npm run goal:report
+```
+
+Confirm that every approved company claim is Level A and `CONFIRMED` with a source, reviewer and
+date. Confirm that every `company_evidence` image is company-owned, rights-approved, subject-matched
+and reviewed. Representative or generated visuals must remain distinct from company evidence, and
+`notes_internal` must not enter public output or generated reports. Regenerate the Goal report and
+verify it reconciles product, technical, compatibility, media, company and acquisition counts.
+
 For product-series evidence, category-family or public series changes, also run:
 
 ```bash

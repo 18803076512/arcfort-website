@@ -23,9 +23,13 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
+.pnpm-store/
 dev-server.log
 
 # system
 .DS_Store
 Thumbs.db
 *.tsbuildinfo
+.supabase/
+supabase/.branches/
+supabase/.temp/
