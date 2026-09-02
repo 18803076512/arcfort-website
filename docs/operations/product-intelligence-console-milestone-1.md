@@ -1,8 +1,9 @@
 # Product Intelligence Console V1 - Milestone 1 Operations
 
-Status: Repository foundation is statically verified. The earlier 68-test migration baseline passed
-locally, but the current 74-assertion guard amendments still require a fresh database replay. A named
-hosted staging replay also remains required before Milestone 1 can exit.
+Status: Repository foundation at `6383171` passed static checks and isolated Linux CI database replay
+on 2026-09-02, including all 74 pgTAP assertions and two exact-row shadow imports. A named, authorized
+hosted staging replay remains required before Milestone 1 can exit. No Console UI or production
+source-of-truth cutover is included.
 
 ## Authority Boundary
 
@@ -69,6 +70,9 @@ drift instead of copying it into the new database.
 
 Use a Docker-compatible container runtime and the Supabase CLI. The local stack is development-only
 and must not be exposed to the internet. CLI `2.116.0` is pinned in `devDependencies`.
+Run `npm ci` first so CLI and formatter versions match the lockfile. The isolated Linux CI job uses
+the same commands and provides candidate-specific runtime evidence when this Windows host cannot
+start Docker; it is not a hosted staging environment.
 
 ```bash
 npx supabase start
@@ -91,12 +95,39 @@ npm run console:db:types:check
 The check command regenerates and formats the type definition in memory, then fails if the committed
 file differs from the migrated local schema. CI runs the same check against a clean database.
 
-`lib/supabase/database.types.ts` was generated from the verified local schema on 2026-08-31 and is
-the complete schema snapshot for future data-access work. The narrower
+`lib/supabase/database.types.ts` was initially generated from the verified local schema on 2026-08-31.
+Its formatting was aligned with locked Prettier `3.8.4`, and exact regeneration passed against all
+five migrations on 2026-09-02. It is the complete schema snapshot for future data-access work. The narrower
 `lib/supabase/product-intelligence.types.ts` remains the Milestone 1 shadow-import contract. Review
 both when a migration changes; do not hand-edit the generated schema file.
 
 ## Hosted Non-Production Setup
+
+### Owner Setup
+
+1. Sign in to the [Supabase Dashboard](https://supabase.com/dashboard) and select your organization.
+2. Create a new project dedicated to this workflow. Suggested name:
+   `arcfort-product-intelligence-staging`. Do not reuse the website's existing database.
+3. Keep the database password in a password manager. Do not send passwords, API secrets, access
+   tokens or connection strings in chat, screenshots, Git or this runbook.
+4. Use the Free plan if available for the organization and workload. Stop for owner approval if
+   project quota or billing requires an upgrade; do not change an existing production plan.
+5. Choose the region deliberately. Southeast Asia (Singapore) is a suggested staging location,
+   subject to the owner's data-residency choice. See
+   [available regions](https://supabase.com/docs/guides/platform/regions).
+6. Once provisioned, copy only the project reference from the dashboard address
+   `https://supabase.com/dashboard/project/<project-ref>`. The reference and Project URL are not
+   passwords. Send the name, reference, owner, region and plan, plus confirmation that this is a
+   dedicated non-production project and permission for the Milestone 1 migration/shadow import.
+7. Leave the empty project intact. Do not paste tutorial SQL, manually create tables or connect it to
+   Vercel/production. Configure CLI login and required private environment variables locally before
+   the controlled dry-run below. Review the exact migration plan before applying it.
+
+The [official project quickstart](https://supabase.com/docs/guides/getting-started/quickstarts/nextjs)
+documents project creation and the Connect panel. Only its project-creation guidance applies here;
+this repository already contains its schema, application and guarded import workflow.
+
+### Operator Handoff
 
 Before any hosted write, record:
 
@@ -191,21 +222,44 @@ Milestone 1 is complete only when all of the following are available:
 
 ## Current Validation State - 2026-09-02
 
-The current working batch adds six workflow assertions and strengthens readiness, SEO approval,
-shadow-import failure handling, REST mutation filters and destination guards. Static migration,
-domain, configuration, REST, shadow, secret, product, media, SEO, lint, typecheck and production-build
-checks pass. The deterministic 43-product snapshot also generated twice with the same revision and
-SHA-256 digest.
+The foundation, six added workflow assertions and readiness, SEO-approval, REST and destination
+guards are committed in PR #130. Exact tested commit:
+`6383171365fa1ae14904025789cf52ae9718c815`.
+[GitHub Actions run 33591108612](https://github.com/18803076512/arcfort-website/actions/runs/33591108612)
+completed both `quality` and `product-intelligence-database` successfully. Direct database logs prove:
 
-Docker Desktop `4.88.1` currently exits before the local engine starts because Windows cannot access
-new AF_UNIX socket files under the Docker runtime and secrets-engine directories. Quarantining the
-stale directories and disabling optional AI/inference settings did not produce a stable runtime. No
-Docker update, factory reset, Windows feature change or reboot was performed automatically.
+- Clean Linux `npm ci`, isolated Supabase startup and `supabase db reset --local` succeeded.
+- All five migrations applied; five pgTAP files executed 74 assertions with `Result: PASS`.
+- CLI-generated database types exactly matched the committed file.
+- Two consecutive imports reconciled both counts and every source-controlled field across all 17
+  imported tables. Both used revision
+  `f185ebc9ebba875bc59141b872780297804fef894866108fa14d65bf995fc41b`.
+- Counts remained 43 products, 43 variants, 604 technical values, 617 technical-evidence links,
+  46 media records and 43 SEO records. No source status, conflict or verification was promoted.
+- CI shut down the isolated stack with `supabase stop --no-backup`.
 
-Therefore `supabase db reset --local`, the 74 current pgTAP assertions, generated database-type drift
-validation and two exact-row database imports have not been rerun for these amendments. The
-2026-08-31 record below remains valid historical evidence for its exact earlier candidate; it must
-not be presented as proof of the current working tree.
+The quality job passed domain/configuration/REST/migration/shadow validation, source and generated
+data checks, secret scanning, product/media/company/series/compatibility/technical gates, RFQ tests,
+SEO, lint, typecheck, production build and built-page link/image/snippet/performance audits.
+
+Two reproducibility failures were resolved before this passing run. The first clean install exposed
+missing cross-platform optional `@emnapi` dependencies in the lockfile. The lock was repaired from
+the committed baseline with npm `10.9.3`, preserving unrelated versions. A later run passed all 74
+tests but found type-file formatting drift: the previous installed Prettier was `3.9.6`, while the
+lock pins `3.8.4`. A real `npm ci` and locked reformat fixed only generated helper layout, not schema
+semantics. See `knowledge-base/technical/console-validation-reproducibility.md`.
+
+The separately approved Windows Docker Desktop upgrade from `4.88.1` to `4.89.0` installed from the
+official checksum-verified installer, but did not restore this host's runtime. Logs still report
+that Windows cannot access/rename `sailor-ingest.sock` to its stale path. No factory reset, WSL
+removal, Windows feature change or reboot was performed. Earlier quarantined socket directories
+were retained, not deleted blindly. The passing Linux job does not resolve this Windows problem.
+
+The PR remains unmerged. Vercel produced a successful automatic branch preview after the authorized
+push; no production deployment, hosted Supabase migration or public data-source switch was made.
+No staging reference, CLI authentication or local staging credentials are configured. The isolated
+runtime gate is `PASS` for the exact tested candidate. Milestone 1 exit remains `BLOCKED` only on
+the outstanding named/authorized hosted staging parity gate; Console Milestone 2 must not begin.
 
 ## Validation Record - 2026-08-31
 
@@ -245,6 +299,6 @@ security. The same socket class later prevented a fresh 2026-09-02 runtime start
 
 No hosted non-production project was named or authorized, so no remote migration or data write was
 attempted. The 2026-08-31 candidate's local-runtime gate was `PASS`; that result does not cover later
-migration amendments. The current Milestone 1 `$release-qa` verdict remains `BLOCKED` on a fresh
-local database replay, reviewed commit and hosted staging parity. Milestone 2 must not begin before
-those gates pass for the same candidate.
+migration amendments. The later 2026-09-02 replay and remaining hosted staging gate are recorded in
+the current validation section above. Historical runtime results must not be reused for an untested
+candidate.

@@ -1,6 +1,6 @@
 # ArcFort Weld Codex Goal Mode
 
-Evidence baseline: 2026-09-01. Production observations referenced here were last verified on
+Evidence baseline: 2026-09-02. Production observations referenced here were last verified on
 2026-08-29 unless a later date is recorded in the relevant operations evidence.
 
 ## Purpose And Authority
@@ -94,27 +94,27 @@ specification. Appearance, similar naming or catalog grouping cannot establish c
 
 ## Current Repository Baseline
 
-| Area                   | Current evidence                                                                                                                                                                 |
-| ---------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Application            | Next.js 15 App Router, React 19, TypeScript, Tailwind CSS, ESLint and Prettier                                                                                                   |
-| Public routes          | 18 page route files and two API route families, including product, category, series, application, guide and RFQ paths                                                            |
-| Reusable UI            | 59 TypeScript component files using the governed industrial design system                                                                                                        |
-| Product pipeline       | `data/import/products.csv` -> validation/import scripts -> `lib/data/products.ts` -> content adapter -> static App Router pages                                                  |
-| Product records        | 43 total: 40 active and three draft across six categories; all 43 remain `needs_review`                                                                                          |
-| Product series         | 10 catalog evidence records; zero governed public series                                                                                                                         |
-| Series evidence        | 589 component facts and 189 candidates; zero confirmed component facts and 14 blocked data conflicts                                                                             |
-| Compatibility          | Four governed reference-only relationships; zero confirmed relationships                                                                                                         |
-| Technical facts        | 15 governed field-level facts; zero confirmed ArcFort Weld facts                                                                                                                 |
-| Product media          | 119 repository product-image files and 46 canonical asset records; zero rights-approved, exact-product, search-eligible assets                                                   |
-| Public product imagery | All 40 active products retain legacy-reference main images; three draft products remain blocked for exact images                                                                 |
-| Company claims         | 22 governed claim records: 16 approved Level A statements and six blocked unsupported topics                                                                                     |
-| Company media          | Three files and three governed site-media records; all remain representative legacy references and zero are approved company evidence                                            |
-| Knowledge base         | 23 files, including durable `company`, `seo` and `sales` baselines alongside product, technical, compatibility, asset and decision records                                       |
-| SEO                    | Central metadata and JSON-LD builders, canonical handling, sitemap, robots, redirects, static audits and live-readiness checks                                                   |
-| Search baseline        | Site is live and indexable; 88 production sitemap URLs and a recorded baseline of 8 clicks, 422 impressions and 1.90% CTR                                                        |
-| RFQ                    | Email-provider flow, validation, attachments, buyer confirmation, BotID and idempotency are implemented; final sales and buyer inbox placement remains externally unverified     |
-| Delivery operations    | Deployment and live health evidence exist; DMARC, credential-rotation confirmation, GA4 conversion evidence and Search Console submission still require owner-side verification  |
-| Product Intelligence   | Five Supabase migrations and 74 declared pgTAP assertions; the earlier 68-test baseline passed locally, while the current guard amendments still require a fresh database replay |
+| Area                   | Current evidence                                                                                                                                                                |
+| ---------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Application            | Next.js 15 App Router, React 19, TypeScript, Tailwind CSS, ESLint and Prettier                                                                                                  |
+| Public routes          | 18 page route files and two API route families, including product, category, series, application, guide and RFQ paths                                                           |
+| Reusable UI            | 59 TypeScript component files using the governed industrial design system                                                                                                       |
+| Product pipeline       | `data/import/products.csv` -> validation/import scripts -> `lib/data/products.ts` -> content adapter -> static App Router pages                                                 |
+| Product records        | 43 total: 40 active and three draft across six categories; all 43 remain `needs_review`                                                                                         |
+| Product series         | 10 catalog evidence records; zero governed public series                                                                                                                        |
+| Series evidence        | 589 component facts and 189 candidates; zero confirmed component facts and 14 blocked data conflicts                                                                            |
+| Compatibility          | Four governed reference-only relationships; zero confirmed relationships                                                                                                        |
+| Technical facts        | 15 governed field-level facts; zero confirmed ArcFort Weld facts                                                                                                                |
+| Product media          | 119 repository product-image files and 46 canonical asset records; zero rights-approved, exact-product, search-eligible assets                                                  |
+| Public product imagery | All 40 active products retain legacy-reference main images; three draft products remain blocked for exact images                                                                |
+| Company claims         | 22 governed claim records: 16 approved Level A statements and six blocked unsupported topics                                                                                    |
+| Company media          | Three files and three governed site-media records; all remain representative legacy references and zero are approved company evidence                                           |
+| Knowledge base         | 24 files, including durable company, SEO, sales and database-validation baselines alongside product, technical, compatibility, asset and decision records                       |
+| SEO                    | Central metadata and JSON-LD builders, canonical handling, sitemap, robots, redirects, static audits and live-readiness checks                                                  |
+| Search baseline        | Site is live and indexable; 88 production sitemap URLs and a recorded baseline of 8 clicks, 422 impressions and 1.90% CTR                                                       |
+| RFQ                    | Email-provider flow, validation, attachments, buyer confirmation, BotID and idempotency are implemented; final sales and buyer inbox placement remains externally unverified    |
+| Delivery operations    | Deployment and live health evidence exist; DMARC, credential-rotation confirmation, GA4 conversion evidence and Search Console submission still require owner-side verification |
+| Product Intelligence   | Five migrations, 74 pgTAP assertions, generated-type parity and two exact-row shadow imports passed on isolated Linux CI at `6383171`; hosted staging parity remains required   |
 
 The technical website foundation is mature. The primary constraint is verified evidence, not another
 general page or a larger unreviewed SKU count.
@@ -127,14 +127,18 @@ This phase builds versioned Supabase migrations, typed contracts, shadow import,
 RLS controls. It does not make Supabase authoritative for public pages and does not publish product
 data.
 
-The repository implementation and an isolated local runtime proof were completed on 2026-08-31 for
-the then-current 68-test migration baseline. The current working batch adds readiness, SEO-approval
-and destination-safety guards and now declares 74 pgTAP assertions. Static validation, deterministic
-generation, lint, typecheck and the public production build pass, but the amended migrations still
-need a fresh database reset, pgTAP run, generated-type drift check and double exact-row shadow replay.
-The Milestone 1 exit gate also remains open because no named hosted non-production Supabase project
-has been authorized for parity replay and the current working batch has not been reviewed and
-committed.
+The foundation and readiness, SEO-approval and destination-safety hardening are committed on
+`codex/v2-industrial-brand-system` in PR #130. On 2026-09-02, isolated Linux CI at commit `6383171`
+passed a fresh database reset, all 74 pgTAP assertions, generated-type drift validation and two
+consecutive exact-row shadow imports across 17 tables. Static validation, deterministic generation,
+lint, typecheck and the public production build also passed. Candidate-specific evidence is retained
+in `docs/operations/product-intelligence-console-milestone-1.md`; later schema/importer changes must
+rerun the same gates. Windows Docker Desktop still has a separate host startup failure.
+
+The Milestone 1 exit gate remains open because no named hosted non-production Supabase project has
+been authorized for parity replay. A green CI database job does not prove hosted parity, authorize
+production changes or complete the Console UI. The branch is not merged and no production database
+write or source-of-truth cutover has occurred.
 
 The approval and source-of-truth boundary are recorded in
 `knowledge-base/decisions/2026-08-30-product-intelligence-console-v1-foundation.md`.
@@ -262,14 +266,15 @@ mobile behavior and conversion paths must satisfy the applicable repository gate
 
 Complete Product Intelligence Console V1 Milestone 1 staging parity before starting console UI:
 
-1. Restore a Docker-compatible local database runtime and rerun reset, all 74 declared pgTAP checks,
-   generated-type drift validation and two exact-row shadow imports for the current working batch.
-2. Review and commit the freshly verified Milestone 1 foundation and generated database types.
-3. Name and authorize one dedicated hosted non-production Supabase project.
-4. Record project reference, owner, plan, region, rollback owner and confirmation that it is not
+1. Name and authorize one dedicated hosted non-production Supabase project. The owner-facing setup
+   steps are in `docs/operations/product-intelligence-console-milestone-1.md`.
+2. Record project reference, owner, plan, region, rollback owner and confirmation that it is not
    production.
-5. Review a migration dry-run, then replay the five migrations, 74 pgTAP checks and the same shadow
-   snapshot in that exact staging destination.
+3. Configure CLI authentication and project secrets locally without exposing values in chat or Git.
+4. Review a migration dry-run, then replay the five migrations, 74 pgTAP checks and the same shadow
+   snapshot in that exact staging destination with destination-specific approval.
+5. Retain the passing isolated-runtime evidence and rerun it after schema, importer, test or generated
+   contract changes; do not treat the Windows host failure as a hosted parity result.
 6. Keep 15AK factory confirmation and exact-image intake as the first governed pilot workload.
 
 ## Goal Evidence Infrastructure

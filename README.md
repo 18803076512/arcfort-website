@@ -72,7 +72,9 @@ npm run company:evidence:test
 npm run goal:report
 ```
 
-The database type check requires the local Supabase stack to be running. Use
+Install the locked dependencies with `npm ci` before generating database types; formatter version
+drift can change the generated file even when the schema is identical. The database type check
+requires the local Supabase stack to be running. Use
 `npm run console:db:types` after an intentional schema change, review the generated type diff and
 commit it with the matching migration.
 
@@ -81,13 +83,15 @@ destination and explicit shadow-write environment flag are configured. It is not
 publication command. Repository CSV and governed registries remain canonical until a later approved
 15AK cutover.
 
-The 2026-08-31 local runtime proof applied all five migrations, passed 68 pgTAP checks and reconciled
-all source-controlled fields across 17 imported tables twice for the complete 43-product shadow
-snapshot. The second run verifies repeatable imports; a negative unexpected-row test verifies the
-fail-closed path. That historical proof predates the current readiness and SEO-policy hardening. The
-current files declare 74 pgTAP assertions and require a fresh database reset, test run, generated-type
-drift check and double shadow replay. Hosted staging parity is still required before Milestone 2 or
-any source-of-truth cutover.
+The 2026-09-02 isolated Linux CI proof for commit `6383171` applied all five migrations, passed all
+74 pgTAP assertions, matched CLI-generated database types and reconciled every source-controlled
+field across 17 imported tables twice for the complete 43-product shadow snapshot.
+[Both CI jobs passed](https://github.com/18803076512/arcfort-website/actions/runs/33591108612),
+including lint, typecheck and the production build. This is an isolated local-stack test on a CI
+runner, not proof of hosted Supabase parity or production publication. The operations runbook retains
+the exact candidate evidence and separate Windows Docker startup limitation. A named, authorized
+hosted non-production project and parity replay are still required before Milestone 2; any later
+source-of-truth cutover requires separate approval.
 
 ## Pages
 

@@ -21,6 +21,91 @@ Components Changed, Visual Changes, Validation and Deployment may be added when 
 created before this schema remain valid historical records and must not be rewritten only for
 formatting consistency.
 
+## 2026-09-02 - Milestone 1 CI Runtime Proof And Hosted Setup Handoff
+
+**Task**
+
+Completed reproducible validation of the committed Milestone 1 foundation, repaired two clean-CI
+toolchain failures and documented the exact hosted staging setup still needed. This supersedes the
+unrun-current-database status in the earlier same-day entry without rewriting that historical record.
+
+**Files Changed**
+
+- `package-lock.json` - narrowly repaired missing optional `@emnapi` dependency entries from the
+  committed lock baseline; unrelated dependency versions were retained.
+- `lib/supabase/database.types.ts` - regenerated formatting using locked Prettier `3.8.4`; no schema
+  field, table, function or type semantics changed.
+- `README.md`, `docs/CODEX_GOAL.md` and
+  `docs/operations/product-intelligence-console-milestone-1.md` - recorded the verified CI candidate,
+  separated Windows runtime failure from Linux proof and added owner-facing staging setup steps.
+- `scripts/report-goal-progress.ts` and `docs/goal-progress-report.md` - replaced stale unrun-runtime
+  wording with candidate-scoped evidence guidance and the hosted project as the next action.
+- `knowledge-base/technical/console-validation-reproducibility.md` - retained locked-generation,
+  minimal lock-repair and isolated-versus-hosted verification lessons.
+- `docs/CHANGELOG_AI.md` - this record. The foundation file inventory is retained in the preceding
+  Milestone 1 entries and commit `daab9f8` (59 files).
+
+**Components And Visual Changes**
+
+None. No public page, UI component, route, RFQ endpoint or visual asset was created, changed or removed.
+
+**Data Changed**
+
+No canonical product, company, technical, compatibility, media or SEO value changed. The shadow
+source revision remains `f185ebc9ebba875bc59141b872780297804fef894866108fa14d65bf995fc41b`.
+The progress report still distinguishes 43 structured records from zero strict verified SKUs.
+
+**SEO Impact**
+
+None. Public URLs, canonicals, metadata, schema, sitemap, robots and indexed content are unchanged.
+
+**Validation**
+
+- Committed and pushed foundation `daab9f8`, minimal lock repair `80347da` and formatter correction
+  `6383171` to `codex/v2-industrial-brand-system` in PR #130.
+- Run `33572913056` exposed missing optional dependencies during clean Linux `npm ci`; the next run
+  `33590716692` passed quality and all 74 database tests but exposed generated-type formatting drift.
+- Exact commit `6383171365fa1ae14904025789cf52ae9718c815` passed both jobs in
+  [run 33591108612](https://github.com/18803076512/arcfort-website/actions/runs/33591108612).
+- Direct logs prove reset from all five migrations, 74 pgTAP assertions, exact generated-type parity,
+  two exact-row reconciliations across 17 imported tables and clean local-stack teardown.
+- Full quality CI passed source/generated-data validation, secret scanning, RFQ and domain tests,
+  lint, typecheck, production build and built link/image/snippet/performance audits.
+- The documentation follow-up regenerated the goal report twice with identical output and passed
+  company evidence validation, evidence-gate regression tests, focused lint, typecheck, formatting,
+  `git diff --check` and a 408-file secret scan. It changes report wording only, not SQL, importer
+  contracts or database fixtures.
+
+**Known Issues**
+
+- Milestone 1 exit remains `BLOCKED` pending a named, authorized hosted non-production Supabase
+  project and exact parity replay. No project reference, CLI login or staging secrets are configured.
+- The approved Docker Desktop upgrade to `4.89.0` from the official checksum-verified installer
+  completed, but Windows still cannot access/rename the new `sailor-ingest.sock`. No factory reset,
+  WSL removal, Windows feature change or reboot was performed. Linux CI is separate runtime proof.
+- Automated Codex Security diff scanning remains unavailable as described in the previous entry;
+  no automated semantic-scan pass is claimed.
+- Product evidence gaps remain unchanged: no strict verified SKU, confirmed exact-SKU technical
+  fact, confirmed compatibility or rights-approved exact main image. Representative company visuals
+  are not factory evidence.
+
+**Reusable Knowledge Added**
+
+Added the validation reproducibility record and a safe owner-to-operator hosted setup handoff.
+Reference-only data cannot become confirmed because infrastructure tests pass.
+
+**Deployment**
+
+The authorized branch push triggered successful automatic Vercel previews. The PR is not merged;
+no production deployment, hosted Supabase write, provider-permission change or data-authority
+cutover was made. Installing the approved Docker update changed only the local tool installation.
+
+**Next Recommended Action**
+
+Create and name the dedicated Supabase staging project, confirm its owner/region/plan/rollback owner,
+configure credentials locally and review the migration dry-run before the authorized hosted replay.
+Do not start Console Milestone 2 until staging parity is accepted.
+
 ## 2026-09-02 - Product Intelligence Milestone 1 Release-Audit Hardening
 
 **Task**
