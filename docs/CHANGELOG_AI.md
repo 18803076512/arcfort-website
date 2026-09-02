@@ -21,6 +21,27 @@ Components Changed, Visual Changes, Validation and Deployment may be added when 
 created before this schema remain valid historical records and must not be rewritten only for
 formatting consistency.
 
+## 2026-09-02 - Native Windows Supabase Login Recovery
+
+- **Task:** Diagnosed the owner's screenshot: PowerShell blocked the temporary `.ps1` helper before
+  Supabase login started. Replaced that local helper with a Command Prompt/native-executable path.
+- **Files Changed:** `docs/operations/product-intelligence-console-milestone-1.md`,
+  `knowledge-base/technical/console-validation-reproducibility.md` and `docs/CHANGELOG_AI.md`.
+  Local-only `.tmp/supabase-login.cmd` replaces the removed `.tmp/supabase-login.ps1`; neither is
+  tracked or deployed.
+- **Data Changed:** None. The only authorized hosted destination remains `bdaucwemujiunpyptkpq`.
+- **Components And Visual Changes:** None.
+- **SEO Impact:** None; public URLs, content, schema and RFQ behavior are unchanged.
+- **Validation:** Resolved and verified the installed Windows x64 native CLI executable. The new
+  visible Command Prompt process remained live after launch. This does not prove authentication.
+- **Known Issues:** Browser consent/local verification and authenticated project inspection remain
+  necessary. No hosted migration or shadow import has run. No execution policy or trusted-publisher
+  setting was relaxed.
+- **Reusable Knowledge Added:** Distinguish shell script-policy failures from Supabase auth failures;
+  use the installed native binary and keep all login codes local.
+- **Next Recommended Action:** Finish login in the new terminal, verify the exact authorized project
+  and inspect the migration dry-run before the approved shadow replay.
+
 ## 2026-09-02 - Named Staging Authorization And Modern Secret-Key Transport
 
 **Task**

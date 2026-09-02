@@ -167,6 +167,19 @@ proves endpoint reachability only, not project ownership, authenticated database
 requested local CLI login; the owner must complete any browser consent and verification-code entry
 in the local terminal, never in chat. A browser Dashboard login alone does not authenticate the CLI.
 
+The owner's Windows screenshot subsequently showed that PowerShell's execution policy blocked the
+temporary `.ps1` login helper. No policy or trusted-publisher setting was changed. On this verified
+Windows x64 installation, use the native CLI directly from the repository root:
+
+```powershell
+& '.\node_modules\@supabase\cli-windows-x64\bin\supabase.exe' login
+```
+
+The local helper was replaced with `.tmp/supabase-login.cmd`, which invokes the same executable in a
+visible Command Prompt and keeps errors on screen. These local helpers are not deployed or committed.
+Complete browser consent and enter any verification code in that terminal only; never send a code,
+access token or API key in chat. This recovery step does not establish that login has succeeded.
+
 Local `.env.product-intelligence.local` is ignored by the existing `.env*.local` rule and contains
 the exact non-secret destination, `staging` environment, an empty server key and a disabled write
 guard. It is not a deployed Vercel configuration and is not automatically loaded by the importer.

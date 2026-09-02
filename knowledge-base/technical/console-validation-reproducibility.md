@@ -54,6 +54,12 @@ must verify the named project using authenticated metadata before migrations; ne
 reference or a green local test as access credentials. Keep local staging files ignored by Git and
 the explicit write flag off until the reviewed operation is ready.
 
+On Windows, a PowerShell execution-policy error for a helper `.ps1` is not a Supabase authentication
+failure: the CLI may never have started. Inspect the installed `supabase/dist/supabase.js` launcher to
+resolve its native package, then invoke the verified `.exe` directly or from a local `.cmd` helper.
+Do not weaken machine/user execution policy or permanently trust a publisher just to run this login.
+The owner enters browser verification codes locally; no token belongs in logs or chat.
+
 The dated results, exact commit/run, Windows Docker limitation and owner project-creation steps are
 maintained in `docs/operations/product-intelligence-console-milestone-1.md`. Approval and phase gates
 remain in `knowledge-base/decisions/2026-08-30-product-intelligence-console-v1-foundation.md`.
