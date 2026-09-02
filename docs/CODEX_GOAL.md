@@ -135,10 +135,13 @@ lint, typecheck and the public production build also passed. Candidate-specific 
 in `docs/operations/product-intelligence-console-milestone-1.md`; later schema/importer changes must
 rerun the same gates. Windows Docker Desktop still has a separate host startup failure.
 
-The Milestone 1 exit gate remains open because no named hosted non-production Supabase project has
-been authorized for parity replay. A green CI database job does not prove hosted parity, authorize
-production changes or complete the Console UI. The branch is not merged and no production database
-write or source-of-truth cutover has occurred.
+On 2026-09-02 the owner named `arcfort-product-intelligence-staging`, project reference
+`bdaucwemujiunpyptkpq`, reported Singapore and the Free plan, and explicitly authorized Milestone 1
+migration and shadow import only in this non-production project. Authenticated project verification,
+the hosted migration preview and parity replay remain outstanding; the exact handoff state is kept
+in the Milestone 1 operations runbook. The exit gate therefore remains open. A green CI database job
+does not prove hosted parity, authorize production changes or complete the Console UI. No production
+database write or source-of-truth cutover has occurred.
 
 The approval and source-of-truth boundary are recorded in
 `knowledge-base/decisions/2026-08-30-product-intelligence-console-v1-foundation.md`.
@@ -266,11 +269,14 @@ mobile behavior and conversion paths must satisfy the applicable repository gate
 
 Complete Product Intelligence Console V1 Milestone 1 staging parity before starting console UI:
 
-1. Name and authorize one dedicated hosted non-production Supabase project. The owner-facing setup
-   steps are in `docs/operations/product-intelligence-console-milestone-1.md`.
-2. Record project reference, owner, plan, region, rollback owner and confirmation that it is not
-   production.
-3. Configure CLI authentication and project secrets locally without exposing values in chat or Git.
+1. Complete local CLI login and authenticated verification of the owner-authorized staging project
+   `bdaucwemujiunpyptkpq`; do not substitute another project if access fails.
+2. Verify the reported project name, account/organization, plan, region and existing schema, and
+   record the rollback owner. The owner-facing steps and authorization record are in
+   `docs/operations/product-intelligence-console-milestone-1.md`.
+3. Configure project secrets locally without exposing values in chat or Git. The ignored
+   `.env.product-intelligence.local` contains only non-secret destination values until then; its
+   write guard stays off until the exact migration and import are ready.
 4. Review a migration dry-run, then replay the five migrations, 74 pgTAP checks and the same shadow
    snapshot in that exact staging destination with destination-specific approval.
 5. Retain the passing isolated-runtime evidence and rerun it after schema, importer, test or generated

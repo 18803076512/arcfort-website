@@ -21,6 +21,81 @@ Components Changed, Visual Changes, Validation and Deployment may be added when 
 created before this schema remain valid historical records and must not be rewritten only for
 formatting consistency.
 
+## 2026-09-02 - Named Staging Authorization And Modern Secret-Key Transport
+
+**Task**
+
+Recorded the owner's exact non-production project and migration/shadow-import authorization,
+prepared a local-only destination configuration and corrected API-key transport for modern Supabase
+secret keys while preserving legacy JWT behavior. Hosted execution still requires local login.
+
+**Files Changed**
+
+- `lib/supabase/product-intelligence-rest.ts` - modern opaque secret keys use `apikey` without a
+  Bearer header; legacy service-role keys retain Bearer authentication and request-specific headers.
+- `scripts/console/test-product-intelligence-rest.ts` - added mocked GET/PATCH/RPC transport checks
+  for both key types, preserved mutation-filter tests and verified rejected operations never fetch.
+- `.env.example` and `README.md` - documented the existing server-only variable's supported key types.
+- `docs/CODEX_GOAL.md`, `docs/operations/product-intelligence-console-milestone-1.md`,
+  `scripts/report-goal-progress.ts` and `docs/goal-progress-report.md` - recorded the named authorized
+  target and changed the next action from project creation to authenticated verification.
+- `knowledge-base/technical/console-validation-reproducibility.md` - retained key transport and
+  separate authorization/login/API-credential boundaries.
+- `docs/CHANGELOG_AI.md` - this record.
+- Local-only `.env.product-intelligence.local` - non-secret target values, empty key and disabled
+  write flag; ignored by Git and excluded from commits/deployments.
+- Local-only `.tmp/supabase-login.ps1` - user-requested interactive login helper that keeps errors
+  visible; it contains no credentials and is excluded from Git.
+
+**Data Changed**
+
+Owner-supplied operational target: `arcfort-product-intelligence-staging`, reference
+`bdaucwemujiunpyptkpq`, Singapore, Free plan. The owner explicitly confirmed migration and shadow
+import only in this non-production project. Region, billing/account and existing schema still need
+authenticated verification. No product, technical, compatibility, company, media or public SEO data
+changed; the shadow source revision remains `f185ebc9ebba875bc59141b872780297804fef894866108fa14d65bf995fc41b`.
+
+**Components, Visual Changes And SEO Impact**
+
+No public component, page, route or visual asset was created or removed. Public UI, URLs, canonical
+metadata, structured data, sitemap, robots and RFQ behavior are unchanged.
+
+**Validation**
+
+- Destination and REST transport regression tests passed using synthetic keys and mocked fetch.
+- Static migration validation passed for five migrations and 28 governed tables; deterministic
+  shadow validation retained all 43 product records and existing evidence states.
+- Full ESLint and typecheck passed. `npm run build` passed with 90 generated pages.
+- A 408-file secret scan found no high-confidence secrets; `git check-ignore` confirmed the local
+  environment file is excluded by `.env*.local`.
+- The expected hosted API endpoint returned unauthenticated HTTP 401. This proves reachability only,
+  not ownership, authenticated database health, applied migrations or remote parity.
+
+**Known Issues**
+
+Supabase CLI still reports no access token. The requested interactive login process was started and
+later exited without a detected CLI credential; the cause is not established. The owner was asked
+for the non-sensitive prompt/error, not a token or verification code. At the owner's request, a local
+helper retried login in a verified live window; a later manually pasted command contained path typos,
+so the owner received the shorter helper command. Hosted schema inspection,
+dry-run, migration, pgTAP and shadow replay have not run. Modern key transport is unit-tested, not
+yet authenticated against the hosted destination. Milestone 1 exit remains blocked on remote proof.
+
+**Reusable Knowledge Added**
+
+Modern secret keys are not JWTs. Project naming, owner approval, browser login, CLI login and project
+API credentials are independent evidence states. A reachable host does not satisfy the hosted gate.
+
+**Deployment**
+
+No hosted database write, production connection, provider-permission change or production deployment.
+The local-only write flag remains disabled. No database reset or existing-data deletion is authorized.
+
+**Next Recommended Action**
+
+Complete the local Supabase CLI login, verify only `bdaucwemujiunpyptkpq`, review its existing schema
+and the migration dry-run, then perform the approved Milestone 1 shadow replay without publishing.
+
 ## 2026-09-02 - Milestone 1 CI Runtime Proof And Hosted Setup Handoff
 
 **Task**

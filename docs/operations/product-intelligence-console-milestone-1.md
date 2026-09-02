@@ -147,6 +147,39 @@ npx supabase db push --dry-run
 Applying migrations with `npx supabase db push` is an external write and requires approval for the
 exact project after the dry-run has been reviewed.
 
+### Authorized Staging Handoff - 2026-09-02
+
+The owner supplied and explicitly approved this exact non-production destination:
+
+| Field             | Value                                                                                | Evidence                                                               |
+| ----------------- | ------------------------------------------------------------------------------------ | ---------------------------------------------------------------------- |
+| Project name      | `arcfort-product-intelligence-staging`                                               | Owner supplied                                                         |
+| Project reference | `bdaucwemujiunpyptkpq`                                                               | Owner supplied and explicitly authorized                               |
+| Direct API URL    | `https://bdaucwemujiunpyptkpq.supabase.co`                                           | Derived from the supplied reference; unauthenticated endpoint responds |
+| Region            | Singapore                                                                            | Owner reported; authenticated metadata check pending                   |
+| Plan              | Free                                                                                 | Owner reported; authenticated billing check pending                    |
+| Authorized writes | Milestone 1 migrations and shadow import only                                        | Owner confirmation on 2026-09-02                                       |
+| Exclusions        | No existing-data deletion, production connection, public publication or paid upgrade | Scoped request and confirmation                                        |
+
+At the initial connection check, `GET /auth/v1/health` returned HTTP 401 without credentials. This
+proves endpoint reachability only, not project ownership, authenticated database health or parity.
+`supabase projects list --output json` reported that no access token was configured. The operator
+requested local CLI login; the owner must complete any browser consent and verification-code entry
+in the local terminal, never in chat. A browser Dashboard login alone does not authenticate the CLI.
+
+Local `.env.product-intelligence.local` is ignored by the existing `.env*.local` rule and contains
+the exact non-secret destination, `staging` environment, an empty server key and a disabled write
+guard. It is not a deployed Vercel configuration and is not automatically loaded by the importer.
+Use an explicit local environment-file loader or process environment after reviewing its values.
+Do not print populated credentials in command output or include them in a report.
+
+Next, authenticate and verify the exact project, its organization/owner, region, plan and existing
+database objects. Review the dry-run before applying the approved migrations. If unexpected objects,
+existing data or a different project are found, stop; do not reset, force a migration or delete rows.
+Retain failed-import audit evidence and keep repository sources canonical. Confirm a rollback owner
+before any hosted write that requires recovery work. Hosted dry-run, migrations, pgTAP and shadow
+parity are not yet proven by this handoff record.
+
 ## Controlled Shadow Import
 
 The hosted import command refuses production mode and requires an explicit write guard. Set values
@@ -161,6 +194,12 @@ Required variables:
 - `PRODUCT_INTELLIGENCE_ENVIRONMENT=local` or `staging`
 - `PRODUCT_INTELLIGENCE_ALLOW_SHADOW_WRITE=true`
 - `PRODUCT_INTELLIGENCE_STAGING_PROJECT_REF=<exact-authorized-project-ref>` for hosted staging
+
+The existing `PRODUCT_INTELLIGENCE_SUPABASE_SERVICE_ROLE_KEY` variable accepts either a modern
+`sb_secret_...` key or a legacy service-role JWT. Modern opaque keys are sent through `apikey` only;
+they are not JWT Bearer tokens. Legacy keys retain both headers for local-stack compatibility. Never
+use a publishable/anon key for this administrative import or expose the server key to a browser.
+This follows the [Supabase API-key guidance](https://supabase.com/docs/guides/getting-started/api-keys).
 
 `local` is deliberately restricted to an HTTP loopback URL (`127.0.0.1`, `localhost` or IPv6
 loopback). Any hosted project must use `staging`, HTTPS and the exact authorized project reference;
@@ -257,9 +296,10 @@ were retained, not deleted blindly. The passing Linux job does not resolve this 
 
 The PR remains unmerged. Vercel produced a successful automatic branch preview after the authorized
 push; no production deployment, hosted Supabase migration or public data-source switch was made.
-No staging reference, CLI authentication or local staging credentials are configured. The isolated
-runtime gate is `PASS` for the exact tested candidate. Milestone 1 exit remains `BLOCKED` only on
-the outstanding named/authorized hosted staging parity gate; Console Milestone 2 must not begin.
+The owner subsequently supplied and authorized a staging destination, as recorded in the hosted
+handoff section above; authentication and hosted parity must still be proven separately. The isolated
+runtime gate is `PASS` for the exact tested candidate. Milestone 1 exit remains `BLOCKED` on the
+outstanding hosted staging parity gate; Console Milestone 2 must not begin.
 
 ## Validation Record - 2026-08-31
 

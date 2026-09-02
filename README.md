@@ -83,6 +83,11 @@ destination and explicit shadow-write environment flag are configured. It is not
 publication command. Repository CSV and governed registries remain canonical until a later approved
 15AK cutover.
 
+`PRODUCT_INTELLIGENCE_SUPABASE_SERVICE_ROLE_KEY` accepts a modern Supabase secret key or a legacy
+service-role JWT. Modern secret keys are sent only through the `apikey` header; legacy JWTs retain
+Bearer authorization. Keep both kinds server-only and out of Git. CLI login and the destination
+approval record are separate from these project API credentials; follow the operations runbook.
+
 The 2026-09-02 isolated Linux CI proof for commit `6383171` applied all five migrations, passed all
 74 pgTAP assertions, matched CLI-generated database types and reconciled every source-controlled
 field across 17 imported tables twice for the complete 43-product shadow snapshot.

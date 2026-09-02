@@ -42,6 +42,18 @@ Keep public CSV/TypeScript sources canonical throughout shadow migration.
 
 ## Evidence And Handoff
 
+The Product Intelligence REST client must distinguish modern opaque Supabase secret keys from
+legacy service-role JWTs. Modern `sb_secret_` keys go in `apikey` only; sending them as Bearer JWTs is
+not the supported transport. Legacy JWTs retain both headers. Keep the existing server-only
+environment variable compatible with both and test GET, PATCH and RPC requests without a real key or
+network request. See [Supabase API keys](https://supabase.com/docs/guides/getting-started/api-keys).
+
+Owner authorization, browser Dashboard login, CLI login and project API credentials are separate
+states. An unauthenticated 401 from the expected endpoint proves reachability only. The operator
+must verify the named project using authenticated metadata before migrations; never treat a project
+reference or a green local test as access credentials. Keep local staging files ignored by Git and
+the explicit write flag off until the reviewed operation is ready.
+
 The dated results, exact commit/run, Windows Docker limitation and owner project-creation steps are
 maintained in `docs/operations/product-intelligence-console-milestone-1.md`. Approval and phase gates
 remain in `knowledge-base/decisions/2026-08-30-product-intelligence-console-v1-foundation.md`.

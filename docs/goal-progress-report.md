@@ -6,7 +6,7 @@ Generated from governed repository evidence on 2026-09-01. Source revision: `f18
 
 ArcFort Weld currently has 43 structured product records, including 40 active public records and 3 drafts. Under the strict evidence gate defined below, 0 products qualify as verified high-quality SKUs. Structured page count and verified product readiness are deliberately reported separately.
 
-Product Intelligence Milestone 1 has 5 versioned migrations and 74 declared pgTAP assertions across 5 test files. The Milestone 1 operations runbook records candidate-specific reset, pgTAP, generated-type and exact-row import evidence. Passing isolated-runtime results cover only the tested candidate and do not establish hosted parity. A named, authorized hosted non-production staging replay remains required before Console Milestone 2.
+Product Intelligence Milestone 1 has 5 versioned migrations and 74 declared pgTAP assertions across 5 test files. The Milestone 1 operations runbook records candidate-specific reset, pgTAP, generated-type and exact-row import evidence, plus the owner-authorized staging destination. Passing isolated-runtime results cover only the tested candidate and do not establish hosted parity. Successful replay in that exact non-production project remains required before Console Milestone 2.
 
 ## SKU Milestones
 
@@ -71,7 +71,7 @@ Factory ownership, certifications, capacity, customer cases, distributor coverag
 
 ## Highest-Value Next Actions
 
-1. Name and authorize the dedicated hosted non-production Supabase project, record its owner, plan, region and rollback owner, then configure credentials locally without exposing secrets.
+1. Complete authenticated verification of the owner-authorized staging project recorded in the Milestone 1 runbook, including account, plan, region, existing schema and rollback owner. Configure credentials only locally without exposing secrets.
 2. Review the exact candidate's isolated-runtime evidence and hosted migration dry-run, then replay migrations, pgTAP and the deterministic shadow snapshot in that authorized staging project. Rerun local-stack CI when schema or importer contracts change.
 3. Return Level A 15AK measurements, drawings or approved sample records for the four pilot products and reconcile each fact by stable ID.
 4. Capture rights-approved exact 15AK main, connection-detail, dimensional and packaging images, then complete the product media review gate.

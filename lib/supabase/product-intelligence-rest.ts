@@ -19,14 +19,19 @@ export class ProductIntelligenceRestClient {
   }
 
   private async request<Response>(path: string, init: RequestInit): Promise<Response> {
+    const headers = new Headers(init.headers);
+    headers.set("apikey", this.config.serviceRoleKey);
+    headers.set("content-type", "application/json");
+    // Opaque Supabase secret keys are not JWTs; only legacy keys belong in Bearer auth.
+    if (this.config.serviceRoleKey.startsWith("sb_secret_")) {
+      headers.delete("authorization");
+    } else {
+      headers.set("authorization", `Bearer ${this.config.serviceRoleKey}`);
+    }
+
     const response = await fetch(`${this.config.url}/rest/v1/${path}`, {
       ...init,
-      headers: {
-        apikey: this.config.serviceRoleKey,
-        authorization: `Bearer ${this.config.serviceRoleKey}`,
-        "content-type": "application/json",
-        ...init.headers,
-      },
+      headers,
     });
 
     if (!response.ok) {
