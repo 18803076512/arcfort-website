@@ -42,7 +42,8 @@ enable_signup = false
 enable_anonymous_sign_ins = false
 
 [auth.email]
-enable_signup = false
+# The CLI maps this flag to the email provider. Global auth.enable_signup stays false.
+enable_signup = true
 double_confirm_changes = true
 enable_confirmations = true
 

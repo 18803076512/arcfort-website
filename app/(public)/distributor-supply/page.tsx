@@ -16,6 +16,10 @@ import { SectionHeading } from "@/components/ui/SectionHeading";
 import { getAllProductCategories } from "@/lib/content/categories";
 import { breadcrumbJsonLd, faqJsonLd, webPageJsonLd } from "@/lib/content/jsonld";
 import { getAllProducts } from "@/lib/content/products";
+import {
+  distributorSocialImageAlt,
+  distributorSocialImageSize,
+} from "@/lib/content/distributor-social-image";
 import { buildMetadata } from "@/lib/content/seo";
 import { buildEmailHref, buildWhatsAppHref, siteConfig } from "@/lib/content/site";
 
@@ -171,7 +175,7 @@ const sectionLinks = [
   { href: "#distributor-faq", label: "FAQ" },
 ] as const;
 
-export const metadata = buildMetadata({
+const pageMetadata = buildMetadata({
   title: "Welding Products for Distributors & Importers",
   description:
     "Source ArcFort Weld welding and cutting products for distributors and importers. Send SKU lists, drawings and packaging requirements for quotation preparation.",
@@ -184,6 +188,31 @@ export const metadata = buildMetadata({
     "OEM welding accessories supplier",
   ],
 });
+
+// Image routes stay outside this group to preserve their existing public URLs.
+export const metadata = {
+  ...pageMetadata,
+  openGraph: {
+    ...pageMetadata.openGraph,
+    images: [
+      {
+        url: "/distributor-supply/opengraph-image",
+        ...distributorSocialImageSize,
+        alt: distributorSocialImageAlt,
+      },
+    ],
+  },
+  twitter: {
+    ...pageMetadata.twitter,
+    images: [
+      {
+        url: "/distributor-supply/twitter-image",
+        ...distributorSocialImageSize,
+        alt: distributorSocialImageAlt,
+      },
+    ],
+  },
+};
 
 export default function DistributorSupplyPage() {
   const categories = getAllProductCategories();
