@@ -1,9 +1,12 @@
 export type ProductIntelligenceEnvironment = "local" | "staging";
 
-export type ProductIntelligenceAdminConfig = {
+export type ProductIntelligenceTargetConfig = {
   url: string;
-  serviceRoleKey: string;
   environment: ProductIntelligenceEnvironment;
+};
+
+export type ProductIntelligenceAdminConfig = ProductIntelligenceTargetConfig & {
+  serviceRoleKey: string;
 };
 
 const LOCAL_LOOPBACK_HOSTNAMES = new Set(["127.0.0.1", "localhost", "[::1]"]);
@@ -34,7 +37,7 @@ function parseDestinationUrl(rawUrl: string): URL {
   return parsed;
 }
 
-export function getProductIntelligenceAdminConfig(): ProductIntelligenceAdminConfig {
+export function getProductIntelligenceTargetConfig(): ProductIntelligenceTargetConfig {
   const environment = readRequiredEnvironmentVariable("PRODUCT_INTELLIGENCE_ENVIRONMENT");
   if (environment !== "local" && environment !== "staging") {
     throw new Error(
@@ -69,14 +72,17 @@ export function getProductIntelligenceAdminConfig(): ProductIntelligenceAdminCon
     }
   }
 
-  const url = destination.origin;
+  return { url: destination.origin, environment };
+}
+
+export function getProductIntelligenceAdminConfig(): ProductIntelligenceAdminConfig {
+  const target = getProductIntelligenceTargetConfig();
   const serviceRoleKey = readRequiredEnvironmentVariable(
     "PRODUCT_INTELLIGENCE_SUPABASE_SERVICE_ROLE_KEY",
   );
 
   return {
-    url,
+    ...target,
     serviceRoleKey,
-    environment,
   };
 }

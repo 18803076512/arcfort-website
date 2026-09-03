@@ -147,7 +147,206 @@ npx supabase db push --dry-run
 Applying migrations with `npx supabase db push` is an external write and requires approval for the
 exact project after the dry-run has been reviewed.
 
-### Authorized Staging Handoff - 2026-09-02
+### Current Staging Authorization - 2026-09-03
+
+The owner explicitly replaced the prior destination and confirmed the following scope on
+2026-09-03. This is the only current hosted write authorization for this task. See the
+[replacement decision](../../knowledge-base/decisions/2026-09-03-product-intelligence-staging-replacement.md).
+
+| Field             | Current Value                                                                        | Evidence                                                              |
+| ----------------- | ------------------------------------------------------------------------------------ | --------------------------------------------------------------------- |
+| Project name      | `arcfort-product-intelligence-staging`                                               | Owner supplied; authenticated CLI lookup verified                     |
+| Project reference | `fdsvzuqixppsakukkrsf`                                                               | Owner authorized; authenticated CLI lookup verified                   |
+| Direct API URL    | `https://fdsvzuqixppsakukkrsf.supabase.co`                                           | Derived from the authenticated project reference; REST replay pending |
+| Organization      | `xycjhlnlacqocitjkagq`                                                               | Authenticated project metadata                                        |
+| Region            | Singapore (`ap-southeast-1`)                                                         | Authenticated CLI lookup verified                                     |
+| Plan              | Free                                                                                 | Owner reported; authenticated verification pending                    |
+| Recovery owner    | Project owner, confirmed in this task on 2026-09-03                                  | Owner confirmed project management and recovery responsibility        |
+| Authorized writes | Reviewed Milestone 1 migrations and shadow import only                               | Owner confirmation on 2026-09-03                                      |
+| Exclusions        | No existing-data deletion, production connection, public publication or paid upgrade | Explicit scoped confirmation                                          |
+
+The old `bdaucwemujiunpyptkpq` project is no longer an authorized target for this work. Do not
+migrate/import into it, delete it or silently fall back to it. Its earlier record below is history.
+
+The initial CLI check returned "Access token not provided". Local token login subsequently succeeded
+on 2026-09-03. Independent authenticated CLI lookups verified the exact project reference/name,
+Singapore (`ap-southeast-1`), organization ID and provider-reported status `ACTIVE_HEALTHY`.
+The owner then explicitly confirmed managing this staging project and responsibility for recovery.
+Authenticated structural inspection and migration dry-run passed, as recorded below. No migrations,
+database test suite or shadow import have been applied to this replacement project by this workflow.
+
+The table above retains the owner-supplied authorization evidence. The later authenticated checks
+confirm name, reference, region and organization ID, not the reported billing plan or the owner's
+account role. The CLI organization-list response was empty; this does not establish a plan or
+contradict the owner's management confirmation. The in-app Dashboard session requires sign-in.
+Non-sensitive Dashboard evidence of the project and Free plan has been requested before hosted
+writes. `ACTIVE_HEALTHY` is provider metadata, not a substitute for schema, RLS or parity tests.
+
+A subsequent target-only Management API check independently revalidated the project's name/ref and
+organization, then received HTTP 403 from `GET /v1/organizations/xycjhlnlacqocitjkagq`. No credential
+was printed or persisted by that check. The official
+[organization endpoint](https://supabase.com/docs/reference/api/v1-get-an-organization) exposes the
+plan and requires organization-read permissions. Do not widen token permissions, infer Free from an
+empty list, retry with another account or change billing to pass this gate; retain the Dashboard
+evidence request.
+
+The ignored `.env.product-intelligence.local` now targets the replacement URL/reference, retains an
+empty project server key and keeps `PRODUCT_INTELLIGENCE_ALLOW_SHADOW_WRITE=false`. No CLI project
+link exists. Do not copy an old project key into the new configuration. CLI account authentication
+and the project server key used by the shadow importer are separate credentials.
+
+### Hosted Preflight And Preview - 2026-09-03
+
+The authenticated inspection targeted only `fdsvzuqixppsakukkrsf` and returned:
+
+| Check                                                | Observed Result                                 |
+| ---------------------------------------------------- | ----------------------------------------------- |
+| Database / server                                    | `postgres` / PostgreSQL `17.6`                  |
+| Existing public tables, views and materialized views | None                                            |
+| Existing public functions                            | None                                            |
+| `supabase_migrations.schema_migrations`              | Absent                                          |
+| Auth users                                           | 0                                               |
+| Storage buckets                                      | 0                                               |
+| Static migration validation                          | PASS: 5 migrations, 28 governed tables          |
+| Domain, destination and REST transport tests         | PASS                                            |
+| Deterministic shadow validation                      | PASS: 43 products; all evidence states retained |
+
+Read-only SQL used `db query --linked --project-ref fdsvzuqixppsakukkrsf --output json`.
+The explicit reference selects the authorized project without creating a persistent project link.
+CLI preflight reports `Initialising login role` and may create provider-managed connection/cache
+state; this is not a business-table migration and must not be described as zero provider side effects.
+
+The exact preview command completed with exit code zero:
+
+```bash
+npx supabase db push --linked --project-ref fdsvzuqixppsakukkrsf --dry-run --skip-vault
+```
+
+It returned `dryRun: true`, `upToDate: false`, no seeds, no custom roles and exactly these files:
+
+1. `202608300001_product_intelligence_foundation.sql`
+2. `202608300002_product_intelligence_security.sql`
+3. `202608300003_product_intelligence_readiness.sql`
+4. `202608300004_product_intelligence_private_storage.sql`
+5. `202608310005_product_intelligence_workflow_guards.sql`
+
+The reviewed candidate creates the governed schema, RLS/workflow guards, readiness views and two
+private buckets. The final migration replaces only policies from earlier migrations in this set.
+It does not delete business rows. `--skip-vault` prevents unrelated Vault secret synchronization;
+do not add `--include-all`, `--include-roles`, `--include-seed` or any reset operation.
+
+At this preflight, the migration/importer/contracts/snapshot diff against tested commit `21c877a1`
+was empty. A later SQL-QA tooling batch below adds a shared target-config reader and test runner;
+it requires its own CI validation. The migrations and deterministic source snapshot are unchanged.
+The current
+shadow revision is `f185ebc9ebba875bc59141b872780297804fef894866108fa14d65bf995fc41b` and its file
+SHA-256 is `4D98BC4678F6C75FAF03D03BD569CAB3B1170276333C1F4C794456F1201909F7`.
+
+A rollback-only probe with two SELECT statements proved that hosted `db query` returns only the last
+result set. Do not run a pgTAP file through this command and infer all assertions passed from exit
+code zero or an empty final `finish()` result. Use a runner that retains the full TAP assertion
+count and failures. The installed CLI advertises `test db --linked --project-ref`; actual hosted
+execution and all 74 passing assertions still need to be verified after the migration.
+
+The owner is the recovery contact. Stop on any unexpected state and preserve evidence. Do not reset,
+recreate or delete the hosted database without separate authorization. Before applying, finish plan
+verification and repeat the target/empty-schema/preview checks if the project or candidate has changed.
+After applying, require real hosted tests, generated-type parity and two exact-row shadow imports;
+none is proven by this preview.
+
+### SQL Report Runner Preparation - 2026-09-03
+
+The installed CLI's `test db --linked` still launches a Docker pg_prove container. Its source also
+shows that local `db query` uses the extended PostgreSQL protocol, which rejects a multi-statement
+test file. Do not replace a complete test harness with either a bare SQL exit code or an untested
+local/hosted transport assumption.
+
+The repository now contains:
+
+- `scripts/console/database-test-report.ts`: prepares only the reviewed BEGIN/plan/finish/ROLLBACK
+  envelope and validates suite identity, normalized source SHA-256, exact plan/execution counts,
+  failure count, finish diagnostics and pgTAP version. Existing assertions and fixtures are unchanged.
+- `scripts/console/run-database-sql-tests.ts`: requires an explicit local or guarded staging target,
+  validates every source first, runs positive/negative/count-mismatch self-checks, then all five suites.
+  A transport error is not accepted as a successful negative control. Provider error bodies are not
+  printed. Every normal result is collected before the test's final ROLLBACK.
+- `scripts/console/test-database-test-report.ts`: tests malformed/empty/partial/failed reports,
+  source mismatches, unsafe envelopes, skipped/TODO tests, all five source bodies / 74 planned
+  assertions and CLI rejection of disabled, ambiguous, production or mismatched destinations.
+
+Commands:
+
+```bash
+npm run console:sql-qa:test
+# Requires this project's existing isolated local Supabase stack:
+npm run console:db:test:sql
+# Only after destination/plan/authorization review and successful migrations:
+npm run console:db:test:staging
+```
+
+Local SQL QA uses `psql` inside `supabase_db_arcfort-product-intelligence`, after matching its label
+and the repository project ID. The existing CI pg_prove step remains intact; the additional SQL step
+tests the same assertion/counter contract against real PostgreSQL. Staging SQL QA uses explicit-ref
+Management API requests and requires the existing target/write guards, but no project server key.
+The importer still separately requires its server key. No new dependency is added.
+
+This is not a sandbox for third-party SQL: only reviewed repository tests may be executed. File
+hashes bind results to the tested content, not to owner approval. A passing QA report does not promote
+product verification, authorize publication, or prove migration/import parity by itself.
+
+Unit/configuration checks pass. The local Docker health recheck failed because
+`dockerDesktopLinuxEngine` was absent; no reset/restart was performed. The new PostgreSQL SQL-runner
+path and hosted transport have not yet run. Owner approval was requested to commit/push this tooling
+to the existing PR #130 branch for isolated CI; no push, merge, production deployment or staging write
+was performed in this preparation batch.
+
+On 2026-09-03 the owner subsequently authorized committing and pushing the prepared tooling to
+PR #130 (`codex/v2-industrial-brand-system`) to run isolated database tests. The PR was verified open,
+targeting `main`, with no auto-merge request. Only the existing quality workflow's disposable local
+Supabase stack may be used in this batch; no hosted credentials, staging mutation, merge or production
+deployment are authorized by this follow-up. Candidate-specific CI results must be recorded before
+claiming the new SQL report path passes real PostgreSQL tests.
+
+### Windows Local Token Login Fallback
+
+The previous console reported a non-interactive error. A later corrected console produced a login
+link, but browser visibility and CLI authentication were not established. Do not keep reopening the
+same unsuccessful flow or change PowerShell execution policy to work around it.
+
+For this workstation, the ignored `.tmp/supabase-token-login.cmd` offers a local masked-input
+fallback:
+
+1. Manually open [Supabase Account Access Tokens](https://supabase.com/dashboard/account/tokens) in
+   the owner's browser and create a token for this setup with the shortest practical expiry.
+2. Double-click `.tmp/supabase-token-login.cmd` in the repository's File Explorer folder, or run
+   `& '.\.tmp\supabase-token-login.cmd'` from PowerShell in the repository root.
+3. Paste the personal access token into the masked local prompt and press Enter. Never put it in
+   chat, a screenshot, a shell command argument, a repository file or a support log.
+4. The helper invokes the native CLI using a temporary process environment variable, then checks
+   only the exact authorized project's reference and name. It clears the variable on exit and
+   performs no migration, import, deletion or production operation.
+5. Report only success or a non-sensitive failure. The helper suppresses provider output on errors
+   so a credential is not accidentally echoed. The operator must independently verify CLI access,
+   project metadata, schema and the migration preview before the next write.
+
+The helper does not store the token in its source or in the staging env file. The CLI manages its
+own account credential storage: native credential storage when available, with a possible plaintext
+`~/.supabase/access-token` fallback. Treat either as private local credentials. See
+[the official CLI login documentation](https://supabase.com/docs/reference/cli/supabase-login).
+Do not confuse a personal access token with the project's publishable/anon or secret/service-role
+API key. Revoke the setup token when it is no longer needed.
+
+The first helper displayed a false failure after successful authentication. A read-only Windows
+PowerShell reproduction confirmed `ErrorActionPreference=Stop` converted the CLI's non-fatal
+missing-project-link stderr into `NativeCommandError`. The local helper now captures each native
+exit code, restores strict error handling before parsing/validation, checks target identity and
+reports only a non-sensitive failure stage. A fresh target lookup passed under Windows PowerShell.
+Do not paste the token again once authenticated access is independently confirmed. Do not link a
+database merely to suppress this warning; linking belongs to the next reviewed staging operation.
+
+### Historical Staging Handoff - 2026-09-02 (Superseded)
+
+This section preserves the earlier investigation; use the 2026-09-03 record above for current actions.
 
 The owner supplied and explicitly approved this exact non-production destination:
 
@@ -235,7 +434,9 @@ milestone.
 
 ## RLS And Role Bootstrap
 
-Public signup is disabled. The first owner is not stored in `seed.sql`. Create an invite-only Auth
+Local configuration disables public signup; hosted Auth configuration has not yet been verified or
+changed. Do not infer a hosted setting from `supabase/config.toml`. Verify invite-only operation
+before enabling Console access. The first owner is not stored in `seed.sql`. Create an invite-only Auth
 user in the named non-production project, then assign `owner` with a controlled service-role action.
 Do not expose the service-role key to a browser or `NEXT_PUBLIC_*` variable.
 

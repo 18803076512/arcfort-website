@@ -1,6 +1,6 @@
 # ArcFort Weld Codex Goal Mode
 
-Evidence baseline: 2026-09-02. Production observations referenced here were last verified on
+Evidence baseline: 2026-09-03. Production observations referenced here were last verified on
 2026-08-29 unless a later date is recorded in the relevant operations evidence.
 
 ## Purpose And Authority
@@ -109,7 +109,7 @@ specification. Appearance, similar naming or catalog grouping cannot establish c
 | Public product imagery | All 40 active products retain legacy-reference main images; three draft products remain blocked for exact images                                                                |
 | Company claims         | 22 governed claim records: 16 approved Level A statements and six blocked unsupported topics                                                                                    |
 | Company media          | Three files and three governed site-media records; all remain representative legacy references and zero are approved company evidence                                           |
-| Knowledge base         | 24 files, including durable company, SEO, sales and database-validation baselines alongside product, technical, compatibility, asset and decision records                       |
+| Knowledge base         | 25 files, including durable company, SEO, sales and database-validation baselines alongside product, technical, compatibility, asset and decision records                       |
 | SEO                    | Central metadata and JSON-LD builders, canonical handling, sitemap, robots, redirects, static audits and live-readiness checks                                                  |
 | Search baseline        | Site is live and indexable; 88 production sitemap URLs and a recorded baseline of 8 clicks, 422 impressions and 1.90% CTR                                                       |
 | RFQ                    | Email-provider flow, validation, attachments, buyer confirmation, BotID and idempotency are implemented; final sales and buyer inbox placement remains externally unverified    |
@@ -135,13 +135,31 @@ lint, typecheck and the public production build also passed. Candidate-specific 
 in `docs/operations/product-intelligence-console-milestone-1.md`; later schema/importer changes must
 rerun the same gates. Windows Docker Desktop still has a separate host startup failure.
 
-On 2026-09-02 the owner named `arcfort-product-intelligence-staging`, project reference
-`bdaucwemujiunpyptkpq`, reported Singapore and the Free plan, and explicitly authorized Milestone 1
-migration and shadow import only in this non-production project. Authenticated project verification,
-the hosted migration preview and parity replay remain outstanding; the exact handoff state is kept
-in the Milestone 1 operations runbook. The exit gate therefore remains open. A green CI database job
+On 2026-09-03 the owner replaced the staging destination with `arcfort-product-intelligence-staging`,
+project reference `fdsvzuqixppsakukkrsf`, reported Singapore and the Free plan, and explicitly
+authorized Milestone 1 migration and shadow import only in this non-production project. The prior
+`bdaucwemujiunpyptkpq` destination is superseded and must not receive further writes. See
+`knowledge-base/decisions/2026-09-03-product-intelligence-staging-replacement.md`.
+Local token login subsequently succeeded on 2026-09-03. A fresh authenticated CLI lookup verified
+the exact reference/name, Singapore (`ap-southeast-1`) and provider status `ACTIVE_HEALTHY`.
+The authenticated project organization is `xycjhlnlacqocitjkagq`; the owner confirmed project
+management and recovery responsibility. Hosted inspection found an empty public schema, no
+migration history, zero users/buckets and PostgreSQL `17.6`. The five-migration dry-run passed with
+no seeds or custom roles. Free is still owner-reported; independent plan evidence, actual migrations,
+hosted database tests and parity replay remain outstanding. The exact handoff state is kept in the
+Milestone 1 operations runbook. The exit gate therefore remains open. A green CI database job
 does not prove hosted parity, authorize production changes or complete the Console UI. No production
 database write or source-of-truth cutover has occurred.
+
+The follow-up organization-plan request returned HTTP 403; project access does not imply billing
+read access. The owner-side non-sensitive Free-plan evidence request remains open. A SQL-report QA
+adapter is now prepared to avoid the Windows Docker dependency for hosted testing; it preserves
+the five existing test files, checks all 74 planned assertions and rejects missing/failed results.
+Its unit/configuration checks pass, but new PostgreSQL/CI and hosted execution are still unverified.
+The old CI pass must not be presented as proof of this new tooling. On 2026-09-03 the owner authorized
+committing and pushing this tooling to PR #130 for isolated database CI only. No merge, production
+deployment or staging write is included in this step; do not begin Milestone 2 while its gates remain
+open.
 
 The approval and source-of-truth boundary are recorded in
 `knowledge-base/decisions/2026-08-30-product-intelligence-console-v1-foundation.md`.
@@ -269,10 +287,12 @@ mobile behavior and conversion paths must satisfy the applicable repository gate
 
 Complete Product Intelligence Console V1 Milestone 1 staging parity before starting console UI:
 
-1. Complete local CLI login and authenticated verification of the owner-authorized staging project
-   `bdaucwemujiunpyptkpq`; do not substitute another project if access fails.
-2. Verify the reported project name, account/organization, plan, region and existing schema, and
-   record the rollback owner. The owner-facing steps and authorization record are in
+1. Use the now-authenticated CLI for the owner-authorized staging project `fdsvzuqixppsakukkrsf`.
+   Recheck the exact target before linking or writing; do not substitute another project or revert
+   to the superseded target if access fails.
+2. Finish independent plan verification. Identity, organization ID, region, empty-schema inspection,
+   owner management/recovery confirmation and migration preview have passed. Recheck before writing
+   if the target or candidate changes. The owner-facing steps and authorization record are in
    `docs/operations/product-intelligence-console-milestone-1.md`.
 3. Configure project secrets locally without exposing values in chat or Git. The ignored
    `.env.product-intelligence.local` contains only non-secret destination values until then; its

@@ -1,6 +1,9 @@
 import assert from "node:assert/strict";
 
-import { getProductIntelligenceAdminConfig } from "../../lib/supabase/product-intelligence-config.ts";
+import {
+  getProductIntelligenceAdminConfig,
+  getProductIntelligenceTargetConfig,
+} from "../../lib/supabase/product-intelligence-config.ts";
 
 const variableNames = [
   "PRODUCT_INTELLIGENCE_SUPABASE_URL",
@@ -97,6 +100,23 @@ assert.deepEqual(getProductIntelligenceAdminConfig(), {
   serviceRoleKey: "test-service-role-key",
   url: "http://localhost:54321",
 });
+
+configure({
+  PRODUCT_INTELLIGENCE_ENVIRONMENT: "staging",
+  PRODUCT_INTELLIGENCE_ALLOW_SHADOW_WRITE: "true",
+  PRODUCT_INTELLIGENCE_STAGING_PROJECT_REF: "abcdefghijklmnopqrst",
+  PRODUCT_INTELLIGENCE_SUPABASE_URL: "https://abcdefghijklmnopqrst.supabase.co",
+});
+assert.deepEqual(getProductIntelligenceTargetConfig(), {
+  environment: "staging",
+  url: "https://abcdefghijklmnopqrst.supabase.co",
+});
+assert.throws(getProductIntelligenceAdminConfig, /SERVICE_ROLE_KEY is required/);
+process.env.PRODUCT_INTELLIGENCE_ALLOW_SHADOW_WRITE = "false";
+assert.throws(getProductIntelligenceTargetConfig, /ALLOW_SHADOW_WRITE=true/);
+process.env.PRODUCT_INTELLIGENCE_ALLOW_SHADOW_WRITE = "true";
+process.env.PRODUCT_INTELLIGENCE_SUPABASE_URL = "https://different-project.supabase.co";
+assert.throws(getProductIntelligenceTargetConfig, /does not match/);
 
 for (const name of variableNames) delete process.env[name];
 console.log("Product Intelligence destination guard tests passed.");

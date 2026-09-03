@@ -45,6 +45,9 @@ jobs:
       - name: Test schema, lifecycle and RLS
         run: npm run console:db:test
 
+      - name: Verify rollback-only SQL test reporting and negative controls
+        run: npm run console:db:test:sql
+
       - name: Verify generated database types
         run: npm run console:db:types:check
 
@@ -94,6 +97,7 @@ jobs:
           npm run console:domain:test
           npm run console:config:test
           npm run console:rest:test
+          npm run console:sql-qa:test
           npm run console:migrations:validate
           npm run console:shadow:validate
 

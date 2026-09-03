@@ -21,6 +21,158 @@ Components Changed, Visual Changes, Validation and Deployment may be added when 
 created before this schema remain valid historical records and must not be rewritten only for
 formatting consistency.
 
+## 2026-09-03 - Docker-Independent Staging SQL QA Preparation
+
+- **Task:** Prepared a strict SQL report path for the existing Milestone 1 pgTAP suites, avoiding
+  the local Docker requirement for future hosted execution without weakening assertion checks.
+- **Files Changed:**
+  - `scripts/console/database-test-report.ts` (new): reviewed test-envelope adapter and strict
+    suite/hash/count/failure/diagnostic validation.
+  - `scripts/console/run-database-sql-tests.ts` (new): explicit local/staging runner with real
+    positive, negative and count-mismatch probes; normal fixtures end in ROLLBACK.
+  - `scripts/console/test-database-test-report.ts` (new): result, envelope, source-preservation and
+    rejected CLI-destination tests.
+  - `lib/supabase/product-intelligence-config.ts`: shared target guard; administrative import still
+    separately requires the server key and all previous destination/write protections.
+  - `scripts/console/test-product-intelligence-config.ts`: covered the shared target reader and
+    preserved the import credential requirement.
+  - `package.json`: added `console:sql-qa:test`, `console:db:test:sql` and
+    `console:db:test:staging`; no dependency or lockfile change.
+  - `.github/workflows/quality.yml`: retained original pg_prove coverage; added unit and real local
+    PostgreSQL SQL-report validation steps for the next approved CI run.
+  - `README.md`, `docs/CODEX_GOAL.md`,
+    `docs/operations/product-intelligence-console-milestone-1.md`,
+    `knowledge-base/decisions/2026-09-03-product-intelligence-staging-replacement.md`,
+    `knowledge-base/technical/console-validation-reproducibility.md` and `docs/CHANGELOG_AI.md`:
+    usage, current evidence and remaining authorization/runtime gates.
+- **Data Changed:** No migration, existing SQL test, product, technical, media, compatibility or
+  canonical snapshot changes. A target-only authenticated read confirmed project identity, then
+  the organization-plan endpoint returned HTTP 403. Free remains owner-reported. No credentials
+  were printed, persisted in sources or expanded; no other account/project was queried.
+- **Components And Visual Changes:** New development QA helpers only; no public UI component was
+  created, removed or changed.
+- **SEO Impact:** None; URLs, metadata, schema, sitemap, robots and RFQ are unchanged.
+- **Validation:** Report/envelope/CLI rejection tests, target/config tests, REST transport tests,
+  catalog-domain checks, static migration and shadow validation passed. The adapter preserves all
+  five source test bodies and their 74 planned assertions; this is static evidence, not 74 hosted
+  passes. Full lint, typecheck and `npm run build` passed with 90 generated pages.
+- **Known Issues:** Actual PostgreSQL execution of the new runner remains unverified. A fresh local
+  Docker check failed because its Linux-engine pipe was absent; no reset/restart was attempted.
+  The organization endpoint denied the read with HTTP 403. The owner-side project/Free screenshot
+  and approval to commit/push this tooling to PR #130 are pending. No hosted migrations, test suite,
+  generated-type parity or double shadow import have run.
+- **Reusable Knowledge Added:** The CLI's linked pg_prove command still requires Docker; local SQL
+  uses the extended protocol while hosted SQL can return only its last result set. Keep original
+  pgTAP functions and tests intact, validate counters/diagnostics and reject transport errors as
+  negative-control evidence. Project access does not establish billing-read access.
+- **Deployment:** No commit, push, merge, production deployment, staging mutation or provider
+  permission change in this preparation batch. The local staging write guard remains disabled.
+- **Next Recommended Action:** Obtain the pending PR push approval and run the new isolated CI gate;
+  obtain plan evidence before using the approved staging migration/test/type/import workflow.
+
+## 2026-09-03 - Hosted Staging Preflight And Recovery Ownership
+
+- **Task:** Recorded the owner's management/recovery confirmation, inspected the authorized empty
+  hosted database and reviewed the exact Milestone 1 migration preview without applying it.
+- **Files Changed:** `README.md`, `docs/CODEX_GOAL.md`,
+  `docs/operations/product-intelligence-console-milestone-1.md`,
+  `knowledge-base/decisions/2026-09-03-product-intelligence-staging-replacement.md`,
+  `knowledge-base/technical/console-validation-reproducibility.md` and `docs/CHANGELOG_AI.md`.
+- **Data Changed:** Operational evidence only. Authenticated project metadata identifies organization
+  `xycjhlnlacqocitjkagq`. Inspection found PostgreSQL `17.6`, no public relations/functions or
+  migration-history table, zero Auth users and zero storage buckets. The owner confirmed managing
+  this project and responsibility for recovery. No product, source, media or verification data changed.
+- **Components And Visual Changes:** None. Corrected the runbook's hosted-signup claim: local config
+  disables signup, but the hosted setting is not yet verified. No Auth setting was changed.
+- **SEO Impact:** None; public URLs, metadata, structured data, sitemap, robots and RFQ code unchanged.
+- **Validation:** Exact-target hosted dry-run passed for five migrations, with no seeds/custom roles
+  and Vault synchronization skipped. Migration, domain, destination, REST and shadow checks passed.
+  The candidate schema/importer/contracts/snapshot are unchanged from tested commit `21c877a1`.
+  A rollback-only SQL probe proved the Management API returns only the last SELECT result.
+  Full ESLint, TypeScript and `npm run build` passed; the build generated 90 pages. Repository secret
+  scanning passed across 409 text files. No hosted pgTAP suite or import has run.
+- **Known Issues:** Free plan is owner-reported, not independently verified. The CLI organization
+  list returned no records and the available Dashboard browser required sign-in; non-sensitive
+  project/plan evidence was requested. Actual migrations, 74 hosted TAP assertions, generated-type
+  parity and two exact-row imports remain pending. Windows Docker remains a separate runtime issue.
+- **Reusable Knowledge Added:** Explicit-ref hosted command usage, the last-result-set limitation,
+  dry-run versus apply evidence, provider-managed temporary login roles and separate local/hosted
+  signup configuration. Never infer TAP success from a successful SQL transport alone.
+- **Deployment:** No commit, push, merge, public deployment or hosted business migration in this batch.
+  CLI preflight may initialize a temporary provider login role; no production service was connected.
+  The local import key remains empty and the shadow-write flag remains disabled.
+- **Next Recommended Action:** Verify the Free plan, then complete the approved exact-target
+  migration/test/type/double-import replay before considering Milestone 1 exit. Do not start M2 yet.
+
+## 2026-09-03 - Local CLI Authentication Verified
+
+- **Task:** Opened the requested local masked-input login tool, independently verified successful
+  account authentication and corrected a false failure in its Windows PowerShell error handling.
+- **Files Changed:** `docs/CODEX_GOAL.md`,
+  `docs/operations/product-intelligence-console-milestone-1.md`,
+  `knowledge-base/decisions/2026-09-03-product-intelligence-staging-replacement.md`,
+  `knowledge-base/technical/console-validation-reproducibility.md` and `docs/CHANGELOG_AI.md`.
+  Updated the ignored local-only `.tmp/supabase-token-login.cmd`.
+- **Data Changed:** Authenticated lookup confirmed project `fdsvzuqixppsakukkrsf`, name
+  `arcfort-product-intelligence-staging`, region `ap-southeast-1` (Singapore), and provider status
+  `ACTIVE_HEALTHY`. No business/product/technical/media data changed. No credential was printed or
+  stored in repository sources; CLI account credential storage is separate from the empty project
+  server-key configuration.
+- **Components And Visual Changes:** No website component or visual change. The local helper keeps
+  masked input and credential cleanup, checks both native exit codes and reports a safe failure stage.
+- **SEO Impact:** None; public routes, metadata, schema, RFQ, sitemap and robots are unchanged.
+- **Validation:** Independent authenticated project lookup passed. The old stderr/Stop behavior was
+  reproduced as `NativeCommandError`; a corrected read-only query passed under Windows PowerShell.
+  Local-helper parsing, hidden-input/cleanup, exit-code and no-mutation checks passed. No website
+  build or database replay was required to establish this scoped authentication result.
+- **Known Issues:** Account/organization, billing plan, existing schema and rollback owner remain
+  unverified. No project linking, hosted migration preview, migration, pgTAP replay or shadow import
+  has run. Provider health metadata is not hosted database parity.
+- **Reusable Knowledge Added:** Treat native stderr separately from exit status in Windows
+  PowerShell; restore strict handling and verify JSON/identity. Do not ask for another credential
+  after independent authentication succeeds or link a database solely to silence a warning.
+- **Deployment:** Local login and read-only remote metadata checks only. No push, merge, website
+  deployment or hosted database write in this authentication batch.
+- **Next Recommended Action:** Inspect remaining staging metadata/schema, record recovery ownership
+  and review the exact migration dry-run before the already authorized Milestone 1 replay.
+
+## 2026-09-03 - Replacement Staging Authorization And Local Token Handoff
+
+- **Task:** Recorded the owner's replacement staging project and fresh explicit authorization;
+  prepared a local masked-input authentication fallback after unsuccessful browser-login attempts.
+- **Files Changed:** `README.md`, `docs/CODEX_GOAL.md`,
+  `docs/operations/product-intelligence-console-milestone-1.md`,
+  `knowledge-base/decisions/2026-09-03-product-intelligence-staging-replacement.md`,
+  `knowledge-base/technical/console-validation-reproducibility.md` and `docs/CHANGELOG_AI.md`.
+  Local-only `.env.product-intelligence.local` was updated and
+  `.tmp/supabase-token-login.cmd` was added; both remain ignored by Git.
+- **Data Changed:** Current authorized destination is `fdsvzuqixppsakukkrsf`, named
+  `arcfort-product-intelligence-staging`, with Singapore and Free plan reported by the owner.
+  `bdaucwemujiunpyptkpq` is superseded, not deleted. Authentication, hosted identity/schema checks,
+  billing verification and rollback-owner confirmation remain outstanding. No canonical product,
+  technical, compatibility, company or media records changed.
+- **Components And Visual Changes:** No website components created, changed or removed. The local
+  helper invokes the official CLI for login and read-only project lookup only.
+- **SEO Impact:** None; no URL, canonical, metadata, schema, sitemap, robots or RFQ changes.
+- **Validation:** PowerShell parser and local-helper safety checks passed. The local configuration
+  matches the new reference/URL, has an empty server key and rejects writes with its disabled guard.
+  Destination-guard regression tests passed; Git ignore rules protect both local files. The goal
+  report regenerated without content changes, retaining existing media-evidence warnings. Full
+  website build/lint/typecheck and hosted database tests were not rerun for this documentation and
+  local-setup batch; no website runtime or database contract changed.
+- **Known Issues:** CLI still reports no access token. The helper's successful credential flow is
+  unverified until the owner supplies a token locally and the operator independently checks access.
+  No migration preview, migration, pgTAP replay or shadow import has run on the replacement project.
+- **Reusable Knowledge Added:** Destination changes require fresh scoped authorization even when
+  project names match. Browser process startup and HTTP reachability do not prove authentication.
+  Use local masked input, temporary environment transport and target-only metadata output; retain
+  the CLI's native-storage/plaintext-fallback distinction without claiming unverified encryption.
+- **Deployment:** Local preparation only; no push, merge, deployment, production connection or
+  hosted database write was performed in this batch.
+- **Next Recommended Action:** Complete local token login, authenticate the exact new project and
+  inspect the migration dry-run before the approved staging replay. Do not resume the old project
+  or begin Console Milestone 2.
+
 ## 2026-09-02 - Native Windows Supabase Login Recovery
 
 - **Task:** Diagnosed the owner's screenshot: PowerShell blocked the temporary `.ps1` helper before

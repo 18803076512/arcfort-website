@@ -42,6 +42,11 @@ The approved Product Intelligence architecture adds a dedicated Supabase Postgre
 Storage foundation without changing the website's current product source. Milestone 1 is data-only:
 there is no `/console` UI yet, no public signup and no direct database-to-website publishing.
 
+The current destination-specific staging approval and Windows local-login fallback are in the
+[Milestone 1 runbook](docs/operations/product-intelligence-console-milestone-1.md#current-staging-authorization---2026-09-03).
+Check that record before linking a project; a previous project reference is not current approval.
+Local login helpers and credentials are ignored by Git and must never be deployed.
+
 Key files:
 
 - `supabase/migrations/` - versioned relational schema, lifecycle, human verification, release QA,
@@ -65,6 +70,7 @@ npm run console:shadow:generate
 npm run console:shadow:validate
 npm run console:domain:test
 npm run console:config:test
+npm run console:sql-qa:test
 npm run console:migrations:validate
 npm run console:db:types:check
 npm run company:evidence:validate
@@ -94,9 +100,29 @@ field across 17 imported tables twice for the complete 43-product shadow snapsho
 [Both CI jobs passed](https://github.com/18803076512/arcfort-website/actions/runs/33591108612),
 including lint, typecheck and the production build. This is an isolated local-stack test on a CI
 runner, not proof of hosted Supabase parity or production publication. The operations runbook retains
-the exact candidate evidence and separate Windows Docker startup limitation. A named, authorized
-hosted non-production project and parity replay are still required before Milestone 2; any later
+the exact candidate evidence and separate Windows Docker startup limitation. The replacement staging
+project `fdsvzuqixppsakukkrsf` now has authenticated identity, an empty-schema inspection and a reviewed
+five-migration dry-run. Recovery ownership is confirmed. Independent Free-plan evidence and actual
+hosted migration/test/type/import parity remain outstanding before Milestone 2; any later
 source-of-truth cutover requires separate approval.
+
+SQL-based database QA is available for the reviewed Milestone 1 tests:
+
+- `npm run console:sql-qa:test` validates the report adapter and destination rejection cases without
+  a database or credentials.
+- `npm run console:db:test:sql` uses `psql` in this project's already running local Supabase container.
+  CI retains the existing pg_prove run and additionally checks the SQL report path with real passing,
+  failing and count-mismatch controls.
+- `npm run console:db:test:staging` uses the authenticated CLI Management API without a local Docker
+  dependency. It requires the reviewed staging URL/reference, `staging` environment and explicit
+  shadow-write guard. It does not need the project's service-role key and does not load env files
+  automatically. Do not enable it until the target, plan, migrations and authorization are verified.
+
+The adapter preserves existing test assertions and fixtures, adds a final pgTAP counter/diagnostic
+report before ROLLBACK, and rejects missing, failed, partial or mismatched results. These commands
+are for reviewed repository SQL only, not an arbitrary-SQL sandbox. The new adapter's unit and local
+quality checks pass; actual PostgreSQL/CI replay remains pending. See the operations runbook for the
+current staging authorization and remaining gates.
 
 ## Pages
 
