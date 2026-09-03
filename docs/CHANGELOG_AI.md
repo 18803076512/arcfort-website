@@ -3988,3 +3988,50 @@ readiness pagination and the actual provider restriction. Local templates do not
 
 Finish candidate-specific CI, then resolve the named owner mailbox and approved Auth mail delivery
 before any real invitation, owner role or M2 activation. Do not start M3/product publishing.
+
+## 2026-09-04 - Console M2 Candidate Verification And Response Isolation
+
+**Task**
+
+Resolve the two first-run CI failures, prove the isolated Console access model and close a root 404
+payload leak found by the new HTTP gate. Real-owner onboarding remains outside this completed batch.
+
+**Files Changed**
+
+Corrected the local Auth email-provider setting and isolated pagination fixture, bound the existing
+distributor social preview URLs explicitly, added a neutral root fallback plus public catch-all,
+added `scripts/console/test-console-http.ts`, and updated the M2 operating records.
+
+**Data Changed**
+
+No product, compatibility, technical, image or company facts changed. No hosted user, role,
+invitation, SMTP setting, product row or publication record changed.
+
+**SEO Impact**
+
+Public URLs, canonicals, structured data and buyer-facing 404 shell remain intact. Distributor Open
+Graph/Twitter metadata again resolves to the stable 1200x630 routes. Console responses now exclude
+the public shell's schema/navigation payload and remain noindex, nofollow and noarchive.
+
+**Validation**
+
+GitHub Actions run `33725484619` passed quality and isolated database jobs, including Auth/RLS,
+session refresh, role revocation and 1,103-row pagination. The latest local build, snippet audit,
+HTTP privacy/public-shell checks and 360/390/768/1440 browser review passed. Authenticated browser and
+real inbox checks remain deliberately unclaimed.
+
+**Known Issues**
+
+The first administrator mailbox has not been named. Hosted custom invitation/recovery templates are
+blocked by the Free-plan default mail provider unless a separately approved SMTP/delivery solution is
+configured. Existing dependency audit advisories remain for pre-existing dependency chains.
+
+**Reusable Knowledge Added**
+
+The M2 access-boundary decision now records why the root fallback must stay neutral even when an
+apparently unused public 404 is only serialized into a private React Server Component response.
+
+**Next Recommended Action**
+
+Choose the first administrator mailbox and approve a distinct Supabase Auth mail-delivery solution;
+then invite exactly one owner, verify real inbox receipt/login and complete authenticated browser QA.

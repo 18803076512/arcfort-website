@@ -128,15 +128,15 @@ real-data pilot. M1's runtime gates pass with bounded operational warnings. The 
 and validation. Owner onboarding is not complete. Supabase is not authoritative for public pages
 and no product data was published.
 
-The proposed M2 batch and exact acceptance matrix are now recorded in
-`docs/operations/product-intelligence-console-milestone-2-plan.md`. Read-only inspection on 2026-09-03
-found that hosted signup is not disabled, despite the local TOML disabling it. The plan also resolves
-the current root layout's shared public tracking/navigation boundary. M2 scope, URL-preserving
-layout isolation and staging Auth changes were subsequently approved. Signup is now disabled and
+The M2 batch and exact acceptance matrix are recorded in
+`docs/operations/product-intelligence-console-milestone-2-plan.md`. Initial read-only inspection on
+2026-09-03 found that hosted signup was not disabled. M2 scope, URL-preserving layout isolation and
+staging Auth changes were subsequently approved and implemented locally. Signup is now disabled and
 the exact loopback URLs are configured. The default Free-plan mail provider rejected custom
 invitation/recovery templates. The first owner login mailbox and separately approved mail-service
 resolution remain missing; no account or role was created. See the M2 implementation record for
-candidate-specific code and test status; do not treat local implementation as completed onboarding.
+candidate-specific code and test status. Isolated CI passed Auth, RLS, revocation and 1,103-row
+pagination checks; do not treat that synthetic result as completed real-owner onboarding.
 
 The foundation and readiness, SEO-approval and destination-safety hardening are committed on
 `codex/v2-industrial-brand-system` in PR #130. On 2026-09-02, isolated Linux CI at commit `6383171`

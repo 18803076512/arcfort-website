@@ -158,7 +158,10 @@ endpoints remain at `app/distributor-supply/` to retain their existing stable UR
 Use the `CONSOLE_*` names in `.env.example` only in a reviewed local process. Keep the Product
 Intelligence import write guard off and its service key absent. The server uses the public client
 key plus the signed-in user's session, checks current roles and relies on RLS for every read.
-`npm run console:boundaries:test` checks local safety contracts. Isolated CI additionally runs
+`npm run console:boundaries:test` checks local safety contracts. After a reviewed local production
+server is running, `npm run console:http:test` verifies private response headers, unauthenticated
+payload isolation, cross-origin POST rejection, public shell retention and stable social-image
+routes without submitting credentials or email. Isolated CI additionally runs
 `npm run console:auth:test:local` against disposable users and 1,103 synthetic pagination records;
 this command refuses non-CI/hosted execution. It is not an owner invitation workflow.
 

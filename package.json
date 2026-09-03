@@ -33,6 +33,7 @@
     "console:domain:test": "node --experimental-strip-types scripts/console/test-catalog-domain.ts",
     "console:boundaries:test": "node --experimental-strip-types scripts/console/test-console-boundaries.ts",
     "console:auth:test:local": "node --experimental-strip-types scripts/console/test-console-isolated.ts --local",
+    "console:http:test": "node --experimental-strip-types scripts/console/test-console-http.ts",
     "console:config:test": "node --experimental-strip-types scripts/console/test-product-intelligence-config.ts",
     "console:rest:test": "node --experimental-strip-types scripts/console/test-product-intelligence-rest.ts",
     "console:sql-qa:test": "node --experimental-strip-types scripts/console/test-database-test-report.ts",

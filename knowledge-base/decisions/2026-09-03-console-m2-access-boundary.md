@@ -13,6 +13,9 @@ without changing public data authority, evidence status or publication permissio
 - Use URL-preserving route groups to remove the public root's analytics, attribution, metadata and
   sales shell from Console. This is privacy isolation, not a cosmetic site rewrite. Keep social-image
   files outside the group because Next 15 adds a group-derived metadata-image URL suffix otherwise.
+- Keep the shared root 404 fallback neutral and use a public catch-all for the full public 404 shell.
+  This prevents public analytics/schema/navigation component payloads from appearing in private
+  Console responses while preserving the buyer-facing public not-found experience.
 - Use official Supabase SSR/client packages and a public key with the caller's session. Normal reads
   must not use the M1 service-role importer. Each data function checks fresh identity/current roles;
   database RLS remains independently enforced. Public pages continue to read the Git-backed catalog.

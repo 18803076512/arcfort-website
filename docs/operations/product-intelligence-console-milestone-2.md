@@ -1,7 +1,7 @@
 # Product Intelligence Console - Milestone 2 Implementation
 
 Date: 2026-09-03
-Status: Local implementation in review; real owner onboarding and M2 exit not complete.
+Status: Local candidate verified; real owner onboarding and M2 exit not complete.
 
 ## Scope And Authority
 
@@ -45,17 +45,24 @@ The provider rejected email-template modification on the Free-plan default mail 
 fields were compared before/after and remained unchanged. Local templates are not proof of hosted
 delivery. Do not enable SMTP, upgrade billing or reuse RFQ credentials without a separate decision.
 
-## Validation In Progress
+## Validation Evidence
 
 - Local config/origin/body-limit/filter/access/layout unit checks passed.
-- Typecheck and lint passed; build passed before the final social-image path correction.
+- Typecheck and lint passed. The production build passed with 92 generated pages and every Console
+  route remaining dynamic; public distributor social-image endpoints retained their original URLs.
 - Company, distributor, quality, trade terms, search, attribution and all three RFQ tests passed.
 - SEO audit retained 40 indexable product pages, six categories, six applications and 17 guides.
 - Built internal-link audit passed across 80 HTML pages and two dynamic source pages.
 - Performance gates retained their original budgets and passed after including the public group
   layout/error assets. Homepage JavaScript was 126.7 KiB against 140 KiB; shared CSS 9.8 KiB/15 KiB.
-- Added isolated real Auth/RLS/session/role-revocation/DTO tests and a 1,103-row pagination fixture.
-  They run after M1's two imports in disposable CI, never against hosted staging. Results pending.
+- Isolated real Auth/RLS/session/role-revocation/DTO tests and a 1,103-row pagination fixture passed
+  in GitHub Actions run `33725484619`. They run after M1's two imports in disposable CI, never
+  against hosted staging. Synthetic accounts and records were discarded with that stack.
+- Loopback HTTP checks passed for private headers, unauthenticated catalog-payload exclusion,
+  cross-origin POST rejection, public shells/canonicals, sitemap/robots and both social-image routes.
+- Browser checks passed at 360, 390, 768 and 1440 CSS pixels for the login/recovery experience,
+  anonymous protected-route behavior and retained public homepage/contact content. Inputs remain at
+  least 44 pixels high and tested pages had no horizontal overflow.
 - Full owner login/inbox and authenticated responsive browser checks remain pending.
 
 ## Files And Contracts
@@ -69,8 +76,9 @@ delivery. Do not enable SMTP, upgrade billing or reuse RFQ credentials without a
   indexing exclusion. Public `app/sitemap.ts` and RFQ API source remain unchanged.
 - `supabase/config.toml`, `supabase/templates/`: local invitation/recovery configuration only.
 - `.env.example`, `package.json`, `package-lock.json`: environment names, SDK versions and tests.
-- `scripts/console/test-console-boundaries.ts`, `test-console-isolated.ts`, `.github/workflows/quality.yml`:
-  unit and disposable database checks, preserving all existing M1 CI gates.
+- `scripts/console/test-console-boundaries.ts`, `test-console-isolated.ts`, `test-console-http.ts`,
+  `.github/workflows/quality.yml`: unit, loopback HTTP and disposable database checks, preserving all
+  existing M1 CI gates.
 - Nine existing public source-path test/audit files and `scripts/check-performance-budget.ts`:
   route-group-aware paths with unchanged assertions/budgets.
 - `README.md`, Goal/design documents, M2 plan, dated decision and AI change log: implementation,
@@ -82,7 +90,7 @@ delivery. Do not enable SMTP, upgrade billing or reuse RFQ credentials without a
 2. Approved mail-service resolution for the provider template restriction; actual receipt and
    owner-set password remain unverified. Do not invent success from API acceptance.
 3. Verified account identity followed by exactly one intended owner role; no additional accounts.
-4. Real authenticated browser checks and candidate-specific isolated CI completion.
+4. Real authenticated browser checks. Candidate-specific isolated CI is complete.
 5. Existing dependency audit reports seven advisories (six high, one moderate) in non-Supabase
    dependency chains. No force upgrade was applied. Review these before any production release.
 6. Full V1 editing, verification, publishing and the real 15AK pilot belong to later milestones.
