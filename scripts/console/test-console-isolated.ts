@@ -149,7 +149,7 @@ const family = await admin.from("products").insert({
   external_key: `qa-${familyId}`,
   category_id: categoryId,
   name_en: "QA pagination fixture",
-  product_type: "consumable",
+  product_type: "welding-consumable",
   source_type: "unknown",
 });
 if (family.error) throw new Error("Isolated family fixture failed.");
