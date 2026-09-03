@@ -72,6 +72,7 @@ const securityHeaders = [
 ] as const;
 
 const nextConfig: NextConfig = {
+  logging: { incomingRequests: { ignore: [/^\/console(?:\/|\?|$)/] } },
   compress: true,
   poweredByHeader: false,
   images: {
@@ -114,6 +115,14 @@ const nextConfig: NextConfig = {
       {
         source: "/(.*)",
         headers: securityHeaders.map((header) => ({ ...header })),
+      },
+      {
+        source: "/console/:path*",
+        headers: [
+          { key: "X-Robots-Tag", value: "noindex, nofollow, noarchive" },
+          { key: "Cache-Control", value: "private, no-store, max-age=0" },
+          { key: "Referrer-Policy", value: "no-referrer" },
+        ],
       },
       {
         source: "/downloads/arcfort-distributor-sourcing-guide.pdf",

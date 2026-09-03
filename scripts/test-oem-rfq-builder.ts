@@ -82,7 +82,7 @@ assert.equal(oemProductScopeOptions.length, 6);
 assert.equal(oemServiceOptions.length, 6);
 assert.equal(oemEvidenceOptions.length, 6);
 
-const pageSource = readFileSync(new URL("../app/oem-service/page.tsx", import.meta.url), "utf8");
+const pageSource = readFileSync(new URL("../app/(public)/oem-service/page.tsx", import.meta.url), "utf8");
 const sitemapSource = readFileSync(new URL("../app/sitemap.ts", import.meta.url), "utf8");
 const builderSource = readFileSync(
   new URL("../components/oem/OemRfqBuilder.tsx", import.meta.url),

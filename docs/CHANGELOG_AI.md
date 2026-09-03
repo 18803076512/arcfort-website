@@ -21,6 +21,86 @@ Components Changed, Visual Changes, Validation and Deployment may be added when 
 created before this schema remain valid historical records and must not be rewritten only for
 formatting consistency.
 
+## 2026-09-03 - Milestone 2 Plan And Read-Only Auth Preflight
+
+- **Task:** Inspected the current route/layout, analytics, security, RLS/readiness and source-test
+  dependencies, checked real staging Auth capabilities and prepared the next scoped Console plan.
+- **Files Changed:** Added `docs/operations/product-intelligence-console-milestone-2-plan.md`;
+  updated `README.md`, `docs/CODEX_GOAL.md`, `docs/CHANGELOG_AI.md` and
+  `knowledge-base/technical/console-validation-reproducibility.md`. The six pending M1 completion
+  documents were preserved; no previous milestone evidence was discarded.
+- **Components And Visual Changes:** None. The M2 route/layout/auth/DTO files are proposed, not
+  implemented. A credential-free local inspection helper was removed after use.
+- **Data Changed:** Operational observations only. Authenticated target identity was rechecked and
+  `GET /auth/v1/settings` returned `disable_signup=false`, email enabled, email autoconfirm off and
+  anonymous sign-ins off. SMTP and redirects were not exposed by that endpoint and remain unknown.
+  No signup, email, invitation, role grant, database mutation or provider configuration change.
+- **SEO Impact:** None. The plan identifies URL-preserving server-layout isolation and public
+  metadata/analytics protection as an approval item; no routes or public tracking changed.
+- **Validation:** Inspected actual implementation and public provider settings with only whitelisted
+  non-sensitive output. Documentation formatting, local references, scope consistency, diff hygiene
+  and secret scanning passed. Additional regression checks passed: ESLint, TypeScript and a
+  production build with 90 pages. Runtime/source/dependency files remain unchanged from `4518b885`.
+  The plan contains future M2 tests; none is represented as passing implemented M2 authentication
+  or browser QA. M2 activation is `BLOCKED` pending its scoped approval and actual implementation/
+  access validation; this does not reopen the completed M1 data-foundation gate.
+- **Known Issues:** Hosted signup must be disabled under new scoped approval before activation.
+  M2 implementation scope, the layout move, Auth settings, exact callbacks, invitation delivery and
+  first owner mailbox/role handoff remain unapproved or missing. The earlier M1 runtime result
+  remains valid, but it is not a completed Console UI or an Auth-provider write authorization.
+- **Reusable Knowledge Added:** Local Auth TOML differs from real hosted settings; public settings
+  cannot prove SMTP/redirect readiness. Root layout inheritance introduces a separate Console
+  analytics/metadata boundary. The proposed plan maps source-path consumers and acceptance tests.
+- **Deployment:** No commit, push, merge, deployment, production connection or account-setting write.
+- **Next Recommended Action:** Obtain scoped approval for M2-A/B/C/D/E and the first owner's login
+  mailbox, then implement the staged plan. Keep product editing, publication and source-of-truth
+  cutover out of this batch.
+
+## 2026-09-03 - Hosted Milestone 1 Migration And Shadow Parity
+
+- **Task:** Accepted the requested paired project/Free Plan Dashboard evidence and completed the
+  previously authorized Milestone 1 hosted replay only in `fdsvzuqixppsakukkrsf`.
+- **Files Changed:** `README.md`, `docs/CODEX_GOAL.md`, `docs/CHANGELOG_AI.md`,
+  `docs/operations/product-intelligence-console-milestone-1.md`,
+  `knowledge-base/decisions/2026-09-03-product-intelligence-staging-replacement.md` and
+  `knowledge-base/technical/console-validation-reproducibility.md`.
+- **Components And Visual Changes:** None. Temporary local audit/type/import wrappers were removed
+  after use; no public or persistent runtime component was created, changed or removed.
+- **Data Changed:** Applied the five existing reviewed migrations to the previously empty staging
+  schema. Imported unchanged revision `f185ebc9ebba875bc59141b872780297804fef894866108fa14d65bf995fc41b`
+  twice through the existing guarded importer. All 17 source tables reconciled by exact identifier
+  and source column on both runs. Canonical repository product/media/technical data are unchanged.
+  Staging now contains 43 products/variants, 604 technical values, 617 evidence links and 46 media
+  records; all 14 conflicts and zero-confirmed fact/compatibility/media states are preserved.
+- **SEO Impact:** No route, canonical, metadata, schema projection, sitemap, robots or indexed-content
+  change. Supabase remains shadow-only; the public site still consumes repository adapters.
+- **Validation:** Fresh authenticated target/schema/dry-run checks, five applied migrations,
+  hosted SQL runner controls and 74/74 assertions on pgTAP `1.3.3`, generated schema-member parity,
+  and two exact-row imports passed. Final SQL inspection confirms 28 forced-RLS tables, two private
+  buckets, zero duplicate SKU/slug, zero Auth users/roles, zero verification/release/publish records
+  and one `RECONCILED` batch. The 3,634 append-only audit events remain intact. Local domain/config/
+  REST/report/migration/shadow tests, RFQ tests, secret scanning, ESLint, typecheck and a 90-page
+  production build passed; built SEO/link/image/snippet and performance audits passed.
+- **QA Scope:** `PASS_WITH_WARNINGS` for the M1 data-foundation gate only. The tested runtime is
+  unchanged from `4518b885ad0971533c4408fee216b5bec2a4ebaf`, whose isolated
+  [CI run 33714840051](https://github.com/18803076512/arcfort-website/actions/runs/33714840051)
+  passed before hosted execution. Console V1, M2 UI and the end-to-end 15AK pilot are not complete.
+- **Known Issues:** Hosted type generation adds five PostgREST `14.5` metadata/comment lines; every
+  actual schema member and the rest of the formatted file match. No canonical type overwrite was
+  made. Windows Docker remains unavailable. Hosted invite-only Auth settings and owner-role bootstrap
+  are not yet configured/verified. Billing evidence is an owner-provided paired Dashboard capture,
+  not an organization API read. No new factory facts, image rights or inbox-delivery proof were added.
+- **Reusable Knowledge Added:** Exact hosted test hashes, migration history and parity/audit counts;
+  how to distinguish hosted generator metadata from schema drift; bounded in-memory use of an
+  existing project key; why repeat-import idempotency must retain audit history.
+- **Deployment:** Only the owner-authorized staging migration/import was performed. No billing
+  change, credential creation/rotation, production connection, merge or production deployment.
+  PR #130 remains open at `4518b885` with no auto-merge; this six-document completion record is local
+  and has not been committed or pushed. Local write guard remains false and its server-key field empty.
+- **Next Recommended Action:** Review the Milestone 2 invite-only Console shell/read-only dashboard
+  plan and complete the scoped Auth/owner handoff, preserving repository authority and 15AK evidence
+  gates. Do not start product publication or unrelated sales/CRM work.
+
 ## 2026-09-03 - Authorized PR 130 Push And Isolated Database QA
 
 - **Task:** Completed the owner's explicit authorization to commit and push the prepared SQL QA
@@ -3865,3 +3945,46 @@ Short objective and reason for the change.
 
 - One highest-impact follow-up.
 ```
+
+## 2026-09-03 - Console M2 Implementation And Staging Access Boundary
+
+**Task**
+
+Implement the owner's approved M2-A/B/C/D/E scope as a disabled-by-default, read-only local Console.
+M2 exit and real owner onboarding are not complete.
+
+**Files Changed**
+
+Public route files moved to `app/(public)/`; `app/layout.tsx`, not-found recovery, `next.config.ts`,
+`app/robots.ts`, `middleware.ts`, new `app/(console)/console/`, `components/console/`, `lib/console/`,
+two Console tests, source-path tests/audits, performance manifest paths, CI, package/lock/environment
+example, local Auth templates/config, README, Goal/design docs, M2 plan/runbook and the dated access
+decision. Earlier uncommitted M1 completion evidence was retained. See the M2 runbook for file groups.
+
+**Data Changed**
+
+No product, technical, compatibility, image or public content facts changed. Hosted Auth in staging
+`fdsvzuqixppsakukkrsf` changed only signup closure, site URL and two exact loopback callbacks, with
+complete unrelated-field readback parity. No user, role, invitation, SMTP or billing change occurred.
+
+**SEO Impact**
+
+Existing public URLs/content/canonicals/sitemap retained; Console excluded from indexing/tracking.
+Social-image endpoints kept outside the public group to avoid a Next 15 group-derived URL suffix.
+
+**Known Issues**
+
+First owner mailbox missing. Free-plan default email provider rejected custom invite/recovery
+templates with HTTP 400, so hosted templates remain unchanged and onboarding needs a separately
+approved delivery solution. Isolated CI and authenticated browser handoff are still being validated.
+Existing dependency chains report seven advisories; no force framework upgrade, merge or deployment.
+
+**Reusable Knowledge Added**
+
+`knowledge-base/decisions/2026-09-03-console-m2-access-boundary.md` records layout, session/RLS,
+readiness pagination and the actual provider restriction. Local templates do not prove hosted email.
+
+**Next Recommended Action**
+
+Finish candidate-specific CI, then resolve the named owner mailbox and approved Auth mail delivery
+before any real invitation, owner role or M2 activation. Do not start M3/product publishing.

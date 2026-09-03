@@ -1,9 +1,11 @@
 # Product Intelligence Console V1 - Milestone 1 Operations
 
-Status: Repository foundation at `6383171` passed static checks and isolated Linux CI database replay
-on 2026-09-02, including all 74 pgTAP assertions and two exact-row shadow imports. A named, authorized
-hosted staging replay remains required before Milestone 1 can exit. No Console UI or production
-source-of-truth cutover is included.
+Status: Milestone 1 data-foundation runtime gates passed in the authorized hosted staging project
+`fdsvzuqixppsakukkrsf` on 2026-09-03: five migrations, 74 SQL/pgTAP assertions, generated schema-member
+parity and two 17-table exact-row shadow imports. This follows the isolated CI proof at `4518b885`.
+The scoped result is `PASS_WITH_WARNINGS`: hosted type-generator metadata differs from local output,
+Windows Docker remains unavailable, and hosted Auth setup belongs to the next milestone. No Console
+UI, public publication or production source-of-truth cutover is included.
 
 ## Authority Boundary
 
@@ -153,17 +155,17 @@ The owner explicitly replaced the prior destination and confirmed the following 
 2026-09-03. This is the only current hosted write authorization for this task. See the
 [replacement decision](../../knowledge-base/decisions/2026-09-03-product-intelligence-staging-replacement.md).
 
-| Field             | Current Value                                                                        | Evidence                                                              |
-| ----------------- | ------------------------------------------------------------------------------------ | --------------------------------------------------------------------- |
-| Project name      | `arcfort-product-intelligence-staging`                                               | Owner supplied; authenticated CLI lookup verified                     |
-| Project reference | `fdsvzuqixppsakukkrsf`                                                               | Owner authorized; authenticated CLI lookup verified                   |
-| Direct API URL    | `https://fdsvzuqixppsakukkrsf.supabase.co`                                           | Derived from the authenticated project reference; REST replay pending |
-| Organization      | `xycjhlnlacqocitjkagq`                                                               | Authenticated project metadata                                        |
-| Region            | Singapore (`ap-southeast-1`)                                                         | Authenticated CLI lookup verified                                     |
-| Plan              | Free                                                                                 | Owner reported; authenticated verification pending                    |
-| Recovery owner    | Project owner, confirmed in this task on 2026-09-03                                  | Owner confirmed project management and recovery responsibility        |
-| Authorized writes | Reviewed Milestone 1 migrations and shadow import only                               | Owner confirmation on 2026-09-03                                      |
-| Exclusions        | No existing-data deletion, production connection, public publication or paid upgrade | Explicit scoped confirmation                                          |
+| Field             | Current Value                                                                        | Evidence                                                                  |
+| ----------------- | ------------------------------------------------------------------------------------ | ------------------------------------------------------------------------- |
+| Project name      | `arcfort-product-intelligence-staging`                                               | Owner supplied; authenticated CLI lookup verified                         |
+| Project reference | `fdsvzuqixppsakukkrsf`                                                               | Owner authorized; authenticated CLI lookup verified                       |
+| Direct API URL    | `https://fdsvzuqixppsakukkrsf.supabase.co`                                           | Authenticated identity and two actual REST shadow imports verified        |
+| Organization      | `xycjhlnlacqocitjkagq`                                                               | Authenticated project metadata                                            |
+| Region            | Singapore (`ap-southeast-1`)                                                         | Authenticated CLI lookup verified                                         |
+| Plan              | Free                                                                                 | Owner-provided paired Dashboard evidence reviewed; API lookup unavailable |
+| Recovery owner    | Project owner, confirmed in this task on 2026-09-03                                  | Owner confirmed project management and recovery responsibility            |
+| Authorized writes | Reviewed Milestone 1 migrations and shadow import only                               | Owner confirmation on 2026-09-03                                          |
+| Exclusions        | No existing-data deletion, production connection, public publication or paid upgrade | Explicit scoped confirmation                                              |
 
 The old `bdaucwemujiunpyptkpq` project is no longer an authorized target for this work. Do not
 migrate/import into it, delete it or silently fall back to it. Its earlier record below is history.
@@ -172,27 +174,29 @@ The initial CLI check returned "Access token not provided". Local token login su
 on 2026-09-03. Independent authenticated CLI lookups verified the exact project reference/name,
 Singapore (`ap-southeast-1`), organization ID and provider-reported status `ACTIVE_HEALTHY`.
 The owner then explicitly confirmed managing this staging project and responsibility for recovery.
-Authenticated structural inspection and migration dry-run passed, as recorded below. No migrations,
-database test suite or shadow import have been applied to this replacement project by this workflow.
+Authenticated structural inspection and migration dry-run passed before the actual migration,
+database test suite and two shadow imports recorded in the hosted completion section below.
 
 The table above retains the owner-supplied authorization evidence. The later authenticated checks
 confirm name, reference, region and organization ID, not the reported billing plan or the owner's
 account role. The CLI organization-list response was empty; this does not establish a plan or
 contradict the owner's management confirmation. The in-app Dashboard session requires sign-in.
-Non-sensitive Dashboard evidence of the project and Free plan has been requested before hosted
-writes. `ACTIVE_HEALTHY` is provider metadata, not a substitute for schema, RLS or parity tests.
+Non-sensitive Dashboard evidence was requested and subsequently supplied before hosted writes.
+`ACTIVE_HEALTHY` is provider metadata, not a substitute for schema, RLS or parity tests.
 
 A subsequent target-only Management API check independently revalidated the project's name/ref and
 organization, then received HTTP 403 from `GET /v1/organizations/xycjhlnlacqocitjkagq`. No credential
 was printed or persisted by that check. The official
 [organization endpoint](https://supabase.com/docs/reference/api/v1-get-an-organization) exposes the
 plan and requires organization-read permissions. Do not widen token permissions, infer Free from an
-empty list, retry with another account or change billing to pass this gate; retain the Dashboard
-evidence request.
+empty list, retry with another account or change billing to pass this gate. The paired Dashboard
+evidence below resolved the requested owner handoff without expanding API permissions.
 
 The ignored `.env.product-intelligence.local` now targets the replacement URL/reference, retains an
-empty project server key and keeps `PRODUCT_INTELLIGENCE_ALLOW_SHADOW_WRITE=false`. No CLI project
-link exists. Do not copy an old project key into the new configuration. CLI account authentication
+empty project server key and keeps `PRODUCT_INTELLIGENCE_ALLOW_SHADOW_WRITE=false`. No persistent CLI
+project link was created. For the approved import, the current project's existing server key was
+obtained with the authenticated CLI and passed only in child-process memory, never printed or saved
+to an env file. Do not copy an old project key into the new configuration. CLI account authentication
 and the project server key used by the shadow importer are separate credentials.
 
 ### Hosted Preflight And Preview - 2026-09-03
@@ -337,11 +341,161 @@ formatting, diff hygiene and secret scanning passed. `npm run build` generated 9
 dependency, SQL migration, canonical product/media value, public route or RFQ implementation changed.
 
 Release QA for this tooling-only PR/isolated-CI scope is PASS. That result is not authorization to
-merge, publish or deploy. The hosted Free-plan evidence, project server-key configuration, real
-Management API test transport, generated-type parity and two hosted imports remain outstanding.
+merge, publish or deploy. At that checkpoint the hosted Free-plan evidence, project server-key use,
+real Management API test transport, generated-type parity and two hosted imports were outstanding;
+the later hosted completion section records their actual resolution.
 The local staging write guard is unchanged and disabled. Record any follow-up documentation-only
 commit separately from this tested implementation candidate; never claim these logs tested a later
 runtime change.
+
+### Dashboard Plan Evidence And Pre-Apply Recheck - 2026-09-03
+
+The owner completed the requested two-part screenshot handoff: the project capture shows
+`arcfort-product-intelligence-staging`, `fdsvzuqixppsakukkrsf`, Singapore, Healthy and no migrations;
+the following Billing capture explicitly shows `Free Plan`. The latter crop has no organization
+header, so the project association comes from the owner's scoped response and paired project image,
+not an independently successful organization API call. The previous HTTP 403 remains historical
+evidence; no broader credential scope or billing change was requested.
+
+Reviewed source hashes (SHA-256):
+
+- Project: `F7BB6B68E31E1A2CB2A5A839488444D0F0DEFB97678D2004AB8720553B58DFFE`.
+- Billing: `6CF83FC209B2607E60AF762A2E61B06FE3513E373FBF7326792895C88EBF4D0B`.
+
+The screenshot handoff is accepted as reviewed owner-provided Dashboard plan evidence for this
+dedicated staging operation. Do not infer a plan from Nano alone: paid organizations can retain Nano
+instances after an upgrade. No private account screenshot is copied into public website assets.
+
+Immediately before applying, the authenticated CLI lookup reconfirmed the exact name/ref,
+organization `xycjhlnlacqocitjkagq`, `ap-southeast-1` and `ACTIVE_HEALTHY`. PostgreSQL `17.6` still has
+zero public relations/functions, no migration history, zero Auth users and zero storage buckets.
+The `--dry-run --skip-vault` preview lists exactly the five approved migration files. Static migration,
+shadow, destination and report-adapter checks pass; runtime files and snapshot are unchanged from
+the isolated-CI-tested candidate `4518b885ad0971533c4408fee216b5bec2a4ebaf`.
+
+The owner remains recovery contact. Apply only this migration set under the existing exact-project
+authorization, then require hosted SQL tests, type comparison and two exact-row shadow imports.
+Stop and preserve evidence if a step fails; do not reset, delete data, synchronize Vault or change
+production. The public repository content source remains authoritative.
+
+### Hosted Milestone 1 Completion - 2026-09-03
+
+The reviewed execution candidate was `4518b885ad0971533c4408fee216b5bec2a4ebaf`. Its migration,
+importer, Supabase contract, test and deterministic snapshot files were unchanged during execution.
+[Isolated CI run 33714840051](https://github.com/18803076512/arcfort-website/actions/runs/33714840051)
+had already passed both jobs, including the original pg_prove runner and SQL-report runner, generated
+types and two imports. That evidence was retained separately from the following real hosted results.
+
+After repeating authenticated identity, empty-schema inspection and the exact five-file dry-run,
+the approved apply command completed with exit code zero:
+
+```bash
+npx supabase db push --linked --project-ref fdsvzuqixppsakukkrsf --skip-vault --yes --agent no
+```
+
+Final migration history contains exactly `202608300001`, `202608300002`, `202608300003`,
+`202608300004` and `202608310005`. No reset, seed, unrelated role synchronization, Vault secret sync,
+production operation or old-project fallback was performed.
+
+#### Hosted SQL Tests
+
+`npm run console:db:test:staging` executed against the exact direct staging URL/reference with
+`PRODUCT_INTELLIGENCE_ENVIRONMENT=staging` and the write guard enabled only for the process. The
+runner's passing, failing-assertion and plan-count-mismatch controls all succeeded on the hosted
+Management API transport. All five real suites reported pgTAP `1.3.3`, zero failed assertions,
+matching planned/executed counts and the reviewed normalized source hashes:
+
+| Suite           | Assertions | Normalized Source SHA-256                                          |
+| --------------- | ---------: | ------------------------------------------------------------------ |
+| Lifecycle       |      12/12 | `9e4f9d6834de64f7f9dee9daad109ec10580e58611e48a4077512b5e5565f5a5` |
+| RLS             |      10/10 | `a38c551b67ea3b44c79ae4f69de668ef573b56ecd5879ec1c121015d02f14353` |
+| Schema          |      25/25 | `6df55d245855c1dcca073cc83694a7f332a9650fb1190702be308284e8692c40` |
+| Service job     |        5/5 | `5dd41f99a621683462bbe52707cbbd6d0df757cbfb799ff5b6854948087a1e01` |
+| Workflow guards |      22/22 | `8a31f08742dc0e4ffdc68aab420a084ac75feccf63a10daa512355e3687d7bba` |
+
+Total: **74/74 PASS**. Each fixture transaction rolled back. This is full hosted assertion evidence,
+not an inference from a bare SQL exit code or the earlier isolated CI result.
+
+#### Generated Types
+
+Hosted type generation used the pinned CLI and both existing schemas:
+
+```bash
+npx supabase gen types typescript --project-id fdsvzuqixppsakukkrsf --schema public,graphql_public
+```
+
+The raw generated file is **not byte-identical** to the committed local artifact: hosted generation
+adds `Database.__InternalSupabase.PostgrestVersion = "14.5"` with two generated comments. The full
+formatted diff contains only these five added lines; all other generated text is identical.
+After parsing both outputs with the installed TypeScript compiler, every actual schema member in
+`public` and `graphql_public` matched, including tables, row/insert/update types, relationships,
+views, functions, enums and composites. Only the provider metadata member was excluded from that
+schema comparison. No field or schema difference was ignored and no canonical type file was
+overwritten. Local exact-file drift validation remains the CI gate; do not misreport this hosted
+semantic comparison as full-file identity. See the validation knowledge record for the procedure.
+
+#### Two Shadow Imports
+
+The authenticated CLI supplied an existing key for this project only. For legacy server keys, the
+helper checks the exact project reference and `service_role`; no key was created, rotated,
+printed, committed or persisted by this operation. The key and guarded destination variables were
+passed only to the child processes running the existing `console:shadow:apply` implementation.
+
+Both consecutive runs completed with:
+
+```text
+Shadow import count and exact-row parity reconciled in staging: f185ebc9ebba.
+```
+
+Each run compared all source-controlled columns and identifiers across the 17 imported source
+tables and verified the reconciled batch revision/counts. The single batch remains `RECONCILED`,
+`is_shadow=true`, with no failure. Snapshot revision and SHA-256 are unchanged from preflight.
+The importer retained all original source snapshots and verification states; it did not delete rows.
+
+#### Final Read-Only Audit
+
+| Check                                                      | Observed Result                                                             |
+| ---------------------------------------------------------- | --------------------------------------------------------------------------- |
+| Governed public tables                                     | 28; all have RLS and FORCE RLS enabled                                      |
+| Products / variants                                        | 43 / 43; all variants remain shadow records                                 |
+| Legacy states                                              | 40 active, 3 draft; all 43 `needs_review`                                   |
+| Duplicate SKU / public slug                                | 0 / 0                                                                       |
+| Technical values / evidence links                          | 604 / 617                                                                   |
+| Confirmed technical values / data conflicts                | 0 / 14                                                                      |
+| Compatibility relationships / confirmed                    | 4 / 0                                                                       |
+| Media records / search-eligible                            | 46 / 0                                                                      |
+| SEO records / published SEO                                | 43 / 0                                                                      |
+| Auth users / console roles                                 | 0 / 0; no test-user/role residue                                            |
+| Verification events / release candidates / publish records | 0 / 0 / 0                                                                   |
+| Audit events                                               | 3,634; retained, not cleared for a cleaner count                            |
+| Storage objects                                            | 0; no product files were uploaded in this shadow-data batch                 |
+| Storage buckets                                            | `pi-product-originals`, `pi-technical-evidence`; both private, 25 MiB limit |
+
+The source-data parity check covers all imported rows. Operational audit events are deliberately
+append-only and are not an idempotent row-count target. A second successful import must not erase
+history to make that operational count look unchanged.
+
+Local follow-up checks passed: domain, destination guard, REST transport, SQL-report adapter,
+migration and shadow validation, secret scanning, RFQ constraints/email/timeout tests, ESLint and
+TypeScript. `npm run build` generated 90 pages. SEO, built internal links, image evidence, snippet
+hygiene and performance budgets also passed. No mobile/layout change was made, so no new visual
+browser test or production inbox-delivery test is claimed. Temporary credential-free audit/type
+helpers and their generated output were removed; the local env write guard remains false and its
+server-key value empty.
+
+#### Phase Gate And Remaining Work
+
+Milestone 1's data-foundation gates pass. The scoped QA result is `PASS_WITH_WARNINGS`, not a public
+product release approval. The hosted generator's metadata difference is bounded and documented;
+Windows Docker remains broken although isolated CI and real hosted tests pass. Hosted invite-only
+Auth settings and the first owner role are not configured or verified yet; they must be addressed
+before Milestone 2 Console access, not silently enabled in this migration batch.
+
+Repository product sources remain authoritative. Public routes, metadata, images, SEO and RFQ are
+unchanged. PR #130 remains separate from this hosted execution; no merge or production deployment
+was made. No evidence gap was promoted: 15AK still needs real factory technical confirmation and
+exact-product photo rights/identity review. Review the Milestone 2 shell/auth/dashboard plan before
+starting that phase. The full Console V1 and 15AK end-to-end pilot are not complete.
 
 ### Windows Local Token Login Fallback
 
@@ -509,7 +663,7 @@ Milestone 1 is complete only when all of the following are available:
 - No current identifier, source status, conflict or verification state changes during import.
 - No public route, metadata, sitemap, RFQ behavior or source-of-truth boundary changes.
 
-## Current Validation State - 2026-09-02
+## Historical Validation State - 2026-09-02
 
 The foundation, six added workflow assertions and readiness, SEO-approval, REST and destination
 guards are committed in PR #130. Exact tested commit:

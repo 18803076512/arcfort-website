@@ -94,27 +94,27 @@ specification. Appearance, similar naming or catalog grouping cannot establish c
 
 ## Current Repository Baseline
 
-| Area                   | Current evidence                                                                                                                                                                     |
-| ---------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| Application            | Next.js 15 App Router, React 19, TypeScript, Tailwind CSS, ESLint and Prettier                                                                                                       |
-| Public routes          | 18 page route files and two API route families, including product, category, series, application, guide and RFQ paths                                                                |
-| Reusable UI            | 59 TypeScript component files using the governed industrial design system                                                                                                            |
-| Product pipeline       | `data/import/products.csv` -> validation/import scripts -> `lib/data/products.ts` -> content adapter -> static App Router pages                                                      |
-| Product records        | 43 total: 40 active and three draft across six categories; all 43 remain `needs_review`                                                                                              |
-| Product series         | 10 catalog evidence records; zero governed public series                                                                                                                             |
-| Series evidence        | 589 component facts and 189 candidates; zero confirmed component facts and 14 blocked data conflicts                                                                                 |
-| Compatibility          | Four governed reference-only relationships; zero confirmed relationships                                                                                                             |
-| Technical facts        | 15 governed field-level facts; zero confirmed ArcFort Weld facts                                                                                                                     |
-| Product media          | 119 repository product-image files and 46 canonical asset records; zero rights-approved, exact-product, search-eligible assets                                                       |
-| Public product imagery | All 40 active products retain legacy-reference main images; three draft products remain blocked for exact images                                                                     |
-| Company claims         | 22 governed claim records: 16 approved Level A statements and six blocked unsupported topics                                                                                         |
-| Company media          | Three files and three governed site-media records; all remain representative legacy references and zero are approved company evidence                                                |
-| Knowledge base         | 25 files, including durable company, SEO, sales and database-validation baselines alongside product, technical, compatibility, asset and decision records                            |
-| SEO                    | Central metadata and JSON-LD builders, canonical handling, sitemap, robots, redirects, static audits and live-readiness checks                                                       |
-| Search baseline        | Site is live and indexable; 88 production sitemap URLs and a recorded baseline of 8 clicks, 422 impressions and 1.90% CTR                                                            |
-| RFQ                    | Email-provider flow, validation, attachments, buyer confirmation, BotID and idempotency are implemented; final sales and buyer inbox placement remains externally unverified         |
-| Delivery operations    | Deployment and live health evidence exist; DMARC, credential-rotation confirmation, GA4 conversion evidence and Search Console submission still require owner-side verification      |
-| Product Intelligence   | At `202c189`, isolated CI passed five migrations, both 74-assertion runners, SQL negative controls, generated types and two exact-row shadow imports; hosted parity remains required |
+| Area                   | Current evidence                                                                                                                                                                |
+| ---------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Application            | Next.js 15 App Router, React 19, TypeScript, Tailwind CSS, ESLint and Prettier                                                                                                  |
+| Public routes          | 18 page route files and two API route families, including product, category, series, application, guide and RFQ paths                                                           |
+| Reusable UI            | 59 TypeScript component files using the governed industrial design system                                                                                                       |
+| Product pipeline       | `data/import/products.csv` -> validation/import scripts -> `lib/data/products.ts` -> content adapter -> static App Router pages                                                 |
+| Product records        | 43 total: 40 active and three draft across six categories; all 43 remain `needs_review`                                                                                         |
+| Product series         | 10 catalog evidence records; zero governed public series                                                                                                                        |
+| Series evidence        | 589 component facts and 189 candidates; zero confirmed component facts and 14 blocked data conflicts                                                                            |
+| Compatibility          | Four governed reference-only relationships; zero confirmed relationships                                                                                                        |
+| Technical facts        | 15 governed field-level facts; zero confirmed ArcFort Weld facts                                                                                                                |
+| Product media          | 119 repository product-image files and 46 canonical asset records; zero rights-approved, exact-product, search-eligible assets                                                  |
+| Public product imagery | All 40 active products retain legacy-reference main images; three draft products remain blocked for exact images                                                                |
+| Company claims         | 22 governed claim records: 16 approved Level A statements and six blocked unsupported topics                                                                                    |
+| Company media          | Three files and three governed site-media records; all remain representative legacy references and zero are approved company evidence                                           |
+| Knowledge base         | 25 files, including durable company, SEO, sales and database-validation baselines alongside product, technical, compatibility, asset and decision records                       |
+| SEO                    | Central metadata and JSON-LD builders, canonical handling, sitemap, robots, redirects, static audits and live-readiness checks                                                  |
+| Search baseline        | Site is live and indexable; 88 production sitemap URLs and a recorded baseline of 8 clicks, 422 impressions and 1.90% CTR                                                       |
+| RFQ                    | Email-provider flow, validation, attachments, buyer confirmation, BotID and idempotency are implemented; final sales and buyer inbox placement remains externally unverified    |
+| Delivery operations    | Deployment and live health evidence exist; DMARC, credential-rotation confirmation, GA4 conversion evidence and Search Console submission still require owner-side verification |
+| Product Intelligence   | M1 hosted foundation gates passed on 2026-09-03: five migrations, 74 assertions, schema-member type parity and two 17-table imports; shadow-only, no Console UI or publication  |
 
 The technical website foundation is mature. The primary constraint is verified evidence, not another
 general page or a larger unreviewed SKU count.
@@ -122,10 +122,21 @@ general page or a larger unreviewed SKU count.
 ## Current System Phase
 
 The owner approved Product Intelligence Console V1 decisions D0-D7 on 2026-08-30. The current
-implementation phase is **Milestone 1 - Data Foundation**, with 15AK as the first real-data pilot.
-This phase builds versioned Supabase migrations, typed contracts, shadow import, audit, lifecycle and
-RLS controls. It does not make Supabase authoritative for public pages and does not publish product
-data.
+completed implementation batch is **Milestone 1 - Data Foundation**, with 15AK remaining the first
+real-data pilot. M1's runtime gates pass with bounded operational warnings. The next batch is
+**Milestone 2 - Console Shell And Dashboard**, approved on 2026-09-03 and now under local implementation
+and validation. Owner onboarding is not complete. Supabase is not authoritative for public pages
+and no product data was published.
+
+The proposed M2 batch and exact acceptance matrix are now recorded in
+`docs/operations/product-intelligence-console-milestone-2-plan.md`. Read-only inspection on 2026-09-03
+found that hosted signup is not disabled, despite the local TOML disabling it. The plan also resolves
+the current root layout's shared public tracking/navigation boundary. M2 scope, URL-preserving
+layout isolation and staging Auth changes were subsequently approved. Signup is now disabled and
+the exact loopback URLs are configured. The default Free-plan mail provider rejected custom
+invitation/recovery templates. The first owner login mailbox and separately approved mail-service
+resolution remain missing; no account or role was created. See the M2 implementation record for
+candidate-specific code and test status; do not treat local implementation as completed onboarding.
 
 The foundation and readiness, SEO-approval and destination-safety hardening are committed on
 `codex/v2-industrial-brand-system` in PR #130. On 2026-09-02, isolated Linux CI at commit `6383171`
@@ -145,28 +156,42 @@ the exact reference/name, Singapore (`ap-southeast-1`) and provider status `ACTI
 The authenticated project organization is `xycjhlnlacqocitjkagq`; the owner confirmed project
 management and recovery responsibility. Hosted inspection found an empty public schema, no
 migration history, zero users/buckets and PostgreSQL `17.6`. The five-migration dry-run passed with
-no seeds or custom roles. Free is still owner-reported; independent plan evidence, actual migrations,
-hosted database tests and parity replay remain outstanding. The exact handoff state is kept in the
-Milestone 1 operations runbook. The exit gate therefore remains open. A green CI database job
-does not prove hosted parity, authorize production changes or complete the Console UI. No production
-database write or source-of-truth cutover has occurred.
+no seeds or custom roles. The owner then supplied paired project and Billing Dashboard screenshots
+showing the exact project and Free Plan. Their scoped provenance and the crop's missing organization
+header are recorded in the runbook; this is reviewed owner-provided Dashboard evidence, not a
+successful organization API read. The requested billing evidence handoff is now resolved.
 
 The follow-up organization-plan request returned HTTP 403; project access does not imply billing
-read access. The owner-side non-sensitive Free-plan evidence request remains open. A SQL-report QA
-adapter is now prepared to avoid the Windows Docker dependency for hosted testing; it preserves
+read access. No token permissions or billing settings were changed to resolve that gap. The SQL-report QA
+adapter avoids the Windows Docker dependency for hosted testing; it preserves
 the five existing test files, checks all 74 planned assertions and rejects missing/failed results.
 Its unit/configuration checks pass. On 2026-09-03 the owner authorized
-committing and pushing this tooling to PR #130 for isolated database CI only. No merge, production
-deployment or staging write is included in this step; do not begin Milestone 2 while its gates remain
-open.
+committing and pushing this tooling to PR #130 for isolated database CI only. That separate approval
+does not include a merge or production deployment. Hosted migration/import execution used the
+owner's earlier explicit authorization for the exact replacement staging project.
 
 Candidate `202c189f1f062fa20fff8219aca3a0aba66f1c79` subsequently passed isolated
 [CI run 33714502709](https://github.com/18803076512/arcfort-website/actions/runs/33714502709).
 Both jobs passed: the original pg_prove and SQL-report paths each ran all 74 assertions; the new
 runner's pass/fail/count-mismatch controls passed on pgTAP `1.3.3`. Generated database types matched,
 and two complete shadow imports reconciled 17 tables each. The website quality/build/SEO/RFQ gates
-also passed. This closes the new runner's isolated PostgreSQL evidence gap, not hosted transport,
-plan verification or Milestone 1 staging parity. The runbook retains the exact results.
+also passed. The evidence-only follow-up `4518b885` passed
+[run 33714840051](https://github.com/18803076512/arcfort-website/actions/runs/33714840051) too.
+
+On 2026-09-03 the unchanged tested candidate was applied to `fdsvzuqixppsakukkrsf` after repeated
+identity/schema/preview checks. All five migrations, all 74 hosted assertions with real negative
+controls, and two 17-table exact-row shadow imports passed. Every generated `public` and
+`graphql_public` schema member matches the committed types. Hosted output includes additional
+PostgREST `14.5` metadata; full-file identity is not claimed and the local type
+artifact was retained. The existing project server key was used only in process memory.
+
+Final hosted evidence confirms 28 forced-RLS tables, two private buckets, all 43 products in shadow
+mode, no duplicate SKU/slug, zero Auth users/console roles and zero publication records. The 14
+conflicts and all unconfirmed fact/compatibility/media states remain unchanged. The M1 foundation
+gate is `PASS_WITH_WARNINGS`: Windows Docker is still unavailable, generator metadata differs, and
+hosted Auth setup must be verified before Console access. These are not permission to publish
+unverified products. The full Console UI, 15AK pilot and production authority transition remain
+incomplete. The runbook retains exact commands, suite hashes and final counts.
 
 The approval and source-of-truth boundary are recorded in
 `knowledge-base/decisions/2026-08-30-product-intelligence-console-v1-foundation.md`.
@@ -292,23 +317,23 @@ mobile behavior and conversion paths must satisfy the applicable repository gate
 
 ## Recommended Next Setup Phase
 
-Complete Product Intelligence Console V1 Milestone 1 staging parity before starting console UI:
+Complete the approved Product Intelligence Console V1 Milestone 2 gates:
 
-1. Use the now-authenticated CLI for the owner-authorized staging project `fdsvzuqixppsakukkrsf`.
-   Recheck the exact target before linking or writing; do not substitute another project or revert
-   to the superseded target if access fails.
-2. Finish independent plan verification. Identity, organization ID, region, empty-schema inspection,
-   owner management/recovery confirmation and migration preview have passed. Recheck before writing
-   if the target or candidate changes. The owner-facing steps and authorization record are in
-   `docs/operations/product-intelligence-console-milestone-1.md`.
-3. Configure project secrets locally without exposing values in chat or Git. The ignored
-   `.env.product-intelligence.local` contains only non-secret destination values until then; its
-   write guard stays off until the exact migration and import are ready.
-4. Review a migration dry-run, then replay the five migrations, 74 pgTAP checks and the same shadow
-   snapshot in that exact staging destination with destination-specific approval.
-5. Retain the passing isolated-runtime evidence and rerun it after schema, importer, test or generated
-   contract changes; do not treat the Windows host failure as a hosted parity result.
-6. Keep 15AK factory confirmation and exact-image intake as the first governed pilot workload.
+1. Validate the local M2 implementation and isolated CI. Resolve the first owner mailbox and
+   default-provider template restriction before claiming real invitation/login success. Do not add
+   publishing or CRM work; keep Console disabled outside controlled local QA.
+2. Recheck the exact staging target `fdsvzuqixppsakukkrsf`; old-project authorization remains
+   superseded. Obtain the owner access/role/bootstrap handoff and provider-setting approval before
+   changing hosted Auth or creating an account. No service key may reach browser code.
+3. Close the observed hosted signup gap only with scoped approval, then verify redirect, session and
+   role boundaries before exposing Console access. Local Auth config is not hosted evidence. Test
+   unauthorized requests at application and RLS layers; do not infer email delivery from API success.
+4. Preserve repository data authority, product routes, SEO and RFQ. Shadow imports must not overwrite
+   future reviewed Console edits without a separately approved authority-transition design.
+5. Retain both isolated and hosted M1 proof. Schema/importer/test/contract changes require fresh
+   candidate-specific gates, not reuse of these green results. Keep write guards off by default.
+6. Continue collecting Level A 15AK facts and exact-product images for the later verification pilot;
+   do not convert reference values into confirmed data to fill the future dashboard.
 
 ## Goal Evidence Infrastructure
 
@@ -321,5 +346,5 @@ The controlled evidence-infrastructure batch is implemented:
 - `npm run company:evidence:validate` and `npm run goal:report` are CI-gated.
 
 The report deliberately separates 43 structured records from zero strict verified SKUs. The next
-evidence action is not more page volume; it is hosted staging parity plus Level A 15AK and company
-media evidence.
+evidence action is not more page volume; it is Level A 15AK and company media evidence alongside the
+controlled Console access/dashboard phase.

@@ -70,7 +70,7 @@ assert.deepEqual(search("plasma electrode suppliers"), ["plasma-electrode"]);
 assert.deepEqual(search("OEM TIG torch parts"), ["tig-ceramic-cup"]);
 
 const productCenterSource = readFileSync(
-  new URL("../app/products/page.tsx", import.meta.url),
+  new URL("../app/(public)/products/page.tsx", import.meta.url),
   "utf8",
 );
 const productFinderSource = readFileSync(

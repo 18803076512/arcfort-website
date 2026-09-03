@@ -1,4 +1,4 @@
-import { RfqForm } from "@/app/rfq/RfqForm";
+import { RfqForm } from "@/app/(public)/rfq/RfqForm";
 import { Breadcrumbs } from "@/components/content/Breadcrumbs";
 import { BuyerPathList } from "@/components/content/BuyerPathList";
 import { PageSectionNav } from "@/components/content/PageSectionNav";

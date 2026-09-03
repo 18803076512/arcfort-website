@@ -92,7 +92,7 @@ const builderSource = readFileSync(
   "utf8",
 );
 const guideTemplateSource = readFileSync(
-  new URL("../app/guides/[slug]/page.tsx", import.meta.url),
+  new URL("../app/(public)/guides/[slug]/page.tsx", import.meta.url),
   "utf8",
 );
 const stickyContactSource = readFileSync(
@@ -100,7 +100,7 @@ const stickyContactSource = readFileSync(
   "utf8",
 );
 const productCenterSource = readFileSync(
-  new URL("../app/products/page.tsx", import.meta.url),
+  new URL("../app/(public)/products/page.tsx", import.meta.url),
   "utf8",
 );
 

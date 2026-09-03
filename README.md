@@ -40,7 +40,8 @@ controlled by this company; never associate unrelated companies that use a simil
 
 The approved Product Intelligence architecture adds a dedicated Supabase Postgres, Auth and private
 Storage foundation without changing the website's current product source. Milestone 1 is data-only:
-there is no `/console` UI yet, no public signup and no direct database-to-website publishing.
+there is no `/console` UI or website signup path yet, and no direct database-to-website publishing.
+Hosted Auth configuration must be verified before enabling Console access.
 
 The current destination-specific staging approval and Windows local-login fallback are in the
 [Milestone 1 runbook](docs/operations/product-intelligence-console-milestone-1.md#current-staging-authorization---2026-09-03).
@@ -101,10 +102,14 @@ field across 17 imported tables twice for the complete 43-product shadow snapsho
 including lint, typecheck and the production build. This is an isolated local-stack test on a CI
 runner, not proof of hosted Supabase parity or production publication. The operations runbook retains
 the exact candidate evidence and separate Windows Docker startup limitation. The replacement staging
-project `fdsvzuqixppsakukkrsf` now has authenticated identity, an empty-schema inspection and a reviewed
-five-migration dry-run. Recovery ownership is confirmed. Independent Free-plan evidence and actual
-hosted migration/test/type/import parity remain outstanding before Milestone 2; any later
-source-of-truth cutover requires separate approval.
+project `fdsvzuqixppsakukkrsf` subsequently completed the real hosted replay on 2026-09-03, after
+authenticated identity/empty-schema checks, owner recovery confirmation, reviewed paired Free-plan
+Dashboard evidence and a repeated dry-run. All five migrations, 74 hosted assertions and two
+17-table exact-row imports passed. Generated `public` and `graphql_public` schema members match the
+committed types; the added hosted PostgREST-version metadata means the entire generated
+file is not byte-identical. The local canonical type file was retained. See the
+[hosted completion evidence](docs/operations/product-intelligence-console-milestone-1.md#hosted-milestone-1-completion---2026-09-03).
+The scoped M1 result is `PASS_WITH_WARNINGS`, not approval to publish or change data authority.
 
 SQL-based database QA is available for the reviewed Milestone 1 tests:
 
@@ -124,9 +129,42 @@ are for reviewed repository SQL only, not an arbitrary-SQL sandbox. The new adap
 quality checks pass. At commit `202c189f1f062fa20fff8219aca3a0aba66f1c79`,
 [isolated CI run 33714502709](https://github.com/18803076512/arcfort-website/actions/runs/33714502709)
 also passed the new runner's three self-checks and all 74 assertions on PostgreSQL, the original
-pg_prove suite, generated types and two exact-row shadow imports across 17 tables. Hosted execution
-is still unverified. See the operations runbook for the current staging authorization and remaining
-gates; this PR is not merged or deployed to production.
+pg_prove suite, generated types and two exact-row shadow imports across 17 tables. The real hosted
+SQL transport and all 74 assertions have now passed too. Final hosted inspection found 28 forced-RLS
+tables, two private buckets, 43 shadow products, no duplicate SKU/slug, no test users/roles and no
+publication records. All 14 conflicts and unconfirmed evidence states remain unchanged.
+The existing server key was used only in process memory for the approved import; the ignored local
+env file retains an empty key and a disabled write guard. No production connection was made.
+
+Milestone 1's data-foundation gates are complete; the full Console V1 is not. The
+[Milestone 2 implementation plan](docs/operations/product-intelligence-console-milestone-2-plan.md)
+now defines layout isolation, invite-only login, authorization and read-only dashboard/product views.
+A read-only hosted Auth preflight found `disable_signup=false`; Console activation must wait for
+the remaining callback/delivery review and named owner-account handoff. The owner approved M2-A
+through M2-E on 2026-09-03. Local read-only Console implementation is now in review; see the
+[M2 implementation record](docs/operations/product-intelligence-console-milestone-2.md).
+Hosted signup has subsequently been disabled and exact loopback URLs configured in the approved
+staging project. The default mail provider on Free Plan rejected custom invitation/recovery
+templates, so real owner onboarding remains blocked pending a separate mail-service decision and
+the first login mailbox. No account or role was created. Console stays disabled by default and
+rejects Vercel environments. PR #130 is not merged or deployed to production by this work.
+
+### Read-Only Console Development
+
+Public page files live under `app/(public)/` without changing their URLs. Console files live under
+`app/(console)/console/`; public tracking, metadata and navigation do not wrap them. Social-image
+endpoints remain at `app/distributor-supply/` to retain their existing stable URLs.
+
+Use the `CONSOLE_*` names in `.env.example` only in a reviewed local process. Keep the Product
+Intelligence import write guard off and its service key absent. The server uses the public client
+key plus the signed-in user's session, checks current roles and relies on RLS for every read.
+`npm run console:boundaries:test` checks local safety contracts. Isolated CI additionally runs
+`npm run console:auth:test:local` against disposable users and 1,103 synthetic pagination records;
+this command refuses non-CI/hosted execution. It is not an owner invitation workflow.
+
+The invitation/recovery HTML in `supabase/templates/` configures the local stack only. Do not claim
+those templates are installed on staging or that email delivery works until the recorded provider
+and real inbox gates pass. Do not deploy or enable Console on the public website during M2.
 
 ## Pages
 
@@ -624,7 +662,7 @@ Vercel Functions can restart or scale across instances. A paid Vercel Firewall r
 `POST /api/rfq` remains optional for sustained abuse and must not be enabled without billing approval.
 
 The App Router includes three buyer-facing recovery layers: `app/not-found.tsx` for missing URLs,
-`app/error.tsx` for page-level runtime errors and `app/global-error.tsx` for root-layout failures.
+`app/(public)/error.tsx` for page-level runtime errors and `app/global-error.tsx` for root-layout failures.
 Keep product, RFQ, business email and WhatsApp recovery routes available when these pages are
 updated. Error pages must not expose stack traces, credentials or internal request data.
 

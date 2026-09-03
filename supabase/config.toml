@@ -36,7 +36,7 @@ file_size_limit = "25MiB"
 [auth]
 enabled = true
 site_url = "http://127.0.0.1:3000"
-additional_redirect_urls = ["http://127.0.0.1:3000/console/auth/callback"]
+additional_redirect_urls = ["http://127.0.0.1:3000/console/auth/callback", "http://127.0.0.1:3000/console/auth/confirm"]
 jwt_expiry = 3600
 enable_signup = false
 enable_anonymous_sign_ins = false
@@ -45,6 +45,14 @@ enable_anonymous_sign_ins = false
 enable_signup = false
 double_confirm_changes = true
 enable_confirmations = true
+
+[auth.email.template.invite]
+subject = "ArcFort Weld Console Invitation"
+content_path = "./supabase/templates/invite.html"
+
+[auth.email.template.recovery]
+subject = "ArcFort Weld Console Password Reset"
+content_path = "./supabase/templates/recovery.html"
 
 [analytics]
 enabled = false

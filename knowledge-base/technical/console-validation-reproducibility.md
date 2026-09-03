@@ -107,8 +107,8 @@ cache writes, even when the supplied SQL is read-only.
 A 2026-09-03 rollback-only probe against the authorized empty staging project returned only the last
 of two SELECT result sets. Consequently, `db query --file <pgtap-file>` with exit code zero is not
 proof that every TAP assertion passed. Require complete TAP results, assertion totals and failure
-status from a proper test runner; retain the distinction between 74 CI assertions and unexecuted
-hosted tests. Never weaken a release gate because a transport omits earlier results.
+status from a proper test runner; distinguish CI assertions from actual hosted test execution.
+Never weaken a release gate because a transport omits earlier results.
 
 Use `db push --dry-run --skip-vault` with an explicit reviewed staging reference to inspect schema
 scope without synchronizing unrelated Vault secrets. A successful dry-run is a preview, not an
@@ -137,11 +137,78 @@ The new runner's real PostgreSQL contract was subsequently proven at
 [isolated run 33714502709](https://github.com/18803076512/arcfort-website/actions/runs/33714502709).
 The original runner and the new SQL path each passed 74 assertions on pgTAP `1.3.3`, including the
 new runner's real positive, failing-assertion and plan-mismatch self-checks. Type parity and both
-17-table shadow imports also passed. This closes the isolated SQL contract check only: the hosted
-Management API transport still needs explicit-target execution after staging prerequisites pass.
+17-table shadow imports also passed. This isolated result alone did not prove the hosted transport.
+Later on 2026-09-03, the authorized hosted project passed the same three controls and all 74
+assertions on pgTAP `1.3.3`; both exact-row shadow imports passed too. The current runbook retains
+the separate hosted commands, suite hashes, type comparison and aggregate audit.
 
 The target-only organization endpoint returned HTTP 403 after a successful authenticated project
 check. Its [official contract](https://supabase.com/docs/reference/api/v1-get-an-organization)
 separates organization-read access from project access. Keep the owner's Free-plan statement as
 owner evidence until the plan is independently visible; do not expand access or repeatedly request
-tokens to resolve a billing-metadata gap.
+tokens to resolve a billing-metadata gap. The owner subsequently provided paired project and Billing
+Dashboard screenshots as requested. Record their provenance and limitations: the Billing crop omits
+the organization header, so its linkage is the scoped owner response, not an API-verified plan.
+
+## Hosted Type-Generator Metadata
+
+With CLI `2.116.0`, locked Prettier `3.8.4` and the same migrated schema, hosted generation on
+2026-09-03 added five lines absent from the local artifact: two comments and
+`Database.__InternalSupabase.PostgrestVersion = "14.5"`. The full formatted diff contained no other
+change. This is provider metadata, not a different product column or relationship. Never rewrite the
+canonical local type artifact or remove an unknown schema difference merely to pass a comparison.
+
+For the hosted comparison:
+
+1. Generate `typescript` using the explicit authorized `--project-id` and
+   `--schema public,graphql_public`. Capture the non-secret type output separately from credentials.
+2. Format both outputs with locked Prettier and LF endings; inspect the entire diff, not just its
+   first mismatch. Local exact-file validation still runs in isolated CI.
+3. Parse both with the TypeScript compiler API. Extract the `Database` type literal, allow exclusion
+   only of the known `__InternalSupabase` metadata property, and require the same schema-name set.
+4. Print each actual schema member with the same compiler printer and compare exactly. This checks
+   tables, Row/Insert/Update, relationships, views, functions, enums and composite definitions.
+5. Stop on any actual schema difference. Report bounded generator metadata separately; do not call
+   the raw files byte-identical when they are not.
+
+Both schema members matched at the reviewed hosted M1 candidate. Temporary generated output and the
+credential-free inspection helper remained outside Git. This operational comparison does not change
+the existing local `console:db:types:check` gate or authorize a future schema drift.
+
+## Bounded Staging Credentials And Audit
+
+When already authenticated and authorized for the exact staging import, obtain an existing project
+server key through the official CLI with stdout/stderr captured in memory. Recheck project
+ref/name/organization/region first. Select an unambiguous server credential and, for legacy JWTs,
+validate its `ref` and `service_role` claims. This is use of an existing authorized credential, not
+permission to create keys, widen scopes or change another project's settings.
+
+Pass the key only through the guarded import child-process environment. Never print raw key JSON,
+put a key in command arguments, write it to the operational report or enable persistent write flags.
+Suppress raw provider/parse errors in this path and clear references when the operation ends. On
+failure stop and inspect non-sensitive batch/audit state before any retry.
+
+The 2026-09-03 hosted replay retained one `RECONCILED` batch after two exact-row imports. Audit events
+increased as expected and were retained; idempotency applies to source rows, not to erasing history.
+Final checks found no Auth users/console roles, no storage objects and no verification/release/publish
+records left from tests. Two private buckets exist, but no product media files were uploaded by this
+shadow-record import. Hosted Auth settings and owner bootstrap still belong to the next scoped task.
+
+## Local Auth Configuration Is Not Hosted Auth Evidence
+
+The M2 read-only preflight on 2026-09-03 revalidated the exact staging identity, then used its existing
+public client key in memory for `GET /auth/v1/settings`. Hosted `disable_signup` was `false`, while
+the repository's local TOML has `enable_signup=false`. No signup attempt, invitation, email,
+password change or role grant was made. The complete non-sensitive field whitelist and proposed
+handoff are in the [M2 plan](../../docs/operations/product-intelligence-console-milestone-2-plan.md).
+
+Public Auth settings reveal selected capabilities, not SMTP configuration, redirect allowlists,
+delivery success or account ownership. Missing fields remain unknown. Do not obtain a broader token,
+modify a provider setting or run a real signup merely to fill those gaps without authorization.
+No public signup button, no existing users and working RLS are not equivalent to disabled registration.
+
+Before private UI work, inspect the inherited root layout as well as the child route: existing
+marketing analytics, attribution, canonical metadata or commercial components can leak into a new
+Console if only its child layout is considered. Layout isolation and authenticated data access are
+different controls. A route-group proposal must preserve URL/source-test behavior and remain an
+explicit reviewed change, not a silent full-site rearrangement.

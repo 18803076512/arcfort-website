@@ -169,7 +169,7 @@ creating another page-specific version.
   mobile product navigation using the same route data.
 - `components/home/HomeHero.tsx`, `ProductSystemCard.tsx` and `HomeInquiryCta.tsx`: the Phase 1
   homepage brand, catalog-entry and qualified-inquiry patterns.
-- `app/products/page.tsx`: the Phase 2 Product Center sequence: finder, product systems, published
+- `app/(public)/products/page.tsx`: the Phase 2 Product Center sequence: finder, product systems, published
   catalog, RFQ preparation and sourcing FAQ.
 - `components/content/CategoryPageTemplate.tsx`: the Phase 2 category sequence: product range,
   evidence-based parts and selection, buyer guide, applications, FAQ and related categories.

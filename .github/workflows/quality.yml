@@ -57,6 +57,9 @@ jobs:
       - name: Prove idempotent exact-row reconciliation
         run: npm run console:shadow:apply:local
 
+      - name: Test Console authentication, RLS and large-catalog pagination
+        run: npm run console:auth:test:local
+
       - name: Stop local Product Intelligence services
         if: always()
         run: npx supabase stop --no-backup
@@ -95,6 +98,7 @@ jobs:
       - name: Validate Product Intelligence foundation
         run: |
           npm run console:domain:test
+          npm run console:boundaries:test
           npm run console:config:test
           npm run console:rest:test
           npm run console:sql-qa:test

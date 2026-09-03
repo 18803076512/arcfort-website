@@ -1,7 +1,7 @@
 # Product Intelligence Staging Destination Replacement
 
 Date: 2026-09-03
-Status: Owner approved; identity, empty schema and preview verified; billing and hosted replay pending
+Status: Owner approved; reviewed hosted Milestone 1 migration, tests and shadow parity completed
 
 ## Decision And Evidence
 
@@ -46,17 +46,56 @@ Auth users and zero storage buckets. The reviewed dry-run lists exactly the five
 migrations, with no seeds or custom roles. Exact commands and observations are retained in the
 runbook's 2026-09-03 preflight section.
 
-Free remains owner-reported: the CLI organization list returned no records and the available
+At initial preflight Free remained owner-reported: the CLI organization list returned no records and the available
 Dashboard browser requires sign-in. Project/plan Dashboard evidence has been requested. No billing
 change, paid upgrade or inference about the owner's organization permissions is made from this gap.
 The follow-up target-only authenticated organization endpoint returned HTTP 403 after project
 identity validation succeeded. Do not broaden credential scope or reinterpret missing access as
-Free-plan evidence. The screenshot request remains the bounded next owner action.
+Free-plan evidence. The screenshot request was subsequently satisfied by the paired Dashboard
+evidence below.
 
-The ignored destination file uses the new reference/URL, with an empty project server key and
-disabled write guard. No persistent CLI project link, hosted migration, pgTAP suite replay or shadow
-import has been performed by this workflow. CLI connection preflight can initialize a temporary
-login role; do not confuse that with applied business migrations.
+### Dashboard Evidence Follow-Up
+
+The owner supplied a project screenshot showing the exact authorized URL/reference, name, Singapore,
+Healthy status and no migrations, followed by the requested Billing screenshot explicitly showing
+`Free Plan`. Reviewed SHA-256 values:
+
+- Project screenshot: `F7BB6B68E31E1A2CB2A5A839488444D0F0DEFB97678D2004AB8720553B58DFFE`.
+- Billing screenshot: `6CF83FC209B2607E60AF762A2E61B06FE3513E373FBF7326792895C88EBF4D0B`.
+
+The billing crop omits the organization header; its association with this project is the owner's
+scoped response to the exact-project evidence request, corroborated by the paired project capture.
+This is reviewed owner-provided Dashboard evidence, not a successful organization API lookup.
+It satisfies the requested screenshot handoff without expanding credential permissions. No plan,
+billing or account setting was changed. Screenshots are not published in the repository.
+
+A fresh authenticated lookup reconfirmed the exact ref/name, organization `xycjhlnlacqocitjkagq`,
+Singapore and `ACTIVE_HEALTHY`. The pre-write database check again found an empty public schema,
+zero users/buckets and no migration history; the dry-run again listed only the five reviewed files.
+
+The ignored destination file still uses the new reference/URL, with an empty project server key and
+disabled write guard. No persistent CLI project link was created. CLI connection preflight can
+initialize a temporary login role; do not confuse that with applied business migrations.
+
+### Hosted Execution Outcome
+
+After the accepted Dashboard evidence and repeated preflight, the five reviewed migrations were
+actually applied to `fdsvzuqixppsakukkrsf`. The hosted SQL runner passed all 74 assertions on pgTAP
+`1.3.3`, including its real pass/fail/count-mismatch controls. TypeScript AST comparison found all
+`public` and `graphql_public` schema members identical to the committed types. The complete generated
+files differ only by five added lines for hosted PostgREST `14.5` metadata and comments; the local
+canonical artifact was not overwritten and full-file identity is not claimed.
+
+Two approved imports reconciled every source-controlled field across 17 tables at unchanged revision
+`f185ebc9ebba875bc59141b872780297804fef894866108fa14d65bf995fc41b`. The current project's existing
+server key was obtained through the authenticated CLI and used only in child-process memory. No
+credential was printed, saved to the destination file or copied from the old project.
+
+Final hosted checks found all 28 tables under forced RLS, two private buckets, zero users/roles or
+publication records, no duplicate SKU/slug, all 43 products retained as needs-review shadow records,
+14 preserved conflicts and zero fact/compatibility/media promotions. The single import batch is
+`RECONCILED`; append-only audit history remains intact. The operations runbook retains exact suite
+hashes, counts, commands, tested commit and warnings. No production or billing setting changed.
 
 ## Reversal
 
@@ -66,16 +105,16 @@ unaffected by this preparation; deleting a hosted project is not an automatic ro
 
 ## Next Action
 
-Finish billing-plan verification, then recheck the exact target and apply the reviewed migration set
-within the existing destination-specific authorization. Retain all 74 hosted TAP results, generate
-and compare types, and reconcile the same shadow snapshot twice before evaluating Milestone 1 exit.
-The SQL-report runner requires candidate-specific isolated PostgreSQL/CI proof before hosted
-use; existing pg_prove checks remain required. On 2026-09-03 the owner explicitly authorized commit
-and push to PR #130 for isolated database CI. This separate authorization does not include a merge,
-production deployment or staging database write; the Free-plan evidence gate is unchanged.
-That isolated evidence now passes for `202c189f1f062fa20fff8219aca3a0aba66f1c79` in
-[run 33714502709](https://github.com/18803076512/arcfort-website/actions/runs/33714502709): both
-74-assertion paths, real negative controls, generated types and two 17-table imports. The hosted
-Management API transport and complete staging parity still require their own execution evidence.
+Milestone 1's scoped foundation gate is `PASS_WITH_WARNINGS`; review the next Console shell,
+invite-only authentication and read-only dashboard plan before Milestone 2. The public website still
+uses repository sources. Hosted Auth configuration/owner-role bootstrap require their own controlled
+handoff, and real 15AK data/media review remains necessary before any product release.
+
+Preserve the isolated CI proof alongside hosted results and rerun both after schema/importer changes.
+The owner-authorized PR #130 push and isolated tests were a separate action, not permission to merge
+or deploy production. Tested implementation `202c189f1f062fa20fff8219aca3a0aba66f1c79` passed
+[run 33714502709](https://github.com/18803076512/arcfort-website/actions/runs/33714502709), and its
+documentation follow-up `4518b885ad0971533c4408fee216b5bec2a4ebaf` passed
+[run 33714840051](https://github.com/18803076512/arcfort-website/actions/runs/33714840051).
 The operations runbook documents the local masked-input token fallback for Windows browser-login
 failures. Tokens, API keys and database passwords must never enter Git, chat or these records.
