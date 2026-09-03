@@ -21,6 +21,42 @@ Components Changed, Visual Changes, Validation and Deployment may be added when 
 created before this schema remain valid historical records and must not be rewritten only for
 formatting consistency.
 
+## 2026-09-03 - Authorized PR 130 Push And Isolated Database QA
+
+- **Task:** Completed the owner's explicit authorization to commit and push the prepared SQL QA
+  tooling to PR #130, then waited for and inspected its real isolated database and website CI.
+- **Files Changed:** The implementation commit `202c189f1f062fa20fff8219aca3a0aba66f1c79`
+  contains the 13 files listed in the preparation entry below. This evidence follow-up updates only
+  `README.md`, `docs/CODEX_GOAL.md`, `docs/CHANGELOG_AI.md`,
+  `docs/operations/product-intelligence-console-milestone-1.md`,
+  `knowledge-base/decisions/2026-09-03-product-intelligence-staging-replacement.md` and
+  `knowledge-base/technical/console-validation-reproducibility.md`.
+- **Components And Visual Changes:** Development QA helpers only; no public component created,
+  removed or changed. No visual changes.
+- **Data Changed:** Operational authorization/test evidence only. Canonical product, technical,
+  compatibility, media and shadow-snapshot records are unchanged. CI imported into its disposable
+  local database only; no staging or production database was modified.
+- **SEO Impact:** No URL, metadata, schema, sitemap, robots or public-content change.
+- **Validation:** Local SQL-report/config/REST/domain/migration/shadow tests, lint, typecheck,
+  formatting, diff hygiene and secret scanning passed; local production build generated 90 pages.
+  [CI run 33714502709](https://github.com/18803076512/arcfort-website/actions/runs/33714502709)
+  passed both jobs for `202c189`: all five migrations, original pg_prove 74/74, SQL-report 74/74 on
+  pgTAP `1.3.3`, real pass/fail/count-mismatch controls, generated-type parity and two complete
+  17-table exact-row imports. Website quality, RFQ, SEO, image and performance gates passed.
+- **QA Scope:** PASS for this tooling-only PR update and isolated CI. Hosted parity and production
+  release are separate gates and are not marked complete by this result.
+- **Known Issues:** Free remains owner-reported after an organization-read HTTP 403. Hosted
+  migration/test/type/import replay, the local project server key and hosted Auth settings remain
+  outstanding. No new factory facts or product-image evidence was supplied in this task.
+- **Reusable Knowledge Added:** The SQL counter adapter and negative controls now have actual
+  PostgreSQL evidence with an exact candidate/run; preserve the distinction from untested hosted
+  API transport. The runbook contains the assertion totals and two-import reconciliation proof.
+- **Deployment:** Pushed only to `codex/v2-industrial-brand-system` in the existing open PR #130;
+  no merge, auto-merge enablement, production deployment or staging write. Evidence-only follow-up
+  changes do not alter the tested implementation.
+- **Next Recommended Action:** Obtain non-sensitive Dashboard evidence of the exact staging project
+  and Free plan, then resume its approved migration/test/type/import workflow with local credentials.
+
 ## 2026-09-03 - Docker-Independent Staging SQL QA Preparation
 
 - **Task:** Prepared a strict SQL report path for the existing Milestone 1 pgTAP suites, avoiding

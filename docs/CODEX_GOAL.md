@@ -94,27 +94,27 @@ specification. Appearance, similar naming or catalog grouping cannot establish c
 
 ## Current Repository Baseline
 
-| Area                   | Current evidence                                                                                                                                                                |
-| ---------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Application            | Next.js 15 App Router, React 19, TypeScript, Tailwind CSS, ESLint and Prettier                                                                                                  |
-| Public routes          | 18 page route files and two API route families, including product, category, series, application, guide and RFQ paths                                                           |
-| Reusable UI            | 59 TypeScript component files using the governed industrial design system                                                                                                       |
-| Product pipeline       | `data/import/products.csv` -> validation/import scripts -> `lib/data/products.ts` -> content adapter -> static App Router pages                                                 |
-| Product records        | 43 total: 40 active and three draft across six categories; all 43 remain `needs_review`                                                                                         |
-| Product series         | 10 catalog evidence records; zero governed public series                                                                                                                        |
-| Series evidence        | 589 component facts and 189 candidates; zero confirmed component facts and 14 blocked data conflicts                                                                            |
-| Compatibility          | Four governed reference-only relationships; zero confirmed relationships                                                                                                        |
-| Technical facts        | 15 governed field-level facts; zero confirmed ArcFort Weld facts                                                                                                                |
-| Product media          | 119 repository product-image files and 46 canonical asset records; zero rights-approved, exact-product, search-eligible assets                                                  |
-| Public product imagery | All 40 active products retain legacy-reference main images; three draft products remain blocked for exact images                                                                |
-| Company claims         | 22 governed claim records: 16 approved Level A statements and six blocked unsupported topics                                                                                    |
-| Company media          | Three files and three governed site-media records; all remain representative legacy references and zero are approved company evidence                                           |
-| Knowledge base         | 25 files, including durable company, SEO, sales and database-validation baselines alongside product, technical, compatibility, asset and decision records                       |
-| SEO                    | Central metadata and JSON-LD builders, canonical handling, sitemap, robots, redirects, static audits and live-readiness checks                                                  |
-| Search baseline        | Site is live and indexable; 88 production sitemap URLs and a recorded baseline of 8 clicks, 422 impressions and 1.90% CTR                                                       |
-| RFQ                    | Email-provider flow, validation, attachments, buyer confirmation, BotID and idempotency are implemented; final sales and buyer inbox placement remains externally unverified    |
-| Delivery operations    | Deployment and live health evidence exist; DMARC, credential-rotation confirmation, GA4 conversion evidence and Search Console submission still require owner-side verification |
-| Product Intelligence   | Five migrations, 74 pgTAP assertions, generated-type parity and two exact-row shadow imports passed on isolated Linux CI at `6383171`; hosted staging parity remains required   |
+| Area                   | Current evidence                                                                                                                                                                     |
+| ---------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Application            | Next.js 15 App Router, React 19, TypeScript, Tailwind CSS, ESLint and Prettier                                                                                                       |
+| Public routes          | 18 page route files and two API route families, including product, category, series, application, guide and RFQ paths                                                                |
+| Reusable UI            | 59 TypeScript component files using the governed industrial design system                                                                                                            |
+| Product pipeline       | `data/import/products.csv` -> validation/import scripts -> `lib/data/products.ts` -> content adapter -> static App Router pages                                                      |
+| Product records        | 43 total: 40 active and three draft across six categories; all 43 remain `needs_review`                                                                                              |
+| Product series         | 10 catalog evidence records; zero governed public series                                                                                                                             |
+| Series evidence        | 589 component facts and 189 candidates; zero confirmed component facts and 14 blocked data conflicts                                                                                 |
+| Compatibility          | Four governed reference-only relationships; zero confirmed relationships                                                                                                             |
+| Technical facts        | 15 governed field-level facts; zero confirmed ArcFort Weld facts                                                                                                                     |
+| Product media          | 119 repository product-image files and 46 canonical asset records; zero rights-approved, exact-product, search-eligible assets                                                       |
+| Public product imagery | All 40 active products retain legacy-reference main images; three draft products remain blocked for exact images                                                                     |
+| Company claims         | 22 governed claim records: 16 approved Level A statements and six blocked unsupported topics                                                                                         |
+| Company media          | Three files and three governed site-media records; all remain representative legacy references and zero are approved company evidence                                                |
+| Knowledge base         | 25 files, including durable company, SEO, sales and database-validation baselines alongside product, technical, compatibility, asset and decision records                            |
+| SEO                    | Central metadata and JSON-LD builders, canonical handling, sitemap, robots, redirects, static audits and live-readiness checks                                                       |
+| Search baseline        | Site is live and indexable; 88 production sitemap URLs and a recorded baseline of 8 clicks, 422 impressions and 1.90% CTR                                                            |
+| RFQ                    | Email-provider flow, validation, attachments, buyer confirmation, BotID and idempotency are implemented; final sales and buyer inbox placement remains externally unverified         |
+| Delivery operations    | Deployment and live health evidence exist; DMARC, credential-rotation confirmation, GA4 conversion evidence and Search Console submission still require owner-side verification      |
+| Product Intelligence   | At `202c189`, isolated CI passed five migrations, both 74-assertion runners, SQL negative controls, generated types and two exact-row shadow imports; hosted parity remains required |
 
 The technical website foundation is mature. The primary constraint is verified evidence, not another
 general page or a larger unreviewed SKU count.
@@ -155,11 +155,18 @@ The follow-up organization-plan request returned HTTP 403; project access does n
 read access. The owner-side non-sensitive Free-plan evidence request remains open. A SQL-report QA
 adapter is now prepared to avoid the Windows Docker dependency for hosted testing; it preserves
 the five existing test files, checks all 74 planned assertions and rejects missing/failed results.
-Its unit/configuration checks pass, but new PostgreSQL/CI and hosted execution are still unverified.
-The old CI pass must not be presented as proof of this new tooling. On 2026-09-03 the owner authorized
+Its unit/configuration checks pass. On 2026-09-03 the owner authorized
 committing and pushing this tooling to PR #130 for isolated database CI only. No merge, production
 deployment or staging write is included in this step; do not begin Milestone 2 while its gates remain
 open.
+
+Candidate `202c189f1f062fa20fff8219aca3a0aba66f1c79` subsequently passed isolated
+[CI run 33714502709](https://github.com/18803076512/arcfort-website/actions/runs/33714502709).
+Both jobs passed: the original pg_prove and SQL-report paths each ran all 74 assertions; the new
+runner's pass/fail/count-mismatch controls passed on pgTAP `1.3.3`. Generated database types matched,
+and two complete shadow imports reconciled 17 tables each. The website quality/build/SEO/RFQ gates
+also passed. This closes the new runner's isolated PostgreSQL evidence gap, not hosted transport,
+plan verification or Milestone 1 staging parity. The runbook retains the exact results.
 
 The approval and source-of-truth boundary are recorded in
 `knowledge-base/decisions/2026-08-30-product-intelligence-console-v1-foundation.md`.

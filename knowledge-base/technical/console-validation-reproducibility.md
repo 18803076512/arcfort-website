@@ -132,7 +132,13 @@ must never execute arbitrary uploaded SQL.
 Validate the adapter in the isolated CI stack alongside the original pg_prove runner, including
 passing, deliberately failing and count-mismatch probes. Only the expected assertion-error type
 may satisfy a negative probe; a connection error is not evidence of correct failure detection.
-The new runner's real PostgreSQL and hosted checks remain pending until executed for its candidate.
+The new runner's real PostgreSQL contract was subsequently proven at
+`202c189f1f062fa20fff8219aca3a0aba66f1c79` in
+[isolated run 33714502709](https://github.com/18803076512/arcfort-website/actions/runs/33714502709).
+The original runner and the new SQL path each passed 74 assertions on pgTAP `1.3.3`, including the
+new runner's real positive, failing-assertion and plan-mismatch self-checks. Type parity and both
+17-table shadow imports also passed. This closes the isolated SQL contract check only: the hosted
+Management API transport still needs explicit-target execution after staging prerequisites pass.
 
 The target-only organization endpoint returned HTTP 403 after a successful authenticated project
 check. Its [official contract](https://supabase.com/docs/reference/api/v1-get-an-organization)

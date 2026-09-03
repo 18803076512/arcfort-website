@@ -307,6 +307,42 @@ Supabase stack may be used in this batch; no hosted credentials, staging mutatio
 deployment are authorized by this follow-up. Candidate-specific CI results must be recorded before
 claiming the new SQL report path passes real PostgreSQL tests.
 
+### Isolated SQL Runner CI Evidence - 2026-09-03
+
+The authorized PR #130 push produced candidate `202c189f1f062fa20fff8219aca3a0aba66f1c79` and
+[Quality checks run 33714502709](https://github.com/18803076512/arcfort-website/actions/runs/33714502709).
+Both jobs completed successfully. The database job ran from `04:17:30Z` to `04:19:46Z`; the website
+quality job completed at `04:18:41Z`. These results are from disposable Linux CI containers, not the
+hosted staging project or the Windows Docker host.
+
+| Gate                   | Direct Evidence                                                                       |
+| ---------------------- | ------------------------------------------------------------------------------------- |
+| Fresh migration replay | All five reviewed migrations applied during reset                                     |
+| Original pg_prove      | `Files=5, Tests=74`, `Result: PASS`                                                   |
+| SQL runner self-checks | Passing assertion, intentional failure and plan mismatch correctly detected           |
+| SQL lifecycle          | 12/12, zero failures                                                                  |
+| SQL RLS                | 10/10, zero failures                                                                  |
+| SQL schema             | 25/25, zero failures                                                                  |
+| SQL service job        | 5/5, zero failures                                                                    |
+| SQL workflow guards    | 22/22, zero failures                                                                  |
+| SQL total              | 5 files, 74 assertions, pgTAP `1.3.3`; suite source hashes retained in the job log    |
+| Generated types        | Match the migrated local schema                                                       |
+| Shadow parity          | Two successful imports; 17 tables per import, 34 exact-row/source-column checks       |
+| Source snapshot        | Revision `f185ebc9ebba875bc59141b872780297804fef894866108fa14d65bf995fc41b` unchanged |
+| Website quality        | Build, lint, typecheck, data/media/SEO/RFQ tests, built audits and performance passed |
+| Cleanup                | Disposable local Supabase services stopped successfully                               |
+
+Before this push, local report/config/REST/domain/migration/shadow checks, full lint, typecheck,
+formatting, diff hygiene and secret scanning passed. `npm run build` generated 90 pages. No new
+dependency, SQL migration, canonical product/media value, public route or RFQ implementation changed.
+
+Release QA for this tooling-only PR/isolated-CI scope is PASS. That result is not authorization to
+merge, publish or deploy. The hosted Free-plan evidence, project server-key configuration, real
+Management API test transport, generated-type parity and two hosted imports remain outstanding.
+The local staging write guard is unchanged and disabled. Record any follow-up documentation-only
+commit separately from this tested implementation candidate; never claim these logs tested a later
+runtime change.
+
 ### Windows Local Token Login Fallback
 
 The previous console reported a non-interactive error. A later corrected console produced a login

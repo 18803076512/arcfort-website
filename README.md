@@ -121,8 +121,12 @@ SQL-based database QA is available for the reviewed Milestone 1 tests:
 The adapter preserves existing test assertions and fixtures, adds a final pgTAP counter/diagnostic
 report before ROLLBACK, and rejects missing, failed, partial or mismatched results. These commands
 are for reviewed repository SQL only, not an arbitrary-SQL sandbox. The new adapter's unit and local
-quality checks pass; actual PostgreSQL/CI replay remains pending. See the operations runbook for the
-current staging authorization and remaining gates.
+quality checks pass. At commit `202c189f1f062fa20fff8219aca3a0aba66f1c79`,
+[isolated CI run 33714502709](https://github.com/18803076512/arcfort-website/actions/runs/33714502709)
+also passed the new runner's three self-checks and all 74 assertions on PostgreSQL, the original
+pg_prove suite, generated types and two exact-row shadow imports across 17 tables. Hosted execution
+is still unverified. See the operations runbook for the current staging authorization and remaining
+gates; this PR is not merged or deployed to production.
 
 ## Pages
 

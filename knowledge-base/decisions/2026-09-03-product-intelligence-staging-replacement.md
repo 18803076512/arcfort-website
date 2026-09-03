@@ -69,9 +69,13 @@ unaffected by this preparation; deleting a hosted project is not an automatic ro
 Finish billing-plan verification, then recheck the exact target and apply the reviewed migration set
 within the existing destination-specific authorization. Retain all 74 hosted TAP results, generate
 and compare types, and reconcile the same shadow snapshot twice before evaluating Milestone 1 exit.
-The newly prepared SQL-report runner requires its own isolated PostgreSQL/CI proof before hosted
+The SQL-report runner requires candidate-specific isolated PostgreSQL/CI proof before hosted
 use; existing pg_prove checks remain required. On 2026-09-03 the owner explicitly authorized commit
 and push to PR #130 for isolated database CI. This separate authorization does not include a merge,
 production deployment or staging database write; the Free-plan evidence gate is unchanged.
+That isolated evidence now passes for `202c189f1f062fa20fff8219aca3a0aba66f1c79` in
+[run 33714502709](https://github.com/18803076512/arcfort-website/actions/runs/33714502709): both
+74-assertion paths, real negative controls, generated types and two 17-table imports. The hosted
+Management API transport and complete staging parity still require their own execution evidence.
 The operations runbook documents the local masked-input token fallback for Windows browser-login
 failures. Tokens, API keys and database passwords must never enter Git, chat or these records.
