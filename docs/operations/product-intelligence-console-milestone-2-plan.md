@@ -1,7 +1,8 @@
 # Product Intelligence Console V1 - Milestone 2 Plan
 
 Date: 2026-09-03
-Status: M2-A through M2-E approved by the owner on 2026-09-03; implementation in progress.
+Status: M2-A through M2-E approved; local technical candidate verified in GitHub Actions run
+`33815534865`. Real owner onboarding and M2 activation remain pending.
 The first administrator mailbox has not yet been named. Invitation, verified account handoff and
 role assignment remain pending; the public business mailbox is not assumed to be the login mailbox.
 
@@ -19,7 +20,7 @@ No approval for M2 account creation, Auth settings, production access or publica
 from M1's migration/import authorization. The owner's subsequent explicit confirmation authorizes
 the M2 defaults below, not a production merge, deployment, publication or paid service.
 
-## Current Evidence
+## Initial Evidence At Planning Time
 
 Inspected runtime: `4518b885ad0971533c4408fee216b5bec2a4ebaf` on
 `codex/v2-industrial-brand-system`, with the six local M1 completion documents preserved.
@@ -238,6 +239,17 @@ additive migration and obtain target-specific approval; never edit an already ap
 
 M2 is not complete from a screenshot, green unit tests, an Auth user row or a successful build alone.
 Record each proof and any blocked item. Full V1 additionally requires M3-M6 and real 15AK evidence.
+
+### Current Acceptance Status - 2026-09-04
+
+The disabled-feature, provider-setting, access, RLS, data, query, privacy, public-layout, responsive,
+SEO/RFQ and quality gates have candidate-specific evidence in the
+[M2 implementation record](product-intelligence-console-milestone-2.md). Final run `33815534865`
+passed both the public quality job and disposable database/Auth job at commit `44f1ee9`.
+
+The owner and deployment rows remain open. No real mailbox has been named, no invitation received,
+no hosted role assigned and no authenticated owner browser session verified. No merge, production
+deployment, product publication or source cutover is authorized by the technical result.
 
 ## Rollback And Stop Conditions
 

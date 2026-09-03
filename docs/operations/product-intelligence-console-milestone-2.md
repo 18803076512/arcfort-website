@@ -56,8 +56,9 @@ delivery. Do not enable SMTP, upgrade billing or reuse RFQ credentials without a
 - Performance gates retained their original budgets and passed after including the public group
   layout/error assets. Homepage JavaScript was 126.7 KiB against 140 KiB; shared CSS 9.8 KiB/15 KiB.
 - Isolated real Auth/RLS/session/role-revocation/DTO tests and a 1,103-row pagination fixture passed
-  in GitHub Actions run `33725484619`. They run after M1's two imports in disposable CI, never
-  against hosted staging. Synthetic accounts and records were discarded with that stack.
+  in final GitHub Actions run `33815534865` at commit `44f1ee9`. They run after M1's two imports in
+  disposable CI, never against hosted staging. Synthetic accounts and records were discarded with
+  that stack.
 - Loopback HTTP checks passed for private headers, unauthenticated catalog-payload exclusion,
   cross-origin POST rejection, public shells/canonicals, sitemap/robots and both social-image routes.
 - Browser checks passed at 360, 390, 768 and 1440 CSS pixels for the login/recovery experience,

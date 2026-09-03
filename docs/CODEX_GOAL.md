@@ -124,9 +124,9 @@ general page or a larger unreviewed SKU count.
 The owner approved Product Intelligence Console V1 decisions D0-D7 on 2026-08-30. The current
 completed implementation batch is **Milestone 1 - Data Foundation**, with 15AK remaining the first
 real-data pilot. M1's runtime gates pass with bounded operational warnings. The next batch is
-**Milestone 2 - Console Shell And Dashboard**, approved on 2026-09-03 and now under local implementation
-and validation. Owner onboarding is not complete. Supabase is not authoritative for public pages
-and no product data was published.
+**Milestone 2 - Console Shell And Dashboard**, approved on 2026-09-03. Its local technical candidate
+passed final isolated CI on 2026-09-04; activation remains pending. Owner onboarding is not complete.
+Supabase is not authoritative for public pages and no product data was published.
 
 The M2 batch and exact acceptance matrix are recorded in
 `docs/operations/product-intelligence-console-milestone-2-plan.md`. Initial read-only inspection on

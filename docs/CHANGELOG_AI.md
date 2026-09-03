@@ -4015,8 +4015,8 @@ the public shell's schema/navigation payload and remain noindex, nofollow and no
 
 **Validation**
 
-GitHub Actions run `33725484619` passed quality and isolated database jobs, including Auth/RLS,
-session refresh, role revocation and 1,103-row pagination. The latest local build, snippet audit,
+Final GitHub Actions run `33815534865` passed quality and isolated database jobs at commit `44f1ee9`,
+including Auth/RLS, session refresh, role revocation and 1,103-row pagination. The latest local build, snippet audit,
 HTTP privacy/public-shell checks and 360/390/768/1440 browser review passed. Authenticated browser and
 real inbox checks remain deliberately unclaimed.
 

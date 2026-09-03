@@ -141,7 +141,7 @@ Milestone 1's data-foundation gates are complete; the full Console V1 is not. Th
 now defines layout isolation, invite-only login, authorization and read-only dashboard/product views.
 A read-only hosted Auth preflight found `disable_signup=false`; Console activation must wait for
 the remaining callback/delivery review and named owner-account handoff. The owner approved M2-A
-through M2-E on 2026-09-03. Local read-only Console implementation is now in review; see the
+through M2-E on 2026-09-03. The local read-only Console technical candidate is now verified; see the
 [M2 implementation record](docs/operations/product-intelligence-console-milestone-2.md).
 Hosted signup has subsequently been disabled and exact loopback URLs configured in the approved
 staging project. The default mail provider on Free Plan rejected custom invitation/recovery
