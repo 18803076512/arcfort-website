@@ -1,0 +1,44 @@
+# REFERENCE ONLY: reviewed hosted settings, not an executable deployment config.
+# Project: fdsvzuqixppsakukkrsf (arcfort-product-intelligence-staging).
+# Recorded 2026-09-06 from the 2026-09-05 CLI apply/reconciliation evidence.
+# Not loaded by local Supabase or CI. Do not copy over config.toml or use config push.
+# Use a reviewed, narrowly scoped Auth update for future changes; see
+# docs/operations/console-staging-auth-smtp.md. No secret belongs in this file.
+
+[auth]
+site_url = "http://127.0.0.1:3000"
+additional_redirect_urls = ["http://127.0.0.1:3000/console/auth/callback", "http://127.0.0.1:3000/console/auth/confirm"]
+enable_signup = false
+enable_anonymous_sign_ins = false
+
+[auth.email]
+enable_signup = true
+double_confirm_changes = true
+enable_confirmations = true
+max_frequency = "1m"
+otp_length = 8
+
+[auth.email.smtp]
+enabled = true
+host = "smtp.resend.com"
+port = 465
+user = "resend"
+pass = "env(SUPABASE_AUTH_SMTP_PASS)"
+admin_email = "auth@arcfortweld.com"
+sender_name = "ArcFort Weld Product Intelligence"
+
+[auth.email.template.invite]
+subject = "ArcFort Weld Console Invitation"
+content_path = "./supabase/templates/invite.html"
+
+[auth.email.template.recovery]
+subject = "ArcFort Weld Console Password Reset"
+content_path = "./supabase/templates/recovery.html"
+
+[auth.mfa.totp]
+enroll_enabled = true
+verify_enabled = true
+
+[storage]
+enabled = true
+file_size_limit = "50MiB"

@@ -144,9 +144,13 @@ the remaining callback/delivery review and named owner-account handoff. The owne
 through M2-E on 2026-09-03. The local read-only Console technical candidate is now verified; see the
 [M2 implementation record](docs/operations/product-intelligence-console-milestone-2.md).
 Hosted signup has subsequently been disabled and exact loopback URLs configured in the approved
-staging project. The default mail provider on Free Plan rejected custom invitation/recovery
-templates, so real owner onboarding remains blocked pending a separate mail-service decision and
-the first login mailbox. No account or role was created. Console stays disabled by default and
+staging project. After the initial Free-plan default-provider template rejection, the owner chose
+`info@arcfortweld.com` and approved separate staging Resend SMTP. SMTP/templates were configured on
+2026-09-05; one invitation has provider-reported delivery. A 2026-09-06 check found the account still
+unconfirmed, and no owner role has been granted. See the
+[staging Auth mail runbook](docs/operations/console-staging-auth-smtp.md) for configuration evidence,
+the corrected CLI setting drift and the remaining real-owner handoff. Console stays disabled by
+default and
 rejects Vercel environments. PR #130 is not merged or deployed to production by this work.
 
 ### Read-Only Console Development
@@ -165,9 +169,12 @@ routes without submitting credentials or email. Isolated CI additionally runs
 `npm run console:auth:test:local` against disposable users and 1,103 synthetic pagination records;
 this command refuses non-CI/hosted execution. It is not an owner invitation workflow.
 
-The invitation/recovery HTML in `supabase/templates/` configures the local stack only. Do not claim
-those templates are installed on staging or that email delivery works until the recorded provider
-and real inbox gates pass. Do not deploy or enable Console on the public website during M2.
+The invitation/recovery HTML in `supabase/templates/` is also installed on approved staging Auth.
+Local `supabase/config.toml` remains collector-only; `supabase/config.staging.toml` is a non-loaded
+reference, not a deployment input. `console:db:start` and database CI check mail isolation before
+starting disposable services. Never provide real SMTP secrets to these tests or push local config to
+hosted staging. Provider-reported delivery is not verified owner inbox/login. Do not deploy or enable
+Console on the public website during M2.
 
 ## Pages
 

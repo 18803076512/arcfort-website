@@ -1,3 +1,5 @@
+# Local/disposable CI only. Never push this file to a hosted project.
+# Hosted Auth settings are recorded separately in config.staging.toml.
 project_id = "arcfort-product-intelligence"
 
 [api]

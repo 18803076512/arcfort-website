@@ -4035,3 +4035,72 @@ apparently unused public 404 is only serialized into a private React Server Comp
 
 Choose the first administrator mailbox and approve a distinct Supabase Auth mail-delivery solution;
 then invite exactly one owner, verify real inbox receipt/login and complete authenticated browser QA.
+
+## 2026-09-06 - Staging Auth SMTP Handoff And Local Mail Isolation
+
+**Task**
+
+Close the approved staging SMTP configuration/handoff batch and prevent the shared local/CI stack
+from using a real mail transport. Record the named first-owner invitation without claiming completed
+M2 activation. This entry includes the 2026-09-05 provider actions and their 2026-09-06 follow-up.
+
+**Files Changed**
+
+- `supabase/config.toml`: local/disposable scope warning; external SMTP removed before commit.
+- `supabase/config.staging.toml`: new non-loaded, secret-free hosted policy reference.
+- `.env.example`: operator-only SMTP environment name, explicitly excluded from app/CI runtime.
+- `scripts/console/test-console-boundaries.ts`: collector-only mail guard and negative controls.
+- `package.json`, `.github/workflows/quality.yml`: run the guard before local/CI database startup.
+- `docs/operations/console-staging-auth-smtp.md`: provider evidence, drift correction and owner handoff.
+- `knowledge-base/decisions/2026-09-06-console-staging-auth-mail.md`: distinct local, staging and
+  production mail authority; supersedes the prior missing-mailbox/SMTP gate only.
+- `README.md`, `docs/CODEX_GOAL.md`, both M2 plan/implementation records and this log: current phase
+  state and remaining activation gates. Old dated log/decision history is retained.
+
+**Data Changed**
+
+Staging Auth SMTP and invite/recovery templates configured with explicit owner approval. Exactly one
+invitation sent to the owner-selected `info@arcfortweld.com`; Resend reported Delivered. The account
+remained unconfirmed on the 2026-09-06 read-only check; the owner later reported no received invitation.
+No role grant, product/source/technical/media
+change, production RFQ update, billing change or publication occurred. One-time encrypted key handoff
+material and retired helper scripts were removed from the ignored temporary directory.
+
+**Components And Visual Changes**
+
+None. Existing read-only Console and public page components are unchanged.
+
+**SEO Impact**
+
+None. Public URLs, canonical metadata, schema, sitemap, robots and RFQ code remain unchanged.
+Console remains excluded from search and unavailable on Vercel/production.
+
+**Validation**
+
+Local lint, typecheck, build (92 pages), Console boundary/config checks, migration/shadow validation,
+RFQ unit tests, secret scanning, SEO/internal-link checks and unchanged performance budgets passed.
+The actual loopback server's HTTP privacy/CSRF/public-shell checks passed, and the login form rendered
+in the browser. No authenticated owner session was exercised. Candidate-specific Linux database/Auth
+CI is required on PR #130; its exact run/commit result is recorded in the PR, not inferred from local
+checks or earlier green runs. No merge or production deployment is included.
+
+**Known Issues**
+
+CLI `config push` immediately applied omitted defaults during the SMTP change. TOTP, mail frequency
+and OTP length drift was explicitly restored; a storage update was rejected by the provider without
+a plan upgrade. Later CLI reconciliation reported all projected services up to date, not complete
+Management API field parity. The runbook retains this distinction. Owner receipt/password/login,
+verified-role assignment and authenticated responsive QA remain open. Prior dependency advisories and
+the separately exposed production credential require their own scoped remediation; neither was
+silently changed here.
+
+**Reusable Knowledge Added**
+
+The dated mail decision and runbook separate safe local mail capture, approved hosted Auth, production
+RFQ credentials, CLI projection evidence and actual inbox/identity verification.
+
+**Next Recommended Action**
+
+Verify the PR's isolated CI result, then complete the real-owner invitation/password handoff at the
+running loopback Console. Grant only the intended existing owner role after identity verification.
+Do not start M3 editing or product publishing from a provider-delivered invitation alone.

@@ -251,6 +251,18 @@ The owner and deployment rows remain open. No real mailbox has been named, no in
 no hosted role assigned and no authenticated owner browser session verified. No merge, production
 deployment, product publication or source cutover is authorized by the technical result.
 
+### Onboarding Update - 2026-09-06
+
+This supersedes the missing-mailbox/SMTP statements in the dated 2026-09-03/04 observations above
+and the original inputs below. The owner chose `info@arcfortweld.com` and approved a separate
+domain-limited Resend credential for staging Auth. SMTP/templates are configured, and one invitation
+has provider-reported delivery. The account remained unconfirmed at the 2026-09-06 read-only check;
+no role grant or real-owner browser verification has occurred. The owner gate remains open.
+
+The [staging mail runbook](console-staging-auth-smtp.md) records CLI default drift and correction,
+local/CI mail isolation, exact evidence limits and the remaining handoff. These actions do not
+authorize production activation, a billing change or M3 product publishing.
+
 ## Rollback And Stop Conditions
 
 Keep the Console feature disabled until checks pass. Public pages retain their Git-backed source

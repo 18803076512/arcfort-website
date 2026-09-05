@@ -11,6 +11,28 @@ import { filters, literalPattern, uuid } from "../../lib/console/catalog.ts";
 import { checkConsoleAccess } from "../../lib/console/access.ts";
 import type { ConsoleClient } from "../../lib/console/client.ts";
 
+// Fail closed on custom mail transport before a disposable Supabase stack starts.
+// This deliberately accepts only the repository's simple local collector section.
+function assertLocalMailIsolation(source: string) {
+  const config = source.replace(/^\s*#.*$/gm, "");
+  assert.doesNotMatch(
+    config,
+    /\bsmtp\b|\bsmtp_[a-z_]+\b|SUPABASE_AUTH_SMTP_PASS|smtp\.resend\.com/i,
+  );
+  assert.match(config, /^\[local_smtp\]\s+enabled = true\s+port = 54324\s*(?=\[|$)/m);
+}
+const localSupabaseConfig = readFileSync("supabase/config.toml", "utf8");
+assertLocalMailIsolation(localSupabaseConfig);
+for (const unsafe of [
+  '\n[auth.email.smtp]\nenabled = true\nhost = "smtp.resend.com"\n',
+  '\n[auth.email."smtp"]\nenabled = true\n',
+  "\n[auth.email]\nsmtp = { enabled = true }\n",
+  '\n[auth.email]\nsmtp_host = "mail.example.invalid"\n',
+])
+  assert.throws(() => assertLocalMailIsolation(localSupabaseConfig + unsafe));
+assert.throws(() => assertLocalMailIsolation("[local_smtp]\nenabled = false\nport = 54324\n"));
+assert.throws(() => assertLocalMailIsolation("[auth]\nenabled = true\n"));
+
 const config = {
   CONSOLE_ENABLED: "true",
   CONSOLE_ENVIRONMENT: "staging",
@@ -161,5 +183,5 @@ assert.match(readFileSync("app/robots.ts", "utf8"), /"\/console"/);
 assert.equal(readFileSync("lib/console/catalog.ts", "utf8").includes("raw_snapshot"), false);
 assert.equal(readFileSync("lib/console/catalog.ts", "utf8").includes("notes_internal"), false);
 console.log(
-  "Console config, origin, form, filters, authorization and layout boundaries passed (unit scope).",
+  "Console local mail isolation, config, origin, form, filters, authorization and layout boundaries passed (unit scope).",
 );

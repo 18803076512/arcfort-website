@@ -38,7 +38,7 @@
     "console:rest:test": "node --experimental-strip-types scripts/console/test-product-intelligence-rest.ts",
     "console:sql-qa:test": "node --experimental-strip-types scripts/console/test-database-test-report.ts",
     "console:migrations:validate": "node --experimental-strip-types scripts/console/validate-product-intelligence-migrations.ts",
-    "console:db:start": "supabase start",
+    "console:db:start": "npm run console:boundaries:test && supabase start",
     "console:db:reset": "supabase db reset --local",
     "console:db:test": "supabase test db --local",
     "console:db:test:sql": "node --experimental-strip-types scripts/console/run-database-sql-tests.ts --local",

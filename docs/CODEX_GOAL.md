@@ -1,6 +1,7 @@
 # ArcFort Weld Codex Goal Mode
 
-Evidence baseline: 2026-09-03. Production observations referenced here were last verified on
+Evidence baseline: 2026-09-03; staging owner/mail update: 2026-09-06.
+Production observations referenced here were last verified on
 2026-08-29 unless a later date is recorded in the relevant operations evidence.
 
 ## Purpose And Authority
@@ -133,8 +134,13 @@ The M2 batch and exact acceptance matrix are recorded in
 2026-09-03 found that hosted signup was not disabled. M2 scope, URL-preserving layout isolation and
 staging Auth changes were subsequently approved and implemented locally. Signup is now disabled and
 the exact loopback URLs are configured. The default Free-plan mail provider rejected custom
-invitation/recovery templates. The first owner login mailbox and separately approved mail-service
-resolution remain missing; no account or role was created. See the M2 implementation record for
+invitation/recovery templates. The owner subsequently selected `info@arcfortweld.com` and approved
+separate staging Resend SMTP. SMTP/templates were configured on 2026-09-05 and one invitation has
+provider-reported delivery. A read-only check on 2026-09-06 found the account still unconfirmed; no
+owner role was assigned. Real mailbox receipt, password/login and authenticated browser checks remain
+open. Local/CI mail remains collector-only. See the
+`docs/operations/console-staging-auth-smtp.md` runbook for evidence and corrected CLI setting drift,
+and the M2 implementation record for
 candidate-specific code and test status. Isolated CI passed Auth, RLS, revocation and 1,103-row
 pagination checks; do not treat that synthetic result as completed real-owner onboarding.
 
