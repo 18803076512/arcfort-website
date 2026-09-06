@@ -23,11 +23,11 @@ const sourceLinks = new Map<string, Set<string>>();
 const dynamicSources: DynamicSource[] = [
   {
     route: "/products",
-    sourceFile: path.resolve("app/products/page.tsx"),
+    sourceFile: path.resolve("app/(public)/products/page.tsx"),
   },
   {
     route: "/rfq",
-    sourceFile: path.resolve("app/rfq/page.tsx"),
+    sourceFile: path.resolve("app/(public)/rfq/page.tsx"),
   },
 ];
 const priorityTargets: PriorityTarget[] = [

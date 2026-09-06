@@ -1,180 +1,104 @@
 import Link from "next/link";
+import { BrandLockup } from "@/components/BrandLockup";
+import { Container } from "@/components/ui/Container";
 import { buildEmailHref, buildWhatsAppHref, siteConfig } from "@/lib/content/site";
-import { productCategories } from "@/lib/product-categories";
+import { productNavigationGroups } from "@/lib/content/site-navigation";
 
-const links = [
-  { href: "/products", label: "Products" },
-  { href: "/applications", label: "Applications" },
-  { href: "/guides", label: "Guides" },
-  { href: "/products/mig-mag-torch-parts", label: "MIG/MAG Parts" },
-  { href: "/products/plasma-cutting-consumables", label: "Plasma Consumables" },
-  { href: "/oem-service", label: "OEM Service" },
-  { href: "/quality-control", label: "Quality Control" },
-  { href: "/shipping-payment", label: "Shipping & Payment" },
-  { href: "/downloads", label: "Downloads" },
-  { href: "/about", label: "About" },
+const cooperationLinks = [
+  { href: "/distributor-supply", label: "Distributor Cooperation" },
+  { href: "/oem-service", label: "OEM / ODM" },
+  { href: "/quality-control", label: "Quality Coordination" },
+  { href: "/shipping-payment", label: "Order & Shipping" },
+] as const;
+
+const resourceLinks = [
+  { href: "/applications", label: "Industry Solutions" },
+  { href: "/guides", label: "Technical Guides" },
+  { href: "/downloads", label: "Catalogs & Downloads" },
+  { href: "/about", label: "About ArcFort Weld" },
   { href: "/contact", label: "Contact" },
   { href: "/privacy", label: "Privacy" },
-  { href: "/rfq", label: "RFQ" },
-];
+] as const;
 
-const buyerServiceLinks = [
-  { href: "/distributor-supply", label: "Distributor Supply" },
-  { href: "/oem-service", label: "OEM Service" },
-  { href: "/quality-control", label: "Quality Control" },
-  { href: "/shipping-payment", label: "Shipping & Payment" },
-  { href: "/downloads", label: "Downloads" },
-  { href: "/rfq", label: "Request a Quote" },
-];
+const footerLinkClass =
+  "inline-flex min-h-9 items-center text-sm leading-6 text-slate-300 transition hover:text-white";
 
 export function Footer() {
   return (
     <footer className="bg-arc-midnight text-white">
-      <div
-        data-nosnippet
-        data-snippet-region="site-footer-cta"
-        className="border-b border-white/10 bg-[linear-gradient(90deg,rgba(11,35,65,0.96),rgba(15,76,129,0.78))]"
-      >
-        <div className="mx-auto grid max-w-7xl gap-6 px-4 py-10 sm:px-6 lg:grid-cols-[1fr_0.72fr] lg:items-center lg:px-8">
-          <div>
-            <p className="text-xs font-bold uppercase tracking-[0.18em] text-arc-signal">
-              Export RFQ Support
-            </p>
-            <h2 className="mt-3 font-display text-3xl font-black leading-tight">
-              Send product lists, drawings or sample photos for quotation review.
-            </h2>
-            <p className="mt-3 max-w-3xl text-sm leading-7 text-slate-300">
-              ArcFort Weld reviews welding and cutting product requirements for distributors,
-              importers, repair workshops and OEM buyers before confirming quotation details.
-            </p>
-          </div>
-          <div className="grid gap-3 sm:grid-cols-3 lg:grid-cols-1">
-            <Link
-              href="/rfq"
-              className="inline-flex min-h-12 items-center justify-center bg-arc-signal px-5 text-xs font-bold uppercase tracking-[0.14em] text-arc-midnight transition hover:bg-white"
-            >
-              Request a Quote
+      <div data-nosnippet data-snippet-region="site-footer-links">
+        <Container className="grid gap-10 py-14 md:grid-cols-2 lg:grid-cols-[1.25fr_repeat(4,0.75fr)] lg:py-16">
+          <div className="max-w-sm">
+            <Link href="/" aria-label="ArcFort Weld homepage">
+              <BrandLockup inverse />
             </Link>
-            <a
-              href={buildEmailHref({ subject: "ArcFort Weld export RFQ" })}
-              className="inline-flex min-h-12 items-center justify-center border border-white/25 px-5 text-xs font-bold uppercase tracking-[0.14em] text-white transition hover:border-arc-signal hover:text-arc-signal"
-            >
-              Email Sales
-            </a>
-            <a
-              href={buildWhatsAppHref()}
-              className="inline-flex min-h-12 items-center justify-center border border-white/25 px-5 text-xs font-bold uppercase tracking-[0.14em] text-white transition hover:border-arc-signal hover:text-arc-signal"
-            >
-              WhatsApp
-            </a>
+            <p className="mt-5 text-sm leading-7 text-slate-300">
+              Welding equipment, torch parts, cutting consumables and industrial accessories for
+              distributors, OEM buyers and industrial users.
+            </p>
+            <p className="mt-4 text-xs leading-5 text-slate-400">{siteConfig.legalName}</p>
           </div>
-        </div>
-      </div>
-      <div
-        data-nosnippet
-        data-snippet-region="site-footer-links"
-        className="mx-auto grid max-w-7xl gap-10 px-4 py-12 sm:px-6 md:grid-cols-2 lg:grid-cols-[1.05fr_0.65fr_0.9fr_0.85fr_0.85fr] lg:px-8"
-      >
-        <div>
-          <div className="font-display text-3xl font-black">{siteConfig.shortName}</div>
-          <p className="mt-4 max-w-sm text-sm leading-6 text-slate-300">
-            {siteConfig.tagline} for distributors, importers, OEM buyers, industrial users, and
-            repair workshops.
-          </p>
-          <p className="mt-3 max-w-sm text-xs leading-5 text-slate-400">
-            {siteConfig.responseNote}
-          </p>
-          <p className="mt-4 text-xs leading-5 text-slate-400">{siteConfig.legalName}</p>
-        </div>
-        <div>
-          <h2 className="text-sm font-bold uppercase tracking-[0.18em] text-arc-signal">Company</h2>
-          <div className="mt-4 grid gap-2">
-            {links
-              .filter(
-                (link) =>
-                  ![
-                    "/oem-service",
-                    "/quality-control",
-                    "/shipping-payment",
-                    "/downloads",
-                    "/rfq",
-                  ].includes(link.href),
-              )
-              .map((link) => (
-                <Link
-                  key={link.href}
-                  href={link.href}
-                  className="inline-flex min-h-8 items-center text-sm text-slate-300 hover:text-white"
-                >
-                  {link.label}
+
+          <div>
+            <h2 className="text-sm font-bold uppercase text-slate-400">Products</h2>
+            <div className="mt-4 grid gap-1">
+              {productNavigationGroups.map((group) => (
+                <Link key={group.href} href={group.href} className={footerLinkClass}>
+                  {group.title}
                 </Link>
               ))}
+            </div>
           </div>
-        </div>
-        <div>
-          <h2 className="text-sm font-bold uppercase tracking-[0.18em] text-arc-signal">
-            Buyer Services
-          </h2>
-          <div className="mt-4 grid gap-2">
-            {buyerServiceLinks.map((link) => (
-              <Link
-                key={link.href}
-                href={link.href}
-                className="inline-flex min-h-8 items-center text-sm text-slate-300 hover:text-white"
+
+          <div>
+            <h2 className="text-sm font-bold uppercase text-slate-400">Cooperation</h2>
+            <div className="mt-4 grid gap-1">
+              {cooperationLinks.map((item) => (
+                <Link key={item.href} href={item.href} className={footerLinkClass}>
+                  {item.label}
+                </Link>
+              ))}
+            </div>
+          </div>
+
+          <div>
+            <h2 className="text-sm font-bold uppercase text-slate-400">Resources</h2>
+            <div className="mt-4 grid gap-1">
+              {resourceLinks.map((item) => (
+                <Link key={item.href} href={item.href} className={footerLinkClass}>
+                  {item.label}
+                </Link>
+              ))}
+            </div>
+          </div>
+
+          <div>
+            <h2 className="text-sm font-bold uppercase text-slate-400">Contact Sales</h2>
+            <div className="mt-4 grid gap-2 text-sm leading-6 text-slate-300">
+              <a
+                href={buildEmailHref({ subject: "ArcFort Weld product inquiry" })}
+                className="break-all transition hover:text-white"
               >
-                {link.label}
-              </Link>
-            ))}
+                {siteConfig.email}
+              </a>
+              <a href={buildWhatsAppHref()} className="transition hover:text-white">
+                {siteConfig.whatsapp}
+              </a>
+              <p className="mt-2 text-slate-400">{siteConfig.address}</p>
+            </div>
           </div>
-        </div>
-        <div>
-          <h2 className="text-sm font-bold uppercase tracking-[0.18em] text-arc-signal">
-            Product Lines
-          </h2>
-          <div className="mt-4 grid gap-2">
-            {productCategories.map((category) => (
-              <Link
-                key={category.name}
-                href={`/products/${category.slug}`}
-                className="inline-flex min-h-8 items-center text-sm text-slate-300 hover:text-white"
-              >
-                {category.name}
-              </Link>
-            ))}
-          </div>
-        </div>
-        <div>
-          <h2 className="text-sm font-bold uppercase tracking-[0.18em] text-arc-signal">Contact</h2>
-          <div className="mt-4 grid gap-2 text-sm text-slate-300">
-            <a
-              href={buildEmailHref({ subject: "ArcFort Weld product inquiry" })}
-              className="inline-flex min-h-8 items-center break-words hover:text-white"
-            >
-              Email: {siteConfig.email}
-            </a>
-            <a
-              href={buildWhatsAppHref()}
-              className="inline-flex min-h-8 items-center break-words hover:text-white"
-            >
-              WhatsApp: {siteConfig.whatsapp}
-            </a>
-            <p className="break-words">Address: {siteConfig.address}</p>
-            <p className="break-words">Main Port: {siteConfig.mainPort}</p>
-            <Link
-              href="/rfq"
-              className="inline-flex min-h-8 items-center font-semibold text-white hover:text-arc-signal"
-            >
-              Send Inquiry
-            </Link>
-          </div>
-        </div>
+        </Container>
       </div>
+
       <div
         data-nosnippet
         data-snippet-region="site-footer-legal"
-        className="border-t border-white/10 px-4 py-5 text-center text-xs uppercase tracking-[0.16em] text-slate-400"
+        className="border-t border-white/10"
       >
-        (c) 2026 {siteConfig.name}
+        <Container className="flex flex-col gap-2 py-5 text-xs text-slate-400 sm:flex-row sm:items-center sm:justify-between">
+          <p>(c) 2026 {siteConfig.name}. All rights reserved.</p>
+          <p>Industrial welding and cutting solutions</p>
+        </Container>
       </div>
     </footer>
   );

@@ -1,6 +1,16 @@
--- ARCFORT product catalog setup for Supabase.
--- Run this in the Supabase SQL editor after reviewing the field model.
--- No API keys or credentials belong in this file.
+-- DEPRECATED PRODUCT CATALOG DRAFT - DO NOT APPLY.
+--
+-- Product Intelligence Console V1 replaced this JSONB-heavy prototype with the governed,
+-- migration-managed schema in supabase/migrations/. The executable draft is retained below only as
+-- historical design input. Use docs/operations/product-intelligence-console-milestone-1.md.
+
+do $deprecated_product_catalog$
+begin
+  raise exception 'Deprecated schema blocked: apply versioned files from supabase/migrations instead.';
+end
+$deprecated_product_catalog$;
+
+/* Historical non-executable draft follows.
 
 create extension if not exists pgcrypto;
 
@@ -180,3 +190,4 @@ set
 
 -- Keep product assets private until the image workflow is confirmed.
 -- Public image delivery can be enabled later through signed URLs or a controlled public bucket.
+*/

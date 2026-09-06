@@ -15,8 +15,8 @@ later be migrated to Supabase or Sanity CMS.
 - `scripts/validate-product-csv.mjs` - CSV validation script
 - `content/products.ts` - current mock product data used by the website
 - `content/categories.ts` - current product category data
-- `supabase/product-catalog-schema.sql` - future product database schema
-- `docs/supabase-product-catalog-setup.md` - product database setup instructions
+- `supabase/product-catalog-schema.sql` - deprecated, deliberately non-executable schema prototype
+- `docs/supabase-product-catalog-setup.md` - redirect to the governed Product Intelligence setup
 
 ## Validate Product CSV
 
@@ -102,47 +102,34 @@ Safety behavior:
 
 ## Field Notes
 
-| Field | Notes |
-| --- | --- |
-| `category_slug` | Must match a slug in `content/categories.ts`. |
-| `product_slug` | Use lowercase letters, numbers and hyphens. |
-| `title` | Professional B2B English product name. |
-| `sku` | Use `To be confirmed` if internal SKU is not ready. |
-| `kind` | Use `welding-consumable` or `welding-equipment`. |
-| `process` | Use `MIG/MAG`, `TIG`, `MMA`, `Plasma Cutting` or `To be confirmed`. |
-| `short_description` | One concise B2B sentence. |
-| `length` | Use confirmed length or `Available upon request`. |
-| `compatible_model` | Use confirmed models such as `MB15 / MB24` or `Compatibility can be confirmed by sample or drawing`. |
-| `oem` | Use `Available` when OEM service is available. |
-| `image_name` | Use a descriptive planned filename such as `mig-contact-tip-m6-10.jpg`. |
-| `application` | Main buyer-facing application phrase for the specification table. |
-| `applications` | Separate multiple values with semicolons. |
-| `features` | Separate multiple values with semicolons. |
-| `related_product_slugs` | Separate product slugs with semicolons. |
-| `missing_fields` | Separate missing field names with semicolons. |
+| Field                   | Notes                                                                                                |
+| ----------------------- | ---------------------------------------------------------------------------------------------------- |
+| `category_slug`         | Must match a slug in `content/categories.ts`.                                                        |
+| `product_slug`          | Use lowercase letters, numbers and hyphens.                                                          |
+| `title`                 | Professional B2B English product name.                                                               |
+| `sku`                   | Use `To be confirmed` if internal SKU is not ready.                                                  |
+| `kind`                  | Use `welding-consumable` or `welding-equipment`.                                                     |
+| `process`               | Use `MIG/MAG`, `TIG`, `MMA`, `Plasma Cutting` or `To be confirmed`.                                  |
+| `short_description`     | One concise B2B sentence.                                                                            |
+| `length`                | Use confirmed length or `Available upon request`.                                                    |
+| `compatible_model`      | Use confirmed models such as `MB15 / MB24` or `Compatibility can be confirmed by sample or drawing`. |
+| `oem`                   | Use `Available` when OEM service is available.                                                       |
+| `image_name`            | Use a descriptive planned filename such as `mig-contact-tip-m6-10.jpg`.                              |
+| `application`           | Main buyer-facing application phrase for the specification table.                                    |
+| `applications`          | Separate multiple values with semicolons.                                                            |
+| `features`              | Separate multiple values with semicolons.                                                            |
+| `related_product_slugs` | Separate product slugs with semicolons.                                                              |
+| `missing_fields`        | Separate missing field names with semicolons.                                                        |
 
-## Next Migration Step
+## Product Intelligence Migration Path
 
-After real SKU data is confirmed, create an importer that converts the CSV into one of these targets:
+The active Supabase foundation is the governed Product Intelligence schema under
+`supabase/migrations/`. It imports repository data as a non-authoritative shadow, preserves source
+and verification states, and reconciles stable identifiers before any authority change.
 
-- Supabase tables for product management
-- Sanity CMS documents
-- Generated TypeScript content for static builds
+Do not run `supabase/product-catalog-schema.sql`; it is a blocked historical prototype. Follow
+`docs/operations/product-intelligence-console-milestone-1.md` for local reset, database tests,
+generated types, shadow import and hosted non-production approval requirements.
 
-Do not connect a live importer until the data owner confirms field accuracy.
-
-## Supabase Product Catalog
-
-The product catalog database schema is prepared in:
-
-```txt
-supabase/product-catalog-schema.sql
-```
-
-Setup guide:
-
-```txt
-docs/supabase-product-catalog-setup.md
-```
-
-Run the SQL only after reviewing the field model and confirming the target Supabase project.
+Do not connect a live importer or change the website source until the owner approves the exact
+scope after parity, evidence and release-gate verification.

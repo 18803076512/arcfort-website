@@ -50,12 +50,12 @@ export function ProductFinderForm({
       action="/products#product-catalog"
       method="get"
       onSubmit={handleSubmit}
-      className="grid gap-4 border border-slate-200 bg-arc-frost p-5 shadow-sm sm:p-6 lg:grid-cols-[minmax(0,1.25fr)_minmax(13rem,0.75fr)]"
+      className="grid gap-4 border border-arc-line bg-arc-frost p-5 sm:p-6 lg:grid-cols-[minmax(0,1.25fr)_minmax(13rem,0.75fr)]"
     >
       <div>
         <label
           htmlFor="product-finder-search"
-          className="block text-xs font-bold uppercase tracking-[0.16em] text-slate-600"
+          className="block text-xs font-bold uppercase text-slate-600"
         >
           Product name, component or SKU
         </label>
@@ -72,7 +72,7 @@ export function ProductFinderForm({
       <div>
         <label
           htmlFor="product-finder-category"
-          className="block text-xs font-bold uppercase tracking-[0.16em] text-slate-600"
+          className="block text-xs font-bold uppercase text-slate-600"
         >
           Product category
         </label>
@@ -93,21 +93,21 @@ export function ProductFinderForm({
       <div className="flex flex-col gap-2 sm:flex-row lg:col-span-2">
         <button
           type="submit"
-          className="inline-flex min-h-12 w-full items-center justify-center bg-arc-blue px-6 text-sm font-bold uppercase tracking-[0.14em] text-white transition hover:bg-arc-midnight sm:w-auto"
+          className="button-base bg-arc-blue text-white hover:bg-arc-midnight sm:w-auto"
         >
           Search Products
         </button>
         {hasParameters ? (
           <Link
             href="/products#product-finder"
-            className="inline-flex min-h-12 w-full items-center justify-center border border-arc-blue px-6 text-xs font-bold uppercase tracking-[0.14em] text-arc-blue transition hover:bg-white sm:w-auto"
+            className="button-base button-secondary w-full sm:w-auto"
           >
             Clear Filters
           </Link>
         ) : (
           <Link
             href="#product-categories"
-            className="inline-flex min-h-12 w-full items-center justify-center border border-slate-300 px-6 text-xs font-bold uppercase tracking-[0.14em] text-slate-700 transition hover:border-arc-blue hover:text-arc-blue sm:w-auto"
+            className="button-base w-full border-slate-300 text-slate-700 hover:border-arc-blue hover:text-arc-blue sm:w-auto"
           >
             Browse Categories
           </Link>

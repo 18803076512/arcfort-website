@@ -1,179 +1,238 @@
 #!/usr/bin/env node
 
-import { existsSync, mkdirSync, writeFileSync } from "node:fs";
+import { mkdirSync, writeFileSync } from "node:fs";
 import path from "node:path";
-import {
-  resolveValidationInputPath,
-  splitImageList,
-  validateCsvFile,
-  type ProductImportRow,
-} from "./product-import-utils.ts";
+import { validateProductImageAssets } from "./product-image-asset-utils.ts";
+import type { ProductImportRow } from "./product-import-utils.ts";
 
 const outputPath = path.join(process.cwd(), "docs", "product-image-tasks.csv");
+const coreImageCategories = new Set([
+  "mig-mag-torch-parts",
+  "tig-torch-parts",
+  "plasma-cutting-consumables",
+]);
+const priorityOrder = new Map([
+  ["P0", 0],
+  ["P1", 1],
+  ["P2", 2],
+  ["P3", 3],
+]);
+
+type ImageValidation = ReturnType<typeof validateProductImageAssets>;
+type ImageAssetRow = ImageValidation["rows"][number];
+type ImageInspection = ImageValidation["inspections"] extends Map<string, infer T> ? T : never;
 
 function csvEscape(value: string) {
-  if (/[",\n\r]/.test(value)) {
-    return `"${value.replace(/"/g, '""')}"`;
-  }
-
-  return value;
+  return /[",\n\r]/.test(value) ? `"${value.replace(/"/g, '""')}"` : value;
 }
 
-function publicImageExists(imagePath: string) {
-  return imagePath.startsWith("/images/products/")
-    ? existsSync(path.join(process.cwd(), "public", imagePath))
-    : false;
-}
-
-function getProductFamily(row: ProductImportRow) {
-  if (row.category_slug.includes("mig")) {
-    return "MIG/MAG torch consumable";
+function getPriority(product: ProductImportRow, asset: ImageAssetRow) {
+  if (product.status === "active" && asset.role === "main" && asset.source_kind === "unknown") {
+    return "P0";
   }
 
-  if (row.category_slug.includes("tig")) {
-    return "TIG torch consumable";
-  }
-
-  if (row.category_slug.includes("plasma")) {
-    return "Plasma cutting consumable";
-  }
-
-  if (row.category_slug.includes("accessories")) {
-    return "Welding accessory";
-  }
-
-  if (row.category_slug.includes("consumables")) {
-    return "Welding consumable";
-  }
-
-  return "Welding and cutting product";
-}
-
-function getShotGuidance(row: ProductImportRow) {
-  const name = row.name.toLowerCase();
-
-  if (name.includes("liner") || name.includes("cable")) {
-    return "Show full length if possible plus one close-up of connector/end detail.";
-  }
-
-  if (name.includes("connector") || name.includes("holder") || name.includes("clamp")) {
-    return "Show main body at 45 degrees plus close-up of contact/connection area.";
-  }
-
-  if (name.includes("nozzle") || name.includes("electrode") || name.includes("tip")) {
-    return "Show front, side and opening/thread detail when available.";
-  }
-
-  if (name.includes("cup") || name.includes("collet") || name.includes("gas lens")) {
-    return "Show side view and opening detail; include size marker only if confirmed.";
-  }
-
-  return "Show product on white background with one clear front/side view.";
-}
-
-function getPriority(row: ProductImportRow) {
-  if (row.category_slug.includes("mig") || row.category_slug.includes("plasma")) {
+  if (
+    coreImageCategories.has(product.category_slug) &&
+    (asset.role === "main" || asset.publication_status === "blocked")
+  ) {
     return "P1";
   }
 
-  if (row.category_slug.includes("tig")) {
+  if (product.status === "active" || asset.role === "main") {
     return "P2";
   }
 
   return "P3";
 }
 
-function createTaskRows(rows: ProductImportRow[]) {
-  return rows.flatMap((row) => {
-    const mainImageExists = publicImageExists(row.main_image);
-    const needsReviewedMainImage =
-      !mainImageExists || row.image_status === "placeholder" || row.image_status === "needs_photo";
-    const missingMainImage = needsReviewedMainImage
-      ? [
-          {
-            sku: row.sku,
-            product: row.name,
-            category: row.category,
-            imageType: "main_image",
-            targetPath: row.main_image,
-            priority: getPriority(row),
-            productFamily: getProductFamily(row),
-            shotGuidance: getShotGuidance(row),
-            currentStatus: row.image_status,
-            reason: !mainImageExists
-              ? "Target file is missing."
-              : "Current file is not approved for product image SEO.",
-            requirements:
-              "Real product photo, white or light background, no watermark, no fake certification logo, no price text, product fills 70-85% of frame.",
-            dataReminder:
-              "Confirm material, size, thread, compatible model, package and OEM data separately; image alone does not confirm specifications.",
-          },
-        ]
-      : [];
-    const missingGalleryImages = splitImageList(row.gallery_images)
-      .filter((imagePath) => !publicImageExists(imagePath))
-      .map((imagePath) => ({
-        sku: row.sku,
-        product: row.name,
-        category: row.category,
-        imageType: "gallery_image",
-        targetPath: imagePath,
-        priority: getPriority(row),
-        productFamily: getProductFamily(row),
-        shotGuidance: getShotGuidance(row),
-        currentStatus: row.image_status,
-        reason: "Gallery target file is missing.",
-        requirements:
-          "Real product photo, white or light background, no watermark, no fake certification logo, no price text, product fills 70-85% of frame.",
-        dataReminder:
-          "Confirm material, size, thread, compatible model, package and OEM data separately; image alone does not confirm specifications.",
-      }));
+function getRequiredActions(asset: ImageAssetRow, inspection: ImageInspection | undefined) {
+  const actions: string[] = [];
 
-    return [...missingMainImage, ...missingGalleryImages];
-  });
+  if (asset.publication_status === "blocked") {
+    actions.push("Capture and approve a dedicated exact-product image before publication");
+  }
+  if (asset.source_kind === "unknown" || asset.ownership_status === "unknown") {
+    actions.push("Identify the original source and owner or replace the asset");
+  }
+  if (asset.usage_rights_status !== "approved") {
+    actions.push("Record the permitted website-usage basis");
+  }
+  if (asset.content_match_status !== "exact_product") {
+    actions.push("Match the image to the exact physical SKU using a label, sample or drawing");
+  }
+  if (!asset.source_file) {
+    actions.push("Record the original source file");
+  }
+  if (!asset.reviewed_by || !asset.reviewed_date) {
+    actions.push("Record the reviewer and ISO review date after evidence review");
+  }
+  if (
+    inspection?.exists &&
+    inspection.width &&
+    inspection.height &&
+    (inspection.width < 1000 || inspection.height < 1000)
+  ) {
+    actions.push(
+      `Replace the low-resolution ${inspection.width} x ${inspection.height} source with a sharper exact-product view`,
+    );
+  }
+  const extension = path.extname(asset.public_path).toLowerCase();
+  const extensionFormat =
+    extension === ".png" ? "png" : [".jpg", ".jpeg"].includes(extension) ? "jpeg" : undefined;
+  if (
+    inspection?.detectedFormat &&
+    extensionFormat &&
+    inspection.detectedFormat !== extensionFormat
+  ) {
+    actions.push(
+      `Re-export or rename the asset so the ${extension} extension matches its ${inspection.detectedFormat.toUpperCase()} content`,
+    );
+  }
+
+  return actions;
 }
 
-const inputPath = resolveValidationInputPath(process.argv[2]);
-const result = validateCsvFile(inputPath);
+function getTaskType(asset: ImageAssetRow) {
+  if (asset.publication_status === "blocked") return "capture_and_approve";
+  if (asset.source_kind === "unknown" || asset.ownership_status === "unknown") {
+    return "provenance_review";
+  }
+  if (asset.content_match_status !== "exact_product") return "exact_product_replacement";
+  if (asset.usage_rights_status !== "approved") return "rights_review";
+  return "evidence_review";
+}
 
-if (result.errors.length > 0) {
-  console.error(
-    "Product image task generation failed because the product CSV has validation errors.",
-  );
+function getCaptureGuidance(product: ProductImportRow, role: string) {
+  const name = product.name.toLowerCase();
+
+  if (role === "packaging") {
+    return "Photograph the actual packing and label without unsupported certification or quantity claims.";
+  }
+  if (role === "dimension") {
+    return "Use a controlled drawing or photograph the exact SKU square to a calibrated measuring reference.";
+  }
+  if (role === "technical") {
+    return "Capture the genuine connection, thread, opening or surface detail without changing product geometry.";
+  }
+  if (name.includes("liner") || name.includes("cable")) {
+    return "Show the complete product arrangement plus clear end or connector details.";
+  }
+  if (name.includes("connector") || name.includes("holder") || name.includes("clamp")) {
+    return "Show the complete product at a three-quarter angle plus the genuine contact or connection area.";
+  }
+  if (
+    name.includes("nozzle") ||
+    name.includes("electrode") ||
+    name.includes("tip") ||
+    name.includes("cup") ||
+    name.includes("collet") ||
+    name.includes("gas lens")
+  ) {
+    return "Show the complete product, side profile and opening or thread detail for the same physical SKU.";
+  }
+
+  return "Show the exact product on a clean neutral background with complete geometry visible and in focus.";
+}
+
+const validation = validateProductImageAssets();
+
+if (validation.errors.length > 0) {
+  console.error("Product image task generation stopped because the asset registry has errors.");
+  for (const issue of validation.errors) {
+    console.error(`- ${issue.assetId ? `${issue.assetId}: ` : ""}${issue.message}`);
+  }
   process.exit(1);
 }
 
-const taskRows = createTaskRows(result.rows);
+const productBySlug = new Map(validation.products.map((product) => [product.slug, product]));
+const tasks = validation.rows
+  .map((asset) => {
+    const product = productBySlug.get(asset.product_slug);
+    if (!product) return null;
+
+    const inspection = validation.inspections.get(asset.public_path);
+    const requiredActions = getRequiredActions(asset, inspection);
+    if (requiredActions.length === 0) return null;
+
+    return {
+      assetId: asset.asset_id,
+      sku: product.sku,
+      product: product.name,
+      category: product.category,
+      role: asset.role,
+      publicPath: asset.public_path,
+      priority: getPriority(product, asset),
+      taskType: getTaskType(asset),
+      productStatus: product.status,
+      publicationStatus: asset.publication_status,
+      sourceKind: asset.source_kind,
+      sourceReference: asset.source_reference,
+      sourceOwner: asset.source_owner,
+      usageRightsStatus: asset.usage_rights_status,
+      contentMatchStatus: asset.content_match_status,
+      dimensions:
+        inspection?.width && inspection.height
+          ? `${inspection.width} x ${inspection.height}`
+          : "Not available",
+      requiredActions: requiredActions.join("; "),
+      captureGuidance: getCaptureGuidance(product, asset.role),
+      approvalRequirements:
+        "Record source owner, original file, usage basis, exact-SKU evidence, reviewer and ISO review date. Do not alter threads, holes, dimensions, connections or product shape.",
+    };
+  })
+  .filter((task): task is NonNullable<typeof task> => Boolean(task))
+  .sort(
+    (left, right) =>
+      (priorityOrder.get(left.priority) ?? 99) - (priorityOrder.get(right.priority) ?? 99) ||
+      left.category.localeCompare(right.category) ||
+      left.sku.localeCompare(right.sku) ||
+      left.role.localeCompare(right.role),
+  );
+
 const headers = [
+  "asset_id",
   "sku",
   "product",
   "category",
-  "image_type",
-  "target_path",
+  "role",
+  "public_path",
   "priority",
-  "product_family",
-  "shot_guidance",
-  "current_status",
-  "reason",
-  "requirements",
-  "data_reminder",
+  "task_type",
+  "product_status",
+  "publication_status",
+  "source_kind",
+  "source_reference",
+  "source_owner",
+  "usage_rights_status",
+  "content_match_status",
+  "dimensions",
+  "required_actions",
+  "capture_guidance",
+  "approval_requirements",
 ];
 const lines = [
   headers.join(","),
-  ...taskRows.map((row) =>
+  ...tasks.map((task) =>
     [
-      row.sku,
-      row.product,
-      row.category,
-      row.imageType,
-      row.targetPath,
-      row.priority,
-      row.productFamily,
-      row.shotGuidance,
-      row.currentStatus,
-      row.reason,
-      row.requirements,
-      row.dataReminder,
+      task.assetId,
+      task.sku,
+      task.product,
+      task.category,
+      task.role,
+      task.publicPath,
+      task.priority,
+      task.taskType,
+      task.productStatus,
+      task.publicationStatus,
+      task.sourceKind,
+      task.sourceReference,
+      task.sourceOwner,
+      task.usageRightsStatus,
+      task.contentMatchStatus,
+      task.dimensions,
+      task.requiredActions,
+      task.captureGuidance,
+      task.approvalRequirements,
     ]
       .map(csvEscape)
       .join(","),
@@ -183,6 +242,13 @@ const lines = [
 mkdirSync(path.dirname(outputPath), { recursive: true });
 writeFileSync(outputPath, `${lines.join("\n")}\n`);
 
-console.log(`Product image task list written to ${path.relative(process.cwd(), outputPath)}`);
-console.log(`Image tasks: ${taskRows.length}`);
-console.log(`Validation warnings: ${result.warnings.length}`);
+const priorityCounts = ["P0", "P1", "P2", "P3"].map(
+  (priority) => `${priority}=${tasks.filter((task) => task.priority === priority).length}`,
+);
+
+console.log(`Product image evidence tasks written to ${path.relative(process.cwd(), outputPath)}`);
+console.log(`Assets requiring action: ${tasks.length} of ${validation.rows.length}`);
+console.log(`Priority queue: ${priorityCounts.join(", ")}`);
+console.log(
+  "No asset status was changed. Evidence must be reviewed in data/assets/product-image-assets.csv before publication status can be upgraded.",
+);

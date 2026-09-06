@@ -14,6 +14,59 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  product-intelligence-database:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      CI: true
+      SUPABASE_TELEMETRY_DISABLED: 1
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v7
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Verify local mail isolation before starting services
+        run: npm run console:boundaries:test
+
+      - name: Start local Product Intelligence services
+        run: >-
+          npx supabase start
+          --exclude studio,imgproxy,edge-runtime,logflare,vector,supavisor,realtime
+
+      - name: Prove migrations are reproducible
+        run: npm run console:db:reset
+
+      - name: Test schema, lifecycle and RLS
+        run: npm run console:db:test
+
+      - name: Verify rollback-only SQL test reporting and negative controls
+        run: npm run console:db:test:sql
+
+      - name: Verify generated database types
+        run: npm run console:db:types:check
+
+      - name: Apply and reconcile repository shadow data
+        run: npm run console:shadow:apply:local
+
+      - name: Prove idempotent exact-row reconciliation
+        run: npm run console:shadow:apply:local
+
+      - name: Test Console authentication, RLS and large-catalog pagination
+        run: npm run console:auth:test:local
+
+      - name: Stop local Product Intelligence services
+        if: always()
+        run: npx supabase stop --no-backup
+
   quality:
     runs-on: ubuntu-latest
     timeout-minutes: 15
@@ -40,17 +93,48 @@ jobs:
       - name: Validate product data
         run: npm run products:validate
 
+      - name: Validate company claims and media evidence
+        run: |
+          npm run company:evidence:validate
+          npm run company:evidence:test
+
+      - name: Validate Product Intelligence foundation
+        run: |
+          npm run console:domain:test
+          npm run console:boundaries:test
+          npm run console:entrance:test
+          npm run console:config:test
+          npm run console:rest:test
+          npm run console:sql-qa:test
+          npm run console:migrations:validate
+          npm run console:shadow:validate
+
       - name: Preview safe simple SKU merge
         run: npm run products:simple:preview
 
       - name: Check product images
-        run: npm run products:check-images
+        run: |
+          npm run products:check-images
+          npm run images:assets:validate
+          npm run test:image-readiness
+          npm run test:image-presentation
+          npm run images:triage:validate
+          npm run products:image-tasks
 
       - name: Verify generated product files
         run: |
           npm run products:import
           npm run products:report
-          git diff --exit-code -- lib/data/products.ts docs/product-readiness-report.md
+          npm run series:components:generate
+          npm run series:components:report
+          npm run series:report
+          npm run compatibility:report
+          npm run technical:report
+          npm run images:assets:generate
+          npm run images:assets:report
+          npm run acquisition:report
+          npm run goal:report
+          git diff --exit-code -- lib/data/products.ts lib/data/product-image-assets.ts lib/data/product-series-component-facts.ts docs/product-readiness-report.md docs/product-image-tasks.csv docs/product-series-component-evidence-report.md docs/product-series-readiness-report.md docs/compatibility-readiness-report.md docs/product-technical-evidence-report.md docs/product-image-asset-report.md docs/acquisition-readiness-report.md docs/goal-progress-report.md
 
       - name: Verify promotion campaign links
         run: |
@@ -60,11 +144,22 @@ jobs:
       - name: Audit SEO content
         run: npm run seo:audit
 
+      - name: Test bounded production-audit retries
+        run: npm run test:live-audit
+
       - name: Test RFQ constraints
         run: npm run test:rfq
 
       - name: Test product catalog search
         run: npm run test:product-search
+
+      - name: Validate product-series evidence and public relationships
+        run: |
+          npm run series:validate
+          npm run series:components:validate
+          npm run compatibility:validate
+          npm run technical:validate
+          npm run test:product-series
 
       - name: Test MIG/MAG torch parts RFQ builder
         run: npm run test:mig-rfq
@@ -107,6 +202,9 @@ jobs:
 
       - name: Audit built internal links
         run: npm run seo:links
+
+      - name: Audit built product image evidence
+        run: npm run seo:images
 
       - name: Audit search snippets and social preview
         run: npm run seo:snippets

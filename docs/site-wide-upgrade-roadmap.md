@@ -3,22 +3,37 @@
 This roadmap defines the next improvement sequence for ArcFort Weld. The goal is to make the
 website more professional, easier to index, and stronger for overseas B2B RFQ conversion.
 
-## Production Baseline - 2026-08-13
+## Recorded Production Baseline - 2026-08-13
 
-The production build currently generates 89 pages and includes 40 indexable products, six product
-categories, six application pages and 16 buyer guides. Product search, category-specific RFQ
-builders, the OEM project builder, canonical metadata, sitemap, robots, structured data and the
-validated RFQ form are in place. The Search Console export dated 2026-08-12 is recorded in
+The recorded 2026-08-13 production build generated 91 pages and included 40 indexable products, six
+product categories, one 15AK product-series page, six application pages and 17 buyer guides.
+Product search, category-specific RFQ builders, the OEM project builder, canonical metadata,
+sitemap, robots, structured data and the validated RFQ form are in place. The Search Console export
+dated 2026-08-12 is recorded in
 `docs/seo/search-console-baseline-2026-08-12.md` and should be used as the measurement baseline.
+
+## Current V2 Branch - 2026-08-28
+
+The current validated branch generates 90 pages with 40 indexable products, six categories, six
+applications and 17 buyer guides. No product-series page is currently indexable. The prepared 15AK
+candidate is held in `evidence_review` because its linked images remain family-level legacy
+references without approved rights and exact-product evidence. Its former URL temporarily redirects
+to the MIG/MAG category until the automated series publication gate passes.
+
+The 602 company-catalog record is separately `blocked`: PDF page 14 uses an ORK 501D header while
+the technical and complete-torch table identifies ORK 602. Its 72 governed facts, 22 candidates and
+37 image requests remain internal until factory evidence resolves the page identity and exact
+water-cooled interfaces. It is excluded from public category and RFQ choices.
 
 The site is technically ready to acquire inquiries, but four evidence and operational tasks now
 matter more than adding another general page:
 
-1. Confirm that a controlled browser RFQ reaches the sales mailbox and that the buyer confirmation
-   email arrives. Confirm that the Resend credential previously shared outside the deployment
-   environment has been rotated.
-2. Replace the three `needs_photo` draft products with reviewed own or legally usable supplier
-   photos. Review material, dimensions, fitment and source evidence for the 40 active products.
+1. Confirm matching controlled-test references in the sales and buyer-confirmation mailboxes.
+   Confirm that the Resend credential previously shared outside the deployment environment has been
+   rotated. Provider acceptance and production email readiness are already verified.
+2. Record source and usage-right evidence for active supplier images, replace the three
+   `needs_photo` draft products with exact-product photos, and review material, dimensions, fitment
+   and source evidence for the 40 active products.
 3. Recheck Search Console after a comparable 28-day period. Improve pages with impressions and weak
    click-through rate before publishing overlapping guide content.
 4. Measure qualified RFQs, form completion, email clicks and WhatsApp clicks without collecting
