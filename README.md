@@ -144,14 +144,13 @@ the remaining callback/delivery review and named owner-account handoff. The owne
 through M2-E on 2026-09-03. The local read-only Console technical candidate is now verified; see the
 [M2 implementation record](docs/operations/product-intelligence-console-milestone-2.md).
 Hosted signup has subsequently been disabled and exact loopback URLs configured in the approved
-staging project. After the initial Free-plan default-provider template rejection, the owner chose
-`info@arcfortweld.com` and approved separate staging Resend SMTP. SMTP/templates were configured on
-2026-09-05; one invitation has provider-reported delivery. A 2026-09-06 check found the account still
-unconfirmed, and no owner role has been granted. See the
+staging project. The owner approved separate staging Resend SMTP, configured on 2026-09-05. After
+reporting no receipt at the initial address, the owner approved a different login mailbox on
+2026-09-06. Its single invitation has provider-reported delivery; no owner role has been granted.
+Actual password/login and authenticated browser checks remain open. See the
 [staging Auth mail runbook](docs/operations/console-staging-auth-smtp.md) for configuration evidence,
 the corrected CLI setting drift and the remaining real-owner handoff. Console stays disabled by
-default and
-rejects Vercel environments. PR #130 is not merged or deployed to production by this work.
+default and rejects Vercel environments. PR #130 is not merged or deployed to production by this work.
 
 ### Read-Only Console Development
 

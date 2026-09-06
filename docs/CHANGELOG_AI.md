@@ -4104,3 +4104,55 @@ RFQ credentials, CLI projection evidence and actual inbox/identity verification.
 Verify the PR's isolated CI result, then complete the real-owner invitation/password handoff at the
 running loopback Console. Grant only the intended existing owner role after identity verification.
 Do not start M3 editing or product publishing from a provider-delivered invitation alone.
+
+## 2026-09-06 - Approved Owner Mailbox Replacement And CI Readback
+
+**Task**
+
+Resolve the reported invitation-address mismatch within the approved staging onboarding scope.
+After explicit owner confirmation, send one invitation to the replacement Outlook login address.
+Retain the prior unconfirmed account without granting a role or changing public business contacts.
+
+**Files Changed**
+
+`README.md`, `docs/CODEX_GOAL.md`, the M2 plan and implementation records, the staging Auth mail
+runbook, this log, and new `knowledge-base/decisions/2026-09-06-console-owner-mailbox.md`.
+Only non-public operating records changed; no application component was created, changed or removed.
+
+**Data Changed**
+
+One new staging Auth invitation/account for the explicitly approved replacement mailbox. Fresh
+project identity/health and zero-matching-account checks passed before sending. Resend reported
+Delivered for the expected recipient/subject. No role grant, auto-confirmation, password assignment,
+old-account deletion, public company email, production RFQ, DNS, product or technical data change.
+Current recipient authority is centralized in the runbook rather than repeated across page configs.
+
+**SEO And Visual Impact**
+
+None. Production and public data sources remain untouched; Console remains loopback-only/noindex.
+
+**Validation**
+
+Read back run `33998964482` as successful for exact commit
+`f906f3c8d5afd4be2d52a1b8ebd3a091f42d927a`: quality and isolated database/Auth jobs both passed,
+including mail isolation before startup, reset, SQL/RLS gates, types and double shadow import.
+The prior observation block was an approval-quota error, not a CI failure. Loopback HTTP privacy,
+unauthenticated access and public-shell checks passed again; the real browser login form rendered.
+This follow-up changes documentation only and does not prove actual owner inbox/login completion.
+
+**Known Issues**
+
+Owner password setup, real login, verified role grant and authenticated responsive QA remain open.
+The earlier domain-address invitation was not received in the owner's everyday mailbox; forwarding
+has not been proved or modified. Existing production credential/dependency warnings remain scoped
+separately. No merge, production deployment or product publication occurred.
+
+**Reusable Knowledge Added**
+
+The dated replacement decision preserves mailbox authority and forbids treating provider delivery
+as identity proof or applying a later role grant to the superseded account.
+
+**Next Recommended Action**
+
+Let the owner open the new invitation on the computer running Console, set their own password, then
+verify that exact identity before assigning the single intended owner role and completing M2 QA.

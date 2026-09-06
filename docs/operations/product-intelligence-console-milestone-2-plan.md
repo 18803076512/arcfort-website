@@ -259,7 +259,11 @@ domain-limited Resend credential for staging Auth. SMTP/templates are configured
 has provider-reported delivery. The account remained unconfirmed at the 2026-09-06 read-only check;
 no role grant or real-owner browser verification has occurred. The owner gate remains open.
 
-The [staging mail runbook](console-staging-auth-smtp.md) records CLI default drift and correction,
+Later on 2026-09-06, after reporting no receipt, the owner explicitly approved a replacement login
+mailbox and a single new invitation. That invitation has provider-reported delivery; the prior
+account remains unchanged and no owner role has been granted. Run `33998964482` passed both CI jobs
+at `f906f3c8`. The [staging mail runbook](console-staging-auth-smtp.md) records the exact current
+recipient, CLI default drift and correction,
 local/CI mail isolation, exact evidence limits and the remaining handoff. These actions do not
 authorize production activation, a billing change or M3 product publishing.
 

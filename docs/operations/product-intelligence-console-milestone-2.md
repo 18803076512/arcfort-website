@@ -41,12 +41,13 @@ configuration used the CLI; distinguish these evidence scopes. Latest recorded s
 | Redirect allowlist         | Exact `/console/auth/callback` and `/console/auth/confirm` under that origin |
 | Custom SMTP                | Separate approved Resend SMTP, configured 2026-09-05                         |
 | Hosted email templates     | Repository invitation/recovery templates installed                          |
-| Accounts/roles/invitations | One named administrator invited; still unconfirmed on 2026-09-06; no role grant |
+| Accounts/roles/invitations | Owner approved a replacement login mailbox on 2026-09-06; new invitation delivered; no role grant |
 
 The initial default-provider template rejection (HTTP 400) changed nothing; a reduced three-field
 patch succeeded. Later approved SMTP setup, CLI default drift, explicit correction and projected
 configuration reconciliation are recorded in the [mail runbook](console-staging-auth-smtp.md).
-Resend reported one invitation Delivered, which is not owner inbox/login evidence. Local/CI config
+Resend reported delivery for the original and approved replacement invitation, one per mailbox;
+neither is owner inbox/login evidence. Local/CI config
 is collector-only; a separate non-loaded staging snapshot records hosted policy. Do not upgrade
 billing, reuse RFQ credentials or run broad config pushes to bypass a remaining gate.
 
@@ -69,6 +70,8 @@ billing, reuse RFQ credentials or run broad config pushes to bypass a remaining 
 - Browser checks passed at 360, 390, 768 and 1440 CSS pixels for the login/recovery experience,
   anonymous protected-route behavior and retained public homepage/contact content. Inputs remain at
   least 44 pixels high and tested pages had no horizontal overflow.
+- Exact-candidate run `33998964482` passed quality and isolated database jobs at `f906f3c8`, including
+  the new pre-start local mail isolation guard and all existing database/Auth gates.
 - Full owner login/inbox and authenticated responsive browser checks remain pending.
 
 ## Files And Contracts
@@ -93,10 +96,11 @@ billing, reuse RFQ credentials or run broad config pushes to bypass a remaining 
 
 ## Remaining Gates
 
-1. The owner has selected `info@arcfortweld.com` and approved distinct staging SMTP. Actual mailbox
-   receipt, owner-set password and login still require the owner's interaction.
+1. The owner has approved distinct staging SMTP and a replacement login mailbox, recorded in the
+   mail runbook. Actual mailbox receipt, owner-set password and login still require their interaction.
 2. The invitation has provider-reported delivery; do not treat it as verified inbox/login evidence.
-3. Verified account identity followed by exactly one intended owner role; no additional accounts.
+3. Verified replacement account identity followed by exactly one intended owner role. The prior
+   unconfirmed account must remain unchanged and unprivileged.
 4. Real authenticated browser checks. Candidate-specific isolated CI is complete.
 5. Existing dependency audit reports seven advisories (six high, one moderate) in non-Supabase
    dependency chains. No force upgrade was applied. Review these before any production release.

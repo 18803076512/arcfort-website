@@ -1,13 +1,16 @@
 # Console Staging Auth Mail And Owner Handoff
 
-Recorded: 2026-09-06. Provider configuration/invitation evidence: 2026-09-05.
+Recorded: 2026-09-06. SMTP evidence: 2026-09-05; replacement invitation: 2026-09-06.
 Scope: M2 onboarding only, not production RFQ email or a public Console deployment.
 
 ## Approved Destination
 
 - Supabase project: `fdsvzuqixppsakukkrsf`, `arcfort-product-intelligence-staging`.
 - Organization: `xycjhlnlacqocitjkagq`; region: Singapore (`ap-southeast-1`).
-- First administrator mailbox, explicitly selected by the owner: `info@arcfortweld.com`.
+- Current administrator mailbox, explicitly approved on 2026-09-06: `arcfortweld1@outlook.com`.
+- Superseded invitation address: `info@arcfortweld.com`. Retain that unconfirmed account without a
+  role; do not delete it, grant access or change its email automatically.
+- The public business mailbox remains `arcfortweld@outlook.com`; no website/RFQ recipient changed.
 - The owner approved a separate Resend SMTP credential for staging Auth, its replacement after the
   failed handoff, and secure local key entry. This does not authorize rotation of production RFQ keys.
 - No billing upgrade, production setting, data-source cutover or public publishing is in scope.
@@ -76,6 +79,26 @@ the domain's MX at `inbound-smtp.us-east-1.amazonaws.com`; this does not prove f
 owner's everyday mailbox. Confirm the intended login address or existing mailbox routing before
 sending another invitation. Do not silently change the account identity or production MX records.
 
+The owner then explicitly approved using `arcfortweld1@outlook.com` for staging login and sending one
+new invitation. A fresh target/name/organization/region/health check passed and found zero matching
+accounts for that mailbox. The existing loopback login form and HTTP privacy checks passed before
+the single invitation was sent. Resend's email list showed Delivered for the new recipient and the
+expected invitation subject. The new account was unconfirmed at creation; no role was granted and the
+old account was not altered. There have been two invitations total, one to each explicitly approved
+address, not a resend loop. Password setup and actual login still require the owner's interaction.
+
+## Exact-Candidate CI Evidence
+
+On 2026-09-06, [run 33998964482](https://github.com/18803076512/arcfort-website/actions/runs/33998964482)
+was read back as completed successfully for `f906f3c8d5afd4be2d52a1b8ebd3a091f42d927a`.
+Both quality and isolated database jobs passed, including the pre-start mail guard, fresh reset,
+schema/RLS tests, SQL-report negative controls, generated types, two exact-row shadow imports and
+Console Auth/revocation/pagination tests. An earlier tool-approval quota error delayed observation;
+it was not a CI failure. Later documentation-only commits do not change that tested runtime, but
+their own PR checks must still be inspected rather than inheriting a green status.
+
+## Remaining Owner Handoff
+
 1. Start the reviewed Console at `http://127.0.0.1:3000` with only its staging public key and disabled
    importer. Keep it off Vercel and bound to loopback.
 2. The owner opens the invitation in their own mailbox and sets a password themselves. Do not ask
@@ -98,3 +121,4 @@ rotation/dependency check; do not reuse or revoke it as part of staging onboardi
 - [Resend SMTP](https://resend.com/docs/send-with-smtp)
 - [M2 access boundary](../../knowledge-base/decisions/2026-09-03-console-m2-access-boundary.md)
 - [Staging mail decision](../../knowledge-base/decisions/2026-09-06-console-staging-auth-mail.md)
+- [Owner mailbox replacement](../../knowledge-base/decisions/2026-09-06-console-owner-mailbox.md)

@@ -134,11 +134,13 @@ The M2 batch and exact acceptance matrix are recorded in
 2026-09-03 found that hosted signup was not disabled. M2 scope, URL-preserving layout isolation and
 staging Auth changes were subsequently approved and implemented locally. Signup is now disabled and
 the exact loopback URLs are configured. The default Free-plan mail provider rejected custom
-invitation/recovery templates. The owner subsequently selected `info@arcfortweld.com` and approved
-separate staging Resend SMTP. SMTP/templates were configured on 2026-09-05 and one invitation has
-provider-reported delivery. A read-only check on 2026-09-06 found the account still unconfirmed; no
-owner role was assigned. Real mailbox receipt, password/login and authenticated browser checks remain
-open. Local/CI mail remains collector-only. See the
+invitation/recovery templates. The owner subsequently approved separate staging Resend SMTP,
+configured on 2026-09-05. After reporting no receipt at the first address, the owner explicitly
+approved a replacement administrator mailbox on 2026-09-06. A single new invitation has
+provider-reported delivery; the old account remains unchanged and no owner role was assigned.
+Real mailbox receipt, password/login and authenticated browser checks remain open. Local/CI mail
+remains collector-only, and both jobs in exact-candidate CI run `33998964482` passed at `f906f3c8`.
+See the
 `docs/operations/console-staging-auth-smtp.md` runbook for evidence and corrected CLI setting drift,
 and the M2 implementation record for
 candidate-specific code and test status. Isolated CI passed Auth, RLS, revocation and 1,103-row
