@@ -146,6 +146,15 @@ and the M2 implementation record for
 candidate-specific code and test status. Isolated CI passed Auth, RLS, revocation and 1,103-row
 pagination checks; do not treat that synthetic result as completed real-owner onboarding.
 
+On 2026-09-06, the owner approved preparing a protected HTTPS test entrance because loopback links
+cannot be used on their phone. The [mobile staging candidate](operations/console-mobile-staging.md)
+is disabled and not deployed. Cloudflare zone/Access reads recovered on 2026-09-07, but subscription
+visibility is still denied and no new app/tunnel/DNS exists. Plan and exact-destination approval gates
+remain in the runbook before any provisioning.
+The owner then reported setting a password, but a fresh staging read still showed the approved
+replacement identity unconfirmed, no sign-in timestamp and no role. Resolve that handoff discrepancy;
+do not enable a tunnel, resend invitations or grant roles based only on the password report.
+
 The foundation and readiness, SEO-approval and destination-safety hardening are committed on
 `codex/v2-industrial-brand-system` in PR #130. On 2026-09-02, isolated Linux CI at commit `6383171`
 passed a fresh database reset, all 74 pgTAP assertions, generated-type drift validation and two

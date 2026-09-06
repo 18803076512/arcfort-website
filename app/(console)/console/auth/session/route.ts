@@ -3,13 +3,14 @@ import type { CookieOptions } from "@supabase/ssr";
 import { getConsoleConfig } from "@/lib/console/config";
 import { checkInviteOnlyProvider, createConsoleClient } from "@/lib/console/client";
 import { checkConsoleAccess } from "@/lib/console/access";
-import { consolePrivateHeaders, isConsoleOrigin, readConsoleForm } from "@/lib/console/security";
+import { consolePrivateHeaders, readConsoleForm } from "@/lib/console/security";
+import { isConsoleEntrance } from "@/lib/console/entrance";
 
 export async function POST(request: NextRequest) {
   const settings = getConsoleConfig();
   if (
     settings.status !== "ready" ||
-    !isConsoleOrigin(request.headers, settings.config.origin, true)
+    !(await isConsoleEntrance(request.headers, settings.config, true))
   ) {
     return new NextResponse("Console request unavailable.", {
       status: 403,

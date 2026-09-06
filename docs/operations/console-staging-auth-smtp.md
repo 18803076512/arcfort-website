@@ -99,6 +99,18 @@ their own PR checks must still be inspected rather than inheriting a green statu
 
 ## Remaining Owner Handoff
 
+Update after the mobile-access approval on 2026-09-06: the owner reported setting a password.
+A fresh target-verified read still found the approved replacement identity unconfirmed, no sign-in
+timestamp and zero Console roles. This contradicts completion of the invitation handoff, not the
+owner's statement that they set some password. Clarify the page/account before granting access.
+No additional invitation, confirmation, password change or role mutation was performed.
+
+The separately prepared [mobile HTTPS entrance](console-mobile-staging.md) remains disabled and not
+provisioned. Cloudflare zone/Access reads recovered on 2026-09-07, but plan visibility and the exact
+new hostname/policy approval remain open; see that runbook for current evidence. The original loopback instructions
+below remain applicable to the currently running local service; use the mobile runbook only after
+its actual provider and protection gates pass.
+
 1. Start the reviewed Console at `http://127.0.0.1:3000` with only its staging public key and disabled
    importer. Keep it off Vercel and bound to loopback.
 2. The owner opens the invitation in their own mailbox and sets a password themselves. Do not ask

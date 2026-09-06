@@ -5,10 +5,7 @@ import { consoleCookieOptions, type ConsoleConfig } from "./config.ts";
 export function createConsoleClient(config: ConsoleConfig, cookies: CookieMethodsServer) {
   return createServerClient<Database>(config.supabaseUrl, config.publicKey, {
     cookies,
-    cookieOptions: {
-      ...consoleCookieOptions,
-      secure: new URL(config.origin).protocol === "https:",
-    },
+    cookieOptions: consoleCookieOptions(config),
     global: {
       fetch: (url, init) =>
         fetch(url, { ...init, cache: "no-store", signal: AbortSignal.timeout(12000) }),

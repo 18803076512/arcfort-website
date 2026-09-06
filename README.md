@@ -152,6 +152,17 @@ Actual password/login and authenticated browser checks remain open. See the
 the corrected CLI setting drift and the remaining real-owner handoff. Console stays disabled by
 default and rejects Vercel environments. PR #130 is not merged or deployed to production by this work.
 
+The owner subsequently approved preparation of a protected mobile HTTPS entrance. Its default-off
+Cloudflare Access/Tunnel candidate and exact activation gates are documented
+in the [mobile staging runbook](docs/operations/console-mobile-staging.md). This is not a live URL.
+`npm run console:entrance:test` verifies signed-token, identity, HTTPS, cookie and route boundaries
+with offline fixtures. No hosted Auth redirect or owner role has changed. After the owner reported
+setting a password, a fresh read-only check still found the approved account unconfirmed with no
+sign-in timestamp or role; clarify which password page was used before granting access. On
+2026-09-07, Cloudflare zone/Access reads recovered, but subscription visibility is denied and no
+staging app, tunnel or DNS record exists. Confirm the plan and exact new hostname/policy before any
+provider write. The mobile entry is still not live.
+
 ### Read-Only Console Development
 
 Public page files live under `app/(public)/` without changing their URLs. Console files live under

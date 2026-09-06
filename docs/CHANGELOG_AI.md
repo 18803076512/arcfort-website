@@ -4156,3 +4156,132 @@ as identity proof or applying a later role grant to the superseded account.
 
 Let the owner open the new invitation on the computer running Console, set their own password, then
 verify that exact identity before assigning the single intended owner role and completing M2 QA.
+
+## 2026-09-06 - Protected Mobile Entrance Preparation And Password-State Check
+
+**Task**
+
+Prepare the owner-approved protected HTTPS staging entrance, then pause external activation after
+the owner reported setting a password. Verify the actual approved identity instead of assuming the
+invitation handoff succeeded. This records a local implementation checkpoint, not M2 completion.
+
+**Files Changed**
+
+- `.env.example`, `package.json`, `package-lock.json`, `.github/workflows/quality.yml`
+- `lib/console/config.ts`, `lib/console/client.ts`, `lib/console/server.ts`, new `lib/console/entrance.ts`
+- `middleware.ts`, `app/(console)/console/auth/session/route.ts`, `app/(console)/console/auth/callback/route.ts`
+- `scripts/console/test-console-boundaries.ts`, `scripts/console/test-console-http.ts`, new `scripts/console/test-console-entrance.ts`
+- `README.md`, `docs/CODEX_GOAL.md`, `docs/operations/console-staging-auth-smtp.md`
+- New `docs/operations/console-mobile-staging.md`, new `knowledge-base/decisions/2026-09-06-console-mobile-entrance.md`, this log
+
+Two ignored, credential-free local helpers were also adjusted: the owner preflight now reports
+confirmation/sign-in/roles for the exact expected identity, and the startup helper explicitly retains
+loopback mode and removes Access configuration. Neither helper is a deployment artifact.
+
+**Components And Data Changed**
+
+No UI components created/removed and no product/company/compatibility/media records changed.
+Add a default-off exact-host Access entrance with signed JWT verification, one-mailbox binding,
+HTTPS cookies and separate public-route/RFQ denial. Preserve Supabase identity/current-role/RLS
+checks and Vercel rejection. Promote the already installed lightweight `jose` version to a direct
+dependency; import only verification modules in the Edge runtime.
+
+Read-only hosted preflight matched the approved project/name/organization/region/health and exactly
+one expected replacement account. Its email was still unconfirmed, sign-in timestamp absent and
+roles empty after the owner's password report. No password, Auth setting, invitation, role, DNS,
+Cloudflare resource, production secret or production deployment was changed.
+
+**SEO And Visual Impact**
+
+Public URLs, metadata, schema, sitemap, robots and RFQ behavior remain unchanged. The candidate
+staging host denies public routes, disallows indexing and preserves private/no-store/no-referrer
+responses. No visual redesign. The existing loopback login form renders; real-owner views and a
+live mobile HTTPS session remain unverified.
+
+**Validation**
+
+Local entrance signed-token/configuration/expiry/identity/CSRF/cookie/route tests, existing boundary
+tests, lint, typecheck, RFQ tests, build (92 static pages), SEO audit, built internal links and
+performance budgets passed. HTTP smoke tests verified exact staging Host denial and public-shell
+retention. The initial Host probe used Node fetch, which rewrote the header; use `node:http` for
+virtual-host tests, not a weakened application check. Synthetic fixture labels were clarified after
+the secret scanner flagged literal test assignments; the scanner itself was not weakened.
+
+A local generated build manifest was inadvertently printed while checking matchers. Only ephemeral
+Next build metadata keys were present, not Supabase, SMTP, account or production credentials. The
+local Server Action key and build metadata were regenerated before restoring the service; future
+manifest inspections must project matcher fields only, never print the environment section.
+
+**Known Issues**
+
+Live activation is **BLOCKED**: Cloudflare connector authentication failed and its browser is logged
+out; exact account/plan/DNS/Access provisioning is unverified. The candidate URL is not live. Owner
+password-page/account clarification is required before granting any role. No live Access result,
+owner login or inbox result is implied by offline QA. No PR merge or production deployment.
+
+**Reusable Knowledge Added**
+
+The new decision and runbook separate temporary protected mobile access from permanent hosting,
+document exact origin/issuer/audience gates, forbid public Quick Tunnel/password bypass, and preserve
+the evidence distinction between a password report, Auth confirmation and actual owner login.
+
+**Next Recommended Action**
+
+Clarify which account/page received the password and complete the approved identity handoff. If
+mobile access is still needed, restore Cloudflare authentication, verify the exact dedicated
+hostname/policy and activate only after the runbook's live protection gates pass.
+
+## 2026-09-07 - Mobile Entrance Host Review And PR Preparation
+
+**Task**
+
+Finish review of the default-off mobile entrance candidate for the already authorized PR #130.
+Do not enable the entrance, send invitations or grant a role while the password-page discrepancy
+remains unresolved. The previous checkpoint lists the complete 20-file implementation batch.
+
+**Files Changed**
+
+Within that batch, refine `lib/console/entrance.ts`, `middleware.ts` and the three Console entrance,
+boundary and HTTP test scripts. Update `README.md`, `docs/CODEX_GOAL.md`, the mobile staging and
+Auth mail runbooks, and this log with current provider evidence. No new UI component or product data.
+
+**Data Changed**
+
+None. A fresh read verified the same approved staging account remains unconfirmed with no sign-in
+timestamp or role. Cloudflare zone/Access reads now succeed for the existing account and active
+ArcFort zone. No candidate app, named tunnel or DNS record exists. Billing/subscription reads alone
+are unauthorized; Free-plan availability is not yet proven. No external settings or account writes.
+
+**SEO Impact**
+
+Retain all public SEO and RFQ behavior. Staging host classification now handles explicit ports,
+uppercase and trailing-dot variants for denial, while authentication still requires the exact
+canonical origin. Escape literal dots in Next's host matcher. No additional public page or indexable
+product was created.
+
+**Validation**
+
+Reviewed Next's actual host-matcher implementation and Cloudflare's documented identity/service
+token claims. Offline tests include global-session rejection and future not-before timestamps.
+Build generated 92 static pages; lint, typecheck, entrance/boundary tests, repository secret scanning
+and built HTTP checks passed, including Host variants and retained public shell. The public staging
+activation gate remains **BLOCKED**, distinct from local implementation checks. CI must be read back
+for the exact pushed commit; prior green CI is not inherited.
+
+**Known Issues**
+
+The owner must clarify which password page/account was used. Actual invitation confirmation/login,
+one intended owner-role assignment and authenticated M2 acceptance remain incomplete. Protected
+HTTPS activation additionally requires verified plan/cost and the exact hostname/policy approval.
+No merge, production deployment, M3 work or product publication is authorized by this checkpoint.
+
+**Reusable Knowledge Added**
+
+The runbook now distinguishes partial connector permissions from a total authentication failure.
+Host matching and authorization use deliberately different strictness: normalize variants only to
+deny access, never to grant it. Real-wire `node:http` probes preserve the tested Host header.
+
+**Next Recommended Action**
+
+Read back exact-candidate isolated CI, then resolve the owner's password-page/account handoff before
+granting any role or activating the new network entrance.

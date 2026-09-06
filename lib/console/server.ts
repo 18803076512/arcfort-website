@@ -5,12 +5,12 @@ import { redirect } from "next/navigation";
 import { getConsoleConfig } from "./config";
 import { checkInviteOnlyProvider, createConsoleClient } from "./client";
 import { checkConsoleAccess } from "./access";
-import { isConsoleOrigin } from "./security";
+import { isConsoleEntrance } from "./entrance";
 
 export const getConsoleContext = cache(async () => {
   const config = getConsoleConfig();
   if (config.status !== "ready") return { status: config.status } as const;
-  if (!isConsoleOrigin(await headers(), config.config.origin))
+  if (!(await isConsoleEntrance(await headers(), config.config)))
     return { status: "invalid" } as const;
   if (!(await checkInviteOnlyProvider(config.config))) return { status: "unavailable" } as const;
   const store = await cookies();

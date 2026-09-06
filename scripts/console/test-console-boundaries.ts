@@ -177,7 +177,11 @@ for (const marker of [
   assert.equal(publicLayout.includes(marker), true);
 }
 assert.equal(root.includes("next/headers"), false);
-assert.match(readFileSync("middleware.ts", "utf8"), /matcher: \["\/console\/:path\*"\]/);
+const middlewareSource = readFileSync("middleware.ts", "utf8");
+assert.ok(middlewareSource.includes('"/console/:path*"'));
+assert.ok(
+  middlewareSource.includes('type: "host", value: "console-staging\\\\.arcfortweld\\\\.com\\\\.?"'),
+);
 assert.equal(readFileSync("app/sitemap.ts", "utf8").includes("/console"), false);
 assert.match(readFileSync("app/robots.ts", "utf8"), /"\/console"/);
 assert.equal(readFileSync("lib/console/catalog.ts", "utf8").includes("raw_snapshot"), false);

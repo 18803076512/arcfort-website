@@ -1,12 +1,41 @@
 import { NextResponse, type NextRequest } from "next/server";
-import { getConsoleConfig } from "@/lib/console/config";
+import { getConsoleConfig, stagingConsoleOrigin } from "@/lib/console/config";
 import { createConsoleClient } from "@/lib/console/client";
-import { consolePrivateHeaders, isConsoleOrigin } from "@/lib/console/security";
+import { consolePrivateHeaders } from "@/lib/console/security";
+import { isConsoleEntrance, isStagingConsoleHost, stagingPathKind } from "@/lib/console/entrance";
 
 export async function middleware(request: NextRequest) {
   let response = NextResponse.next({ request });
   const settings = getConsoleConfig();
-  if (settings.status === "ready" && isConsoleOrigin(request.headers, settings.config.origin)) {
+  const entrance =
+    settings.status === "ready" &&
+    (await isConsoleEntrance(request.headers, settings.config, request.method === "POST"));
+  if (isStagingConsoleHost(request.headers.get("host"))) {
+    const kind = stagingPathKind(request.nextUrl.pathname, request.method);
+    if (kind === "robots")
+      return new NextResponse("User-agent: *\nDisallow: /\n", {
+        headers: { ...consolePrivateHeaders, "Content-Type": "text/plain; charset=utf-8" },
+      });
+    if (kind === "blocked")
+      return new NextResponse("Not found.", {
+        status: 404,
+        headers: consolePrivateHeaders,
+      });
+    if (!entrance || settings.status !== "ready" || !settings.config.access)
+      return new NextResponse("Access required.", { status: 403, headers: consolePrivateHeaders });
+    if (kind === "root") {
+      const redirect = NextResponse.redirect(new URL("/console/login", stagingConsoleOrigin));
+      Object.entries(consolePrivateHeaders).forEach(([key, value]) =>
+        redirect.headers.set(key, value),
+      );
+      return redirect;
+    }
+  }
+  if (
+    settings.status === "ready" &&
+    entrance &&
+    stagingPathKind(request.nextUrl.pathname, request.method) === "console"
+  ) {
     const client = createConsoleClient(settings.config, {
       getAll: () => request.cookies.getAll(),
       setAll: (values, cacheHeaders) => {
@@ -28,4 +57,12 @@ export async function middleware(request: NextRequest) {
   return response;
 }
 
-export const config = { matcher: ["/console/:path*"] };
+export const config = {
+  matcher: [
+    "/console/:path*",
+    {
+      source: "/:path*",
+      has: [{ type: "host", value: "console-staging\\.arcfortweld\\.com\\.?" }],
+    },
+  ],
+};
