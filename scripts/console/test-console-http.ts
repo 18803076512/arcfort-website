@@ -93,6 +93,49 @@ const rejected = await request("/console/auth/session", {
 assert.equal(rejected.status, 403);
 privacy(rejected);
 assert.equal(rejected.headers.has("set-cookie"), false);
+// Native forms under no-referrer emit Origin: null. Reject unsafe context before parsing the body.
+const nativeHeaders = {
+  host: new URL(origin).host,
+  Origin: "null",
+  "Sec-Fetch-Site": "same-origin",
+  "Sec-Fetch-Mode": "navigate",
+  "Sec-Fetch-Dest": "document",
+  "Content-Type": "application/json",
+};
+for (const override of [
+  { Origin: "https://invalid.example" },
+  { Origin: "" },
+  { "Sec-Fetch-Site": "cross-site" },
+  { "Sec-Fetch-Site": "same-site" },
+  { "Sec-Fetch-Site": "none" },
+  { "Sec-Fetch-Site": "" },
+  { "Sec-Fetch-Mode": "" },
+  { "Sec-Fetch-Dest": "" },
+]) {
+  const response = await request("/console/auth/session", {
+    method: "POST",
+    headers: { ...nativeHeaders, ...override },
+    body: "{}",
+  });
+  assert.equal(response.status, 403);
+  privacy(response);
+  assert.equal(response.headers.has("set-cookie"), false);
+}
+for (const Origin of ["null", origin]) {
+  const response = await request("/console/auth/session", {
+    method: "POST",
+    headers: { ...nativeHeaders, Origin },
+    body: "{}",
+  });
+  assert.equal(
+    response.status,
+    400,
+    "Same-origin request reaches invalid-form validation, not Auth mutation",
+  );
+  assert.equal(await response.text(), "Invalid form.");
+  privacy(response);
+  assert.equal(response.headers.has("set-cookie"), false);
+}
 // Exercise the built host matcher over loopback without exposing a real tunnel or sending mail.
 const stagingHeaders = { host: new URL(stagingConsoleOrigin).host, "x-forwarded-proto": "https" };
 for (const path of [

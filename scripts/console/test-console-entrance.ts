@@ -127,6 +127,28 @@ function headers(assertion = validToken, overrides: Record<string, string> = {})
 }
 assert.equal(await isConsoleEntrance(headers(), config, false, resolveKey), true);
 assert.equal(await isConsoleEntrance(headers(), config, true, resolveKey), true);
+const nativeNavigation = {
+  origin: "null",
+  "sec-fetch-mode": "navigate",
+  "sec-fetch-dest": "document",
+};
+assert.equal(
+  await isConsoleEntrance(headers(validToken, nativeNavigation), config, true, resolveKey),
+  true,
+);
+assert.equal(
+  await isConsoleEntrance(headers("", nativeNavigation), config, true, resolveKey),
+  false,
+);
+assert.equal(
+  await isConsoleEntrance(
+    headers(validToken, { ...nativeNavigation, "sec-fetch-site": "cross-site" }),
+    config,
+    true,
+    resolveKey,
+  ),
+  false,
+);
 for (const claims of [
   { iss: "https://different.cloudflareaccess.com" },
   { aud: "b".repeat(64) },

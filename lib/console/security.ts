@@ -16,7 +16,15 @@ export function isConsoleOrigin(headers: Headers, origin: string, mutation = fal
   if (headers.get("host") !== expected.host) return false;
   if (!mutation) return true;
   const fetchSite = headers.get("sec-fetch-site");
-  return headers.get("origin") === origin && (!fetchSite || fetchSite === "same-origin");
+  const requestOrigin = headers.get("origin");
+  if (requestOrigin === origin) return !fetchSite || fetchSite === "same-origin";
+  // no-referrer makes native form POST origins opaque; require browser-owned navigation metadata.
+  return (
+    requestOrigin === "null" &&
+    fetchSite === "same-origin" &&
+    headers.get("sec-fetch-mode") === "navigate" &&
+    headers.get("sec-fetch-dest") === "document"
+  );
 }
 
 export async function readConsoleForm(request: Request): Promise<URLSearchParams | null> {

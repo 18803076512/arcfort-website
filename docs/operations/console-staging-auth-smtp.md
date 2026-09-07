@@ -126,6 +126,46 @@ full V1 goal are not complete. Production RFQ delivery is a separate workflow an
 this invitation. The previously exposed production credential still requires a separate scoped
 rotation/dependency check; do not reuse or revoke it as part of staging onboarding.
 
+## 2026-09-07 Coordinated Desktop Reinvitation
+
+The owner requested email verification again and confirmed they are now using the computer hosting
+the loopback Console. This allows a new desktop handoff without activating the mobile HTTPS entrance.
+The local login rendered correctly and both login/confirmation routes passed the pre-send HTTP
+checks. No hosted Auth URL, SMTP, DNS or access-policy setting was changed.
+
+A target-verified read found the same approved replacement identity, still unconfirmed, without a
+sign-in timestamp or role. One reinvitation was accepted by Supabase Auth at
+`2026-09-06T22:57:13Z` (2026-09-07 06:57 China time). Its response identified the existing account and
+still reported it unconfirmed. No duplicate account, role assignment, password change or automatic
+confirmation occurred. This is now three accepted invitations overall: the first domain-mailbox
+invitation, the replacement Outlook invitation, and this one coordinated Outlook reinvitation.
+
+The ignored operator helper records attempt intent before the send and refuses an automatic repeat
+after either acceptance or an ambiguous network response. Its first preflight stopped before sending
+because Windows PowerShell wrapped the empty role result; parsing the HTTP JSON directly resolved
+that issue. The subsequent guarded attempt was the only actual resend. No secret or invitation URL
+was recorded. API acceptance is not Resend Delivered, inbox placement, or successful owner login.
+
+The next action is for the owner to open the newest invitation on this computer, choose
+`Review Invitation`, choose `Continue` on the local confirmation page, and set their own password.
+Then re-read the exact identity's confirmation and sign-in state before any owner-role operation.
+Do not reopen the old password-page clarification as a prerequisite to this newly coordinated handoff.
+Do not resend again without coordinating with the owner. The existing mobile activation gates remain
+unchanged and are not needed for this desktop-only step.
+
+## Desktop Form Error Resolution
+
+After the coordinated resend, the owner reported `Console request unavailable.`. The session handler
+returned this before touching the invitation or password because native no-referrer form navigation
+uses a literal null Origin. See the
+[native-form origin decision](../../knowledge-base/decisions/2026-09-07-console-native-form-origin.md)
+for the isolated reproduction, bounded same-origin metadata validation and negative tests.
+
+This is a local application defect, not evidence that the mailbox or password was wrong. Apply the
+rebuilt local candidate and have the owner reopen the newest invitation and choose Continue. Do not
+request an old token, automatically resend, consume the link or grant a role. A 403 from this entrance
+guard does not consume the invitation; expiry is still controlled by Supabase and must not be assumed.
+
 ## References
 
 - [Supabase custom SMTP](https://supabase.com/docs/guides/auth/auth-smtp)

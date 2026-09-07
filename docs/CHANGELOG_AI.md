@@ -4285,3 +4285,119 @@ deny access, never to grant it. Real-wire `node:http` probes preserve the tested
 
 Read back exact-candidate isolated CI, then resolve the owner's password-page/account handoff before
 granting any role or activating the new network entrance.
+
+## 2026-09-07 - Coordinated Desktop Owner Reinvitation
+
+**Task**
+
+The owner requested email verification again and confirmed access to the local computer. Reopen the
+existing loopback login and send one invitation to the already approved, unconfirmed staging owner.
+
+**Files Changed**
+
+`docs/operations/console-staging-auth-smtp.md`, `docs/CHANGELOG_AI.md`; the ignored operator helper
+`.tmp/invite-staging-owner.ps1` gained an exact-existing-account resend mode and a local attempt
+receipt. No application component was created, removed or modified.
+
+**Data Changed**
+
+One invitation resend was accepted by staging Auth at `2026-09-06T22:57:13Z`, for the same existing
+replacement identity. Preflight verified the exact project, unconfirmed account, absent sign-in and
+zero roles. Response identity matched and remained unconfirmed. No product/company data, password,
+role, hosted configuration, production service or DNS change occurred.
+
+**SEO Impact And Visual Changes**
+
+None. The existing loopback login was opened for the owner. The mobile HTTPS candidate remains off.
+
+**Validation**
+
+PowerShell syntax and guarded project/account checks passed. The login rendered in the browser;
+login/confirmation HTTP checks passed, with private noindex confirmation headers. The first preflight
+stopped before sending on a PowerShell empty-array wrapper, then direct JSON parsing fixed the helper
+and the single resend succeeded. Its intent receipt prevents automatic duplicate attempts. Only
+documentation/operator changes occurred; no new application build is claimed. Exact earlier runtime
+commit `842a8715116a3ca424cfc6e59f994ef89668f3d3` passed both jobs in CI run `34065001601`;
+that result was recorded on PR #130, not inherited as real owner onboarding evidence.
+
+**Known Issues**
+
+Email API acceptance is not inbox delivery or verification. The owner must open the newest invitation
+on this computer and complete confirmation/password setup. No owner permission was granted and no
+authenticated M2 acceptance or deployment is claimed. No automatic resend is scheduled.
+
+**Reusable Knowledge Added**
+
+The Auth runbook now records the coordinated desktop handoff and separates existing-account resend,
+mail acceptance and actual identity confirmation. Loopback onboarding does not require activating
+the separately gated mobile entrance. No private token, password or full invitation URL is retained.
+
+**Next Recommended Action**
+
+Wait for the owner's desktop confirmation/password handoff, then verify the exact identity's email
+confirmation and actual login before the previously approved one-user owner-role operation.
+
+## 2026-09-07 - Fix Native Console Form Origin Rejection
+
+**Task**
+
+Resolve the owner's desktop `Console request unavailable.` error during the M2 onboarding handoff.
+
+**Files Changed**
+
+- `lib/console/security.ts`
+- `scripts/console/test-console-boundaries.ts`
+- `scripts/console/test-console-entrance.ts`
+- `scripts/console/test-console-http.ts`
+- `scripts/console/serve-origin-browser-fixture.ts` (new isolated manual regression fixture)
+- `knowledge-base/decisions/2026-09-07-console-native-form-origin.md` (new)
+- `docs/operations/console-staging-auth-smtp.md`
+- `docs/CHANGELOG_AI.md`
+
+**Components, Data And Visual Changes**
+
+No UI component, product/company record, image or account changed. The only runtime change is the
+shared Console request-origin guard. Preserve all work from the preceding desktop reinvitation task.
+No additional invitation, password, role, Auth configuration, DNS or production mutation occurred.
+
+**Root Cause And Security Boundary**
+
+Native form POSTs under the existing no-referrer policy use literal `Origin: null`. The prior guard
+rejected them before Auth. Retain exact Host and explicit-origin validation; accept the native case
+only with all three exact browser-owned same-origin/navigation/document Fetch Metadata values.
+Missing/foreign origins, cross-site/same-site requests and incomplete metadata remain rejected.
+Keep no-referrer, no-store, noindex, Access JWT validation, session/role checks and RLS unchanged.
+
+**Validation**
+
+A credential-free real browser fixture emitted the documented native headers and no Referer. Its
+actual guard result changed from rejected to accepted after the fix. Boundary and signed-entrance
+unit suites passed, including native positive and unsafe/missing-header negative controls. Lint,
+typecheck and build passed with 92 static pages; only the existing Webpack cache size warnings remain.
+The new built HTTP cases passed: native same-origin requests reached invalid-form validation (400),
+while unsafe origins remained 403 without session cookies. No probe submitted a real credential or
+invitation. Existing HTTP privacy/public shell/sitemap/robots/social-image checks, RFQ tests and
+repository secret scanning passed. The temporary diagnostic server was stopped after QA.
+
+**SEO Impact And Deployment**
+
+No public SEO or RFQ change. The old local server was verified unreachable; the freshly built
+loopback-only Console was started with only the approved staging public key and importer disabled.
+No hosted deployment, public HTTPS activation or production release is implied.
+
+**Known Issues**
+
+The owner must reopen the newest invitation and complete confirmation/password entry themselves.
+Actual email confirmation/login and authenticated M2 acceptance remain unverified. Do not infer
+invitation validity from this fix or resend automatically if it has expired. No owner role granted.
+
+**Reusable Knowledge Added**
+
+The dated origin decision records the browser-standard behavior, narrow verification exception,
+manual fixture and source references. Synthetic explicit-origin HTTP tests alone did not cover native
+form behavior; both are now required when reviewing future Console submission changes.
+
+**Next Recommended Action**
+
+Have the owner retry the newest desktop invitation, then verify actual confirmation/login. Keep any
+PR validation separate from that owner handoff and from the full Product Intelligence V1 goal.

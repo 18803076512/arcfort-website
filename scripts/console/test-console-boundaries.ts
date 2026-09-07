@@ -84,6 +84,32 @@ const validHeaders = new Headers({
   "sec-fetch-site": "same-origin",
 });
 assert.equal(isConsoleOrigin(validHeaders, config.CONSOLE_ORIGIN, true), true);
+const nativeHeaders = new Headers(validHeaders);
+nativeHeaders.set("origin", "null");
+nativeHeaders.set("sec-fetch-mode", "navigate");
+nativeHeaders.set("sec-fetch-dest", "document");
+assert.equal(isConsoleOrigin(nativeHeaders, config.CONSOLE_ORIGIN, true), true);
+for (const [name, value] of [
+  ["origin", "https://evil.example"],
+  ["origin", ""],
+  ["host", "localhost:3000"],
+  ["sec-fetch-site", "cross-site"],
+  ["sec-fetch-site", "same-site"],
+  ["sec-fetch-site", "none"],
+  ["sec-fetch-mode", "no-cors"],
+  ["sec-fetch-mode", "cors"],
+  ["sec-fetch-dest", "iframe"],
+  ["sec-fetch-dest", "empty"],
+]) {
+  const headers = new Headers(nativeHeaders);
+  headers.set(name, value);
+  assert.equal(isConsoleOrigin(headers, config.CONSOLE_ORIGIN, true), false, `${name}=${value}`);
+}
+for (const name of ["host", "origin", "sec-fetch-site", "sec-fetch-mode", "sec-fetch-dest"]) {
+  const headers = new Headers(nativeHeaders);
+  headers.delete(name);
+  assert.equal(isConsoleOrigin(headers, config.CONSOLE_ORIGIN, true), false, `missing ${name}`);
+}
 for (const overrides of [
   { origin: "https://evil.example" },
   { host: "evil.example" },
