@@ -4401,3 +4401,252 @@ form behavior; both are now required when reviewing future Console submission ch
 
 Have the owner retry the newest desktop invitation, then verify actual confirmation/login. Keep any
 PR validation separate from that owner handoff and from the full Product Intelligence V1 goal.
+
+## 2026-09-07 - Restore Desktop Console And Preserve Invitation Approval Boundary
+
+**Task**
+
+Resume desktop owner onboarding after the local service stopped and tool access became available.
+
+**Files Changed**
+
+`docs/operations/console-staging-auth-smtp.md`, `docs/CHANGELOG_AI.md`; the ignored operator helper
+`.tmp/invite-staging-owner.ps1` gained one fixed, separately recorded desktop-resume attempt option.
+The existing attempt receipt is unchanged. No application component was created, changed or removed.
+
+**Data Changed**
+
+None. A fresh target-verified read found the same approved owner identity unconfirmed, without a
+sign-in timestamp or roles. Approval review rejected the planned additional invitation before command
+execution. No invitation, account, password, role, product record or provider setting was modified.
+
+**Visual Changes And SEO Impact**
+
+The existing local login is visible again. No visual redesign, public content or SEO change occurred.
+The mobile entrance remains unprovisioned and no production deployment was performed.
+
+**Validation**
+
+Restarted the existing reviewed build on loopback only, using the staging public key with importer
+disabled. The built HTTP privacy, native-form origin, unsafe-origin, staging-host isolation and public
+shell checks passed. Browser inspection confirmed the login form renders. The operator helper's
+PowerShell syntax passed. This operational/documentation-only change does not claim a new build,
+lint or typecheck run, email delivery or authenticated owner acceptance.
+
+**Known Issues**
+
+The earlier invitation approval does not cover another resend according to approval review. Await
+explicit approval for one additional invitation to the same staging owner mailbox. Do not retry
+through another execution path. Real owner confirmation/password login and M2 acceptance remain open.
+
+**Reusable Knowledge Added**
+
+The Auth runbook separates local service restoration from invitation authorization and records the
+rejected send as no external mutation, retaining the earlier attempt evidence and retry safeguards.
+
+**Next Recommended Action**
+
+Obtain explicit approval for the single additional desktop invitation, then hand email confirmation
+and password entry to the owner before considering the previously approved one-user role assignment.
+
+## 2026-09-07 - Send Explicitly Approved Additional Desktop Invitation
+
+**Task**
+
+Execute the owner's new explicit approval for one additional staging invitation after the preceding
+authorization rejection. Preserve prior attempt records and do not retry automatically.
+
+**Files Changed**
+
+`docs/operations/console-staging-auth-smtp.md`, `docs/CHANGELOG_AI.md`. The ignored operator receipt
+`.tmp/staging-owner-reinvite-2026-09-07-desktop-resume.json` was created by the guarded send. No
+application component or helper code changed in this task.
+
+**Data Changed**
+
+Exactly one invitation resend was accepted at `2026-09-07T10:51:01Z` for the same approved existing
+staging owner. No duplicate account, password, role, product/company record or configuration changed.
+
+**Validation And SEO Impact**
+
+Fresh target/name/organization/region/health, exact identity and no-role checks passed. Local login
+and private noindex confirmation preflight checks passed. The API response matched the expected
+unconfirmed account. No public visual, route, SEO or production deployment change occurred. No new
+build, lint or typecheck is required for this operational/documentation-only task.
+
+**Known Issues**
+
+Provider acceptance is not delivery or actual owner verification/login. The owner must open the
+newest invitation on the same computer and complete confirmation/password entry. M2 authenticated
+acceptance remains pending; no permission was assigned and no further resend was scheduled.
+
+**Reusable Knowledge Added**
+
+The Auth runbook records the new scoped approval and accepted attempt separately from the earlier
+rejection, retaining the distinction between send, delivery, identity confirmation and permission.
+
+**Next Recommended Action**
+
+Complete the owner's desktop invitation handoff, then verify the exact identity's confirmation and
+actual password login before the already approved one-user owner-role operation.
+
+## 2026-09-07 - Verify Owner Email Confirmation And Check Browser Session
+
+**Task:** Check the owner's reported login before assigning any Console permission.
+
+**Files Changed:** `docs/operations/console-staging-auth-smtp.md`, `docs/CHANGELOG_AI.md`.
+No component or executable file changed.
+
+**Data Changed:** No agent-side account mutation. A fresh read confirmed the approved staging owner
+now has email confirmation and a sign-in timestamp, with no Console role. Preserve this new evidence.
+
+**SEO Impact And Visual Changes:** None. The existing local login form remains the handoff surface;
+no public website, production deployment or product data changed.
+
+**Validation:** Exact project and account checks passed. The current browser's dashboard request
+redirected to `state=unauthenticated`, establishing no active session in that tab. This is distinct
+from failed email verification. No runtime change or new build/lint/typecheck run is claimed.
+
+**Known Issues:** The owner's current password-login session is not yet demonstrated in the observed
+browser. No role was granted, password inspected/changed or invitation resent. An invitation-related
+sign-in timestamp alone is insufficient evidence of a current password-login session.
+
+**Reusable Knowledge Added:** The Auth runbook now closes the mailbox-confirmation gate while keeping
+the browser-session and role-bootstrap gates separate; another browser's session remains uninspected.
+
+**Next Recommended Action:** The owner submits their password in the prepared local login form;
+verify authenticated no-role state before the approved single-user owner bootstrap.
+
+## 2026-09-07 - Verify Password Login And Prepare Single-Owner Bootstrap
+
+**Task:** Resolve the owner-reported no-role handoff and prepare the staging role assignment.
+
+**Files Changed:** `docs/operations/console-staging-auth-smtp.md`, `docs/CHANGELOG_AI.md`; new ignored
+operator SQL `.tmp/bootstrap-staging-console-owner.sql`. No application component changed.
+
+**Data Changed:** No role or account mutation. Targeted authentication-method evidence confirmed a
+password login at `2026-09-07T10:56:48Z`. The final preview confirmed the exact verified owner,
+recent password authentication and zero existing role rows. No session secret or password was read.
+
+**SEO Impact And Visual Changes:** None. No product/company data, public page, RFQ, hosted Auth
+configuration or production deployment changed.
+
+**Validation:** Exact staging target/identity checks and read-only role preflight passed. The SQL
+write is prepared with a transaction, repeated guards, table lock and audit assertion, but approval
+review rejected it before execution. No successful SQL write or new build/lint/typecheck is claimed.
+
+**Known Issues:** Explicit authorization for the persistent owner role is now required by approval
+review. Do not retry via another path. The user reported a no-role page, while the observed in-app
+tab remained unauthenticated; retained password-method evidence resolves the login handoff without
+misrepresenting browser acceptance. No permission was granted.
+
+**Reusable Knowledge Added:** The Auth runbook records the targeted password-method check, the
+distinction from a legacy audit table with no matching rows, and the pending permission boundary.
+
+**Next Recommended Action:** Obtain explicit approval to grant only this account the staging owner
+role, recheck the target, execute the guarded bootstrap once and verify its audit before UI acceptance.
+
+## 2026-09-08 - Complete And Verify Explicitly Approved Staging Owner Bootstrap
+
+**Task:** Complete the exact role operation approved by the owner, then verify the resulting state
+and restore the local Console for authenticated acceptance. The grant committed on 2026-09-07;
+readback and this completion record followed on 2026-09-08.
+
+**Files Changed:** `docs/operations/console-staging-auth-smtp.md`, `docs/CODEX_GOAL.md`,
+`docs/CHANGELOG_AI.md`. The previously prepared ignored bootstrap SQL was executed once, not edited.
+No application component was created, modified or removed.
+
+**Data Changed:** One active owner role for the exact approved staging identity, committed at
+`2026-09-07T11:34:50.965333Z`. Readback found one total role row, one expected active owner and zero
+roles for the superseded account. Audit event `3682` records the INSERT as a database-operator action.
+No product, company, password, invitation, provider configuration or production data changed.
+
+**Validation:** Target identity, verified email, recent password-login and empty-role preflight
+passed. Transactional account/role guards and audit assertion passed. Independent post-write role
+and audit reads matched the intended change. After restarting the existing loopback-only reviewed
+runtime, `console:http:test` passed privacy, native-form origin, unsafe-origin rejection, staging-host
+isolation and public shell/social-image checks. No new build/lint/typecheck run is claimed for this
+operational/documentation-only change.
+
+**SEO Impact And Visual Changes:** None. The local login entrance was reopened; no public website,
+hosted deployment, mobile entrance or new publishing capability was enabled.
+
+**Known Issues:** The newly opened in-app browser tab has no authenticated session. Owner UI,
+responsive and logout acceptance remains pending in the owner's actual browser. Completed mailbox,
+password-login and owner-grant gates must not be repeated or misrepresented as full M2/V1 completion.
+
+**Reusable Knowledge Added:** The runbook records exact authorization, grant and audit evidence,
+marks the first-owner script consumed, and separates account permissions from browser session state.
+The Goal document now points future tasks to authenticated acceptance instead of another bootstrap.
+
+**Next Recommended Action:** Refresh the Console in the owner's authenticated browser and verify
+dashboard, products, readiness and responsive/logout behavior without changing data or publishing.
+
+## 2026-09-08 - Complete Real-Owner Read-Only Console Acceptance
+
+**Task:** Finish authenticated M2 acceptance after the owner confirmed seeing the Overview.
+
+**Files Changed:** `docs/operations/product-intelligence-console-milestone-2.md`,
+`docs/operations/product-intelligence-console-milestone-2-plan.md`,
+`docs/operations/console-staging-auth-smtp.md`, `docs/CODEX_GOAL.md`, `docs/CHANGELOG_AI.md`.
+No component or runtime file was created, changed or removed.
+
+**Data Changed:** None in product/company/evidence/role registries. Browser QA used real owner reads
+against the approved staging project and ended the current session with Sign Out. No credentials
+were inspected, invitations sent, roles changed or public products published.
+
+**Visual Changes And SEO Impact:** No design or public SEO change. Actual responsive layouts were
+inspected; Console private/noindex behavior and retained public shell/social images passed HTTP QA.
+
+**Validation:** Real browser Overview, 25+18 pagination without duplicates, SKU/name/category/
+lifecycle/empty/clear filters, product detail/reference image, ten series, blocked 602 detail,
+14-conflict filter, 43-image/four-compatibility readiness filters, mobile/tablet/desktop overflow,
+44px mobile form controls, keyboard focus/table scrolling and logout/back/reload/direct-route denial
+passed. Fresh `console:http:test` and `console:boundaries:test` passed. Existing exact-candidate CI
+run `34083109446` at `5021ae265b4c471957650435d011b61508c0274f` was read back successful for quality
+and isolated database jobs; it is not a new build/lint/typecheck run. Documentation formatting,
+`git diff --check` and the repository secret scan passed.
+
+**Known Issues:** PASS_WITH_WARNINGS applies only to local staging-backed read-only M2. All 43 SKU
+main-image eligibility gaps, 14 technical conflicts, 586 values needing factory confirmation and
+four unconfirmed compatibility relationships remain unchanged. Narrow-screen evidence tables are
+long. The previously recorded dependency advisories require a fresh production review. External
+HTTPS/mobile access, merge, production activation, editing and publishing are not completed here.
+
+**Reusable Knowledge Added:** The M2 acceptance matrix and Auth runbook now distinguish completed
+owner/session acceptance from product publication readiness and external deployment. Goal pointers
+no longer direct future tasks to repeat email verification, password setup or owner bootstrap.
+
+**Next Recommended Action:** Review a bounded M3 draft-editing/evidence-intake plan, especially the
+shadow-import authority and immutable source/audit boundaries; do not begin publication automatically.
+
+## 2026-09-08 - Prepare Evidence-Based M3 Editing Plan And M2 Handoff
+
+**Task:** Inspect the accepted V1 objective and current database/importer/verification contracts,
+then define the next product editing workflow without enabling unapproved writes.
+
+**Files Changed:** New `docs/operations/product-intelligence-console-milestone-3-plan.md`;
+`README.md`, `docs/CODEX_GOAL.md`, `docs/CHANGELOG_AI.md`. The existing five-file M2 acceptance delta
+is retained for the same authorized PR #130 handoff.
+
+**Components And Data Changed:** None. No runtime, migration, permission, product/evidence record,
+provider setting or public data source changed. The proposed M3 authority transition is not active.
+
+**Visual Changes And SEO Impact:** None. Corrected README/Goal statements that still described no
+Console or pending owner setup; public pages, URLs, metadata and RFQ are unchanged.
+
+**Reusable Knowledge Added:** The M3 plan records the current import-overwrite risk, missing copy/
+revision contract, timestamp-only approval lookup and distinct holder/nozzle scopes. It defines
+transactional import/adoption protection, immutable technical revisions, exact human review,
+concurrency/idempotency, proposed files, tests, recovery and explicit M3-A through M3-E approvals.
+
+**Validation:** Plan cross-references and claims checked against current migrations, importer,
+Console access/read models, canonical 15AK intake and the approved architecture. Documentation
+format/diff/secret checks passed; PR/CI results are reported separately.
+
+**Known Issues:** M3 remains a proposal. Missing owner scope/authority approval and real Level A
+product evidence cannot be replaced by synthetic tests. No hosted adoption/migration, merge,
+production deployment or editing/publishing activation is authorized by this plan.
+
+**Next Recommended Action:** Approve M3-A through M3-E for local implementation and disposable CI;
+review a separate exact migration/adoption preview before any hosted staging write.

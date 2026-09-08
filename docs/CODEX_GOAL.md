@@ -1,6 +1,6 @@
 # ArcFort Weld Codex Goal Mode
 
-Evidence baseline: 2026-09-03; staging owner/mail update: 2026-09-06.
+Evidence baseline: 2026-09-03; staging owner/browser acceptance: 2026-09-08.
 Production observations referenced here were last verified on
 2026-08-29 unless a later date is recorded in the relevant operations evidence.
 
@@ -115,7 +115,7 @@ specification. Appearance, similar naming or catalog grouping cannot establish c
 | Search baseline        | Site is live and indexable; 88 production sitemap URLs and a recorded baseline of 8 clicks, 422 impressions and 1.90% CTR                                                       |
 | RFQ                    | Email-provider flow, validation, attachments, buyer confirmation, BotID and idempotency are implemented; final sales and buyer inbox placement remains externally unverified    |
 | Delivery operations    | Deployment and live health evidence exist; DMARC, credential-rotation confirmation, GA4 conversion evidence and Search Console submission still require owner-side verification |
-| Product Intelligence   | M1 hosted foundation gates passed on 2026-09-03: five migrations, 74 assertions, schema-member type parity and two 17-table imports; shadow-only, no Console UI or publication  |
+| Product Intelligence   | M1 hosted foundation and M2 local read-only owner/browser gates passed with warnings; no product editing, public-source cutover or Console publication                          |
 
 The technical website foundation is mature. The primary constraint is verified evidence, not another
 general page or a larger unreviewed SKU count.
@@ -123,11 +123,13 @@ general page or a larger unreviewed SKU count.
 ## Current System Phase
 
 The owner approved Product Intelligence Console V1 decisions D0-D7 on 2026-08-30. The current
-completed implementation batch is **Milestone 1 - Data Foundation**, with 15AK remaining the first
-real-data pilot. M1's runtime gates pass with bounded operational warnings. The next batch is
-**Milestone 2 - Console Shell And Dashboard**, approved on 2026-09-03. Its local technical candidate
-passed final isolated CI on 2026-09-04; activation remains pending. Owner onboarding is not complete.
-Supabase is not authoritative for public pages and no product data was published.
+completed implementation batches are **Milestone 1 - Data Foundation** and the local, staging-backed
+read-only scope of **Milestone 2 - Console Shell And Dashboard**, with 15AK remaining the first
+real-data pilot. M2 owner onboarding and authenticated browser acceptance passed with bounded warnings
+on 2026-09-08. Candidate `5021ae265b4c471957650435d011b61508c0274f` has successful quality and isolated
+database CI in run `34083109446`. External HTTPS/mobile deployment and full V1 remain incomplete.
+Supabase is not authoritative for public pages and no product data was published. See the dated
+[acceptance record](operations/product-intelligence-console-milestone-2.md#2026-09-08-real-owner-browser-acceptance).
 
 The M2 batch and exact acceptance matrix are recorded in
 `docs/operations/product-intelligence-console-milestone-2-plan.md`. Initial read-only inspection on
@@ -136,10 +138,10 @@ staging Auth changes were subsequently approved and implemented locally. Signup 
 the exact loopback URLs are configured. The default Free-plan mail provider rejected custom
 invitation/recovery templates. The owner subsequently approved separate staging Resend SMTP,
 configured on 2026-09-05. After reporting no receipt at the first address, the owner explicitly
-approved a replacement administrator mailbox on 2026-09-06. A single new invitation has
-provider-reported delivery; the old account remains unchanged and no owner role was assigned.
-Real mailbox receipt, password/login and authenticated browser checks remain open. Local/CI mail
-remains collector-only, and both jobs in exact-candidate CI run `33998964482` passed at `f906f3c8`.
+approved a replacement administrator mailbox on 2026-09-06. The initial provider-reported delivery
+was followed by verified email/password-login evidence, an explicitly approved owner grant and
+actual browser acceptance on 2026-09-08. The superseded account remains unprivileged. Local/CI mail
+remains collector-only; historical run `33998964482` passed at `f906f3c8` before the current candidate.
 See the
 `docs/operations/console-staging-auth-smtp.md` runbook for evidence and corrected CLI setting drift,
 and the M2 implementation record for
@@ -151,9 +153,8 @@ cannot be used on their phone. The [mobile staging candidate](operations/console
 is disabled and not deployed. Cloudflare zone/Access reads recovered on 2026-09-07, but subscription
 visibility is still denied and no new app/tunnel/DNS exists. Plan and exact-destination approval gates
 remain in the runbook before any provisioning.
-The owner then reported setting a password, but a fresh staging read still showed the approved
-replacement identity unconfirmed, no sign-in timestamp and no role. Resolve that handoff discrepancy;
-do not enable a tunnel, resend invitations or grant roles based only on the password report.
+The earlier password-report/confirmation discrepancy is now resolved by the dated Auth and browser
+evidence. Do not reopen that handoff, enable a tunnel, resend invitations or repeat the owner grant.
 
 The foundation and readiness, SEO-approval and destination-safety hardening are committed on
 `codex/v2-industrial-brand-system` in PR #130. On 2026-09-02, isolated Linux CI at commit `6383171`
@@ -334,17 +335,26 @@ mobile behavior and conversion paths must satisfy the applicable repository gate
 
 ## Recommended Next Setup Phase
 
-Complete the approved Product Intelligence Console V1 Milestone 2 gates:
+Close the completed local M2 batch and plan the next controlled product-data workflow:
 
-1. Validate the local M2 implementation and isolated CI. Resolve the first owner mailbox and
-   default-provider template restriction before claiming real invitation/login success. Do not add
-   publishing or CRM work; keep Console disabled outside controlled local QA.
-2. Recheck the exact staging target `fdsvzuqixppsakukkrsf`; old-project authorization remains
-   superseded. Obtain the owner access/role/bootstrap handoff and provider-setting approval before
-   changing hosted Auth or creating an account. No service key may reach browser code.
-3. Close the observed hosted signup gap only with scoped approval, then verify redirect, session and
-   role boundaries before exposing Console access. Local Auth config is not hosted evidence. Test
-   unauthorized requests at application and RLS layers; do not infer email delivery from API success.
+Current access update: the approved staging owner has verified email, evidenced password login and
+one active `owner` role. The role committed on 2026-09-07 and was independently read back with audit
+event `3682` on 2026-09-08. The superseded account has no role. These gates are complete; do not
+repeat invitations, password setup or the first-owner bootstrap. Authenticated owner UI/responsive/
+logout acceptance is complete, including 43-row pagination, conflict/readiness filters and denied
+post-logout access. See the [M2 acceptance record](operations/product-intelligence-console-milestone-2.md#2026-09-08-real-owner-browser-acceptance)
+and [Auth runbook](operations/console-staging-auth-smtp.md) for exact scope and evidence.
+
+1. Review the proposed [M3 draft-editing/evidence plan](operations/product-intelligence-console-milestone-3-plan.md),
+   including M3-A through M3-E: pilot working authority, import freeze, atomic revisions/review,
+   roles and local-only implementation. The plan is prepared, not approved or implemented. No
+   product confirmation, hosted migration/adoption or publication is implied by completing M2.
+2. Preserve exact staging target `fdsvzuqixppsakukkrsf`; old-project authorization remains
+   superseded. Any further account, permission or provider change needs separate scoped approval.
+   No service key may reach browser code.
+3. Keep Console within its approved local boundary. External HTTPS/mobile activation requires its
+   own provider/destination approval and live checks. Preserve invite-only policy, current role
+   checks, private/noindex responses and application/RLS isolation.
 4. Preserve repository data authority, product routes, SEO and RFQ. Shadow imports must not overwrite
    future reviewed Console edits without a separately approved authority-transition design.
 5. Retain both isolated and hosted M1 proof. Schema/importer/test/contract changes require fresh
@@ -364,4 +374,4 @@ The controlled evidence-infrastructure batch is implemented:
 
 The report deliberately separates 43 structured records from zero strict verified SKUs. The next
 evidence action is not more page volume; it is Level A 15AK and company media evidence alongside the
-controlled Console access/dashboard phase.
+controlled draft-editing/evidence-intake plan.

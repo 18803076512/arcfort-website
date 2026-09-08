@@ -267,6 +267,20 @@ recipient, CLI default drift and correction,
 local/CI mail isolation, exact evidence limits and the remaining handoff. These actions do not
 authorize production activation, a billing change or M3 product publishing.
 
+### Acceptance Update - 2026-09-08
+
+The [real-owner acceptance record](product-intelligence-console-milestone-2.md#2026-09-08-real-owner-browser-acceptance)
+supersedes the earlier open owner/onboarding observations. The verified owner has exactly one audited
+staging role, and their authenticated browser has passed Overview, products, filters/pagination,
+series, conflicts/readiness, responsive/keyboard and logout/back/direct-route checks. Existing
+exact-candidate CI run `34083109446` passed both jobs at `5021ae265b4c471957650435d011b61508c0274f`.
+
+Result: **PASS_WITH_WARNINGS for local staging-backed read-only M2**, not a production release or
+external HTTPS acceptance. The deployment row remains limited to the authorized local environment;
+mobile HTTPS provisioning, merge and production activation have not occurred. Product data/image
+blockers and the prior dependency-audit warning remain recorded. No role, invitation or password
+setup should be repeated. Later editing/publishing requires its own reviewed scope.
+
 ## Rollback And Stop Conditions
 
 Keep the Console feature disabled until checks pass. Public pages retain their Git-backed source

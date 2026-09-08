@@ -39,9 +39,10 @@ controlled by this company; never associate unrelated companies that use a simil
 ## Product Intelligence Console V1
 
 The approved Product Intelligence architecture adds a dedicated Supabase Postgres, Auth and private
-Storage foundation without changing the website's current product source. Milestone 1 is data-only:
-there is no `/console` UI or website signup path yet, and no direct database-to-website publishing.
-Hosted Auth configuration must be verified before enabling Console access.
+Storage foundation without changing the website's current product source. Milestone 1's data
+foundation and Milestone 2's local, staging-backed read-only `/console` are implemented. Actual
+owner/browser acceptance passed with bounded warnings on 2026-09-08. There is no public signup,
+editable product workflow or direct database-to-website publishing yet.
 
 The current destination-specific staging approval and Windows local-login fallback are in the
 [Milestone 1 runbook](docs/operations/product-intelligence-console-milestone-1.md#current-staging-authorization---2026-09-03).
@@ -138,27 +139,28 @@ env file retains an empty key and a disabled write guard. No production connecti
 
 Milestone 1's data-foundation gates are complete; the full Console V1 is not. The
 [Milestone 2 implementation plan](docs/operations/product-intelligence-console-milestone-2-plan.md)
-now defines layout isolation, invite-only login, authorization and read-only dashboard/product views.
-A read-only hosted Auth preflight found `disable_signup=false`; Console activation must wait for
-the remaining callback/delivery review and named owner-account handoff. The owner approved M2-A
-through M2-E on 2026-09-03. The local read-only Console technical candidate is now verified; see the
-[M2 implementation record](docs/operations/product-intelligence-console-milestone-2.md).
-Hosted signup has subsequently been disabled and exact loopback URLs configured in the approved
-staging project. The owner approved separate staging Resend SMTP, configured on 2026-09-05. After
-reporting no receipt at the initial address, the owner approved a different login mailbox on
-2026-09-06. Its single invitation has provider-reported delivery; no owner role has been granted.
-Actual password/login and authenticated browser checks remain open. See the
-[staging Auth mail runbook](docs/operations/console-staging-auth-smtp.md) for configuration evidence,
-the corrected CLI setting drift and the remaining real-owner handoff. Console stays disabled by
-default and rejects Vercel environments. PR #130 is not merged or deployed to production by this work.
+defines layout isolation, invite-only login, authorization and read-only dashboard/product views.
+The owner approved M2-A through M2-E on 2026-09-03. Hosted signup was subsequently disabled, exact
+loopback URLs configured, and separately approved staging SMTP installed. Verified email/password
+login and one explicitly approved owner role are now complete. The
+[M2 acceptance record](docs/operations/product-intelligence-console-milestone-2.md#2026-09-08-real-owner-browser-acceptance)
+documents real browser products, series, evidence, readiness, mobile/keyboard and logout checks.
+The [Auth runbook](docs/operations/console-staging-auth-smtp.md) retains the dated setup history;
+do not repeat invitations, password setup or the consumed first-owner bootstrap. Console stays
+disabled by default and rejects Vercel environments. PR #130 has not been merged or deployed to
+production by this work.
+
+The [M3 editing/review plan](docs/operations/product-intelligence-console-milestone-3-plan.md) is
+proposed, not implemented or approved. It covers the four 15AK pilot identities, protected working
+data, draft creation/editing, evidence revisions and human review. Legacy shadow replay must be
+guarded before editable data is introduced. Public data authority and publication remain separate.
 
 The owner subsequently approved preparation of a protected mobile HTTPS entrance. Its default-off
 Cloudflare Access/Tunnel candidate and exact activation gates are documented
 in the [mobile staging runbook](docs/operations/console-mobile-staging.md). This is not a live URL.
 `npm run console:entrance:test` verifies signed-token, identity, HTTPS, cookie and route boundaries
-with offline fixtures. No hosted Auth redirect or owner role has changed. After the owner reported
-setting a password, a fresh read-only check still found the approved account unconfirmed with no
-sign-in timestamp or role; clarify which password page was used before granting access. On
+with offline fixtures. This entrance work did not change hosted Auth redirects or owner roles; the
+separately approved owner bootstrap is recorded in the Auth runbook. On
 2026-09-07, Cloudflare zone/Access reads recovered, but subscription visibility is denied and no
 staging app, tunnel or DNS record exists. Confirm the plan and exact new hostname/policy before any
 provider write. The mobile entry is still not live.

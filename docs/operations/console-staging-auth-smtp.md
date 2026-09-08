@@ -166,6 +166,152 @@ rebuilt local candidate and have the owner reopen the newest invitation and choo
 request an old token, automatically resend, consume the link or grant a role. A 403 from this entrance
 guard does not consume the invitation; expiry is still controlled by Supabase and must not be assumed.
 
+## 2026-09-07 Desktop Service Resume
+
+On the owner's next continuation, normal authenticated CLI access recovered. The approved staging
+project again matched its name, organization, region and healthy state. The same replacement owner
+account was still unconfirmed, without a sign-in timestamp or any Console role.
+
+The loopback service was no longer reachable. Restarting the existing reviewed build with only the
+staging public key and importer disabled restored the login page. The built Console HTTP suite passed,
+including the native-form origin regression, private routes, unsafe-origin rejection, staging-host
+isolation and public SEO shell checks. The browser displayed the login form. This is service recovery,
+not a new build, hosted deployment or successful owner login.
+
+A separate, fixed operator attempt identifier was prepared without changing the earlier invitation
+receipt. Approval review rejected the additional resend before process execution because the previous
+coordinated approval did not cover a further email. **No new invitation was sent in this resume.**
+Do not invoke another helper or provider path to bypass that rejection. Obtain explicit approval for
+one additional invitation to the same approved mailbox before executing this new attempt. Preserve
+both the previous receipt and the intent-before-send protection against ambiguous retries.
+
+The owner handoff remains pending. Keep passwords, invitation tokens and full invitation URLs out of
+chat and logs. Do not infer expiration, delivery, verification or role readiness from the restored
+login page. No password, role, SMTP, Auth policy, production or mobile-entrance setting changed.
+
+## 2026-09-07 Explicitly Approved Additional Desktop Invitation
+
+After the rejected attempt above, the owner explicitly approved one additional invitation to
+`arcfortweld1@outlook.com`. The same guarded helper then rechecked the exact healthy staging target,
+existing owner identity, absent email confirmation/sign-in and empty roles. Both local login and
+confirmation preflight requests passed before sending.
+
+Supabase Auth accepted exactly one resend at `2026-09-07T10:51:01Z` (18:51 China time). The response
+matched the existing identity and remained unconfirmed. The new fixed-attempt receipt records intent
+and acceptance; the earlier receipt remains intact. There are now four accepted invitations overall,
+including the original superseded address and three to the approved replacement mailbox. The earlier
+approval rejection did not send an email. No further resend is authorized by this operation.
+
+This records API acceptance only, not Resend delivery, inbox placement or completed login. The owner
+must use the newest invitation on this computer, select Review Invitation and Continue, and complete
+password setup themselves. No password, owner role, SMTP setting, production service or public
+business contact changed. Recheck actual confirmation and owner login before any role assignment.
+
+## 2026-09-07 Email Confirmation Verified; Browser Session Pending
+
+After the owner reported signing in, a fresh target-verified Auth read found the same approved
+replacement account with both email confirmation and a sign-in timestamp present. Its Console role
+list was still empty. This closes the email-confirmation gate; do not send another invitation merely
+because the Console dashboard is not yet accessible.
+
+The current in-app browser still showed the login form. Navigating that same tab to the dashboard
+returned `/console/login?state=unauthenticated`, not the no-role state. The provider timestamp may
+also result from invitation verification; it does not establish a current password-login session in
+this browser. Another browser's session was not inspected. The owner was handed the existing login
+form with the approved mailbox entered, to submit their own password. No role, password, email or
+provider configuration was changed.
+
+Next verify an authenticated no-role state in the owner's browser, then perform only the approved
+single-user owner bootstrap. Do not treat this pending browser handoff as an unconfirmed mailbox,
+failed mail delivery, or permission to consume an invitation or set a password for the owner.
+
+## 2026-09-07 Password Login Verified; Explicit Role Approval Required
+
+The owner reported the no-active-role message. The observed in-app tab still showed an
+unauthenticated login page, so it was not represented as an authenticated browser acceptance test.
+A narrowly scoped database read provided independent evidence: the approved account has a retained
+password authentication-method record at `2026-09-07T10:56:48Z`. Only the method, count and time were
+read; no session identifiers, tokens, passwords or IP addresses were returned. The scoped legacy Auth
+audit query returned no rows and was not treated as proof of a failed login.
+
+A final read-only bootstrap preview confirmed the exact verified owner is eligible, a recent
+password login exists, and the complete Console role table has zero rows. The owner-reported login
+handoff and provider-side password evidence are now satisfied. Do not ask the owner to repeat email
+verification or password setup merely because a different browser tab has no session.
+
+The ignored `.tmp/bootstrap-staging-console-owner.sql` prepares one fixed-target first-owner
+operation with transaction-local timeouts, a role-table lock, repeated identity/password checks, an
+empty-role-table requirement and an audit assertion. It inserts only the approved account's owner
+role. `granted_by` is null for an operator bootstrap rather than falsely attributing it to a user
+session. Existing roles, conflicting identity or a failed check stop the operation; no automatic
+revocation, retry or product write is included.
+
+Approval review rejected the write command **before execution**, requiring explicit authorization
+for this particular persistent owner permission despite the earlier M2 planning approval. No role
+was granted. Ask specifically to grant `owner` to `arcfortweld1@outlook.com` only in
+`fdsvzuqixppsakukkrsf`; do not use REST, the dashboard or another SQL path to bypass the rejection.
+This role carries database governance permissions, even though the M2 screens are read-only. It is
+not Supabase organization membership, production access, a source cutover or permission to publish.
+
+After that approval, recheck the target and role preview, execute once, then read back the role and
+audit entry. Authenticated page/viewport/logout acceptance remains separate; retain the working
+owner session and do not claim the in-app browser is that session without observing it.
+
+## 2026-09-08 Owner Bootstrap Completion Readback
+
+The owner explicitly confirmed the exact persistent `owner` permission for the approved replacement
+mailbox in staging only. A fresh project/account check and read-only preview again found the expected
+verified identity, recent password login and an empty role table. The guarded SQL then committed one
+role at `2026-09-07T11:34:50.965333Z` (2026-09-07 19:34 China time). It was not retried during the
+following continuation.
+
+Readback on 2026-09-08 confirmed:
+
+- Total Console role rows: one.
+- Expected approved account's active owner rows: one; `revoked_at` is null.
+- Superseded account's role rows: zero.
+- Audit event `3682`: `console_user_roles`, `INSERT`, actor kind `database`, with the same timestamp.
+
+The existing transaction guards and audit assertion passed. No Auth password, invitation,
+organization membership, additional account, SMTP setting, product data or public data authority was
+changed. This grants staging database governance permissions, not production access or an instruction
+to publish. Future invocations of the first-owner script must not run now that the role table is
+populated. Any revocation is a separate explicitly approved operation, not an automatic QA cleanup.
+
+The local server had stopped before this continuation. The same reviewed runtime
+`5021ae265b4c471957650435d011b61508c0274f` was restored on loopback with the staging public key only
+and importer disabled. The built HTTP suite passed private/noindex behavior, native-form origin,
+unsafe-origin rejection, staging-host isolation and public shell/social-image checks. No new
+application build or hosted deployment is claimed.
+
+No existing Console tab remained in the observed in-app browser. A fresh dashboard tab correctly
+returned an unauthenticated login page. This does not undo the verified password login or owner
+grant. Have the owner refresh the dashboard in their originally authenticated browser, or sign in
+themselves in the new tab. Do not request another invitation, password reset or owner grant.
+
+**Completed gates:** email confirmation, evidenced password login, exact single-user owner grant and
+audit readback. **Remaining gate:** authenticated owner UI acceptance, including products/readiness,
+responsive layouts and logout. M2 acceptance and full Console V1 completion must not be claimed from
+role or unauthenticated HTTP checks alone. M3 editing/publishing and mobile HTTPS activation remain
+outside this operation.
+
+## 2026-09-08 Authenticated Owner Acceptance Completion
+
+The owner subsequently confirmed seeing the Overview, and the actual authenticated in-app browser
+was verified at the same loopback origin. The
+[M2 acceptance record](product-intelligence-console-milestone-2.md#2026-09-08-real-owner-browser-acceptance)
+contains the candidate, observed counts, filters/pagination, product/series/evidence/readiness,
+responsive/keyboard and test results. This supersedes the pending browser gate above.
+
+The final real Sign Out returned to the login page. Back, reload and a direct previously visited
+product URL also required login and displayed no SKU data. The owner role was not revoked and no
+password, invitation, SMTP policy, product record or production setting was changed. The login page
+is the expected final state after this test, not a recurrence of the earlier account-setup failure.
+
+Local staging-backed read-only acceptance is PASS_WITH_WARNINGS. The external HTTPS/mobile entrance
+is still disabled and undeployed; full V1 editing/publishing and data authority transition remain
+separate work. Do not rerun the consumed bootstrap or send another invitation to continue.
+
 ## References
 
 - [Supabase custom SMTP](https://supabase.com/docs/guides/auth/auth-smtp)
