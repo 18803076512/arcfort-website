@@ -1,6 +1,7 @@
 import { Constants } from "../supabase/database.types.ts";
 import type { ConsoleClient } from "./client.ts";
 import { checkConsoleAccess } from "./access.ts";
+import { consoleWorkingEnabled } from "./working-config.ts";
 
 export class ConsoleReadError extends Error {
   constructor() {
@@ -209,12 +210,11 @@ export async function readTechnicalData(
   subject?: { variantId?: string; componentId?: string },
 ) {
   await authorize(client);
-  let query = client
-    .from("technical_values")
-    .select(
-      "id,value_text,unit,verification_status,source_level,source_type,public_note,confirmation_requirements,confirmed_at,legacy_reviewed_date,product_variant_id,series_component_id,technical_field_definitions(label,is_critical),product_variants(id,sku),series_components(id,component_name,variant_label,series_id),technical_value_evidence(evidence_role,evidence_sources(title,source_reference,source_level,source_type,exact_subject,evidence_date))",
-      { count: "exact" },
-    );
+  const columns =
+    "id,value_text,unit,variant_label,verification_status,source_level,source_type,public_note,confirmation_requirements,confirmed_at,legacy_reviewed_date,product_variant_id,series_component_id,technical_field_definitions(label,is_critical),product_variants(id,sku),series_components(id,component_name,variant_label,series_id),technical_value_evidence(evidence_role,evidence_sources(title,source_reference,source_level,source_type,exact_subject,evidence_date))" as const;
+  let query = consoleWorkingEnabled()
+    ? client.from("pi_effective_technical_values").select(columns, { count: "exact" })
+    : client.from("technical_values").select(columns, { count: "exact" });
   if (filter.verification)
     query = query.eq(
       "verification_status",
@@ -223,7 +223,28 @@ export async function readTechnicalData(
   if (filter.q) query = query.ilike("value_text", literalPattern(filter.q));
   if (subject?.variantId) query = query.eq("product_variant_id", uuid(subject.variantId));
   if (subject?.componentId) query = query.eq("series_component_id", uuid(subject.componentId));
-  return page(await query.order("id").range(...range(filter)), filter);
+  const result = page(await query.order("id").range(...range(filter)), filter);
+  return {
+    ...result,
+    items: result.items.map((item) => {
+      if (
+        !item.id ||
+        item.value_text === null ||
+        !item.verification_status ||
+        !item.source_level ||
+        !item.confirmation_requirements
+      )
+        throw new ConsoleReadError();
+      return {
+        ...item,
+        id: item.id,
+        value_text: item.value_text,
+        verification_status: item.verification_status,
+        source_level: item.source_level,
+        confirmation_requirements: item.confirmation_requirements,
+      };
+    }),
+  };
 }
 
 export async function readProductDetail(client: ConsoleClient, id: string) {

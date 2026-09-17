@@ -1,6 +1,6 @@
 # Product Intelligence Validation Reproducibility
 
-Reviewed: 2026-09-03
+Reviewed: 2026-09-14
 Scope: Product Intelligence Console V1 Milestone 1 validation tooling, not a data-authority change.
 
 ## Locked Tools Are Part Of The Evidence
@@ -212,3 +212,76 @@ marketing analytics, attribution, canonical metadata or commercial components ca
 Console if only its child layout is considered. Layout isolation and authenticated data access are
 different controls. A route-group proposal must preserve URL/source-test behavior and remain an
 explicit reviewed change, not a silent full-site rearrangement.
+
+## September 13 Local Runtime Lessons
+
+Existing migration version records and TOML configuration are not evidence that a retained local
+container uses current object definitions or Auth settings. Read the actual policy and allowlisted
+provider fields before a full test. An imported catalog is not an empty SQL-fixture baseline.
+Retain the original database while using separate local QA schemas/databases; do not remove real
+or adopted data to make fixture counts pass. Recreating `public` can also remove platform default
+privileges, so a passing rebuilt schema is not evidence of identical platform ACLs.
+
+Pre-adoption permission denial must precede adoption-state disclosure, without changing the
+authority-then-role lock order. The M3 guards now make a non-locking role check first, then retain
+their locked current-role recheck. Six real SQL negative regressions established the old failure
+and the repaired behavior; none of the role matrix or publication rules was loosened.
+
+For lock contention, count the dependency chain rooted at the owned test lock holder, not only its
+direct blockers. A queued caller may wait behind another blocked caller. Materialize the current
+database's PID/blocker graph and use cycle-safe recursive `UNION`. A targeted real two-session
+duplicate probe reproduced the old observer failure and passed after this change; this targeted
+proof still does not replace a fresh complete integrated run. See PostgreSQL's
+[blocking-function contract](https://www.postgresql.org/docs/17/functions-info.html#FUNCTIONS-INFO-SESSION).
+
+Preserve failed adopted fixtures, receipts and audit history. A new test-database switch involving
+database names, platform settings and ACLs needs authorization for that exact local operation; it
+is not an importer rollback and must not be smuggled into the fail-closed acceptance runner.
+The [current runbook](../../docs/operations/console-m3-isolated-acceptance.md#september-13-post-restart-checkpoint)
+retains the concrete targets and dated partial evidence. The owner subsequently approved and
+completed one exact preservation operation; see the
+[scoped decision](../decisions/2026-09-13-console-m3-local-baseline-preservation.md).
+
+## Browser Transport And Retained Local Databases
+
+Cloning a reviewed PostgreSQL schema/database does not by itself prove the destination has the
+original database-level settings and ACLs. Compare those explicitly and keep secret setting values
+in memory. OID JSON output can be a string: validate the actual typed representation rather than
+loosely coercing it or dropping the guard. Stop at partial checkpoints and inspect current state
+before resuming an authorized preservation operation. The runbook retains the concrete proof.
+
+For malformed JSON HTTP tests with the locked Playwright runtime, supply raw bytes. Its installed
+client JSON-encodes a non-JSON string under an application/json content type, changing what the
+server receives. The September 14 real HTTP probe verified the difference; keep parser rejection
+distinct from authentication or schema validation rejection.
+
+A successful command can replace the document before Playwright retrieves its response body.
+Moving the retrieval earlier alone did not resolve the observed race. The M3 browser harness now
+retains bytes from the real same-origin upstream response and forwards that response unchanged.
+This remains a live server/database test, not a fabricated success response. Preserve browser
+status/header checks, exact request data, external-request denial and post-command database checks.
+Use bounded synthetic diagnostics; do not retain session state, cookies, credentials or raw private
+provider output just to debug a failed assertion. A repaired existing-receipt replay is narrower
+evidence than a fresh integrated run and must be reported as such.
+
+The September 14 retained-fixture diagnostic also reproduced an App Router redirect timing issue:
+after logout returned 303 and cleared cookies, `page.goto()` completed on the protected URL before
+the streamed redirect reached login. The unauthorized document had no product editing control.
+Wait for the actual login URL before asserting the destination, then keep the absent-control and
+forbidden-command checks. Do not replace them with a successful HTTP status check or a fixed sleep.
+The before/after diagnostic passed on existing synthetic accounts without changing roles, technical
+rows or handler behavior. It does not close the fresh full-run gate.
+
+For retained-baseline comparisons, label the checkpoint before loading a large adoption JSON value
+and use the existing local acceptance runner's bounded 4 MiB child-process buffer. A default-buffer
+`ENOBUFS` is not a database mismatch; no source comparison may be skipped because output is large.
+
+## Interrupted Acceptance Evidence
+
+On September 17, the fresh M3 browser phase wrote PASS for all ten scenarios before a later Windows
+reboot invalidated the terminal handle. Use the report and inspected runner ordering to distinguish
+completed browser/API prerequisites from unavailable overall process-exit evidence. Independently
+repeat remaining read-only original-row/publication assertions and verify retained archives after
+normal runtime startup. Do not reset an adopted database or repeat the whole mutable test merely
+because its terminal handle disappeared. Preserve this limitation until a clean isolated run records
+its final result. A browser PASS report is not itself proof of subsequent cleanup or final assertions.

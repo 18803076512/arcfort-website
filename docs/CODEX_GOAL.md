@@ -1,6 +1,7 @@
 # ArcFort Weld Codex Goal Mode
 
-Evidence baseline: 2026-09-03; staging owner/browser acceptance: 2026-09-08.
+Evidence baseline: 2026-09-03; staging owner/browser acceptance: 2026-09-08;
+M3 local approval: 2026-09-09; command/UI checkpoint: 2026-09-10; local acceptance checkpoint: 2026-09-14.
 Production observations referenced here were last verified on
 2026-08-29 unless a later date is recorded in the relevant operations evidence.
 
@@ -345,10 +346,54 @@ logout acceptance is complete, including 43-row pagination, conflict/readiness f
 post-logout access. See the [M2 acceptance record](operations/product-intelligence-console-milestone-2.md#2026-09-08-real-owner-browser-acceptance)
 and [Auth runbook](operations/console-staging-auth-smtp.md) for exact scope and evidence.
 
-1. Review the proposed [M3 draft-editing/evidence plan](operations/product-intelligence-console-milestone-3-plan.md),
-   including M3-A through M3-E: pilot working authority, import freeze, atomic revisions/review,
-   roles and local-only implementation. The plan is prepared, not approved or implemented. No
-   product confirmation, hosted migration/adoption or publication is implied by completing M2.
+1. Continue the approved [M3 draft-editing/evidence plan](operations/product-intelligence-console-milestone-3-plan.md).
+   The owner approved M3-A through M3-E on 2026-09-09 for local development and isolated testing.
+   The [first authority/import barrier](operations/product-intelligence-console-milestone-3.md)
+   and private atomic product draft/technical review commands are implemented with passing embedded
+   SQL tests (246 assertions plus all fifteen real-source pilot scopes). Local-only command endpoints,
+   editing/review UI and paginated history are implemented, with eight command-contract test groups
+   and synthetic browser checks. The [isolated acceptance runner](operations/console-m3-isolated-acceptance.md)
+   and seven target-guard test groups are prepared. On September 13 the owner explicitly approved
+   preserving the failed local database as `arcfort_m3_failed_20260913` and creating a new `postgres`
+   from the reviewed empty template. That operation completed with old rows, audit, settings and
+   ACLs retained. Original pg_prove and the independent SQL-report runner each passed 9 suites /
+   246 assertions; complete CLI type parity and two exact 17-table imports passed. The new run
+   completed real Auth/PostgREST, adoption/import contention, duplicate creation, stale saves,
+   technical EDIT/APPROVE/REJECT and revocation before failing in browser acceptance.
+   September 14 diagnostics verified two browser-test transport repairs: raw malformed JSON bytes
+   and retention of unchanged real server responses across navigation. Login, rejection requests
+   and an existing create-receipt replay passed. The owner subsequently approved the exact second local preservation to
+   `arcfort_m3_failed_20260914`; see the
+   [new authorization](../knowledge-base/decisions/2026-09-14-console-m3-local-baseline-rerun.md).
+   That second operation is now complete. Both archives and the empty template remain intact.
+   On the new baseline, SQL/types/two imports and the API phase passed again. Nine real browser
+   groups and twelve responsive screenshots passed before failure in the final session/logout group.
+   A retained-fixture diagnostic reproduced a streamed-redirect timing assertion and passed after
+   waiting for actual login navigation; the full repaired runner and current clean CI remain unproven.
+   Current local data retains three synthetic drafts, six verification events and one adoption;
+   all 43 original variants / 604 facts are unchanged, with zero publish records. Thirty-six
+   regression scripts, full typecheck and lint pass. Execution and remaining gates are tracked in
+   the [latest runbook](operations/console-m3-isolated-acceptance.md#september-14-second-preservation-result).
+   Do not ask for either completed preservation approval again. The owner subsequently confirmed
+   the third exact preservation to `arcfort_m3_failed_20260914_b` on September 17; it completed with
+   all three archives/template and original database ACL/settings retained. Fresh SQL/types/two
+   imports passed, and the complete ten-group browser report passed with twelve screenshots and
+   zero page errors/external requests. The terminal handle was lost across a later Windows reboot;
+   no captured overall exit code is claimed. Independent final retention checks after normal Docker
+   startup passed for all 43 original variants / 604 facts and zero publication. Current candidate
+   clean CI and durable full-run completion evidence remain missing. See the
+   [latest acceptance section](operations/console-m3-isolated-acceptance.md#september-17-third-preservation-and-fresh-browser-acceptance).
+   No fourth switch is authorized; never reset or replay imports over any adopted database.
+   The September 17 Docker
+   all-users recovery passed ordinary desktop startup and two normal restarts with unchanged
+   retained database snapshots. Its documented preserving uninstall unexpectedly removed active
+   data, which was recovered from verified cold backups. Subsequent Windows reboot/normal-shortcut
+   acceptance passed at 2026-09-17 04:14 UTC, with all original retained data matching again and
+   correct CLI discovery. C-drive free space recovered to approximately 12 GB without agent cleanup;
+   see the [recovery record](../knowledge-base/technical/docker-desktop-recovery.md).
+   These are environment/data-retention results, not full M3 acceptance.
+   Do not request the same general M3 approval again. Hosted migration/adoption, real technical
+   confirmation, merge and publication remain separate gates.
 2. Preserve exact staging target `fdsvzuqixppsakukkrsf`; old-project authorization remains
    superseded. Any further account, permission or provider change needs separate scoped approval.
    No service key may reach browser code.

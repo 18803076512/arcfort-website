@@ -1441,6 +1441,245 @@ export type Database = {
         };
         Relationships: [];
       };
+      technical_revision_heads: {
+        Row: {
+          current_value_id: string | null;
+          field_definition_id: string;
+          product_variant_id: string;
+          revision: number;
+          root_value_id: string;
+          scope_label: string;
+        };
+        Insert: {
+          current_value_id?: string | null;
+          field_definition_id: string;
+          product_variant_id: string;
+          revision: number;
+          root_value_id: string;
+          scope_label?: string;
+        };
+        Update: {
+          current_value_id?: string | null;
+          field_definition_id?: string;
+          product_variant_id?: string;
+          revision?: number;
+          root_value_id?: string;
+          scope_label?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "technical_revision_heads_current_value_id_fkey";
+            columns: ["current_value_id"];
+            isOneToOne: false;
+            referencedRelation: "pi_effective_technical_values";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "technical_revision_heads_current_value_id_fkey";
+            columns: ["current_value_id"];
+            isOneToOne: false;
+            referencedRelation: "technical_values";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "technical_revision_heads_field_definition_id_fkey";
+            columns: ["field_definition_id"];
+            isOneToOne: false;
+            referencedRelation: "technical_field_definitions";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "technical_revision_heads_product_variant_id_fkey";
+            columns: ["product_variant_id"];
+            isOneToOne: false;
+            referencedRelation: "pi_variant_readiness";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "technical_revision_heads_product_variant_id_fkey";
+            columns: ["product_variant_id"];
+            isOneToOne: false;
+            referencedRelation: "product_variants";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "technical_revision_heads_root_value_id_fkey";
+            columns: ["root_value_id"];
+            isOneToOne: true;
+            referencedRelation: "pi_effective_technical_values";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "technical_revision_heads_root_value_id_fkey";
+            columns: ["root_value_id"];
+            isOneToOne: true;
+            referencedRelation: "technical_values";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      technical_revisions: {
+        Row: {
+          created_at: string;
+          created_by: string;
+          decision_event_id: string | null;
+          predecessor_id: string | null;
+          proposal_digest: string;
+          reason: string;
+          review_state: string;
+          root_value_id: string;
+          sequence: number;
+          submitted_digest: string | null;
+          value_id: string;
+        };
+        Insert: {
+          created_at?: string;
+          created_by: string;
+          decision_event_id?: string | null;
+          predecessor_id?: string | null;
+          proposal_digest: string;
+          reason: string;
+          review_state: string;
+          root_value_id: string;
+          sequence: number;
+          submitted_digest?: string | null;
+          value_id: string;
+        };
+        Update: {
+          created_at?: string;
+          created_by?: string;
+          decision_event_id?: string | null;
+          predecessor_id?: string | null;
+          proposal_digest?: string;
+          reason?: string;
+          review_state?: string;
+          root_value_id?: string;
+          sequence?: number;
+          submitted_digest?: string | null;
+          value_id?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "technical_revisions_decision_event_id_fkey";
+            columns: ["decision_event_id"];
+            isOneToOne: false;
+            referencedRelation: "verification_events";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "technical_revisions_predecessor_id_fkey";
+            columns: ["predecessor_id"];
+            isOneToOne: false;
+            referencedRelation: "pi_effective_technical_values";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "technical_revisions_predecessor_id_fkey";
+            columns: ["predecessor_id"];
+            isOneToOne: false;
+            referencedRelation: "technical_values";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "technical_revisions_root_value_id_fkey";
+            columns: ["root_value_id"];
+            isOneToOne: false;
+            referencedRelation: "technical_revision_heads";
+            referencedColumns: ["root_value_id"];
+          },
+          {
+            foreignKeyName: "technical_revisions_value_id_fkey";
+            columns: ["value_id"];
+            isOneToOne: true;
+            referencedRelation: "pi_effective_technical_values";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "technical_revisions_value_id_fkey";
+            columns: ["value_id"];
+            isOneToOne: true;
+            referencedRelation: "technical_values";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      technical_source_bindings: {
+        Row: {
+          asserted_unit: string;
+          asserted_value: string;
+          created_at: string;
+          created_by: string;
+          evidence_basis: string;
+          evidence_source_id: string;
+          field_definition_id: string;
+          product_variant_id: string;
+          revision_label: string;
+          scope_label: string;
+          source_digest: string;
+          source_kind: string;
+          source_location: string;
+        };
+        Insert: {
+          asserted_unit: string;
+          asserted_value: string;
+          created_at?: string;
+          created_by: string;
+          evidence_basis: string;
+          evidence_source_id: string;
+          field_definition_id: string;
+          product_variant_id: string;
+          revision_label: string;
+          scope_label?: string;
+          source_digest: string;
+          source_kind: string;
+          source_location: string;
+        };
+        Update: {
+          asserted_unit?: string;
+          asserted_value?: string;
+          created_at?: string;
+          created_by?: string;
+          evidence_basis?: string;
+          evidence_source_id?: string;
+          field_definition_id?: string;
+          product_variant_id?: string;
+          revision_label?: string;
+          scope_label?: string;
+          source_digest?: string;
+          source_kind?: string;
+          source_location?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "technical_source_bindings_evidence_source_id_fkey";
+            columns: ["evidence_source_id"];
+            isOneToOne: true;
+            referencedRelation: "evidence_sources";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "technical_source_bindings_field_definition_id_fkey";
+            columns: ["field_definition_id"];
+            isOneToOne: false;
+            referencedRelation: "technical_field_definitions";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "technical_source_bindings_product_variant_id_fkey";
+            columns: ["product_variant_id"];
+            isOneToOne: false;
+            referencedRelation: "pi_variant_readiness";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "technical_source_bindings_product_variant_id_fkey";
+            columns: ["product_variant_id"];
+            isOneToOne: false;
+            referencedRelation: "product_variants";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
       technical_value_evidence: {
         Row: {
           created_at: string;
@@ -1466,6 +1705,13 @@ export type Database = {
             columns: ["evidence_source_id"];
             isOneToOne: false;
             referencedRelation: "evidence_sources";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "technical_value_evidence_technical_value_id_fkey";
+            columns: ["technical_value_id"];
+            isOneToOne: false;
+            referencedRelation: "pi_effective_technical_values";
             referencedColumns: ["id"];
           },
           {
@@ -1626,6 +1872,60 @@ export type Database = {
         };
         Relationships: [];
       };
+      pi_effective_technical_values: {
+        Row: {
+          confirmation_requirements: string[] | null;
+          confirmed_at: string | null;
+          confirmed_by: string | null;
+          created_at: string | null;
+          external_key: string | null;
+          field_definition_id: string | null;
+          id: string | null;
+          legacy_reviewed_by: string | null;
+          legacy_reviewed_date: string | null;
+          product_variant_id: string | null;
+          public_note: string | null;
+          raw_snapshot: Json | null;
+          series_component_id: string | null;
+          source_level: Database["public"]["Enums"]["pi_source_level"] | null;
+          source_type: string | null;
+          unit: string | null;
+          updated_at: string | null;
+          value_text: string | null;
+          variant_label: string | null;
+          verification_status: Database["public"]["Enums"]["pi_verification_status"] | null;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "technical_values_field_definition_id_fkey";
+            columns: ["field_definition_id"];
+            isOneToOne: false;
+            referencedRelation: "technical_field_definitions";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "technical_values_product_variant_id_fkey";
+            columns: ["product_variant_id"];
+            isOneToOne: false;
+            referencedRelation: "pi_variant_readiness";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "technical_values_product_variant_id_fkey";
+            columns: ["product_variant_id"];
+            isOneToOne: false;
+            referencedRelation: "product_variants";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "technical_values_series_component_id_fkey";
+            columns: ["series_component_id"];
+            isOneToOne: false;
+            referencedRelation: "series_components";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
       pi_variant_readiness: {
         Row: {
           approved_seo_count: number | null;
@@ -1653,7 +1953,21 @@ export type Database = {
       };
     };
     Functions: {
+      pi_add_technical_source: {
+        Args: {
+          field_uuid: string;
+          request_uuid: string;
+          scope_label: string;
+          source_copy: Json;
+          variant_uuid: string;
+        };
+        Returns: Json;
+      };
       pi_can_view_console: { Args: never; Returns: boolean };
+      pi_create_product_draft: {
+        Args: { draft_copy: Json; identity: Json; request_uuid: string };
+        Returns: Json;
+      };
       pi_current_shadow_counts: { Args: never; Returns: Json };
       pi_has_console_role: {
         Args: {
@@ -1668,7 +1982,99 @@ export type Database = {
         };
         Returns: boolean;
       };
+      pi_product_working_states: {
+        Args: { variant_ids: string[] };
+        Returns: {
+          origin: string;
+          product_variant_id: string;
+          revision: number;
+        }[];
+      };
+      pi_propose_technical_revision: {
+        Args: {
+          evidence_links: Json;
+          expected_revision: number;
+          field_uuid: string;
+          proposal_reason: string;
+          request_uuid: string;
+          scope_label: string;
+          value_copy: Json;
+          variant_uuid: string;
+        };
+        Returns: Json;
+      };
+      pi_read_product_draft: {
+        Args: { variant_uuid: string };
+        Returns: {
+          applications: string;
+          description: string;
+          editable: boolean;
+          model: string;
+          name_en: string;
+          name_zh: string;
+          product_variant_id: string;
+          public_slug: string;
+          revision: number;
+          sku: string;
+          summary: string;
+        }[];
+      };
+      pi_read_product_draft_history: {
+        Args: { page_number: number; variant_uuid: string };
+        Returns: {
+          actor_id: string;
+          applications: string;
+          created_at: string;
+          description: string;
+          model: string;
+          name_en: string;
+          name_zh: string;
+          revision: number;
+          summary: string;
+          total_count: number;
+        }[];
+      };
       pi_reconcile_shadow_batch: { Args: { batch_id: string }; Returns: Json };
+      pi_review_technical_revision: {
+        Args: {
+          conflict_resolution: string;
+          decision: string;
+          expected_digest: string;
+          expected_revision: number;
+          replacement_evidence: Json;
+          replacement_value: Json;
+          request_uuid: string;
+          review_reason: string;
+          value_uuid: string;
+        };
+        Returns: Json;
+      };
+      pi_save_product_draft: {
+        Args: {
+          draft_copy: Json;
+          expected_revision: number;
+          request_uuid: string;
+          variant_uuid: string;
+        };
+        Returns: Json;
+      };
+      pi_submit_technical_review: {
+        Args: {
+          expected_digest: string;
+          expected_revision: number;
+          request_uuid: string;
+          value_uuid: string;
+        };
+        Returns: Json;
+      };
+      pi_working_status: {
+        Args: never;
+        Returns: {
+          adopted: boolean;
+          can_edit: boolean;
+          can_review: boolean;
+        }[];
+      };
     };
     Enums: {
       pi_console_role: "owner" | "editor" | "reviewer" | "publisher" | "viewer";

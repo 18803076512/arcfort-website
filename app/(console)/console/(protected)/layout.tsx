@@ -2,6 +2,7 @@ import { ConsoleLink } from "@/components/console/ConsoleLink";
 
 import type { ReactNode } from "react";
 import { requireConsoleAccess } from "@/lib/console/server";
+import { consoleWorkingEnabled } from "@/lib/console/working-config";
 
 export default async function ProtectedLayout({ children }: { children: ReactNode }) {
   const access = await requireConsoleAccess();
@@ -30,7 +31,11 @@ export default async function ProtectedLayout({ children }: { children: ReactNod
         </div>
       </aside>
       <main id="console-main" tabIndex={-1} className="console-main">
-        <div className="console-environment">Staging / Read-only shadow catalog</div>
+        <div className="console-environment">
+          {consoleWorkingEnabled()
+            ? "Local / Working catalog / Publication disabled"
+            : "Staging / Read-only shadow catalog"}
+        </div>
         {children}
       </main>
     </div>

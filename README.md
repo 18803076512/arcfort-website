@@ -150,10 +150,26 @@ do not repeat invitations, password setup or the consumed first-owner bootstrap.
 disabled by default and rejects Vercel environments. PR #130 has not been merged or deployed to
 production by this work.
 
-The [M3 editing/review plan](docs/operations/product-intelligence-console-milestone-3-plan.md) is
-proposed, not implemented or approved. It covers the four 15AK pilot identities, protected working
-data, draft creation/editing, evidence revisions and human review. Legacy shadow replay must be
-guarded before editable data is introduced. Public data authority and publication remain separate.
+The [M3 editing/review plan](docs/operations/product-intelligence-console-milestone-3-plan.md) was
+approved on 2026-09-09 for local development and isolated tests only. The first authority/import
+barrier, private atomic product-draft commands and revision-bound technical review commands are
+implemented. Default-off local commands, create/edit/review forms and paginated history are now
+implemented with synthetic UI tests; hosted editing remains disabled. The
+[M3 implementation record](docs/operations/product-intelligence-console-milestone-3.md) tracks the
+remaining batches. Public data authority and publication remain separate; no hosted adoption occurred.
+
+Optional embedded SQL regression tests can run without Docker. Install the locked test-only package
+from `scripts/console/sql-runtime/` using `npm ci --ignore-scripts`, return to the repository root,
+then run `npm run console:authority:test:embedded`. This in-memory PostgreSQL test does not load
+credentials or connect to staging. It supplements, never replaces, full Supabase/Auth/concurrency CI.
+
+Run `npm run console:commands:test` for command/role/input/origin contracts. The optional
+`npm run console:ui:dev` serves real editor components with synthetic data at
+`http://127.0.0.1:3901/console/products/new`; it never saves to a database. See the
+[UI fixture guide](scripts/console/ui-fixture/README.md) for Playwright checks and evidence limits.
+`CONSOLE_WORKING_ENABLED` defaults to false and can enable the actual editor only with the exact
+local application/database configuration and separately adopted working authority. It cannot
+enable hosted staging or production commands.
 
 The owner subsequently approved preparation of a protected mobile HTTPS entrance. Its default-off
 Cloudflare Access/Tunnel candidate and exact activation gates are documented
@@ -180,6 +196,21 @@ payload isolation, cross-origin POST rejection, public shell retention and stabl
 routes without submitting credentials or email. Isolated CI additionally runs
 `npm run console:auth:test:local` against disposable users and 1,103 synthetic pagination records;
 this command refuses non-CI/hosted execution. It is not an owner invitation workflow.
+
+M3 adds `console:working:test:guards` and `console:working:test:local`. The latter requires a fresh
+disposable local database after two source imports, uses real caller sessions and observes database
+lock contention. It never resets existing work. CI resets its disposable M2 fixtures before this
+separate gate. See the [M3 acceptance runbook](docs/operations/console-m3-isolated-acceptance.md):
+the September 17 local run passed all ten persisted browser scenarios and independent final source
+retention, while its overall exit code was lost across a later reboot. Candidate-specific clean CI
+remains required. Install the separately locked `scripts/console/browser-runtime`
+with `npm ci --ignore-scripts` for complete local typechecking. Its [guide](scripts/console/browser-runtime/README.md)
+documents the provider-free smoke and the distinction between refusal evidence and a full pass.
+
+The owner authorized M3 review/commit/push for CI only on `codex/v2-industrial-brand-system`.
+`vercel.json` disables automatic Vercel deployment for that exact branch; other branches retain
+their existing behavior. This does not authorize a merge, hosted migration or publication. See the
+[CI-only decision](knowledge-base/decisions/2026-09-17-console-m3-ci-only-submission.md).
 
 The invitation/recovery HTML in `supabase/templates/` is also installed on approved staging Auth.
 Local `supabase/config.toml` remains collector-only; `supabase/config.staging.toml` is a non-loaded

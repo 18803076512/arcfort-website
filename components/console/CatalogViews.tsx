@@ -66,6 +66,7 @@ export function Pagination({
       "blocker",
       "variant",
       "component",
+      "kind",
     ]) {
       if (typeof params[key] === "string") query.set(key, params[key]);
     }
@@ -110,7 +111,7 @@ export function TechnicalTable({ data }: { data: Awaited<ReturnType<typeof readT
             ) : (
               "Unassigned"
             )}
-            <small>{item.series_components?.variant_label}</small>
+            <small>{item.variant_label ?? item.series_components?.variant_label}</small>
             <p>{item.technical_field_definitions?.label}</p>
             {item.technical_field_definitions?.is_critical && <small>Critical field</small>}
           </td>

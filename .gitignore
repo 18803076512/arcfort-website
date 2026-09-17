@@ -31,5 +31,6 @@ dev-server.log
 Thumbs.db
 *.tsbuildinfo
 .supabase/
+scripts/console/ui-fixture/next-env.d.ts
 supabase/.branches/
 supabase/.temp/

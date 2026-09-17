@@ -1,7 +1,9 @@
 # Console M3 - 15AK Editing And Human Verification Plan
 
 Date: 2026-09-08
-Status: Proposed; implementation and staging mutation approval pending.
+Status: M3-A through M3-E approved on 2026-09-09 for local development and isolated testing only.
+Hosted migration/adoption approval is still pending. See the
+[implementation record](product-intelligence-console-milestone-3.md) for current batch progress.
 
 ## Objective And Boundary
 
@@ -36,10 +38,10 @@ Important source constraints: `products` does not currently contain editable des
 `raw_snapshot` must not become the new content store. New non-shadow variants must start in DRAFT;
 existing INGESTED records must not be reset to DRAFT through an invalid lifecycle transition.
 
-## Decisions Requiring Approval
+## Approved Implementation Decisions
 
-Approval of this proposal must identify the following choices. It is not approval to confirm any
-actual technical value, write to hosted staging, merge or deploy.
+The owner approved all five choices below on 2026-09-09. This is not approval to confirm any actual
+technical value, write to hosted staging, merge or deploy.
 
 | ID   | Recommended default                                                                 | Consequence                                                                                                                           |
 | ---- | ----------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------- |
@@ -205,10 +207,19 @@ originals, decisions and audit. Restore code through reviewed commits. Do not un
 the database, flip adopted rows back to shadow, or overwrite drafts as a rollback. Public pages stay
 on their previous snapshot. Database reversal needs a separately reviewed forward recovery/export.
 
-Missing now: M3-A through M3-E approval; Level A identity/measurements/drawings and exact scoped
+Missing now: Level A identity/measurements/drawings and exact scoped
 technical evidence for the real pilot. These facts are not prerequisites for writing tested local
 workflow code after approval, but they are prerequisites for real confirmation and M6 completion.
 Exact-image rights/media and publication gates remain unresolved in their later milestones.
 
-Next action: owner reviews M3-A through M3-E for local implementation and isolated tests. This plan
-does not itself activate writing, change an authority flag or authorize a staging migration/adoption.
+September 14 next action: close the fresh integrated-run gate after the final browser redirect
+assertion repair. Real SQL (9 suites / 246 assertions), full CLI types, two 17-table imports,
+Auth/PostgREST, observed multi-connection contention and the first nine persisted browser groups
+have passed. Twelve screenshots cover edit/review/history at 360/390/768/1440px. A retained-fixture
+logout diagnostic passes with the corrected navigation wait, but it is not a full runner pass.
+The [acceptance runbook](console-m3-isolated-acceptance.md#september-14-second-preservation-result)
+records both completed exact preservation approvals and the current retained state. A further
+archive/name switch needs its own exact approval; do not reset or replay imports over adopted data.
+Current M1/M2 contract regressions pass, but a new clean-stack M2 Auth/pagination and complete M3 CI
+run have not been dispatched. Do not request M3-A through M3-E or either completed preservation
+approval again. Hosted migration/adoption needs its own later review.

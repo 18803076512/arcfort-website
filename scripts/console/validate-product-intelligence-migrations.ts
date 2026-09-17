@@ -15,6 +15,10 @@ const migrationNames = [
   "202608300003_product_intelligence_readiness.sql",
   "202608300004_product_intelligence_private_storage.sql",
   "202608310005_product_intelligence_workflow_guards.sql",
+  "202609090006_product_intelligence_working_authority.sql",
+  "202609090007_product_intelligence_draft_commands.sql",
+  "202609090008_product_intelligence_technical_review.sql",
+  "202609090009_product_intelligence_console_commands.sql",
 ] as const;
 const migrations = await Promise.all(
   migrationNames.map(async (name) => ({
@@ -28,6 +32,10 @@ const security = migrations[1].content;
 const readiness = migrations[2].content;
 const storage = migrations[3].content;
 const workflowGuards = migrations[4].content;
+const workingAuthority = migrations[5].content;
+const draftCommands = migrations[6].content;
+const technicalReview = migrations[7].content;
+const consoleCommands = migrations[8].content;
 const errors: string[] = [];
 
 const requiredTables = [
@@ -165,6 +173,69 @@ if (!workflowGuards.includes("current_qa_run_id") || !workflowGuards.includes("q
 if (!workflowGuards.includes("revoke all on all functions in schema private")) {
   errors.push("Private workflow helpers do not explicitly revoke direct execution.");
 }
+for (const required of [
+  "private.pi_working_adoptions",
+  "private.pi_working_authority_control",
+  "private.pi_adopt_15ak_working_scope",
+  "private.pi_guard_working_catalog_write",
+  "for update",
+  "for share",
+  "All seventeen source tables must be compared",
+  "Exact source parity failed",
+  "before insert or update or delete or truncate",
+  "revoke all on all functions in schema private from public, anon, authenticated, service_role",
+]) {
+  if (!workingAuthority.includes(required))
+    errors.push(`Working authority contract missing: ${required}.`);
+}
+for (const required of [
+  "private.pi_create_product_draft",
+  "private.pi_save_product_draft",
+  "private.pi_command_receipts",
+  "private.pi_product_draft_revisions",
+  "private.pi_mutation_context",
+  "context.transaction_id = txid_current()",
+  "context.actor_id = auth.uid()",
+  "current_revision <> expected_revision",
+  "payload_digest",
+  "for share",
+  "revoke all on all functions in schema private from public, anon, authenticated, service_role",
+]) {
+  if (!draftCommands.includes(required))
+    errors.push(`Draft command contract missing: ${required}.`);
+}
+for (const required of [
+  "public.technical_revision_heads",
+  "public.technical_revisions",
+  "public.technical_source_bindings",
+  "private.pi_add_technical_source",
+  "private.pi_propose_technical_revision",
+  "private.pi_submit_technical_review",
+  "private.pi_review_technical_revision",
+  "private.pi_guard_exact_technical_approval",
+  "candidate.submitted_digest = private.pi_technical_digest(old.id)",
+  "event.decision = 'APPROVE'",
+  "binding.scope_label = coalesce(value.variant_label,'')",
+  "binding.asserted_value = value.value_text",
+  "public.pi_effective_technical_values with (security_invoker = true)",
+  "Every known critical-field scope must be confirmed",
+  "revoke all on all functions in schema private from public, anon, authenticated, service_role",
+]) {
+  if (!technicalReview.includes(required))
+    errors.push(`Technical review contract missing: ${required}.`);
+}
+for (const required of [
+  "public.pi_create_product_draft",
+  "public.pi_save_product_draft",
+  "public.pi_review_technical_revision",
+  "public.pi_working_status",
+  "public.pi_read_product_draft_history",
+  "private.pi_require_console_reader",
+  "grant execute",
+  "from public, anon, authenticated, service_role",
+])
+  if (!consoleCommands.includes(required))
+    errors.push(`Console command contract missing: ${required}.`);
 if (
   !legacyCatalogDraft.includes("DEPRECATED PRODUCT CATALOG DRAFT - DO NOT APPLY") ||
   !legacyCatalogDraft.includes("Deprecated schema blocked") ||
@@ -185,6 +256,6 @@ if (errors.length > 0) {
   process.exitCode = 1;
 } else {
   console.log(
-    `Product Intelligence migration validation passed (${migrationNames.length} migrations, ${requiredTables.length} governed tables).`,
+    `Product Intelligence migration validation passed (${migrationNames.length} migrations, ${requiredTables.length} foundation tables and 3 working-review tables).`,
   );
 }

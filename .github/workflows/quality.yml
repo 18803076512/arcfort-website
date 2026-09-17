@@ -34,8 +34,23 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Install isolated browser test runtime
+        working-directory: scripts/console/browser-runtime
+        run: npm ci --ignore-scripts
+
+      - name: Install the pinned Chromium browser
+        working-directory: scripts/console/browser-runtime
+        run: npx playwright install --with-deps chromium
+
       - name: Verify local mail isolation before starting services
         run: npm run console:boundaries:test
+
+      - name: Install isolated SQL test runtime
+        working-directory: scripts/console/sql-runtime
+        run: npm ci --ignore-scripts
+
+      - name: Verify working-authority barrier in an independent in-memory database
+        run: npm run console:authority:test:embedded
 
       - name: Start local Product Intelligence services
         run: >-
@@ -63,6 +78,18 @@ jobs:
       - name: Test Console authentication, RLS and large-catalog pagination
         run: npm run console:auth:test:local
 
+      # M2 adds 1,103 synthetic pagination records. M3 requires pristine exact-source parity.
+      - name: Reset disposable local fixtures before M3 authority acceptance
+        run: npm run console:db:reset
+
+      - name: Rebuild the pristine M3 baseline and prove replay parity
+        run: |
+          npm run console:shadow:apply:local
+          npm run console:shadow:apply:local
+
+      - name: Test persisted M3 commands, transaction contention and browser workflows
+        run: npm run console:working:test:local
+
       - name: Stop local Product Intelligence services
         if: always()
         run: npx supabase stop --no-backup
@@ -87,6 +114,10 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Install isolated browser types for complete TypeScript checking
+        working-directory: scripts/console/browser-runtime
+        run: npm ci --ignore-scripts
+
       - name: Scan tracked files for secrets
         run: npm run security:secrets
 
@@ -101,6 +132,10 @@ jobs:
       - name: Validate Product Intelligence foundation
         run: |
           npm run console:domain:test
+          npm run console:drafts:test
+          npm run console:commands:test
+          npm run console:working:test:guards
+          npm run console:browser:test:guards
           npm run console:boundaries:test
           npm run console:entrance:test
           npm run console:config:test

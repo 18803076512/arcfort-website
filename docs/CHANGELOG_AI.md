@@ -4650,3 +4650,727 @@ production deployment or editing/publishing activation is authorized by this pla
 
 **Next Recommended Action:** Approve M3-A through M3-E for local implementation and disposable CI;
 review a separate exact migration/adoption preview before any hosted staging write.
+
+## 2026-09-09 - M3 Authority Barrier And Atomic Product Draft Checkpoint
+
+**Task:** Record M3-A through M3-E approval for local/isolated work, prevent legacy imports from
+overwriting future working data, and implement private owner/editor draft creation and saving.
+The owner asked to continue during implementation. This is not completion of M3 or Console V1.
+
+**Files Changed:** Add migrations `202609090006_product_intelligence_working_authority.sql` and
+`202609090007_product_intelligence_draft_commands.sql`; corresponding authority/draft pgTAP files;
+`lib/domain/catalog/drafts.ts`; `scripts/console/test-product-drafts.ts`;
+`scripts/console/sql-runtime/{package.json,package-lock.json,bootstrap.sql,test-authority.mjs,check-public-types.mjs}`;
+`scripts/console/test-database-test-report.ts`, `scripts/console/validate-product-intelligence-migrations.ts`,
+`package.json`, `.github/workflows/quality.yml`, `README.md`, `docs/CODEX_GOAL.md`, the M3 plan/new
+implementation record, the new dated M3 decision and this log. The root dependency lock is unchanged.
+
+**Components Changed:** No UI component, route or stylesheet change. New private SQL command/control
+and revision/receipt families plus typed draft validation/safe error contracts. Existing M1/M2
+database/client interfaces are preserved. The optional SQL/type-generator runtime is test-only.
+
+**Data Changed:** No canonical or hosted product/company/media/compatibility/account data. Isolated
+in-memory tests import the unchanged 43-product source twice, simulate authority adoption and test
+synthetic drafts. Complete seventeen-table baselines, fifteen pilot references and source hashes are
+retained; no real value is confirmed. New draft rows exist only inside disposable test instances.
+
+**Visual Changes And SEO Impact:** None. Public snapshot, URL, metadata, sitemap, image eligibility
+and RFQ behavior remain unchanged. No product editor UI or review control is enabled.
+
+**Validation:** Seven migrations applied in an in-memory PostgreSQL WASM engine; 126/126 pgTAP
+assertions passed (original 74, authority 20, draft commands 32). Passing/failing/count-mismatch
+runner controls passed. Two real-source imports each reconcile all seventeen tables field by field.
+Missing/mutated manifest, unfinished import, incorrect role/revocation and service impersonation
+attempts are rejected without partial adoption. Frozen service upserts/direct changes, baseline
+deletion and authority reset are rejected. Draft duplicate/stale saves, duplicate create and
+duplicate-slug failure after product insertion prove receipt behavior and statement rollback.
+Official Supabase generator introspection matches the complete committed `Database.public` type
+member; CLI-wide/GraphQL generation remains a separate full-stack check. Build generated 92 pages;
+draft/domain/boundary/config/entrance/REST/report, migration/shadow, RFQ, SEO and performance checks
+passed. Formatting/diff and secret scans passed. See the M3 implementation record for scope.
+
+**Known Issues:** M3 remains BLOCKED for release: technical proposal/review commands, application
+write endpoints, editor/history UI and actual multi-connection/Supabase browser acceptance are not
+complete. Windows has no usable Docker runtime; synthetic Auth/storage fixtures are not provider
+acceptance. No CI run, commit/push, hosted migration/adoption, merge or deployment was performed.
+Real Level A technical evidence and rights-approved exact images remain missing.
+
+**Reusable Knowledge Added:** `knowledge-base/decisions/2026-09-09-console-m3-working-authority.md`
+records approval, transactional import freeze, private capabilities, immutable copy history and
+bounded embedded SQL/type-generator proof. The M3 runbook retains the remaining gates. Do not ask
+for the same general M3 authorization again or repeat owner onboarding.
+
+**Next Recommended Action:** Implement exact source-bound technical proposals and human
+approve/edit/reject transactions, then connect the editor and history UI under the existing
+local-only authorization. Complete full-stack race/browser tests before requesting any exact
+hosted migration/adoption approval.
+
+## 2026-09-09 - M3 Exact Technical Revision And Human Review Commands
+
+**Task:** Continue the approved local M3 workflow by binding technical candidates and human decisions
+to exact product, field, scope, value/unit and evidence revisions. This completes a local backend
+batch, not M3 acceptance, Console V1 or the long-term operating-system goal.
+
+**Files Changed:** Add `supabase/migrations/202609090008_product_intelligence_technical_review.sql`,
+`supabase/tests/database/product_intelligence_technical_review.test.sql` and
+`knowledge-base/decisions/2026-09-09-console-m3-technical-revisions.md`. Update
+`scripts/console/sql-runtime/{test-authority.mjs,check-public-types.mjs}`,
+`scripts/console/{test-database-test-report.ts,validate-product-intelligence-migrations.ts}`,
+generated `lib/supabase/database.types.ts`, README, Goal/M3 plan/implementation record, the earlier
+working-authority decision cross-reference and this append-only log.
+
+**Components Changed:** Three forced-RLS working metadata tables; private source/proposal/submit/
+approve-edit-reject commands; exact approval guard; effective technical/readiness/dashboard/lifecycle
+projections. No application endpoint, UI component, stylesheet, public route or dependency added.
+
+**Data Changed:** No real product/evidence/company/media/compatibility/account or hosted data.
+Original catalog values, raw snapshots and source records survive. New candidates, decisions and
+source bindings used in successful confirmation tests are synthetic and discarded with the isolated
+database. All fifteen real-source 15AK scopes separately retain their original root and complete
+unchanged row; their new test candidates remain NEEDS_FACTORY_CONFIRMATION with zero review events.
+
+**Visual Changes And SEO Impact:** None. Public snapshot, 40 indexable products, URLs, sitemap,
+metadata, image eligibility and RFQ are unchanged. Current staging application remains read-only.
+
+**Validation:** Eight fresh embedded migrations; 216/216 pgTAP assertions (90 new technical-review
+checks), three runner controls, two exact seventeen-table shadow imports, authority/replay negatives
+and all fifteen real-source scope checks passed. Tests cover wrong SKU/field/side/profile/value/unit,
+missing/secondary/unbound/stale sources, current versus historical selection, conflict carry-forward,
+exact APPROVE versus EDIT, rejection, role revocation, stale receipts and atomic failed EDIT.
+Official Supabase type generation from embedded introspection regenerated and rechecked the complete
+public member, preserving GraphQL/helpers/constants. Typecheck, lint, build (92 pages), Console
+domain/draft/boundary/config/entrance/REST/report tests, migration/shadow validation, RFQ tests, SEO
+content/links/images/snippets and performance budgets passed. Formatting, diff and secret checks are
+recorded in the current M3 runbook after final validation.
+
+**Known Issues:** Full M3 release remains BLOCKED. Application write endpoints, create/edit/review
+forms, comparison/history integration and responsive browser acceptance are unfinished. No usable
+Docker/psql was found locally; real Supabase Auth/PostgREST, full CLI type generation and concurrent
+connections are not proven by the WASM engine. Existing CI gates remain required and were not run
+remotely in this batch. No commit/push, remote migration/adoption, provider change or deployment.
+Missing actual Level A facts, exact-image rights and compatibility evidence still block the real pilot.
+
+**Reusable Knowledge Added:** The dated technical revision decision records exact evidence binding,
+immutable originals, separate current/review states, UTC-stable hashes, conflict retention, atomic
+human decisions and the boundary of embedded type/SQL proof. No actual technical fact was confirmed.
+
+**Next Recommended Action:** Connect authenticated local-only commands to product creation/editing,
+technical comparison and paginated history, then verify browser workflows and multi-connection
+transactions in disposable Supabase before requesting any hosted migration/adoption authorization.
+
+## 2026-09-11 - M3 Local Command Endpoints And Editor UI Checkpoint
+
+**Task:** Connect the approved draft and technical-review commands to local Console forms, source
+comparison and history, then test failure recovery and responsive behavior. Work began on September
+10 and was rechecked on September 11. This completes a local UI/command batch, not full M3 or V1.
+
+**Files Changed:** Add migration `202609090009_product_intelligence_console_commands.sql` and its
+database suite; regenerate `lib/supabase/database.types.ts`; add `lib/console/commands.ts`,
+`working-config.ts`, `working.ts`, `lib/domain/catalog/commands.ts` and the private Console command
+route. Add product new/edit/review/history pages and update existing Console layout/list/detail,
+`lib/console/catalog.ts`, `components/console/CatalogViews.tsx` and Console CSS. Add
+`ProductDraftForm.tsx`, `TechnicalWorkbench.tsx`, `ProductWorkingNav.tsx`, `CommandFeedback.tsx` and
+`useConsoleCommand.ts`. Add command tests, browser runner and standalone `scripts/console/ui-fixture/`.
+Update package/lock, environment example, quality workflow, scoped generated-file lint/ignore rules,
+README, Goal, M3 plan/implementation record, the September 10 local-command decision and this log.
+Earlier M3 migrations and unrelated work remain preserved; the five deployed migrations are unchanged.
+
+**Components Changed:** Create/edit copy, exact-scope proposal/review/source forms, minimal history
+and working navigation. Explicit APPROVE/EDIT/REJECT actions, retry identity, stale comparison,
+unsaved-change protection and source-save interlocks are implemented. No component was removed.
+
+**Data Changed:** Additive local database command/read contracts only. No canonical or hosted product
+data changed. The source remains 43 products, 15 unconfirmed exact-SKU facts, 14 component conflicts,
+zero confirmed compatibility and zero rights-approved exact search images. All successful technical
+approvals in tests use synthetic evidence. No lifecycle/publication/rights state is advanced.
+
+**Visual Changes:** Restrained Console forms, desktop three-column comparison, stacked mobile
+comparison, source detail rows, readable history and standard Lucide action icons. Corrected stable
+accessible labels and native checkbox selection visibility. The `lucide-react@1.43.0` dependency
+supports recognizable controls; no public performance budget was increased.
+
+**SEO Impact:** No public URL, canonical, metadata, sitemap, schema or RFQ source change. New Console
+routes remain private/noindex; mutable database data still cannot publish to the website.
+
+**Validation:** All 240 embedded pgTAP assertions, official public-schema type comparison, two exact
+17-table source imports and preservation of all 15 pilot reference scopes passed. Eight command
+contract groups passed. Ten synthetic browser scenarios and thirteen screenshots cover 360/390/768/
+1024/1280/1440px, failures/retries, keyboard focus, unsaved navigation, reviewer decisions, evidence
+save interlocks and viewer controls. Typecheck, lint, production build, Console domain/draft/boundary/
+entrance/config/REST/report tests, migration/shadow validation, RFQ tests, SEO content/links/images/
+snippets, performance budgets and secret scanning passed in this batch. Final rerun evidence and any
+remaining verification limits are in the M3 implementation record; fixture output is under `.tmp/console-ui/`.
+
+**Known Issues:** Full M3 release remains BLOCKED on real isolated Supabase Auth/PostgREST and
+multi-connection/database-backed browser acceptance. Docker/psql were unavailable; mock/browser and
+embedded SQL proof are deliberately separate. Per-SKU workbench reads fail closed above 200 scopes
+or source bindings. Private uploads, media/compatibility editing, previews and publication remain
+later milestones. Real Level A 15AK evidence and exact-image rights are still missing.
+
+**Reusable Knowledge Added:** `knowledge-base/decisions/2026-09-10-console-m3-local-command-ui.md`
+records caller-session commands, local-only activation, bounded responses, UI recovery and evidence
+limits. The fixture guide documents repeatable isolated UI checks, not fake database acceptance.
+
+**Deployment:** No commit/push, remote CI dispatch, hosted migration/adoption, role/provider change,
+merge, deployment or publication. No repository rule override. Local mutation flag remains off.
+
+**Next Recommended Action:** Prepare and run real isolated database-backed create/save/reload,
+technical review/history and two-connection race tests before any hosted migration/adoption request.
+
+## 2026-09-11 - M3 Real-Service Acceptance Runner Preparation
+
+**Task:** Prepare strictly local real-session persistence and observed database-contention tests
+under the existing M3 approval. This completes acceptance-tool preparation, not real M3 acceptance.
+
+**Files Changed:** Add `scripts/console/local-acceptance.ts`, `test-local-acceptance.ts` and
+`test-working-isolated.ts`; update package scripts and `.github/workflows/quality.yml`. Add
+`docs/operations/console-m3-isolated-acceptance.md` and the September 11 isolated-acceptance decision;
+update README, Goal, M3 plan/implementation record and this log. Existing M3 work is preserved.
+
+**Components Changed:** Test-only local target transport, pristine baseline guard, real-session
+command scenarios and PostgreSQL lock observation. No application component or migration changed.
+
+**Data Changed:** None. No test account, role, adoption or product was written by the local attempt.
+All canonical source facts, 43 product records, 15 unconfirmed pilot facts, 14 component conflicts,
+compatibility and image-evidence states remain unchanged. Future isolated approvals are synthetic.
+
+**Visual Changes:** None. **SEO Impact:** None; public routes, metadata, schema, RFQ and assets unchanged.
+
+**Validation:** Seven target/baseline guard groups, eight command-contract groups, typecheck, focused
+lint, formatting, diff whitespace checks and a 515-text-file secret scan pass. Existing 240
+embedded SQL assertions, official public-type parity, two exact seventeen-table replays and fifteen
+original pilot-scope preservation checks pass. The real runner exits nonzero at local preflight:
+Docker/psql unavailable and local service ports absent. An elevated read-only WSL check found
+`docker-desktop`, but its VM could not start (`HCS_E_SERVICE_NOT_AVAILABLE`); system settings were
+not changed. No real-service success or CI execution is claimed. Full M3 remains BLOCKED pending real-service and persisted-browser
+acceptance; see the dedicated runbook for bounded evidence and remaining checks.
+
+**Known Issues:** The new real-service scenarios require their first successful run in disposable
+Supabase; HTTP command/cookie and database-backed browser acceptance are separate unfinished work.
+No existing gate is weakened. Real Level A facts and exact-product image evidence are still missing.
+
+**Reusable Knowledge Added:** `knowledge-base/decisions/2026-09-11-console-m3-isolated-acceptance.md`
+records independent M2/M3 fixture baselines, observed-lock evidence, local-only safety and the
+distinction between prepared tests and proven behavior.
+
+**Deployment:** No commit/push, remote CI dispatch, hosted migration/adoption, provider change,
+merge, deployment or publication. No repository rule override and no production write.
+
+**Next Recommended Action:** Execute this exact M3 candidate on available disposable local
+Supabase, resolve any real-service failures, then complete persisted browser create/review/history
+acceptance before any hosted authority transition.
+
+## 2026-09-11 - M3 Browser Acceptance Harness And Real Server Smoke
+
+**Task:** Add the missing real browser/form/HTTP acceptance path to the isolated M3 runner and verify
+the real production server's refusal behavior without claiming successful database acceptance.
+
+**Files Changed:** Add `scripts/console/browser-server.ts`, `test-browser-server.ts`,
+`test-browser-server-smoke.ts`, `test-working-browser.ts` and independently locked
+`scripts/console/browser-runtime/` (Playwright/core 1.62.1). Update `test-working-isolated.ts`, package
+scripts, quality workflow, README, Goal, M3 plan/implementation/acceptance runbooks and this log. Add
+`knowledge-base/decisions/2026-09-11-console-m3-browser-acceptance.md`.
+
+**Components Changed:** Test-only production build/server lifecycle and browser harness. Ten full
+scenarios cover real form login, HTTP refusal, create/retry/reload, stale tabs, copy history, source
+intake, human EDIT/APPROVE/REJECT, technical history, viewer controls, responsive widths, revocation
+and logout. Successful responses are not mocked. No application component or database schema changed.
+
+**Data Changed:** None. No real-service account, role, adoption or product was created locally. The
+complete runner reserves one more synthetic draft in disposable tests only. All canonical products,
+technical references, conflicts, compatibility, image evidence and publication states are unchanged.
+
+**Visual Changes:** None to the application. Twelve synthetic screenshots are configured for a
+future successful full run, not presented as existing evidence. **SEO Impact:** None; public routes,
+metadata, schema, RFQ and source data are unchanged.
+
+**Validation:** Four server/privacy guard groups, seven local target guards, eight command-contract
+groups, typecheck and focused lint pass. The current production build and real Edge unavailable-
+provider smoke pass: no login/password control, no session cookies, HTTP 503 for same-origin commands,
+HTTP 403 for cross-origin commands, private/noindex headers, no external requests and verified
+owned-server shutdown/port release. All 240 embedded SQL assertions, official public-type parity,
+two exact seventeen-table imports and fifteen original pilot-scope checks pass. The integrated
+full runner still exits nonzero at local target preflight; no real-service/browser persistence pass
+is claimed. Tests use explicit placeholders; secret scanning is not weakened. Clean locked browser
+dependency installation, formatting, diff checks and the 523-text-file secret scan pass.
+
+**Known Issues:** Local Docker/WSL remains unavailable (`HCS_E_SERVICE_NOT_AVAILABLE` observed in the
+preceding batch). Full M3 release stays BLOCKED until the real-service and browser scenarios run
+successfully and evidence is reviewed. Root typechecking now requires installing the small locked
+browser test package; both CI jobs include that installation. No root browser runtime dependency
+or CI timeout increase was introduced. Real Level A pilot facts and exact-image rights are missing.
+
+**Reusable Knowledge Added:** The browser acceptance decision records ephemeral synthetic sessions,
+real-response/persisted-data proof, test-server environment isolation, independent browser dependency
+locking and the distinction between unavailable-provider smoke and completed acceptance.
+
+**Deployment:** No commit/push, remote CI dispatch, hosted migration/adoption, provider change,
+deployment or publication. No rule override. Only owned local test processes were started and stopped.
+
+**Next Recommended Action:** Restore or provide an authorized disposable local Supabase environment,
+execute the integrated M3 suite, investigate real failures and review persisted-browser evidence
+before requesting a hosted authority transition.
+
+## 2026-09-11 - M3 Environment Blocker Revalidated
+
+**Task:** Perform read-only diagnosis of the remaining real-service acceptance blocker after the
+local command, browser and regression-test preparation batches.
+
+**Files Changed:** `docs/operations/console-m3-isolated-acceptance.md` and this log.
+**Components Changed:** None. **Data Changed:** None. **Visual Changes:** None. **SEO Impact:** None.
+
+**Validation:** Docker/psql remain unavailable. WSL again reports a missing required feature with
+`HCS_E_SERVICE_NOT_AVAILABLE`. `WslService` is running; CIM reports no active hypervisor despite
+enabled firmware virtualization and available VM/SLAT capabilities. Windows optional-feature
+inspection requires administrator elevation unavailable to the current tool session. These are
+environment observations, not a completed diagnosis of the exact Windows feature/boot settings.
+Documentation formatting, whitespace and secret checks apply; application tests are not rerun for
+this record-only change. No database/browser persistence or full M3 success is claimed.
+
+**Known Issues:** The same unavailable local container environment has persisted across the M3
+acceptance-tool, browser-tool and current diagnostic turns. Remaining real-service verification
+cannot proceed without administrator action or a newly available authorized disposable environment.
+Do not bypass it with hosted writes, another mock suite or premature M4 work.
+
+**Reusable Knowledge Added:** Current operating evidence is retained in the acceptance runbook.
+No new product/company fact or governance decision was added to the knowledge base.
+
+**Deployment:** None. No system feature, boot setting, service configuration, installation, account,
+provider setting or remote state changed. No repository rule override.
+
+**Next Recommended Action:** Obtain administrator-assisted diagnosis/restoration of local
+Docker/WSL, without an automatic restart, then run the integrated M3 real-service/browser suite.
+
+## 2026-09-12 - Administrator Diagnosis Locates M3 Environment Blocker
+
+**Task:** Follow the owner's explicit administrator-diagnosis/local-repair authorization and
+determine the minimum next repair without installing software or restarting automatically.
+
+**Files Changed:** `docs/operations/console-m3-isolated-acceptance.md` and this log; a read-only
+diagnostic helper and bounded result are retained under ignored `.tmp/`.
+**Components Changed:** None. **Data Changed:** None. **Visual Changes:** None. **SEO Impact:** None.
+
+**Validation:** Administrator-token-verified PowerShell 7 diagnosis completed with exit code zero.
+Virtual Machine Platform is disabled despite firmware virtualization being enabled. WSL 2.7.12.0
+and per-user Docker Desktop 4.89.0 are installed; CLI 29.7.2 runs from its actual user-level path.
+The selected Docker context is a local named pipe, but the engine pipe is absent. The current boot
+entry does not explicitly list hypervisor launch type. Earlier default-path/PATH absence did not
+prove Docker was uninstalled. Windows PowerShell 5 refused scripts; no execution policy was changed.
+Both changed documents pass formatting checks; `git diff --check` passes with existing line-ending
+notices, and the 523-text-file secret scan finds no high-confidence patterns.
+
+**Known Issues:** Full real-service/browser M3 acceptance remains unproven. The next scoped action
+requires confirmation to enable `VirtualMachinePlatform` without automatic restart; any needed
+restart remains separately gated. No BIOS change, full Hyper-V activation, legacy WSL 1 activation
+or Docker reinstall is justified by the current evidence. Application tests were not rerun for
+this read-only diagnostic/documentation batch.
+
+**Reusable Knowledge Added:** The acceptance runbook retains administrator findings, per-user Docker
+discovery and Microsoft/Docker source links. No new product/company fact or governance decision was
+added to the knowledge base.
+
+**Deployment:** None. No system configuration, installation, restart, account, remote provider,
+database or publication write occurred. Existing M3 changes were preserved; no rule override.
+
+**Next Recommended Action:** Approve the minimum component activation, review its restart requirement,
+then restore the existing local Docker engine and execute the isolated M3 persisted-workflow suite.
+
+## 2026-09-12 - Authorized Virtual Machine Platform Activation
+
+**Task:** Execute the owner's explicit approval to enable only `VirtualMachinePlatform` without an
+automatic restart, preparing the local environment for real M3 acceptance.
+
+**Files Changed:** `docs/operations/console-m3-isolated-acceptance.md` and this log; the activation
+helper, result and local DISM log are retained under ignored `.tmp/`.
+**Components Changed:** Local Windows Virtual Machine Platform only, now pending restart. No
+application component changed. **Data Changed:** None. **Visual Changes:** None. **SEO Impact:** None.
+
+**Validation:** The helper passes PowerShell syntax parsing, verifies its administrator token and
+completes with exit code zero. The activation command uses `-NoRestart`, without `-All`. Independent
+before/after optional-feature queries show exactly one changed feature, from `Disabled` to
+`EnablePending`. Windows reports `RestartNeeded=true` and a servicing reboot-pending indicator.
+The hypervisor is not active yet. This is successful component activation staging, not successful
+Docker startup or database/browser acceptance. Application tests were not rerun for this local
+system/documentation-only change.
+
+**Known Issues:** An owner-controlled restart is needed before verifying the component and Docker
+engine. Full M3 and the real 15AK workflow remain incomplete; no publication gate changed. Do not
+rerun component activation while pending, expand to other Windows features or bypass isolated tests.
+
+**Reusable Knowledge Added:** The acceptance runbook retains exact authorization, command, pending
+state and restart handoff. No new product/company fact or governance decision was added to the
+knowledge base.
+
+**Deployment:** None. No restart, Docker reinstall, execution-policy change, boot-setting edit,
+remote provider change, database write or publication occurred. No repository rule override.
+
+**Next Recommended Action:** Save other work and restart Windows at the owner's chosen time, then
+verify actual local feature/engine health and execute the isolated M3 real-service/browser suite.
+
+## 2026-09-13 - Post-Restart M3 Acceptance And Guard Repairs
+
+**Task:** Continue the approved local M3 acceptance after the owner-controlled restart; recover the
+existing Docker/Supabase environment, investigate real failures and retain accurate evidence.
+
+**Files Changed:** `supabase/migrations/202609090007_product_intelligence_draft_commands.sql`,
+`supabase/migrations/202609090008_product_intelligence_technical_review.sql`,
+`supabase/tests/database/product_intelligence_console_commands.test.sql`,
+`scripts/console/local-acceptance.ts`, `scripts/console/test-working-isolated.ts`,
+`scripts/console/test-database-test-report.ts`, generated `lib/supabase/database.types.ts`,
+`scripts/report-goal-progress.ts`, generated `docs/goal-progress-report.md`,
+`docs/operations/console-m3-isolated-acceptance.md`,
+`docs/operations/product-intelligence-console-milestone-3.md`, `docs/CODEX_GOAL.md`,
+`knowledge-base/technical/console-validation-reproducibility.md` and this log. Bounded diagnostics,
+SQL reports and scoped local recovery helpers remain under ignored `.tmp/`.
+
+**Components Changed:** Two private M3 command-entry guards now deny unauthorized roles before
+adoption-state checks while retaining locked role revalidation. The real-service lock observer
+follows indirect blocker chains; fixed failure checkpoints provide safer diagnostic precision.
+No visual/UI component changed. The generated Goal report now separates current migration/test
+inventory from execution evidence and links current phase gates instead of obsolete M1 instructions.
+
+**Data Changed:** No canonical public product/company/technical/compatibility/media data changed.
+Four M3 migrations were applied locally. A stale local SEO policy was aligned with existing
+migration 005; its source was not edited. Two exact seventeen-table shadow replays passed before
+adoption. The current failed local run retains five synthetic users, four roles, one synthetic
+adoption and two draft products (45 total variants), with zero verification events/publications.
+Original technical references remain unconfirmed. The first failed pre-adoption account-only
+fixture was narrowly removed after inspection, retaining original row hashes and audit history.
+
+**Visual Changes:** None. **SEO Impact:** None; public routes, metadata and authority remain unchanged.
+
+**Validation:** Virtual Machine Platform/hypervisor and Docker 29.7.2 are operational. Stale IPC
+directories were retained intact; no Docker data volume was deleted. The local stack restarted
+without `--no-backup`, retained product/fact hashes and now reports invite-only email Auth matching
+the existing config. Real pgTAP 1.3.3 passed all nine suites / 246 assertions in an ACL-preserving QA
+database; all six new permission regressions failed before the fix. Embedded SQL, public-type
+parity, two source replays and fifteen original pilot scopes pass. Complete CLI type parity,
+typecheck, focused lint, seven target guard groups, four browser-server guard groups, eight command
+groups, local boundaries, migration validation and SQL-report contracts pass. A real two-session
+existing-SKU probe reproduces the old lock-observer failure and passes after the recursive fix.
+These checks do not establish full integrated acceptance. Build, public SEO/RFQ and responsive
+browser checks were not rerun for this SQL/test-tool repair.
+Company-evidence validation and Goal-report generation pass with existing media-evidence warnings;
+the canonical report still counts 43 products and zero strict verified SKUs. Formatting, diff
+whitespace and the 523-text-file secret scan pass.
+
+**Known Issues:** The complete Auth/PostgREST/concurrency/browser run still has not passed. The
+adopted failed database must not be reset or receive old imports. Automatic safety review rejected
+a proposed local-only database preservation/fresh-baseline switch; it has NOT executed and exact
+owner approval is pending. The Docker IPC failure recurred, so permanent cause/fix is unproven;
+compression was investigated but not established as its cause or changed. Real 15AK evidence and
+exact-product image/publication gates remain outstanding.
+
+**Reusable Knowledge Added:** The technical validation knowledge record now distinguishes retained
+runtime drift, fixture baselines/platform ACLs, permission-first guard checks and actual blocker
+chains. The acceptance runbook owns exact evidence, retained targets and the pending approval.
+
+**Deployment:** None. No commit, push, merge, remote CI, hosted migration/adoption, hosted provider
+change or publication. The previous owner restart was verified, not initiated by Codex. No
+repository rule override or machine execution-policy change occurred.
+
+**Next Recommended Action:** Obtain explicit approval for the documented data-preserving local
+fresh-baseline operation, then repeat all integrated M3 persisted-workflow and browser gates.
+
+## 2026-09-13 - M3 Pending Authorization And Recurring Engine Failure Revalidated
+
+**Task:** Revalidate the pending local test boundary and attempt the independent original SQL-runner
+gate without executing the rejected database switch.
+
+**Files Changed:** `docs/CODEX_GOAL.md`, `docs/operations/console-m3-isolated-acceptance.md`,
+`docs/operations/product-intelligence-console-milestone-3.md` and this log.
+**Components Changed:** None. **Data Changed:** None. **Visual Changes:** None. **SEO Impact:** None.
+
+**Validation:** The separate QA database was rechecked empty. Later the engine pipe was absent;
+bounded Docker Desktop startup reproduced the recorded IPC rename/access failure, with a backend
+crash logged at 11:15:46 UTC. The owned failed startup was stopped successfully. Original pg_prove
+tests did not execute. No new passing database or browser acceptance is claimed. Documentation
+formatting, configured Git whitespace checks and repository secret scanning apply to this record.
+
+**Known Issues:** Exact owner approval for the data-preserving local database switch is still
+absent across consecutive continuations. The switch remains unexecuted. Engine startup is also
+unreliable; further automatic directory-quarantine retries were not attempted. Full M3, real 15AK
+evidence and later publication gates remain incomplete.
+
+**Reusable Knowledge Added:** Current operational state was appended to the acceptance runbook.
+No new product/company fact or governance decision was added to the knowledge base.
+
+**Deployment:** None. No directory move, database reset/switch, factory reset, installation, Windows
+configuration change, hosted write or public-data change occurred. No repository rule override.
+
+**Next Recommended Action:** Obtain explicit approval for the documented local preservation and
+fresh-baseline operation, restore a stable local Docker engine, then execute the remaining gates.
+
+## 2026-09-14 - Authorized Local Baseline Preservation And Browser Transport Repairs
+
+**Task:** Complete the owner's September 13 exact local preservation approval, run real M3 gates,
+and diagnose/fix actual browser acceptance transport failures without resetting adopted data.
+
+**Files Changed:** `scripts/console/test-working-browser.ts`, `docs/CODEX_GOAL.md`,
+`docs/operations/console-m3-isolated-acceptance.md`,
+`docs/operations/product-intelligence-console-milestone-3.md`,
+`knowledge-base/decisions/2026-09-13-console-m3-local-baseline-preservation.md`,
+`knowledge-base/technical/console-validation-reproducibility.md` and this log. Bounded local helpers
+and synthetic diagnostic reports remain ignored under `.tmp/`.
+
+**Components Changed:** Browser acceptance transport only: send malformed JSON as raw bytes and
+retain unchanged real upstream command response bytes across document navigation. No application
+component, route, migration, dependency, role rule or expected status was changed.
+**Visual Changes:** None. **SEO Impact:** None; public URLs/metadata/content remain unchanged.
+
+**Data Changed:** The old local database was preserved as `arcfort_m3_failed_20260913`, retaining
+45 variants, five synthetic users, four roles, one adoption, two drafts, zero verification events
+and 7,287 audit events. A new empty local `postgres` was created from the reviewed QA template with
+platform settings/ACLs retained, then imported and adopted for isolated tests. It now retains 46
+variants, five synthetic users, four roles, one adoption, three drafts, three synthetic verification
+events and zero publish records. Three local synthetic login passwords were renewed only in memory
+for diagnostics. All 43 original variants / 604 facts and the separate archived row hashes are
+unchanged. No real technical fact, compatibility, image right or publication status was promoted.
+
+**Validation:** Original pg_prove and independent SQL-report paths each passed 9 suites / 246
+assertions, including report-runner controls. Complete local CLI type parity and two exact 17-table
+imports passed. The full M3 process passed its API phase but failed in browser acceptance; it is not
+reported as a full pass. Actual Next production builds, three-role form login/private cookies and
+the repaired HTTP rejection group passed. The existing create-receipt diagnostic passed actual
+200/redirect/body/identity/retry/persisted-field checks after response-retention repair, without
+creating another product. Complete typecheck, focused lint, 8 command / 7 target / 4 browser guard
+groups, boundary tests, migration validation and 9-suite/246-assertion report contracts pass.
+Formatting and configured Git whitespace checks passed; the 524-file repository secret scan found
+no high-confidence secret patterns. All owned acceptance-server processes exited.
+
+**Known Issues:** Full repaired browser workflow, responsive screenshots and a fresh integrated/
+clean-CI pass remain unproven, so M3 release remains BLOCKED. Another exact local preservation switch
+to `arcfort_m3_failed_20260914` is proposed but not authorized or executed. Docker's recurring IPC
+rename failure required additional guarded, non-destructive directory retention; its root cause is
+unresolved. Real Level A 15AK facts/exact-product media and later V1 gates remain incomplete.
+
+**Reusable Knowledge Added:** A dated exact-preservation decision and reproducibility lessons for
+database-level ACL/settings, typed OID JSON, raw malformed request bytes, real-response retention
+and the distinction between diagnostic replay and fresh acceptance.
+
+**Deployment:** None. No commit/push/merge, remote CI, hosted migration/adoption/provider change,
+production write or publication. No repository rule override. Only existing failed Docker IPC
+directories were retained after path/content/process checks; no volume, database or Windows feature
+was deleted/reset or reconfigured beyond the owner-approved local database connection/name switch.
+
+**Next Recommended Action:** Obtain exact approval to preserve the current local test database under
+the new archive name and establish a fresh isolated baseline, then run the repaired M3 flow end to end.
+
+## 2026-09-14 - Second Authorized Baseline And Streamed Redirect Acceptance Repair
+
+**Task:** Fulfill the second exact local preservation approval, repeat actual M3 acceptance,
+preserve all failed fixtures, and resolve the reproduced final-group browser timing assertion.
+
+**Files Changed:** `scripts/console/test-working-browser.ts`, `docs/CODEX_GOAL.md`,
+`docs/operations/console-m3-isolated-acceptance.md`,
+`docs/operations/product-intelligence-console-milestone-3.md`,
+`docs/operations/product-intelligence-console-milestone-3-plan.md`,
+`knowledge-base/decisions/2026-09-14-console-m3-local-baseline-rerun.md`,
+`knowledge-base/technical/console-validation-reproducibility.md` and this log. Preservation,
+retention, session diagnostics and the regression summary remain ignored under `.tmp/`.
+
+**Components Changed:** Test harness only: wait for actual login navigation after a streamed
+unauthenticated redirect, and retain granular final-group checkpoints. An earlier ignored probe
+now uses Playwright types instead of three explicit `any` annotations. No application component,
+route, migration, dependency, permission rule, expected response status or timeout was changed.
+**Visual Changes:** None. Twelve real responsive screenshots were captured and representative
+mobile/tablet/desktop forms were reviewed. **SEO Impact:** None; public sources and URLs unchanged.
+
+**Data Changed:** Preserved the previous local database as `arcfort_m3_failed_20260914`, retaining
+46 variants, five synthetic users, four roles, one adoption, three drafts, three verification events
+and 3,685 audit events. The first `arcfort_m3_failed_20260913` archive remains unchanged. A new local
+`postgres` was created from the reviewed empty QA template with original settings/ACLs retained.
+The new test fixture now has 46 variants, five synthetic users, four roles, one adoption, three
+drafts, six synthetic verification events and 3,727 audit events; editor/reviewer are revoked and
+publication remains zero. Only existing synthetic owner/reviewer passwords were renewed in memory
+for the final diagnostics. All 43 original variants / 604 facts, both archives and the empty template
+were independently compared and retained unchanged. No real technical evidence was confirmed.
+
+**Validation:** Both real SQL paths passed 9 suites / 246 assertions; negative/report controls,
+complete CLI types and two exact 17-table imports passed. The fresh M3 runner passed its API phase
+and nine real browser groups, then failed in the session/logout group. Twelve screenshots cover
+edit/review/history at 360/390/768/1440px with no overflow; four representative screenshots were
+visually reviewed. The retained-fixture diagnostic reproduced the immediate-URL timing failure;
+after waiting for login it passed revoked HTTP 403, logout 303, empty cookies, absent editor controls
+and logged-out HTTP 403, while technical rows stayed unchanged. This is not a fresh complete pass.
+Production Next builds, all 36 selected regression scripts, complete typecheck and full lint passed.
+Regressions include Console contracts/guards, RFQ, evidence, SEO and unchanged performance budgets
+(homepage JS 126.6/140 KiB, shared CSS 9.8/15 KiB). Formatting, Git whitespace checks and the 525-file
+repository secret scan passed. All owned acceptance/diagnostic servers exited.
+
+**Known Issues:** M3 release is BLOCKED pending a fresh complete repaired integrated run and current
+clean CI. A fresh isolated M2 Auth/pagination test was not run against the now-adopted fixture.
+The proposed third local preservation `arcfort_m3_failed_20260914_b` is not authorized or executed.
+Recurring Docker IPC startup failure remains unresolved; this batch retained the two exact
+`20260914-2` socket directories after current path/content/process checks. Real Level A 15AK facts,
+exact-product media/rights and later V1 gates remain missing.
+
+**Reusable Knowledge Added:** The second exact authorization and its completion, plus bounded
+lessons on streamed App Router redirects, targeted-versus-integrated proof, and a 4 MiB retained
+baseline comparison buffer. Dated historical failures and approvals were preserved rather than
+rewritten as successful runs.
+
+**Deployment:** None. No commit, push, merge, remote CI, hosted migration/adoption/account/provider
+change, production write, RFQ submission or publication. No repository rule override. No database,
+volume or image was deleted/reset and no global role or Windows feature/policy was changed.
+
+**Next Recommended Action:** Obtain exact approval for the proposed third local preservation,
+retain both prior archives and current fixtures, and rerun SQL/types/two imports/full M3 on a fresh
+baseline before advancing any milestone or external release.
+
+## 2026-09-17 - Docker Host Installation And Verified Backup Recovery
+
+**Task:** Diagnose recurring Windows Docker startup failure and execute the owner's explicitly
+approved data-preserving all-users installation. Identify package-private paths/registry, recover
+from an unexpected uninstall preservation failure, and verify normal runtime/data retention.
+
+**Files Changed:** `knowledge-base/technical/docker-desktop-recovery.md`,
+`knowledge-base/decisions/2026-09-17-docker-all-users-recovery.md`, `docs/CODEX_GOAL.md`,
+`docs/operations/console-m3-isolated-acceptance.md`, this log and ignored `.tmp` diagnosis,
+backup/restoration/verification helpers and reports. Existing unrelated M3 changes were preserved.
+
+**Components Changed:** Local Docker Desktop 4.89 -> 4.90 -> 4.91 per-user attempts, then approved
+4.91.0.239619 all-users installation at `C:\Program Files\Docker\Docker`. WSL2 runtime data is now
+outside the Codex package at `C:\Users\admin\DockerDesktopData`. Website components are unchanged.
+
+**Data Changed:** No product/business data was intentionally changed. The documented
+`uninstall -keep-data` invocation unexpectedly omitted that flag in its self-relaunch, deleting the
+active VHDX/settings and WSL registration. The incident was disclosed. Previously verified cold
+copies were rechecked and restored into an absent destination; WSL registration was recreated with
+a new GUID. Restored disk SHA-256 hashes matched and three subsequent full retained-data comparisons
+passed. Both backup generations are retained. Do not describe this operation as deletion-free.
+
+**Visual Changes / SEO Impact:** None. No public route, product content, metadata, RFQ or compatibility
+change. The normal native Docker dashboard now opens with the original running project.
+
+**Validation:** Independent cold-backup source/copy hashes passed. Official installer checksum and
+Docker Inc signature passed; all-users installation exited zero with host-visible registration.
+Initial ordinary shortcut startup and two normal stop/start cycles passed without socket surgery.
+Every cycle retained all seven container identities, two volumes, current database, two archives,
+empty template, 43 immutable product variants, 604 facts and zero publish records. Engine/client
+29.8.0, Compose 5.5.1 and Buildx 0.37.0 respond. Ignored verification script syntax, new knowledge
+document formatting, Git whitespace checks and the 527-file repository secret scan passed. No full
+M3 test or unrelated website build was rerun; these checks do not close the M3 release gate.
+
+**Known Issues:** Post-migration Windows reboot verification is pending. C-drive free space is about
+2 GB; owner approval is pending to move both complete cold backups to E with hash verification.
+The current Codex process has stale PATH inheritance despite the correct machine PATH, requiring a
+fresh app/Windows session. The third M3 database switch and later real 15AK evidence gates remain
+unapproved/unproven. Registry-login credentials may require owner reauthentication; their recovery
+was not verified. Do not repeat the observed bundled uninstaller preservation path.
+
+**Reusable Knowledge Added:** Package-private versus ordinary-host path/registry evidence,
+independent backup verification, uninstall self-relaunch flag loss, recovery provenance and a
+normal-restart/data-retention acceptance boundary. No security settings or privileged groups were
+weakened; the installed helper service remains stopped/manual.
+
+**Deployment:** None. No commit, push, merge, CI dispatch, hosted/provider change, production write
+or publication. The owner-approved scope change was local all-users installation only; no repository
+rule override was requested or applied.
+
+**Next Recommended Action:** Resolve backup placement and complete an owner-controlled Windows
+reboot/normal-start check before the separately authorized fresh M3 acceptance, preserving every
+retained database and historical report.
+
+## 2026-09-17 - Cold-Start Acceptance Timestamp Guard
+
+- **Task:** Prevent ordinary same-session Docker health from being reported as a Windows cold start.
+- **Files Changed:** Ignored `.tmp/verify-docker-repair-20260915.mjs`, its negative-control report,
+  `knowledge-base/technical/docker-desktop-recovery.md` and this log.
+- **Components Changed:** Local read-only acceptance helper only; require Windows boot time later
+  than installation and the second normal restart before running cold-start acceptance.
+- **Data Changed / Visual Changes / SEO Impact:** None. No Docker, database, backup or public-site
+  mutation. No deployment.
+- **Validation:** Script syntax passes. The actual unrebooted-host negative control refuses at the
+  boot-time gate before Docker/SQL access and creates no false cold-start PASS report.
+- **Known Issues:** Windows reboot and backup-migration approval remain pending. The running seven
+  containers remain healthy/running; C still has about 2 GB free. No full M3 acceptance was run.
+- **Reusable Knowledge Added:** Completion evidence must include a post-installation Windows boot
+  timestamp, not just a successful engine query or a file named `cold-start`.
+- **Next Recommended Action:** Obtain the pending backup-placement answer and complete the
+  owner-controlled Windows reboot before final Docker acceptance.
+
+## 2026-09-17 - Docker Windows Cold-Start Acceptance Completed
+
+- **Task:** Complete the repaired Docker runtime's final post-installation Windows reboot gate.
+- **Files Changed:** `knowledge-base/technical/docker-desktop-recovery.md`,
+  `knowledge-base/decisions/2026-09-17-docker-all-users-recovery.md`, `docs/CODEX_GOAL.md`,
+  `docs/operations/console-m3-isolated-acceptance.md`, this log and the ignored cold-start report.
+- **Components Changed:** No new implementation. The installed normal desktop shortcut was started
+  after a verified Windows reboot; no IPC modification, forced shutdown or container recreation.
+- **Data Changed / Visual Changes / SEO Impact:** None in this acceptance batch. All database checks
+  were read-only; earlier backup restoration and its incident remain documented rather than erased.
+- **Validation:** Windows boot 04:08:50 UTC follows installation and the two previous restart checks.
+  The cold-start report passed at 04:14:16 UTC: original seven containers, two volumes, current
+  database, both archives, empty template, 43 original variants / 604 facts and zero publication
+  records all match. Fresh CLI discovery resolves to the all-users executable.
+- **Known Issues:** Docker repair acceptance is complete, not the full V1/M3 goal. Registry-login
+  credentials may still need owner reauthentication. C-drive free space returned to approximately
+  12 GB after startup without agent cleanup; both cold backups remain in place. Their proposed move
+  to E is optional and still unapproved. The third M3 database switch remains unapproved.
+- **Reusable Knowledge Added:** Cold-start success now has actual post-installation Windows boot
+  evidence, distinct from normal process restarts and the earlier tested negative control.
+- **Deployment:** None. No commit, push, remote CI, hosted/provider change, product publication,
+  website/RFQ change or new database test run.
+- **Next Recommended Action:** Obtain exact approval for the proposed third M3 preservation/switch,
+  then run fresh full acceptance without overwriting any retained database.
+
+## 2026-09-17 - Third Local Preservation And Ten-Scenario Browser Acceptance
+
+- **Task:** Execute the newly confirmed third local M3 preservation and fresh acceptance without
+  deleting prior fixtures or confusing synthetic approval with real product confirmation.
+- **Files Changed:** `knowledge-base/decisions/2026-09-17-console-m3-third-local-baseline.md`,
+  `docs/operations/console-m3-isolated-acceptance.md`,
+  `docs/operations/product-intelligence-console-milestone-3.md`, `docs/CODEX_GOAL.md`,
+  `knowledge-base/technical/docker-desktop-recovery.md`,
+  `knowledge-base/technical/console-validation-reproducibility.md`, this log, and four ignored
+  preservation/finalization/retention/regression helpers with bounded reports and screenshots.
+- **Components Changed:** No application, schema or test-expectation edits. The authorized local
+  baseline switch retained original platform settings/ACL and restarted only the same consumers.
+- **Data Changed:** Previous `postgres` retained as `arcfort_m3_failed_20260914_b`; two older
+  archives and the empty template unchanged. Fresh local imports and synthetic acceptance created
+  one adoption, three drafts and six verification events. Original 43 variants / 604 facts are
+  unchanged; zero publications. Both Docker cold backups remain in place.
+- **Visual Changes / SEO Impact:** None. Twelve current synthetic screenshots and overflow checks
+  cover 360/390/768/1440px. Public content, routes, canonicals, sitemap and RFQ implementation unchanged.
+- **Validation:** Both SQL paths pass 9 suites / 246 assertions, type parity and two exact 17-table
+  imports pass. All ten persisted-browser scenarios pass with zero page errors/external requests;
+  this includes the previously failing logout group. Independent final source/archive retention
+  passes after another actual Windows reboot and ordinary Docker startup. All 36 selected regression
+  scripts, full typecheck and lint pass. Current production build succeeded within browser acceptance.
+- **Known Issues:** Initial helper stopped before settings restoration; guarded finalization completed
+  after verifying the partial state. Its root cause is unproven and its STOPPED report retained.
+  The full runner's terminal handle was lost across the later reboot; overall exit code and
+  pre-reboot cleanup are not claimed. Final data assertions were independently repeated. Current
+  candidate clean CI remains missing; overall M3 release status is BLOCKED. Full V1 and real 15AK
+  evidence/media/publication remain incomplete. No fourth local switch is authorized.
+- **Reusable Knowledge Added:** Distinguish persisted browser PASS from missing process completion;
+  repeat safe final assertions and retain adopted fixtures rather than resetting to recover logs.
+  New exact third-operation authorization is retained separately from Docker repair permission.
+- **Deployment:** None. No commit/push, remote CI, hosted/provider changes or publication.
+- **Next Recommended Action:** Review the current M3 candidate and obtain exact branch authorization
+  for clean isolated CI. Collect real 15AK evidence separately without promoting reference facts.
+
+## 2026-09-18 - M3 CI-Only Candidate Review
+
+- **Task:** Review the current M3 candidate under the owner's September 17 explicit commit/push
+  authorization for `18803076512/arcfort-website`, `codex/v2-industrial-brand-system`, CI only.
+- **Files Changed:** `vercel.json`,
+  `knowledge-base/decisions/2026-09-17-console-m3-ci-only-submission.md`, `README.md`,
+  `scripts/console/browser-runtime/README.md`, `docs/operations/console-m3-isolated-acceptance.md`
+  and this log, alongside the previously recorded pending M3 implementation and recovery records.
+- **Components Changed:** Add an exact-branch automatic-deployment refusal because PR #130's prior
+  checks show Vercel preview integration. No application/test expectation changed in this review.
+- **Data Changed / Visual Changes / SEO Impact:** None. No local/hosted database mutation or public
+  content/source transition; public URLs and RFQ unchanged.
+- **Validation:** Reviewed SQL authority/role/evidence boundaries, HTTP commands, default-off local
+  gate, private read projections, forms/history, test locks and CI isolation. No new blocking code
+  defect found. Current local evidence includes both 246-assertion SQL paths, exact types/imports,
+  ten browser scenarios, original-row retention and 36 regression scripts. A 530-file secret scan passes.
+- **Known Issues:** Candidate clean CI is pending; missing process-exit evidence is not relabeled
+  as a captured pass. Full V1/real 15AK evidence and later media/preview/publication work remain open.
+- **Reusable Knowledge Added:** CI-only authorization must account for connected Git deployment
+  hooks; record the exact branch guard and verify external behavior rather than assuming no deploy.
+- **Deployment:** Forbidden by this scoped approval. No merge, hosted migration or publication.
+- **Next Recommended Action:** Submit the reviewed candidate with the exact-branch guard, verify
+  remote SHA and CI outcome, and confirm no Vercel deployment was created for that candidate.

@@ -127,7 +127,7 @@ try {
 
 const directory = path.resolve("supabase", "tests", "database");
 const names = (await readdir(directory)).filter((file) => file.endsWith(".test.sql")).sort();
-assert.equal(names.length, 5, "Review the QA coverage when adding or removing a database suite.");
+assert.equal(names.length, 9, "Review the QA coverage when adding or removing a database suite.");
 let assertions = 0;
 for (const suite of names) {
   const original = await readFile(path.join(directory, suite), "utf8");
@@ -141,7 +141,7 @@ for (const suite of names) {
 }
 assert.equal(
   assertions,
-  74,
+  246,
   "Review the expected PostgreSQL assertion baseline when tests change.",
 );
 const stagingEnvironment: NodeJS.ProcessEnv = {
@@ -184,5 +184,5 @@ for (const [args, environment, expectedError] of [
   assert.equal(result.stdout, "");
 }
 console.log(
-  "Database SQL report tests passed: strict result validation and all 5 suites / 74 planned assertions.",
+  "Database SQL report tests passed: strict result validation and all 9 suites / 246 planned assertions.",
 );

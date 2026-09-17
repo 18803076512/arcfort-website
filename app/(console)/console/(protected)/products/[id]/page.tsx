@@ -1,4 +1,6 @@
 import { ConsoleLink } from "@/components/console/ConsoleLink";
+import { ProductWorkingNav } from "@/components/console/ProductWorkingNav";
+import { readWorkingStates } from "@/lib/console/working";
 
 import Image from "next/image";
 import { notFound } from "next/navigation";
@@ -30,6 +32,7 @@ export default async function ProductDetailPage({
   const query = await searchParams;
   const data = await readProductDetail(client, id);
   if (!data) notFound();
+  const working = (await readWorkingStates(client, [id])).length > 0;
   const technical = await readTechnicalData(client, filters(query), { variantId: id });
   return (
     <>
@@ -37,6 +40,7 @@ export default async function ProductDetailPage({
         Products
       </ConsoleLink>
       <h1>{data.identity.products?.name_en}</h1>
+      {working && <ProductWorkingNav id={id} />}
       <dl className="console-facts">
         <div>
           <dt>SKU / Model</dt>
@@ -53,7 +57,13 @@ export default async function ProductDetailPage({
           <dt>Lifecycle</dt>
           <dd>
             <Status value={data.identity.lifecycle_state} />
-            <p>{data.identity.is_shadow ? "Shadow record" : "Governed record"}</p>
+            <p>
+              {working
+                ? "Working draft"
+                : data.identity.is_shadow
+                  ? "Shadow record"
+                  : "Governed record"}
+            </p>
           </dd>
         </div>
       </dl>

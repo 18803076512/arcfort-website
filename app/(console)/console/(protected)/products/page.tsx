@@ -1,4 +1,6 @@
 import { ConsoleLink } from "@/components/console/ConsoleLink";
+import { Plus } from "lucide-react";
+import { readWorkingStatus, readWorkingStates } from "@/lib/console/working";
 
 import { requireConsoleAccess } from "@/lib/console/server";
 import { filters, lifecycleStates, readProducts, type SearchParams } from "@/lib/console/catalog";
@@ -14,9 +16,22 @@ export default async function ProductsPage({
   const params = await searchParams;
   const filter = filters(params);
   const data = await readProducts(client, filter);
+  const working = await readWorkingStatus(client);
+  const states = await readWorkingStates(
+    client,
+    data.items.map((item) => item.id),
+  );
   return (
     <>
-      <h1>Products</h1>
+      <div className="console-page-heading">
+        <h1>Products</h1>
+        {working.can_edit && (
+          <ConsoleLink className="console-button console-action" href="/console/products/new">
+            <Plus size={18} aria-hidden="true" />
+            New product
+          </ConsoleLink>
+        )}
+      </div>
       <form className="console-toolbar" method="get">
         <label className="console-search">
           Search
@@ -69,7 +84,13 @@ export default async function ProductsPage({
               <td>{item.product_categories.name_en}</td>
               <td>
                 <Status value={item.lifecycle_state} />
-                <small>{item.is_shadow ? "Shadow record" : "Governed record"}</small>
+                <small>
+                  {states.some((state) => state.product_variant_id === item.id)
+                    ? "Working draft"
+                    : item.is_shadow
+                      ? "Shadow record"
+                      : "Governed record"}
+                </small>
               </td>
               <td>
                 <Status value={item.legacy_status} />
