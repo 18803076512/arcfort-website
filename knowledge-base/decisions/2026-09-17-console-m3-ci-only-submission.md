@@ -1,7 +1,7 @@
 # M3 CI-Only Submission Authorization
 
 Date: 2026-09-17
-Status: owner-approved review, commit and push; candidate verification pending.
+Status: executed; candidate `e5c23e31` passes clean CI (reviewed 2026-09-18).
 
 After local browser and retention checks passed, the owner explicitly approved reviewing M3,
 committing it and pushing to `18803076512/arcfort-website`, branch
@@ -25,3 +25,16 @@ successful push or a prior green CI run as current candidate acceptance.
 
 Rollback of code/configuration requires a reviewed follow-up commit. Do not reset retained adopted
 data. Re-enabling this branch's automatic deployments is a separate explicit release decision.
+
+## Execution Evidence
+
+The 85-file reviewed candidate was committed as `e5c23e31f9b34c7e10801c444167ecb3501da670` and
+normally pushed to the exact branch. [Run 35284287968](https://github.com/18803076512/arcfort-website/actions/runs/35284287968)
+passed website quality and the complete isolated database/M2/M3 sequence, including all ten M3
+browser scenarios and final source retention. The watch process exited 0.
+
+Readback at 2026-09-17 23:00:56 UTC verifies that SHA, PR OPEN with no auto-merge, zero GitHub
+deployments and no Vercel commit status/check. No merge, hosted mutation or deployment was performed.
+The [acceptance record](../../docs/operations/console-m3-isolated-acceptance.md#september-18-clean-ci-acceptance)
+owns the exact gate results and remaining local-only/pilot limits. Documentation-only follow-up
+commits remain within this same CI-only authorization and require verification for their new SHA.

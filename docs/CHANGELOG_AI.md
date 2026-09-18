@@ -5374,3 +5374,34 @@ retained database and historical report.
 - **Deployment:** Forbidden by this scoped approval. No merge, hosted migration or publication.
 - **Next Recommended Action:** Submit the reviewed candidate with the exact-branch guard, verify
   remote SHA and CI outcome, and confirm no Vercel deployment was created for that candidate.
+
+## 2026-09-18 - M3 Clean CI Acceptance
+
+- **Task:** Complete the authorized review, commit, non-force push and isolated CI verification for
+  M3 on `18803076512/arcfort-website`, branch `codex/v2-industrial-brand-system`.
+- **Files Changed:** The reviewed 85-file M3 candidate is commit
+  `e5c23e31f9b34c7e10801c444167ecb3501da670`. This evidence follow-up updates `README.md`,
+  `scripts/console/browser-runtime/README.md`, `docs/CODEX_GOAL.md`, both M3 acceptance/implementation
+  records, the CI-only decision and this append-only log.
+- **Components Changed:** No additional implementation changes in this evidence follow-up. The
+  candidate contains local-only draft creation/editing, source-bound review/history, four additive
+  migrations, SQL/API/browser tests and an exact-branch Vercel deployment refusal.
+- **Data Changed / Visual Changes / SEO Impact:** No public data, routes, SEO or RFQ change. Only
+  disposable CI synthetic fixtures were created/reset; preserved Windows data/archives/backups and
+  hosted databases were untouched by submission. No additional visual change.
+- **Validation:** Run `35284287968` passes both jobs and the watch exits 0. Embedded SQL and both real
+  SQL paths pass 246 assertions; types, repeated 17-table imports, M2 Auth/RLS/1,103-row pagination,
+  ten persisted M3 browser scenarios, full source-retention and cleanup pass. Website secret/data/
+  generation/RFQ/lint/type/build/SEO/performance gates pass. Readback confirms exact remote SHA,
+  PR OPEN with no auto-merge, zero deployments and no Vercel status/check for this candidate.
+- **Known Issues:** Local/CI M3 is PASS_WITH_WARNINGS, not a hosted/public release. Historical Windows
+  process output remains unavailable; new clean CI supplies independent full-run proof. Pilot
+  200-scope/source limits and serialized commands remain. Full V1, real 15AK Level A evidence and
+  exact media remain incomplete. Runner-image migration notice is non-blocking. CI screenshots
+  were not separately uploaded as artifacts; CI completion logs and local screenshots are retained.
+- **Reusable Knowledge Added:** Candidate-specific CI and post-push deployment readback are recorded
+  in the runbook and authorization decision; neither infrastructure recovery nor partial output is
+  relabeled as end-to-end acceptance.
+- **Deployment:** None. No merge, hosted migration/adoption, provider change or product publication.
+- **Next Recommended Action:** Obtain exact-SKU Level A 15AK evidence and rights-approved imagery;
+  review the next Console phase within its own scope and approval boundary.

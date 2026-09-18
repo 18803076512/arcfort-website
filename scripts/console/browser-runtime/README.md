@@ -32,5 +32,7 @@ The smoke test produces console results only, not fabricated database screenshot
 
 See [M3 acceptance evidence](../../../docs/operations/console-m3-isolated-acceptance.md). The
 September 17 local run passed ten persisted browser scenarios and independent final retention;
-its overall exit code was unavailable after a later reboot. Current candidate clean CI remains
-required. A persisted browser report alone does not prove later cleanup or final assertions.
+its overall exit code was unavailable after a later reboot. Candidate `e5c23e31` subsequently passed
+[clean CI](https://github.com/18803076512/arcfort-website/actions/runs/35284287968), including all ten
+browser scenarios, full-run completion and source retention. Do not rerun imports or reset the
+retained adopted database to recreate historical output. This is not hosted or publication approval.

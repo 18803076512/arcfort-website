@@ -1,6 +1,6 @@
 # Console M3 Implementation Evidence
 
-Reviewed: 2026-09-14
+Reviewed: 2026-09-18
 Scope: local development and isolated testing only.
 Plan: [M3 editing and review](product-intelligence-console-milestone-3-plan.md).
 Decision: [M3 working authority](../../knowledge-base/decisions/2026-09-09-console-m3-working-authority.md).
@@ -10,12 +10,12 @@ Decision: [M3 working authority](../../knowledge-base/decisions/2026-09-09-conso
 | Batch                               | State                                          | Remaining gate                       |
 | ----------------------------------- | ---------------------------------------------- | ------------------------------------ |
 | M3-A through M3-E authorization     | Approved                                       | Hosted actions are still separate    |
-| M3.1a authority/import barrier      | Real SQL, Auth and lock tests pass             | Fresh full integrated/clean-CI run   |
-| M3.1b atomic product draft commands | Real API and browser persistence pass          | Fresh complete integrated acceptance |
-| M3.1c source-bound technical review | Real SQL/API/browser decisions pass            | Fresh complete integrated acceptance |
-| M3.2 product creation/editing       | Browser create/retry/stale/reload pass         | Fresh complete integrated acceptance |
-| M3.3 technical review/history       | Browser EDIT/APPROVE/REJECT/history pass       | Fresh complete integrated acceptance |
-| M3.4 full acceptance                | Final browser assertion repaired; not complete | Fresh full run and clean CI          |
+| M3.1a authority/import barrier      | Real SQL, Auth and lock tests pass in clean CI | Separate hosted approval required   |
+| M3.1b atomic product draft commands | Real API and browser persistence pass in CI   | Local-only pilot boundary           |
+| M3.1c source-bound technical review | Real SQL/API/browser decisions pass in CI     | Real Level A evidence still missing |
+| M3.2 product creation/editing       | Browser create/retry/stale/reload pass in CI   | Hosted execution unperformed        |
+| M3.3 technical review/history       | Browser EDIT/APPROVE/REJECT/history pass in CI | No real-product confirmation        |
+| M3.4 full acceptance                | PASS_WITH_WARNINGS, local/disposable CI       | Full V1 and publication incomplete  |
 
 No hosted migration or adoption was performed. Existing staging Console remains read-only. No
 real product, source, company record, hosted account/role/provider or publication status was changed.
@@ -332,3 +332,14 @@ durable integrated completion evidence are still missing; **M3 release remains B
 the local browser/data-retention gates now pass. No fourth database switch, hosted change, CI push
 or publication is authorized. See the
 [dated runbook](console-m3-isolated-acceptance.md#september-17-third-preservation-and-fresh-browser-acceptance).
+
+## September 18 Candidate CI Gate
+
+Candidate `e5c23e31f9b34c7e10801c444167ecb3501da670` passed both jobs in
+[run 35284287968](https://github.com/18803076512/arcfort-website/actions/runs/35284287968). This includes
+all 246 assertions through both SQL paths, full type/import parity, fresh M2 Auth/pagination, all ten
+M3 browser scenarios and complete runner/source-retention/cleanup success. The approved local/CI M3
+gate is **PASS_WITH_WARNINGS**; historical failed checkpoints above remain historical, not open gates.
+See the [current acceptance](console-m3-isolated-acceptance.md#september-18-clean-ci-acceptance)
+for candidate identity, deployment refusal/readback and explicit pilot limits. Hosted adoption,
+real technical confirmation, full V1 and public publication remain separate and incomplete.

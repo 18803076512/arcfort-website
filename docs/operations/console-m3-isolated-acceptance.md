@@ -1,11 +1,11 @@
 # M3 Isolated Acceptance Runner
 
-Reviewed: 2026-09-17. Status: SQL/types/imports and all ten real browser scenarios pass; final
-retention was independently repeated. Overall process exit evidence and current clean CI remain
-unproven. Read the latest dated section before using historical recovery steps.
+Reviewed: 2026-09-18. Status: **PASS_WITH_WARNINGS** for the approved local/disposable-CI M3 scope.
+Candidate `e5c23e31` passed both CI jobs, including complete M3 process completion and source
+retention. Read the latest dated section before using historical recovery steps.
 
-This is the next acceptance batch under the existing M3 local-development approval. It does not
-authorize hosted adoption, provider changes, CI dispatch, deployment or real technical confirmation.
+The local-development approval and subsequent exact CI-only submission approval cover this batch.
+Neither authorizes hosted adoption, provider changes, deployment or real technical confirmation.
 
 ## Scope And Entry Points
 
@@ -647,3 +647,47 @@ product data, RFQ implementation and production configuration are not rewritten.
 The 530-file secret scan passed. Local SQL, browser, retention and 36-regression evidence remains
 scoped to the tested worktree. The new Vercel configuration is a submission guard, not a deployment.
 Commit identity, remote verification and clean-CI results must be recorded after they exist.
+
+## September 18 Clean CI Acceptance
+
+Reviewed candidate `e5c23e31f9b34c7e10801c444167ecb3501da670` was committed and normally pushed to
+the authorized branch. [CI run 35284287968](https://github.com/18803076512/arcfort-website/actions/runs/35284287968)
+completed successfully: `quality` in 1m18s and `product-intelligence-database` in 5m11s. The CI watch
+returned exit code 0. This is new Linux clean-stack proof, not reconstructed Windows terminal output.
+
+- Embedded SQL: 246 assertions, negative controls, real-source replay and authority barrier pass.
+- Original pg_prove and independent SQL reporter: each passes 9 suites / 246 assertions.
+- Generated database types and repeated exact-row imports across 17 tables pass.
+- M2 Auth/RLS, refresh, revocation, DTO privacy and 1,103-row pagination pass before the disposable
+  CI fixture reset. That reset did not operate on the preserved Windows databases.
+- M3 real Auth/PostgREST, observed lock contention, browser forms, technical review/history,
+  revocation and original-source retention pass. The log records all ten browser scenarios at
+  2026-09-17 22:58:55 UTC and full runner completion at 22:58:56 UTC. Service cleanup also passes.
+- Website secret/data/evidence checks, deterministic generation, RFQ suites, lint, typecheck,
+  production build, built SEO/link/image/snippet checks and performance budgets pass.
+
+At 2026-09-17 23:00:56 UTC (September 18 in Shanghai), GitHub readback confirms the exact PR head,
+both successful jobs, PR #130 still OPEN, no auto-merge, zero deployments for this SHA and no commit
+status contexts. In particular no Vercel deployment/check was recorded. The exact-branch
+`git.deploymentEnabled` refusal remains in place. No merge, hosted write or production change ran.
+
+### Bounded Gate Result
+
+**PASS_WITH_WARNINGS** applies only to the approved M3 local/disposable-CI implementation. No
+blocking finding remains for that scope. The historical Windows execution handle remains unavailable;
+the fresh CI completion independently resolves the missing full-run gate. Windows archives, adopted
+fixtures and both cold backups were not reset or modified by this submission.
+
+The owner-facing limits remain explicit: commands are local-only/default-off, hosted M3 migration
+and adoption are unperformed, the pilot caps scopes/source bindings at 200 per SKU and serializes
+commands, and no 1000-SKU throughput claim is made. Real 15AK Level A facts, approved exact images,
+media/compatibility/preview/publishing work and full Console V1 remain incomplete. No synthetic
+approval changes public evidence. Current public source, URLs, SEO and RFQ are unchanged.
+
+GitHub also emits a non-failing notice that `ubuntu-latest` will move to Ubuntu 26 on October 19;
+revalidate the pinned toolchain when the runner image changes. The CI logs retain completion proof;
+screenshots produced inside the disposable runner were not separately uploaded as artifacts.
+
+The next highest-value step is exact-SKU Level A 15AK evidence and rights-approved imagery intake,
+alongside separately scoped review of the next Console phase. This pass grants no new release or
+hosted-write authorization. The documentation follow-up must receive its own CI before close-out.

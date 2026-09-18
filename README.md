@@ -202,8 +202,10 @@ disposable local database after two source imports, uses real caller sessions an
 lock contention. It never resets existing work. CI resets its disposable M2 fixtures before this
 separate gate. See the [M3 acceptance runbook](docs/operations/console-m3-isolated-acceptance.md):
 the September 17 local run passed all ten persisted browser scenarios and independent final source
-retention, while its overall exit code was lost across a later reboot. Candidate-specific clean CI
-remains required. Install the separately locked `scripts/console/browser-runtime`
+retention, while its overall exit code was lost across a later reboot. Candidate `e5c23e31` then passed
+[clean CI](https://github.com/18803076512/arcfort-website/actions/runs/35284287968), including full M2/M3
+completion and cleanup. This closes the local/CI gate only, not hosted adoption or publication.
+Install the separately locked `scripts/console/browser-runtime`
 with `npm ci --ignore-scripts` for complete local typechecking. Its [guide](scripts/console/browser-runtime/README.md)
 documents the provider-free smoke and the distinction between refusal evidence and a full pass.
 

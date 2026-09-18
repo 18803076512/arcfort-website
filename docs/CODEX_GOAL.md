@@ -1,7 +1,7 @@
 # ArcFort Weld Codex Goal Mode
 
 Evidence baseline: 2026-09-03; staging owner/browser acceptance: 2026-09-08;
-M3 local approval: 2026-09-09; command/UI checkpoint: 2026-09-10; local acceptance checkpoint: 2026-09-14.
+M3 local approval: 2026-09-09; command/UI checkpoint: 2026-09-10; local/clean-CI acceptance: 2026-09-18.
 Production observations referenced here were last verified on
 2026-08-29 unless a later date is recorded in the relevant operations evidence.
 
@@ -116,7 +116,7 @@ specification. Appearance, similar naming or catalog grouping cannot establish c
 | Search baseline        | Site is live and indexable; 88 production sitemap URLs and a recorded baseline of 8 clicks, 422 impressions and 1.90% CTR                                                       |
 | RFQ                    | Email-provider flow, validation, attachments, buyer confirmation, BotID and idempotency are implemented; final sales and buyer inbox placement remains externally unverified    |
 | Delivery operations    | Deployment and live health evidence exist; DMARC, credential-rotation confirmation, GA4 conversion evidence and Search Console submission still require owner-side verification |
-| Product Intelligence   | M1 hosted foundation and M2 local read-only owner/browser gates passed with warnings; no product editing, public-source cutover or Console publication                          |
+| Product Intelligence   | M1 hosted foundation, M2 local owner/browser and M3 local/CI draft/review gates passed with warnings; hosted remains read-only, with no public-source cutover or publication       |
 
 The technical website foundation is mature. The primary constraint is verified evidence, not another
 general page or a larger unreviewed SKU count.
@@ -124,9 +124,11 @@ general page or a larger unreviewed SKU count.
 ## Current System Phase
 
 The owner approved Product Intelligence Console V1 decisions D0-D7 on 2026-08-30. The current
-completed implementation batches are **Milestone 1 - Data Foundation** and the local, staging-backed
-read-only scope of **Milestone 2 - Console Shell And Dashboard**, with 15AK remaining the first
-real-data pilot. M2 owner onboarding and authenticated browser acceptance passed with bounded warnings
+completed implementation batches are **Milestone 1 - Data Foundation**, the local, staging-backed
+read-only scope of **Milestone 2 - Console Shell And Dashboard**, and the local/disposable-CI scope
+of **Milestone 3 - Draft Editing And Technical Review**. M3 candidate `e5c23e31` passed clean CI on
+2026-09-18 (Shanghai); hosted M3 is unperformed. 15AK remains the first real-data pilot.
+M2 owner onboarding and authenticated browser acceptance passed with bounded warnings
 on 2026-09-08. Candidate `5021ae265b4c471957650435d011b61508c0274f` has successful quality and isolated
 database CI in run `34083109446`. External HTTPS/mobile deployment and full V1 remain incomplete.
 Supabase is not authoritative for public pages and no product data was published. See the dated
@@ -336,7 +338,7 @@ mobile behavior and conversion paths must satisfy the applicable repository gate
 
 ## Recommended Next Setup Phase
 
-Close the completed local M2 batch and plan the next controlled product-data workflow:
+Retain the completed local/CI M3 baseline and review the next controlled product-data phase:
 
 Current access update: the approved staging owner has verified email, evidenced password login and
 one active `owner` role. The role committed on 2026-09-07 and was independently read back with audit
@@ -346,7 +348,16 @@ logout acceptance is complete, including 43-row pagination, conflict/readiness f
 post-logout access. See the [M2 acceptance record](operations/product-intelligence-console-milestone-2.md#2026-09-08-real-owner-browser-acceptance)
 and [Auth runbook](operations/console-staging-auth-smtp.md) for exact scope and evidence.
 
-1. Continue the approved [M3 draft-editing/evidence plan](operations/product-intelligence-console-milestone-3-plan.md).
+Latest M3 checkpoint (2026-09-18): reviewed candidate `e5c23e31` passed both jobs in
+[CI run 35284287968](https://github.com/18803076512/arcfort-website/actions/runs/35284287968), including
+fresh M2 Auth/pagination and the complete M3 SQL/API/ten-scenario browser/source-retention sequence.
+The approved local/disposable-CI M3 gate is **PASS_WITH_WARNINGS**. The owner authorized only review,
+commit and push to the existing branch; it remains unmerged, with its automatic Vercel deployment
+disabled. Hosted M3 migration/adoption and full V1 are not completed or authorized by this pass.
+The dated [acceptance record](operations/console-m3-isolated-acceptance.md#september-18-clean-ci-acceptance)
+supersedes the older pending-CI checkpoints below and retains exact bounds and remaining evidence.
+
+1. Preserve the completed local/CI [M3 draft-editing/evidence plan](operations/product-intelligence-console-milestone-3-plan.md).
    The owner approved M3-A through M3-E on 2026-09-09 for local development and isolated testing.
    The [first authority/import barrier](operations/product-intelligence-console-milestone-3.md)
    and private atomic product draft/technical review commands are implemented with passing embedded
@@ -381,7 +392,8 @@ and [Auth runbook](operations/console-staging-auth-smtp.md) for exact scope and 
    zero page errors/external requests. The terminal handle was lost across a later Windows reboot;
    no captured overall exit code is claimed. Independent final retention checks after normal Docker
    startup passed for all 43 original variants / 604 facts and zero publication. Current candidate
-   clean CI and durable full-run completion evidence remain missing. See the
+   clean CI and durable full-run completion evidence were still missing at that checkpoint and
+   were subsequently supplied by the September 18 CI acceptance linked above. See the
    [latest acceptance section](operations/console-m3-isolated-acceptance.md#september-17-third-preservation-and-fresh-browser-acceptance).
    No fourth switch is authorized; never reset or replay imports over any adopted database.
    The September 17 Docker
