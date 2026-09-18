@@ -63,7 +63,7 @@ assert.deepEqual(
   },
 );
 
-const rfqFormSource = readFileSync(new URL("../app/rfq/RfqForm.tsx", import.meta.url), "utf8");
+const rfqFormSource = readFileSync(new URL("../app/(public)/rfq/RfqForm.tsx", import.meta.url), "utf8");
 const analyticsTrackerSource = readFileSync(
   new URL("../components/AnalyticsTracker.tsx", import.meta.url),
   "utf8",
@@ -94,10 +94,10 @@ for (const parameter of [
 }
 
 const distributorPageSource = readFileSync(
-  new URL("../app/distributor-supply/page.tsx", import.meta.url),
+  new URL("../app/(public)/distributor-supply/page.tsx", import.meta.url),
   "utf8",
 );
-const contactPageSource = readFileSync(new URL("../app/contact/page.tsx", import.meta.url), "utf8");
+const contactPageSource = readFileSync(new URL("../app/(public)/contact/page.tsx", import.meta.url), "utf8");
 
 assert.match(distributorPageSource, /href="#distributor-rfq-builder"/);
 assert.match(distributorPageSource, /id="distributor-rfq-builder"/);

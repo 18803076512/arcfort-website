@@ -1,5 +1,6 @@
 import { roboticMigTorchCategoryResourceSection } from "../lib/content/buyer-resource-links.ts";
 import type { ProductCategory } from "../lib/content/schemas.ts";
+import { migMagCatalogReferenceFamilies } from "../lib/data/product-series-evidence.ts";
 
 export const productCategories: ProductCategory[] = [
   {
@@ -94,75 +95,7 @@ export const productCategories: ProductCategory[] = [
         productSlug: "mig-torch-switch",
       },
     ],
-    referenceFamilies: [
-      {
-        name: "15AK catalog reference group",
-        documentedComponents: [
-          "Gas nozzle",
-          "Contact tip",
-          "Tip holder",
-          "Insulator or holder spring",
-          "Swan neck",
-          "Torch liner",
-        ],
-        buyerCheck:
-          "The company catalog shows more than one 15AK torch arrangement. Send the complete torch and label, keep the nozzle-to-neck parts in removal order, and record only measured or visibly marked wire size, thread and length references before requesting a match.",
-      },
-      {
-        name: "24KD / 25AK catalog reference group",
-        documentedComponents: [
-          "Gas nozzle",
-          "Contact tip",
-          "Tip holder",
-          "Gas diffuser",
-          "Swan neck",
-          "Torch liner",
-        ],
-        buyerCheck:
-          "Do not select from the series name alone. Confirm whether the torch label shows 24KD or 25AK, photograph the assembled and disassembled front end, and provide the documented wire size, nozzle profile, liner ends and rear connector when those parts are required.",
-      },
-      {
-        name: "36KD / 40KD catalog reference group",
-        documentedComponents: [
-          "Gas nozzle",
-          "Contact tip",
-          "Tip holder",
-          "Gas diffuser",
-          "Swan neck",
-          "Torch liner",
-        ],
-        buyerCheck:
-          "These company-catalog series use different documented front-end references from the smaller groups. Provide the exact torch label, cooling arrangement, contact-tip marking, surrounding component stack and connection photos so the requested parts can be reviewed together.",
-      },
-      {
-        name: "501D / 602 catalog reference group",
-        documentedComponents: [
-          "Gas nozzle",
-          "Contact tip",
-          "Tip holder",
-          "Gas diffuser",
-          "Insulator",
-          "Swan neck",
-          "Water and cable connections",
-        ],
-        buyerCheck:
-          "Treat 501D and 602 as separate reference systems inside this catalog group. Confirm the exact label, water-cooled connection layout, complete cable end, front-end parts in assembly order and any visible part or drawing reference before quotation.",
-      },
-      {
-        name: "ORK 200A / 350A / 500A catalog reference group",
-        documentedComponents: [
-          "Gas nozzle",
-          "Contact tip",
-          "Tip holder",
-          "Gas diffuser or insulator",
-          "Swan neck",
-          "Torch liner",
-          "Control and rear connections",
-        ],
-        buyerCheck:
-          "The ORK catalog pages show distinct 200A, 350A and 500A assemblies. Copy the exact series label, show the complete torch and rear connections, and keep the nozzle, tip, holder, diffuser or insulator and neck in order for evidence-based matching.",
-      },
-    ],
+    referenceFamilies: migMagCatalogReferenceFamilies,
     selectionVariables: [
       {
         label: "Torch model and front-end family",
