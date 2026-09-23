@@ -1,8 +1,9 @@
 # Docker Desktop Recovery Evidence
 
-Reviewed: 2026-09-17. Scope: this Windows workstation and its retained local Console fixtures.
-Status: local repair accepted. Restored data, ordinary desktop startup, two normal restarts and
-post-migration Windows reboot acceptance PASS. The prior low-space condition has eased.
+Reviewed: 2026-09-18. Scope: this Windows workstation and its retained local Console fixtures.
+Status: September 17 recovery/startup/data checks and September 18 post-enable Windows reboot,
+ordinary Docker startup and complete retained-data acceptance PASS. The owner-approved
+VirtualMachinePlatform repair is verified; see the latest checkpoint for the exact evidence.
 
 ## Boundary
 
@@ -225,6 +226,77 @@ the engine without socket changes or data reset. `.tmp/m3-retention-20260917.jso
 10:38:33 UTC: all three archives/template and the 43 original variants / 604 facts remain intact,
 with zero publications. This verifies the later authorized database state, not equality of new
 synthetic fixtures with the earlier current-database hash. Neither cold backup was moved or deleted.
+
+## September 18 Windows Prerequisite Regression
+
+The M3 documentation head `1e56ea096f397f12e94ae263fb73bcdbd17ee5de` independently passes both jobs
+in [CI run 35305919207](https://github.com/18803076512/arcfort-website/actions/runs/35305919207).
+This is isolated Linux CI and does not prove this Windows engine is currently usable.
+
+Windows booted at 2026-09-18 04:06:25 UTC. With autostart still false, the initial Docker pipe and
+processes were absent. The ordinary Explorer desktop shortcut launched installed 4.91 processes
+at 04:11:45 UTC, but the API returned HTTP 500 and no working engine. Read-only system checks find:
+
+- `Win32_ComputerSystem.HypervisorPresent`: false.
+- CPU/firmware virtualization, SLAT and VM monitor extensions: true.
+- `Win32_OptionalFeature`: VirtualMachinePlatform 2 (disabled), HypervisorPlatform 2,
+  Microsoft-Hyper-V-Hypervisor 2, Microsoft-Windows-Subsystem-Linux 1 (enabled).
+- WslService is running; vmcompute and hns were not returned by the service query.
+- WSL status reports that WSL2 is unsupported in this configuration and requests the virtual
+  machine platform component. The cause or actor that disabled it has not been established.
+
+The ordinary desktop Node probe at `.tmp/probe-docker-start-host-20260918.mjs` produced separate
+write-once host reports. Actual current startup logs say `no virtualization available` and a
+grpcfuse vsock listener encountered a dead network. Packaged-agent AppData reads returned an old
+September 16 log, so those stale bytes are not current diagnostic evidence. The earlier PowerShell
+probe exited without a report and is not counted as successful inspection.
+
+At that diagnostic checkpoint, no Windows feature, boot setting, service startup policy, Docker
+setting, data disk, WSL registration or database had been changed to address the new regression.
+No reset, reinstall, prune or forced stop was performed. Database retention could not yet be
+rechecked because the engine was unavailable; the September 17 result was historical evidence.
+
+The owner subsequently gave exact approval to re-enable only VirtualMachinePlatform, preserving all
+disks/distributions/containers and without automatically restarting Windows. The
+[new decision](../decisions/2026-09-18-docker-virtual-machine-platform-reenable.md) records the grant
+and execution. Administrator DISM completed at 04:26:05 UTC with exit 3010, `Reboot required=yes`
+and explicit `/NoRestart` suppression. CIM now reports VirtualMachinePlatform enabled; the separate
+HypervisorPlatform and full Hyper-V hypervisor features remain disabled. No BIOS/boot setting changed.
+Current data/system disks and both cold backups remain present, with recorded backup sizes intact.
+
+Acceptance required an owner-performed Windows restart later than this enable operation, then
+ordinary startup, engine health and exact database-retention checks. The next section records that
+completed gate. No complete Hyper-V role or BIOS/security change was authorized by this scope.
+
+### Post-Enable Reboot And Retention Accepted
+
+The subsequent authoritative read confirms Windows boot at 2026-09-18 07:06:41 UTC, later than
+the 04:26:05 UTC enable operation. HypervisorPresent is true and VirtualMachinePlatform is enabled.
+No Docker process/engine was present when checked. This task did not change the previously false
+autostart preference. The installed shortcut, launched by the ordinary Explorer desktop, started
+the engine without IPC/configuration changes.
+
+`.tmp/verify-docker-post-vmp-20260918.mjs --self-test` passes the valid boot case and four negative
+controls for old boot, invalid date, absent hypervisor and disabled feature. `--verify` then passes
+against real services at 11:57:43 UTC, exit 0. The write-once report is
+`.tmp/docker-post-vmp-20260918.json`; it uses the September 17 current-database baseline, not the
+superseded September 14 current snapshot.
+
+- Exact local desktop-linux pipe and Engine 29.8.0.
+- All seven original container IDs/mounts and two named volumes unchanged; all are running,
+  with six healthy healthchecks and REST having no healthcheck.
+- Current database, all three archives and empty template match their preserved snapshots.
+- All original 43 variants / 604 facts match the immutable adoption baseline, with zero publication.
+- Current synthetic counts remain 46 variants, five users, four roles, one adoption, three drafts,
+  six verification events and 3,727 audit events. Current hashes remain
+  `042c56c6dec8c32ca1d74b2960a1c88f` / `482c05e24d2bd2e6c0afdd47207a288f`.
+
+All database checks used READ ONLY transactions. No import/reset, Windows auto-restart, new Docker
+installation, WSL registration change, disk copy or backup relocation occurred. The repair gate is
+closed within these tested conditions; the cause of the earlier component disable is still unknown.
+The earlier all-users two-restart proof remains historical; these new checks specifically add
+post-component-enable Windows reboot and data-retention proof. Full Console V1 and real 15AK
+verification/media/publication are separate unfinished work.
 
 ## Resume And Completion Gate
 

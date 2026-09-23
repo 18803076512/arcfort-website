@@ -357,6 +357,13 @@ disabled. Hosted M3 migration/adoption and full V1 are not completed or authoriz
 The dated [acceptance record](operations/console-m3-isolated-acceptance.md#september-18-clean-ci-acceptance)
 supersedes the older pending-CI checkpoints below and retains exact bounds and remaining evidence.
 
+Windows environment update (2026-09-18): after a new boot exposed disabled VirtualMachinePlatform,
+the owner approved only that component's re-enable without automatic reboot. A later actual boot,
+active hypervisor, ordinary Docker startup and read-only retention of all original data/archives
+passed at 11:57:43 UTC. The [recovery record](../knowledge-base/technical/docker-desktop-recovery.md)
+owns this completed environment gate. Do not repeat installation, reset adopted data or request the
+same restart again. Full V1 and real 15AK evidence remain open.
+
 1. Preserve the completed local/CI [M3 draft-editing/evidence plan](operations/product-intelligence-console-milestone-3-plan.md).
    The owner approved M3-A through M3-E on 2026-09-09 for local development and isolated testing.
    The [first authority/import barrier](operations/product-intelligence-console-milestone-3.md)

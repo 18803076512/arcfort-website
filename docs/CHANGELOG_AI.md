@@ -5405,3 +5405,77 @@ retained database and historical report.
 - **Deployment:** None. No merge, hosted migration/adoption, provider change or product publication.
 - **Next Recommended Action:** Obtain exact-SKU Level A 15AK evidence and rights-approved imagery;
   review the next Console phase within its own scope and approval boundary.
+
+## 2026-09-18 - Final M3 CI Head And Windows Prerequisite Check
+
+- **Task:** Complete CI-only submission and independently recheck the local Docker environment
+  after another Windows reboot.
+- **Files Changed:** `knowledge-base/technical/docker-desktop-recovery.md` and this log retain the
+  newly observed Windows prerequisite regression. Ignored read-only probes/reports are local only.
+- **Components Changed / Data Changed / Visual Changes / SEO Impact:** None. No runtime, public
+  evidence, hosted database, route, RFQ or deployment change in this checkpoint.
+- **Validation:** Final pushed documentation head `1e56ea096f397f12e94ae263fb73bcdbd17ee5de` passes
+  both jobs in run `35305919207`; CI watch exits 0. At 04:16:55 UTC GitHub confirms the same PR head,
+  two successful checks, PR OPEN, no auto-merge, zero deployments and no commit status contexts.
+  The earlier implementation candidate also passed run `35284287968`.
+- **Known Issues:** Windows booted at 04:06:25 UTC. Ordinary Docker startup creates the correct
+  installed processes but its engine fails; actual host logs report no virtualization available.
+  CPU/BIOS virtualization is enabled, but VirtualMachinePlatform is disabled and HypervisorPresent
+  is false. Cause is unknown. Current Windows retention cannot be rechecked without a working
+  engine. This does not invalidate isolated CI or turn prior dated recovery proof into a current pass.
+- **Reusable Knowledge Added:** Recheck current Windows prerequisites after reboot; distinguish
+  BIOS capability, optional-component state and a running hypervisor. Read actual host logs rather
+  than stale package-virtualized AppData copies.
+- **Deployment:** None. Only the authorized branch was pushed; no merge or hosted mutation.
+- **Next Recommended Action:** Obtain the pending exact VirtualMachinePlatform re-enable approval,
+  apply only that prerequisite without automatic reboot, then verify startup and retained data after
+  the owner's restart. Keep the wider V1/15AK goal open.
+
+## 2026-09-18 - Authorized VirtualMachinePlatform Re-Enable
+
+- **Task:** Execute the owner's exact Windows-component approval while preserving data and avoiding
+  an automatic restart.
+- **Files Changed:** New `knowledge-base/decisions/2026-09-18-docker-virtual-machine-platform-reenable.md`,
+  `knowledge-base/technical/docker-desktop-recovery.md` and this log. DISM's generated operational
+  log remains ignored and local. These post-CI environment records are not part of head `1e56ea09`.
+- **Components Changed:** Enable VirtualMachinePlatform and its required parent dependencies via
+  official DISM with `/NoRestart`. No full Hyper-V role, BIOS/boot/security or service-startup edit.
+- **Data Changed / Visual Changes / SEO Impact:** No Docker/WSL/container/database/public data,
+  product evidence, website UI, routes, SEO or RFQ change.
+- **Validation:** DISM exits 3010 at 04:26:05 UTC; the log explicitly requires reboot and confirms
+  restart suppression. CIM reports VirtualMachinePlatform enabled and separate HypervisorPlatform/
+  Microsoft-Hyper-V-Hypervisor still disabled. Current data/system disks and both cold backups exist;
+  backup sizes match the earlier records. No fresh hash or database-retention pass is inferred.
+- **Known Issues:** Owner-performed Windows restart and new engine/retention acceptance remain
+  required. The cause of the prerequisite becoming disabled is unknown. Full Console V1/15AK is
+  still incomplete; both existing M3 candidate CI runs remain passed.
+- **Reusable Knowledge Added:** Exact component-only approval, actual command/exit evidence and
+  a post-enable reboot gate are recorded independently of the earlier installation recovery.
+- **Deployment:** None; no further push, merge, hosted change or product publication.
+- **Next Recommended Action:** After the owner's restart, verify actual later boot, hypervisor,
+  ordinary Docker startup and retained data without resets or reimports.
+
+## 2026-09-18 - Post-Component-Reboot Docker Acceptance
+
+- **Task:** Verify the owner's Windows restart after VirtualMachinePlatform enable and close the
+  current local Docker repair gate without changing preserved data.
+- **Files Changed:** `docs/CODEX_GOAL.md`, `knowledge-base/technical/docker-desktop-recovery.md`,
+  `knowledge-base/decisions/2026-09-18-docker-virtual-machine-platform-reenable.md` and this log.
+  A write-once read-only verifier/report remains in ignored `.tmp/`.
+- **Components Changed / Data Changed / Visual Changes / SEO Impact:** No additional system,
+  application, database, product-evidence, UI, route, SEO or RFQ changes. Normal installed Docker
+  startup only; the original no-autostart preference is retained.
+- **Validation:** Actual boot 07:06:41 UTC is later than enable completion, with HypervisorPresent
+  true and VirtualMachinePlatform enabled. Verifier valid/negative controls pass. Real acceptance
+  at 11:57:43 UTC exits 0: Engine 29.8.0, seven original running containers/mounts, six healthy
+  healthchecks, two volumes, current database, three archives/template, original 43 variants / 604
+  facts unchanged, and zero publications. Current audit/fixture counts and full-table hashes match
+  the September 17 baseline. All SQL is READ ONLY; no imports or resets were run.
+- **Known Issues:** Cause of the prerequisite disable remains unknown; no guarantee against future
+  Windows configuration changes is claimed. Full Console V1 and the real 15AK evidence/media/publish
+  workflow remain incomplete. Historical failed startup records are retained rather than erased.
+- **Reusable Knowledge Added:** Distinguish feature installation from a verified later boot and
+  active hypervisor, then validate current-generation snapshots and immutable original rows.
+- **Deployment:** None. No hosted migration/adoption, merge, publication or provider change.
+- **Next Recommended Action:** Continue the next bounded Console/15AK evidence phase after review;
+  obtain Level A exact-SKU facts and rights-approved imagery without relabeling reference data.
