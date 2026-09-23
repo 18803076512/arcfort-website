@@ -61,14 +61,14 @@ assert.match(publicCopy, /order-specific quotation/);
 assert.match(publicCopy, /certification is never assumed/);
 
 const pageSource = readFileSync(
-  new URL("../app/shipping-payment/page.tsx", import.meta.url),
+  new URL("../app/(public)/shipping-payment/page.tsx", import.meta.url),
   "utf8",
 );
 const distributorSource = readFileSync(
-  new URL("../app/distributor-supply/page.tsx", import.meta.url),
+  new URL("../app/(public)/distributor-supply/page.tsx", import.meta.url),
   "utf8",
 );
-const oemSource = readFileSync(new URL("../app/oem-service/page.tsx", import.meta.url), "utf8");
+const oemSource = readFileSync(new URL("../app/(public)/oem-service/page.tsx", import.meta.url), "utf8");
 
 assert.match(pageSource, /Welding Product Shipping, Payment and Order Terms/);
 assert.match(pageSource, /export-order-workflow/);

@@ -1,0 +1,61 @@
+# Local/disposable CI only. Never push this file to a hosted project.
+# Hosted Auth settings are recorded separately in config.staging.toml.
+project_id = "arcfort-product-intelligence"
+
+[api]
+enabled = true
+port = 54321
+schemas = ["public", "graphql_public"]
+extra_search_path = ["public", "extensions"]
+max_rows = 1000
+auto_expose_new_tables = false
+
+[db]
+port = 54322
+shadow_port = 54320
+major_version = 17
+
+[db.migrations]
+enabled = true
+
+[db.seed]
+enabled = true
+sql_paths = ["./seed.sql"]
+
+[studio]
+enabled = true
+port = 54323
+api_url = "http://127.0.0.1"
+
+[local_smtp]
+enabled = true
+port = 54324
+
+[storage]
+enabled = true
+file_size_limit = "25MiB"
+
+[auth]
+enabled = true
+site_url = "http://127.0.0.1:3000"
+additional_redirect_urls = ["http://127.0.0.1:3000/console/auth/callback", "http://127.0.0.1:3000/console/auth/confirm"]
+jwt_expiry = 3600
+enable_signup = false
+enable_anonymous_sign_ins = false
+
+[auth.email]
+# The CLI maps this flag to the email provider. Global auth.enable_signup stays false.
+enable_signup = true
+double_confirm_changes = true
+enable_confirmations = true
+
+[auth.email.template.invite]
+subject = "ArcFort Weld Console Invitation"
+content_path = "./supabase/templates/invite.html"
+
+[auth.email.template.recovery]
+subject = "ArcFort Weld Console Password Reset"
+content_path = "./supabase/templates/recovery.html"
+
+[analytics]
+enabled = false

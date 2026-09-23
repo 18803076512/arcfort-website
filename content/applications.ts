@@ -18,6 +18,40 @@ export const applications: ApplicationPage[] = [
       "Clear product lists by torch model or reference number",
       "RFQ support for mixed welding parts and plasma consumables",
     ],
+    operatingContext: [
+      "Steel fabrication and repair work using welding and plasma cutting product families",
+      "Repeat replacement of torch-front consumables during maintenance purchasing",
+      "Mixed welding, cutting and workshop-accessory lists prepared by vessel, workshop or order",
+    ],
+    selectionConsiderations: [
+      {
+        label: "Process and installed equipment",
+        guidance:
+          "State the welding or cutting process, torch or machine model and the current component reference when available.",
+      },
+      {
+        label: "Consumable identity",
+        guidance:
+          "Keep electrodes, nozzles, shields, contact tips and related stack components in installation order for review.",
+      },
+      {
+        label: "Working and documentation requirements",
+        guidance:
+          "Provide buyer drawings, approved specifications and any project documentation requirement with the RFQ.",
+      },
+      {
+        label: "Repeat-order control",
+        guidance:
+          "Separate trial quantities from repeat quantities and retain the approved product, label and packing reference.",
+      },
+    ],
+    rfqFields: [
+      "Shipyard, vessel-repair or fabrication work scope",
+      "Welding or cutting process and installed torch or machine reference",
+      "Product list, existing part numbers, drawings or arranged sample photos",
+      "Quantity by item, trial or repeat-order plan and packaging requirement",
+      "Destination country and required buyer documentation",
+    ],
     relatedCategorySlugs: [
       "mig-mag-torch-parts",
       "plasma-cutting-consumables",
@@ -62,6 +96,40 @@ export const applications: ApplicationPage[] = [
       "Robotic welding torch front-end evidence for automated cell maintenance",
       "Accessory lists for workshop maintenance",
       "Packaging and quantity details for distributor programs",
+    ],
+    operatingContext: [
+      "Repair and body-work purchasing for manual welding equipment",
+      "Parts fabrication using repeat torch consumables and workshop accessories",
+      "Automated welding-cell maintenance where installed interfaces must be documented",
+    ],
+    selectionConsiderations: [
+      {
+        label: "Manual or automated use",
+        guidance:
+          "Identify whether the request is for a hand torch, repair workshop or robotic welding-cell replacement.",
+      },
+      {
+        label: "Installed torch reference",
+        guidance:
+          "Provide the torch label, connection photos, front-end component stack and approved drawing when available.",
+      },
+      {
+        label: "Replacement scope",
+        guidance:
+          "Separate complete torch, neck, cable package, loose consumables and workshop accessories by line item.",
+      },
+      {
+        label: "Trial and repeat supply",
+        guidance:
+          "Record the approved trial item before releasing larger repeat or distributor quantities.",
+      },
+    ],
+    rfqFields: [
+      "Repair, fabrication or automated-cell application",
+      "Installed welding equipment and torch model or label",
+      "Required product scope and current component stack",
+      "Interface drawing, connection photos, sample or existing part reference",
+      "Trial quantity, repeat quantity, packaging and destination country",
     ],
     relatedCategorySlugs: ["mig-mag-torch-parts", "tig-torch-parts", "welding-accessories"],
     relatedProductSlugs: [
@@ -110,6 +178,40 @@ export const applications: ApplicationPage[] = [
       "Accessory and clamp support for field work",
       "Clear RFQ details for delivery planning",
     ],
+    operatingContext: [
+      "Construction and maintenance requests governed by buyer welding procedures and project requirements",
+      "Field-repair purchasing where equipment, accessories and consumables must be listed separately",
+      "Replacement and replenishment orders that require clear destination and delivery planning",
+    ],
+    selectionConsiderations: [
+      {
+        label: "Buyer welding procedure",
+        guidance:
+          "Provide the approved process, base-material requirement and consumable specification instead of selecting from appearance.",
+      },
+      {
+        label: "Field equipment",
+        guidance:
+          "Identify the installed power source, torch, holder, cable or connector references included in the request.",
+      },
+      {
+        label: "Project controls",
+        guidance:
+          "Attach buyer drawings, required standards and document lists; ArcFort Weld does not infer project compliance.",
+      },
+      {
+        label: "Order breakdown",
+        guidance:
+          "Separate consumables, accessories, equipment and spare quantities so the quotation scope is clear.",
+      },
+    ],
+    rfqFields: [
+      "Pipeline construction, maintenance or repair scope",
+      "Approved welding process and buyer consumable requirement",
+      "Installed equipment, torch and accessory references",
+      "Drawings, project specifications and required document list",
+      "Quantity by line item, destination and delivery requirement",
+    ],
     relatedCategorySlugs: ["welding-consumables", "welding-accessories", "welding-machines"],
     relatedProductSlugs: ["tig-gas-lens-1-6mm", "tig-ceramic-cup-6", "plasma-electrode"],
     faq: [
@@ -141,6 +243,40 @@ export const applications: ApplicationPage[] = [
       "MIG/MAG torch replacement parts",
       "Plasma electrode and nozzle sourcing",
       "Workshop accessory and clamp product lists",
+    ],
+    operatingContext: [
+      "Daily workshop welding and cutting with repeat consumable replacement",
+      "Mixed MIG/MAG, TIG and plasma purchasing across fabrication workstations",
+      "Maintenance and distributor replenishment lists organized by installed equipment",
+    ],
+    selectionConsiderations: [
+      {
+        label: "Process mix",
+        guidance:
+          "List each welding and cutting process separately with the installed torch or machine reference.",
+      },
+      {
+        label: "Front-end geometry",
+        guidance:
+          "Confirm thread, size, visible profile and assembly relationship from a drawing, sample or measured reference.",
+      },
+      {
+        label: "Consumption pattern",
+        guidance:
+          "Separate high-frequency consumables from occasional maintenance parts and workshop accessories.",
+      },
+      {
+        label: "Packing plan",
+        guidance:
+          "State trial quantity, repeat quantity and any item labeling or private-label requirement.",
+      },
+    ],
+    rfqFields: [
+      "Fabrication process and workstation or equipment reference",
+      "Product name, model, size, thread or current part number",
+      "Drawing, sample photo or parts arranged in assembly order",
+      "Quantity by item and expected repeat-purchase pattern",
+      "Packaging, labeling and destination country",
     ],
     relatedCategorySlugs: [
       "mig-mag-torch-parts",
@@ -177,6 +313,40 @@ export const applications: ApplicationPage[] = [
       "Consumables for welding and cutting maintenance",
       "Packaging and delivery details for project purchasing",
     ],
+    operatingContext: [
+      "Structural steelwork and installation purchasing for workshop or site use",
+      "Maintenance orders combining holders, clamps, cables and replaceable consumables",
+      "Project supply lists that require product, packing and delivery scope to be separated",
+    ],
+    selectionConsiderations: [
+      {
+        label: "Workshop or site use",
+        guidance:
+          "State the working environment and buyer-approved equipment requirement for each requested item.",
+      },
+      {
+        label: "Cable and connection details",
+        guidance:
+          "Provide connector type, existing cable reference, holder or clamp photos and verified dimensions when relevant.",
+      },
+      {
+        label: "Consumable fit",
+        guidance:
+          "Use the torch or machine model, drawing, current part and assembly photos to review replacement products.",
+      },
+      {
+        label: "Project delivery scope",
+        guidance:
+          "Separate product lines, quantities, packing, destination and required buyer documents before quotation.",
+      },
+    ],
+    rfqFields: [
+      "Structural, installation or maintenance application",
+      "Workshop or site-use requirement and installed equipment",
+      "Accessory, cable, connector and consumable product list",
+      "Photos, drawings, verified dimensions or existing part references",
+      "Quantity, packaging, destination and buyer document requirement",
+    ],
     relatedCategorySlugs: [
       "welding-accessories",
       "welding-consumables",
@@ -212,6 +382,40 @@ export const applications: ApplicationPage[] = [
       "Mixed consumable and accessory product lists",
       "Replacement parts by reference part, photo or reference number",
       "Repeat purchasing support for common workshop items",
+    ],
+    operatingContext: [
+      "Repair and maintenance work involving several welding or cutting processes",
+      "Unknown replacement parts that must be identified from the installed assembly",
+      "Counter or workshop replenishment orders containing mixed low-volume product lines",
+    ],
+    selectionConsiderations: [
+      {
+        label: "Identify before matching",
+        guidance:
+          "Photograph the complete torch or tool, its label and the removed components in assembly order.",
+      },
+      {
+        label: "Record measurable details",
+        guidance:
+          "Provide visible markings, thread, overall size and connection details from verified measurements or drawings.",
+      },
+      {
+        label: "Separate process families",
+        guidance:
+          "Keep MIG/MAG, TIG, plasma, machine and general accessory items on separate RFQ lines.",
+      },
+      {
+        label: "Control repeat orders",
+        guidance:
+          "Retain the approved SKU, sample, image and package reference after the first item is confirmed.",
+      },
+    ],
+    rfqFields: [
+      "Repair process and installed torch, machine or tool",
+      "Complete product and label photos plus removed parts in assembly order",
+      "Visible markings, drawings, verified dimensions or sample reference",
+      "Quantity by item, trial or repeat-order requirement",
+      "Packaging preference and destination country",
     ],
     relatedCategorySlugs: ["mig-mag-torch-parts", "tig-torch-parts", "welding-accessories"],
     relatedProductSlugs: [

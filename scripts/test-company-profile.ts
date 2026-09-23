@@ -55,12 +55,12 @@ for (const unsupportedClaim of [
 }
 
 const sourceFiles = {
-  about: readFileSync(new URL("../app/about/page.tsx", import.meta.url), "utf8"),
-  home: readFileSync(new URL("../app/page.tsx", import.meta.url), "utf8"),
-  contact: readFileSync(new URL("../app/contact/page.tsx", import.meta.url), "utf8"),
-  distributor: readFileSync(new URL("../app/distributor-supply/page.tsx", import.meta.url), "utf8"),
-  oem: readFileSync(new URL("../app/oem-service/page.tsx", import.meta.url), "utf8"),
-  rfq: readFileSync(new URL("../app/rfq/page.tsx", import.meta.url), "utf8"),
+  about: readFileSync(new URL("../app/(public)/about/page.tsx", import.meta.url), "utf8"),
+  home: readFileSync(new URL("../app/(public)/page.tsx", import.meta.url), "utf8"),
+  contact: readFileSync(new URL("../app/(public)/contact/page.tsx", import.meta.url), "utf8"),
+  distributor: readFileSync(new URL("../app/(public)/distributor-supply/page.tsx", import.meta.url), "utf8"),
+  oem: readFileSync(new URL("../app/(public)/oem-service/page.tsx", import.meta.url), "utf8"),
+  rfq: readFileSync(new URL("../app/(public)/rfq/page.tsx", import.meta.url), "utf8"),
 };
 
 assert.match(sourceFiles.about, /Renqiu Ailesen Welding Technology Co\., Ltd\./);

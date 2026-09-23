@@ -1,0 +1,6 @@
+{
+  "extends": "../../../tsconfig.json",
+  "compilerOptions": { "baseUrl": "../../..", "incremental": false },
+  "include": ["app/**/*.tsx", "app/**/*.ts", "../../../.tmp/console-ui-next/types/**/*.ts"],
+  "exclude": ["node_modules"]
+}

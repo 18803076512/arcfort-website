@@ -71,12 +71,12 @@ assert.equal(
   2,
 );
 
-const pageSource = readFileSync("app/distributor-supply/page.tsx", "utf8");
+const pageSource = readFileSync("app/(public)/distributor-supply/page.tsx", "utf8");
 const componentSource = readFileSync(
   "components/distributor/DistributorRfqBuilder.tsx",
   "utf8",
 );
-const downloadsSource = readFileSync("app/downloads/page.tsx", "utf8");
+const downloadsSource = readFileSync("app/(public)/downloads/page.tsx", "utf8");
 const analyticsSource = readFileSync("components/AnalyticsTracker.tsx", "utf8");
 const sitemapSource = readFileSync("app/sitemap.ts", "utf8");
 
