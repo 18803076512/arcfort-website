@@ -1,4 +1,11 @@
 import { validateProductDraftCopy, type ProductDraftCopy } from "./drafts.ts";
+import {
+  COMPATIBILITY_SOURCE_FIELDS,
+  compatibilityRelationshipTypes,
+  type CompatibilityCopy,
+  type CompatibilitySourceCopy,
+  type CompatibilityRelationshipType,
+} from "./compatibility.ts";
 
 export type TechnicalValueCopy = { value_text: string; unit: string };
 export type EvidenceLink = { source_id: string; role: "supporting" | "conflicting" };
@@ -20,6 +27,13 @@ export type DraftIdentity = { sku: string; slug: string; source_reference: strin
 type Base = { request_id: string };
 type Target = { variant_id: string; field_id: string; scope: string };
 type ReviewTarget = { value_id: string; revision: number; digest: string };
+type CompatibilityTarget = {
+  subject_id: string;
+  target_id: string;
+  relationship_type: CompatibilityRelationshipType;
+  scope: string;
+};
+type CompatibilityReviewTarget = { relationship_id: string; revision: number; digest: string };
 export type ConsoleCommand = Base &
   (
     | { action: "create"; identity: DraftIdentity; copy: ProductDraftCopy }
@@ -41,6 +55,29 @@ export type ConsoleCommand = Base &
         replacement: TechnicalValueCopy | null;
         evidence: EvidenceLink[] | null;
       })
+    | { action: "compatibility_entity"; variant_id: string }
+    | (CompatibilityTarget & {
+        action: "compatibility_source";
+        role: string;
+        source: CompatibilitySourceCopy;
+      })
+    | (CompatibilityTarget & {
+        action: "compatibility_propose";
+        root_id: string | null;
+        revision: number;
+        copy: CompatibilityCopy;
+        evidence: EvidenceLink[];
+        reason: string;
+      })
+    | (CompatibilityReviewTarget & { action: "compatibility_submit" })
+    | (CompatibilityReviewTarget & {
+        action: "compatibility_review";
+        decision: "APPROVE" | "EDIT" | "REJECT";
+        reason: string;
+        resolution: string;
+        replacement: CompatibilityCopy | null;
+        evidence: EvidenceLink[] | null;
+      })
   );
 export type CommandInput = ConsoleCommand extends infer C
   ? C extends ConsoleCommand
@@ -58,6 +95,10 @@ export type CommandResult =
         revision?: number;
         digest?: string;
         event_id?: string;
+        entity_id?: string;
+        product_variant_id?: string;
+        relationship_id?: string;
+        root_relationship_id?: string;
       };
     }
   | { ok: false; code: string; message: string; fields?: string[] };
@@ -122,6 +163,44 @@ function reason(value: unknown) {
   string(value, "reason", 2000, true);
   if (value.replace(/\s/g, "").length < 3) throw new CommandInputError(["reason"]);
 }
+function exactLabel(value: unknown, field: string) {
+  string(value, field, 200, true);
+  if (value !== value.trim()) throw new CommandInputError([field]);
+}
+function compatibilityCopy(value: unknown) {
+  const copy = record(value);
+  keys(copy, ["role", "confirmation_requirements"]);
+  exactLabel(copy.role, "role");
+  if (
+    !Array.isArray(copy.confirmation_requirements) ||
+    copy.confirmation_requirements.length < 1 ||
+    copy.confirmation_requirements.length > 20
+  )
+    throw new CommandInputError(["confirmation_requirements"]);
+  for (const requirement of copy.confirmation_requirements)
+    string(requirement, "confirmation_requirements", 500, true);
+}
+function sourceClassification(source: Record<string, unknown>) {
+  const levels: Record<string, string> = {
+    company_record: "A",
+    official_manufacturer: "B",
+    technical_standard: "C",
+    secondary_reference: "D",
+  };
+  if (
+    !Object.hasOwn(levels, String(source.source_kind)) ||
+    levels[String(source.source_kind)] !== source.source_level
+  )
+    throw new CommandInputError(["source_kind"]);
+  const date = String(source.evidence_date);
+  if (
+    !/^\d{4}-\d{2}-\d{2}$/.test(date) ||
+    Number.isNaN(Date.parse(date)) ||
+    new Date(date).toISOString().slice(0, 10) !== date ||
+    date > new Date().toISOString().slice(0, 10)
+  )
+    throw new CommandInputError(["evidence_date"]);
+}
 export function parseConsoleCommand(input: unknown): ConsoleCommand {
   const value = record(input);
   uuid(value.request_id, "request_id");
@@ -179,25 +258,7 @@ export function parseConsoleCommand(input: unknown): ConsoleCommand {
       keys(source, [...SOURCE_FIELDS]);
       for (const field of SOURCE_FIELDS)
         string(source[field], field, 2000, field !== "asserted_unit");
-      const levels: Record<string, string> = {
-        company_record: "A",
-        official_manufacturer: "B",
-        technical_standard: "C",
-        secondary_reference: "D",
-      };
-      if (
-        !Object.hasOwn(levels, String(source.source_kind)) ||
-        levels[String(source.source_kind)] !== source.source_level
-      )
-        throw new CommandInputError(["source_kind"]);
-      const date = String(source.evidence_date);
-      if (
-        !/^\d{4}-\d{2}-\d{2}$/.test(date) ||
-        Number.isNaN(Date.parse(date)) ||
-        new Date(date).toISOString().slice(0, 10) !== date ||
-        date > new Date().toISOString().slice(0, 10)
-      )
-        throw new CommandInputError(["evidence_date"]);
+      sourceClassification(source);
     } else {
       revision(value.revision);
       technical(value.value);
@@ -225,6 +286,88 @@ export function parseConsoleCommand(input: unknown): ConsoleCommand {
         throw new CommandInputError(["decision"]);
       if (value.decision === "EDIT") {
         technical(value.replacement);
+        evidence(value.evidence);
+      } else if (value.replacement !== null || value.evidence !== null)
+        throw new CommandInputError(["replacement"]);
+    }
+  } else if (value.action === "compatibility_entity") {
+    keys(value, [...base, "variant_id"]);
+    uuid(value.variant_id, "variant_id");
+  } else if (value.action === "compatibility_source" || value.action === "compatibility_propose") {
+    keys(value, [
+      ...base,
+      "subject_id",
+      "target_id",
+      "relationship_type",
+      "scope",
+      ...(value.action === "compatibility_source"
+        ? ["role", "source"]
+        : ["root_id", "revision", "copy", "evidence", "reason"]),
+    ]);
+    uuid(value.subject_id, "subject_id");
+    uuid(value.target_id, "target_id");
+    if (String(value.subject_id).toLowerCase() === String(value.target_id).toLowerCase())
+      throw new CommandInputError(["target_id"]);
+    if (!compatibilityRelationshipTypes.some((type) => type === value.relationship_type))
+      throw new CommandInputError(["relationship_type"]);
+    exactLabel(value.scope, "scope");
+    if (value.action === "compatibility_source") {
+      exactLabel(value.role, "role");
+      const source = record(value.source);
+      keys(source, [...COMPATIBILITY_SOURCE_FIELDS]);
+      for (const field of COMPATIBILITY_SOURCE_FIELDS) {
+        string(source[field], field, 2000, true);
+        if (source[field] !== source[field].trim()) throw new CommandInputError([field]);
+      }
+      sourceClassification(source);
+      if (!["supports", "contradicts", "catalog_grouping"].includes(String(source.assertion)))
+        throw new CommandInputError(["assertion"]);
+      if (
+        ![
+          "company_catalog",
+          "factory_confirmation",
+          "drawing",
+          "approved_sample",
+          "verified_reference_number",
+          "confirmed_dimensions",
+          "official_catalog",
+          "standard",
+          "secondary_reference",
+        ].includes(String(source.evidence_basis))
+      )
+        throw new CommandInputError(["evidence_basis"]);
+    } else {
+      if (value.root_id !== null) uuid(value.root_id, "root_id");
+      revision(value.revision);
+      if (value.root_id === null && value.revision !== 0) throw new CommandInputError(["revision"]);
+      compatibilityCopy(value.copy);
+      evidence(value.evidence);
+      reason(value.reason);
+    }
+  } else if (value.action === "compatibility_submit" || value.action === "compatibility_review") {
+    keys(value, [
+      ...base,
+      "relationship_id",
+      "revision",
+      "digest",
+      ...(value.action === "compatibility_review"
+        ? ["decision", "reason", "resolution", "replacement", "evidence"]
+        : []),
+    ]);
+    uuid(value.relationship_id, "relationship_id");
+    revision(value.revision);
+    if (typeof value.digest !== "string" || !/^[a-f0-9]{64}$/.test(value.digest))
+      throw new CommandInputError(["digest"]);
+    if (value.action === "compatibility_review") {
+      reason(value.reason);
+      string(value.resolution, "resolution", 2000);
+      if (
+        typeof value.decision !== "string" ||
+        !["APPROVE", "EDIT", "REJECT"].includes(value.decision)
+      )
+        throw new CommandInputError(["decision"]);
+      if (value.decision === "EDIT") {
+        compatibilityCopy(value.replacement);
         evidence(value.evidence);
       } else if (value.replacement !== null || value.evidence !== null)
         throw new CommandInputError(["replacement"]);

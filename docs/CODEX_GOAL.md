@@ -116,7 +116,7 @@ specification. Appearance, similar naming or catalog grouping cannot establish c
 | Search baseline        | Site is live and indexable; 88 production sitemap URLs and a recorded baseline of 8 clicks, 422 impressions and 1.90% CTR                                                       |
 | RFQ                    | Email-provider flow, validation, attachments, buyer confirmation, BotID and idempotency are implemented; final sales and buyer inbox placement remains externally unverified    |
 | Delivery operations    | Deployment and live health evidence exist; DMARC, credential-rotation confirmation, GA4 conversion evidence and Search Console submission still require owner-side verification |
-| Product Intelligence   | M1 hosted foundation, M2 local owner/browser and M3 local/CI draft/review gates passed with warnings; hosted remains read-only, with no public-source cutover or publication       |
+| Product Intelligence   | M1 hosted foundation, M2 local owner/browser and M3 local/CI draft/review gates passed with warnings; hosted remains read-only, with no public-source cutover or publication    |
 
 The technical website foundation is mature. The primary constraint is verified evidence, not another
 general page or a larger unreviewed SKU count.
@@ -339,6 +339,112 @@ mobile behavior and conversion paths must satisfy the applicable repository gate
 ## Recommended Next Setup Phase
 
 Retain the completed local/CI M3 baseline and review the next controlled product-data phase:
+
+M4 update (2026-09-24): the local read-only media inspection workbench is implemented with SKU
+coverage, asset filters, incomplete-approval/missing-view indicators and recorded-hash duplicate
+checks. Offline/query-transport, synthetic responsive UI and public-site regressions pass. Fresh
+real Auth/RLS/PostgREST CI is still required for this candidate; no M4 push/merge/deployment or
+database mutation is implied by the earlier M3 authorization. The
+[M4 record](operations/product-intelligence-console-milestone-4.md) retains this boundary and the
+remaining compatibility/media commands, OEM/packaging/documents and full acceptance scope.
+M4, full V1 and the real 15AK pilot are not complete.
+
+M4-B1 update (2026-09-24): exact-SKU compatibility source intake and immutable endpoint/source
+bindings are prepared locally in migration 10, with 79 new embedded SQL assertions (325 total)
+and preservation checks for all four real reference relationships. No database migration was
+applied outside the in-memory test; no public command/UI or real confirmation is enabled. The
+[evidence decision](../knowledge-base/decisions/2026-09-24-console-m4-compatibility-evidence.md)
+separates source eligibility from human approval. Relationship revisions/review, media commands,
+supporting records, fresh full-stack CI and the complete real-data pilot remain required.
+
+M4-B2 update (2026-09-25): migration 11 prepares compatibility proposal/current-head history,
+submitted-digest APPROVE/EDIT/REJECT and current/open readiness integration. All 417 embedded SQL
+assertions pass, including 92 review checks and proposals against the four actual 15AK references
+without changing their original rows or confirming fit. The
+[revision decision](../knowledge-base/decisions/2026-09-25-console-m4-compatibility-revisions.md)
+records the stronger readiness rule: a historical/current approval cannot hide a new unconfirmed
+relationship. No local retained/hosted migration, public command grant or UI integration occurred.
+Owner-facing compatibility editing, media commands, OEM/packaging/documents, full-stack CI and the
+real evidence/preview/QA/publication pilot remain required; private SQL is not completed V1.
+
+M4-B3 update (2026-09-25): five compatibility command contracts now connect the existing same-origin
+handler to authenticated SQL wrappers prepared in migration 12. A separate default-off local-only
+flag prevents implicit activation by M3 settings. All 448 embedded assertions, six new synthetic
+transport groups and eight existing command groups pass. The
+[command decision](../knowledge-base/decisions/2026-09-25-console-m4-compatibility-commands.md)
+separates web configuration from database authorization. No active setting, retained/hosted schema
+or public product data changed. Current/source/history reads, owner UI and real full-stack
+acceptance are still required before this becomes a usable compatibility workflow.
+
+M4-B4 update (2026-09-26): the SKU-scoped compatibility route, counted current/source/history reads,
+target search and owner comparison/editor are implemented locally behind the unchanged default-off
+flag. Four read groups and eleven synthetic browser groups / eighteen screenshots pass, alongside
+existing editor/media regressions and 448 embedded SQL assertions. The
+[workbench decision](../knowledge-base/decisions/2026-09-26-console-m4-compatibility-workbench.md)
+separates UI/source-intake feedback from authoritative approval. Real Auth/PostgREST/persistence,
+concurrency and fresh CI remain unproven for this candidate. No retained/hosted database, canonical
+fact, public route or active flag changed. Media mutations, supporting records and the real 15AK
+verified preview/QA/publication workflow remain required; synthetic UI is not completed V1.
+
+M4-B5 preparation (2026-09-26): the pristine isolated runner now includes compatibility API and
+browser scenarios, explicit test-server opt-in, additional existing-work refusal checks and exact
+retention of original compatibility/source rows. Thirteen guard groups and the existing 448 embedded
+SQL assertions pass. The actual Auth/PostgREST/concurrent/browser sequence has not run; CI-only
+submission of the current M4 candidate requires its own authorization. See the
+[preparation record](operations/product-intelligence-console-milestone-4.md#m4-b5-isolated-acceptance-preparation).
+No active configuration, retained data, real evidence or public source changed.
+
+M4-B6 preparation (2026-09-26): migration 13 adds immutable media source bindings to the exact SKU,
+asset, role and separate usage-rights/product-match dimension. All 528 embedded assertions pass,
+including 80 new checks, public-schema type parity and two 17-table replays. Four synthetic source
+intakes against actual imported 15AK identities preserve all original images/mappings and produce
+no approval or publication. The
+[media evidence decision](../knowledge-base/decisions/2026-09-26-console-m4-media-evidence.md)
+distinguishes declared metadata from byte verification and human approval. No retained/hosted
+migration, original upload, mapping command, review UI or active setting changed. Fresh full-stack
+CI and exact submission approval remain outstanding; the pending B5 submission scope does not
+include this new migration. Full media review and the real 15AK preview/QA/publication pilot remain
+required, not replaced by source-intake tests.
+
+M4-B7 preparation (2026-09-27): migration 14 adds private original upload intent/completion ledgers
+and restrictive policies limited to their managed Storage namespace. A server-only validator checks
+actual raster bytes and retains the original unchanged. All 598 embedded SQL assertions and six
+actual byte-test groups pass; the production build retains 93 static outputs. The
+[original-intake decision](../knowledge-base/decisions/2026-09-27-console-m4-original-intake.md)
+separates declared metadata, input-byte validation and human approval. SQL completion remains
+`not_attested`, private and blocked. No upload endpoint/UI, actual Storage round trip, retained/hosted
+migration or public-data change occurred. Connect and test authenticated upload/readback before
+claiming usable intake; SKU media review and the real 15AK preview/QA/publication pilot remain open.
+
+M4-B8 preparation (2026-09-27): migration 15 and a separately disabled local-only API connect
+authenticated original upload, exact byte readback and counted SKU intake history to a responsive
+form. All 627 embedded SQL assertions, six byte groups, nine mocked-SDK groups, six-width synthetic
+UI and actual production-build HTTP privacy checks pass. The
+[upload decision](../knowledge-base/decisions/2026-09-27-console-m4-original-upload.md) retains the
+distinction between observed stored bytes, SQL `not_attested` completion and human rights/match
+approval. No real Auth/Storage round trip, retained/hosted migration or candidate CI is claimed.
+No active flag, canonical product fact, public route or media assignment changed. Complete real
+disposable upload acceptance, then immutable media review and the real 15AK preview/QA/publication
+pilot; synthetic upload feedback is not completed V1.
+
+M4-B9 correction (2026-09-27): inspection for real upload acceptance found B8's API path outside
+the `/console` login-cookie scope. The endpoint now lives at `/console/originals`, with unchanged
+cookie restrictions and an exact-path middleware-body-clone exemption. Actual browser cookie
+delivery, installed/production matcher coverage and fresh production HTTP privacy/host checks pass.
+The [replacement decision](../knowledge-base/decisions/2026-09-27-console-m4-original-cookie-scope.md)
+supersedes B8 API placement only. No Auth/Storage persistence, schema application, active flag or
+media approval is implied. Continue real disposable acceptance and the full 15AK workflow; the
+twelve V1 requirements remain incomplete.
+
+M4-B10 submission update (2026-09-28): the owner explicitly authorized the current M4 compatibility,
+media/originals, cookie correction and real isolated acceptance batch for review, commit and push
+to `18803076512/arcfort-website` / `codex/v2-industrial-brand-system`, for isolated CI only. This
+replaces the unanswered B5-only scope; no merge, deployment, hosted change or retained-stack
+migration/reset/import/switch is included. Real unmocked original-upload/Storage acceptance is
+prepared with >10 MiB transport, byte retention, retries, role/revocation and source preservation.
+Fourteen local target/server guard groups and fresh embedded 15-suite/627-assertion checks pass;
+actual candidate CI is pending. See the [B10 record](operations/product-intelligence-console-milestone-4.md#m4-b10-real-original-acceptance-and-authorized-ci).
+Do not classify prepared assertions as real-provider evidence or mark V1 complete.
 
 Current access update: the approved staging owner has verified email, evidenced password login and
 one active `owner` role. The role committed on 2026-09-07 and was independently read back with audit

@@ -1,6 +1,7 @@
 import { ConsoleLink } from "@/components/console/ConsoleLink";
 import { ProductWorkingNav } from "@/components/console/ProductWorkingNav";
 import { readWorkingStates } from "@/lib/console/working";
+import { consoleCompatibilityEnabled, consoleOriginalsEnabled } from "@/lib/console/working-config";
 
 import Image from "next/image";
 import { notFound } from "next/navigation";
@@ -40,7 +41,13 @@ export default async function ProductDetailPage({
         Products
       </ConsoleLink>
       <h1>{data.identity.products?.name_en}</h1>
-      {working && <ProductWorkingNav id={id} />}
+      {working && (
+        <ProductWorkingNav
+          id={id}
+          compatibility={consoleCompatibilityEnabled()}
+          originals={consoleOriginalsEnabled()}
+        />
+      )}
       <dl className="console-facts">
         <div>
           <dt>SKU / Model</dt>
@@ -76,6 +83,11 @@ export default async function ProductDetailPage({
       <TechnicalTable data={technical} />
       <Pagination data={technical} params={query} path={`/console/products/${id}`} />
       <h2>Product Media</h2>
+      <p className="mb-4">
+        <ConsoleLink href={`/console/media?variant=${id}`}>
+          Media coverage and asset inventory
+        </ConsoleLink>
+      </p>
       {data.media.length ? (
         <DataTable
           label="Product media evidence"

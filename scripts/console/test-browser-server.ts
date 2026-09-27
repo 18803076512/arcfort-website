@@ -23,15 +23,54 @@ test("browser server receives only system paths and local public configuration",
     NODE_OPTIONS: "do-not-pass",
     NEXT_PUBLIC_GA_MEASUREMENT_ID: "do-not-pass",
     CONSOLE_SUPABASE_URL: "https://hosted.example.invalid",
+    CONSOLE_COMPATIBILITY_ENABLED: "true",
+    CONSOLE_ORIGINALS_ENABLED: "true",
     HTTP_PROXY: "do-not-pass",
   });
   assert.equal(env.CONSOLE_SUPABASE_URL, "http://127.0.0.1:54321");
   assert.equal(env.NODE_ENV, "production");
+  assert.equal(env.CONSOLE_COMPATIBILITY_ENABLED, undefined);
+  assert.equal(env.CONSOLE_ORIGINALS_ENABLED, undefined);
   assert.equal(env.PATH, "synthetic-path");
   assert.equal(env.SystemRoot, "synthetic-root");
   assert.ok(!JSON.stringify(env).includes("do-not-pass"));
   assert.throws(() => browserServerEnvironment("sb_secret_synthetic", { CI: "true" }));
   assert.throws(() => browserServerEnvironment("sb_publishable_synthetic", {}));
+});
+
+test("compatibility acceptance requires an explicit exact-local server option", () => {
+  const env = browserServerEnvironment(
+    "sb_publishable_synthetic",
+    { CI: "true" },
+    { compatibility: true },
+  );
+  assert.equal(env.CONSOLE_COMPATIBILITY_ENABLED, "true");
+  assert.equal(env.CONSOLE_ENVIRONMENT, "local");
+  assert.equal(env.CONSOLE_SUPABASE_URL, "http://127.0.0.1:54321");
+  assert.equal(env.CONSOLE_ORIGINALS_ENABLED, undefined);
+  assert.throws(() =>
+    browserServerEnvironment("sb_secret_synthetic", { CI: "true" }, { compatibility: true }),
+  );
+  assert.throws(() =>
+    browserServerEnvironment("sb_publishable_synthetic", {}, { compatibility: true }),
+  );
+});
+
+test("original upload requires a separate exact-local server option", () => {
+  const env = browserServerEnvironment(
+    "sb_publishable_synthetic",
+    { CI: "true" },
+    { originals: true },
+  );
+  assert.equal(env.CONSOLE_ORIGINALS_ENABLED, "true");
+  assert.equal(env.CONSOLE_COMPATIBILITY_ENABLED, undefined);
+  assert.equal(env.CONSOLE_SUPABASE_URL, "http://127.0.0.1:54321");
+  assert.throws(() =>
+    browserServerEnvironment("sb_secret_synthetic", { CI: "true" }, { originals: true }),
+  );
+  assert.throws(() =>
+    browserServerEnvironment("sb_publishable_synthetic", {}, { originals: true }),
+  );
 });
 
 test("every Next production env filename is refused without reading or deleting it", async () => {

@@ -19,6 +19,8 @@ import {
 } from "../../lib/console/working.ts";
 import { consoleWorkingEnabled } from "../../lib/console/working-config.ts";
 import { browserOrigin, privateResponse, startBrowserServer } from "./browser-server.ts";
+import { runCompatibilityWorkingBrowser } from "./test-compatibility-working-browser.ts";
+import { runOriginalWorkingBrowser } from "./test-original-working-browser.ts";
 
 type Account = { id: string; email: string; password: string; client: ConsoleClient };
 type BrowserInput = {
@@ -27,6 +29,8 @@ type BrowserInput = {
   reviewer: Account;
   viewer: Account;
   fieldId: string;
+  compatibilityTargetId?: string;
+  originals?: boolean;
   revokeReviewer: () => Promise<void>;
 };
 
@@ -40,13 +44,17 @@ export async function runWorkingBrowser(input: BrowserInput) {
   const { chromium } = createRequire(import.meta.url)(
     "./browser-runtime/node_modules/playwright",
   ) as typeof import("./browser-runtime/node_modules/playwright/index.js");
-  const server = await startBrowserServer(input.publicKey);
+  const server = await startBrowserServer(input.publicKey, {
+    compatibility: Boolean(input.compatibilityTargetId),
+    originals: input.originals === true,
+  });
   let browser: Browser | undefined;
   const results: string[] = [];
   let phase = "browser launch";
   let checkpoint: string | undefined;
   let pageErrors = 0;
   let externalRequests = 0;
+  let screenshots = 0;
   const commandBodies = new WeakMap<BrowserRequest, Buffer>();
   const output = path.resolve(".tmp/console-working-browser", randomUUID());
   try {
@@ -436,9 +444,45 @@ export async function runWorkingBrowser(input: BrowserInput) {
           path: path.join(output, `${section}-${width}.png`),
           fullPage: true,
         });
+        screenshots++;
       }
     }
     results.push(phase);
+
+    phase = "real compatibility browser forms, history and source boundaries";
+    const compatibility = input.compatibilityTargetId
+      ? await runCompatibilityWorkingBrowser({
+          variantId: id,
+          targetId: input.compatibilityTargetId,
+          owner: { ...owner, client: input.owner.client },
+          reviewer: { ...reviewer, client: input.reviewer.client, id: input.reviewer.id },
+          viewer: { ...viewer, client: input.viewer.client },
+          output,
+          goto,
+          command,
+          checkpoint: (value) => {
+            checkpoint = value;
+          },
+        })
+      : undefined;
+    screenshots += compatibility?.screenshots ?? 0;
+
+    phase = "real original upload, stored bytes and intake history";
+    const originals = input.originals
+      ? await runOriginalWorkingBrowser({
+          variantId: id,
+          owner: { ...owner, client: input.owner.client },
+          reviewer: { ...reviewer, client: input.reviewer.client },
+          viewer: { ...viewer, client: input.viewer.client },
+          context,
+          output,
+          goto,
+          checkpoint: (value) => {
+            checkpoint = value;
+          },
+        })
+      : undefined;
+    screenshots += originals?.screenshots ?? 0;
 
     phase = "revoked reviewer and logout cannot reuse browser credentials";
     checkpoint = "prepare pending proposal";
@@ -464,6 +508,13 @@ export async function runWorkingBrowser(input: BrowserInput) {
       .fill("Synthetic stale reviewer attempt");
     checkpoint = "revoke reviewer role";
     await input.revokeReviewer();
+    if (originals) {
+      await originals.assertRevoked();
+    }
+    if (compatibility) {
+      await compatibility.assertRevoked();
+      results.push(...compatibility.results);
+    }
     checkpoint = "stale browser approval returns forbidden";
     const revoked = await command(
       reviewer.page,
@@ -488,6 +539,10 @@ export async function runWorkingBrowser(input: BrowserInput) {
     assert.equal(await page.getByLabel("English name", { exact: true }).count(), 0);
     checkpoint = "logged-out HTTP command is denied";
     await wire(owner.ctx, headers, JSON.stringify(created.request), 403);
+    if (originals) {
+      await originals.assertLoggedOut();
+      results.push(...originals.results);
+    }
     results.push(phase);
     checkpoint = "no page errors or external requests";
     assert.equal(pageErrors, 0);
@@ -495,13 +550,13 @@ export async function runWorkingBrowser(input: BrowserInput) {
     await writeFile(
       path.join(output, "result.json"),
       JSON.stringify(
-        { status: "PASS", scenarios: results, screenshots: 12, pageErrors, externalRequests },
+        { status: "PASS", scenarios: results, screenshots, pageErrors, externalRequests },
         null,
         2,
       ),
     );
     console.log(
-      `M3 database-backed browser acceptance passed: ${results.length} scenarios; synthetic-only screenshots and bounded report retained.`,
+      `Working Console database-backed browser acceptance passed: ${results.length} scenarios; synthetic-only screenshots and bounded report retained.`,
     );
     return id;
   } catch {

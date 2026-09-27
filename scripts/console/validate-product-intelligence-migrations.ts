@@ -19,6 +19,12 @@ const migrationNames = [
   "202609090007_product_intelligence_draft_commands.sql",
   "202609090008_product_intelligence_technical_review.sql",
   "202609090009_product_intelligence_console_commands.sql",
+  "202609240010_product_intelligence_compatibility_sources.sql",
+  "202609240011_product_intelligence_compatibility_review.sql",
+  "202609250012_product_intelligence_compatibility_commands.sql",
+  "202609260013_product_intelligence_media_sources.sql",
+  "202609260014_product_intelligence_original_intake.sql",
+  "202609270015_product_intelligence_original_commands.sql",
 ] as const;
 const migrations = await Promise.all(
   migrationNames.map(async (name) => ({
@@ -36,6 +42,12 @@ const workingAuthority = migrations[5].content;
 const draftCommands = migrations[6].content;
 const technicalReview = migrations[7].content;
 const consoleCommands = migrations[8].content;
+const compatibilitySources = migrations[9].content;
+const compatibilityReview = migrations[10].content;
+const compatibilityCommands = migrations[11].content;
+const mediaSources = migrations[12].content;
+const originalIntake = migrations[13].content;
+const originalCommands = migrations[14].content;
 const errors: string[] = [];
 
 const requiredTables = [
@@ -243,11 +255,110 @@ if (
 ) {
   errors.push("The incompatible legacy product-catalog draft is not fail-closed.");
 }
+for (const required of [
+  "public.compatibility_source_bindings",
+  "private.pi_ensure_product_compatibility_entity",
+  "private.pi_add_compatibility_source",
+  "private.pi_compatibility_source_matches",
+  "binding.assertion = 'supports'",
+  "binding.scope_label = pi_compatibility_source_matches.scope_label",
+  "binding.target_digest = private.pi_compatibility_entity_digest(target_uuid)",
+  "compatibility_source_immutable",
+  "force row level security",
+  "revoke all on all functions in schema private from public, anon, authenticated, service_role",
+]) {
+  if (!compatibilitySources.includes(required))
+    errors.push(`Compatibility source contract missing: ${required}.`);
+}
 if (
   allSql.includes("SUPABASE_SERVICE_ROLE_KEY") ||
   allSql.includes("PRODUCT_INTELLIGENCE_SUPABASE")
 ) {
   errors.push("A migration contains an environment-variable name or credential contract.");
+}
+for (const required of [
+  "public.compatibility_revision_heads",
+  "public.compatibility_revisions",
+  "private.pi_propose_compatibility_revision",
+  "private.pi_submit_compatibility_review",
+  "private.pi_review_compatibility_revision",
+  "private.pi_guard_exact_compatibility_approval",
+  "candidate.submitted_digest=private.pi_compatibility_digest(old.id)",
+  "event.decision='APPROVE'",
+  "public.pi_effective_compatibility_relationships with (security_invoker=true)",
+  "Open compatibility proposals must be reviewed before VERIFIED",
+  "revoke all on all functions in schema private from public, anon, authenticated, service_role",
+]) {
+  if (!compatibilityReview.includes(required))
+    errors.push(`Compatibility review contract missing: ${required}.`);
+}
+
+for (const [name, args] of [
+  ["pi_ensure_product_compatibility_entity", "uuid,uuid"],
+  ["pi_add_compatibility_source", "uuid,uuid,uuid,text,text,text,jsonb"],
+  ["pi_propose_compatibility_revision", "uuid,uuid,uuid,text,text,bigint,jsonb,jsonb,text,uuid"],
+  ["pi_submit_compatibility_review", "uuid,uuid,bigint,text"],
+  ["pi_review_compatibility_revision", "uuid,uuid,bigint,text,text,text,text,jsonb,jsonb"],
+]) {
+  if (
+    !compatibilityCommands.includes(`create function public.${name}(`) ||
+    !compatibilityCommands.includes(`select private.${name}(`) ||
+    !compatibilityCommands.includes(
+      `revoke all on function public.${name}(${args}) from public,anon,authenticated,service_role;`,
+    ) ||
+    !compatibilityCommands.includes(
+      `grant execute on function public.${name}(${args}) to authenticated;`,
+    )
+  )
+    errors.push(`Narrow compatibility command wrapper missing: ${name}.`);
+}
+
+for (const required of [
+  "public.media_source_bindings",
+  "private.pi_add_media_source",
+  "private.pi_media_source_matches",
+  "private.pi_media_source_can_support_review",
+  "binding.evidence_dimension=dimension",
+  "binding.variant_digest=private.pi_media_variant_digest(variant_uuid)",
+  "binding.asset_digest=private.pi_media_asset_digest(asset_uuid)",
+  "media_source_immutable",
+  "force row level security",
+  "revoke all on all functions in schema private from public, anon, authenticated, service_role",
+]) {
+  if (!mediaSources.includes(required)) errors.push(`Media source contract missing: ${required}.`);
+}
+
+for (const required of [
+  "public.media_upload_intents",
+  "public.media_upload_completions",
+  "private.pi_begin_media_upload",
+  "private.pi_complete_media_upload",
+  "public.pi_can_upload_original",
+  "as restrictive for insert",
+  "as restrictive for update",
+  "as restrictive for delete",
+  "'byte_verification','not_attested'",
+  "original_asset_identity_guard",
+]) {
+  if (!originalIntake.includes(required))
+    errors.push(`Original intake contract missing: ${required}.`);
+}
+
+for (const [name, args] of [
+  ["pi_begin_media_upload", "uuid,uuid,jsonb"],
+  ["pi_complete_media_upload", "uuid,uuid"],
+  ["pi_read_original_intakes", "uuid,integer"],
+]) {
+  if (
+    !originalCommands.includes(`create function public.${name}(`) ||
+    !originalCommands.includes(
+      `revoke all on function public.${name}(${args}) from public,anon,authenticated,service_role;`,
+    ) ||
+    !originalCommands.includes(
+      `grant execute on function public.${name}(${args}) to authenticated;`,
+    )
+  )
+    errors.push(`Original command wrapper missing: ${name}.`);
 }
 
 if (errors.length > 0) {
@@ -256,6 +367,6 @@ if (errors.length > 0) {
   process.exitCode = 1;
 } else {
   console.log(
-    `Product Intelligence migration validation passed (${migrationNames.length} migrations, ${requiredTables.length} foundation tables and 3 working-review tables).`,
+    `Product Intelligence migration validation passed (${migrationNames.length} migrations, ${requiredTables.length} foundation tables and scoped working-review contracts).`,
   );
 }

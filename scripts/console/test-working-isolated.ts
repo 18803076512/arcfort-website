@@ -22,6 +22,7 @@ import type {
 } from "../../lib/domain/catalog/commands.ts";
 import type { Database } from "../../lib/supabase/database.types.ts";
 import { runWorkingBrowser } from "./test-working-browser.ts";
+import { runCompatibilityAcceptance } from "./test-compatibility-isolated.ts";
 
 let checkpoint = "local target preflight";
 async function main() {
@@ -41,11 +42,25 @@ async function main() {
     drafts: number;
     events: number;
     products: number;
+    compatibilityHeads: number;
+    compatibilityRevisions: number;
+    compatibilitySources: number;
+    mediaSources: number;
+    uploadIntents: number;
+    uploadCompletions: number;
+    storageObjects: number;
   }>(`select json_build_object(
     'users',(select count(*) from auth.users), 'roles',(select count(*) from console_user_roles),
     'adoptions',(select count(*) from private.pi_working_adoptions),
     'drafts',(select count(*) from private.pi_product_draft_heads),
-    'events',(select count(*) from verification_events), 'products',(select count(*) from product_variants));`);
+    'events',(select count(*) from verification_events), 'products',(select count(*) from product_variants),
+    'compatibilityHeads',(select count(*) from compatibility_revision_heads),
+    'compatibilityRevisions',(select count(*) from compatibility_revisions),
+    'compatibilitySources',(select count(*) from compatibility_source_bindings),
+    'mediaSources',(select count(*) from media_source_bindings),
+    'uploadIntents',(select count(*) from media_upload_intents),
+    'uploadCompletions',(select count(*) from media_upload_completions),
+    'storageObjects',(select count(*) from storage.objects));`);
   assertPristineBaseline(pristine);
   const catalog = await buildShadowCatalog();
   const tables = {
@@ -62,6 +77,25 @@ async function main() {
   const originalVariants = local.json(
     "select jsonb_agg(to_jsonb(t) order by id) from product_variants t;",
   );
+  const relationshipIds = catalog.tables.compatibility_relationships
+    .map((row) => sqlLiteral(row.id))
+    .join(",");
+  const compatibilityRetentionQueries = [
+    ...(["compatibility_entities", "compatibility_relationships", "evidence_sources"] as const).map(
+      (table) => {
+        const ids = catalog.tables[table].map((row) => sqlLiteral(row.id)).join(",");
+        return `select jsonb_agg(to_jsonb(t) order by id) from ${table} t where id in (${ids});`;
+      },
+    ),
+    `select jsonb_agg(to_jsonb(t) order by compatibility_relationship_id,evidence_source_id) from compatibility_evidence t where compatibility_relationship_id in (${relationshipIds});`,
+  ];
+  const originalCompatibility = compatibilityRetentionQueries.map((query) => local.json(query));
+  const mediaRetentionQueries = (["media_assets", "product_media"] as const).map((table) => {
+    const ids = catalog.tables[table].map((row) => sqlLiteral(row.id)).join(",");
+    assert.ok(ids.length > 0, "Original media baseline must be present.");
+    return `select jsonb_agg(to_jsonb(t) order by id) from ${table} t where id in (${ids});`;
+  });
+  const originalMedia = mediaRetentionQueries.map((query) => local.json(query));
   const admin = createClient<Database>(local.url, local.adminKey, {
     auth: { persistSession: false, autoRefreshToken: false },
     global: { fetch: (url, init) => fetch(url, { ...init, signal: AbortSignal.timeout(12_000) }) },
@@ -69,6 +103,8 @@ async function main() {
   Object.assign(process.env, {
     CONSOLE_ENABLED: "true",
     CONSOLE_WORKING_ENABLED: "true",
+    CONSOLE_COMPATIBILITY_ENABLED: "true",
+    CONSOLE_ORIGINALS_ENABLED: "true",
     CONSOLE_ENVIRONMENT: "local",
     CONSOLE_ORIGIN: config.origin,
     CONSOLE_SUPABASE_URL: local.url,
@@ -460,6 +496,18 @@ async function main() {
       "1",
     );
 
+    const compatibility = await runCompatibilityAcceptance({
+      local,
+      variantId: id,
+      owner,
+      editor,
+      reviewer,
+      viewer,
+      checkpoint: (value) => {
+        checkpoint = value;
+      },
+    });
+
     checkpoint = "revocation denies still-valid sessions at handler and database";
     assert.equal(
       (
@@ -497,6 +545,8 @@ async function main() {
       reviewer,
       viewer,
       fieldId: field.data.id,
+      compatibilityTargetId: compatibility.targetId,
+      originals: true,
       revokeReviewer: async () => {
         assert.equal(
           (
@@ -509,6 +559,8 @@ async function main() {
         );
       },
     });
+    checkpoint = "revoked reviewer cannot replay compatibility receipts or access records";
+    await compatibility.assertRevoked();
 
     checkpoint = "real references preserved and no lifecycle/publication advancement";
     const ids = catalog.tables.technical_values.map((row) => sqlLiteral(row.id)).join(",");
@@ -525,6 +577,28 @@ async function main() {
       ),
       originalVariants,
     );
+    assert.deepEqual(
+      compatibilityRetentionQueries.map((query) => local.json(query)),
+      originalCompatibility,
+    );
+    assert.deepEqual(
+      mediaRetentionQueries.map((query) => local.json(query)),
+      originalMedia,
+    );
+    assert.equal(local.sql("select count(*) from media_upload_intents;"), "2");
+    assert.equal(local.sql("select count(*) from media_upload_completions;"), "2");
+    assert.equal(local.sql("select count(*) from storage.objects;"), "2");
+    assert.equal(
+      local.sql(`select count(*) from media_upload_intents i
+      join media_upload_completions c on c.intent_id=i.id
+      join storage.objects o on o.id=c.storage_object_id
+      where o.bucket_id='pi-product-originals' and o.name=i.storage_path
+        and o.owner_id=i.actor_id::text and c.created_by=i.actor_id
+        and o.metadata->>'size'=i.manifest->>'byte_size'
+        and o.metadata->>'mimetype'=i.manifest->>'mime_type';`),
+      "2",
+    );
+    assert.equal(local.sql("select count(*) from media_source_bindings;"), "0");
     assert.equal(
       local.sql(
         "select count(*) from product_variants where not is_shadow and lifecycle_state='DRAFT' and legacy_image_status='needs_photo';",
@@ -533,7 +607,7 @@ async function main() {
     );
     assert.equal(local.sql("select count(*) from publish_records;"), "0");
     console.log(
-      "M3 real local acceptance passed: Auth/PostgREST, observed lock contention, database-backed browser forms, review/history, revocation and source retention.",
+      "M3, compatibility and original intake local acceptance passed: Auth/PostgREST/Storage, observed lock contention, database-backed browser forms, review/history, upload/readback, revocation and source retention. Synthetic-only; no real product approval or publication.",
     );
   } finally {
     // No data deletion: preserve failed fixtures for inspection until the disposable stack is stopped.
@@ -544,7 +618,7 @@ async function main() {
 
 main().catch(() => {
   console.error(
-    `M3 isolated acceptance failed at: ${checkpoint}. Raw SQL, provider responses and credentials are suppressed.`,
+    `Working Console isolated acceptance failed at: ${checkpoint}. Raw SQL, provider responses and credentials are suppressed.`,
   );
   process.exitCode = 1;
 });

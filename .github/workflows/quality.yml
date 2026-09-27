@@ -87,7 +87,7 @@ jobs:
           npm run console:shadow:apply:local
           npm run console:shadow:apply:local
 
-      - name: Test persisted M3 commands, transaction contention and browser workflows
+      - name: Test persisted M3, compatibility, original Storage and browser workflows
         run: npm run console:working:test:local
 
       - name: Stop local Product Intelligence services
@@ -134,10 +134,16 @@ jobs:
           npm run console:domain:test
           npm run console:drafts:test
           npm run console:commands:test
+          npm run console:compatibility:test
+          npm run console:compatibility:reads:test
+          npm run console:media:test
+          npm run console:originals:test
+          npm run console:originals:upload:test
           npm run console:working:test:guards
           npm run console:browser:test:guards
           npm run console:boundaries:test
           npm run console:entrance:test
+          npm run console:matcher:test
           npm run console:config:test
           npm run console:rest:test
           npm run console:sql-qa:test

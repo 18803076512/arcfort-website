@@ -15,6 +15,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             <span className="console-caption">Product Intelligence</span>
             <nav aria-label="Console">
               <ConsoleLink href="/console/products/new">Products</ConsoleLink>
+              <ConsoleLink href="/console/media">Product Media</ConsoleLink>
               <ConsoleLink href="/console/products/10000000-0000-4000-8000-000000000001/review">
                 Technical Data
               </ConsoleLink>

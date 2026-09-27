@@ -1,4 +1,5 @@
 import assert from "node:assert/strict";
+import { spawnSync } from "node:child_process";
 import { test } from "node:test";
 import {
   assertAcceptanceInvocation,
@@ -21,6 +22,31 @@ test("isolated acceptance requires exact CI/local invocation", () => {
     assert.throws(() => assertAcceptanceInvocation(args, { CI: "true" }));
   for (const CI of [undefined, "false", "1"])
     assert.throws(() => assertAcceptanceInvocation(["--local"], { CI }));
+});
+
+test("the integrated runner refuses a non-local target before host or provider access", () => {
+  const result = spawnSync(
+    process.execPath,
+    ["--experimental-strip-types", "scripts/console/test-working-isolated.ts", "--staging"],
+    {
+      env: {
+        NODE_ENV: "test",
+        CI: "true",
+        SystemRoot: process.env.SystemRoot,
+        PATH: process.env.PATH,
+      },
+      encoding: "utf8",
+      timeout: 20_000,
+      windowsHide: true,
+    },
+  );
+  assert.equal(result.error, undefined);
+  assert.equal(result.status, 1);
+  assert.equal(result.stdout, "");
+  assert.match(
+    result.stderr,
+    /Working Console isolated acceptance failed at: local target preflight/,
+  );
 });
 
 test("ambient provider, database, Docker and runtime overrides fail closed", () => {
@@ -126,10 +152,40 @@ test("SQL literals preserve JSON and quoted synthetic source values", () => {
 });
 
 test("existing accounts, working records and M2 pagination fixtures are never reset", () => {
-  const good = { users: 0, roles: 0, adoptions: 0, drafts: 0, events: 0, products: 43 };
+  const good = {
+    users: 0,
+    roles: 0,
+    adoptions: 0,
+    drafts: 0,
+    events: 0,
+    products: 43,
+    compatibilityHeads: 0,
+    compatibilityRevisions: 0,
+    compatibilitySources: 0,
+    mediaSources: 0,
+    uploadIntents: 0,
+    uploadCompletions: 0,
+    storageObjects: 0,
+  };
   assertPristineBaseline(good);
-  for (const key of ["users", "roles", "adoptions", "drafts", "events"])
+  for (const key of [
+    "users",
+    "roles",
+    "adoptions",
+    "drafts",
+    "events",
+    "compatibilityHeads",
+    "compatibilityRevisions",
+    "compatibilitySources",
+    "mediaSources",
+    "uploadIntents",
+    "uploadCompletions",
+    "storageObjects",
+  ])
     assert.throws(() => assertPristineBaseline({ ...good, [key]: 1 }));
+  const { compatibilitySources: _omitted, ...incomplete } = good;
+  assert.equal(_omitted, 0);
+  assert.throws(() => assertPristineBaseline(incomplete));
   for (const products of [0, 42, 44, 1146])
     assert.throws(() => assertPristineBaseline({ ...good, products }));
 });

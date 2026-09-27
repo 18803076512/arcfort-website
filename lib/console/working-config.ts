@@ -11,3 +11,11 @@ export function consoleWorkingEnabled(env: Record<string, string | undefined> = 
     settings.config.supabaseUrl === "http://127.0.0.1:54321"
   );
 }
+
+export function consoleCompatibilityEnabled(env: Record<string, string | undefined> = process.env) {
+  return env.CONSOLE_COMPATIBILITY_ENABLED === "true" && consoleWorkingEnabled(env);
+}
+
+export function consoleOriginalsEnabled(env: Record<string, string | undefined> = process.env) {
+  return env.CONSOLE_ORIGINALS_ENABLED === "true" && consoleWorkingEnabled(env);
+}

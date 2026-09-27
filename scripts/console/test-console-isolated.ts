@@ -17,6 +17,7 @@ import {
   readTechnicalData,
 } from "../../lib/console/catalog.ts";
 import type { CookieOptions } from "@supabase/ssr";
+import { mediaFilters, readMediaCoverage, readMediaAssets } from "../../lib/console/media.ts";
 
 // Synthetic accounts and records belong exclusively to the disposable Linux CI database.
 // Never use this account-creation path, auto-confirmation or fixture data on hosted staging.
@@ -89,9 +90,11 @@ async function createFixture(role?: "owner" | "viewer") {
 const anon = cookieClient();
 assert.equal((await checkConsoleAccess(anon.client)).status, "unauthenticated");
 await assert.rejects(() => readDashboard(anon.client));
+await assert.rejects(() => readMediaAssets(anon.client, mediaFilters({ view: "assets" })));
 const noRole = await createFixture();
 assert.equal((await checkConsoleAccess(noRole.client)).status, "no_role");
 await assert.rejects(() => readProducts(noRole.client, filters({})));
+await assert.rejects(() => readMediaCoverage(noRole.client, mediaFilters({})));
 const owner = await createFixture("owner");
 const viewer = await createFixture("viewer");
 assert.equal((await checkConsoleAccess(owner.client)).status, "authorized");
@@ -110,6 +113,93 @@ assert.equal(initial.metrics.total_products, 43);
 assert.equal(initial.metrics.data_conflicts, 14);
 assert.equal(initial.metrics.published_products, 0);
 const productPage = await readProducts(viewer.client, filters({}));
+const mediaCoveragePage = await readMediaCoverage(viewer.client, mediaFilters({}));
+assert.equal(mediaCoveragePage.total, 43);
+assert.equal(mediaCoveragePage.items.length, 25);
+assert.equal(
+  mediaCoveragePage.items.every((item) => item.coverage.main.recordedApproval === 0),
+  true,
+);
+const mediaAssets = await readMediaAssets(viewer.client, mediaFilters({ view: "assets" }));
+assert.equal(mediaAssets.total, 46);
+assert.equal(mediaAssets.items.length, 25);
+assert.equal(
+  mediaAssets.items.every((item) => !item.recordedApproval),
+  true,
+);
+assert.equal(
+  (await readMediaAssets(viewer.client, mediaFilters({ view: "assets", assignment: "unassigned" })))
+    .total,
+  0,
+);
+const assigned = mediaAssets.items.find((item) => item.assignments.length);
+assert.ok(assigned?.assignments[0].variantId);
+const scopedMedia = await readMediaAssets(
+  viewer.client,
+  mediaFilters({ view: "assets", variant: assigned.assignments[0].variantId }),
+);
+assert.ok(scopedMedia.items.some((item) => item.id === assigned.id));
+// Positive anti-join/hash controls live only in the disposable CI stack.
+const mediaFixtureIds = [randomUUID(), randomUUID(), randomUUID()];
+const mediaFixture = await admin.from("media_assets").insert(
+  mediaFixtureIds.map((id, index) => ({
+    id,
+    external_key: `qa-media-${id}`,
+    source_kind: "synthetic_ci",
+    source_reference: "Synthetic media QA only",
+    ownership_status: "unknown",
+    usage_rights_status: "needs_confirmation",
+    content_match_status: "needs_review",
+    publication_status: "blocked",
+    file_hash: index < 2 ? "a".repeat(64) : null,
+    raw_snapshot: { notes_internal: "PRIVATE_MEDIA_QA_SENTINEL" },
+  })),
+);
+assert.equal(mediaFixture.error, null, "Disposable media fixtures");
+const mediaMapping = await admin.from("product_media").insert({
+  product_variant_id: productPage.items[0].id,
+  media_asset_id: mediaFixtureIds[0],
+  role: "thread_detail",
+  alt_text: "Synthetic CI only",
+});
+assert.equal(mediaMapping.error, null, "Disposable media mapping");
+const unmappedMedia = await readMediaAssets(
+  viewer.client,
+  mediaFilters({ view: "assets", q: "qa-media-", assignment: "unassigned" }),
+);
+assert.equal(unmappedMedia.total, 2);
+assert.ok(unmappedMedia.items.every((item) => !item.assignments.length));
+const duplicateMedia = await readMediaAssets(
+  viewer.client,
+  mediaFilters({ view: "assets", variant: productPage.items[0].id, q: "qa-media-" }),
+);
+assert.equal(duplicateMedia.total, 1);
+assert.equal(duplicateMedia.items[0].sameHashAssets, 2);
+assert.equal(duplicateMedia.items[0].recordedApproval, false);
+const mappedCoverage = await readMediaCoverage(
+  viewer.client,
+  mediaFilters({ variant: productPage.items[0].id }),
+);
+const initialCoverage = mediaCoveragePage.items.find((item) => item.id === productPage.items[0].id);
+assert.ok(initialCoverage);
+assert.equal(
+  mappedCoverage.items[0].coverage.detail.mapped,
+  initialCoverage.coverage.detail.mapped + 1,
+);
+assert.equal(mappedCoverage.items[0].coverage.detail.recordedApproval, 0);
+const missingMappedDetail = await readMediaCoverage(
+  viewer.client,
+  mediaFilters({ variant: productPage.items[0].id, missingView: "detail" }),
+);
+assert.equal(
+  missingMappedDetail.total,
+  0,
+  "Missing-view anti-join excludes an existing detail mapping",
+);
+assert.doesNotMatch(
+  JSON.stringify([unmappedMedia, duplicateMedia, mappedCoverage]),
+  /PRIVATE_MEDIA_QA_SENTINEL|raw_snapshot|notes_internal/,
+);
 assert.equal(productPage.total, 43);
 assert.equal(productPage.items.length, 25);
 const detail = await readProductDetail(viewer.client, productPage.items[0].id);
@@ -122,7 +212,7 @@ assert.equal(
   14,
 );
 assert.equal((await readReadiness(viewer.client, filters({ blocker: "image" }))).total, 43);
-for (const value of [productPage, detail, series]) {
+for (const value of [productPage, detail, series, mediaCoveragePage, mediaAssets, scopedMedia]) {
   const serialized = JSON.stringify(value);
   for (const forbidden of [
     "raw_snapshot",
@@ -178,6 +268,23 @@ assert.equal(first.items.length, 25);
 assert.equal(afterCap.items.length, 25);
 assert.equal(last.items.length, 3);
 assert.equal(afterCap.items[0].sku, "AF-ACC-QA-3000");
+const mediaAfterCap = await readMediaCoverage(
+  viewer.client,
+  mediaFilters({ q: "QA pagination", searchBy: "name", page: "41" }),
+);
+assert.equal(mediaAfterCap.total, 1103);
+assert.equal(mediaAfterCap.items.length, 25);
+assert.equal(mediaAfterCap.items[0].sku, "AF-ACC-QA-3000");
+const missingMediaAfterCap = await readMediaCoverage(
+  viewer.client,
+  mediaFilters({ q: "QA pagination", searchBy: "name", page: "41", missingView: "main" }),
+);
+assert.equal(missingMediaAfterCap.total, 1103);
+assert.equal(missingMediaAfterCap.items[0].sku, "AF-ACC-QA-3000");
+assert.equal(
+  mediaAfterCap.items.every((item) => item.coverage.main.mapped === 0),
+  true,
+);
 assert.equal(last.items[2].sku, "AF-ACC-QA-3102");
 assert.equal(
   new Set([...first.items, ...afterCap.items, ...last.items].map((item) => item.id)).size,
@@ -197,6 +304,8 @@ const revoked = await admin
 if (revoked.error) throw new Error("Isolated revocation failed.");
 assert.equal((await checkConsoleAccess(viewer.client)).status, "no_role");
 await assert.rejects(() => readDashboard(viewer.client));
+await assert.rejects(() => readMediaAssets(viewer.client, mediaFilters({ view: "assets" })));
+await assert.rejects(() => readMediaCoverage(viewer.client, mediaFilters({})));
 assert.equal((await checkConsoleAccess(owner.client)).status, "authorized");
 await owner.client.auth.signOut({ scope: "local" });
 assert.equal((await checkConsoleAccess(owner.client)).status, "unauthenticated");

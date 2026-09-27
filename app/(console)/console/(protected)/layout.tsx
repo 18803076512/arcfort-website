@@ -21,6 +21,7 @@ export default async function ProtectedLayout({ children }: { children: ReactNod
           <ConsoleLink href="/console/products">Products</ConsoleLink>
           <ConsoleLink href="/console/series">Product Series</ConsoleLink>
           <ConsoleLink href="/console/technical-data">Technical Evidence</ConsoleLink>
+          <ConsoleLink href="/console/media">Product Media</ConsoleLink>
         </nav>
         <div className="console-session">
           <p>{access.roles.join(", ")}</p>

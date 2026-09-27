@@ -33,10 +33,20 @@
     "console:domain:test": "node --experimental-strip-types scripts/console/test-catalog-domain.ts",
     "console:drafts:test": "node --experimental-strip-types scripts/console/test-product-drafts.ts",
     "console:commands:test": "node --experimental-strip-types scripts/console/test-console-commands.ts",
+    "console:compatibility:test": "node --experimental-strip-types scripts/console/test-compatibility-commands.ts",
+    "console:compatibility:reads:test": "node --experimental-strip-types scripts/console/test-compatibility-reads.ts",
+    "console:compatibility:ui:test": "node scripts/console/test-compatibility-browser.mjs",
+    "console:media:test": "node --experimental-strip-types scripts/console/test-console-media.ts",
+    "console:originals:test": "node --conditions=react-server --experimental-strip-types scripts/console/test-original-files.ts",
+    "console:originals:upload:test": "node --conditions=react-server --experimental-strip-types scripts/console/test-original-upload.ts",
+    "console:originals:ui:test": "node scripts/console/test-original-browser.mjs",
+    "console:originals:http:test": "node --experimental-strip-types scripts/console/test-original-http.ts",
+    "console:media:ui:test": "node scripts/console/test-media-browser.mjs",
     "console:ui:dev": "next dev scripts/console/ui-fixture -H 127.0.0.1 -p 3901",
     "console:ui:test": "node scripts/console/test-editor-browser.mjs",
     "console:boundaries:test": "node --experimental-strip-types scripts/console/test-console-boundaries.ts",
     "console:entrance:test": "node --experimental-strip-types scripts/console/test-console-entrance.ts",
+    "console:matcher:test": "node --experimental-strip-types scripts/console/test-middleware-matchers.ts",
     "console:auth:test:local": "node --experimental-strip-types scripts/console/test-console-isolated.ts --local",
     "console:working:test:guards": "node --experimental-strip-types scripts/console/test-local-acceptance.ts",
     "console:browser:test:guards": "node --experimental-strip-types scripts/console/test-browser-server.ts",
@@ -118,7 +128,8 @@
     "next": "15.5.22",
     "react": "19.0.0",
     "react-dom": "19.0.0",
-    "server-only": "0.0.1"
+    "server-only": "0.0.1",
+    "sharp": "0.34.5"
   },
   "overrides": {
     "next": {

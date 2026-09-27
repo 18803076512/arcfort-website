@@ -374,6 +374,216 @@ rollback;
   console.log(
     "All 15 real-source pilot scopes retain their exact original root, immutable reference and unconfirmed status.",
   );
+  assert.equal(tables.compatibility_relationships.length, 4);
+  for (const [index, relationship] of tables.compatibility_relationships.entries()) {
+    const subject = tables.compatibility_entities.find(
+      (entity) => entity.id === relationship.subject_entity_id,
+    );
+    assert.ok(subject && ledger.pilot_variant_ids.includes(subject.product_variant_id));
+    const identity = (
+      await db.query("select private.pi_ensure_product_compatibility_entity($1,$2) as result", [
+        `92000000-0000-4000-8000-${String(index + 1).padStart(12, "0")}`,
+        subject.product_variant_id,
+      ])
+    ).rows[0].result;
+    assert.equal(identity.entity_id, subject.id, "Intake reuses the imported canonical entity");
+    const scope = "Isolated imported-reference test; not verified fit";
+    const args = [
+      relationship.subject_entity_id,
+      relationship.target_entity_id,
+      relationship.relationship_type,
+      scope,
+      relationship.role,
+    ];
+    assert.equal(
+      (
+        await db.query(
+          "select private.pi_check_compatibility_target($1,$2,$3,$4,$5) as variant",
+          args,
+        )
+      ).rows[0].variant,
+      subject.product_variant_id,
+      "Actual imported product-to-series identities satisfy the target contract",
+    );
+    const links = tables.compatibility_evidence.filter(
+      (link) => link.compatibility_relationship_id === relationship.id,
+    );
+    assert.ok(links.length > 0);
+    for (const link of links) {
+      assert.equal(
+        (
+          await db.query(
+            "select private.pi_compatibility_source_can_support_confirmation($1,$2,$3,$4,$5,$6) as eligible",
+            [link.evidence_source_id, ...args],
+          )
+        ).rows[0].eligible,
+        false,
+        "Imported catalog evidence has no exact revision binding and cannot confirm fit",
+      );
+    }
+  }
+  for (const table of [
+    "compatibility_entities",
+    "compatibility_relationships",
+    "compatibility_evidence",
+  ]) {
+    assert.equal(
+      (
+        await db.query(
+          `select $1::jsonb = (select jsonb_agg(to_jsonb(r) order by to_jsonb(r)::text)
+          from public.${table} r) as unchanged`,
+          [JSON.stringify(ledger.baseline[table])],
+        )
+      ).rows[0].unchanged,
+      true,
+      `${table} retains every imported row`,
+    );
+  }
+  console.log(
+    "All four real-source compatibility relationships retain identity, evidence and reference-only state.",
+  );
+  for (const [index, relationship] of tables.compatibility_relationships.entries()) {
+    const evidence = tables.compatibility_evidence
+      .filter((link) => link.compatibility_relationship_id === relationship.id)
+      .map((link) => ({ source_id: link.evidence_source_id, role: link.evidence_role }));
+    const result = (
+      await db.query(
+        "select private.pi_propose_compatibility_revision($1,$2,$3,$4,$5,$6,0,$7::jsonb,$8::jsonb,$9) as result",
+        [
+          `93000000-0000-4000-8000-${String(index + 1).padStart(12, "0")}`,
+          relationship.id,
+          relationship.subject_entity_id,
+          relationship.target_entity_id,
+          relationship.relationship_type,
+          "Isolated imported-reference lineage test",
+          JSON.stringify({
+            role: relationship.role,
+            confirmation_requirements: relationship.confirmation_requirements,
+          }),
+          JSON.stringify(evidence),
+          "Isolated source retention test; not factory confirmation",
+        ],
+      )
+    ).rows[0].result;
+    assert.equal(result.root_relationship_id, relationship.id);
+    const candidate = (
+      await db.query(
+        "select relationship_status,verification_status,confirmed_by from compatibility_relationships where id=$1",
+        [result.relationship_id],
+      )
+    ).rows[0];
+    assert.equal(candidate.relationship_status, "reference_only");
+    assert.equal(candidate.verification_status, "NEEDS_FACTORY_CONFIRMATION");
+    assert.equal(candidate.confirmed_by, null);
+    assert.equal(
+      (
+        await db.query(
+          "select to_jsonb(r)=$2::jsonb as unchanged from compatibility_relationships r where id=$1",
+          [
+            relationship.id,
+            JSON.stringify(
+              ledger.baseline.compatibility_relationships.find((row) => row.id === relationship.id),
+            ),
+          ],
+        )
+      ).rows[0].unchanged,
+      true,
+      "Actual 15AK relationship retains its entire original row under revision",
+    );
+    assert.equal(
+      (
+        await db.query(
+          "select current_relationship_id from compatibility_revision_heads where root_relationship_id=$1",
+          [relationship.id],
+        )
+      ).rows[0].current_relationship_id,
+      relationship.id,
+    );
+  }
+  assert.equal((await db.query("select count(*)::int as n from verification_events")).rows[0].n, 0);
+  assert.equal((await db.query("select count(*)::int as n from publish_records")).rows[0].n, 0);
+  console.log(
+    "Four real 15AK proposals retain reference status, original current pointers and complete source rows.",
+  );
+  assert.equal(
+    (await db.query("select count(*)::int as n from media_source_bindings")).rows[0].n,
+    0,
+    "Shadow import never manufactures exact-SKU media evidence",
+  );
+  for (const [index, variantId] of ledger.pilot_variant_ids.entries()) {
+    const mappings = tables.product_media.filter(
+      (mapping) => mapping.product_variant_id === variantId && mapping.role === "main",
+    );
+    assert.equal(mappings.length, 1, "Each actual pilot SKU retains one original main mapping");
+    const mapping = mappings[0];
+    const result = (
+      await db.query(
+        "select private.pi_add_media_source($1,$2,$3,'main','product_match',$4) as result",
+        [
+          `94000000-0000-4000-8000-${String(index + 1).padStart(12, "0")}`,
+          variantId,
+          mapping.media_asset_id,
+          JSON.stringify({
+            assertion: "reference_only",
+            evidence_basis: "catalog_reference",
+            evidence_date: "2026-01-01",
+            owner_name: "Synthetic test custodian",
+            revision_label: "TEST-REFERENCE-1",
+            source_kind: "company_record",
+            source_level: "A",
+            source_location: "Synthetic in-memory fixture only",
+            source_reference: "Synthetic reference; not actual product or usage-rights evidence",
+            title: "Synthetic scoped media intake test",
+          }),
+        ],
+      )
+    ).rows[0].result;
+    const scope = [result.source_id, variantId, mapping.media_asset_id];
+    assert.equal(
+      (
+        await db.query(
+          "select private.pi_media_source_matches($1,$2,$3,'main','product_match') as matches",
+          scope,
+        )
+      ).rows[0].matches,
+      true,
+      "Intake supports each actual imported SKU/asset identity without replacing its mapping",
+    );
+    for (const dimension of ["product_match", "usage_rights"]) {
+      assert.equal(
+        (
+          await db.query(
+            "select private.pi_media_source_can_support_review($1,$2,$3,'main',$4) as eligible",
+            [...scope, dimension],
+          )
+        ).rows[0].eligible,
+        false,
+        "A synthetic catalog reference is not exact-product or usage-rights approval evidence",
+      );
+    }
+  }
+  for (const table of ["media_assets", "product_media"]) {
+    assert.equal(
+      (
+        await db.query(
+          `select $1::jsonb = (select jsonb_agg(to_jsonb(r) order by to_jsonb(r)::text) from public.${table} r) as unchanged`,
+          [JSON.stringify(ledger.baseline[table])],
+        )
+      ).rows[0].unchanged,
+      true,
+      `${table} preserves every imported image and assignment`,
+    );
+  }
+  assert.equal(
+    (await db.query("select count(*)::int as n from media_source_bindings")).rows[0].n,
+    4,
+    "Only the four explicitly synthetic intake fixtures add bindings",
+  );
+  assert.equal((await db.query("select count(*)::int as n from verification_events")).rows[0].n, 0);
+  assert.equal((await db.query("select count(*)::int as n from publish_records")).rows[0].n, 0);
+  console.log(
+    "Four in-memory 15AK media intake fixtures preserve every original asset/mapping, with no approval or publication.",
+  );
   console.log(
     `Embedded SQL PASS: ${assertions} pgTAP assertions, negative controls, two real-source replays and post-adoption service-role denial.`,
   );

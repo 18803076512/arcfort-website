@@ -3,14 +3,20 @@ import { spawn } from "node:child_process";
 import { existsSync } from "node:fs";
 import { createServer } from "node:net";
 import path from "node:path";
-import { consoleWorkingEnabled } from "../../lib/console/working-config.ts";
+import {
+  consoleCompatibilityEnabled,
+  consoleOriginalsEnabled,
+  consoleWorkingEnabled,
+} from "../../lib/console/working-config.ts";
 
 export const browserOrigin = "http://127.0.0.1:3000";
 export const runtimeEnvFiles = [".env", ".env.local", ".env.production", ".env.production.local"];
+type BrowserFeatures = { compatibility?: boolean; originals?: boolean };
 
 export function browserServerEnvironment(
   publicKey: string,
   ambient: Record<string, string | undefined>,
+  features: BrowserFeatures = {},
 ) {
   assert.equal(ambient.CI, "true", "Disposable CI only.");
   const env: NodeJS.ProcessEnv = { NODE_ENV: "production" };
@@ -33,6 +39,10 @@ export function browserServerEnvironment(
     CONSOLE_SUPABASE_PUBLISHABLE_KEY: publicKey,
   });
   assert.equal(consoleWorkingEnabled(env), true, "A local public key is required.");
+  if (features.compatibility) env.CONSOLE_COMPATIBILITY_ENABLED = "true";
+  if (features.originals) env.CONSOLE_ORIGINALS_ENABLED = "true";
+  assert.equal(consoleCompatibilityEnabled(env), features.compatibility === true);
+  assert.equal(consoleOriginalsEnabled(env), features.originals === true);
   return env;
 }
 
@@ -59,10 +69,10 @@ export function privateResponse(headers: Record<string, string>) {
   assert.equal(headers["referrer-policy"], "no-referrer");
 }
 
-export async function startBrowserServer(publicKey: string) {
+export async function startBrowserServer(publicKey: string, features: BrowserFeatures = {}) {
   const root = process.cwd();
   assertNoRuntimeEnvFiles(root);
-  const env = browserServerEnvironment(publicKey, process.env);
+  const env = browserServerEnvironment(publicKey, process.env, features);
   await assertPortAvailable();
   function next(args: string[]) {
     const child = spawn(

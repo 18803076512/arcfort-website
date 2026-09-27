@@ -80,6 +80,13 @@ export function assertPristineBaseline(value: unknown) {
       drafts: 0,
       events: 0,
       products: 43,
+      compatibilityHeads: 0,
+      compatibilityRevisions: 0,
+      compatibilitySources: 0,
+      mediaSources: 0,
+      uploadIntents: 0,
+      uploadCompletions: 0,
+      storageObjects: 0,
     },
     "A fresh imported disposable database is required; this runner never resets existing work.",
   );

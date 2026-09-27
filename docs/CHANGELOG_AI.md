@@ -5479,3 +5479,392 @@ retained database and historical report.
 - **Deployment:** None. No hosted migration/adoption, merge, publication or provider change.
 - **Next Recommended Action:** Continue the next bounded Console/15AK evidence phase after review;
   obtain Level A exact-SKU facts and rights-approved imagery without relabeling reference data.
+
+## 2026-09-24 - M4-A Read-Only Media Workbench
+
+- **Task:** Implement the first M4 media inspection batch without reducing the complete V1/15AK
+  objective to a read-only catalog. Exact mapping/review commands and the rest of M4 remain open.
+- **Files Changed:** `lib/domain/catalog/media.ts`, `lib/console/media.ts`,
+  `components/console/MediaWorkspace.tsx`, `components/console/CatalogViews.tsx`, the protected
+  Console media page/layout/product detail and Console CSS; media fixture/tests, existing isolated
+  Auth/HTTP tests and fixture app/README; `package.json`, `.github/workflows/quality.yml`,
+  `docs/operations/product-intelligence-console-milestone-4.md`, `docs/CODEX_GOAL.md`,
+  `knowledge-base/assets/console-media-inspection.md` and this log.
+- **Components Changed:** New MediaWorkspace and media coverage/read models; reused Console
+  navigation, tables, pagination and status components. No component removed.
+- **Data Changed:** None. No migrations, imports, Auth writes, role changes or database operations
+  were executed. New synthetic CI fixtures are code only until run in a disposable stack. No real
+  image, geometry, usage right, product match or confirmation was changed.
+- **Visual Changes:** Internal SKU Coverage and Asset Inventory views, metadata filters, reference
+  thumbnails and missing/unassigned/incomplete/duplicate indicators. Public website unchanged.
+- **SEO Impact:** No public URLs, canonical data, image projection, sitemap or RFQ changes. New
+  Console route remains dynamic, private and noindex.
+- **Validation:** Media domain/query tests (including 1,103 links and fail-closed reads), eight
+  existing command groups, boundary/entrance tests, ten new responsive screenshots and M3 UI
+  regression pass. Lint, typecheck, production build, performance, SEO/link checks and secret scan
+  pass. Three built disabled-mode media routes pass privacy checks. Detailed scope is in the runbook.
+- **Known Issues:** Fresh real Auth/RLS/PostgREST CI is pending for this exact candidate, so the
+  integration/release gate remains BLOCKED. No private upload/download, mapping mutation or human
+  review is delivered yet. Asset-global approval cannot establish per-SKU exact match. Full M4,
+  frozen preview/publication and real 15AK evidence remain incomplete.
+- **Reusable Knowledge Added:** Counted related-row pagination, metadata-only hash/coverage claims,
+  minimal DTOs and the exact-variant approval boundary are recorded in the media knowledge base.
+- **Deployment:** None. Changes remain local; new M4-only CI submission approval is requested
+  separately. The existing branch deployment suppression remains untouched.
+- **Next Recommended Action:** Obtain current-candidate isolated CI evidence, then implement
+  exact-SKU media/compatibility revisions and review using genuine 15AK source evidence.
+
+## 2026-09-24 - M4-B1 Exact Compatibility Source Intake
+
+- **Task:** Prepare the exact-evidence prerequisite for governed compatibility editing while
+  preserving the full V1 and real 15AK workflow objective.
+- **Files Changed:** New migration `202609240010_product_intelligence_compatibility_sources.sql`
+  and `supabase/tests/database/product_intelligence_compatibility_sources.test.sql`;
+  `lib/supabase/database.types.ts`, `scripts/console/sql-runtime/test-authority.mjs`,
+  `scripts/console/validate-product-intelligence-migrations.ts`, M4 operations record,
+  `docs/CODEX_GOAL.md`, the dated compatibility-evidence decision and this log.
+- **Components Changed:** Private identity/source commands, immutable source binding and matching
+  helpers. No UI component, public RPC or readiness projection changed.
+- **Data Changed:** None outside isolated in-memory tests. Four real canonical compatibility
+  records remain reference-only; no fitment, media right, commercial term or technical fact was
+  confirmed. Retained local databases/archives and hosted staging were not modified.
+- **Visual Changes:** None in this batch. Existing M4-A work is preserved separately.
+- **SEO Impact:** None; public product sources, URLs, structured data, sitemap and RFQ unchanged.
+- **Validation:** Ten embedded SQL suites / 325 assertions pass, including 79 new source tests;
+  official public-schema type parity, two 17-table replays, four imported compatibility retention
+  checks, migration validation, canonical compatibility validation/report, lint and typecheck pass.
+  Build exits 0 with 93 static outputs; performance, SEO/internal links, 544-file secret scan and
+  whitespace checks pass. The M4 operations record retains exact evidence limits and the interrupted
+  initial build observation separately from the completed rerun.
+- **Known Issues:** Private intake is not a usable full compatibility editor. Revision/review,
+  effective readiness and application integration remain open. Real Auth/PostgREST/concurrency,
+  complete CLI type parity and fresh candidate CI are unproven; release gate remains BLOCKED.
+- **Reusable Knowledge Added:** Exact directed endpoint/scope/version binding, immutable source
+  revisions, explicit supporting/contradicting/grouping assertions and eligibility-versus-approval
+  boundary in `knowledge-base/decisions/2026-09-24-console-m4-compatibility-evidence.md`.
+- **Deployment:** None. No commit/push, merge, retained/hosted migration or public authority change.
+- **Next Recommended Action:** Implement compatibility revisions and explicit human decisions with
+  effective readiness, then expose the bounded local workflow and validate it on genuine 15AK input.
+
+## 2026-09-25 - M4-B2 Compatibility Revisions And Human Review
+
+- **Task:** Complete the local private compatibility revision/review batch toward the full V1 and
+  real 15AK workflow. This is not a completed compatibility UI or accepted M4 release.
+- **Files Changed:** New migration `202609240011_product_intelligence_compatibility_review.sql`
+  and `supabase/tests/database/product_intelligence_compatibility_review.test.sql`;
+  `lib/supabase/database.types.ts`, `scripts/console/sql-runtime/test-authority.mjs`,
+  `scripts/console/validate-product-intelligence-migrations.ts`, M4 operations record,
+  `docs/CODEX_GOAL.md`, the dated compatibility-revisions decision and this log.
+- **Components Changed:** Private propose/submit/APPROVE/EDIT/REJECT commands, revision heads and
+  lineage, exact confirmation guard, effective compatibility view, readiness/dashboard projection
+  and open-proposal lifecycle guard. No public command or UI component added or removed.
+- **Data Changed:** None outside credential-free in-memory tests. All four canonical relationships
+  remain reference-only. Original rows, current pointers, fifteen technical scopes and source replay
+  integrity are verified in isolation. No real fit, technical fact, media or commercial term approved.
+- **Visual Changes / SEO Impact:** None in this batch; public data authority, URLs, metadata,
+  structured data, sitemap, RFQ and public presentation remain unchanged. M4-A work is preserved.
+- **Validation:** Eleven embedded suites / 417 assertions pass, including 92 new review tests,
+  matching-event-without-exact-source rejection, negative controls, two 17-table source replays and
+  real 15AK original/current-pointer retention. Official embedded public-schema type parity,
+  migration validation, compatibility validation/report, lint, TypeScript, production build
+  (captured exit 0; 93 static outputs), performance, SEO, links and 547-file secret scan pass.
+- **Known Issues:** Real PostgreSQL, both native SQL runners, full CLI type-byte parity, actual
+  Auth/PostgREST, multi-connection races and persisted browser acceptance remain unproven for M4.
+  Release gate stays BLOCKED; local implementation can continue. Local-only wrappers/read models,
+  compatibility UI, media commands, OEM/packaging/documents and the real preview/QA/publish pilot
+  remain required. Zero relationships alone is not a compatibility-coverage proof.
+- **Reusable Knowledge Added:**
+  `knowledge-base/decisions/2026-09-25-console-m4-compatibility-revisions.md` records exact human
+  decisions, immutable history, conflict retention and the stronger current/open readiness policy.
+- **Deployment:** None. No commit/push, merge, retained/hosted migration, reset, import replay or
+  public-authority change. The prior M3 and pending M4-A-only CI scopes do not authorize this batch.
+- **Next Recommended Action:** Connect typed local-only compatibility commands/read models and
+  owner review UI, then validate persisted behavior and genuine 15AK evidence before publication.
+
+## 2026-09-25 - M4-B3 Local Compatibility Command Contract
+
+- **Task:** Connect the five compatibility actions to the shared Console command transport and
+  prepare authenticated SQL wrappers, without claiming a complete owner-facing workflow.
+- **Files Changed:** `lib/domain/catalog/compatibility.ts`, `lib/domain/catalog/commands.ts`,
+  `lib/console/commands.ts`, `lib/console/working-config.ts`, `.env.example`, migration
+  `202609250012_product_intelligence_compatibility_commands.sql`, generated database types,
+  new compatibility command SQL/TypeScript tests, migration validator, `package.json`, existing
+  quality workflow, M4 runbook, Goal status, dated command-boundary decision and this log.
+- **Components Changed:** Typed entity/source/propose/submit/review contracts, strict input and
+  minimal-result validation, caller-session RPC dispatch and default-off local compatibility flag.
+  No UI component created, changed or removed in this batch. Existing technical contracts retained.
+- **Data Changed:** None outside synthetic in-memory fixtures. No active environment setting,
+  retained/hosted database, adoption, source file, real compatibility or publication was changed.
+  Four canonical relationships remain reference-only, with zero confirmed relationships.
+- **Visual Changes / SEO Impact:** None; public pages, product authority, URLs, SEO, sitemap and
+  RFQ behavior remain unchanged. Internal command-bundle changes stay within existing Console routes.
+- **Validation:** Twelve embedded SQL suites / 448 assertions, including 31 wrapper assertions,
+  official embedded public-type parity, negative controls and real-source retention pass. Six new
+  synthetic transport groups, eight existing command groups, boundary/entrance/migration checks,
+  full lint plus final targeted lint, standalone TypeScript and production build pass (captured
+  exit 0; 93 static outputs). Performance, SEO, built links and 552-file secret scan pass. A malformed
+  decision-array regression was reproduced and fixed. The lost first lint handle is not a pass;
+  absence of its process was verified before the successful full rerun.
+- **Known Issues:** Source/current/history reads and compatibility UI remain unimplemented. Actual
+  Auth/PostgREST, multi-connection races, persisted browser acceptance and full CLI type parity for
+  this M4 candidate remain unproven. The release gate stays BLOCKED while local work continues;
+  synthetic transport and embedded roles are not provider/owner acceptance. Full V1 and real 15AK
+  evidence/media/preview/QA/publication remain incomplete.
+- **Reusable Knowledge Added:**
+  `knowledge-base/decisions/2026-09-25-console-m4-compatibility-commands.md` records the separate
+  web opt-in, independent database authorization, strict input and minimal-receipt contracts.
+- **Deployment:** None. No commit/push, merge, retained/hosted migration, reset or public cutover.
+  Example flag remains false; M3 and earlier M4-A-only submission scopes were not reused.
+- **Next Recommended Action:** Build bounded current/source/history reads and the owner-facing
+  compatibility editor, then run the real persisted review flow before approving any 15AK fitment.
+
+## 2026-09-26 - M4-B4 Compatibility Workbench And Scoped Reads
+
+- **Task:** Connect compatibility source intake, proposals and explicit human decisions to the
+  owner-facing Console while preserving original/current/candidate boundaries.
+- **Files Changed:** New `lib/console/compatibility.ts`, `lib/console/read-pages.ts`,
+  `components/console/CompatibilityWorkbench.tsx`, protected product compatibility page,
+  `scripts/console/compatibility-fixture.ts`, `test-compatibility-reads.ts` and
+  `test-compatibility-browser.mjs`; updated media read helper, product working navigation and
+  overview/edit/review/history pages, Console CSS, fixture page/README, package commands, quality
+  workflow, M4 runbook, Goal status, dated workbench decision and this log.
+- **Components Changed:** New compatibility comparison/editor, exact-source form, target search
+  and paginated relationship history; shared counted read helper and flag-gated navigation. No
+  component removed. Source recording, linking, submission and approval remain distinct actions.
+- **Data Changed:** Synthetic fixtures only. No real fact, relationship, image, schema, active flag,
+  retained/hosted database or publication changed. Four real relationships remain reference-only.
+- **Visual Changes:** Existing quiet Console layout, three desktop comparison columns, stacked
+  mobile records, scoped form alignment, stable accessible labels and visible conflict/source-scope
+  warnings. New-relationship forms omit empty comparison sections. Public design unchanged.
+- **SEO Impact:** None; public URLs, canonicals, sitemap, metadata, data authority and RFQ preserved.
+- **Validation:** Four read groups, eleven new browser groups / eighteen screenshots, existing
+  editor and media browser regressions, five media read groups, six compatibility/eight existing
+  command groups, boundary/entrance checks and 448 embedded SQL assertions pass. Final build
+  captured exit 0 / 93 static outputs; full lint, standalone TypeScript, performance, SEO, links
+  and secret scanning pass. Label and newly-recorded-source retention issues were fixed and covered.
+- **Known Issues:** Real Auth/PostgREST/RLS, persistence/concurrency, full native CLI parity and
+  fresh candidate CI remain unproven. Release gate BLOCKED; not a whole-goal impasse. No real 15AK
+  approval, media writes, supporting-record workflow or verified preview/QA/publication is claimed.
+- **Reusable Knowledge Added:**
+  `knowledge-base/decisions/2026-09-26-console-m4-compatibility-workbench.md` documents counted
+  read completeness, minimal DTOs, non-atomic read limitations and source/review UI boundaries.
+- **Deployment:** None. No commit/push/merge, retained/hosted migration, reset or cutover. A clearly
+  labeled loopback synthetic UI fixture is available for inspection only, without database access.
+- **Next Recommended Action:** Prepare isolated full-stack compatibility acceptance without
+  altering adopted data, then finish media/supporting records for the actual 15AK evidence pilot.
+
+## 2026-09-26 - M4-B5 Isolated Compatibility Acceptance Preparation
+
+- **Task:** Integrate actual-client compatibility API and browser acceptance scenarios into the
+  existing pristine disposable runner without executing them against retained data.
+- **Files Changed:** New `scripts/console/test-compatibility-isolated.ts` and
+  `test-compatibility-working-browser.ts`; updated `test-working-isolated.ts`,
+  `test-working-browser.ts`, `local-acceptance.ts`, `test-local-acceptance.ts`, `browser-server.ts`,
+  `test-browser-server.ts`, quality workflow step label, M4 runbook, Goal status, workbench decision
+  checkpoint and this log.
+- **Components Changed:** Test runners and safety guards only. Prepared role, persistence, history,
+  conflict, concurrent-save, idempotent-approval, stale-tab and revoked-browser scenarios. No
+  application UI component changed. Explicit test-server flag and original compatibility retention
+  assertions supplement the existing M3 checks.
+- **Data Changed:** None outside synthetic in-memory tests. The real-service scenarios were not run;
+  no retained/hosted migration, reset, import, role change, real confirmation or publication occurred.
+- **Visual Changes / SEO Impact:** None. Six extra responsive screenshots are requested by the new
+  runner but have not been produced. Public design, facts, URLs, canonicals, sitemap and RFQ unchanged.
+- **Validation:** Eight target/baseline guards (including an integrated invalid-target invocation)
+  and five server guards, six compatibility command
+  groups, four synthetic read groups and 448 embedded SQL assertions pass. Embedded public-type
+  parity and two 17-table replays pass. Actual Auth/PostgREST/browser/concurrent acceptance remains
+  unrun; prepared assertions are not represented as test results.
+  Final standalone TypeScript, zero-warning targeted lint, formatting and 562-file secret scan pass.
+  Build/visual suites were not rerun for this test-only batch; new full-stack screenshots are absent.
+- **Known Issues:** Full-stack runner, native CLI parity and current-candidate CI remain unverified.
+  Release gate BLOCKED, with continued local progress toward V1. Windows read-only prerequisite
+  recheck was prevented by the approval service authentication error; no system operation ran.
+  Real 15AK evidence/media/owner approval/preview/QA/publication remain incomplete.
+- **Reusable Knowledge Added:** Workbench decision checkpoint and M4 runbook distinguish ordinary
+  stale-save tests from explicit conflict review, synthetic-only write scope, original relationship
+  retention and the exact new CI approval boundary.
+- **Deployment:** None. No commit/push/merge, active flag change or public-source cutover. A new
+  M4-A/B1-B5 CI-only submission approval was requested for the existing repository/branch.
+- **Next Recommended Action:** Run the reviewed M4 candidate in authorized disposable CI and fix
+  genuine integration failures, then finish media/supporting records toward the real 15AK pilot.
+
+## 2026-09-26 - M4-B6 Exact-SKU Media Evidence Intake
+
+- **Task:** Prepare separate immutable usage-rights and product-match source bindings for the
+  exact SKU, asset and media role, without inferring approval or altering existing assignments.
+- **Files Changed:** New migration `202609260013_product_intelligence_media_sources.sql` and
+  `product_intelligence_media_sources.test.sql`; updated migration validator, embedded SQL runner,
+  `test-database-test-report.ts`, generated `lib/supabase/database.types.ts`, M4 runbook, Goal status, media inspection knowledge,
+  new dated media-evidence decision and this log.
+- **Components Changed:** Private intake/matching/eligibility functions, forced-RLS source-binding
+  table and immutable-source guard. No application UI component added, changed or removed.
+- **Data Changed:** Synthetic in-memory fixtures only. All imported original media and SKU mappings
+  remain unchanged; no real evidence, active configuration, original image or product geometry
+  changed. No retained/hosted database or storage policy received a write.
+- **Visual Changes / SEO Impact:** None. No public paths, metadata, source authority or RFQ changes.
+- **Validation:** Thirteen embedded suites / 528 assertions, including 80 media checks, public-schema
+  generator parity, two 17-table replays and adoption negative controls pass. Four synthetic source
+  intakes against actual imported 15AK identities preserve original rows and produce no approval or
+  publication. Missing-product handling was corrected after its negative test failed. Migration
+  validation and standalone TypeScript pass. The independent report adapter's M3-only count baseline
+  is updated to the reviewed 13 suites / 528 assertions, retaining strict failure/count checks.
+  Report/preflight tests, final zero-warning scoped lint, formatting, diff checks and the 565-file
+  secret scan pass. Real Auth/PostgREST/concurrency, native CLI parity and fresh CI remain unrun;
+  no new build/visual result is claimed for this private-schema batch.
+- **Known Issues:** Source metadata is not original-byte verification or human rights/match approval.
+  Upload/mapping/review UI, supporting records and full real 15AK preview/QA/publication remain open.
+  The Windows read-only prerequisite query was blocked by automatic approval usage limits and did
+  not execute; no system change or reboot occurred. Release gate remains BLOCKED, V1 incomplete.
+- **Reusable Knowledge Added:** `2026-09-26-console-m4-media-evidence.md` records exact scope,
+  independent dimensions, metadata-fingerprint limitations, current-role receipts and forward-only
+  evidence correction. The media inspection record links that boundary.
+- **Deployment:** None. No commit/push/merge, migration, reset or public-source cutover. The pending
+  M4-A/B1-B5 CI-only question is not silently expanded to this additional migration.
+- **Next Recommended Action:** Implement original-file intake and immutable SKU media review with
+  both rights and match evidence, then verify the persisted workflow in authorized disposable CI.
+
+## 2026-09-27 - M4-B7 Private Original Intake Foundation
+
+- **Task:** Prepare private original intake and actual image-byte validation without manufacturing
+  rights, exact-SKU approval or publication, then close the bounded foundation's local checks.
+- **Files Changed:** New migration `202609260014_product_intelligence_original_intake.sql`,
+  `product_intelligence_original_intake.test.sql`, `lib/console/original-files.ts` and
+  `scripts/console/test-original-files.ts`; updated embedded bootstrap, migration validator,
+  SQL-report test, generated Supabase types, package/lockfile, quality workflow, M4 runbook,
+  Goal status/report, media inspection knowledge, new dated original-intake decision and this log.
+- **Components Changed:** Immutable upload ledgers/private commands, managed-namespace RLS policies,
+  original identity guard and server-only raster validator. No user-facing component or endpoint
+  added. Sharp is explicit at the already installed `0.34.5`, with no transitive version change.
+- **Data Changed:** Synthetic embedded rows and generated raster buffers only. No real original,
+  geometry, canonical product fact, image mapping, approval, retained/hosted database or active flag
+  changed. SQL completion remains `not_attested`, private and blocked.
+- **Visual Changes / SEO Impact:** None. Public source directories, URLs, metadata and RFQ unchanged.
+- **Validation:** Fourteen embedded suites / 598 assertions, including 70 original-intake checks,
+  official public-schema type parity, two 17-table replays and all existing preservation probes
+  pass. Six actual-byte groups pass, including four image formats, corrupt/animated rejection,
+  byte-identical EXIF preservation, resource limits and an actual stalled-read timeout. Final review
+  fixed empty chunks bypassing the read-count limit and added its regression. TypeScript,
+  zero-warning targeted lint, migration/report checks, formatting, production build (93 static
+  outputs), performance, SEO, 80-page/two-source internal links and 570-file secret scanning pass.
+  Company evidence tests and Goal generation pass with existing warnings; strict verified SKUs
+  remain zero. No fresh browser acceptance is claimed for code with no UI caller.
+- **Known Issues:** Actual Storage/Auth/PostgREST round trips, concurrency, native CLI parity and
+  candidate CI remain unrun. Upload UI/readback, immutable mapping review, supporting records and
+  the full real 15AK preview/QA/publication flow remain incomplete. Storage metadata cannot attest
+  bytes; input-buffer validation cannot prove persisted bytes or human approval. Release BLOCKED.
+- **Reusable Knowledge Added:** `2026-09-27-console-m4-original-intake.md` records the distinct
+  evidence claims, scoped policies, service/admin limitations, original fidelity, installed Sharp
+  timeout behavior and the required authenticated HTTP/Storage integration gate.
+- **Deployment:** None. No commit/push/merge, retained/hosted migration, reset or authority cutover.
+  The pending B5 CI-only approval does not include B6/B7. A separate read-only host check confirms
+  enabled VirtualMachinePlatform, present hypervisor, responding Docker and seven running containers;
+  no system change/reboot or fresh database-retention claim was made.
+- **Next Recommended Action:** Connect authenticated upload, exact stored-byte readback and owner
+  SKU intake, then run real isolated Storage/browser acceptance before adding media approval.
+
+## 2026-09-27 - M4-B8 Original Upload And Readback
+
+- **Task:** Connect the original-intake foundation to authenticated upload/readback, counted SKU
+  history and a responsive intake form while preserving separate media review and publication gates.
+- **Files Changed:** New migration `202609270015_product_intelligence_original_commands.sql` and
+  its SQL test; new original domain contract, upload/read services, API/originals routes,
+  `OriginalIntake`, upload/browser/HTTP tests and dated upload decision. Updated shared SKU
+  navigation/pages, Console CSS/config, byte-limit import, `.env.example`, `next.config.ts`,
+  generated Supabase types, migration/report checks, package scripts, quality workflow, HTTP tests,
+  fixture/README, media knowledge, M4 runbook, Goal status/report and this log.
+- **Components Changed:** Original intake form/history, authenticated user-client orchestrator,
+  minimal result/read DTOs and SQL wrappers with current-role checks and per-actor intent quota.
+  No components removed. An independent local-only flag is default-off; active settings unchanged.
+- **Data Changed:** Synthetic raster/transport/UI fixtures and in-memory SQL rows only. No real
+  original, geometry, SKU mapping, technical fact, rights/match approval, canonical registry or
+  retained/hosted database changed. SQL completion remains private, blocked and `not_attested`.
+- **Visual Changes:** SKU Original images tab, bounded local preview, source fields, upload/retry
+  feedback and paginated intake history; publisher/viewer states are read-only. Public UI unchanged.
+- **SEO Impact:** No public route/content/schema changes. The private API has exact-path
+  noindex/no-store/no-referrer headers, verified in the actual production-build HTTP response.
+- **Validation:** Fifteen embedded suites / 627 assertions, including 29 new wrapper/history checks,
+  official embedded type parity, two 17-table replays and existing source-retention probes pass.
+  Six actual-byte groups and nine mocked-SDK upload/read groups pass. Synthetic original UI passes
+  six widths/screenshots, payload/retry/error/receipt, image load, roles/history and keyboard guards.
+  Existing editor, compatibility and media UI regressions pass. Fresh production build and owned
+  HTTP privacy/host/method/origin checks pass after fixing the demonstrated header override.
+  Full zero-warning lint, TypeScript, scoped formatting, performance, SEO and internal links pass.
+  Migration/report validation, diff checks and the 582-file secret scan pass. Regenerated Goal
+  inventory is 15 suites/627 assertions; it retains 43 structured products, zero strict verified
+  SKUs and the existing legacy-media/company-evidence warnings.
+- **Known Issues:** Real Auth/Storage/persisted-browser acceptance, large-file HTTP transport,
+  native CLI type parity, multi-connection races and fresh CI remain unproven. Retry IDs are local
+  to the mounted form, not durable reload recovery. Incomplete uploads are retained. Neither input
+  decoding nor a successful round trip creates human rights/match approval; full media review,
+  supporting records and the real 15AK preview/QA/publication pilot remain open. Release BLOCKED.
+- **Reusable Knowledge Added:** `2026-09-27-console-m4-original-upload.md` records the API body-clone
+  boundary, unchanged-byte reconciliation, narrowly scoped limits, private DTOs, incomplete-upload
+  retention and the distinction between stored-byte observation, SQL receipt and human approval.
+- **Deployment:** None. No push/merge, schema application, reset, source-authority change or active
+  flag. Previous M3 and unanswered B5 CI scopes do not cover B6-B8. Docker remains healthy; no
+  further system change or reboot occurred.
+- **Next Recommended Action:** Prove real original intake in an authorized disposable
+  Auth/Storage/browser stack before enabling it or adding exact-SKU media approval.
+
+## 2026-09-27 - M4-B9 Original Upload Cookie Scope Correction
+
+- **Task:** Fix the blocking mismatch between B8's upload path and the existing `/console` login
+  cookie while preserving narrow cookies, bounded bodies and independent route authorization.
+- **Files Changed:** Relocated original API route to `app/(console)/console/originals/route.ts`;
+  updated `middleware.ts`, original domain path/form, `next.config.ts`, upload/browser/HTTP/boundary
+  tests, package/quality workflow; new matcher test and dated cookie-scope decision. Updated B8
+  supersession notice, media knowledge, fixture README, M4 runbook, Goal status and this log.
+- **Components Changed:** Upload endpoint placement and exact-path middleware coverage. Login
+  cookies and complete upload auth/role checks are unchanged; the old path has no alias.
+- **Data Changed:** Synthetic browser cookie and test requests only. No retained/hosted schema,
+  product evidence, original bytes/geometry, mapping, approval or active flag changed.
+- **Visual Changes / SEO Impact:** No intended UI or public SEO change. The upload uses existing
+  Console privacy headers and logging exclusion; product URLs, canonical data and RFQ are unchanged.
+- **Validation:** Installed Next source parser and actual production middleware manifest pass
+  route/host/cookie-scope checks. Fresh production build and owned HTTP privacy/CSRF/host/public
+  regression pass. Real Edge verifies HttpOnly-cookie delivery to the form's upload path and absence
+  at the old path; the four-group synthetic UI suite retains six widths/screenshots and no page
+  errors/external requests. Nine upload/read unit groups and offline boundary/entrance checks pass.
+  Initial test-only enum typing and assumed staging POST status were corrected without changing
+  runtime auth or the existing 404 staging POST denial policy.
+  Final TypeScript, full zero-warning lint, formatting/diff checks, performance, SEO and the 584-file
+  secret scan pass. Canonical/public data and source paths have no diff.
+- **Known Issues:** This proves cookie delivery, not actual Auth/Storage intake or >10 MiB HTTP
+  readback. The real isolated upload runner remains to be connected/executed; native provider
+  behavior, persistence and fresh CI are unproven. Media review, real 15AK evidence and full V1 remain
+  incomplete. Release status BLOCKED; no historical B8 test is reclassified as real upload proof.
+- **Reusable Knowledge Added:** `2026-09-27-console-m4-original-cookie-scope.md` supersedes only B8
+  API placement and records cookie/middleware interplay, actual framework matching and test limits.
+- **Deployment:** None. No commit/push, merge, migration, reset or production-source change.
+- **Next Recommended Action:** Connect original-file acceptance to the existing guarded disposable
+  Auth/Storage/browser runner, then verify persistence and byte fidelity before enabling intake.
+
+## 2026-09-28 - M4-B10 Real Original Acceptance And CI Authorization
+
+- **Task:** Prepare real disposable Auth/Storage/browser original-intake acceptance and record the
+  owner's authorization for review, commit and push of the current M4 batch to the existing branch.
+- **Files Changed:** New `scripts/console/test-original-working-browser.ts` and dated isolated-CI
+  decision; updated working browser/isolated runners, browser-server feature options, local guards
+  and guard tests, quality workflow step, M4 runbook, Goal status and this log.
+- **Components Changed:** Test orchestration only in B10; the reviewed submission also includes
+  accumulated compatibility workbench, private media inspection and original-intake components.
+- **Data Changed:** Generated synthetic test bytes and disposable fixtures only. No real product,
+  original geometry, canonical registry, retained stack or hosted data changed.
+- **Visual Changes / SEO Impact:** No B10 runtime visual or public SEO change. Six responsive
+  persisted-original history screenshots are required by the real runner, not yet claimed passed.
+- **Validation:** Eight local target guards, six server feature guards, TypeScript and zero-warning
+  lint pass. Fresh embedded SQL: 15 suites / 627 assertions, official complete public-schema type
+  parity, two 17-table replays and source-retention probes pass. Actual CI is pending.
+  Pre-submission review and all 18 focused scripts pass; fresh production build/HTTP isolation,
+  source/compiled matchers, full type/lint, scoped formatting/diff, performance, SEO, built internal
+  links and the 586-text-file secret scan pass. Public data/routes/RFQ/deployment config have no diff.
+- **Known Issues:** The new unmocked browser/Storage helper is prepared, not yet executed. Media
+  approval/mapping, full real 15AK evidence, verified preview/QA and publishing remain incomplete.
+- **Reusable Knowledge Added:** `2026-09-28-console-m4-isolated-ci.md` records exact authorization,
+  pristine-target protection and the distinction between synthetic isolated acceptance and release.
+- **Deployment:** None. Only review/commit/push to `18803076512/arcfort-website` branch
+  `codex/v2-industrial-brand-system` and isolated CI are authorized. No merge, deployment, hosted
+  migration or retained-stack reset/import/switch. Branch automatic deployment remains disabled.
+- **Next Recommended Action:** Execute and inspect candidate-specific isolated CI before enabling
+  original intake or implementing human-reviewed SKU media assignment.

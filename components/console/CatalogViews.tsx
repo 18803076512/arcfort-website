@@ -67,6 +67,12 @@ export function Pagination({
       "variant",
       "component",
       "kind",
+      "view",
+      "publication",
+      "rights",
+      "match",
+      "assignment",
+      "missingView",
     ]) {
       if (typeof params[key] === "string") query.set(key, params[key]);
     }

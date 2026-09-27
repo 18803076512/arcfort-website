@@ -153,6 +153,13 @@ export type Database = {
             referencedColumns: ["id"];
           },
           {
+            foreignKeyName: "compatibility_evidence_compatibility_relationship_id_fkey";
+            columns: ["compatibility_relationship_id"];
+            isOneToOne: false;
+            referencedRelation: "pi_effective_compatibility_relationships";
+            referencedColumns: ["id"];
+          },
+          {
             foreignKeyName: "compatibility_evidence_evidence_source_id_fkey";
             columns: ["evidence_source_id"];
             isOneToOne: false;
@@ -235,6 +242,260 @@ export type Database = {
           },
           {
             foreignKeyName: "compatibility_relationships_target_entity_id_fkey";
+            columns: ["target_entity_id"];
+            isOneToOne: false;
+            referencedRelation: "compatibility_entities";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      compatibility_revision_heads: {
+        Row: {
+          current_relationship_id: string | null;
+          relationship_type: string;
+          revision: number;
+          root_relationship_id: string;
+          scope_label: string;
+          subject_entity_id: string;
+          target_entity_id: string;
+        };
+        Insert: {
+          current_relationship_id?: string | null;
+          relationship_type: string;
+          revision: number;
+          root_relationship_id: string;
+          scope_label: string;
+          subject_entity_id: string;
+          target_entity_id: string;
+        };
+        Update: {
+          current_relationship_id?: string | null;
+          relationship_type?: string;
+          revision?: number;
+          root_relationship_id?: string;
+          scope_label?: string;
+          subject_entity_id?: string;
+          target_entity_id?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "compatibility_revision_heads_current_relationship_id_fkey";
+            columns: ["current_relationship_id"];
+            isOneToOne: false;
+            referencedRelation: "compatibility_relationships";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "compatibility_revision_heads_current_relationship_id_fkey";
+            columns: ["current_relationship_id"];
+            isOneToOne: false;
+            referencedRelation: "pi_effective_compatibility_relationships";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "compatibility_revision_heads_root_relationship_id_fkey";
+            columns: ["root_relationship_id"];
+            isOneToOne: true;
+            referencedRelation: "compatibility_relationships";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "compatibility_revision_heads_root_relationship_id_fkey";
+            columns: ["root_relationship_id"];
+            isOneToOne: true;
+            referencedRelation: "pi_effective_compatibility_relationships";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "compatibility_revision_heads_subject_entity_id_fkey";
+            columns: ["subject_entity_id"];
+            isOneToOne: false;
+            referencedRelation: "compatibility_entities";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "compatibility_revision_heads_target_entity_id_fkey";
+            columns: ["target_entity_id"];
+            isOneToOne: false;
+            referencedRelation: "compatibility_entities";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      compatibility_revisions: {
+        Row: {
+          created_at: string;
+          created_by: string;
+          decision_event_id: string | null;
+          predecessor_id: string | null;
+          proposal_digest: string;
+          reason: string;
+          relationship_id: string;
+          review_state: string;
+          root_relationship_id: string;
+          sequence: number;
+          submitted_digest: string | null;
+        };
+        Insert: {
+          created_at?: string;
+          created_by: string;
+          decision_event_id?: string | null;
+          predecessor_id?: string | null;
+          proposal_digest: string;
+          reason: string;
+          relationship_id: string;
+          review_state: string;
+          root_relationship_id: string;
+          sequence: number;
+          submitted_digest?: string | null;
+        };
+        Update: {
+          created_at?: string;
+          created_by?: string;
+          decision_event_id?: string | null;
+          predecessor_id?: string | null;
+          proposal_digest?: string;
+          reason?: string;
+          relationship_id?: string;
+          review_state?: string;
+          root_relationship_id?: string;
+          sequence?: number;
+          submitted_digest?: string | null;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "compatibility_revisions_decision_event_id_fkey";
+            columns: ["decision_event_id"];
+            isOneToOne: false;
+            referencedRelation: "verification_events";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "compatibility_revisions_predecessor_id_fkey";
+            columns: ["predecessor_id"];
+            isOneToOne: false;
+            referencedRelation: "compatibility_relationships";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "compatibility_revisions_predecessor_id_fkey";
+            columns: ["predecessor_id"];
+            isOneToOne: false;
+            referencedRelation: "pi_effective_compatibility_relationships";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "compatibility_revisions_relationship_id_fkey";
+            columns: ["relationship_id"];
+            isOneToOne: true;
+            referencedRelation: "compatibility_relationships";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "compatibility_revisions_relationship_id_fkey";
+            columns: ["relationship_id"];
+            isOneToOne: true;
+            referencedRelation: "pi_effective_compatibility_relationships";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "compatibility_revisions_root_relationship_id_fkey";
+            columns: ["root_relationship_id"];
+            isOneToOne: false;
+            referencedRelation: "compatibility_revision_heads";
+            referencedColumns: ["root_relationship_id"];
+          },
+        ];
+      };
+      compatibility_source_bindings: {
+        Row: {
+          asserted_role: string;
+          assertion: string;
+          created_at: string;
+          created_by: string;
+          evidence_basis: string;
+          evidence_source_id: string;
+          product_variant_id: string;
+          relationship_type: string;
+          revision_label: string;
+          scope_label: string;
+          source_digest: string;
+          source_kind: string;
+          source_location: string;
+          subject_digest: string;
+          subject_entity_id: string;
+          target_digest: string;
+          target_entity_id: string;
+        };
+        Insert: {
+          asserted_role: string;
+          assertion: string;
+          created_at?: string;
+          created_by: string;
+          evidence_basis: string;
+          evidence_source_id: string;
+          product_variant_id: string;
+          relationship_type: string;
+          revision_label: string;
+          scope_label: string;
+          source_digest: string;
+          source_kind: string;
+          source_location: string;
+          subject_digest: string;
+          subject_entity_id: string;
+          target_digest: string;
+          target_entity_id: string;
+        };
+        Update: {
+          asserted_role?: string;
+          assertion?: string;
+          created_at?: string;
+          created_by?: string;
+          evidence_basis?: string;
+          evidence_source_id?: string;
+          product_variant_id?: string;
+          relationship_type?: string;
+          revision_label?: string;
+          scope_label?: string;
+          source_digest?: string;
+          source_kind?: string;
+          source_location?: string;
+          subject_digest?: string;
+          subject_entity_id?: string;
+          target_digest?: string;
+          target_entity_id?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "compatibility_source_bindings_evidence_source_id_fkey";
+            columns: ["evidence_source_id"];
+            isOneToOne: true;
+            referencedRelation: "evidence_sources";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "compatibility_source_bindings_product_variant_id_fkey";
+            columns: ["product_variant_id"];
+            isOneToOne: false;
+            referencedRelation: "pi_variant_readiness";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "compatibility_source_bindings_product_variant_id_fkey";
+            columns: ["product_variant_id"];
+            isOneToOne: false;
+            referencedRelation: "product_variants";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "compatibility_source_bindings_subject_entity_id_fkey";
+            columns: ["subject_entity_id"];
+            isOneToOne: false;
+            referencedRelation: "compatibility_entities";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "compatibility_source_bindings_target_entity_id_fkey";
             columns: ["target_entity_id"];
             isOneToOne: false;
             referencedRelation: "compatibility_entities";
@@ -555,6 +816,182 @@ export type Database = {
           width?: number | null;
         };
         Relationships: [];
+      };
+      media_source_bindings: {
+        Row: {
+          assertion: string;
+          asset_digest: string;
+          created_at: string;
+          created_by: string;
+          evidence_basis: string;
+          evidence_dimension: string;
+          evidence_source_id: string;
+          media_asset_id: string;
+          media_role: string;
+          product_variant_id: string;
+          revision_label: string;
+          source_digest: string;
+          source_kind: string;
+          source_location: string;
+          variant_digest: string;
+        };
+        Insert: {
+          assertion: string;
+          asset_digest: string;
+          created_at?: string;
+          created_by: string;
+          evidence_basis: string;
+          evidence_dimension: string;
+          evidence_source_id: string;
+          media_asset_id: string;
+          media_role: string;
+          product_variant_id: string;
+          revision_label: string;
+          source_digest: string;
+          source_kind: string;
+          source_location: string;
+          variant_digest: string;
+        };
+        Update: {
+          assertion?: string;
+          asset_digest?: string;
+          created_at?: string;
+          created_by?: string;
+          evidence_basis?: string;
+          evidence_dimension?: string;
+          evidence_source_id?: string;
+          media_asset_id?: string;
+          media_role?: string;
+          product_variant_id?: string;
+          revision_label?: string;
+          source_digest?: string;
+          source_kind?: string;
+          source_location?: string;
+          variant_digest?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "media_source_bindings_evidence_source_id_fkey";
+            columns: ["evidence_source_id"];
+            isOneToOne: true;
+            referencedRelation: "evidence_sources";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "media_source_bindings_media_asset_id_fkey";
+            columns: ["media_asset_id"];
+            isOneToOne: false;
+            referencedRelation: "media_assets";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "media_source_bindings_product_variant_id_fkey";
+            columns: ["product_variant_id"];
+            isOneToOne: false;
+            referencedRelation: "pi_variant_readiness";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "media_source_bindings_product_variant_id_fkey";
+            columns: ["product_variant_id"];
+            isOneToOne: false;
+            referencedRelation: "product_variants";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      media_upload_completions: {
+        Row: {
+          created_at: string;
+          created_by: string;
+          intent_id: string;
+          media_asset_id: string;
+          storage_metadata: Json;
+          storage_object_id: string;
+          storage_version: string | null;
+        };
+        Insert: {
+          created_at?: string;
+          created_by: string;
+          intent_id: string;
+          media_asset_id: string;
+          storage_metadata: Json;
+          storage_object_id: string;
+          storage_version?: string | null;
+        };
+        Update: {
+          created_at?: string;
+          created_by?: string;
+          intent_id?: string;
+          media_asset_id?: string;
+          storage_metadata?: Json;
+          storage_object_id?: string;
+          storage_version?: string | null;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "media_upload_completions_intent_id_fkey";
+            columns: ["intent_id"];
+            isOneToOne: true;
+            referencedRelation: "media_upload_intents";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "media_upload_completions_media_asset_id_fkey";
+            columns: ["media_asset_id"];
+            isOneToOne: true;
+            referencedRelation: "media_assets";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      media_upload_intents: {
+        Row: {
+          actor_id: string;
+          created_at: string;
+          id: string;
+          manifest: Json;
+          media_asset_id: string;
+          product_variant_id: string;
+          storage_path: string;
+          variant_digest: string;
+        };
+        Insert: {
+          actor_id: string;
+          created_at?: string;
+          id: string;
+          manifest: Json;
+          media_asset_id: string;
+          product_variant_id: string;
+          storage_path: string;
+          variant_digest: string;
+        };
+        Update: {
+          actor_id?: string;
+          created_at?: string;
+          id?: string;
+          manifest?: Json;
+          media_asset_id?: string;
+          product_variant_id?: string;
+          storage_path?: string;
+          variant_digest?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "media_upload_intents_product_variant_id_fkey";
+            columns: ["product_variant_id"];
+            isOneToOne: false;
+            referencedRelation: "pi_variant_readiness";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "media_upload_intents_product_variant_id_fkey";
+            columns: ["product_variant_id"];
+            isOneToOne: false;
+            referencedRelation: "product_variants";
+            referencedColumns: ["id"];
+          },
+        ];
       };
       oem_references: {
         Row: {
@@ -1872,6 +2309,45 @@ export type Database = {
         };
         Relationships: [];
       };
+      pi_effective_compatibility_relationships: {
+        Row: {
+          buyer_confirmation_required: boolean | null;
+          confirmation_requirements: string[] | null;
+          confirmed_at: string | null;
+          confirmed_by: string | null;
+          created_at: string | null;
+          external_key: string | null;
+          id: string | null;
+          legacy_reviewed_by: string | null;
+          legacy_reviewed_date: string | null;
+          raw_snapshot: Json | null;
+          relationship_status: string | null;
+          relationship_type: string | null;
+          role: string | null;
+          source_level: Database["public"]["Enums"]["pi_source_level"] | null;
+          source_type: string | null;
+          subject_entity_id: string | null;
+          target_entity_id: string | null;
+          updated_at: string | null;
+          verification_status: Database["public"]["Enums"]["pi_verification_status"] | null;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "compatibility_relationships_subject_entity_id_fkey";
+            columns: ["subject_entity_id"];
+            isOneToOne: false;
+            referencedRelation: "compatibility_entities";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "compatibility_relationships_target_entity_id_fkey";
+            columns: ["target_entity_id"];
+            isOneToOne: false;
+            referencedRelation: "compatibility_entities";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
       pi_effective_technical_values: {
         Row: {
           confirmation_requirements: string[] | null;
@@ -1953,6 +2429,18 @@ export type Database = {
       };
     };
     Functions: {
+      pi_add_compatibility_source: {
+        Args: {
+          asserted_role: string;
+          relation_type: string;
+          request_uuid: string;
+          scope_label: string;
+          source_copy: Json;
+          subject_uuid: string;
+          target_uuid: string;
+        };
+        Returns: Json;
+      };
       pi_add_technical_source: {
         Args: {
           field_uuid: string;
@@ -1963,16 +2451,27 @@ export type Database = {
         };
         Returns: Json;
       };
+      pi_begin_media_upload: {
+        Args: { manifest: Json; request_uuid: string; variant_uuid: string };
+        Returns: Json;
+      };
+      pi_can_upload_original: { Args: { object_name: string }; Returns: boolean };
       pi_can_view_console: { Args: never; Returns: boolean };
+      pi_complete_media_upload: {
+        Args: { intent_uuid: string; request_uuid: string };
+        Returns: Json;
+      };
       pi_create_product_draft: {
         Args: { draft_copy: Json; identity: Json; request_uuid: string };
         Returns: Json;
       };
       pi_current_shadow_counts: { Args: never; Returns: Json };
+      pi_ensure_product_compatibility_entity: {
+        Args: { request_uuid: string; variant_uuid: string };
+        Returns: Json;
+      };
       pi_has_console_role: {
-        Args: {
-          required_roles: Database["public"]["Enums"]["pi_console_role"][];
-        };
+        Args: { required_roles: Database["public"]["Enums"]["pi_console_role"][] };
         Returns: boolean;
       };
       pi_is_valid_lifecycle_transition: {
@@ -1990,6 +2489,21 @@ export type Database = {
           revision: number;
         }[];
       };
+      pi_propose_compatibility_revision: {
+        Args: {
+          evidence_links: Json;
+          expected_revision: number;
+          proposal_reason: string;
+          relation_copy: Json;
+          relation_type: string;
+          request_uuid: string;
+          root_uuid?: string;
+          scope_label: string;
+          subject_uuid: string;
+          target_uuid: string;
+        };
+        Returns: Json;
+      };
       pi_propose_technical_revision: {
         Args: {
           evidence_links: Json;
@@ -2002,6 +2516,25 @@ export type Database = {
           variant_uuid: string;
         };
         Returns: Json;
+      };
+      pi_read_original_intakes: {
+        Args: { page_number: number; variant_uuid: string };
+        Returns: {
+          asset_id: string;
+          byte_size: number;
+          completed: boolean;
+          created_at: string;
+          filename: string;
+          height: number;
+          intent_id: string;
+          mime_type: string;
+          source_kind: string;
+          source_owner: string;
+          source_reference: string;
+          subject_current: boolean;
+          total_count: number;
+          width: number;
+        }[];
       };
       pi_read_product_draft: {
         Args: { variant_uuid: string };
@@ -2035,6 +2568,20 @@ export type Database = {
         }[];
       };
       pi_reconcile_shadow_batch: { Args: { batch_id: string }; Returns: Json };
+      pi_review_compatibility_revision: {
+        Args: {
+          conflict_resolution: string;
+          decision: string;
+          expected_digest: string;
+          expected_revision: number;
+          relationship_uuid: string;
+          replacement_copy: Json;
+          replacement_evidence: Json;
+          request_uuid: string;
+          review_reason: string;
+        };
+        Returns: Json;
+      };
       pi_review_technical_revision: {
         Args: {
           conflict_resolution: string;
@@ -2055,6 +2602,15 @@ export type Database = {
           expected_revision: number;
           request_uuid: string;
           variant_uuid: string;
+        };
+        Returns: Json;
+      };
+      pi_submit_compatibility_review: {
+        Args: {
+          expected_digest: string;
+          expected_revision: number;
+          relationship_uuid: string;
+          request_uuid: string;
         };
         Returns: Json;
       };

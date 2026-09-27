@@ -8,6 +8,8 @@ import {
   type CommandResult,
 } from "../domain/catalog/commands.ts";
 import { isConsoleOrigin } from "./security.ts";
+import { consoleCompatibilityEnabled } from "./working-config.ts";
+import { isCompatibilityCommand } from "../domain/catalog/compatibility.ts";
 
 export function isConsoleCommandOrigin(headers: Headers, origin: string) {
   if (headers.get("x-console-command") !== "1") return false;
@@ -55,9 +57,12 @@ export async function readConsoleCommand(request: Request): Promise<unknown> {
 
 export function canRunConsoleCommand(roles: ConsoleRole[], action: ConsoleCommand["action"]) {
   const allowed: ConsoleRole[] =
-    action === "review"
+    action === "review" || action === "compatibility_review"
       ? ["owner", "reviewer"]
-      : action === "source" || action === "submit"
+      : action === "source" ||
+          action === "submit" ||
+          action === "compatibility_source" ||
+          action === "compatibility_submit"
         ? ["owner", "editor", "reviewer"]
         : ["owner", "editor"];
   return roles.some((role) => allowed.includes(role));
@@ -66,6 +71,7 @@ export function canRunConsoleCommand(roles: ConsoleRole[], action: ConsoleComman
 export async function executeConsoleCommand(
   client: ConsoleClient,
   input: unknown,
+  env: Record<string, string | undefined> = process.env,
 ): Promise<CommandResult> {
   const access = await checkConsoleAccess(client);
   if (access.status !== "authorized")
@@ -81,7 +87,10 @@ export async function executeConsoleCommand(
       fields: error instanceof CommandInputError ? error.fields : ["form"],
     };
   }
-  if (!canRunConsoleCommand(access.roles, command.action))
+  if (
+    !canRunConsoleCommand(access.roles, command.action) ||
+    (isCompatibilityCommand(command.action) && !consoleCompatibilityEnabled(env))
+  )
     return { ok: false, code: "42501", message: commandError("42501") };
   try {
     const request_uuid = command.request_id;
@@ -138,6 +147,53 @@ export async function executeConsoleCommand(
             replacement_value: command.replacement,
             replacement_evidence: command.evidence,
           });
+        case "compatibility_entity":
+          return client.rpc("pi_ensure_product_compatibility_entity", {
+            request_uuid,
+            variant_uuid: command.variant_id,
+          });
+        case "compatibility_source":
+          return client.rpc("pi_add_compatibility_source", {
+            request_uuid,
+            subject_uuid: command.subject_id,
+            target_uuid: command.target_id,
+            relation_type: command.relationship_type,
+            scope_label: command.scope,
+            asserted_role: command.role,
+            source_copy: command.source,
+          });
+        case "compatibility_propose":
+          return client.rpc("pi_propose_compatibility_revision", {
+            request_uuid,
+            ...(command.root_id === null ? {} : { root_uuid: command.root_id }),
+            subject_uuid: command.subject_id,
+            target_uuid: command.target_id,
+            relation_type: command.relationship_type,
+            scope_label: command.scope,
+            expected_revision: command.revision,
+            relation_copy: command.copy,
+            evidence_links: command.evidence,
+            proposal_reason: command.reason,
+          });
+        case "compatibility_submit":
+          return client.rpc("pi_submit_compatibility_review", {
+            request_uuid,
+            relationship_uuid: command.relationship_id,
+            expected_revision: command.revision,
+            expected_digest: command.digest,
+          });
+        case "compatibility_review":
+          return client.rpc("pi_review_compatibility_revision", {
+            request_uuid,
+            relationship_uuid: command.relationship_id,
+            expected_revision: command.revision,
+            expected_digest: command.digest,
+            decision: command.decision,
+            review_reason: command.reason,
+            conflict_resolution: command.resolution,
+            replacement_copy: command.replacement,
+            replacement_evidence: command.evidence,
+          });
       }
     })();
     if (response.error) {
@@ -154,22 +210,7 @@ export async function executeConsoleCommand(
     const result: Extract<CommandResult, { ok: true }>["result"] = {};
     if (typeof raw.revision === "number" && Number.isSafeInteger(raw.revision))
       result.revision = raw.revision;
-    const requiredIds: ("variant_id" | "source_id" | "value_id" | "root_value_id" | "event_id")[] =
-      command.action === "source"
-        ? ["source_id"]
-        : command.action === "create" || command.action === "save"
-          ? ["variant_id"]
-          : command.action === "propose"
-            ? ["value_id", "root_value_id"]
-            : command.action === "review"
-              ? command.decision === "EDIT"
-                ? ["value_id", "root_value_id", "event_id"]
-                : ["value_id", "event_id"]
-              : ["value_id"];
-    const needsDigest =
-      command.action === "propose" ||
-      command.action === "submit" ||
-      (command.action === "review" && command.decision === "EDIT");
+    const { ids: requiredIds, digest: needsDigest, revision: needsRevision } = resultShape(command);
     const malformed =
       requiredIds.some(
         (field) =>
@@ -178,15 +219,69 @@ export async function executeConsoleCommand(
             raw[field],
           ),
       ) ||
-      (command.action !== "source" &&
-        (typeof result.revision !== "number" || result.revision < 0)) ||
-      (needsDigest && (typeof raw.digest !== "string" || !/^[a-f0-9]{64}$/.test(raw.digest)));
+      (needsRevision && (typeof result.revision !== "number" || result.revision < 0)) ||
+      (needsDigest && (typeof raw.digest !== "string" || !/^[a-f0-9]{64}$/.test(raw.digest))) ||
+      (command.action === "compatibility_entity" &&
+        String(raw.product_variant_id).toLowerCase() !== command.variant_id.toLowerCase());
     if (malformed) return { ok: false, code: "unavailable", message: commandError() };
     for (const field of requiredIds) result[field] = raw[field] as string;
     if (needsDigest) result.digest = raw.digest as string;
-    if (command.action === "source") delete result.revision;
+    if (!needsRevision) delete result.revision;
     return { ok: true, result };
   } catch {
     return { ok: false, code: "unavailable", message: commandError() };
+  }
+}
+
+type ResultId =
+  | "variant_id"
+  | "source_id"
+  | "value_id"
+  | "root_value_id"
+  | "event_id"
+  | "entity_id"
+  | "product_variant_id"
+  | "relationship_id"
+  | "root_relationship_id";
+function resultShape(command: ConsoleCommand): {
+  ids: ResultId[];
+  digest: boolean;
+  revision: boolean;
+} {
+  switch (command.action) {
+    case "create":
+    case "save":
+      return { ids: ["variant_id"], digest: false, revision: true };
+    case "source":
+    case "compatibility_source":
+      return { ids: ["source_id"], digest: false, revision: false };
+    case "compatibility_entity":
+      return { ids: ["entity_id", "product_variant_id"], digest: false, revision: false };
+    case "propose":
+      return { ids: ["value_id", "root_value_id"], digest: true, revision: true };
+    case "compatibility_propose":
+      return { ids: ["relationship_id", "root_relationship_id"], digest: true, revision: true };
+    case "submit":
+      return { ids: ["value_id"], digest: true, revision: true };
+    case "compatibility_submit":
+      return { ids: ["relationship_id"], digest: true, revision: true };
+    case "review":
+      return {
+        ids:
+          command.decision === "EDIT"
+            ? ["value_id", "root_value_id", "event_id"]
+            : ["value_id", "event_id"],
+        digest: command.decision === "EDIT",
+        revision: true,
+      };
+    case "compatibility_review":
+      return {
+        ids:
+          command.decision === "EDIT"
+            ? ["relationship_id", "root_relationship_id", "event_id"]
+            : ["relationship_id", "event_id"],
+        digest: command.decision === "EDIT",
+        revision: true,
+      };
   }
 }

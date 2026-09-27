@@ -51,6 +51,28 @@ function privacy(response: Response) {
   assert.match(response.headers.get("x-robots-tag") ?? "", /nofollow/i);
   assert.equal(response.headers.get("referrer-policy"), "no-referrer");
 }
+// This private streaming route owns its boundary outside the middleware body clone.
+for (const method of ["GET", "HEAD", "OPTIONS", "PUT", "PATCH", "DELETE"]) {
+  const response = await request("/console/originals", { method });
+  assert.equal(response.status, 405);
+  assert.equal(response.headers.get("allow"), "POST");
+  privacy(response);
+}
+for (const originHeader of [origin, "https://invalid.example", "null"]) {
+  const response = await request("/console/originals", {
+    method: "POST",
+    headers: { origin: originHeader, "content-type": "image/png", "x-console-command": "1" },
+    body: "synthetic denied input",
+  });
+  assert.equal(response.status, 403, "Original intake must remain disabled in this smoke server.");
+  privacy(response);
+  assert.equal(response.headers.has("set-cookie"), false);
+}
+assert.equal(
+  (await request("/api/console/originals")).status,
+  404,
+  "No out-of-cookie-scope alias.",
+);
 for (const path of [
   "/console/login",
   "/console/recover",
@@ -60,6 +82,9 @@ for (const path of [
   "/console/series",
   "/console/technical-data",
   "/console/readiness",
+  "/console/media",
+  "/console/media?view=assets&assignment=unassigned",
+  "/console/products/10000000-0000-4000-8000-000000000001/originals",
   "/console/auth/confirm",
   "/console/unknown-qa-route",
 ]) {
@@ -142,6 +167,7 @@ for (const path of [
   "/",
   "/console/login",
   "/console/auth/callback",
+  "/console/originals",
   "/_next/static/qa-missing.js",
 ]) {
   const response = await request(path, { headers: stagingHeaders });
@@ -154,6 +180,7 @@ for (const path of [
   "/contact",
   "/api/rfq",
   "/api/rfq/status",
+  "/api/console/originals",
   "/sitemap.xml",
   "/downloads/renqiu-ailesen-welding-catalog.pdf",
 ]) {
@@ -165,6 +192,13 @@ for (const path of [
 const stagingRfq = await request("/api/rfq", { method: "POST", headers: stagingHeaders, body: "" });
 assert.equal(stagingRfq.status, 404);
 privacy(stagingRfq);
+const stagingOriginal = await request("/console/originals", {
+  method: "POST",
+  headers: stagingHeaders,
+  body: "synthetic denied input",
+});
+assert.equal(stagingOriginal.status, 404, "Staging keeps its existing non-session POST denial.");
+privacy(stagingOriginal);
 const stagingRobots = await request("/robots.txt", { headers: stagingHeaders });
 assert.equal(stagingRobots.status, 200);
 assert.equal(await stagingRobots.text(), "User-agent: *\nDisallow: /\n");

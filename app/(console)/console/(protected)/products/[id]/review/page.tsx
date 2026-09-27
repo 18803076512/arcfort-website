@@ -1,7 +1,11 @@
 import { notFound } from "next/navigation";
 import { requireConsoleAccess } from "@/lib/console/server";
 import { readTechnicalWorkbench } from "@/lib/console/working";
-import { consoleWorkingEnabled } from "@/lib/console/working-config";
+import {
+  consoleWorkingEnabled,
+  consoleCompatibilityEnabled,
+  consoleOriginalsEnabled,
+} from "@/lib/console/working-config";
 import { TechnicalWorkbench } from "@/components/console/TechnicalWorkbench";
 import { ProductWorkingNav } from "@/components/console/ProductWorkingNav";
 import type { SearchParams } from "@/lib/console/catalog";
@@ -23,7 +27,12 @@ export default async function ReviewProductPage({
   return (
     <>
       <h1>Technical review</h1>
-      <ProductWorkingNav id={id} active="review" />
+      <ProductWorkingNav
+        id={id}
+        active="review"
+        compatibility={consoleCompatibilityEnabled()}
+        originals={consoleOriginalsEnabled()}
+      />
       <TechnicalWorkbench
         data={data}
         selectedId={typeof query.scope === "string" ? query.scope : undefined}

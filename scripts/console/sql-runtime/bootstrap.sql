@@ -24,5 +24,8 @@ create table storage.buckets (
   id text primary key, name text, public boolean default false,
   file_size_limit bigint, allowed_mime_types text[]
 );
-create table storage.objects (id uuid primary key, bucket_id text);
+create table storage.objects (
+  id uuid primary key, bucket_id text, name text, owner_id text, metadata jsonb, version text,
+  unique(bucket_id,name)
+);
 alter table storage.objects enable row level security;

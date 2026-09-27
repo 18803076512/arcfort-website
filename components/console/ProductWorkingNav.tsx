@@ -1,12 +1,16 @@
-import { FileText, History, ListChecks } from "lucide-react";
+import { FileText, History, ListChecks, GitCompareArrows, Images } from "lucide-react";
 import { ConsoleLink } from "./ConsoleLink";
 
 export function ProductWorkingNav({
   id,
   active,
+  compatibility = false,
+  originals = false,
 }: {
   id: string;
-  active?: "edit" | "review" | "history";
+  active?: "edit" | "review" | "history" | "compatibility" | "originals";
+  compatibility?: boolean;
+  originals?: boolean;
 }) {
   return (
     <nav className="console-working-nav" aria-label="Product working views">
@@ -29,6 +33,26 @@ export function ProductWorkingNav({
         <ListChecks size={18} aria-hidden="true" />
         Technical review
       </ConsoleLink>
+      {compatibility && (
+        <ConsoleLink
+          href={`/console/products/${id}/compatibility`}
+          className="console-action"
+          aria-current={active === "compatibility" ? "page" : undefined}
+        >
+          <GitCompareArrows size={18} aria-hidden="true" />
+          Compatibility
+        </ConsoleLink>
+      )}
+      {originals && (
+        <ConsoleLink
+          href={`/console/products/${id}/originals`}
+          className="console-action"
+          aria-current={active === "originals" ? "page" : undefined}
+        >
+          <Images size={18} aria-hidden="true" />
+          Original images
+        </ConsoleLink>
+      )}
       <ConsoleLink
         href={`/console/products/${id}/history`}
         className="console-action"

@@ -6,7 +6,7 @@ Product, company and acquisition evidence reviewed through 2026-09-01. Source re
 
 ArcFort Weld currently has 43 structured product records, including 40 active public records and 3 drafts. Under the strict evidence gate defined below, 0 products qualify as verified high-quality SKUs. Structured page count and verified product readiness are deliberately reported separately.
 
-The current Product Intelligence repository contains 9 versioned migrations and 246 declared pgTAP assertions across 9 test files. These are inventory counts, not executed-pass or milestone-completion claims. [CODEX_GOAL.md](CODEX_GOAL.md) links the current phase, candidate-specific acceptance evidence and approval boundaries. Local results do not prove hosted parity or authorize migration, adoption or publication.
+The current Product Intelligence repository contains 15 versioned migrations and 627 declared pgTAP assertions across 15 test files. These are inventory counts, not executed-pass or milestone-completion claims. [CODEX_GOAL.md](CODEX_GOAL.md) links the current phase, candidate-specific acceptance evidence and approval boundaries. Local results do not prove hosted parity or authorize migration, adoption or publication.
 
 ## SKU Milestones
 

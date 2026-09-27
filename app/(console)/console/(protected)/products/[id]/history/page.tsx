@@ -1,7 +1,11 @@
 import { notFound } from "next/navigation";
 import { requireConsoleAccess } from "@/lib/console/server";
 import { readProductHistory, readTechnicalHistory, readWorkingStates } from "@/lib/console/working";
-import { consoleWorkingEnabled } from "@/lib/console/working-config";
+import {
+  consoleWorkingEnabled,
+  consoleCompatibilityEnabled,
+  consoleOriginalsEnabled,
+} from "@/lib/console/working-config";
 import { filters, type SearchParams } from "@/lib/console/catalog";
 import { ProductWorkingNav } from "@/components/console/ProductWorkingNav";
 import { ConsoleLink } from "@/components/console/ConsoleLink";
@@ -28,7 +32,12 @@ export default async function ProductHistoryPage({
   return (
     <>
       <h1>Product change history</h1>
-      <ProductWorkingNav id={id} active="history" />
+      <ProductWorkingNav
+        id={id}
+        active="history"
+        compatibility={consoleCompatibilityEnabled()}
+        originals={consoleOriginalsEnabled()}
+      />
       <nav className="console-working-nav" aria-label="History type">
         <ConsoleLink
           href={`/console/products/${id}/history`}

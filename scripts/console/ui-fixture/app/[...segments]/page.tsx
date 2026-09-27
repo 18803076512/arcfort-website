@@ -2,6 +2,12 @@ import { ProductDraftForm } from "../../../../../components/console/ProductDraft
 import { TechnicalWorkbench } from "../../../../../components/console/TechnicalWorkbench";
 import { ProductWorkingNav } from "../../../../../components/console/ProductWorkingNav";
 import type { TechnicalWorkbenchData } from "../../../../../lib/console/working";
+import { MediaWorkspace } from "../../../../../components/console/MediaWorkspace";
+import { mediaFilters } from "../../../../../lib/console/media";
+import { mediaFixture } from "../../../media-fixture";
+import { compatibilityFixture } from "../../../compatibility-fixture";
+import { CompatibilityWorkbench } from "../../../../../components/console/CompatibilityWorkbench";
+import { OriginalIntake } from "../../../../../components/console/OriginalIntake";
 
 const id = "10000000-0000-4000-8000-000000000001";
 const sourceId = "10000000-0000-4000-8000-000000000002";
@@ -39,6 +45,53 @@ export default async function Page({
   const query = await searchParams;
   const mode = segments.at(-1);
   const viewer = query.role === "viewer";
+  if (mode === "originals")
+    return (
+      <>
+        <h1>Original images</h1>
+        <ProductWorkingNav id={id} active="originals" originals compatibility />
+        <OriginalIntake
+          data={{
+            variantId: id,
+            sku: "AF-MIG-QA-9999",
+            canUpload: !viewer && query.role !== "publisher",
+            page: 1,
+            pageSize: 25,
+            total: 1,
+            items: [
+              {
+                intent_id: sourceId,
+                asset_id: rootId,
+                filename: "synthetic-original.png",
+                byte_size: 1200,
+                mime_type: "image/png",
+                width: 32,
+                height: 24,
+                source_kind: "other_reference",
+                source_owner: "Synthetic custodian",
+                source_reference: "TEST-ONLY source",
+                created_at: "2026-09-27T00:00:00Z",
+                completed: query.state !== "pending",
+                subject_current: query.state !== "stale",
+                total_count: 1,
+              },
+            ],
+          }}
+        />
+      </>
+    );
+  if (mode === "compatibility")
+    return (
+      <>
+        <h1>Compatibility</h1>
+        <ProductWorkingNav id={id} active="compatibility" compatibility />
+        <CompatibilityWorkbench {...compatibilityFixture(query)} />
+      </>
+    );
+  if (mode === "media") {
+    const filter = mediaFilters(query);
+    return <MediaWorkspace data={mediaFixture(filter)} filter={filter} params={query} />;
+  }
   if (mode === "new")
     return (
       <>
