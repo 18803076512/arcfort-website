@@ -46,12 +46,6 @@ create function pg_temp.move(n integer,new_name text) returns integer language s
   with changed as (update storage.objects set name=new_name where id=pg_temp.id(n) returning id)
   select count(*)::int from changed;
 $$;
--- SQL-only fixture models the Storage service operation; function-local setting always restores.
-create function pg_temp.remove(n integer) returns integer language sql
-set storage.allow_delete_query='true' as $$
-  with changed as (delete from storage.objects where id=pg_temp.id(n) returning id)
-  select count(*)::int from changed;
-$$;
 select set_config('request.jwt.claim.role','authenticated',true);
 select pg_temp.actor(1);
 select throws_ok($$select pg_temp.start(100)$$,'55000',null,'intake requires adoption');
@@ -98,14 +92,15 @@ select throws_ok($$select pg_temp.put(300,'first')$$,'42501',null,'another edito
 select pg_temp.actor(1);
 select lives_ok($$select pg_temp.put(300,'first')$$,'creator inserts only at the reserved path');
 select is(pg_temp.move(300,'unmanaged.jpg'),0,'managed object cannot move out of protected namespace');
-select throws_ok($$delete from storage.objects where id=pg_temp.id(300)$$,'42501',null,'platform blocks raw deletion before RLS');
-select is(pg_temp.remove(300),0,'even owner cannot delete managed original');
+select ok(exists(select 1 from pg_trigger where tgrelid='storage.objects'::regclass
+  and tgfoid='storage.protect_delete()'::regprocedure and tgenabled='O'),'platform delete guard remains enabled');
+select throws_ok($$delete from storage.objects where id=pg_temp.id(300)$$,'42501',null,'platform blocks raw managed deletion');
+select is((select count(*)::int from storage.objects where id=pg_temp.id(300)),1,'raw deletion refusal retains managed metadata');
 insert into storage.objects(id,bucket_id,name,owner_id) values(pg_temp.id(301),'pi-product-originals','legacy-test.jpg',auth.uid()::text);
 select throws_ok($$select pg_temp.move(301,'working-originals/forged/original.jpg')$$,'42501',null,'unmanaged object cannot move into protected namespace');
 select is(pg_temp.move(301,'legacy-renamed.jpg'),1,'legacy object policy remains unchanged');
 select throws_ok($$delete from storage.objects where id=pg_temp.id(301)$$,'42501',null,'platform also blocks raw legacy deletion');
-select is(pg_temp.remove(301),1,'legacy owner policy remains unchanged');
-select throws_ok($$delete from storage.objects where id=pg_temp.id(300)$$,'42501',null,'service probe restores the platform guard');
+select is((select count(*)::int from storage.objects where id=pg_temp.id(301)),1,'raw deletion refusal retains legacy metadata');
 reset role;
 insert into results values('completed',pg_temp.complete(200,'first'));
 select is(pg_temp.complete(200,'first'),(select result from results where label='completed'),'completion retry returns same asset');

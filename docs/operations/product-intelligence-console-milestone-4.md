@@ -785,3 +785,19 @@ application writes use the API, not direct metadata manipulation.
 The corrected embedded suite passes all **630 assertions**, complete official public-schema type
 parity, both source replays and original-source retention. The strict SQL report test passes and
 the generated Goal inventory is updated. This is fixture parity, not a replacement for native CI.
+
+### Storage API Boundary Correction
+
+The next candidate `9157f8d7de87d8fc80db894c89fef0a0a8c1a070`,
+[run 36359940605](https://github.com/18803076512/arcfort-website/actions/runs/36359940605), again
+passed quality but failed before the intake suite: the native SQL test role cannot set the
+service-owned `storage.allow_delete_query` parameter. The function-local probe above is superseded
+and removed, with no grant or service-role impersonation added. SQL now tests the enabled platform
+guard, raw managed/legacy DELETE denial and row retention, never claiming those are API/RLS tests.
+The embedded guard remains to prevent the original false assumption from recurring.
+
+The real browser helper retains actual API managed-delete denial/readback and adds a positive
+control: upload a generated ordinary synthetic object, delete it through the same owner's Storage
+API session, and require it to disappear while the managed original survives. The final database
+reconciliation still requires exactly two objects. This proves policy selectivity without changing
+platform configuration; all writes remain limited to the disposable CI synthetic scope.

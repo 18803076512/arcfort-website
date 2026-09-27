@@ -5885,3 +5885,19 @@ retained database and historical report.
 - **Reusable Knowledge Added:** The M4 runbook records the difference between platform raw-SQL
   deletion protection and Storage API RLS, without weakening either boundary.
 - **Next Recommended Action:** Rerun the corrected candidate in the same authorized isolated CI.
+
+## 2026-09-28 - M4 Native Storage API Delete Controls
+
+- **Task:** Replace the unsupported SQL service-parameter probe with native API acceptance.
+- **Files Changed:** Original-intake SQL suite, embedded bootstrap comment, real-original browser
+  helper, M4 runbook and this log.
+- **Data Changed / Visual Changes / SEO Impact:** Synthetic disposable test objects only; no
+  runtime policy, public data, retained stack, hosted environment or production setting changed.
+- **Validation:** `9157f8d7` / run `36359940605` passed quality but rejected the SQL fixture's attempt
+  to set a service-owned Storage parameter. That attempt is removed. SQL requires enabled raw-delete
+  protection and retained rows; real API acceptance now has an ordinary-object deletion positive
+  control alongside managed-original deletion refusal. No elevated parameter grant is introduced.
+- **Known Issues:** Corrected native CI and real browser/Storage execution remain pending.
+- **Reusable Knowledge Added:** M4 runbook supersedes the unsuccessful function-local probe and
+  distinguishes platform SQL safeguards from API/RLS acceptance.
+- **Next Recommended Action:** Complete the corrected isolated CI and retain exact terminal evidence.

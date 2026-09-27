@@ -453,6 +453,12 @@ setting; runtime policies/protection are unchanged. Fresh embedded SQL passes 63
 type/source parity. Native SQL and real browser/Storage acceptance remain pending on the corrected
 candidate. Do not rerun against retained data.
 
+The `9157f8d7` rerun rejected that service-owned parameter even in the SQL fixture. The probe is
+removed, without an added grant: SQL now verifies raw-delete refusal/retention, while actual API
+acceptance verifies managed-original retention and successful ordinary synthetic-object deletion.
+Fresh embedded 630-assertion/type/source checks still pass. Refer to the latest M4 runbook section
+for the native CI result; neither earlier failed run is acceptance evidence.
+
 Current access update: the approved staging owner has verified email, evidenced password login and
 one active `owner` role. The role committed on 2026-09-07 and was independently read back with audit
 event `3682` on 2026-09-08. The superseded account has no role. These gates are complete; do not

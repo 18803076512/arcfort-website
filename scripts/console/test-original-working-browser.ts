@@ -223,6 +223,18 @@ export async function runOriginalWorkingBrowser(input: Input) {
   assert.ok((await storage.move(location, location + "-moved")).error);
   await storage.remove([location]);
   await stored(first.result, small);
+  // Positive control: the actual API can delete an ordinary synthetic object, not managed originals.
+  const legacyPath = `synthetic-original-acceptance/${randomUUID()}.png`;
+  assert.equal(
+    (await storage.upload(legacyPath, small, { contentType: "image/png", upsert: false })).error,
+    null,
+  );
+  assert.equal((await storage.download(legacyPath)).error, null);
+  const removed = await storage.remove([legacyPath]);
+  assert.equal(removed.error, null);
+  assert.ok(removed.data?.some((object) => object.name === legacyPath));
+  assert.ok((await storage.download(legacyPath)).error);
+  await stored(first.result, small);
   const history = await readOriginalIntakes(viewer.client, variantId, 1);
   assert.equal(history?.total, 2);
   assert.equal(history?.canUpload, false);
@@ -247,7 +259,7 @@ export async function runOriginalWorkingBrowser(input: Input) {
   assert.equal(readiness.data?.eligible_main_image_count, 0);
   assert.ok((readiness.data?.blocker_count ?? 0) > 0);
   results.push(
-    "original Storage immutability, counted private history and no mapping/readiness promotion",
+    "original Storage immutability, API delete positive control, private history and no promotion",
   );
 
   let screenshots = 0;

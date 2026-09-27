@@ -29,7 +29,7 @@ create table storage.objects (
   unique(bucket_id,name)
 );
 alter table storage.objects enable row level security;
--- Mirror the installed Storage statement guard; API-operation probes opt in only within a function.
+-- Mirror the installed Storage statement guard. Real API/RLS deletes belong in service acceptance.
 create function storage.protect_delete() returns trigger language plpgsql as $$
 begin
   if coalesce(current_setting('storage.allow_delete_query',true),'false')<>'true' then
