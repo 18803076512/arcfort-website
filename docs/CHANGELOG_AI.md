@@ -5868,3 +5868,20 @@ retained database and historical report.
   migration or retained-stack reset/import/switch. Branch automatic deployment remains disabled.
 - **Next Recommended Action:** Execute and inspect candidate-specific isolated CI before enabling
   original intake or implementing human-reviewed SKU media assignment.
+
+## 2026-09-28 - M4 CI Storage Guard Fixture Parity
+
+- **Task:** Correct the SQL-only Storage deletion probe exposed by the first real isolated CI run.
+- **Files Changed:** Embedded bootstrap, original-intake SQL suite, SQL report test, generated Goal
+  report, M4 runbook and this log.
+- **Data Changed / Visual Changes / SEO Impact:** None outside rollback-only synthetic fixtures.
+  No production/runtime migration, media policy, original object, retained or hosted data changed.
+- **Validation:** Candidate `f366ad16`, run `36359590258`, passed all quality checks but failed the
+  SQL intake suite on Supabase's statement-level raw-delete guard. Read-only inspection confirms
+  the guard. Three added assertions cover raw-delete denial and function-local setting restoration;
+  existing managed-object RLS refusal remains required. Corrected candidate CI is pending.
+- **Known Issues:** Real Auth/Storage/browser acceptance has not yet run. No overall CI pass or
+  media approval, real 15AK completion, deployment or V1 completion is claimed.
+- **Reusable Knowledge Added:** The M4 runbook records the difference between platform raw-SQL
+  deletion protection and Storage API RLS, without weakening either boundary.
+- **Next Recommended Action:** Rerun the corrected candidate in the same authorized isolated CI.

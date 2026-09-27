@@ -142,7 +142,7 @@ for (const suite of names) {
 }
 assert.equal(
   assertions,
-  627,
+  630,
   "Review the expected PostgreSQL assertion baseline when tests change.",
 );
 const stagingEnvironment: NodeJS.ProcessEnv = {
@@ -185,5 +185,5 @@ for (const [args, environment, expectedError] of [
   assert.equal(result.stdout, "");
 }
 console.log(
-  "Database SQL report tests passed: strict result validation and all 15 suites / 627 planned assertions.",
+  "Database SQL report tests passed: strict result validation and all 15 suites / 630 planned assertions.",
 );

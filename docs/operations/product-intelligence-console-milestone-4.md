@@ -762,3 +762,26 @@ is still BLOCKED on the separate gates below.
 CI execution is authorized but its current-candidate result is pending at this checkpoint.
 Release remains BLOCKED. Keep the retained local stack untouched and feature flags off. A green
 isolated run does not complete media approval/mapping, the real 15AK pilot, hosted adoption or V1.
+
+### First CI Result And Storage Guard Fixture Correction
+
+Candidate `f366ad1678dfbc056bbfad763cb227a613c37175` was reviewed, committed and pushed only to
+the authorized branch. [Run 36359590258](https://github.com/18803076512/arcfort-website/actions/runs/36359590258)
+passed the complete quality job, but the database job failed in the original-intake SQL suite.
+The actual Storage `protect_delete()` statement trigger rejects raw DELETE before RLS; the old
+embedded fixture did not model this platform behavior. The run executed 589 assertions before
+stopping and did not reach real browser/Storage acceptance. No successful overall CI is claimed.
+
+Read-only inspection of the installed function/trigger confirmed the `storage.allow_delete_query`
+operation setting and BEFORE DELETE FOR EACH STATEMENT boundary. The fixture now models that
+guard, and only `pg_temp.remove` uses a function-local setting to simulate a Storage operation
+inside its rollback-only transaction. No trigger, runtime migration or real protection is disabled.
+Three additional checks require raw managed/legacy deletion refusal and restoration after the
+operation probe; existing RLS checks still require zero managed deletions and unchanged legacy
+policy. The actual Storage API immutability test remains mandatory in browser acceptance.
+This follows the [official Storage schema boundary](https://supabase.com/docs/guides/storage/schema/design):
+application writes use the API, not direct metadata manipulation.
+
+The corrected embedded suite passes all **630 assertions**, complete official public-schema type
+parity, both source replays and original-source retention. The strict SQL report test passes and
+the generated Goal inventory is updated. This is fixture parity, not a replacement for native CI.

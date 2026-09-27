@@ -29,3 +29,15 @@ create table storage.objects (
   unique(bucket_id,name)
 );
 alter table storage.objects enable row level security;
+-- Mirror the installed Storage statement guard; API-operation probes opt in only within a function.
+create function storage.protect_delete() returns trigger language plpgsql as $$
+begin
+  if coalesce(current_setting('storage.allow_delete_query',true),'false')<>'true' then
+    raise exception 'Direct deletion from storage tables is not allowed. Use the Storage API instead.'
+      using errcode='42501';
+  end if;
+  return null;
+end;
+$$;
+create trigger protect_objects_delete before delete on storage.objects
+for each statement execute function storage.protect_delete();

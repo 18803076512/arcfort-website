@@ -446,6 +446,13 @@ Fourteen local target/server guard groups and fresh embedded 15-suite/627-assert
 actual candidate CI is pending. See the [B10 record](operations/product-intelligence-console-milestone-4.md#m4-b10-real-original-acceptance-and-authorized-ci).
 Do not classify prepared assertions as real-provider evidence or mark V1 complete.
 
+B10 first CI result: `f366ad16` / run `36359590258` passed the complete quality job but stopped in
+the original-intake SQL fixture on Supabase's raw metadata deletion protection. The fixture now
+models the platform guard and confines its RLS operation probe to a rollback-only function-local
+setting; runtime policies/protection are unchanged. Fresh embedded SQL passes 630 assertions and
+type/source parity. Native SQL and real browser/Storage acceptance remain pending on the corrected
+candidate. Do not rerun against retained data.
+
 Current access update: the approved staging owner has verified email, evidenced password login and
 one active `owner` role. The role committed on 2026-09-07 and was independently read back with audit
 event `3682` on 2026-09-08. The superseded account has no role. These gates are complete; do not
