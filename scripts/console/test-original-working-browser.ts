@@ -96,7 +96,10 @@ export async function runOriginalWorkingBrowser(input: Input) {
     );
   }
   async function upload(participant: Participant, name: string, data: Buffer) {
+    const role = participant === owner ? "owner" : "reviewer";
+    checkpoint(`originals: ${role} navigate to real intake form`);
     await goto(participant.page, pathname);
+    checkpoint(`originals: ${role} fill real intake form`);
     await participant.page
       .getByLabel("Original image", { exact: true })
       .setInputFiles({ name, mimeType: "image/png", buffer: data });
@@ -109,12 +112,14 @@ export async function runOriginalWorkingBrowser(input: Input) {
     await participant.page
       .getByLabel("Source reference", { exact: true })
       .fill("TEST-ONLY generated raster; not product evidence");
+    checkpoint(`originals: ${role} submit and await real upload HTTP response`);
     const responsePromise = participant.page.waitForResponse(
       (response) => response.url() === endpoint && response.request().method() === "POST",
       { timeout: 120_000 },
     );
     await participant.page.getByRole("button", { name: "Upload original", exact: true }).click();
     const response = await responsePromise;
+    checkpoint(`originals: ${role} verify HTTP status, privacy, cookie and request metadata`);
     assert.equal(response.status(), 200, "Real original upload did not complete.");
     privateResponse(response.headers());
     assert.match((await response.request().allHeaders()).cookie ?? "", /sb-/);
@@ -122,6 +127,7 @@ export async function runOriginalWorkingBrowser(input: Input) {
     assert.equal(metadata.variant_id, variantId);
     assert.equal(metadata.byte_size, data.length);
     const result = receipt(await response.json());
+    checkpoint(`originals: ${role} wait for received feedback and cleared input`);
     await participant.page.getByRole("status").filter({ hasText: "Original received" }).waitFor();
     assert.equal(
       await participant.page.getByLabel("Original image", { exact: true }).inputValue(),
@@ -130,6 +136,7 @@ export async function runOriginalWorkingBrowser(input: Input) {
     return { metadata, result };
   }
   async function stored(result: Receipt, data: Buffer) {
+    checkpoint("originals: select persisted asset through owner session");
     const asset = await owner.client
       .from("media_assets")
       .select(
@@ -139,6 +146,7 @@ export async function runOriginalWorkingBrowser(input: Input) {
       .single();
     assert.equal(asset.error, null);
     assert.ok(asset.data);
+    checkpoint("originals: validate persisted hash, unapproved flags and immutable metadata");
     assert.equal(asset.data.storage_bucket, "pi-product-originals");
     assert.equal(asset.data.file_hash, createHash("sha256").update(data).digest("hex"));
     assert.equal(asset.data.ownership_status, "unconfirmed");
@@ -153,6 +161,7 @@ export async function runOriginalWorkingBrowser(input: Input) {
     });
     const location = asset.data.storage_path;
     assert.ok(location);
+    checkpoint("originals: download and compare actual stored bytes through owner session");
     const object = await owner.client.storage.from("pi-product-originals").download(location);
     assert.equal(object.error, null);
     assert.ok(object.data);
@@ -168,6 +177,7 @@ export async function runOriginalWorkingBrowser(input: Input) {
   assert.equal((await readOriginalIntakes(owner.client, variantId, 1))?.total, 0);
   const first = await upload(owner, "synthetic-owner-original.png", small);
   const location = await stored(first.result, small);
+  checkpoint("originals: unchanged owner HTTP replay");
   const retried = await owner.ctx.request.post(endpoint, {
     headers: headers(first.metadata),
     data: small,

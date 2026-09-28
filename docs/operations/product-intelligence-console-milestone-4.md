@@ -831,3 +831,11 @@ the parent's privacy-safe log suppressed its nested checkpoint. No full acceptan
 The browser runner now logs only controlled phase/checkpoint/completed-test labels and numeric
 assertion operands, distinguishing owned-server startup from later browser failures. Credentials,
 request/response bodies, raw errors and provider output remain suppressed.
+
+`671bf6eca12fc31c50b22b09a23677aeabfbb075` /
+[run 36378936135](https://github.com/18803076512/arcfort-website/actions/runs/36378936135) reproduces
+the failure in the first owner original-intake scenario, after the M3 editor/review checks and
+compatibility browser helper return. Intake diagnostics now distinguish form entry, HTTP response,
+cookie/receipt, feedback, asset metadata, byte readback and replay; numeric transport/page-error
+counters and a controlled failure category are included. No raw payload/credential is logged, and
+neither upload success nor full compatibility revocation acceptance is inferred from partial progress.

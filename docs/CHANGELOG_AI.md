@@ -5941,3 +5941,14 @@ retained database and historical report.
 - **Known Issues:** Working browser/Storage end-to-end acceptance remains unproven.
 - **Reusable Knowledge Added:** Exact narrower acceptance evidence is retained in the M4 runbook.
 - **Next Recommended Action:** Locate the nested real-browser failure and finish isolated acceptance.
+
+## 2026-09-28 - M4 Original Transport Checkpoints
+
+- **Task / Files Changed:** Add bounded original form/HTTP/Storage/feedback checkpoints and numeric
+  transport counters in working-browser tests; update M4 runbook and this log.
+- **Data Changed / Visual Changes / SEO Impact:** None; runtime behavior and evidence gates unchanged.
+- **Validation:** `671bf6ec` / run `36378936135` repeats the native gates and locates the failure at
+  the first owner original-intake scenario after M3 edit/review and compatibility browser work.
+- **Known Issues:** Exact intake sub-step remains to be observed; no real upload pass is claimed.
+- **Reusable Knowledge Added:** M4 runbook retains the partial proof and explicit remaining boundary.
+- **Next Recommended Action:** Identify and fix the original-intake failure using these exact checkpoints.

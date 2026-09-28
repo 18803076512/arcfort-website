@@ -61,6 +61,9 @@ export async function runWorkingBrowser(input: BrowserInput) {
   let pageErrors = 0;
   let externalRequests = 0;
   let screenshots = 0;
+  let originalRequests = 0;
+  let originalResponses = 0;
+  let originalRequestFailures = 0;
   const commandBodies = new WeakMap<BrowserRequest, Buffer>();
   const output = path.resolve(".tmp/console-working-browser", randomUUID());
   try {
@@ -76,6 +79,21 @@ export async function runWorkingBrowser(input: BrowserInput) {
       });
       value.setDefaultTimeout(15_000);
       value.setDefaultNavigationTimeout(30_000);
+      value.on("request", (request) => {
+        if (request.url() === `${browserOrigin}/console/originals` && request.method() === "POST")
+          originalRequests++;
+      });
+      value.on("response", (response) => {
+        if (
+          response.url() === `${browserOrigin}/console/originals` &&
+          response.request().method() === "POST"
+        )
+          originalResponses++;
+      });
+      value.on("requestfailed", (request) => {
+        if (request.url() === `${browserOrigin}/console/originals` && request.method() === "POST")
+          originalRequestFailures++;
+      });
       await value.route("**/*", async (route) => {
         const request = route.request();
         if (new URL(request.url()).origin !== browserOrigin) {
@@ -572,7 +590,26 @@ export async function runWorkingBrowser(input: BrowserInput) {
       typeof error.expected === "number"
         ? { actual: error.actual, expected: error.expected }
         : undefined;
-    console.error(JSON.stringify({ phase, checkpoint, completed: results, numericAssertion }));
+    const failureKind =
+      error instanceof assert.AssertionError
+        ? "assertion"
+        : error instanceof Error && error.name === "TimeoutError"
+          ? "timeout"
+          : "other";
+    console.error(
+      JSON.stringify({
+        phase,
+        checkpoint,
+        completed: results,
+        numericAssertion,
+        failureKind,
+        originalRequests,
+        originalResponses,
+        originalRequestFailures,
+        pageErrors,
+        externalRequests,
+      }),
+    );
     await writeFile(
       path.join(output, "result.json"),
       JSON.stringify(
