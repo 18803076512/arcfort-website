@@ -5966,3 +5966,31 @@ retained database and historical report.
 - **Reusable Knowledge Added:** M4 runbook records exact label ambiguity and strengthened source
   selection coverage without reducing the real acceptance scope.
 - **Next Recommended Action:** Verify local source-selection regression and complete isolated CI.
+
+## 2026-09-28 - M4 Clean Isolated CI Acceptance
+
+- **Task:** Finish the authorized review/commit/push and native isolated acceptance of the M4
+  compatibility, media/original intake, cookie correction and real acceptance batch.
+- **Files Changed:** Acceptance evidence in `docs/operations/product-intelligence-console-milestone-4.md`,
+  latest checkpoint in `docs/CODEX_GOAL.md`, and this append-only log. Implementation and scoped
+  corrections are recorded in the preceding entries and committed through `c4d7b703`.
+- **Components Changed / Visual Changes:** No further component or visual change in this evidence
+  follow-up. The accepted batch includes private compatibility/media/original workbenches and the
+  original-source select accessible-name correction.
+- **Data Changed:** Synthetic disposable CI fixtures only. Original catalog/fact/compatibility/media
+  rows are retained exactly; zero publication. No canonical or retained/hosted data change.
+- **SEO Impact:** None; public routes, data, SEO and RFQ remain unchanged and regressions pass.
+- **Validation:** `c4d7b703a41bef387e9428011d29df1bfb18948b` / run `36411029604` completed both jobs
+  successfully at 10:45:31 UTC. Native 15-suite/630-assertion SQL, independent reporting, complete
+  type parity, repeated source reconciliation, M2 Auth/RLS/pagination, lock contention and 24 real
+  database-backed browser scenarios pass. Actual >10 MiB original upload/readback, immutable
+  Storage controls, retry/revocation/logout and final source/two-object retention pass.
+- **Known Issues:** Isolated submission is `PASS_WITH_WARNINGS`; release remains `BLOCKED`. Uploads
+  are synthetic, private and unapproved. Human media mapping/review, supporting records, real 15AK
+  verified preview/QA/publication, hosted rollout and full V1 remain incomplete.
+- **Reusable Knowledge Added:** Exact native/provider acceptance and its limits are retained in
+  the M4 runbook, linked by the existing dated CI-only authorization decision and Goal checkpoint.
+- **Deployment:** Only the authorized branch/PR 130 was updated; verified open/unmerged, automatic
+  Vercel deployment disabled, and zero GitHub deployment records for the accepted candidate SHA.
+- **Next Recommended Action:** Complete immutable SKU media mapping and human rights/match review
+  with owner-supplied evidence, preserving default-off flags and separate rollout/publication gates.

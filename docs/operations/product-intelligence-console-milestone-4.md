@@ -856,3 +856,55 @@ The corrected synthetic browser suite passes exact source selection/submitted me
 cookie delivery, retry/error/receipt behavior, six viewport screenshots, image load, keyboard and
 role/history checks. The 360-pixel screenshot is inspected. This local fixture has no database;
 real original persistence still requires the new isolated run.
+
+## September 28 Isolated CI Acceptance
+
+Reviewed implementation candidate `c4d7b703a41bef387e9428011d29df1bfb18948b` passed both jobs in
+[run 36411029604](https://github.com/18803076512/arcfort-website/actions/runs/36411029604), completed
+at 2026-09-28 10:45:31 UTC. This result supersedes the pending real-provider and failed-run
+checkpoints above for the submitted B1-B10 scope, not for all of M4 or V1.
+
+### Verified Gates
+
+- Quality: focused Console/domain/command/privacy/guard tests, generated-data checks, secret scan,
+  zero-warning lint, TypeScript, production build, public SEO/internal-link/image/snippet checks,
+  RFQ regressions and unchanged performance budgets passed.
+- Database: fresh native migration replay, all 15 pgTAP suites / 630 assertions, independent
+  rollback-only SQL reporting with negative controls, and complete native generated-type syntax
+  parity passed. The embedded 630-assertion/source-preservation gate also passed independently.
+- Imports and Auth: two exact 17-table source reconciliations passed before M2 Auth/RLS and
+  1,103-record pagination acceptance. The disposable runner then rebuilt and reconciled its
+  pristine baseline twice before adoption. These resets occurred only in the GitHub runner.
+- Actual working workflow: observed lock contention, stale-command/idempotency checks, technical
+  and compatibility review/history, and **24 database-backed browser scenarios** passed. This
+  includes actual owner/reviewer login cookies and form uploads, a >10 MiB generated original,
+  exact downloaded bytes and SHA-256, unchanged retry, invalid input/origin/role refusal, managed
+  object overwrite/move/delete protection and an ordinary-object API deletion positive control.
+- Revocation/logout: real browser HTTP, direct RPC and Storage reads are denied after role
+  revocation; logout denies receipt replay. Responsive checks run at six widths; browser acceptance
+  requires zero page errors and zero external requests. Local synthetic 360/1440-pixel visual
+  inspection remains separately scoped; runner screenshots are not claimed as manually inspected.
+- Final retention: every original variant, technical fact, compatibility/source row and media/
+  mapping row matches its captured baseline. Exactly two synthetic intents, completions and
+  Storage objects agree on actor, path, size and MIME type. There are zero media source bindings,
+  zero publication records, and three synthetic non-shadow drafts remain `DRAFT` / `needs_photo`.
+  The owned test server and disposable Supabase services stopped successfully.
+
+### Disposition And Remaining Work
+
+The authorized isolated submission gate is **PASS_WITH_WARNINGS**; external release remains
+**BLOCKED**. PR 130 was verified open and unmerged at this candidate, with both checks successful
+and no GitHub deployment record for its SHA. Branch auto-deployment remains disabled. No retained
+local or hosted migration/reset/import/adoption, active feature setting, production deployment,
+canonical product data, public route, SEO or RFQ change was performed in this batch.
+
+Warnings remain bounded to the unactivated implementation: uploads are synthetic evidence, SQL
+completion remains `not_attested`, rights and exact-product match remain unapproved, media mapping/
+human approval is unfinished, and interrupted-upload recovery is not durable resume. The full
+real 15AK pilot, supporting records, verified website preview/QA/publication, hosted rollout and
+all twelve V1 requirements remain incomplete. Existing legacy-image/evidence warnings are unchanged.
+
+Next implement the controlled immutable SKU media mapping and rights/match review batch, using
+the verified private-intake boundary and actual owner-supplied evidence. Publication, deployment
+and retained/hosted database writes continue to require their own exact authorization. Do not
+repeat Docker repair or reset the retained stack to reuse this disposable acceptance runner.

@@ -340,6 +340,19 @@ mobile behavior and conversion paths must satisfy the applicable repository gate
 
 Retain the completed local/CI M3 baseline and review the next controlled product-data phase:
 
+Latest M4 checkpoint (2026-09-28): reviewed candidate `c4d7b703` passed both jobs in
+[CI run 36411029604](https://github.com/18803076512/arcfort-website/actions/runs/36411029604).
+The authorized compatibility/media-original/cookie/acceptance batch passes native 15-suite /
+630-assertion SQL, complete type parity, exact source replay, Auth/RLS, actual Storage byte
+readback and 24 real database-backed browser scenarios, including revocation and retention.
+The isolated submission gate is **PASS_WITH_WARNINGS**, not completed M4 or release approval.
+The [dated acceptance](operations/product-intelligence-console-milestone-4.md#september-28-isolated-ci-acceptance)
+supersedes the pending CI checkpoints below for this submitted scope. No retained/hosted migration,
+active flag, merge, deployment, canonical product change or publication occurred. Next complete
+immutable SKU media mapping and human rights/match review; real 15AK evidence, supporting records,
+verified preview/QA/publication and full V1 remain open. Do not reset adopted data or reopen Docker
+repair to repeat a disposable CI test.
+
 M4 update (2026-09-24): the local read-only media inspection workbench is implemented with SKU
 coverage, asset filters, incomplete-approval/missing-view indicators and recorded-hash duplicate
 checks. Offline/query-transport, synthetic responsive UI and public-site regressions pass. Fresh
