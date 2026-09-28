@@ -5928,3 +5928,16 @@ retained database and historical report.
 - **Reusable Knowledge Added:** The M4 runbook records why formatted text equality was not a stable
   cross-generator type-contract check and the exact non-trivia comparison boundary.
 - **Next Recommended Action:** Prove the full native contract and actual Storage workflow in CI.
+
+## 2026-09-28 - M4 Bounded Browser Failure Evidence
+
+- **Task / Files Changed:** Expose controlled nested browser checkpoints in
+  `test-working-browser.ts`; update the M4 runbook and this log.
+- **Data Changed / Visual Changes / SEO Impact:** None; only test diagnostics change.
+- **Validation:** `59feb26f` / run `36378423576` passes all quality/native SQL/type/replay/M2 gates
+  and reaches working browser acceptance, which fails without a nested checkpoint in CI logs.
+  Diagnostics now distinguish owned-server startup and controlled test phases; raw errors, secrets
+  and provider payloads remain excluded.
+- **Known Issues:** Working browser/Storage end-to-end acceptance remains unproven.
+- **Reusable Knowledge Added:** Exact narrower acceptance evidence is retained in the M4 runbook.
+- **Next Recommended Action:** Locate the nested real-browser failure and finish isolated acceptance.

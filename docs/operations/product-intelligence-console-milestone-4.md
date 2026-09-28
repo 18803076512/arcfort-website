@@ -820,3 +820,14 @@ normalizing whitespace/comments and optional terminators. It does not omit schem
 nullability, enum literals, helpers or Constants; literal content is retained exactly. New negative
 controls cover each of these contract changes and invalid syntax, and run in quality CI. A fresh
 native run must prove the complete contract, not just this first matching function.
+
+### Native Contract Pass And Browser Diagnostic
+
+Candidate `59feb26fbf9ed9b0e6ee8a412a86077dad1d5657`,
+[run 36378423576](https://github.com/18803076512/arcfort-website/actions/runs/36378423576), passed
+quality, native SQL, independent reporting, **complete native type parity**, two source replays,
+M2 real authentication/RLS/pagination and pristine M3 setup. The working browser phase failed;
+the parent's privacy-safe log suppressed its nested checkpoint. No full acceptance is claimed.
+The browser runner now logs only controlled phase/checkpoint/completed-test labels and numeric
+assertion operands, distinguishing owned-server startup from later browser failures. Credentials,
+request/response bodies, raw errors and provider output remain suppressed.

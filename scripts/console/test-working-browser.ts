@@ -44,10 +44,16 @@ export async function runWorkingBrowser(input: BrowserInput) {
   const { chromium } = createRequire(import.meta.url)(
     "./browser-runtime/node_modules/playwright",
   ) as typeof import("./browser-runtime/node_modules/playwright/index.js");
-  const server = await startBrowserServer(input.publicKey, {
-    compatibility: Boolean(input.compatibilityTargetId),
-    originals: input.originals === true,
-  });
+  let server: Awaited<ReturnType<typeof startBrowserServer>>;
+  try {
+    server = await startBrowserServer(input.publicKey, {
+      compatibility: Boolean(input.compatibilityTargetId),
+      originals: input.originals === true,
+    });
+  } catch {
+    console.error("Working browser failed before login: owned production build/server startup.");
+    throw new Error("Owned browser server did not start; private output suppressed.");
+  }
   let browser: Browser | undefined;
   const results: string[] = [];
   let phase = "browser launch";
@@ -559,7 +565,14 @@ export async function runWorkingBrowser(input: BrowserInput) {
       `Working Console database-backed browser acceptance passed: ${results.length} scenarios; synthetic-only screenshots and bounded report retained.`,
     );
     return id;
-  } catch {
+  } catch (error) {
+    const numericAssertion =
+      error instanceof assert.AssertionError &&
+      typeof error.actual === "number" &&
+      typeof error.expected === "number"
+        ? { actual: error.actual, expected: error.expected }
+        : undefined;
+    console.error(JSON.stringify({ phase, checkpoint, completed: results, numericAssertion }));
     await writeFile(
       path.join(output, "result.json"),
       JSON.stringify(
