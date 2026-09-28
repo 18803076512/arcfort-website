@@ -188,6 +188,7 @@ export function OriginalIntake({ data }: { data: OriginalIntakeData }) {
               <label>
                 Source type
                 <select
+                  aria-label="Source type"
                   value={source.source_kind}
                   onChange={(event) =>
                     setSource({

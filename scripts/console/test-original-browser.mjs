@@ -90,6 +90,7 @@ async function fill() {
   await page
     .getByLabel("Original image", { exact: true })
     .setInputFiles({ name: "synthetic.png", mimeType: "image/png", buffer: bytes });
+  await page.getByLabel("Source type", { exact: true }).selectOption("other_reference");
   await page.getByLabel("Source custodian").fill("Synthetic custodian");
   await page.getByLabel("Source reference", { exact: true }).fill("TEST-ONLY photo source");
   await page.getByRole("img", { name: "Selected original" }).waitFor();
@@ -123,6 +124,7 @@ try {
   await page.getByRole("button", { name: "Retry upload", exact: true }).click();
   await page.waitForFunction(() => !document.querySelector("fieldset")?.disabled);
   assert.deepEqual(calls[0], calls[1]);
+  assert.equal(calls[0].source_kind, "other_reference");
   await page.getByLabel("Source reference", { exact: true }).fill("TEST-ONLY revised source");
   await page.getByRole("button", { name: "Retry upload", exact: true }).click();
   await page.waitForFunction(() => !document.querySelector("fieldset")?.disabled);

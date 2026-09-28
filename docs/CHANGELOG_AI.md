@@ -5952,3 +5952,17 @@ retained database and historical report.
 - **Known Issues:** Exact intake sub-step remains to be observed; no real upload pass is claimed.
 - **Reusable Knowledge Added:** M4 runbook retains the partial proof and explicit remaining boundary.
 - **Next Recommended Action:** Identify and fix the original-intake failure using these exact checkpoints.
+
+## 2026-09-28 - M4 Original Source Select Accessible Name
+
+- **Task / Files Changed:** Correct Source type select naming in `OriginalIntake.tsx`; add exact
+  source selection/payload coverage to `test-original-browser.mjs`; update M4 runbook and this log.
+- **Components / Visual Changes:** Explicit select accessible name; no visible layout/text change.
+- **Data Changed / SEO Impact:** None. Product data, Storage policies, public routes and RFQ unchanged.
+- **Validation:** `57622a68` / run `36379601255` fails before uploads while filling the form. Local
+  Edge reproduces exact Source type label count zero versus partial count one; other labels match.
+  The failure has zero upload requests, page errors and external requests, not a Storage failure.
+- **Known Issues:** Corrected original UI and fresh real Storage/browser CI must be rerun.
+- **Reusable Knowledge Added:** M4 runbook records exact label ambiguity and strengthened source
+  selection coverage without reducing the real acceptance scope.
+- **Next Recommended Action:** Verify local source-selection regression and complete isolated CI.

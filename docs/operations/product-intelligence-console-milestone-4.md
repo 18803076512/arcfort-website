@@ -839,3 +839,20 @@ compatibility browser helper return. Intake diagnostics now distinguish form ent
 cookie/receipt, feedback, asset metadata, byte readback and replay; numeric transport/page-error
 counters and a controlled failure category are included. No raw payload/credential is logged, and
 neither upload success nor full compatibility revocation acceptance is inferred from partial progress.
+
+### Original Source Select Label Fix
+
+`57622a6821bc3ea73c1204e50dac2d386fea696a` /
+[run 36379601255](https://github.com/18803076512/arcfort-website/actions/runs/36379601255) identifies
+a timeout while filling the owner form, before any upload request, with zero page errors and
+external requests. Local Edge inspection reproduces the cause: the wrapping Source type label
+includes all option text, so its exact label selector matches zero controls while the three other
+form labels each match one. Add the explicit `aria-label="Source type"` using the existing Console
+select pattern, and extend synthetic UI regression to select `other_reference` and assert the
+actual submitted metadata. Visible text and business/Storage rules are unchanged. This repairs a
+real accessible-name ambiguity instead of weakening the exact-name acceptance selector.
+
+The corrected synthetic browser suite passes exact source selection/submitted metadata, scoped
+cookie delivery, retry/error/receipt behavior, six viewport screenshots, image load, keyboard and
+role/history checks. The 360-pixel screenshot is inspected. This local fixture has no database;
+real original persistence still requires the new isolated run.
