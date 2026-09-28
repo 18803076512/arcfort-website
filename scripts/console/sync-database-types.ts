@@ -48,6 +48,16 @@ if (committedTypes !== formattedTypes) {
   const firstChangedLine = generatedLines.findIndex(
     (line, index) => line !== committedLines[index],
   );
+  // Schema type text only, never provider configuration or row values.
+  const start = Math.max(0, firstChangedLine - 3);
+  const end = firstChangedLine + 16;
+  console.error(
+    JSON.stringify({
+      firstChangedLine: firstChangedLine + 1,
+      committed: committedLines.slice(start, end),
+      generated: generatedLines.slice(start, end),
+    }),
+  );
   throw new Error(
     `Supabase database types are stale near line ${firstChangedLine + 1}. ` +
       "Run npm run console:db:types against the migrated local database and commit the result.",

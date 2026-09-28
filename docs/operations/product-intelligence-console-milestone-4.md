@@ -801,3 +801,12 @@ control: upload a generated ordinary synthetic object, delete it through the sam
 API session, and require it to disappear while the managed original survives. The final database
 reconciliation still requires exactly two objects. This proves policy selectivity without changing
 platform configuration; all writes remain limited to the disposable CI synthetic scope.
+
+### Native Type Parity Diagnostic
+
+Candidate `9e871b35ab54f3facffffd2dfc6d1fb43de144f7`,
+[run 36360276167](https://github.com/18803076512/arcfort-website/actions/runs/36360276167), passed
+quality, native pgTAP and independent SQL reporting but failed complete CLI type parity near line 2458. No browser acceptance ran. `sync-database-types.ts` now emits a bounded schema-only comparison
+on mismatch, preserving strict failure; it never prints connection configuration or row values.
+The exact native difference must be inspected before regenerating types or changing the embedded
+generator contract. No retained database is migrated merely to obtain types.

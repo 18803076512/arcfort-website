@@ -5901,3 +5901,16 @@ retained database and historical report.
 - **Reusable Knowledge Added:** M4 runbook supersedes the unsuccessful function-local probe and
   distinguishes platform SQL safeguards from API/RLS acceptance.
 - **Next Recommended Action:** Complete the corrected isolated CI and retain exact terminal evidence.
+
+## 2026-09-28 - M4 Native Type Parity Diagnostics
+
+- **Task / Files Changed:** Add bounded schema-only mismatch diagnostics to
+  `scripts/console/sync-database-types.ts`; record third-run evidence in the M4 runbook and this log.
+- **Data Changed / Visual Changes / SEO Impact:** None. The type gate still fails on any mismatch.
+- **Validation:** `9e871b35` / run `36360276167` passed quality, native SQL and independent SQL
+  reporting; complete native CLI type parity failed near line 2458. Browser acceptance did not run.
+- **Known Issues:** Exact native type difference is pending diagnostic output. Do not treat the
+  embedded public-type check as complete native parity or adopt the retained stack for generation.
+- **Reusable Knowledge Added:** M4 runbook records the narrower native proof and remaining gate.
+- **Next Recommended Action:** Inspect exact schema-only difference, correct the generated contract
+  and repeat authorized isolated CI without weakening its gate.
