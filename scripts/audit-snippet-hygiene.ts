@@ -14,13 +14,10 @@ type RegionRequirement = {
 };
 
 const regionRequirements: RegionRequirement[] = [
-  { page: "index.html", region: "site-header-utility", minimum: 1 },
   { page: "index.html", region: "site-header-navigation", minimum: 1 },
-  { page: "index.html", region: "site-trust-strip", minimum: 1 },
-  { page: "index.html", region: "homepage-category-code", minimum: 6 },
   { page: "index.html", region: "product-visual", minimum: 1 },
   { page: "index.html", region: "product-card-actions", minimum: 1 },
-  { page: "index.html", region: "site-footer-cta", minimum: 1 },
+  { page: "index.html", region: "home-inquiry-cta", minimum: 1 },
   { page: "index.html", region: "site-footer-links", minimum: 1 },
   { page: "index.html", region: "site-footer-legal", minimum: 1 },
   { page: "index.html", region: "sticky-contact", minimum: 1 },

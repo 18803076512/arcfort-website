@@ -1,6 +1,10 @@
 import type { NextConfig } from "next";
 import { withBotId } from "botid/next/config";
-import { legacyCategoryRedirects, legacyProductRedirects } from "./lib/content/product-redirects";
+import {
+  heldProductSeriesRedirects,
+  legacyCategoryRedirects,
+  legacyProductRedirects,
+} from "./lib/content/product-redirects";
 import { siteConfig } from "./lib/content/site";
 
 const isDevelopment = process.env.NODE_ENV === "development";
@@ -68,6 +72,7 @@ const securityHeaders = [
 ] as const;
 
 const nextConfig: NextConfig = {
+  logging: { incomingRequests: { ignore: [/^\/console(?:\/|\?|$)/] } },
   compress: true,
   poweredByHeader: false,
   images: {
@@ -76,6 +81,7 @@ const nextConfig: NextConfig = {
     ],
     formats: ["image/avif", "image/webp"],
     imageSizes: [16, 32, 48, 64, 96, 128, 256],
+    qualities: [75, 88, 90],
     minimumCacheTTL: 86400,
   },
   async redirects() {
@@ -97,6 +103,11 @@ const nextConfig: NextConfig = {
         destination,
         permanent: true,
       })),
+      ...heldProductSeriesRedirects.map(({ categorySlug, seriesSlug, destination }) => ({
+        source: `/products/${categorySlug}/series/${seriesSlug}`,
+        destination,
+        permanent: false,
+      })),
     ];
   },
   async headers() {
@@ -104,6 +115,14 @@ const nextConfig: NextConfig = {
       {
         source: "/(.*)",
         headers: securityHeaders.map((header) => ({ ...header })),
+      },
+      {
+        source: "/console/:path*",
+        headers: [
+          { key: "X-Robots-Tag", value: "noindex, nofollow, noarchive" },
+          { key: "Cache-Control", value: "private, no-store, max-age=0" },
+          { key: "Referrer-Policy", value: "no-referrer" },
+        ],
       },
       {
         source: "/downloads/arcfort-distributor-sourcing-guide.pdf",

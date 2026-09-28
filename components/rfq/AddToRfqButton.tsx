@@ -13,14 +13,15 @@ import {
 
 type AddToRfqButtonProps = {
   item: RfqListItem;
-  variant?: "detail" | "compact";
+  variant?: "detail" | "compact" | "card";
 };
 
 const variantClasses = {
   detail:
-    "inline-flex min-h-12 w-full items-center justify-center border border-arc-blue px-5 py-3 text-sm font-bold uppercase tracking-[0.14em] transition sm:w-auto",
+    "inline-flex min-h-12 w-full items-center justify-center rounded border border-arc-blue px-5 py-3 text-sm font-bold transition sm:w-auto",
   compact:
-    "inline-flex min-h-10 shrink-0 items-center justify-center border border-arc-blue px-3 py-2 text-[11px] font-bold uppercase tracking-[0.1em] transition",
+    "inline-flex min-h-11 shrink-0 items-center justify-center rounded border border-arc-blue px-3 py-2 text-sm font-bold transition",
+  card: "inline-flex h-11 w-11 shrink-0 items-center justify-center rounded border border-arc-blue text-xl font-bold transition",
 } as const;
 
 export function AddToRfqButton({ item, variant = "detail" }: AddToRfqButtonProps) {
@@ -58,15 +59,22 @@ export function AddToRfqButton({ item, variant = "detail" }: AddToRfqButtonProps
     });
   }
 
-  const label = isFull
-    ? "RFQ List Full"
-    : variant === "compact"
-      ? isAdded
-        ? "Added"
-        : "Add to RFQ"
-      : isAdded
-        ? "Added to RFQ"
-        : "Add to RFQ";
+  const label =
+    variant === "card"
+      ? isFull
+        ? "!"
+        : isAdded
+          ? "-"
+          : "+"
+      : isFull
+        ? "RFQ List Full"
+        : variant === "compact"
+          ? isAdded
+            ? "Added"
+            : "Add to RFQ"
+          : isAdded
+            ? "Added to RFQ"
+            : "Add to RFQ";
 
   return (
     <>
@@ -78,6 +86,13 @@ export function AddToRfqButton({ item, variant = "detail" }: AddToRfqButtonProps
         aria-label={
           isFull
             ? `RFQ list is full. Remove a product before adding ${item.name}`
+            : isAdded
+              ? `Remove ${item.name} from RFQ list`
+              : `Add ${item.name} to RFQ list`
+        }
+        title={
+          isFull
+            ? "RFQ list is full"
             : isAdded
               ? `Remove ${item.name} from RFQ list`
               : `Add ${item.name} to RFQ list`

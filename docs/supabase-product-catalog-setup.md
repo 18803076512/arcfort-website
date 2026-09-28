@@ -1,149 +1,31 @@
-# Supabase Product Catalog Setup
+# Deprecated Supabase Product Catalog Draft
 
-This guide prepares Supabase for ARCFORT product categories, product SKUs, product images, FAQs and
-related product links.
+This document is retained only to redirect older repository links. Do not run
+`supabase/product-catalog-schema.sql`. That prototype stored important product facts in broad JSONB
+fields and does not implement the approved Product Intelligence evidence, verification, lifecycle,
+audit, release or RLS model.
 
-The current website still reads product content from TypeScript mock data. This database setup is
-for the next migration step after real SKU data is confirmed.
+## Current Product Intelligence Setup
 
-## Files
+The approved schema is versioned under `supabase/migrations/`. Follow
+`docs/operations/product-intelligence-console-milestone-1.md` for:
 
-- `supabase/product-catalog-schema.sql` - product catalog tables and private asset bucket
-- `docs/product-sku-template.csv` - CSV source template for SKU collection
-- `scripts/validate-product-csv.mjs` - product CSV validator
-- `scripts/generate-products-from-csv.mjs` - product content preview/generation script
+- isolated local Supabase startup and reset;
+- pgTAP schema, RLS, lifecycle and workflow tests;
+- generated TypeScript database types;
+- deterministic shadow generation and reconciliation;
+- hosted non-production approval boundaries;
+- rollback and source-of-truth protection.
 
-## Step 1: Run SQL
+The repository CSV and governed technical, compatibility, series and media registries remain
+canonical during Milestone 1. Supabase receives shadow copies only and cannot publish to the public
+website.
 
-Open Supabase SQL Editor and run:
+## Legacy File Safety
 
-```sql
--- Copy the full contents of supabase/product-catalog-schema.sql
-```
+`supabase/product-catalog-schema.sql` is deliberately non-executable. It raises an exception before
+the fully commented historical draft. This guard prevents an old setup instruction from creating a
+second, incompatible product schema.
 
-This creates:
-
-- `public.product_categories`
-- `public.products`
-- `public.product_images`
-- `public.product_faqs`
-- `public.product_relations`
-- Private storage bucket `product-assets`
-
-## Step 2: Security Model
-
-The SQL enables RLS on all product catalog tables and grants access to `service_role`.
-
-Rules:
-
-- Do not expose `SUPABASE_SERVICE_ROLE_KEY` to browser code.
-- Do not prefix service role variables with `NEXT_PUBLIC_`.
-- Do not create public insert or update policies for website visitors.
-- Keep product assets private until the image delivery workflow is confirmed.
-
-## Step 3: Product Data Flow
-
-Recommended flow:
-
-1. Collect real SKU data in `docs/product-sku-template.csv`.
-2. Mark missing fields as `To be confirmed`.
-3. Run `npm run validate:products`.
-4. Fix errors and review warnings.
-5. Preview generated content with `npm run generate:products`.
-6. Review generated fields with the product owner.
-7. Import confirmed data into Supabase tables.
-
-## Tables
-
-### `product_categories`
-
-Stores product category SEO and buyer guide content.
-
-Important fields:
-
-- `slug`
-- `code`
-- `title`
-- `description`
-- `seo_title`
-- `seo_description`
-- `seo_intro`
-- `buyer_guide`
-- `features`
-- `faq`
-- `status`
-
-### `products`
-
-Stores SKU and product detail page content.
-
-Important fields:
-
-- `category_slug`
-- `slug`
-- `title`
-- `sku`
-- `kind`
-- `process`
-- `short_description`
-- `description`
-- `specifications`
-- `compatibility`
-- `applications`
-- `features`
-- `packaging`
-- `moq`
-- `lead_time`
-- `missing_fields`
-- `status`
-
-### `product_images`
-
-Stores private asset paths and alt text.
-
-Images should not be public until the production image workflow is confirmed.
-
-### `product_faqs`
-
-Stores product-level FAQ items.
-
-### `product_relations`
-
-Stores related, compatible or replacement product links.
-
-## Status Workflow
-
-Use these status values:
-
-- `draft`
-- `review`
-- `published`
-- `archived`
-
-Do not publish rows until real data has been checked.
-
-## Missing Data Policy
-
-Do not invent:
-
-- Product specifications
-- Certifications
-- Prices
-- Stock status
-- Factory capacity
-- Customer cases
-
-Use `To be confirmed` and list missing fields in `missing_fields`.
-
-## Future Importer
-
-After real SKU data is available, add a server-side importer that:
-
-- Reads a validated CSV file
-- Upserts `product_categories`
-- Upserts `products`
-- Inserts product FAQs
-- Inserts product relations
-- Stores product asset paths after upload
-
-The importer should run server-side only and use environment variables for Supabase credentials.
+Do not remove the guard or revive the legacy tables. A future schema change must be a reviewed,
+versioned migration with database tests and an explicit authority decision.

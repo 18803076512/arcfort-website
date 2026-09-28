@@ -27,6 +27,11 @@ const routeBudgets: RouteBudget[] = [
     maxGzipBytes: 150 * kibibyte,
   },
   {
+    label: "Product Series",
+    route: "/products/[category]/series/[series]/page",
+    maxGzipBytes: 150 * kibibyte,
+  },
+  {
     label: "Distributor Landing",
     route: "/distributor-supply/page",
     maxGzipBytes: 150 * kibibyte,
@@ -37,7 +42,7 @@ const routeBudgets: RouteBudget[] = [
 const maxCssGzipBytes = 15 * kibibyte;
 const maxSingleJavaScriptGzipBytes = 65 * kibibyte;
 const maxSiteImageSourceBytes = 3 * 1024 * 1024;
-const sharedManifestRoutes = ["/layout", "/error", "/global-error"];
+const sharedManifestRoutes = ["/layout", "/(public)/layout", "/(public)/error", "/global-error"];
 
 function formatBytes(bytes: number) {
   return `${(bytes / kibibyte).toFixed(1)} KiB`;
@@ -66,7 +71,7 @@ function getGzipSize(asset: string) {
 
 function getRouteAssets(manifest: AppBuildManifest, route: string) {
   const pages = manifest.pages ?? {};
-  const routeAssets = pages[route];
+  const routeAssets = pages[`/(public)${route}`];
 
   if (!routeAssets) {
     throw new Error(`Route is missing from the app build manifest: ${route}`);

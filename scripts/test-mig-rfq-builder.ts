@@ -8,16 +8,24 @@ import { buildMigRfqHref, buildMigRfqPrompt, migPartOptions } from "../lib/mig-r
 const migCategory = productCategories.find((category) => category.slug === "mig-mag-torch-parts");
 
 assert.ok(migCategory, "MIG/MAG torch parts category must exist.");
-assert.equal(migCategory.referenceFamilies?.length, 5);
+assert.equal(migCategory.referenceFamilies?.length, 9);
 assert.deepEqual(
   migCategory.referenceFamilies?.map((family) => family.name),
   [
     "15AK catalog reference group",
-    "24KD / 25AK catalog reference group",
-    "36KD / 40KD catalog reference group",
-    "501D / 602 catalog reference group",
-    "ORK 200A / 350A / 500A catalog reference group",
+    "24KD catalog reference group",
+    "25AK catalog reference group",
+    "36KD catalog reference group",
+    "40KD catalog reference group",
+    "501D catalog reference group",
+    "ORK 200A catalog reference group",
+    "ORK 350A catalog reference group",
+    "ORK 500A catalog reference group",
   ],
+);
+assert.ok(
+  !migCategory.referenceFamilies?.some((family) => family.name === "602 catalog reference group"),
+  "The blocked 602 catalog identity conflict must stay out of the public RFQ builder.",
 );
 assert.ok(
   migCategory.referenceFamilies?.every(
@@ -27,7 +35,7 @@ assert.ok(
 );
 
 const prompt = buildMigRfqPrompt({
-  torchFamily: "24KD / 25AK catalog reference group",
+  torchFamily: "24KD catalog reference group",
   torchArrangement: "Air-cooled torch or parts",
   components: ["Contact tip", "Gas nozzle", "Gas nozzle"],
   wireReference: "  1.0 mm shown on the current tip  ",
@@ -36,7 +44,7 @@ const prompt = buildMigRfqPrompt({
   packing: "Individual labeled packing",
 });
 
-assert.match(prompt, /Catalog series \/ torch model: 24KD \/ 25AK catalog reference group/);
+assert.match(prompt, /Catalog series \/ torch model: 24KD catalog reference group/);
 assert.match(prompt, /Torch arrangement: Air-cooled torch or parts/);
 assert.match(prompt, /Requested components: Contact tip, Gas nozzle/);
 assert.doesNotMatch(prompt, /Gas nozzle, Gas nozzle/);
