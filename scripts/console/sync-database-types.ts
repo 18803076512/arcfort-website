@@ -3,6 +3,7 @@ import { readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
 
 import { format, resolveConfig } from "prettier";
+import { databaseTypeContract } from "./database-type-contract.ts";
 
 const databaseTypesPath = path.resolve("lib", "supabase", "database.types.ts");
 const cliScript = path.resolve("node_modules", "supabase", "dist", "supabase.js");
@@ -42,7 +43,7 @@ if (write) {
 }
 
 const committedTypes = (await readFile(databaseTypesPath, "utf8")).replace(/\r\n/g, "\n");
-if (committedTypes !== formattedTypes) {
+if (databaseTypeContract(committedTypes) !== databaseTypeContract(formattedTypes)) {
   const committedLines = committedTypes.split("\n");
   const generatedLines = formattedTypes.split("\n");
   const firstChangedLine = generatedLines.findIndex(
@@ -64,4 +65,6 @@ if (committedTypes !== formattedTypes) {
   );
 }
 
-console.log("Supabase database types match the migrated local schema.");
+console.log(
+  "Supabase database types match the complete migrated schema syntax (formatting normalized).",
+);

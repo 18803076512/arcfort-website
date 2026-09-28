@@ -147,6 +147,7 @@ jobs:
           npm run console:config:test
           npm run console:rest:test
           npm run console:sql-qa:test
+          npm run console:types:test
           npm run console:migrations:validate
           npm run console:shadow:validate
 

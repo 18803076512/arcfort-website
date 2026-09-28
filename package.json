@@ -56,6 +56,7 @@
     "console:config:test": "node --experimental-strip-types scripts/console/test-product-intelligence-config.ts",
     "console:rest:test": "node --experimental-strip-types scripts/console/test-product-intelligence-rest.ts",
     "console:sql-qa:test": "node --experimental-strip-types scripts/console/test-database-test-report.ts",
+    "console:types:test": "node --experimental-strip-types scripts/console/test-database-type-contract.ts",
     "console:authority:test:embedded": "node --experimental-strip-types scripts/console/sql-runtime/test-authority.mjs",
     "console:migrations:validate": "node --experimental-strip-types scripts/console/validate-product-intelligence-migrations.ts",
     "console:db:start": "npm run console:boundaries:test && supabase start",

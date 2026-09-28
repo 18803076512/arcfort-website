@@ -5914,3 +5914,17 @@ retained database and historical report.
 - **Reusable Knowledge Added:** M4 runbook records the narrower native proof and remaining gate.
 - **Next Recommended Action:** Inspect exact schema-only difference, correct the generated contract
   and repeat authorized isolated CI without weakening its gate.
+
+## 2026-09-28 - M4 Formatting-Independent Native Type Contract
+
+- **Task / Files Changed:** Add TypeScript syntax-tree contract helper and regression tests; update native
+  type checker, package/quality test command, M4 runbook and this log.
+- **Data Changed / Visual Changes / SEO Impact:** None. Generated/runtime types and migrations are
+  unchanged; comparison still covers the entire native output, including Constants and helpers.
+- **Validation:** `f3172313` / run `36360625820` identifies identical `pi_can_upload_original` type
+  tokens with single-line versus multiline formatting. The new gate normalizes syntax-tree layout;
+  field/type/optional/nullability/schema/literal/constant additions or changes remain failures.
+- **Known Issues:** Complete native parity and subsequent real browser acceptance await fresh CI.
+- **Reusable Knowledge Added:** The M4 runbook records why formatted text equality was not a stable
+  cross-generator type-contract check and the exact non-trivia comparison boundary.
+- **Next Recommended Action:** Prove the full native contract and actual Storage workflow in CI.

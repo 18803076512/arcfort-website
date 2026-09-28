@@ -810,3 +810,13 @@ quality, native pgTAP and independent SQL reporting but failed complete CLI type
 on mismatch, preserving strict failure; it never prints connection configuration or row values.
 The exact native difference must be inspected before regenerating types or changing the embedded
 generator contract. No retained database is migrated merely to obtain types.
+
+Diagnostic candidate `f3172313ff6dc32cfee0f9620b1525efcc978761`,
+[run 36360625820](https://github.com/18803076512/arcfort-website/actions/runs/36360625820), repeated
+the native SQL pass and exposed the first type difference: `pi_can_upload_original` has identical
+Args/Returns tokens but the native generator retains multiline formatting. The native gate now
+uses the installed TypeScript parser/printer to compare **the entire generated syntax tree**,
+normalizing whitespace/comments and optional terminators. It does not omit schemas, functions, argument optionality,
+nullability, enum literals, helpers or Constants; literal content is retained exactly. New negative
+controls cover each of these contract changes and invalid syntax, and run in quality CI. A fresh
+native run must prove the complete contract, not just this first matching function.
