@@ -6594,3 +6594,19 @@ retained database and historical report.
   response retrieval and the bytes users actually view/download, without weakening CSP.
 - **Deployment:** None; same authorized branch and disposable-CI scope only.
 - **Next Recommended Action:** Verify the complete corrected native run and original-data retention.
+
+## 2026-10-07 - Scoped Native Media Reload Confirmation
+
+- **Task:** Handle the existing unsaved-navigation confirmation in synthetic native media tests.
+- **Files Changed:** Media native-browser harness, M4 runbook and this append-only log.
+- **Components Changed:** Test-only dialog handling accepts the exact owner reload confirmation
+  only during an explicit evidence reload; unknown dialogs are dismissed and fail acceptance.
+- **Data Changed / Visual Changes / SEO Impact:** None; application safeguards remain unchanged.
+- **Validation:** Candidate `4e250c2d` / run `37615695868` passed quality, native preparation and
+  original-browser checks before the media handler rejected the legitimate `confirm` dialog.
+  Revised acceptance requires two exercised reload confirmations and no unhandled dialog errors.
+- **Known Issues:** Combined native acceptance remains pending; OEM and packaging have not yet run.
+- **Reusable Knowledge Added:** Runbook records the exact failed candidate and distinguishes a
+  synthetic navigation response from an approval of product evidence.
+- **Deployment:** None; same authorized branch and disposable CI only, no retained/hosted writes.
+- **Next Recommended Action:** Run the corrected full native gate, preserving every evidence check.

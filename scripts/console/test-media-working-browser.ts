@@ -72,14 +72,31 @@ export async function runMediaWorkingBrowser(input: Input) {
   const results: string[] = [];
   const reason = (page: Page, value: string) =>
     page.getByLabel("Decision / proposal reason", { exact: true }).fill(value);
-  const checkpoint = input.checkpoint;
+  let reloadingEvidence = false;
+  let dialogFailed = false;
+  let reloadConfirmations = 0;
+  const dialogSettlements: Promise<void>[] = [];
+  const checkpoint = (value: string) => {
+    assert.equal(dialogFailed, false, "Unexpected media dialog; private output suppressed.");
+    input.checkpoint(value);
+  };
   const dialog = (value: Dialog) => {
-    assert.equal(
-      value.type(),
-      "beforeunload",
-      "Only synthetic unsaved navigation may be accepted.",
+    const reload =
+      reloadingEvidence &&
+      value.page() === owner.page &&
+      value.type() === "confirm" &&
+      value.message() === "Discard unsaved changes and leave this page?";
+    if (reload) {
+      reloadingEvidence = false;
+      reloadConfirmations++;
+    }
+    const allowed = reload || value.type() === "beforeunload";
+    if (!allowed) dialogFailed = true;
+    dialogSettlements.push(
+      (allowed ? value.accept() : value.dismiss()).catch(() => {
+        dialogFailed = true;
+      }),
     );
-    void value.accept();
   };
   for (const participant of [owner, reviewer, viewer]) participant.page.on("dialog", dialog);
   async function data() {
@@ -137,10 +154,15 @@ export async function runMediaWorkingBrowser(input: Input) {
     await owner.page
       .getByText("Evidence changed / Latest record required", { exact: true })
       .waitFor();
-    await Promise.all([
-      owner.page.waitForEvent("domcontentloaded"),
-      owner.page.getByRole("link", { name: "Reload latest record", exact: true }).click(),
-    ]);
+    reloadingEvidence = true;
+    try {
+      await Promise.all([
+        owner.page.waitForEvent("domcontentloaded"),
+        owner.page.getByRole("link", { name: "Reload latest record", exact: true }).click(),
+      ]);
+    } finally {
+      reloadingEvidence = false;
+    }
     await owner.page.getByRole("heading", { name: "Image mappings", exact: true }).waitFor();
     return result.source_id;
   }
@@ -502,6 +524,9 @@ export async function runMediaWorkingBrowser(input: Input) {
       observation: revokedToken.value,
       confirmation: { ...review.confirmation!, original_digest: revokedTarget.originalDigest },
     };
+    await Promise.all(dialogSettlements);
+    assert.equal(dialogFailed, false, "Unexpected media dialog; private output suppressed.");
+    assert.ok(reloadConfirmations >= 2, "Synthetic unsaved reload guards were not exercised.");
     results.push("media counted immutable decision history and six persisted responsive views");
     return {
       results,

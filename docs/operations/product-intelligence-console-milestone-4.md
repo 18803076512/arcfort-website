@@ -2160,3 +2160,16 @@ diagnostic `Response.body()` returned zero bytes while the 125-byte upstream, co
 native download were identical. This directly demonstrates why browser diagnostic body retrieval
 alone is not byte-retention evidence, although it does not establish every detail of Linux CI's
 earlier mismatch. The intermediate `a4055b77` candidate is superseded by this CSP-compatible test.
+
+### Native Media Navigation Follow-Up
+
+Candidate `4e250c2d30437500c72e4783f0ee1e50cd155e18` / [run 37615695868](https://github.com/18803076512/arcfort-website/actions/runs/37615695868)
+passed quality, native preparation and the original-browser phase. The media harness then rejected
+the real unsaved-navigation `confirm` because its handler expected only `beforeunload`. The
+application correctly retains the unsaved original selection when new evidence is recorded.
+
+The harness now accepts only the exact discard message on the synthetic owner's page during its
+explicit evidence reload. Other confirmations are dismissed and fail the sanitized acceptance
+path; asynchronous handler errors are retained rather than thrown outside the main test. At least
+two actual reload confirmations must be exercised. No runtime guard, human evidence decision or
+database contract changes. Complete media/OEM/packaging native acceptance remains pending.
