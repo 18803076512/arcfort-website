@@ -338,15 +338,27 @@ mobile behavior and conversion paths must satisfy the applicable repository gate
 
 ## Recommended Next Setup Phase
 
-Latest authorization (2026-10-07): the owner explicitly approved review, commit and push of
+Latest accepted CI checkpoint (2026-10-08): B11-B16, C1-C4 and D1-D4 at `7403136272fa06c011e0c49a6af7904948279efa`
+pass both jobs in [run 37698778273](https://github.com/18803076512/arcfort-website/actions/runs/37698778273).
+The exact disposable candidate passes 24 native SQL suites / 1,384 assertions and 47 database-backed
+browser scenarios, including media observation/original bytes, OEM and packaging review, observed
+contention, revoked access and exact original/commercial retention. A real stale OEM snapshot was
+fixed with [document navigation](../knowledge-base/decisions/2026-10-08-console-oem-packaging-document-navigation.md).
+The [scoped submission gate](operations/product-intelligence-console-milestone-4.md#october-8-combined-native-acceptance)
+is **PASS_WITH_WARNINGS**, not production or real-product approval. PR #130 remains open; no merge,
+deployment or hosted/retained-local change occurred. Technical documents, real 15AK evidence and
+the verified preview/QA/authorized publishing workflow remain incomplete. Keep the full V1 active.
+
+Authorization record (2026-10-07): the owner explicitly approved review, commit and push of
 B11-B16, C1-C4 and D1-D4 to `18803076512/arcfort-website` / `codex/v2-industrial-brand-system`,
 with explicit OEM and packaging disposable CI only. The [dated decision](../knowledge-base/decisions/2026-10-07-console-m4-media-oem-packaging-ci.md)
-supersedes the pending-approval status below. Native candidate acceptance is still unrun at this
-checkpoint; no merge, deployment, hosted or retained-local change is authorized. Keep V1 open.
+supersedes the historical pending-approval status below. The October 8 accepted checkpoint above
+supersedes this authorization record's previously unrun native gate only; no merge, deployment,
+hosted or retained-local change is authorized.
 
 Retain the completed local/CI M3 baseline and review the next controlled product-data phase:
 
-Latest local M4 checkpoint (2026-10-06): M4-D4 prepares explicit default-off disposable packaging
+Prior local M4 checkpoint (2026-10-06): M4-D4 prepares explicit default-off disposable packaging
 form/Auth/RPC/observed-race/revocation acceptance. All 24 embedded suites / 1,384 assertions and a
 new actual-parser/public-wrapper five-revision packaging rollback rehearsal pass. The exact ledger
 retains unknown/10/12-piece synthetic history, historical-count conflicts, explicit human states,

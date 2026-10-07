@@ -1,7 +1,7 @@
 # OEM And Packaging Document Navigation
 
 Date: 2026-10-08
-Status: local repair; complete native acceptance pending.
+Status: local and native isolated acceptance passed; not deployment approval.
 
 ## Evidence
 
@@ -36,3 +36,12 @@ state and the same session/role boundary; never bypass the test with a forced re
 
 This remains within the owner's exact combined media/OEM/packaging CI-only authorization. No merge,
 deployment, hosted or retained-local operation is performed or newly authorized.
+
+## Accepted Evidence
+
+The repaired runtime at `7403136272fa06c011e0c49a6af7904948279efa` passes both jobs in
+[run 37698778273](https://github.com/18803076512/arcfort-website/actions/runs/37698778273), including
+all 47 native browser scenarios and final OEM/packaging ledgers, revocation and retention checks.
+Local regressions pass 15 OEM / 14 packaging groups at six widths and require actual document
+requests for success and record switching. The complete M4/V1 and real 15AK publishing gates remain
+outside this result; see the [runbook](../../docs/operations/product-intelligence-console-milestone-4.md#october-8-combined-native-acceptance).

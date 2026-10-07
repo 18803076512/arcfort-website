@@ -1,7 +1,7 @@
 # M4 Media, OEM And Packaging CI Authorization
 
 Date: 2026-10-07
-Status: owner-authorized review, commit and push; candidate CI pending.
+Status: owner-authorized batch executed; native acceptance recorded on 2026-10-08 below.
 
 ## Exact Scope
 
@@ -32,3 +32,14 @@ reset, import or Docker repair. No actual product fact, commercial policy or med
 confirmed. No repository rule is overridden. Unrun or failing native gates remain unverified.
 Before release completion, record the exact candidate/run and actual results in the M4 runbook.
 Full V1, technical documents and the real 15AK verified-preview/QA/publication workflow remain open.
+
+## October 8 Result
+
+Candidate `7403136272fa06c011e0c49a6af7904948279efa` passes both jobs in
+[run 37698778273](https://github.com/18803076512/arcfort-website/actions/runs/37698778273):
+24 native SQL suites / 1,384 assertions and 47 database-backed browser scenarios, with exact final
+OEM/packaging ledgers, original/commercial retention and zero publication. The
+[runbook gate](../../docs/operations/product-intelligence-console-milestone-4.md#october-8-combined-native-acceptance)
+is PASS_WITH_WARNINGS for isolated submission only. PR #130 remains open. Failed intermediate
+candidates, the navigation repair and remaining real-evidence/V1 gates are recorded there.
+No authority is extended to merge, deploy, hosted or retained-local operations.

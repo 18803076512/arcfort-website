@@ -6644,3 +6644,30 @@ retained database and historical report.
 - **Local Browser Result:** 15 OEM and 14 packaging groups pass, each at six widths with actual
   document-request assertions and no page errors/external requests. Representative screenshots,
   formatting, whitespace and 670-file secret scan pass; no dependency install/change occurred.
+
+## 2026-10-08 - Combined Media OEM Packaging Native CI Accepted
+
+- **Task:** Complete the authorized B11-B16/C1-C4/D1-D4 submission and real disposable acceptance.
+- **Files Changed:** Goal checkpoint, M4 runbook, combined authorization/navigation decisions and
+  this append-only log. Earlier entries retain all implementation and test-repair file details.
+- **Components Changed:** Governed private media/OEM/packaging workbenches and native acceptance
+  are now verified together; runtime stale OEM/packaging navigation was repaired in `74031362`.
+- **Data Changed:** Only synthetic disposable CI records. Exact imported data, originals and all
+  43 packaging/commercial rows retained; no real confirmation or public/canonical data change.
+- **Visual Changes / SEO Impact:** No public visual, URL, metadata or RFQ change; private responsive
+  workbench layouts remain intact. No claim of live deployment, indexing or mailbox delivery.
+- **Validation:** `7403136272fa06c011e0c49a6af7904948279efa`, run `37698778273`: both jobs PASS;
+  24 native SQL suites / 1,384 assertions, 47 native browser scenarios, explicit OEM/packaging
+  acceptance, observed races, exact ledgers, byte/source/commercial retention and zero publication.
+  Local OEM 15 / packaging 14 browser groups pass at six widths; full quality/build/SEO gates pass.
+- **Known Issues:** Scoped submission is PASS_WITH_WARNINGS, not M4/V1 or real-product release.
+  Technical documents, exact 15AK evidence and verified preview/QA/authorized publishing remain open.
+- **Reusable Knowledge Added:** Exact accepted candidate/run, scoped gate and navigation decision,
+  with prior failures preserved and synthetic versus real-evidence limits explicit.
+- **Deployment:** PR #130 OPEN on approved branch; no merge/deploy, hosted or retained-local write,
+  Docker change or rule override. Normal feature defaults and deployment disable remain unchanged.
+- **Next Recommended Action:** Finish technical-document intake/review and collect real 15AK
+  evidence before completing verified preview and publication controls.
+- **Goal Evidence:** Company-evidence checks pass; Goal-report regeneration has no diff and retains
+  43 structured products / zero strict verified SKUs, with existing media-rights/representative-image
+  warnings unchanged. No synthetic CI approval is counted as a verified real SKU.

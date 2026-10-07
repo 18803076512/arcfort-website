@@ -3,9 +3,10 @@
 Date: 2026-09-24
 Scope: local implementation toward the approved Console V1 architecture. M4 is not complete.
 
-Latest local checkpoint: [M4-D4 disposable packaging acceptance](#m4-d4-disposable-packaging-acceptance-preparation),
-2026-10-06. Native media/OEM/packaging acceptance remains unrun; complete supporting-record
-coverage and M4 exit are not claimed. The dated sections below retain their original scopes.
+Latest accepted checkpoint: [combined native acceptance](#october-8-combined-native-acceptance),
+2026-10-08, candidate `74031362`. Media/OEM/packaging and preceding workflows pass disposable CI;
+technical documents, real 15AK evidence and M4 exit remain incomplete. The original outline and
+dated sections below retain their historical scopes; they are not the latest execution status.
 
 ## Objective And Boundaries
 
@@ -2211,3 +2212,65 @@ including actual document-navigation assertions, pixel/overflow checks, error re
 controls, with zero page errors or external requests. Reviewed OEM mobile and packaging desktop
 screenshots retain readable stacked/two-column layouts. Formatting, whitespace and the 670-file
 secret scan pass. These component fixtures do not replace native provider acceptance.
+
+## October 8 Combined Native Acceptance
+
+**Status: PASS_WITH_WARNINGS for the authorized isolated-CI submission only.** Exact candidate
+`7403136272fa06c011e0c49a6af7904948279efa` passes both jobs in
+[run 37698778273](https://github.com/18803076512/arcfort-website/actions/runs/37698778273).
+The authorized destination remains `18803076512/arcfort-website`, branch
+`codex/v2-industrial-brand-system`. Readback shows PR #130 OPEN at this candidate, targeting main,
+with no merge. The branch's deployment-disable setting is unchanged.
+
+### Applicable Gate Evidence
+
+- **PASS, code/public regression:** the quality job includes all 29 Console foundation commands,
+  secret/data/image/company evidence checks, source-generation parity, RFQ builders, SEO, lint,
+  TypeScript, production build, built links/image/snippet audits and performance budgets. These
+  protect the shared application while the batch changes only private Console workflows.
+- **PASS, native schema and boundaries:** 24 pgTAP suites / 1,384 assertions; rollback-only SQL
+  reporter negative controls; exact complete public types; embedded HMAC parity; repeatable exact
+  17-table source reconciliation; real Auth/RLS and large-catalog pagination.
+- **PASS, native browser and persistence:** 47 scenarios with real sessions/private cookies,
+  Next forms, PostgREST and Storage. Includes compatibility, unchanged inspected/downloaded
+  original bytes, signed media observations, explicit synthetic human review, exact receipt
+  replay, actual observed lock contention, role revocation and logged-out denials. Both OEM and
+  packaging opt-ins print their terminal native-pass messages only after independent final ledgers.
+- **PASS, retained-source/publication boundaries:** exact original variant/technical/compatibility/
+  media/OEM/packaging rows remain unchanged, including all 43 packaging/commercial rows. Both stored
+  originals remain byte-exact. OEM retains 3 sources, 1 head, 5 revisions, 10 evidence links,
+  4 decisions and 1 current; packaging retains 5 sources, 1 head, 5 revisions, 6 links, 4 decisions
+  and 1 current. New publication eligibility and `publish_records` remain zero. Observer disable
+  and revoked sessions preserve historically authorized decisions rather than deleting history.
+- **PASS, component/responsive regression:** local synthetic OEM 15 groups and packaging 14 groups
+  at six widths, with real document-request assertions, no overflow/page errors/external requests,
+  and representative screenshot review. The native workflow also executes its six-width persisted
+  views. Runner-local native screenshots are not represented as a durable downloaded artifact.
+
+### Findings And Remaining Work
+
+No blocking finding remains for this exact disposable-CI scope. Earlier failed/cancelled runs above
+remain historical evidence, not passes. The identified stale-state defect is repaired in runtime;
+the native test still waits for the true persisted state without an injected reload.
+
+Warnings: all successful new approval declarations are TEST-ONLY synthetic records, not verified
+15AK facts, real document review, image rights or product publication. Technical-document support,
+real owner/source evidence and the complete verified preview/QA/authorized publishing flow remain
+open. Owner/source reviewers must supply and confirm real technical, compatibility and media
+evidence through their governed workflows; `technical-verification`, `compatibility-mapping`,
+`product-media-manager` and then `product-publishing` remain the applicable handoffs. These are
+blockers for future real-product publication, not waivers granted by this CI result.
+
+Fresh Goal-report regeneration has no diff and still reports 43 structured products with zero
+strict verified SKUs. Existing warnings remain: 43 legacy-reference image-rights gaps, two reused
+image-content groups and three representative company visuals. Their evidence/publication states
+are unchanged; this CI acceptance does not resolve or approve those records.
+
+The host runner notes an upcoming Ubuntu image-label migration; no dependency/runner update is
+included in this batch. CI and owned local synthetic preview processes have ended. No retained
+local stack, Docker setting, hosted database, production environment, public data or SEO/RFQ path
+was modified. No merge/deployment/live acceptance or repository-rule override is claimed.
+
+Next controlled action: finish M4 technical-document intake/review and real 15AK evidence collection
+before implementing and verifying the full frozen preview/release gates. Keep all twelve V1
+criteria active; do not treat this submission milestone as V1 or M4 completion.
