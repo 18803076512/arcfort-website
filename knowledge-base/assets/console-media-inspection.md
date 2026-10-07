@@ -55,3 +55,102 @@ B9 corrects the original endpoint's [session cookie scope](../decisions/2026-09-
 `/console/originals` receives the existing private Console cookie while only that exact streaming
 path skips the middleware body clone. Browser cookie delivery and compiled route coverage are now
 checked; neither establishes real Storage acceptance or upgrades media evidence.
+
+## Stored Originals Before Human Review
+
+Reviewed: 2026-10-04. The local [B11 inspector](../decisions/2026-10-04-console-m4-stored-original-inspection.md)
+re-reads private completed originals by exact SKU/asset identity and compares actual raster bytes
+with their manifest. It returns unchanged bytes through authenticated private HTTP, not a Storage
+URL. Temporary browser blob previews/downloads are inspection only; they cannot confirm rights,
+product match, mapping or publication. Preserve the separate SQL `not_attested` boundary.
+
+B1-B10 real isolated acceptance passed on September 28. That historical result does not prove the
+new inspector: its current local SDK and browser tests use mocked/synthetic transport. Fresh
+authorized disposable-provider acceptance remains necessary before activation or human media review.
+
+## Mapping Drafts Are Not Effective Images
+
+Reviewed: 2026-10-04. The local [B12 mapping foundation](../decisions/2026-10-04-console-m4-media-mapping-drafts.md)
+binds immutable proposals to one SKU/role/slot, one exact completed original and separately scoped
+rights/match sources. Submission freezes a current content digest; omission cannot hide a known
+contradiction. Recorded object identity is not byte attestation, and evidence counts do not approve
+an image. Existing effective mappings, global asset states and public registries remain unchanged.
+
+The open-proposal lifecycle guard is not complete readiness/dashboard integration or a retroactive
+demotion. Before activation, implement current/effective mapping reads and explicit human
+APPROVE/EDIT/REJECT with stored-original inspection and both evidence dimensions. Embedded metadata
+fixtures, including those using real SKU identities, are not real Storage or owner approval evidence.
+
+## Private Human Review Foundation
+
+Reviewed: 2026-10-04. [B13](../decisions/2026-10-04-console-m4-media-mapping-review.md) adds exact
+pending-snapshot human decisions, separate rights/match declarations and current/effective/readiness
+SQL views. EDIT preserves conflict and history; REJECT retains the preceding mapping; an invalid
+current approval does not restore legacy silently. Approved private originals remain unavailable
+for public/search output, with global asset and original public mapping rows unchanged.
+
+These are private commands with synthetic SQL validation, not an activated reviewer interface or
+byte-attested approval. An inspection declaration cannot prove that a read/download took place.
+Before granting application mutation access, bind actual private byte revalidation to the exact
+review observation and verify human controls plus real Auth/Storage/concurrency in a disposable stack.
+
+## Application Observations Are Not Human Or Public Approval
+
+Reviewed: 2026-10-04. The local [B14 command integration](../decisions/2026-10-04-console-m4-observed-media-commands.md)
+prepares a separately disabled pending-mapping inspector and authenticated review wrappers. A
+short-lived server signature binds actual byte processing to the exact actor/adoption/candidate/
+original snapshot; database verification refuses copied declarations, stale snapshots and nonce
+reuse. The ledger retains a token digest, not signing material or a replayable raw token.
+
+No real key is provisioned, migration applied or reviewer UI activated. Byte processing is not
+proof a human inspected the image or independently confirmed rights/match. Historical observation
+and current evidence validity remain separate; future reviewer/preview/QA projections need both.
+Keep original completion `not_attested`, private output unavailable for publication, and native/
+provider/concurrency acceptance outstanding. Embedded signatures and synthetic rights records do
+not confirm real 15AK images or finish the pilot.
+
+## Local Reviewer Workbench
+
+Reviewed: 2026-10-04. The [B15 workbench decision](../decisions/2026-10-04-console-m4-media-mapping-workbench.md)
+connects counted exact-SKU original/source/current/history reads to explicit propose/submit/review
+controls, while retaining independent default-off boundaries. Include unselected contradictions;
+detectable same-head review drift must fail closed. Bounded reads are not an atomic snapshot.
+
+Display current validity and matching historical observation separately. SQL-only internal approval
+without observation is not full application approval; invalid current proof cannot restore legacy.
+Private originals never become public/search-eligible merely through mapping approval. Keep browser
+tokens in memory and clear acknowledgements on close, failure, context change and expiry. Fresh
+inspection does not renew a human declaration automatically. Source creation requires latest-record
+reload before decisions and never approves or selects that source automatically.
+
+Fourteen synthetic browser groups and seven SDK/domain read groups validate local UI only. Real
+native/Auth/Storage/concurrency acceptance, real 15AK evidence and separately authorized activation,
+public output, preview/QA/publication remain outstanding. No retained/hosted data or original geometry
+was changed, and no signing key was provisioned.
+
+## Disposable Native Acceptance Is A Separate Gate
+
+Reviewed: 2026-10-05. The [B16 preparation](../decisions/2026-10-05-console-m4-disposable-media-acceptance.md)
+extends the guarded real-service runner with media forms/observations/review, exact fixture counts,
+observed transaction contention and unchanged-source/no-publication checks. An ephemeral random key
+may be provisioned only after the full pristine target check; keep it out of the build, browser,
+CLI arguments and artifacts, then disable it even on failure. A lost provisioning response requires
+an exact-ID disable attempt, not an assumption of rollback or removal of other work.
+
+Local guard, embedded SQL and no-provider browser success is not native acceptance. New real-service
+scenarios remain unrun and require fresh exact-batch CI permission. Keep preserved Docker/WSL data,
+hosted providers and all real 15AK evidence untouched. Synthetic declarations cannot approve a real
+image or complete the product pilot. Preserve independent activation and public-output gates.
+
+## Sequential Rehearsal Before Native Execution
+
+Reviewed: 2026-10-05. The [B16 review follow-up](../../docs/operations/product-intelligence-console-milestone-4.md#b16-review-follow-up)
+executes the actual domain parser, server signer and SQL wrappers with simulated actors and object
+metadata inside one rollback-only in-memory transaction. Reuse the exact key insert/disable SQL,
+but retain transaction ownership in the caller. Require a pristine baseline before key generation
+and exact full-row source parity after rollback, not only matching record counts.
+
+Synthetic evidence dates must follow the validator's execution UTC date; a fixed local-calendar
+date can be in the future before UTC midnight. This fixture correction does not change factual
+evidence dates or the actual-source validation policy. A passing sequential ledger/history rehearsal
+is not original-byte inspection, human product evidence, real provider or multi-connection proof.

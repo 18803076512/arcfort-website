@@ -1,6 +1,10 @@
 import { notFound } from "next/navigation";
 import { requireConsoleAccess } from "@/lib/console/server";
-import { consoleCompatibilityEnabled, consoleOriginalsEnabled } from "@/lib/console/working-config";
+import {
+  consoleCompatibilityEnabled,
+  consoleOriginalsEnabled,
+  consoleMediaReviewEnabled,
+} from "@/lib/console/working-config";
 import {
   compatibilityFilters,
   readCompatibilityWorkbench,
@@ -43,6 +47,7 @@ export default async function ProductCompatibilityPage({
         id={id}
         active="compatibility"
         compatibility
+        media={consoleMediaReviewEnabled()}
         originals={consoleOriginalsEnabled()}
       />
       <CompatibilityWorkbench

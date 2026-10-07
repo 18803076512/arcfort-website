@@ -5,15 +5,13 @@ import { getConsoleConfig } from "./config.ts";
 import { consoleOriginalsEnabled } from "./working-config.ts";
 import { isConsoleCommandOrigin } from "./commands.ts";
 import { OriginalFileError, validateOriginalFile } from "./original-files.ts";
+import { claimOriginalWork } from "./original-work.ts";
 import {
   originalUploadFailure,
   originalUuid,
   parseOriginalUpload,
   type OriginalUploadResult,
 } from "../domain/catalog/originals.ts";
-
-// The enabled boundary is a single loopback server, not a distributed deployment.
-const activeActors = new Set<string>();
 
 export async function executeOriginalUpload(
   client: ConsoleClient,
@@ -38,7 +36,6 @@ export async function executeOriginalUpload(
     !access.roles.some((role) => ["owner", "editor", "reviewer"].includes(role))
   )
     return deny("42501");
-  if (activeActors.has(access.userId) || activeActors.size >= 2) return deny("54000");
   let input;
   try {
     input = parseOriginalUpload(request.headers.get("x-console-original"));
@@ -54,7 +51,8 @@ export async function executeOriginalUpload(
   } catch {
     return deny("22023");
   }
-  activeActors.add(access.userId);
+  const release = claimOriginalWork(access.userId);
+  if (!release) return deny("54000");
   try {
     const original = await validateOriginalFile({
       name: input.filename,
@@ -134,6 +132,6 @@ export async function executeOriginalUpload(
   } catch (error) {
     return originalUploadFailure(error instanceof OriginalFileError ? "22023" : "unavailable");
   } finally {
-    activeActors.delete(access.userId);
+    release();
   }
 }

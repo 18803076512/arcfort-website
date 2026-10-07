@@ -8,7 +8,13 @@ export function createConsoleClient(config: ConsoleConfig, cookies: CookieMethod
     cookieOptions: consoleCookieOptions(config),
     global: {
       fetch: (url, init) =>
-        fetch(url, { ...init, cache: "no-store", signal: AbortSignal.timeout(12000) }),
+        fetch(url, {
+          ...init,
+          cache: "no-store",
+          signal: init?.signal
+            ? AbortSignal.any([init.signal, AbortSignal.timeout(12000)])
+            : AbortSignal.timeout(12000),
+        }),
     },
   });
 }

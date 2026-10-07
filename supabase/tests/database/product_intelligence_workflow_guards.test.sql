@@ -182,6 +182,22 @@ set local role authenticated;
 select set_config('request.jwt.claim.role', 'authenticated', true);
 select set_config('request.jwt.claim.sub', '30000000-0000-4000-8000-000000000001', true);
 
+-- This pre-adoption fixture needs known packaging so the technical gate is tested independently.
+insert into public.packaging_records (
+  id, external_key, product_variant_id, package_description, quantity, quantity_unit,
+  moq_note, lead_time_note, source_level, verification_status, evidence_source_id
+) values (
+  '30000000-0000-4000-8000-000000000030', 'workflow-test-packaging',
+  '30000000-0000-4000-8000-000000000012', 'TEST-ONLY workflow bag', 1, 'pieces',
+  'TEST-ONLY MOQ unchanged', 'TEST-ONLY lead time unchanged', 'A', 'NEEDS_FACTORY_CONFIRMATION',
+  '30000000-0000-4000-8000-000000000014'
+);
+insert into public.verification_events (entity_type, entity_id, decision, reason, actor_id)
+values ('packaging_record', '30000000-0000-4000-8000-000000000030', 'APPROVE',
+  'TEST-ONLY synthetic packaging prerequisite', '30000000-0000-4000-8000-000000000001');
+update public.packaging_records set verification_status='CONFIRMED'
+where id='30000000-0000-4000-8000-000000000030';
+
 update public.product_variants
 set lifecycle_state = 'INGESTED'
 where id = '30000000-0000-4000-8000-000000000012';

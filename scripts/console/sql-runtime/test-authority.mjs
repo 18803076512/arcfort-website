@@ -1,4 +1,5 @@
 import assert from "node:assert/strict";
+import { createHmac } from "node:crypto";
 import { readFile, readdir } from "node:fs/promises";
 import path from "node:path";
 
@@ -6,6 +7,11 @@ import { PGlite } from "@electric-sql/pglite";
 import { pgcrypto } from "@electric-sql/pglite/contrib/pgcrypto";
 import { pgtap } from "@electric-sql/pglite-pgtap";
 import { checkEmbeddedPublicTypes } from "./check-public-types.mjs";
+import { rehearseMediaWorkflow } from "./rehearse-media-workflow.mjs";
+import { rehearseOemIntake } from "./rehearse-oem-intake.mjs";
+import { rehearseOemWorkflow } from "./rehearse-oem-workflow.mjs";
+import { rehearsePackagingWorkflow } from "./rehearse-packaging-workflow.mjs";
+import { rehearsePackagingIntake } from "./rehearse-packaging-intake.mjs";
 
 import { buildShadowCatalog } from "../build-shadow-catalog.ts";
 import {
@@ -72,6 +78,29 @@ try {
   await checkEmbeddedPublicTypes(db, root, {
     write: process.argv.includes("--write-public-types"),
   });
+  const syntheticKey = Buffer.alloc(32, 7);
+  const observationPayload =
+    "v1|96000000-0000-4000-8000-000000000001|synthetic UTF8 original observation";
+  const observationSignature = createHmac("sha256", syntheticKey)
+    .update(observationPayload, "utf8")
+    .digest("hex");
+  for (const [payload, signature, expected] of [
+    [observationPayload, observationSignature, true],
+    [observationPayload + "changed", observationSignature, false],
+    [observationPayload, "0".repeat(64), false],
+  ])
+    assert.equal(
+      (
+        await db.query(
+          "select private.pi_media_observation_signature_matches($1,$2,$3) as matches",
+          [payload, signature, syntheticKey],
+        )
+      ).rows[0].matches,
+      expected,
+    );
+  console.log(
+    "Node/pgcrypto HMAC parity and tamper refusal passed with an isolated synthetic key.",
+  );
 
   const probe = (
     count,
@@ -175,6 +204,10 @@ rollback;
     }
     console.log(`Real-source shadow replay ${pass}: all 17 source tables match.`);
   }
+
+  await rehearseMediaWorkflow(db, catalog, tables);
+  await rehearseOemWorkflow(db, catalog, tables);
+  await rehearsePackagingWorkflow(db, catalog, tables);
 
   const ownerId = "90000000-0000-4000-8000-000000000001";
   await db.query("insert into auth.users(id,email) values ($1,'authority-owner@example.invalid')", [
@@ -584,6 +617,191 @@ rollback;
   console.log(
     "Four in-memory 15AK media intake fixtures preserve every original asset/mapping, with no approval or publication.",
   );
+  // Recorded metadata fixtures only: PGlite has no Storage file bytes or human image approval.
+  const mappingId = (n) => `96000000-0000-4000-8000-${String(n).padStart(12, "0")}`;
+  for (const [index, variantId] of ledger.pilot_variant_ids.entries()) {
+    const intent = (
+      await db.query("select private.pi_begin_media_upload($1,$2,$3) as result", [
+        mappingId(100 + index),
+        variantId,
+        JSON.stringify({
+          filename: "synthetic-mapping.png",
+          byte_size: 100,
+          file_hash: "a".repeat(64),
+          mime_type: "image/png",
+          width: 32,
+          height: 24,
+          source_kind: "other_reference",
+          source_owner: "Synthetic in-memory custodian",
+          source_reference: "TEST-ONLY metadata; not real product image evidence",
+        }),
+      ])
+    ).rows[0].result;
+    await db.query(
+      `insert into storage.objects(id,bucket_id,name,owner_id,metadata,version)
+       values($1,'pi-product-originals',$2,$3,'{"size":100,"mimetype":"image/png"}','synthetic-version')`,
+      [mappingId(700 + index), intent.storage_path, ownerId],
+    );
+    const original = (
+      await db.query("select private.pi_complete_media_upload($1,$2) as result", [
+        mappingId(200 + index),
+        intent.intent_id,
+      ])
+    ).rows[0].result;
+    const sources = [];
+    for (const [dimensionIndex, dimension] of ["usage_rights", "product_match"].entries()) {
+      const source = (
+        await db.query("select private.pi_add_media_source($1,$2,$3,'main',$4,$5) as result", [
+          mappingId(300 + index * 2 + dimensionIndex),
+          variantId,
+          original.asset_id,
+          dimension,
+          JSON.stringify({
+            assertion: "reference_only",
+            evidence_basis: "catalog_reference",
+            evidence_date: "2026-01-01",
+            owner_name: "Synthetic in-memory custodian",
+            revision_label: "TEST-MAPPING-1",
+            source_kind: "company_record",
+            source_level: "A",
+            source_location: "Synthetic metadata fixture only",
+            source_reference: "TEST-ONLY; no actual ownership or exact-product approval",
+            title: "Synthetic mapping source",
+          }),
+        ])
+      ).rows[0].result;
+      sources.push(source.source_id);
+      assert.equal(
+        (
+          await db.query(
+            "select private.pi_media_source_can_support_review($1,$2,$3,'main',$4) as eligible",
+            [source.source_id, variantId, original.asset_id, dimension],
+          )
+        ).rows[0].eligible,
+        false,
+      );
+    }
+    const proposed = (
+      await db.query(
+        "select private.pi_propose_media_mapping($1,$2,$3,'main',0,0,$4,$5,$6) as result",
+        [
+          mappingId(500 + index),
+          variantId,
+          original.asset_id,
+          JSON.stringify({ alt_text: "Synthetic mapping fixture; not an actual product image" }),
+          sources,
+          "Synthetic isolated exact-SKU mapping proposal",
+        ],
+      )
+    ).rows[0].result;
+    await db.query("select private.pi_submit_media_mapping($1,$2,$3,$4)", [
+      mappingId(600 + index),
+      proposed.mapping_id,
+      proposed.revision,
+      proposed.digest,
+    ]);
+    const originalDigest = (
+      await db.query("select original_digest from media_mapping_revisions where id=$1", [
+        proposed.mapping_id,
+      ])
+    ).rows[0].original_digest;
+    const humanDeclaration = JSON.stringify({
+      original_digest: originalDigest,
+      original_inspected: true,
+      usage_rights_confirmed: true,
+      exact_product_confirmed: true,
+    });
+    // Synthetic declaration is deliberately rejected: references are not approval evidence.
+    await assert.rejects(
+      db.query(
+        "select private.pi_review_media_mapping($1,$2,$3,$4,'APPROVE',$5,$6,$7,$8,'',null)",
+        [
+          mappingId(800 + index),
+          proposed.mapping_id,
+          proposed.revision,
+          proposed.digest,
+          "Synthetic negative control only; no real human approval",
+          humanDeclaration,
+          sources[0],
+          sources[1],
+        ],
+      ),
+      (error) => error.code === "23514",
+    );
+    await assert.rejects(
+      db.query(
+        "select public.pi_review_media_mapping($1,$2,$3,$4,'APPROVE',$5,$6,$7,$8,'',null,null)",
+        [
+          mappingId(900 + index),
+          proposed.mapping_id,
+          proposed.revision,
+          proposed.digest,
+          "Synthetic observation negative control; no actual bytes or real approval",
+          humanDeclaration,
+          sources[0],
+          sources[1],
+        ],
+      ),
+      (error) => error.code === "23514",
+    );
+  }
+  for (const table of ["media_assets", "product_media", "product_variants", "technical_values"]) {
+    assert.equal(
+      (
+        await db.query(
+          `select $1::jsonb = (select jsonb_agg(to_jsonb(r) order by to_jsonb(r)::text)
+           from public.${table} r where r.id=any($2::uuid[])) as unchanged`,
+          [JSON.stringify(ledger.baseline[table]), ledger.baseline[table].map((row) => row.id)],
+        )
+      ).rows[0].unchanged,
+      true,
+      `Synthetic mapping proposals preserve every original ${table} row`,
+    );
+  }
+  assert.equal((await db.query("select count(*)::int as n from media_mapping_heads")).rows[0].n, 4);
+  assert.equal(
+    (
+      await db.query(`select count(*)::int as n from pi_media_mapping_states where review_state='pending'
+      and verification_status='NEEDS_FACTORY_CONFIRMATION' and rights_evidence_count=1 and match_evidence_count=1`)
+    ).rows[0].n,
+    4,
+  );
+  assert.equal(
+    (await db.query("select count(*)::int as n from media_assets")).rows[0].n,
+    ledger.baseline.media_assets.length + 4,
+  );
+  assert.equal(
+    (await db.query("select count(*)::int as n from product_media")).rows[0].n,
+    ledger.baseline.product_media.length,
+  );
+  assert.equal(
+    (await db.query("select count(*)::int as n from media_upload_completions")).rows[0].n,
+    4,
+  );
+  assert.equal((await db.query("select count(*)::int as n from verification_events")).rows[0].n, 0);
+  assert.equal(
+    (await db.query("select count(*)::int as n from media_mapping_decisions")).rows[0].n,
+    0,
+  );
+  assert.equal(
+    (await db.query("select count(*)::int as n from media_mapping_currents")).rows[0].n,
+    0,
+  );
+  assert.equal(
+    (await db.query("select count(*)::int as n from private.pi_media_review_observations")).rows[0]
+      .n,
+    0,
+  );
+  assert.equal(
+    (await db.query("select count(*)::int as n from private.pi_media_observation_keys")).rows[0].n,
+    0,
+  );
+  assert.equal((await db.query("select count(*)::int as n from publish_records")).rows[0].n, 0);
+  console.log(
+    "Four real 15AK SKU identities accept synthetic pending mappings but reject reference-only approval, preserving all original products/facts/assets/mappings and zero decisions/approval/publication.",
+  );
+  await rehearseOemIntake(db, ledger.pilot_variant_ids, tables);
+  await rehearsePackagingIntake(db, ledger.pilot_variant_ids, tables);
   console.log(
     `Embedded SQL PASS: ${assertions} pgTAP assertions, negative controls, two real-source replays and post-adoption service-role denial.`,
   );

@@ -87,8 +87,8 @@ jobs:
           npm run console:shadow:apply:local
           npm run console:shadow:apply:local
 
-      - name: Test persisted M3, compatibility, original Storage and browser workflows
-        run: npm run console:working:test:local
+      - name: Test persisted M3, compatibility, originals, media, OEM and packaging workflows
+        run: npm run console:working:test:local -- --oem --packaging
 
       - name: Stop local Product Intelligence services
         if: always()
@@ -139,8 +139,18 @@ jobs:
           npm run console:media:test
           npm run console:originals:test
           npm run console:originals:upload:test
+          npm run console:originals:inspect:test
+          npm run console:media:commands:test
+          npm run console:media:mapping:test
+          npm run console:oem:commands:test
+          npm run console:oem:reads:test
+          npm run console:packaging:commands:test
+          npm run console:packaging:reads:test
+          npm run console:packaging:acceptance:test
+          npm run console:oem:acceptance:test
           npm run console:working:test:guards
           npm run console:browser:test:guards
+          npm run console:media:acceptance:guards
           npm run console:boundaries:test
           npm run console:entrance:test
           npm run console:matcher:test

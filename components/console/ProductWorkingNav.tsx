@@ -1,16 +1,40 @@
-import { FileText, History, ListChecks, GitCompareArrows, Images } from "lucide-react";
+import {
+  FileText,
+  History,
+  ListChecks,
+  GitCompareArrows,
+  Images,
+  ImagePlus,
+  Hash,
+  Package,
+} from "lucide-react";
 import { ConsoleLink } from "./ConsoleLink";
+import { consoleOemEnabled, consolePackagingEnabled } from "../../lib/console/working-config";
 
 export function ProductWorkingNav({
   id,
   active,
   compatibility = false,
   originals = false,
+  media = false,
+  oem = consoleOemEnabled(),
+  packaging = consolePackagingEnabled(),
 }: {
   id: string;
-  active?: "edit" | "review" | "history" | "compatibility" | "originals";
+  active?:
+    | "edit"
+    | "review"
+    | "history"
+    | "compatibility"
+    | "originals"
+    | "media"
+    | "oem"
+    | "packaging";
   compatibility?: boolean;
   originals?: boolean;
+  media?: boolean;
+  oem?: boolean;
+  packaging?: boolean;
 }) {
   return (
     <nav className="console-working-nav" aria-label="Product working views">
@@ -51,6 +75,36 @@ export function ProductWorkingNav({
         >
           <Images size={18} aria-hidden="true" />
           Original images
+        </ConsoleLink>
+      )}
+      {oem && (
+        <ConsoleLink
+          href={`/console/products/${id}/oem`}
+          className="console-action"
+          aria-current={active === "oem" ? "page" : undefined}
+        >
+          <Hash size={18} aria-hidden="true" />
+          OEM references
+        </ConsoleLink>
+      )}
+      {packaging && (
+        <ConsoleLink
+          href={`/console/products/${id}/packaging`}
+          className="console-action"
+          aria-current={active === "packaging" ? "page" : undefined}
+        >
+          <Package size={18} aria-hidden="true" />
+          Packaging
+        </ConsoleLink>
+      )}
+      {media && (
+        <ConsoleLink
+          href={`/console/products/${id}/media`}
+          className="console-action"
+          aria-current={active === "media" ? "page" : undefined}
+        >
+          <ImagePlus size={18} aria-hidden="true" />
+          Image mappings
         </ConsoleLink>
       )}
       <ConsoleLink

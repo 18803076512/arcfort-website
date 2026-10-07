@@ -1,6 +1,23 @@
 import assert from "node:assert/strict";
 import { request as httpRequest } from "node:http";
+import { parseArgs } from "node:util";
 import { stagingConsoleOrigin } from "../../lib/console/config.ts";
+import {
+  assertNoRuntimeEnvFiles,
+  assertPortAvailable,
+  assertProviderAbsent,
+} from "./browser-server.ts";
+
+const { values } = parseArgs({
+  options: { "provider-absent": { type: "boolean", default: false } },
+  strict: true,
+  allowPositionals: false,
+});
+if (values["provider-absent"]) {
+  assertNoRuntimeEnvFiles(process.cwd());
+  await assertPortAvailable(54321);
+  await assertProviderAbsent();
+}
 
 // This smoke test never submits credentials, sends mail or follows an external redirect.
 const origin = "http://127.0.0.1:3000";
@@ -50,23 +67,30 @@ function privacy(response: Response) {
   assert.match(response.headers.get("x-robots-tag") ?? "", /noindex/i);
   assert.match(response.headers.get("x-robots-tag") ?? "", /nofollow/i);
   assert.equal(response.headers.get("referrer-policy"), "no-referrer");
+  assert.equal(response.headers.has("x-console-media-observation"), false);
 }
-// This private streaming route owns its boundary outside the middleware body clone.
-for (const method of ["GET", "HEAD", "OPTIONS", "PUT", "PATCH", "DELETE"]) {
-  const response = await request("/console/originals", { method });
-  assert.equal(response.status, 405);
-  assert.equal(response.headers.get("allow"), "POST");
-  privacy(response);
-}
-for (const originHeader of [origin, "https://invalid.example", "null"]) {
-  const response = await request("/console/originals", {
-    method: "POST",
-    headers: { origin: originHeader, "content-type": "image/png", "x-console-command": "1" },
-    body: "synthetic denied input",
-  });
-  assert.equal(response.status, 403, "Original intake must remain disabled in this smoke server.");
-  privacy(response);
-  assert.equal(response.headers.has("set-cookie"), false);
+// Only the streaming upload skips middleware. Inspection stays inside it.
+for (const path of ["/console/originals", "/console/originals/inspect"]) {
+  for (const method of ["GET", "HEAD", "OPTIONS", "PUT", "PATCH", "DELETE"]) {
+    const response = await request(path, { method });
+    assert.equal(response.status, 405);
+    assert.equal(response.headers.get("allow"), "POST");
+    privacy(response);
+  }
+  for (const originHeader of [origin, "https://invalid.example", "null"]) {
+    const response = await request(path, {
+      method: "POST",
+      headers: { origin: originHeader, "content-type": "image/png", "x-console-command": "1" },
+      body: "synthetic denied input",
+    });
+    assert.equal(
+      response.status,
+      403,
+      "Original intake must remain disabled in this smoke server.",
+    );
+    privacy(response);
+    assert.equal(response.headers.has("set-cookie"), false);
+  }
 }
 assert.equal(
   (await request("/api/console/originals")).status,
@@ -85,6 +109,7 @@ for (const path of [
   "/console/media",
   "/console/media?view=assets&assignment=unassigned",
   "/console/products/10000000-0000-4000-8000-000000000001/originals",
+  "/console/products/10000000-0000-4000-8000-000000000001/oem",
   "/console/auth/confirm",
   "/console/unknown-qa-route",
 ]) {
@@ -154,10 +179,15 @@ for (const Origin of ["null", origin]) {
   });
   assert.equal(
     response.status,
-    400,
-    "Same-origin request reaches invalid-form validation, not Auth mutation",
+    values["provider-absent"] ? 503 : 400,
+    values["provider-absent"]
+      ? "Absent provider fails before form or Auth mutation"
+      : "Same-origin request reaches invalid-form validation, not Auth mutation",
   );
-  assert.equal(await response.text(), "Invalid form.");
+  assert.equal(
+    await response.text(),
+    values["provider-absent"] ? "Sign-in is unavailable." : "Invalid form.",
+  );
   privacy(response);
   assert.equal(response.headers.has("set-cookie"), false);
 }
@@ -168,6 +198,7 @@ for (const path of [
   "/console/login",
   "/console/auth/callback",
   "/console/originals",
+  "/console/originals/inspect",
   "/_next/static/qa-missing.js",
 ]) {
   const response = await request(path, { headers: stagingHeaders });
@@ -199,6 +230,13 @@ const stagingOriginal = await request("/console/originals", {
 });
 assert.equal(stagingOriginal.status, 404, "Staging keeps its existing non-session POST denial.");
 privacy(stagingOriginal);
+const stagingInspection = await request("/console/originals/inspect", {
+  method: "POST",
+  headers: stagingHeaders,
+  body: "synthetic denied input",
+});
+assert.equal(stagingInspection.status, 404);
+privacy(stagingInspection);
 const stagingRobots = await request("/robots.txt", { headers: stagingHeaders });
 assert.equal(stagingRobots.status, 200);
 assert.equal(await stagingRobots.text(), "User-agent: *\nDisallow: /\n");

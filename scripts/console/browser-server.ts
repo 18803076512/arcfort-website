@@ -6,12 +6,23 @@ import path from "node:path";
 import {
   consoleCompatibilityEnabled,
   consoleOriginalsEnabled,
+  consoleMediaReviewEnabled,
+  consoleOemEnabled,
+  consolePackagingEnabled,
   consoleWorkingEnabled,
 } from "../../lib/console/working-config.ts";
+import { originalUuid } from "../../lib/domain/catalog/originals.ts";
+import type { DisposableMediaObserver } from "./media-acceptance.ts";
 
 export const browserOrigin = "http://127.0.0.1:3000";
 export const runtimeEnvFiles = [".env", ".env.local", ".env.production", ".env.production.local"];
-type BrowserFeatures = { compatibility?: boolean; originals?: boolean };
+type BrowserFeatures = {
+  oem?: boolean;
+  packaging?: boolean;
+  compatibility?: boolean;
+  originals?: boolean;
+  observer?: DisposableMediaObserver;
+};
 
 export function browserServerEnvironment(
   publicKey: string,
@@ -40,9 +51,29 @@ export function browserServerEnvironment(
   });
   assert.equal(consoleWorkingEnabled(env), true, "A local public key is required.");
   if (features.compatibility) env.CONSOLE_COMPATIBILITY_ENABLED = "true";
+  if (features.oem === true) env.CONSOLE_OEM_ENABLED = "true";
+  if (features.packaging === true) env.CONSOLE_PACKAGING_ENABLED = "true";
   if (features.originals) env.CONSOLE_ORIGINALS_ENABLED = "true";
+  if (features.observer) {
+    assert.equal(features.originals, true, "Media review requires original acceptance.");
+    assert.match(features.observer.id, originalUuid);
+    assert.match(features.observer.secretHex, /^[a-f0-9]{64}$/);
+    env.CONSOLE_MEDIA_REVIEW_ENABLED = "true";
+    env.CONSOLE_MEDIA_OBSERVATION_KEY_ID = features.observer.id;
+    env.CONSOLE_MEDIA_OBSERVATION_SECRET_HEX = features.observer.secretHex;
+  }
   assert.equal(consoleCompatibilityEnabled(env), features.compatibility === true);
   assert.equal(consoleOriginalsEnabled(env), features.originals === true);
+  assert.equal(consoleMediaReviewEnabled(env), Boolean(features.observer));
+  assert.equal(consoleOemEnabled(env), features.oem === true);
+  assert.equal(consolePackagingEnabled(env), features.packaging === true);
+  return env;
+}
+
+export function browserBuildEnvironment(runtime: NodeJS.ProcessEnv) {
+  const env = { ...runtime };
+  delete env.CONSOLE_MEDIA_OBSERVATION_KEY_ID;
+  delete env.CONSOLE_MEDIA_OBSERVATION_SECRET_HEX;
   return env;
 }
 
@@ -61,6 +92,27 @@ export async function assertPortAvailable(port = 3000) {
   });
 }
 
+export async function assertProviderAbsent(fetcher: typeof fetch = fetch) {
+  let responded = false;
+  let refused = false;
+  try {
+    const response = await fetcher("http://127.0.0.1:54321/auth/v1/settings", {
+      headers: { apikey: "sb_publishable_synthetic_provider_absent" },
+      cache: "no-store",
+      signal: AbortSignal.timeout(2000),
+    });
+    responded = true;
+    await response.body?.cancel();
+  } catch (error) {
+    // A free bind does not exclude transparent forwarding. Policy/timeout errors prove no absence.
+    refused =
+      !responded &&
+      error instanceof Error &&
+      (error.cause as { code?: string } | undefined)?.code === "ECONNREFUSED";
+  }
+  assert.ok(refused, "The loopback provider is reachable or its absence cannot be established.");
+}
+
 export function privateResponse(headers: Record<string, string>) {
   assert.match(headers["cache-control"] ?? "", /private/i);
   assert.match(headers["cache-control"] ?? "", /no-store/i);
@@ -74,13 +126,13 @@ export async function startBrowserServer(publicKey: string, features: BrowserFea
   assertNoRuntimeEnvFiles(root);
   const env = browserServerEnvironment(publicKey, process.env, features);
   await assertPortAvailable();
-  function next(args: string[]) {
+  function next(args: string[], childEnv = env) {
     const child = spawn(
       process.execPath,
       [path.join(root, "node_modules/next/dist/bin/next"), ...args],
       {
         cwd: root,
-        env,
+        env: childEnv,
         windowsHide: true,
         stdio: "ignore",
       },
@@ -91,7 +143,7 @@ export async function startBrowserServer(publicKey: string, features: BrowserFea
     });
     return { child, closed };
   }
-  const build = next(["build"]);
+  const build = next(["build"], browserBuildEnvironment(env));
   const buildTimeout = setTimeout(() => build.child.kill(), 300_000);
   const built = await build.closed;
   clearTimeout(buildTimeout);

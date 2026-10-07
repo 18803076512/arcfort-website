@@ -5994,3 +5994,550 @@ retained database and historical report.
   Vercel deployment disabled, and zero GitHub deployment records for the accepted candidate SHA.
 - **Next Recommended Action:** Complete immutable SKU media mapping and human rights/match review
   with owner-supplied evidence, preserving default-off flags and separate rollout/publication gates.
+
+## 2026-10-04 - M4 Private Stored-Original Inspection
+
+- **Task:** Complete and locally validate read-only stored-original inspection before human media
+  review. Reconcile the replayed B1-B10 authorization with its already successful CI submission.
+- **Files Changed:** New inspection domain/service/route, shared original-work helper, inspector
+  component and focused test; original intake/upload, private client adapter and Console CSS;
+  original UI/real-browser/HTTP/matcher/fixture tests, package/quality command; M4 runbook, Goal,
+  media-inspection knowledge, dated decision and this log. Exact paths are listed in the runbook.
+- **Components Changed / Visual Changes:** Private inline history inspector, image controls and
+  pending-review/TIFF/error states. Public website visuals and original geometry are unchanged.
+- **Data Changed / SEO Impact:** None. No original transformation, canonical/public asset change,
+  data migration, mapping, approval, lifecycle promotion, public route or RFQ change.
+- **Validation:** Eight mocked-SDK inspection groups, six byte groups, nine upload/history groups,
+  five synthetic browser groups/twelve screenshots, TypeScript, zero-warning lint, fresh production
+  build, compiled matcher, twenty-two scoped private HTTP probes and public SEO/image/link/snippet/
+  performance regressions pass. Mobile/desktop inspection screenshots are reviewed. Scoped format,
+  diff, 595-file secret scan and canonical Goal report pass; owned test servers are stopped.
+- **Known Issues:** Full-session HTTP smoke receives 503 instead of 400 with unavailable local Auth;
+  its assertion remains unchanged. New actual provider/browser acceptance is prepared, not run.
+  B11 activation/release and full V1 remain blocked; rights/match and immutable mapping are open.
+- **Reusable Knowledge Added:** `2026-10-04-console-m4-stored-original-inspection.md` and the media
+  knowledge record preserve unchanged-byte inspection versus legal/exact-product human approval,
+  caller-signal preservation and the distinction between local and real-provider evidence.
+- **Deployment:** No new commit/push, merge, deployment or retained/hosted stack change. Read-only
+  verification confirms baseline `c190456d` has green CI and PR 130 remains open/unmerged.
+- **Next Recommended Action:** Authorize and execute B11 isolated CI on the exact existing branch;
+  then complete immutable SKU media mapping and human review using real owner-supplied evidence.
+
+## 2026-10-04 - M4 Immutable Media Mapping Draft Foundation
+
+- **Task:** Prepare exact-SKU immutable mapping proposals/submission without changing effective
+  images, approving rights/match or activating the workflow.
+- **Files Changed:** New migration 16 and 92-assertion mapping database suite; generated public
+  `database.types.ts`; migration validator, strict SQL-report test and embedded source runner;
+  existing source TRUNCATE-refusal fixture; M4 runbook, Goal/generated inventory report, media
+  knowledge, dated decision and this log. The runbook lists exact paths and contracts.
+- **Components Changed / Visual Changes:** Private SQL tables/functions, invoker proposal view and
+  open-proposal lifecycle guard only. No new UI or public visual change; original geometry retained.
+- **Data Changed:** Synthetic in-memory fixtures only. All original product/fact/asset/mapping rows
+  remain exact, with zero approval/publication. No retained/hosted or canonical registry change.
+- **SEO Impact:** None. Public URLs, image paths, SEO, indexed content and RFQ remain unchanged.
+- **Validation:** All 16 embedded SQL suites/722 assertions, complete official public type parity,
+  two exact 17-table replays and four synthetic pending proposals using actual 15AK SKU identities
+  pass. Migration/report/type contracts, focused domain/command/read/target guards, TypeScript,
+  zero-warning lint, fresh production build and real Edge unavailable-provider smoke pass. Owned
+  acceptance server stopped with its port released. Final repository hygiene is in the B12 runbook.
+- **Known Issues:** Local foundation is not an effective mapping or human approval workflow.
+  Readiness/dashboard/current-effective integration, human APPROVE/EDIT/REJECT, owner UI, native
+  SQL/CLI types, real provider/concurrency acceptance, real 15AK evidence and full V1 remain open.
+  Storage metadata digest is not actual-byte attestation. B11's separate HTTP prerequisite remains.
+- **Reusable Knowledge Added:** `2026-10-04-console-m4-media-mapping-drafts.md` and media knowledge
+  retain immutable exact-scope submission, unselected contradiction preservation, separate rights/
+  match review and unchanged effective mappings. Source TRUNCATE test still requires guard refusal.
+- **Deployment:** No commit/push, merge, deployment, active flag or retained/hosted schema operation.
+  B1-B10 approval and the pending B11-only CI question are not extended to B12.
+- **Next Recommended Action:** Implement explicit human rights/match review against inspected
+  originals and exact submitted digests, then effective/readiness integration and owner controls.
+
+## 2026-10-04 - M4 Exact-SKU Media Mapping Review Foundation
+
+- **Task:** Implement private human media decisions and current/effective/readiness integration
+  while preserving separate rights, exact-product, actual-byte and publication boundaries.
+- **Files Changed:** New migration 17/109-assertion review suite; generated database types;
+  migration validator/strict SQL report/embedded source runner; pristine target guard/unit/real
+  runner preparation; Goal/generated inventory, M4 runbook, media knowledge, dated decision and log.
+  Exact paths and evidence are retained in the B13 runbook section.
+- **Components Changed / Visual Changes:** SQL review/current guards, immutable decision/event
+  history, effective/private mapping and readiness projections. No new UI or public visual change.
+- **Data Changed:** Synthetic in-memory decisions only. Four actual 15AK identities refuse
+  reference-only approval; every original product/fact/asset/mapping row remains exact, with zero
+  real-source decisions/approval/publication. No canonical or retained/hosted data was modified.
+- **SEO Impact:** None; public URLs, image paths, indexed copy, schema and RFQ are unchanged.
+- **Validation:** All 17 embedded suites/831 assertions, complete official public type parity,
+  original column contract, two exact 17-table replays, negative controls and focused command/read/
+  destination guards pass. Standalone typecheck, zero-warning lint, fresh production build and
+  real Edge unavailable-provider smoke pass; owned server stopped and port released. Final hygiene
+  and public-site regression evidence is retained in the B13 runbook.
+- **Known Issues:** No HTTP/RPC mutation grant or owner UI. Human declaration is not machine-byte
+  attestation; actual observation binding, native SQL/CLI types, real provider/race/browser workflow,
+  governed public output, supporting records, real 15AK evidence and full V1 remain outstanding.
+  Activation/release remains `BLOCKED`; previous green CI does not prove this new batch.
+- **Reusable Knowledge Added:** `2026-10-04-console-m4-media-mapping-review.md` retains independent
+  dimensions, exact pending snapshot, conflict-preserving correction, stale rejection, invalid
+  current proof, unchanged global/public media and contract-preserving readiness integration.
+- **Deployment:** No commit/push, merge, deployment, retained/hosted schema operation or active flag.
+  B1-B10 approval and the pending B11-only question do not authorize this new batch.
+- **Next Recommended Action:** Bind real stored-original observations to explicit human controls
+  and connect exact-scope media commands/effective reads, then obtain fresh isolated acceptance.
+
+## 2026-10-04 - M4 Observed Media Review Command Integration
+
+- **Task:** Bind actual stored-original byte processing to exact authenticated application approval
+  while retaining separate human rights/match evidence and private public-output restrictions.
+- **Files Changed:** New migration 18/61-assertion suite, media domain contracts and server signer;
+  original inspector/route, command parser/handler and disabled working flag; official database
+  types; new command tests, inspector/SQL/source/pristine/header/browser tests, package/workflow;
+  Goal/generated inventory, M4 runbook, media knowledge, dated observation decision and this log.
+  The B14 runbook lists exact files, scopes and checks.
+- **Components Changed / Visual Changes:** Typed source/proposal/submission/review commands,
+  pending-mapping observation mode and independent database verifier/immutable receipt. No new UI,
+  visual or public image change; original geometry retained.
+- **Data Changed:** Synthetic in-memory fixtures and mocked transport only. All original rows and
+  actual-SKU reference states retained, with zero real-source approval/observation/publication.
+  No actual observer key, retained/hosted data or canonical registry was configured or changed.
+- **SEO Impact:** None; public routes, canonicals, indexed content, public images and RFQ unchanged.
+- **Validation:** All 18 embedded suites/892 assertions, official public type/source parity,
+  Node/pgcrypto HMAC parity, 11 inspector and five media-command groups, original technical/
+  compatibility/upload regressions and eight pristine-target groups pass. TypeScript, zero-warning
+  lint, fresh production build and real unavailable-provider/default-off observation browser smoke
+  pass; owned server stopped with port released. Final hygiene is retained in the B14 runbook.
+- **Known Issues:** Actual native/Auth/PostgREST/Storage/race acceptance and usable reviewer UI
+  remain outstanding. A signed byte observation is not human inspection, usage permission, exact
+  product truth, public image eligibility or permanent Storage attestation. Supporting records,
+  real 15AK evidence, verified preview/QA/publication and full V1 remain incomplete.
+- **Reusable Knowledge Added:** `2026-10-04-console-m4-observed-media-commands.md` and media knowledge
+  retain key/actor/adoption/candidate binding, expiry/nonce/replay, digest-only storage, separate
+  historical/current evidence and mandatory explicit human review/activation gates.
+- **Deployment:** No commit/push, merge/deployment, key provisioning, active setting or retained/
+  hosted migration. The pending B11-B13 CI-only question is not extended to B14.
+- **Next Recommended Action:** Build the exact-SKU mapping/reviewer workbench with unchanged
+  original inspection and independent human rights/match controls, then fresh isolated acceptance.
+
+## 2026-10-04 - M4 SKU Media Mapping And Human Review Workbench
+
+- **Task:** Connect exact-SKU mapping and counted original/source/current/history reads to usable
+  human source/proposal/submission/APPROVE/EDIT/REJECT controls, independently disabled by default.
+- **Files Changed:** New protected media page, Console mapping reader, media-review domain helpers,
+  workbench, fixture/read/browser tests; stored-original inspector, working navigation, six existing
+  SKU pages/private CSS; package/workflow, production smoke/matcher; Goal/generated inventory, M4
+  runbook, media knowledge, dated workbench decision and this log. Exact paths are in the B15 runbook.
+- **Components Changed / Visual Changes:** Add `MediaMappingWorkbench`; extend private navigation
+  and original inspector with current observation, explicit acknowledgements and expiry/recheck.
+  Dense unframed source/current/proposal/history comparison, responsive forms and stable controls.
+  No component removed, new dependency or public website visual change.
+- **Data Changed:** Synthetic fixtures only; no canonical CSV, original raster geometry, technical
+  truth, retained/hosted data, actual signing key, real reviewer approval or publication changed.
+- **SEO Impact:** None; public URLs, canonicals, indexed copy, image projection, sitemap/schema/RFQ
+  preserved. New private route remains authenticated, noindex/no-store and default-off.
+- **Validation:** Seven read/domain groups, fourteen synthetic real-browser groups at six widths,
+  old original UI, eleven inspector/five media/eight technical commands and compatibility reads
+  pass. All eighteen embedded suites/892 assertions, official public types/source parity/HMAC,
+  two exact source replays and real-SKU negative controls pass. Typecheck/lint, fresh build, actual
+  no-provider private-route browser smoke, compiled middleware and public SEO/performance audits
+  pass. Native Auth/Storage/DB/race acceptance is not claimed; final hygiene is in the B15 runbook.
+- **Known Issues:** Activation/publication remains `BLOCKED` pending fresh native/provider/race
+  acceptance and real 15AK image/rights/match evidence. Supporting records, governed public output,
+  verified preview/QA/publication and full V1 remain unfinished. Bounded reads are not atomic;
+  current validity, historical observation and human truth remain separate. Existing legacy-media
+  evidence warnings remain unchanged, with zero new search-eligible images.
+- **Reusable Knowledge Added:** Dated B15 workbench decision and media knowledge retain counted
+  exact scope, omitted contradictions, same-head review drift, explicit human controls, transient
+  browser observations, internal-only approvals and exact streaming-redirect security evidence.
+- **Deployment:** No commit/push, merge/deployment, flags, keys or retained/hosted operations.
+  Pending B11-B13-only CI authorization is not extended to B14/B15. No rule override applies.
+- **Next Recommended Action:** Prepare and obtain fresh exact-batch disposable native/Auth/Storage/
+  concurrency acceptance, then use owner-supplied exact 15AK evidence to advance the real pilot.
+- **Final Hygiene (2026-10-05):** TypeScript/lint, scoped formatting and tracked whitespace pass;
+  615 text files show no high-confidence secrets. Re-read the full objective, retained unchanged
+  HEAD/data/approval boundaries and kept the full V1 goal active. No extra phase was activated.
+
+## 2026-10-05 - M4 Disposable Media Acceptance Harness Preparation
+
+- **Task:** Prepare the native disposable media source/mapping/inspection/human-review acceptance
+  sequence and guarded ephemeral observer handling. Local preparation is complete; native execution
+  and full M4/V1 are not claimed.
+- **Files Changed:** New media acceptance helper, guard tests and database-backed browser helper;
+  local acceptance query, browser server/guards, original/working browser and isolated runner;
+  package/prepared quality workflow, Goal/generated report, M4 runbook, media knowledge, dated
+  disposable acceptance decision and this append-only log. Exact paths are in the B16 runbook.
+- **Components Changed / Visual Changes:** None. Reuse current private workbench and owned server;
+  no public website change or dependency added.
+- **Data Changed:** Synthetic test code only. No real provider key, schema migration, original
+  geometry, canonical product fact, retained/hosted data, actual human approval or publication.
+- **SEO Impact:** None; indexed output, URLs, canonicals, sitemap/schema, image governance and RFQ
+  are preserved. New private runtime functionality remains independently default-off.
+- **Validation:** Five provisioning/seven server/eight target guard groups; seven read/five media
+  command/eleven inspector groups; 18 embedded suites/892 assertions, source/public-type/HMAC parity;
+  migration/report/type contracts, TypeScript/lint and fresh real no-provider build/Edge smoke pass.
+  Initial sandbox build hit Windows SWC path access denial; ordinary local permissions passed the
+  unchanged harness and stopped its owned server. Final hygiene is in the B16 runbook.
+- **Known Issues:** New native/CLI/Auth/PostgREST/Storage/race scenarios are prepared but NOT_RUN;
+  activation/publication remains BLOCKED. Real 15AK exact imagery/rights/match, supporting records,
+  public output governance, verified preview/QA/publication and all twelve V1 criteria are unfinished.
+  Historical CI, synthetic declarations and provider-absent smoke do not prove those gates.
+- **Reusable Knowledge Added:** Dated disposable acceptance decision and media knowledge retain
+  pristine-before-key provisioning, stdin/runtime-only secret handling, exact-ID failure cleanup,
+  immutable history, real contention evidence, fixture-count and zero-publication boundaries.
+- **Deployment:** No commit/push, merge/deployment, flags, actual keys or retained/hosted operations.
+  Old B1-B10 permission is fulfilled; pending B11-B13-only permission is not B14-B16 authority.
+  No repository rule override applies.
+- **Next Recommended Action:** Obtain fresh exact-batch CI-only authorization, execute prepared
+  native media acceptance, then apply owner-supplied exact 15AK evidence in the governed workflow.
+- **Final Hygiene / Approval:** Scoped formatting/whitespace, compiled middleware, public SEO/image/
+  performance, company/Goal and 619-text-file secret checks pass. No observer configuration/key-table
+  name in client chunks. The new pending exact B11-B16 CI-only question replaces the unanswered
+  B11-B13-only question, without inferring a response. HEAD/public/deployment boundaries unchanged.
+
+## 2026-10-05 - M4 B16 Sequential Media Rehearsal Review
+
+- **Task:** Review the prepared native media workflow with actual domain parsing/signing/SQL in a
+  rollback-only embedded rehearsal; correct its synthetic UTC-date fixture before native execution.
+- **Files Changed:** New `scripts/console/sql-runtime/rehearse-media-workflow.mjs`; authority runner,
+  media acceptance helper/guards, native media browser fixture and package command; Goal, M4 runbook,
+  media knowledge, dated disposable acceptance decision and this append-only log.
+- **Components Changed / Visual Changes:** None; no application, schema or dependency change.
+- **Data Changed:** Only synthetic in-memory fixtures, all rolled back. No canonical fact/image,
+  real evidence date, retained/hosted data, native signing key, human product approval or publication.
+- **SEO Impact:** None; public URLs, metadata, output, image governance and RFQ unchanged.
+- **Validation:** Actual six command forms, five revisions, exact counts/history, conflict/edit/reject,
+  replay/refusal/revocation, scoped disable, private output and zero publication pass. Pristine counts
+  and full-row 17-table parity hold after rollback. All 18 suites/892 pgTAP assertions, source/types/
+  HMAC parity and real-15AK negative controls pass; six/seven/eight guards, command/read/inspector,
+  migration/type/report, TypeScript and zero-warning lint pass. Final hygiene is in the B16 runbook.
+- **Known Issues:** Simulated JWT/Storage metadata and sequential SQL do not prove native services,
+  actual byte inspection or multi-connection races. Native acceptance remains NOT_RUN; activation/
+  publication remains BLOCKED. Real 15AK evidence, public output, supporting records, preview/QA/
+  publication and full V1 remain incomplete. The declared SQL assertion inventory is unchanged.
+- **Reusable Knowledge Added:** B16 follow-up records exact full-row rollback parity, transaction
+  ownership for shared key SQL and execution-UTC synthetic dates without changing factual policy.
+- **Deployment:** None. No commit/push, merge, provider write, Docker reset or retained-stack startup.
+  The existing exact B11-B16 CI-only authorization question remains pending; no rule override.
+- **Next Recommended Action:** Obtain fresh exact-batch CI authority and execute the native workflow,
+  then use owner-supplied exact 15AK evidence for the governed real-product pilot.
+
+## 2026-10-05 - M4 OEM Reference Source Foundation
+
+- **Task:** Start the remaining M4-C supporting-record workflow with immutable exact-SKU OEM/
+  reference evidence intake; preserve original references, contradictory sources and review gates.
+- **Files Changed:** Migration 19 and 80-assertion OEM suite; new embedded OEM rehearsal and authority
+  runner; generated database types; migration/report/pristine guard contracts and fixtures; Goal/
+  generated inventory, M4 runbook, dated OEM source decision, OEM knowledge and this append-only log.
+- **Components Changed / Visual Changes:** None. One source table/private command boundary; no new
+  UI, public mutation RPC, active configuration, dependency or public website change.
+- **Data Changed:** Synthetic rollback-only/in-memory fixtures. Four actual 15AK identifiers retain
+  all original facts; TEST-ONLY reference labels are not canonical OEM numbers. No original OEM,
+  compatibility, media, commercial term, retained/hosted data or real verification state changed.
+- **SEO Impact:** None; URLs, metadata, public projection, sitemap/schema and RFQ are preserved.
+- **Validation:** 19 embedded suites/972 pgTAP assertions, official public types/source/HMAC parity,
+  exact 17-table replays and all existing negative controls pass. New rehearsal covers four real
+  15AK identities plus one created synthetic draft with exact scope, reference-only refusal,
+  original-row retention, full rollback parity and zero confirmation/fitment/publication. Guards,
+  strict report/type/migration contracts, TypeScript and zero-warning lint pass. Final build/hygiene
+  evidence is retained in the C1 runbook.
+- **Known Issues:** No OEM proposals/current revisions, human review or application workbench yet;
+  packaging/documents and full M4 remain incomplete. Native/CLI/Auth/PostgREST/races, real product
+  evidence, public output, preview/QA/publication and full V1 are unproven. Source eligibility is
+  declared metadata, not actual document verification, confirmed OEM truth or compatibility.
+- **Reusable Knowledge Added:** Dated C1 source decision and OEM knowledge retain exact labels,
+  immutable provenance, reference-versus-fitment separation and the future review/activation gate.
+- **Deployment:** No commit/push, merge/deployment, actual key or retained/hosted operation. The
+  pending B11-B16 CI-only question is not expanded to this new batch. No repository rule override.
+- **Next Recommended Action:** Implement exact OEM proposals, frozen human review and effective/
+  current reads, then owner controls and the remaining packaging/document work within M4-C.
+- **Final Hygiene:** Fresh build/real no-provider Edge smoke, compiled middleware, public SEO/links/
+  image/snippet/performance and company evidence checks pass. Scoped formatting/whitespace and
+  625-text-file secret scan pass; owned test server is stopped, HEAD/public/retained boundaries
+  unchanged. No native-provider or human product confirmation claim is added.
+
+## 2026-10-05 - M4 Frozen OEM Human Review
+
+- **Task:** Implement exact OEM proposals, frozen human APPROVE/EDIT/REJECT, conflict-preserving
+  history/current reads and readiness inside M4-C, preserving the original authority.
+- **Files Changed:** Migration 20 and new 110-assertion OEM review suite; C1 TRUNCATE negative
+  fixture for new FK dependencies; generated database types; migration/report/pristine contracts
+  and fixtures; extended OEM rehearsal; Goal/generated report, M4 runbook, dated OEM review
+  decision, OEM knowledge and this append-only log.
+- **Components Changed / Visual Changes:** None. Five new private working tables/command/read
+  boundary; no application mutation endpoint, owner UI, active setting, dependency or public change.
+- **Data Changed:** Only synthetic in-memory/rollback fixtures. Original OEM/product/technical/
+  compatibility/media/source rows preserved. No real reference, human product approval, retained/
+  hosted data, commercial term, canonical image or publication changes.
+- **SEO Impact:** None; public URLs, metadata, sitemap/schema, product/media output and RFQ preserved.
+- **Validation:** 20 suites/1,082 pgTAP assertions, complete official public types, two exact 17-table
+  imports, existing HMAC/media/real-15AK negative controls pass. Four real 15AK identities and one
+  created synthetic draft receive five frozen TEST-ONLY reference proposals and explicit evidence
+  refusal, zero approvals/currents/publication and exact full rollback parity. Old and extended
+  pristine/provisioning/command/read/inspector guards, TypeScript and zero-warning lint pass. Fresh
+  production build and actual owned no-provider Edge smoke pass; owned server stopped.
+- **Known Issues:** Metadata/declarations do not inspect real OEM documents. Native CLI/Auth/
+  PostgREST/concurrency, application workbench and packaging/documents remain open. Full M4/V1,
+  real 15AK evidence, governed public output, verified preview/QA/publication remain incomplete.
+- **Reusable Knowledge Added:** C2 decision and OEM knowledge retain exact lineage, frozen human
+  status/evidence boundaries, conflict-preserving corrections, stale-current visibility, readiness
+  and historical-versus-current role semantics without asserting compatibility or public approval.
+- **Deployment:** None. The late September 28 CI approval is already fulfilled; neither it nor
+  pending B11-B16 scope covers C1/C2. No commit/push, merge/deploy, active flag/key, retained/hosted
+  operation or repository rule override.
+- **Next Recommended Action:** Build OEM application contracts and usable human workbench, then
+  separately authorized native acceptance and the remaining M4 packaging/document workflow.
+- **Final Hygiene:** Scoped formatting/whitespace, compiled middleware, public SEO/link/image/
+  snippet/performance and company evidence checks pass. All 628 repository text files pass the
+  high-confidence secret scan; generated inventory is 20 suites/1,082 assertions. Public/retained/
+  HEAD boundaries unchanged and all owned sessions stopped; native acceptance remains unrun.
+
+## 2026-10-05 - M4 OEM Application Workbench
+
+- **Task:** Complete the local OEM source/proposal/frozen review application and human workbench
+  inside M4-C, retaining exact originals, evidence status and all V1 requirements.
+- **Files Changed:** Migration 21 and 48-assertion SQL suite; generated public types; new OEM domain,
+  read model, component and product route; shared parser/executor/config/navigation/CSS/error hook;
+  seven command/seven read/fifteen browser test groups and synthetic fixture; production/HTTP smoke,
+  migration/report/package/quality configuration; Goal/generated report, runbook, C3 decision,
+  OEM knowledge and this append-only log.
+- **Components Changed / Visual Changes:** New OEM workbench, source entry and current/proposal/
+  history views; OEM product tab, restrained existing Console layout and responsive comparison.
+  Explicit accessible labels, current-role actions, stale/unsaved/busy/failure/reload states.
+- **Data Changed:** Synthetic in-memory/rollback/UI fixtures only. No real OEM confirmation,
+  original/product/technical/compatibility/media/canonical/retained/hosted data or publication change.
+- **SEO Impact:** None; private/noindex routes, public URLs/metadata/schema/sitemap/RFQ preserved.
+- **Validation:** 21 embedded suites/1,130 assertions, complete official public types, HMAC/source
+  parity/two exact 17-table imports/old media and five TEST-ONLY OEM negative controls pass. Fourteen
+  OEM command/read groups and fifteen synthetic Edge browser groups across six inspected widths
+  pass with zero errors/external requests. Full typecheck/lint, regression/target/observer/server
+  guards, fresh production build/actual no-provider media+OEM smoke, compiled middleware and public
+  SEO/links/images/snippets/performance/company evidence pass. Explicit absent-provider HTTP
+  regression passes; default native form assertions remain strict. Owned test servers stopped.
+- **Known Issues:** Native Auth/PostgREST/concurrency/persisted OEM acceptance is unrun. Metadata
+  and synthetic acknowledgements do not inspect real documents. Packaging/documents, real 15AK
+  evidence, governed verified preview/QA/publication and full M4/V1 remain incomplete. Historical
+  Docker repair is accepted; engine absent on this read, with no new health/retention claim.
+- **Reusable Knowledge Added:** C3 decision and OEM knowledge retain exact human/source/current/
+  history/UI semantics, observed-read limits and independent application-flag versus SQL grants.
+- **Deployment:** None. Existing September 28 scope is fulfilled at `c190456d`, reconfirmed green
+  CI/open unmerged PR; neither it nor pending B11-B16-only scope covers C1-C3. No new commit/push,
+  merge/deploy, feature activation/key, retained/hosted operation or repository rule override.
+- **Next Recommended Action:** Prepare and validate native isolated OEM acceptance within M4;
+  preserve real 15AK evidence requirements before governed verified preview/QA/publication.
+- **Final Hygiene:** Formatting/whitespace and 639-file secret checks pass; generated inventory
+  remains 21 suites/1,130 assertions and zero strict verified SKUs. HEAD/public/retained boundaries
+  unchanged, all owned handles completed and no test listener remains. Full V1 stays active.
+
+## 2026-10-05 - M4 Disposable OEM Acceptance Preparation
+
+- **Task:** Prepare explicit native isolated OEM acceptance and independently rehearse its actual
+  parser/public SQL workflow, preserving all original authority and default-off operation.
+- **Files Changed:** New OEM acceptance fixtures/ledger, guard suite, native browser helper and
+  sequential SQL rehearsal; local/server guards, integrated browser/native runner, authority runner,
+  no-provider browser/HTTP checks; package/quality guard command; Goal/generated inventory, M4
+  runbook, C4 decision, OEM knowledge and this append-only log.
+- **Components Changed / Visual Changes:** None. Only test/harness/safety/records; no application
+  UI, route, CSS, dependency, migration/type or active configuration change.
+- **Data Changed:** Synthetic in-memory/rollback fixtures only. Five private TEST-ONLY revisions,
+  explicit B/A declarations and exact retained-row/ledger checks; no real OEM truth, product/
+  technical/compatibility/media/canonical/retained/hosted data or publication change.
+- **SEO Impact:** None; public URLs, metadata/schema/sitemap/media and RFQ unchanged.
+- **Validation:** 21 embedded suites/1,130 assertions, official public types, HMAC/two exact 17-table
+  imports/old media and real-identity TEST-ONLY OEM controls pass. New sequential OEM source/
+  proposal/submission/APPROVE/EDIT/REJECT/conflict/receipt/revocation workflow, exact five-revision
+  ledger/retention and complete rollback pass. Eight target/nine server/four OEM guard groups,
+  OEM command/read and media regressions, TypeScript/lint/migration/type/report/matcher checks pass.
+  Independent production build, owned server startup, Edge launch and completed-build public
+  SEO/80-page links/images/snippets/performance/company evidence pass.
+- **Known Issues:** Full no-provider browser smoke did not pass: loopback Auth responds despite
+  a free bind. HTTP absence checks now reject HTTP/policy/timeout/unknown responses before any
+  server/browser/form/command; both actual entrypoint refusals pass, not acceptance. Native OEM
+  Auth/PostgREST/forms/races remain NOT_RUN. Real 15AK evidence, packaging/documents, governed
+  verified preview/QA/publication and full M4/V1 remain incomplete.
+- **Reusable Knowledge Added:** C4 decision/OEM knowledge retain explicit disposable scope,
+  independent ledger versus application permissions, late contradiction semantics, sequential
+  rehearsal limits and the verified free-bind/HTTP-reachability distinction. No service identity
+  or current Docker-health claim. No permission widened to fix a test.
+- **Deployment:** None; no commit/push/merge/deploy, retained-stack operation, actual key, native
+  migration, hosted write or repository rule override. Fresh B11-B16 plus C1-C4 CI-only question
+  supersedes pending B11-B16-only scope; no answer/authority inferred.
+- **Next Recommended Action:** Complete separately authorized native disposable OEM acceptance
+  without touching retained data, then finish remaining M4 and obtain exact real 15AK evidence.
+- **Final Hygiene:** All 21 scoped files pass formatting; whitespace/typecheck and 644-file secret
+  checks pass. Final embedded rerun retains all 1,130 assertions and OEM workflow/rollback. Inventory
+  stays 21 migrations/21 suites/43 structured/zero strict verified SKUs. HEAD/public unchanged, all
+  owned sessions stopped and test ports released; reachable provider left untouched.
+
+## 2026-10-05 - M4 Physical Packaging Source Foundation
+
+- **Task:** Implement exact-SKU immutable physical packaging source intake without overwriting
+  imported packaging, unknown quantities, commercial policy or human-review/publication authority.
+- **Files Changed:** New migration 22, packaging SQL suite and rollback rehearsal; authority runner,
+  migration/report validators, generated database types, pristine local/media guard fixtures and
+  prepared native runner; D1 decision, packaging knowledge, Goal/generated inventory, M4 runbook
+  and this append-only log.
+- **Components Changed / Visual Changes:** No application component, route, CSS, dependency,
+  default feature or public UI changed. One new forced-RLS source table and private functions.
+- **Data Changed:** TEST-ONLY in-memory/rollback sources for four actual 15AK identities and one
+  created synthetic DRAFT. All 43 original packaging/commercial rows and unknown count/unit/
+  needs-confirmation states retain exact parity. No canonical/retained/hosted data, actual packaging
+  fact, human approval, compatibility or publication change.
+- **SEO Impact:** None; public URLs, metadata/schema/sitemap/media and RFQ unchanged.
+- **Validation:** All 22 embedded suites/1,238 assertions, including 108 packaging refusals/role/
+  receipt/identity/lineage/unknown/immutability checks; official public types, HMAC/two exact
+  17-table imports and prior rehearsals pass. New five-source real-identity TEST-ONLY packaging
+  rehearsal, full packaging/commercial retention and complete rollback pass. Eight local/six media/
+  four OEM/nine server guards, type/report/migration/shadow/console-boundary checks, TypeScript,
+  zero-warning lint and initial whitespace/secret scan pass.
+- **Known Issues:** Packaging revisions, human APPROVE/EDIT/REJECT, current/history reads, owner
+  workbench and native Auth/PostgREST/races remain unimplemented/unrun. Technical documents,
+  actual 15AK evidence, governed verified preview/QA/publication and full M4/V1 remain incomplete.
+  Prior provider-absence limitation is not retested or represented as resolved.
+- **Reusable Knowledge Added:** D1 decision/packaging knowledge retain exact physical scope,
+  explicit unknowns, original lineage and commercial-policy separation, source-metadata versus
+  actual human evidence, rollback limits and the remaining usable-workflow contract.
+- **Deployment:** None; no push/merge/deployment, Docker/provider operation, native migration,
+  retained/hosted write, actual key, active flag or repository rule override. New D1 is outside
+  the pending B11-B16 plus C1-C4 question; no approval expansion is inferred.
+- **Next Recommended Action:** Finish immutable packaging proposals and exact human review,
+  then the owner workbench/native gate, preserving real evidence collection for the 15AK pilot.
+- **Final Regression:** Fresh production build passes with 95 pages; public SEO/80 HTML/two dynamic
+  source links, image disclosures/snippets/performance pass with existing company-media warnings.
+  OEM/media/original/compatibility command/read/byte tests and installed matcher pass. Final SQL
+  rerun retains 1,238 assertions, generated type parity, all original packaging and exact rollback.
+  All owned build/test handles completed; native packaging acceptance remains unrun.
+
+## 2026-10-05 - M4 Frozen Packaging Human Review
+
+- **Task:** Implement private immutable packaging proposals and exact human APPROVE/EDIT/REJECT,
+  preserve original commercial authority, and expose missing/unresolved packaging as blockers.
+- **Files Changed:** New migration 23 and packaging review SQL suite; generated database types,
+  migration/report validators, local/media pristine guard fixtures, native final-retention checks,
+  packaging rollback rehearsal and compatibility/workflow SQL prerequisite fixtures; D2 decision,
+  packaging knowledge, Goal/generated inventory, M4 runbook and this append-only log.
+- **Components Changed / Visual Changes:** Five forced-RLS history/current tables, private review
+  functions, effective/readiness views, guarded Boolean read and packaging lifecycle trigger. No
+  application component, UI, route, CSS, dependency, public mutation RPC or active flag changed.
+- **Data Changed:** Synthetic in-memory/rollback proposals and simulated decisions only. Actual
+  15AK-identity rehearsal retains reference-only status, refuses confirmation and leaves zero new
+  decisions/current/publication. All 43 original packaging rows, MOQ/lead-time notes and 17-table
+  source snapshots remain exact. No actual factory fact or canonical/retained/hosted data changed.
+- **SEO Impact:** None; public URLs, metadata/schema/sitemap/media and RFQ remain unchanged.
+- **Validation:** 23 embedded suites/1,332 assertions, including 94 packaging-review checks; full
+  official public-type parity, HMAC, two source imports, prior rehearsals and five frozen packaging
+  proposal/refusal/rollback controls pass. Eight local/six media guard groups, report/migration
+  contracts, TypeScript and zero-warning lint pass. The initial compatibility fixture lacked the
+  new packaging prerequisite; corrected synthetic governed setup passes without relaxing guards.
+- **Known Issues:** Packaging application contracts, counted owner workbench and native Auth/
+  PostgREST/concurrency/browser evidence remain incomplete. Technical documents, actual 15AK
+  evidence and verified preview/QA/authorized publication remain required for full M4/V1.
+- **Reusable Knowledge Added:** D2 decision and packaging knowledge retain historical-count
+  conflict scope, conflict inheritance across rejection/editing, reference versus actual supply,
+  missing-record readiness, original commercial separation and synthetic/native evidence limits.
+- **Deployment:** None; no Docker/provider operation, native migration, retained/hosted write,
+  actual key, active setting, commit/push/merge/deployment or rule override. The old fulfilled CI
+  approval and pending B11-B16 plus C1-C4 question do not cover this new packaging batch.
+- **Next Recommended Action:** Connect exact packaging commands and counted source/current/history
+  reads to the owner workbench, then prove native isolated behavior and collect real 15AK evidence.
+- **Final Regression:** Fresh production build completes 95 pages; public SEO, 80 HTML/two source
+  link checks, 43 legacy image disclosures, snippet hygiene and performance pass. Formatting,
+  whitespace and 652-file secret scan pass. Generated inventory is 23 migrations/23 suites/1,332
+  assertions and 43 structured/zero strict verified SKUs; existing media evidence warnings remain.
+  Public/canonical/deployment paths have no diff. All owned handles completed; no server started.
+
+## 2026-10-06 - M4 Packaging Application Workbench
+
+- **Task:** Connect physical-packaging source/proposal/human-review commands to a private SKU
+  workbench, preserving original commercial authority and exact unknown quantities.
+- **Files Changed:** Migration 24 and command SQL suite, source-grant regression, generated public
+  types and migration/report contracts; packaging domain/read modules, shared parser/dispatcher/
+  working flag, `PackagingWorkbench`, protected packaging route, product navigation/scoped CSS;
+  fixture and command/read/browser tests, package/quality entries; D3 decision, packaging knowledge,
+  Goal/generated inventory, M4 runbook and this append-only log.
+- **Components Changed / Visual Changes:** Four narrow authenticated wrappers, two invoker views,
+  default-off route and dense responsive current/proposal/source/history workbench. Explicit known-
+  quantity toggle, stale/conflict states and human review controls; imported MOQ/lead time read-only.
+  Approval evidence/status changes clear acknowledgements. No public visual or dependency change.
+- **Data Changed:** Synthetic isolated tests only. All 43 original packaging/commercial records and
+  exact 17-table source snapshots retained. No actual factory evidence, confirmed quantity, public
+  product, original media, retained or hosted data changed; publication remains blocked.
+- **SEO Impact:** None; public URLs, metadata, structured data, sitemap, imagery and RFQ unchanged.
+- **Validation:** 24 embedded suites/1,384 assertions, complete official public-type parity, HMAC,
+  exact imports and five packaging reference/refusal/rollback controls pass. Eight packaging
+  command/nine read groups plus shared regressions pass. Thirteen synthetic Edge groups and six
+  responsive screenshots pass without page errors/external requests. Readiness totals/drift are
+  cross-checked; first-run obsolete D1 public-wrapper assertion corrected without widening grants.
+- **Known Issues:** Native Auth/PostgREST/persistence/concurrency/owner acceptance is unrun. Real
+  15AK packaging evidence, technical documents, verified preview/QA/authorized publication and full
+  M4/V1 remain incomplete. Synthetic source declarations and browser clicks are not human evidence.
+- **Reusable Knowledge Added:** D3 decision and packaging knowledge document exact physical versus
+  commercial scope, human acknowledgement reset, counted-read limits, UI flag versus database
+  authority, retained original history and synthetic/native evidence boundaries.
+- **Deployment:** None; no Docker/provider operation, native migration, retained/hosted write, real
+  key, active setting, commit/push/merge/deployment or rule override. D1-D3 are outside the pending
+  B11-B16 plus C1-C4 approval scope; prior fulfilled CI approval is not expanded.
+- **Next Recommended Action:** Prepare explicit disposable native packaging acceptance, then use
+  exact real 15AK packaging records for authorized human review and the full verified pilot.
+- **Final Regression:** Final 95-page production build, TypeScript, zero-warning lint, public SEO,
+  80 HTML/two source links, 43 legacy-image disclosures, snippets and performance budgets pass.
+  Seventeen packaging command/read groups pass in the normal CI runtime. Scoped formatting,
+  whitespace and 663-file secret scan pass. Public/canonical/deployment paths remain unchanged.
+  All test/build sessions completed; a separate sanitized synthetic-only loopback preview is
+  intentionally available on port 3901. Normal desktop/mobile screenshots were also inspected.
+  Preview actions cannot persist business data; no native or real-owner acceptance is claimed.
+
+## 2026-10-06 - M4 Disposable Packaging Acceptance Preparation
+
+- **Task:** Prepare the real-service packaging gate with explicit unknown/count correction history,
+  actual role/form/RPC and observed-race tests, while preserving all retained data and commercial terms.
+- **Files Changed:** New packaging acceptance fixtures/ledger, guard tests, native browser script and
+  rollback rehearsal; isolated/browser runners, server/invocation guards, OEM refresh-wait correction,
+  embedded authority entry, package/quality guard entries, D4 decision/knowledge, Goal and M4 runbook.
+- **Components Changed / Visual Changes:** Test infrastructure only. No runtime UI, route, database
+  schema/permission, public visual or dependency change. Native scripts now await exact refreshed
+  revision/state instead of the wrong full-document-load event on packaging/OEM pages.
+- **Data Changed:** Synthetic in-memory data fully rolled back. Five-source/five-revision/six-link/
+  four-decision packaging ledger verified; unknown counts remain unknown, historical conflicts survive
+  count changes and zero public eligibility/publication. All 43 original packaging/commercial rows
+  and source snapshots unchanged; no native, retained or hosted data written.
+- **SEO Impact:** None; public URLs, metadata/schema/sitemap, product imagery and RFQ unchanged.
+- **Validation:** All 24 embedded suites/1,384 assertions, official public types, HMAC, two imports,
+  new complete packaging workflow and prior rollback controls pass. Sixty-seven guard/command/read/
+  contract tests, TypeScript, zero-warning lint and fresh 95-page production build pass.
+- **Known Issues:** Native Auth/PostgREST/persistence/races and actual owner/source verification remain
+  unrun. Existing provider-absence limitation not retested. Technical documents, real 15AK evidence,
+  verified preview/QA/authorized publication and full M4/V1 remain incomplete.
+- **Reusable Knowledge Added:** D4 decision/packaging knowledge document explicit disposable opt-in,
+  unknown/changed-count evidence, independent ledger/retention checks, observed versus sequential
+  races, refreshed-page waiting and the remaining authorization/native evidence gate.
+- **Deployment:** None; no Docker/provider operation, native migration, retained/hosted write, key,
+  active setting, push/merge/deploy or rule override. New B11-B16 plus C1-C4 plus D1-D4 CI-only question
+  replaces the unanswered earlier scope; no owner answer or permission is inferred.
+- **Next Recommended Action:** Obtain exact-batch authorization and run clean disposable native
+  media/OEM/packaging CI, retaining the real 15AK evidence and complete V1 workflow requirements.
+
+## 2026-10-07 - Authorized Combined M4 CI Submission Preparation
+
+- **Task:** Review the owner-authorized B11-B16, C1-C4 and D1-D4 batch and explicitly enable OEM and
+  packaging acceptance in disposable GitHub CI on the approved repository and branch only.
+- **Files Changed:** `.github/workflows/quality.yml`, OEM/packaging acceptance guards, dated combined
+  authorization decision, Goal checkpoint, M4 runbook and this append-only log, alongside the
+  reviewed media/OEM/packaging files documented in their earlier implementation records.
+- **Components Changed / Visual Changes:** CI invocation and guard expectations only in this step;
+  no further application visual changes. Earlier workbenches and nine prepared migrations are
+  included in the submitted scope, with ordinary runtime feature defaults unchanged.
+- **Data Changed:** None outside synthetic local tests. No real product confirmation, original
+  media, commercial policy, public/canonical source or retained/hosted data change.
+- **SEO Impact:** None; public routes, metadata/schema/sitemap, imagery and RFQ are unchanged.
+- **Validation:** Fresh 29 Console foundation commands, TypeScript, zero-warning lint, scoped
+  formatting, whitespace and 669-file secret scan pass. Candidate native CI remains pending;
+  prior PR green checks are not reused as proof for this batch.
+- **Known Issues:** Full native combined acceptance is unproven until CI passes. Real 15AK evidence,
+  technical documents, verified preview/QA/authorized publication and full M4/V1 remain incomplete.
+- **Reusable Knowledge Added:** Dated exact-scope authorization and default-off versus explicit
+  disposable opt-in boundary, linked from the Goal and runbook without rewriting older history.
+- **Deployment:** Not authorized or performed. PR #130 verified OPEN on the exact branch; Vercel
+  branch deployment disable preserved. No merge, hosted/retained-local change or rule override.
+- **Next Recommended Action:** Commit/push the reviewed batch and verify actual native isolated CI
+  before continuing the real 15AK evidence and full verified publishing workflow.
+- **Final Local Regression:** Fresh 24 SQL suites / 1,384 assertions, public type/HMAC parity, two
+  exact imports and media/OEM/packaging rollback rehearsals pass. Public SEO, links, 43 legacy-image
+  disclosures, snippets and performance budgets pass. These are not native provider acceptance.

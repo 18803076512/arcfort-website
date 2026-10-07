@@ -1,6 +1,10 @@
 import { notFound } from "next/navigation";
 import { requireConsoleAccess } from "@/lib/console/server";
-import { consoleOriginalsEnabled, consoleCompatibilityEnabled } from "@/lib/console/working-config";
+import {
+  consoleOriginalsEnabled,
+  consoleCompatibilityEnabled,
+  consoleMediaReviewEnabled,
+} from "@/lib/console/working-config";
 import { readOriginalIntakes } from "@/lib/console/originals";
 import { ProductWorkingNav } from "@/components/console/ProductWorkingNav";
 import { OriginalIntake } from "@/components/console/OriginalIntake";
@@ -28,6 +32,7 @@ export default async function ProductOriginalsPage({
         id={id}
         active="originals"
         originals
+        media={consoleMediaReviewEnabled()}
         compatibility={consoleCompatibilityEnabled()}
       />
       <OriginalIntake data={data} />

@@ -220,6 +220,22 @@ select set_config('timezone','UTC',true);
 insert into results values('resaved-pending',pg_temp.submit(247,'resaved'));
 
 -- Prove the lifecycle guard rejects the open proposal before unrelated critical-field gates.
+-- Satisfy the independent packaging gate through its actual frozen review commands.
+do $$ declare source_uuid uuid; proposal jsonb; copy jsonb:='{"package_description":"TEST-ONLY compatibility fixture bag","quantity":1,"quantity_unit":"pieces"}';
+begin
+  source_uuid:=(private.pi_add_packaging_source(pg_temp.id(950),pg_temp.id(12),copy,jsonb_build_object(
+    'source_level','A','source_kind','company_record','assertion','supports','evidence_basis','packaging_record',
+    'evidence_date','2026-01-01','owner_name','Synthetic custodian','source_reference','TEST-ONLY fixture packaging',
+    'source_location','Synthetic page 1','revision_label','TEST-1','title','Synthetic prerequisite'),null)->>'source_id')::uuid;
+  proposal:=private.pi_propose_packaging_revision(pg_temp.id(951),pg_temp.id(12),0,0,copy,array[source_uuid],
+    'TEST-ONLY independent packaging prerequisite',null,null);
+  perform private.pi_submit_packaging_revision(pg_temp.id(952),(proposal->>'revision_id')::uuid,
+    (proposal->>'revision')::bigint,proposal->>'digest');
+  perform private.pi_review_packaging_revision(pg_temp.id(953),(proposal->>'revision_id')::uuid,
+    (proposal->>'revision')::bigint,proposal->>'digest','APPROVE','TEST-ONLY packaging fixture review',
+    'CONFIRMED','{"source_checked":true,"packaging_checked":true,"commercial_terms_unchanged":true,"arcfort_packaging_confirmed":true}',
+    source_uuid,'',null);
+end $$;
 select private.pi_compatibility_capability();
 update private.pi_mutation_context set allowed_tables=allowed_tables || array['product_variants'];
 update product_variants set is_shadow=false,lifecycle_state='NEEDS_VERIFICATION' where id=pg_temp.id(12);

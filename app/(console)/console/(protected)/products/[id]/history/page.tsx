@@ -5,6 +5,7 @@ import {
   consoleWorkingEnabled,
   consoleCompatibilityEnabled,
   consoleOriginalsEnabled,
+  consoleMediaReviewEnabled,
 } from "@/lib/console/working-config";
 import { filters, type SearchParams } from "@/lib/console/catalog";
 import { ProductWorkingNav } from "@/components/console/ProductWorkingNav";
@@ -37,6 +38,7 @@ export default async function ProductHistoryPage({
         active="history"
         compatibility={consoleCompatibilityEnabled()}
         originals={consoleOriginalsEnabled()}
+        media={consoleMediaReviewEnabled()}
       />
       <nav className="console-working-nav" aria-label="History type">
         <ConsoleLink

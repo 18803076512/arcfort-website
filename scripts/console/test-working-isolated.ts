@@ -3,7 +3,13 @@ import { execFileSync } from "node:child_process";
 import { randomUUID } from "node:crypto";
 import { createClient } from "@supabase/supabase-js";
 import { buildShadowCatalog } from "./build-shadow-catalog.ts";
-import { assertPristineBaseline, openLocalAcceptance, sqlLiteral } from "./local-acceptance.ts";
+import {
+  assertPristineBaseline,
+  openLocalAcceptance,
+  pristineBaselineQuery,
+  sqlLiteral,
+} from "./local-acceptance.ts";
+import { provisionDisposableMediaObserver } from "./media-acceptance.ts";
 import {
   checkInviteOnlyProvider,
   createConsoleClient,
@@ -23,6 +29,9 @@ import type {
 import type { Database } from "../../lib/supabase/database.types.ts";
 import { runWorkingBrowser } from "./test-working-browser.ts";
 import { runCompatibilityAcceptance } from "./test-compatibility-isolated.ts";
+import { readMediaMappings } from "../../lib/console/media-mapping.ts";
+import { assertOemLedger, oemLedgerQuery } from "./oem-acceptance.ts";
+import { assertPackagingLedger, packagingLedgerQuery } from "./packaging-acceptance.ts";
 
 let checkpoint = "local target preflight";
 async function main() {
@@ -35,32 +44,7 @@ async function main() {
   };
   assert.equal(await checkInviteOnlyProvider(config), true);
   // Refuse existing users/work before creating anything. The runner never resets a database.
-  const pristine = local.json<{
-    users: number;
-    roles: number;
-    adoptions: number;
-    drafts: number;
-    events: number;
-    products: number;
-    compatibilityHeads: number;
-    compatibilityRevisions: number;
-    compatibilitySources: number;
-    mediaSources: number;
-    uploadIntents: number;
-    uploadCompletions: number;
-    storageObjects: number;
-  }>(`select json_build_object(
-    'users',(select count(*) from auth.users), 'roles',(select count(*) from console_user_roles),
-    'adoptions',(select count(*) from private.pi_working_adoptions),
-    'drafts',(select count(*) from private.pi_product_draft_heads),
-    'events',(select count(*) from verification_events), 'products',(select count(*) from product_variants),
-    'compatibilityHeads',(select count(*) from compatibility_revision_heads),
-    'compatibilityRevisions',(select count(*) from compatibility_revisions),
-    'compatibilitySources',(select count(*) from compatibility_source_bindings),
-    'mediaSources',(select count(*) from media_source_bindings),
-    'uploadIntents',(select count(*) from media_upload_intents),
-    'uploadCompletions',(select count(*) from media_upload_completions),
-    'storageObjects',(select count(*) from storage.objects));`);
+  const pristine = local.json(pristineBaselineQuery);
   assertPristineBaseline(pristine);
   const catalog = await buildShadowCatalog();
   const tables = {
@@ -96,6 +80,12 @@ async function main() {
     return `select jsonb_agg(to_jsonb(t) order by id) from ${table} t where id in (${ids});`;
   });
   const originalMedia = mediaRetentionQueries.map((query) => local.json(query));
+  const originalOemQuery =
+    "select coalesce(jsonb_agg(to_jsonb(t) order by id),'[]'::jsonb) from oem_references t;";
+  const originalOem = local.json(originalOemQuery);
+  const originalPackagingQuery =
+    "select coalesce(jsonb_agg(to_jsonb(t) order by id),'[]'::jsonb) from packaging_records t;";
+  const originalPackaging = local.json(originalPackagingQuery);
   const admin = createClient<Database>(local.url, local.adminKey, {
     auth: { persistSession: false, autoRefreshToken: false },
     global: { fetch: (url, init) => fetch(url, { ...init, signal: AbortSignal.timeout(12_000) }) },
@@ -105,11 +95,14 @@ async function main() {
     CONSOLE_WORKING_ENABLED: "true",
     CONSOLE_COMPATIBILITY_ENABLED: "true",
     CONSOLE_ORIGINALS_ENABLED: "true",
+    CONSOLE_MEDIA_REVIEW_ENABLED: "true",
     CONSOLE_ENVIRONMENT: "local",
     CONSOLE_ORIGIN: config.origin,
     CONSOLE_SUPABASE_URL: local.url,
     CONSOLE_SUPABASE_PUBLISHABLE_KEY: local.key,
   });
+  if (local.oem) process.env.CONSOLE_OEM_ENABLED = "true";
+  if (local.packaging) process.env.CONSOLE_PACKAGING_ENABLED = "true";
   const sessions: ConsoleClient[] = [];
   function session() {
     const cookies = new Map<string, string>();
@@ -176,7 +169,10 @@ async function main() {
     },
     copy,
   });
+  let observer: ReturnType<typeof provisionDisposableMediaObserver> | undefined;
   try {
+    checkpoint = "pristine disposable media observer provisioning";
+    observer = provisionDisposableMediaObserver(local);
     checkpoint = "real Auth sessions and pre-adoption denial";
     const owner = await fixture("owner");
     const editor = await fixture("editor");
@@ -508,6 +504,50 @@ async function main() {
       },
     });
 
+    for (const feature of [
+      ...(local.oem ? (["oem"] as const) : []),
+      ...(local.packaging ? (["packaging"] as const) : []),
+    ]) {
+      checkpoint = `active editor cannot approve ${feature} at application or database`;
+      failure(
+        await executeConsoleCommand(editor.client, {
+          action: feature === "oem" ? "oem_review" : "packaging_review",
+          request_id: randomUUID(),
+          revision_id: randomUUID(),
+          revision: 1,
+          digest: "a".repeat(64),
+          decision: "REJECT",
+          reason: "TEST-ONLY role refusal",
+          status: null,
+          confirmation: null,
+          source_id: null,
+          resolution: "",
+          replacement: null,
+        }),
+        "42501",
+      );
+      assert.equal(
+        (
+          await editor.client.rpc(
+            feature === "oem" ? "pi_review_oem_revision" : "pi_review_packaging_revision",
+            {
+              request_uuid: randomUUID(),
+              revision_uuid: randomUUID(),
+              expected_revision: 1,
+              expected_digest: "a".repeat(64),
+              decision: "REJECT",
+              review_reason: "TEST-ONLY role refusal",
+              approved_status: null as unknown as "CONFIRMED",
+              confirmation: {},
+              source_uuid: null as unknown as string,
+              conflict_resolution: "",
+              replacement: null,
+            },
+          )
+        ).error?.code,
+        "42501",
+      );
+    }
     checkpoint = "revocation denies still-valid sessions at handler and database";
     assert.equal(
       (
@@ -547,6 +587,9 @@ async function main() {
       fieldId: field.data.id,
       compatibilityTargetId: compatibility.targetId,
       originals: true,
+      media: { observer: observer.observer, withAuthorityLock: local.withAuthorityLock },
+      ...(local.oem ? { oem: { local, foreignVariantId: id } } : {}),
+      ...(local.packaging ? { packaging: { local, foreignVariantId: id } } : {}),
       revokeReviewer: async () => {
         assert.equal(
           (
@@ -585,6 +628,46 @@ async function main() {
       mediaRetentionQueries.map((query) => local.json(query)),
       originalMedia,
     );
+    assert.deepEqual(local.json(originalOemQuery), originalOem);
+    assert.deepEqual(local.json(originalPackagingQuery), originalPackaging);
+    if (local.packaging)
+      assertPackagingLedger(
+        local.json(
+          packagingLedgerQuery(
+            local.sql("select id from product_variants where sku='AF-MIG-TS-9998';"),
+            reviewer.id,
+          ),
+        ),
+      );
+    else
+      for (const table of [
+        "packaging_source_bindings",
+        "packaging_revision_heads",
+        "packaging_revisions",
+        "packaging_revision_evidence",
+        "packaging_revision_decisions",
+        "packaging_revision_currents",
+      ])
+        assert.equal(local.sql(`select count(*) from ${table};`), "0");
+    if (local.oem)
+      assertOemLedger(
+        local.json(
+          oemLedgerQuery(
+            local.sql("select id from product_variants where sku='AF-MIG-TS-9998';"),
+            reviewer.id,
+          ),
+        ),
+      );
+    else
+      for (const table of [
+        "oem_source_bindings",
+        "oem_revision_heads",
+        "oem_revisions",
+        "oem_revision_evidence",
+        "oem_revision_decisions",
+        "oem_revision_currents",
+      ])
+        assert.equal(local.sql(`select count(*) from ${table};`), "0");
     assert.equal(local.sql("select count(*) from media_upload_intents;"), "2");
     assert.equal(local.sql("select count(*) from media_upload_completions;"), "2");
     assert.equal(local.sql("select count(*) from storage.objects;"), "2");
@@ -598,7 +681,81 @@ async function main() {
         and o.metadata->>'mimetype'=i.manifest->>'mime_type';`),
       "2",
     );
-    assert.equal(local.sql("select count(*) from media_source_bindings;"), "0");
+    for (const [table, count] of Object.entries({
+      media_source_bindings: 3,
+      media_mapping_heads: 1,
+      media_mapping_revisions: 5,
+      media_mapping_evidence: 10,
+      media_mapping_decisions: 4,
+      media_mapping_currents: 1,
+      "private.pi_media_observation_keys": 1,
+      "private.pi_media_review_observations": 2,
+    }))
+      assert.equal(local.sql(`select count(*) from ${table};`), String(count));
+    assert.equal(
+      local.sql(`select count(*) from media_mapping_heads h
+      join product_variants v on v.id=h.product_variant_id
+      where v.sku='AF-MIG-TS-9998' and not v.is_shadow and h.revision=5;`),
+      "1",
+    );
+    assert.equal(
+      local.sql(`select count(*) from private.pi_media_review_observations o
+      join media_mapping_decisions d on d.mapping_id=o.mapping_id and d.event_id=o.event_id
+      join verification_events e on e.id=d.event_id and e.actor_id=o.actor_id
+      where d.decision='APPROVE' and o.actor_id=${sqlLiteral(reviewer.id)};`),
+      "2",
+    );
+    assert.equal(
+      local.sql(
+        "select count(*) from media_mapping_revisions where review_state='pending' and sequence=5;",
+      ),
+      "1",
+    );
+    assert.equal(
+      local.sql(`select count(*) from private.pi_command_receipts where
+      strpos(to_jsonb(pi_command_receipts)::text,'v1|')>0;`),
+      "0",
+    );
+    assert.equal(
+      local.sql(`select count(*) from verification_events where
+      strpos(to_jsonb(verification_events)::text,'v1|')>0;`),
+      "0",
+    );
+    assert.equal(
+      local.sql(`select count(*) from media_assets where storage_bucket='pi-product-originals'
+      and publication_status='blocked' and approved_by is null and approved_at is null
+      and raw_snapshot->>'byte_verification'='not_attested';`),
+      "2",
+    );
+    assert.equal(
+      local.sql(`select count(*) from product_media m join product_variants v on v.id=m.product_variant_id
+      where not v.is_shadow;`),
+      "0",
+    );
+    assert.equal(
+      local.sql("select count(*) from pi_effective_media_mappings where mapping_origin<>'legacy';"),
+      "2",
+    );
+    assert.equal(
+      local.sql(
+        "select count(*) from pi_effective_media_mappings where mapping_origin<>'legacy' and publication_ready;",
+      ),
+      "0",
+    );
+    observer.disable();
+    assert.equal(
+      local.sql("select count(*) from private.pi_media_observation_keys where enabled;"),
+      "0",
+    );
+    const retainedMapping = await readMediaMappings(
+      owner.client,
+      local.sql("select id from product_variants where sku='AF-MIG-TS-9998';"),
+    );
+    assert.equal(retainedMapping?.scopes.length, 1);
+    assert.equal(retainedMapping?.scopes[0].current?.valid, true);
+    assert.equal(retainedMapping?.scopes[0].current?.observed, true);
+    assert.equal(retainedMapping?.scopes[0].candidate?.state, "pending");
+    observer = undefined;
     assert.equal(
       local.sql(
         "select count(*) from product_variants where not is_shadow and lifecycle_state='DRAFT' and legacy_image_status='needs_photo';",
@@ -607,12 +764,24 @@ async function main() {
     );
     assert.equal(local.sql("select count(*) from publish_records;"), "0");
     console.log(
-      "M3, compatibility and original intake local acceptance passed: Auth/PostgREST/Storage, observed lock contention, database-backed browser forms, review/history, upload/readback, revocation and source retention. Synthetic-only; no real product approval or publication.",
+      "M3, compatibility, originals and media review local acceptance passed: Auth/PostgREST/Storage, observed lock contention, database-backed forms, exact bytes, signed observation, human review, revocation and source retention. Synthetic-only; no real product approval or publication.",
     );
+    if (local.oem)
+      console.log(
+        "OEM opt-in native acceptance passed: real isolated forms, Auth/RPC refusals, observed races, exact ledger, original retention and zero publication. TEST-ONLY, not real OEM verification.",
+      );
+    if (local.packaging)
+      console.log(
+        "Packaging opt-in native acceptance passed: real forms, explicit unknown count, historical-count conflict, Auth/RPC refusals, observed races and exact original/commercial retention. TEST-ONLY, not real packaging evidence or publication.",
+      );
   } finally {
     // No data deletion: preserve failed fixtures for inspection until the disposable stack is stopped.
-    for (const client of sessions)
-      await client.auth.signOut({ scope: "local" }).catch(() => undefined);
+    try {
+      if (observer) observer.disable();
+    } finally {
+      for (const client of sessions)
+        await client.auth.signOut({ scope: "local" }).catch(() => undefined);
+    }
   }
 }
 

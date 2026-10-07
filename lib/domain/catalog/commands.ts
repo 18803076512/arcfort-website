@@ -1,4 +1,12 @@
 import { validateProductDraftCopy, type ProductDraftCopy } from "./drafts.ts";
+import { OEM_SOURCE_FIELDS, oemSourceClasses, type OemCommand } from "./oem.ts";
+import {
+  PACKAGING_SOURCE_FIELDS,
+  packagingSourceClasses,
+  validPackagingCopy,
+  type PackagingCopy,
+  type PackagingCommand,
+} from "./packaging.ts";
 import {
   COMPATIBILITY_SOURCE_FIELDS,
   compatibilityRelationshipTypes,
@@ -6,6 +14,14 @@ import {
   type CompatibilitySourceCopy,
   type CompatibilityRelationshipType,
 } from "./compatibility.ts";
+import {
+  MEDIA_SOURCE_FIELDS,
+  mediaMappingRoles,
+  type MediaSourceCopy,
+  type MediaMappingCopy,
+  type MediaMappingRole,
+  type MediaConfirmation,
+} from "./media-commands.ts";
 
 export type TechnicalValueCopy = { value_text: string; unit: string };
 export type EvidenceLink = { source_id: string; role: "supporting" | "conflicting" };
@@ -36,6 +52,8 @@ type CompatibilityTarget = {
 type CompatibilityReviewTarget = { relationship_id: string; revision: number; digest: string };
 export type ConsoleCommand = Base &
   (
+    | OemCommand
+    | PackagingCommand
     | { action: "create"; identity: DraftIdentity; copy: ProductDraftCopy }
     | { action: "save"; variant_id: string; revision: number; copy: ProductDraftCopy }
     | (Target & { action: "source"; source: TechnicalSourceCopy })
@@ -78,6 +96,41 @@ export type ConsoleCommand = Base &
         replacement: CompatibilityCopy | null;
         evidence: EvidenceLink[] | null;
       })
+    | {
+        action: "media_source";
+        variant_id: string;
+        asset_id: string;
+        role: MediaMappingRole;
+        dimension: "usage_rights" | "product_match";
+        source: MediaSourceCopy;
+      }
+    | {
+        action: "media_propose";
+        variant_id: string;
+        asset_id: string;
+        role: MediaMappingRole;
+        slot: number;
+        revision: number;
+        head_id: string | null;
+        copy: MediaMappingCopy;
+        sources: string[];
+        reason: string;
+      }
+    | { action: "media_submit"; mapping_id: string; revision: number; digest: string }
+    | {
+        action: "media_review";
+        mapping_id: string;
+        revision: number;
+        digest: string;
+        decision: "APPROVE" | "EDIT" | "REJECT";
+        reason: string;
+        resolution: string;
+        confirmation: MediaConfirmation | null;
+        rights_source_id: string | null;
+        match_source_id: string | null;
+        observation: string | null;
+        replacement: { asset_id: string; copy: MediaMappingCopy; sources: string[] } | null;
+      }
   );
 export type CommandInput = ConsoleCommand extends infer C
   ? C extends ConsoleCommand
@@ -99,6 +152,9 @@ export type CommandResult =
         product_variant_id?: string;
         relationship_id?: string;
         root_relationship_id?: string;
+        mapping_id?: string;
+        head_id?: string;
+        revision_id?: string;
       };
     }
   | { ok: false; code: string; message: string; fields?: string[] };
@@ -200,6 +256,40 @@ function sourceClassification(source: Record<string, unknown>) {
     date > new Date().toISOString().slice(0, 10)
   )
     throw new CommandInputError(["evidence_date"]);
+}
+function mediaCopy(value: unknown) {
+  const copy = record(value);
+  keys(copy, ["alt_text"]);
+  string(copy.alt_text, "alt_text", 500, true);
+  if (copy.alt_text !== copy.alt_text.trim() || /[\u0000-\u001f\u007f]/.test(copy.alt_text))
+    throw new CommandInputError(["alt_text"]);
+}
+function mediaSources(value: unknown) {
+  if (!Array.isArray(value) || value.length > 20) throw new CommandInputError(["sources"]);
+  const seen = new Set<string>();
+  for (const item of value) {
+    uuid(item, "source_id");
+    const id = String(item).toLowerCase();
+    if (seen.has(id)) throw new CommandInputError(["sources"]);
+    seen.add(id);
+  }
+}
+function oemCopy(value: unknown) {
+  const copy = record(value);
+  keys(copy, ["manufacturer_name", "reference_number"]);
+  for (const [key, max] of [
+    ["manufacturer_name", 120],
+    ["reference_number", 100],
+  ] as const) {
+    string(copy[key], key, max, true);
+    if (copy[key] !== copy[key].trim() || /[\u0000-\u001f\u007f]/.test(copy[key]))
+      throw new CommandInputError([key]);
+  }
+}
+function packagingCopy(value: unknown) {
+  const copy = record(value);
+  keys(copy, ["package_description", "quantity", "quantity_unit"]);
+  if (!validPackagingCopy(copy as PackagingCopy)) throw new CommandInputError(["copy"]);
 }
 export function parseConsoleCommand(input: unknown): ConsoleCommand {
   const value = record(input);
@@ -371,6 +461,247 @@ export function parseConsoleCommand(input: unknown): ConsoleCommand {
         evidence(value.evidence);
       } else if (value.replacement !== null || value.evidence !== null)
         throw new CommandInputError(["replacement"]);
+    }
+  } else if (value.action === "media_source" || value.action === "media_propose") {
+    keys(value, [
+      ...base,
+      "variant_id",
+      "asset_id",
+      "role",
+      ...(value.action === "media_source"
+        ? ["dimension", "source"]
+        : ["slot", "revision", "head_id", "copy", "sources", "reason"]),
+    ]);
+    uuid(value.variant_id, "variant_id");
+    uuid(value.asset_id, "asset_id");
+    if (!mediaMappingRoles.some((role) => role === value.role))
+      throw new CommandInputError(["role"]);
+    if (value.action === "media_source") {
+      if (!["usage_rights", "product_match"].includes(String(value.dimension)))
+        throw new CommandInputError(["dimension"]);
+      const source = record(value.source);
+      keys(source, [...MEDIA_SOURCE_FIELDS]);
+      for (const field of MEDIA_SOURCE_FIELDS) {
+        string(source[field], field, 2000, true);
+        if (source[field] !== source[field].trim()) throw new CommandInputError([field]);
+      }
+      sourceClassification(source);
+      if (!["supports", "contradicts", "reference_only"].includes(String(source.assertion)))
+        throw new CommandInputError(["assertion"]);
+      const basis =
+        value.dimension === "usage_rights"
+          ? [
+              "company_ownership",
+              "supplier_authorization",
+              "license_record",
+              "catalog_reference",
+              "secondary_reference",
+            ]
+          : [
+              "sku_label",
+              "controlled_drawing",
+              "approved_sample",
+              "inspection_record",
+              "catalog_reference",
+              "secondary_reference",
+            ];
+      if (!basis.includes(String(source.evidence_basis)))
+        throw new CommandInputError(["evidence_basis"]);
+    } else {
+      if (
+        !Number.isSafeInteger(value.slot) ||
+        (value.slot as number) < 0 ||
+        (value.slot as number) > 99 ||
+        (value.role === "main" && value.slot !== 0)
+      )
+        throw new CommandInputError(["slot"]);
+      revision(value.revision);
+      if (value.head_id !== null) uuid(value.head_id, "head_id");
+      else if (value.revision !== 0) throw new CommandInputError(["revision"]);
+      mediaCopy(value.copy);
+      mediaSources(value.sources);
+      reason(value.reason);
+    }
+  } else if (value.action === "media_submit" || value.action === "media_review") {
+    keys(value, [
+      ...base,
+      "mapping_id",
+      "revision",
+      "digest",
+      ...(value.action === "media_review"
+        ? [
+            "decision",
+            "reason",
+            "resolution",
+            "confirmation",
+            "rights_source_id",
+            "match_source_id",
+            "observation",
+            "replacement",
+          ]
+        : []),
+    ]);
+    uuid(value.mapping_id, "mapping_id");
+    revision(value.revision);
+    if (
+      value.revision === 0 ||
+      typeof value.digest !== "string" ||
+      !/^[a-f0-9]{64}$/.test(value.digest)
+    )
+      throw new CommandInputError(["digest"]);
+    if (value.action === "media_review") {
+      reason(value.reason);
+      string(value.resolution, "resolution", 2000);
+      if (!["APPROVE", "EDIT", "REJECT"].includes(String(value.decision)))
+        throw new CommandInputError(["decision"]);
+      if (value.decision === "APPROVE") {
+        const confirmation = record(value.confirmation);
+        keys(confirmation, [
+          "original_digest",
+          "original_inspected",
+          "usage_rights_confirmed",
+          "exact_product_confirmed",
+        ]);
+        if (
+          typeof confirmation.original_digest !== "string" ||
+          !/^[a-f0-9]{64}$/.test(confirmation.original_digest) ||
+          confirmation.original_inspected !== true ||
+          confirmation.usage_rights_confirmed !== true ||
+          confirmation.exact_product_confirmed !== true
+        )
+          throw new CommandInputError(["confirmation"]);
+        uuid(value.rights_source_id, "rights_source_id");
+        uuid(value.match_source_id, "match_source_id");
+        string(value.observation, "observation", 800, true);
+        if (value.replacement !== null) throw new CommandInputError(["replacement"]);
+      } else {
+        if (
+          value.confirmation !== null ||
+          value.rights_source_id !== null ||
+          value.match_source_id !== null ||
+          value.observation !== null ||
+          value.resolution !== ""
+        )
+          throw new CommandInputError(["confirmation"]);
+        if (value.decision === "EDIT") {
+          const replacement = record(value.replacement);
+          keys(replacement, ["asset_id", "copy", "sources"]);
+          uuid(replacement.asset_id, "asset_id");
+          mediaCopy(replacement.copy);
+          mediaSources(replacement.sources);
+        } else if (value.replacement !== null) throw new CommandInputError(["replacement"]);
+      }
+    }
+  } else if (
+    ["oem_source", "oem_propose", "packaging_source", "packaging_propose"].includes(
+      String(value.action),
+    )
+  ) {
+    const packaging = String(value.action).startsWith("packaging_");
+    const intake = value.action === "oem_source" || value.action === "packaging_source";
+    keys(value, [
+      ...base,
+      "variant_id",
+      "copy",
+      ...(intake
+        ? ["source", ...(packaging ? ["original_id"] : [])]
+        : ["slot", "revision", "head_id", "original_id", "sources", "reason"]),
+    ]);
+    uuid(value.variant_id, "variant_id");
+    (packaging ? packagingCopy : oemCopy)(value.copy);
+    if (packaging && value.original_id !== null) uuid(value.original_id, "original_id");
+    if (intake) {
+      const source = record(value.source);
+      const fields = packaging ? PACKAGING_SOURCE_FIELDS : OEM_SOURCE_FIELDS;
+      keys(source, [...fields]);
+      for (const key of fields) {
+        string(source[key], key, 2000, true);
+        if (source[key] !== source[key].trim()) throw new CommandInputError([key]);
+      }
+      sourceClassification(source);
+      const classifications = packaging ? packagingSourceClasses : oemSourceClasses;
+      const classification = classifications[source.source_kind as keyof typeof classifications];
+      if (!classification.bases.some((basis) => basis === source.evidence_basis))
+        throw new CommandInputError(["evidence_basis"]);
+      if (!["supports", "contradicts", "reference_only"].includes(String(source.assertion)))
+        throw new CommandInputError(["assertion"]);
+    } else {
+      if (
+        !Number.isSafeInteger(value.slot) ||
+        (value.slot as number) < 0 ||
+        (value.slot as number) > 99
+      )
+        throw new CommandInputError(["slot"]);
+      revision(value.revision);
+      if (value.head_id !== null) {
+        uuid(value.head_id, "head_id");
+        if (value.revision === 0) throw new CommandInputError(["revision"]);
+      } else if (value.revision !== 0) throw new CommandInputError(["revision"]);
+      if (value.original_id !== null) uuid(value.original_id, "original_id");
+      mediaSources(value.sources);
+      reason(value.reason);
+    }
+  } else if (
+    ["oem_submit", "oem_review", "packaging_submit", "packaging_review"].includes(
+      String(value.action),
+    )
+  ) {
+    const packaging = String(value.action).startsWith("packaging_");
+    const review = value.action === "oem_review" || value.action === "packaging_review";
+    keys(value, [
+      ...base,
+      "revision_id",
+      "revision",
+      "digest",
+      ...(review
+        ? ["decision", "reason", "status", "confirmation", "source_id", "resolution", "replacement"]
+        : []),
+    ]);
+    uuid(value.revision_id, "revision_id");
+    revision(value.revision);
+    if (
+      value.revision === 0 ||
+      typeof value.digest !== "string" ||
+      !/^[a-f0-9]{64}$/.test(value.digest)
+    )
+      throw new CommandInputError(["digest"]);
+    if (review) {
+      reason(value.reason);
+      string(value.resolution, "resolution", 2000);
+      if (!["APPROVE", "EDIT", "REJECT"].includes(String(value.decision)))
+        throw new CommandInputError(["decision"]);
+      if (value.decision === "APPROVE") {
+        if (!["CONFIRMED", "OEM_REFERENCE"].includes(String(value.status)))
+          throw new CommandInputError(["status"]);
+        const confirmation = record(value.confirmation);
+        const checked = packaging ? "packaging_checked" : "reference_checked";
+        const preserved = packaging ? "commercial_terms_unchanged" : "compatibility_not_asserted";
+        const confirmed = packaging ? "arcfort_packaging_confirmed" : "arcfort_reference_confirmed";
+        keys(confirmation, ["source_checked", checked, preserved, confirmed]);
+        if (
+          confirmation.source_checked !== true ||
+          confirmation[checked] !== true ||
+          confirmation[preserved] !== true ||
+          confirmation[confirmed] !== (value.status === "CONFIRMED")
+        )
+          throw new CommandInputError(["confirmation"]);
+        uuid(value.source_id, "source_id");
+        if (value.replacement !== null) throw new CommandInputError(["replacement"]);
+      } else {
+        if (
+          value.status !== null ||
+          value.confirmation !== null ||
+          value.source_id !== null ||
+          value.resolution !== ""
+        )
+          throw new CommandInputError(["confirmation"]);
+        if (value.decision === "EDIT") {
+          const replacement = record(value.replacement);
+          keys(replacement, ["copy", "sources"]);
+          (packaging ? packagingCopy : oemCopy)(replacement.copy);
+          mediaSources(replacement.sources);
+        } else if (value.replacement !== null) throw new CommandInputError(["replacement"]);
+      }
     }
   } else throw new CommandInputError(["action"]);
   return value as ConsoleCommand;

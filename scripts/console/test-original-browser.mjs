@@ -32,6 +32,16 @@ const errors = [];
 const external = [];
 const calls = [];
 const screenshots = [];
+const inspectionCalls = [];
+let inspectionFailure = false;
+let inspectionWrongSize = false;
+let inspectionWait;
+const storedRaster = (tiff = false) => {
+  const raster = sharp({ create: { width: 32, height: 24, channels: 3, background: "#18705f" } });
+  return (tiff ? raster.tiff() : raster.png()).toBuffer();
+};
+const storedPng = await storedRaster();
+const storedTiff = await storedRaster(true);
 const bytes = await sharp(
   Buffer.from(Array.from({ length: 64 * 48 * 3 }, (_, i) => (i * 71) % 256)),
   { raw: { width: 64, height: 48, channels: 3 } },
@@ -75,6 +85,37 @@ await context.route("**/*", async (route) => {
               intent_id: "97000000-0000-4000-8000-000000000003",
             },
       ),
+    });
+  }
+  if (target.pathname === "/console/originals/inspect") {
+    assert.equal(request.method(), "POST");
+    assert.match(
+      (await request.allHeaders()).cookie ?? "",
+      /arcfort_cookie_scope_probe=synthetic-only/,
+    );
+    assert.equal(request.headers()["x-console-command"], "1");
+    assert.deepEqual(request.postDataJSON(), {
+      variant_id: "10000000-0000-4000-8000-000000000001",
+      asset_id: "10000000-0000-4000-8000-000000000003",
+    });
+    inspectionCalls.push(request.postDataJSON());
+    await inspectionWait;
+    if (inspectionFailure)
+      return route.fulfill({
+        status: 403,
+        contentType: "application/json",
+        body: JSON.stringify({ message: "PRIVATE_SENTINEL" }),
+      });
+    const tiff = new URL(page.url()).searchParams.get("format") === "tiff";
+    const original = tiff ? storedTiff : storedPng;
+    return route.fulfill({
+      status: 200,
+      body: original,
+      headers: {
+        "content-type": tiff ? "image/tiff" : "image/png",
+        "content-length": String(original.length + (inspectionWrongSize ? 1 : 0)),
+        "cache-control": "private, no-store, max-age=0",
+      },
     });
   }
   assert.equal(request.method(), "GET");
@@ -180,10 +221,120 @@ try {
   await page.getByRole("link", { name: "Product copy", exact: true }).click();
   assert.equal(page.url(), url);
   await page.getByRole("button", { name: "Clear selection" }).click();
+  await page.evaluate(() => {
+    const original = URL.revokeObjectURL.bind(URL);
+    window.__revokedOriginalUrls = [];
+    URL.revokeObjectURL = (url) => {
+      window.__revokedOriginalUrls.push(url);
+      original(url);
+    };
+  });
+  inspectionFailure = true;
+  await page.getByRole("button", { name: "Inspect synthetic-original.png", exact: true }).click();
+  await page
+    .getByRole("alert")
+    .filter({ hasText: "The stored original could not be checked" })
+    .waitFor();
+  assert.doesNotMatch(await page.locator("body").innerText(), /PRIVATE_SENTINEL/);
+  inspectionFailure = false;
+  await page.getByRole("button", { name: "Retry original inspection", exact: true }).click();
+  const storedImage = page.getByRole("img", {
+    name: "Stored original: synthetic-original.png",
+    exact: true,
+  });
+  await storedImage.waitFor();
+  await page.waitForFunction(
+    () =>
+      document.querySelector('img[alt="Stored original: synthetic-original.png"]')?.naturalWidth ===
+      32,
+  );
+  const blobUrl = await storedImage.getAttribute("src");
+  assert.match(blobUrl, /^blob:/);
+  await page.getByRole("button", { name: "Zoom in", exact: true }).click();
+  assert.equal(
+    await page.getByLabel("Stored original image", { exact: true }).getAttribute("data-fit"),
+    "false",
+  );
+  await page.getByRole("button", { name: "Zoom in", exact: true }).click();
+  assert.equal(await page.getByRole("button", { name: "Zoom in", exact: true }).isDisabled(), true);
+  await page.getByRole("button", { name: "Zoom out", exact: true }).click();
+  await page.getByRole("button", { name: "Fit original", exact: true }).click();
+  const downloadPromise = page.waitForEvent("download");
+  await page.getByRole("link", { name: "Download original", exact: true }).click();
+  const download = await downloadPromise;
+  assert.equal(download.suggestedFilename(), "synthetic-original.png");
+  const downloaded = [];
+  for await (const chunk of await download.createReadStream()) downloaded.push(chunk);
+  assert.deepEqual(Buffer.concat(downloaded), storedPng);
+  for (const width of [1440, 1280, 1024, 768, 390, 360]) {
+    await page.setViewportSize({ width, height: 1000 });
+    await page
+      .getByRole("region", { name: "Stored original inspection", exact: true })
+      .scrollIntoViewIfNeeded();
+    assert.equal(
+      await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1),
+      true,
+    );
+    const viewport = await page.getByLabel("Stored original image", { exact: true }).boundingBox();
+    const displayed = await storedImage.boundingBox();
+    assert.ok(
+      viewport &&
+        displayed &&
+        displayed.width <= viewport.width &&
+        displayed.height <= viewport.height,
+    );
+    const file = `inspection-${width}.png`;
+    await page.screenshot({ path: path.join(output, file), fullPage: true });
+    screenshots.push(file);
+  }
+  await page.getByRole("button", { name: "Close original inspection", exact: true }).click();
+  assert.equal(
+    await page.getByRole("region", { name: "Stored original inspection", exact: true }).count(),
+    0,
+  );
+  assert.equal(
+    await page
+      .getByRole("button", { name: "Inspect synthetic-original.png", exact: true })
+      .evaluate((el) => el === document.activeElement),
+    true,
+  );
+  assert.equal(
+    await page.evaluate((url) => window.__revokedOriginalUrls.includes(url), blobUrl),
+    true,
+  );
+  inspectionWrongSize = true;
+  await page.getByRole("button", { name: "Inspect synthetic-original.png", exact: true }).click();
+  await page
+    .getByRole("alert")
+    .filter({ hasText: "The stored original could not be checked" })
+    .waitFor();
+  assert.equal(await page.getByRole("link", { name: "Download original", exact: true }).count(), 0);
+  inspectionWrongSize = false;
+  await page.getByRole("button", { name: "Close original inspection", exact: true }).click();
+  let continueInspection;
+  inspectionWait = new Promise((resolve) => {
+    continueInspection = resolve;
+  });
+  const beforeCancel = inspectionCalls.length;
+  await page.getByRole("button", { name: "Inspect synthetic-original.png", exact: true }).click();
+  await page.getByRole("status").filter({ hasText: "Checking stored original" }).waitFor();
+  while (inspectionCalls.length === beforeCancel) await page.waitForTimeout(10);
+  await page.getByRole("button", { name: "Close original inspection", exact: true }).click();
+  continueInspection();
+  inspectionWait = undefined;
+  await page.waitForTimeout(100);
+  assert.equal(
+    await page.getByRole("region", { name: "Stored original inspection", exact: true }).count(),
+    0,
+  );
   for (const role of ["viewer", "publisher"]) {
     await visit(`?role=${role}`);
     assert.equal(await page.getByRole("button", { name: "Upload original" }).count(), 0);
     await page.getByText("Read-only access", { exact: true }).waitFor();
+    await page.getByRole("button", { name: "Inspect synthetic-original.png", exact: true }).click();
+    await page
+      .getByRole("img", { name: "Stored original: synthetic-original.png", exact: true })
+      .waitFor();
   }
   for (const role of ["editor", "reviewer"]) {
     await visit(`?role=${role}`);
@@ -191,8 +342,22 @@ try {
   }
   await visit("?state=pending");
   await page.getByText("Upload incomplete", { exact: true }).waitFor();
+  assert.equal(
+    await page
+      .getByRole("button", { name: "Inspect synthetic-original.png", exact: true })
+      .isDisabled(),
+    true,
+  );
   await visit("?state=stale");
   await page.getByText("Product identity changed", { exact: true }).waitFor();
+  await visit("?format=tiff");
+  await page.getByRole("button", { name: "Inspect synthetic-original.tiff", exact: true }).click();
+  await page.getByRole("link", { name: "Download original", exact: true }).waitFor();
+  await page.getByText("TIFF original; inline preview unavailable", { exact: true }).waitFor();
+  assert.equal(await page.getByRole("button", { name: "Zoom in", exact: true }).count(), 0);
+  console.log(
+    "PASS stored-original inspection: exact cookie-scoped request/bytes, download, zoom, six widths, role access, retry, close/abort/revoke and TIFF state.",
+  );
   assert.deepEqual(errors, []);
   assert.deepEqual(external, []);
   await writeFile(
@@ -201,7 +366,7 @@ try {
       {
         status: "PASS",
         scope: "Synthetic UI and intercepted transport; no Auth/Storage persistence",
-        groups: 4,
+        groups: 5,
         screenshots,
         pageErrors: errors.length,
         externalRequests: external.length,

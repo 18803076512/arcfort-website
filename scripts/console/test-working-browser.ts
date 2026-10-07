@@ -21,6 +21,11 @@ import { consoleWorkingEnabled } from "../../lib/console/working-config.ts";
 import { browserOrigin, privateResponse, startBrowserServer } from "./browser-server.ts";
 import { runCompatibilityWorkingBrowser } from "./test-compatibility-working-browser.ts";
 import { runOriginalWorkingBrowser } from "./test-original-working-browser.ts";
+import { runMediaWorkingBrowser } from "./test-media-working-browser.ts";
+import { runOemWorkingBrowser } from "./test-oem-working-browser.ts";
+import { runPackagingWorkingBrowser } from "./test-packaging-working-browser.ts";
+import type { DisposableMediaObserver } from "./media-acceptance.ts";
+import type { openLocalAcceptance } from "./local-acceptance.ts";
 
 type Account = { id: string; email: string; password: string; client: ConsoleClient };
 type BrowserInput = {
@@ -31,6 +36,12 @@ type BrowserInput = {
   fieldId: string;
   compatibilityTargetId?: string;
   originals?: boolean;
+  media?: {
+    observer: DisposableMediaObserver;
+    withAuthorityLock: ReturnType<typeof openLocalAcceptance>["withAuthorityLock"];
+  };
+  oem?: { local: ReturnType<typeof openLocalAcceptance>; foreignVariantId: string };
+  packaging?: { local: ReturnType<typeof openLocalAcceptance>; foreignVariantId: string };
   revokeReviewer: () => Promise<void>;
 };
 
@@ -49,6 +60,9 @@ export async function runWorkingBrowser(input: BrowserInput) {
     server = await startBrowserServer(input.publicKey, {
       compatibility: Boolean(input.compatibilityTargetId),
       originals: input.originals === true,
+      observer: input.media?.observer,
+      oem: input.oem?.local.oem === true,
+      packaging: input.packaging?.local.packaging === true,
     });
   } catch {
     console.error("Working browser failed before login: owned production build/server startup.");
@@ -141,7 +155,12 @@ export async function runWorkingBrowser(input: BrowserInput) {
       assert.equal(await page.evaluate(() => localStorage.length), 0);
       return { ctx, page };
     }
-    async function command(page: Page, button: Locator, status = 200, navigation = false) {
+    async function command(
+      page: Page,
+      button: Locator,
+      status: number | number[] = 200,
+      navigation = false,
+    ) {
       // The pass-through route retains real response bytes before document replacement.
       const response = page
         .waitForResponse(
@@ -150,13 +169,14 @@ export async function runWorkingBrowser(input: BrowserInput) {
             item.request().method() === "POST",
         )
         .then(async (received) => {
-          assert.equal(received.status(), status);
+          if (Array.isArray(status)) assert.ok(status.includes(received.status()));
+          else assert.equal(received.status(), status);
           privateResponse(received.headers());
           const body = commandBodies.get(received.request());
           assert.ok(body, "The real command response body was not captured.");
           commandBodies.delete(received.request());
           const result = JSON.parse(body.toString("utf8"));
-          assert.equal(result.ok, status === 200);
+          assert.equal(result.ok, received.status() === 200);
           assert.ok(
             !JSON.stringify(result).match(
               /raw_snapshot|private_storage_path|access_token|payload_digest/,
@@ -508,6 +528,68 @@ export async function runWorkingBrowser(input: BrowserInput) {
       : undefined;
     screenshots += originals?.screenshots ?? 0;
 
+    phase = "real media mapping forms, original observations and human review";
+    assert.ok(!input.media || originals, "Media acceptance requires completed original intake.");
+    const media =
+      input.media && originals
+        ? await runMediaWorkingBrowser({
+            variantId: id,
+            owner: { ...owner, client: input.owner.client },
+            reviewer: { ...reviewer, client: input.reviewer.client, id: input.reviewer.id },
+            viewer: { ...viewer, client: input.viewer.client },
+            original: originals.originals[0],
+            context,
+            withAuthorityLock: input.media.withAuthorityLock,
+            output,
+            goto,
+            command,
+            checkpoint: (value) => {
+              checkpoint = value;
+            },
+          })
+        : undefined;
+    screenshots += media?.screenshots ?? 0;
+
+    phase = "real isolated OEM forms, human review and lock contention";
+    const oem = input.oem
+      ? await runOemWorkingBrowser({
+          variantId: id,
+          foreignVariantId: input.oem.foreignVariantId,
+          owner: { ...owner, client: input.owner.client },
+          reviewer: { ...reviewer, client: input.reviewer.client, id: input.reviewer.id },
+          viewer: { ...viewer, client: input.viewer.client },
+          local: input.oem.local,
+          context,
+          output,
+          goto,
+          command,
+          checkpoint: (value) => {
+            checkpoint = value;
+          },
+        })
+      : undefined;
+    screenshots += oem?.screenshots ?? 0;
+
+    phase = "real isolated packaging forms, count corrections and lock contention";
+    const packaging = input.packaging
+      ? await runPackagingWorkingBrowser({
+          variantId: id,
+          foreignVariantId: input.packaging.foreignVariantId,
+          owner: { ...owner, client: input.owner.client },
+          reviewer: { ...reviewer, client: input.reviewer.client, id: input.reviewer.id },
+          viewer: { ...viewer, client: input.viewer.client },
+          local: input.packaging.local,
+          context,
+          output,
+          goto,
+          command,
+          checkpoint: (value) => {
+            checkpoint = value;
+          },
+        })
+      : undefined;
+    screenshots += packaging?.screenshots ?? 0;
+
     phase = "revoked reviewer and logout cannot reuse browser credentials";
     checkpoint = "prepare pending proposal";
     await goto(page, reviewPath);
@@ -535,6 +617,9 @@ export async function runWorkingBrowser(input: BrowserInput) {
     if (originals) {
       await originals.assertRevoked();
     }
+    if (media) await media.assertRevoked();
+    if (oem) await oem.assertRevoked();
+    if (packaging) await packaging.assertRevoked();
     if (compatibility) {
       await compatibility.assertRevoked();
       results.push(...compatibility.results);
@@ -565,7 +650,20 @@ export async function runWorkingBrowser(input: BrowserInput) {
     await wire(owner.ctx, headers, JSON.stringify(created.request), 403);
     if (originals) {
       await originals.assertLoggedOut();
+      await originals.assertRetained();
       results.push(...originals.results);
+    }
+    if (media) {
+      await media.assertLoggedOut();
+      results.push(...media.results);
+    }
+    if (oem) {
+      await oem.assertLoggedOut();
+      results.push(...oem.results);
+    }
+    if (packaging) {
+      await packaging.assertLoggedOut();
+      results.push(...packaging.results);
     }
     results.push(phase);
     checkpoint = "no page errors or external requests";

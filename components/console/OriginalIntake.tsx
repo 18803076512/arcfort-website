@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { Upload, RotateCcw } from "lucide-react";
+import { Upload, RotateCcw, Eye } from "lucide-react";
 import type { OriginalIntakeData } from "../../lib/console/originals";
 import {
   originalSourceKinds,
@@ -16,6 +16,7 @@ import {
 } from "../../lib/domain/catalog/originals";
 import { useUnsavedChanges } from "./useConsoleCommand";
 import { DataTable, EmptyState } from "./CatalogViews";
+import { StoredOriginalInspection } from "./StoredOriginalInspection";
 
 const sourceLabels = {
   own_photo: "Company photo",
@@ -35,6 +36,8 @@ export function OriginalIntake({ data }: { data: OriginalIntakeData }) {
   const [error, setError] = useState("");
   const [message, setMessage] = useState("");
   const [preview, setPreview] = useState("");
+  const [inspectionId, setInspectionId] = useState("");
+  const inspected = data.items.find((item) => item.intent_id === inspectionId && item.completed);
   const fileInput = useRef<HTMLInputElement>(null);
   const pending = useRef<{ file: File; signature: string; input: OriginalUploadInput } | null>(
     null,
@@ -256,6 +259,17 @@ export function OriginalIntake({ data }: { data: OriginalIntakeData }) {
         <p className="console-caption">Read-only access</p>
       )}
       <h2>Original intake history</h2>
+      {inspected && (
+        <StoredOriginalInspection
+          key={inspected.intent_id}
+          item={inspected}
+          variantId={data.variantId}
+          onClose={() => {
+            setInspectionId("");
+            document.getElementById(`inspect-${inspected.intent_id}`)?.focus();
+          }}
+        />
+      )}
       {data.items.length ? (
         <DataTable label="Original intake history" columns={["File", "Source", "Intake state"]}>
           {data.items.map((item) => (
@@ -268,6 +282,17 @@ export function OriginalIntake({ data }: { data: OriginalIntakeData }) {
                 <p className="console-caption">
                   {new Date(item.created_at).toISOString().slice(0, 10)}
                 </p>
+                <button
+                  id={`inspect-${item.intent_id}`}
+                  type="button"
+                  className="console-icon-button"
+                  disabled={!item.completed}
+                  aria-label={`Inspect ${item.filename}`}
+                  title={`Inspect ${item.filename}`}
+                  onClick={() => setInspectionId(item.intent_id)}
+                >
+                  <Eye size={20} aria-hidden="true" />
+                </button>
               </td>
               <td>
                 {item.source_owner}

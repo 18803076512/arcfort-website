@@ -110,5 +110,5 @@ export function useConsoleCommand() {
       setBusy(false);
     }
   }
-  return { run, busy, error, alert };
+  return { run, busy, error, alert, clearError: () => setError(null) };
 }

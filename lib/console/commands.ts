@@ -8,8 +8,16 @@ import {
   type CommandResult,
 } from "../domain/catalog/commands.ts";
 import { isConsoleOrigin } from "./security.ts";
-import { consoleCompatibilityEnabled } from "./working-config.ts";
+import {
+  consoleCompatibilityEnabled,
+  consoleMediaReviewEnabled,
+  consoleOemEnabled,
+  consolePackagingEnabled,
+} from "./working-config.ts";
+import { isOemCommand } from "../domain/catalog/oem.ts";
+import { isPackagingCommand } from "../domain/catalog/packaging.ts";
 import { isCompatibilityCommand } from "../domain/catalog/compatibility.ts";
+import { isMediaCommand } from "../domain/catalog/media-commands.ts";
 
 export function isConsoleCommandOrigin(headers: Headers, origin: string) {
   if (headers.get("x-console-command") !== "1") return false;
@@ -57,12 +65,22 @@ export async function readConsoleCommand(request: Request): Promise<unknown> {
 
 export function canRunConsoleCommand(roles: ConsoleRole[], action: ConsoleCommand["action"]) {
   const allowed: ConsoleRole[] =
-    action === "review" || action === "compatibility_review"
+    action === "review" ||
+    action === "compatibility_review" ||
+    action === "media_review" ||
+    action === "oem_review" ||
+    action === "packaging_review"
       ? ["owner", "reviewer"]
       : action === "source" ||
           action === "submit" ||
           action === "compatibility_source" ||
-          action === "compatibility_submit"
+          action === "compatibility_submit" ||
+          action === "media_source" ||
+          action === "media_submit" ||
+          action === "oem_source" ||
+          action === "oem_submit" ||
+          action === "packaging_source" ||
+          action === "packaging_submit"
         ? ["owner", "editor", "reviewer"]
         : ["owner", "editor"];
   return roles.some((role) => allowed.includes(role));
@@ -89,13 +107,100 @@ export async function executeConsoleCommand(
   }
   if (
     !canRunConsoleCommand(access.roles, command.action) ||
-    (isCompatibilityCommand(command.action) && !consoleCompatibilityEnabled(env))
+    (isCompatibilityCommand(command.action) && !consoleCompatibilityEnabled(env)) ||
+    (isMediaCommand(command.action) && !consoleMediaReviewEnabled(env)) ||
+    (isOemCommand(command.action) && !consoleOemEnabled(env)) ||
+    (isPackagingCommand(command.action) && !consolePackagingEnabled(env))
   )
     return { ok: false, code: "42501", message: commandError("42501") };
   try {
     const request_uuid = command.request_id;
     const response = await (async () => {
       switch (command.action) {
+        case "packaging_source":
+          return client.rpc("pi_add_packaging_source", {
+            request_uuid,
+            variant_uuid: command.variant_id,
+            packaging_copy: command.copy,
+            source_copy: command.source,
+            ...(command.original_id === null ? {} : { original_uuid: command.original_id }),
+          });
+        case "packaging_propose":
+          return client.rpc("pi_propose_packaging_revision", {
+            request_uuid,
+            variant_uuid: command.variant_id,
+            requested_slot: command.slot,
+            expected_revision: command.revision,
+            packaging_copy: command.copy,
+            source_uuids: command.sources,
+            proposal_reason: command.reason,
+            ...(command.head_id === null ? {} : { head_uuid: command.head_id }),
+            ...(command.original_id === null ? {} : { original_uuid: command.original_id }),
+          });
+        case "packaging_submit":
+          return client.rpc("pi_submit_packaging_revision", {
+            request_uuid,
+            revision_uuid: command.revision_id,
+            expected_revision: command.revision,
+            expected_digest: command.digest,
+          });
+        case "packaging_review":
+          return client.rpc("pi_review_packaging_revision", {
+            request_uuid,
+            revision_uuid: command.revision_id,
+            expected_revision: command.revision,
+            expected_digest: command.digest,
+            decision: command.decision,
+            review_reason: command.reason,
+            // PostgreSQL accepts NULL for required arguments that generated Args mark non-nullable.
+            approved_status: command.status as NonNullable<typeof command.status>,
+            confirmation: command.confirmation ?? {},
+            source_uuid: command.source_id as string,
+            conflict_resolution: command.resolution,
+            replacement: command.replacement,
+          });
+        case "oem_source":
+          return client.rpc("pi_add_oem_source", {
+            request_uuid,
+            variant_uuid: command.variant_id,
+            requested_manufacturer: command.copy.manufacturer_name,
+            requested_reference: command.copy.reference_number,
+            source_copy: command.source,
+          });
+        case "oem_propose":
+          return client.rpc("pi_propose_oem_revision", {
+            request_uuid,
+            variant_uuid: command.variant_id,
+            requested_slot: command.slot,
+            expected_revision: command.revision,
+            reference_copy: command.copy,
+            source_uuids: command.sources,
+            proposal_reason: command.reason,
+            ...(command.head_id === null ? {} : { head_uuid: command.head_id }),
+            ...(command.original_id === null ? {} : { original_uuid: command.original_id }),
+          });
+        case "oem_submit":
+          return client.rpc("pi_submit_oem_revision", {
+            request_uuid,
+            revision_uuid: command.revision_id,
+            expected_revision: command.revision,
+            expected_digest: command.digest,
+          });
+        case "oem_review":
+          return client.rpc("pi_review_oem_revision", {
+            request_uuid,
+            revision_uuid: command.revision_id,
+            expected_revision: command.revision,
+            expected_digest: command.digest,
+            decision: command.decision,
+            review_reason: command.reason,
+            // Required PostgreSQL arguments accept NULL; the generated Args omit that nullability.
+            approved_status: command.status as NonNullable<typeof command.status>,
+            confirmation: command.confirmation ?? {},
+            source_uuid: command.source_id as string,
+            conflict_resolution: command.resolution,
+            replacement: command.replacement,
+          });
         case "create":
           return client.rpc("pi_create_product_draft", {
             request_uuid,
@@ -194,6 +299,51 @@ export async function executeConsoleCommand(
             replacement_copy: command.replacement,
             replacement_evidence: command.evidence,
           });
+        case "media_source":
+          return client.rpc("pi_add_media_source", {
+            request_uuid,
+            variant_uuid: command.variant_id,
+            asset_uuid: command.asset_id,
+            requested_role: command.role,
+            requested_dimension: command.dimension,
+            source_copy: command.source,
+          });
+        case "media_propose":
+          return client.rpc("pi_propose_media_mapping", {
+            request_uuid,
+            variant_uuid: command.variant_id,
+            asset_uuid: command.asset_id,
+            requested_role: command.role,
+            requested_slot: command.slot,
+            expected_revision: command.revision,
+            mapping_copy: command.copy,
+            source_uuids: command.sources,
+            proposal_reason: command.reason,
+            ...(command.head_id === null ? {} : { head_uuid: command.head_id }),
+          });
+        case "media_submit":
+          return client.rpc("pi_submit_media_mapping", {
+            request_uuid,
+            mapping_uuid: command.mapping_id,
+            expected_revision: command.revision,
+            expected_digest: command.digest,
+          });
+        case "media_review":
+          return client.rpc("pi_review_media_mapping", {
+            request_uuid,
+            mapping_uuid: command.mapping_id,
+            expected_revision: command.revision,
+            expected_digest: command.digest,
+            decision: command.decision,
+            review_reason: command.reason,
+            confirmation: command.confirmation ?? {},
+            // PostgreSQL permits NULL for these required arguments; the generated Args cannot express it.
+            rights_source_uuid: command.rights_source_id as string,
+            match_source_uuid: command.match_source_id as string,
+            conflict_resolution: command.resolution,
+            replacement: command.replacement,
+            observation_token: command.observation as string,
+          });
       }
     })();
     if (response.error) {
@@ -220,9 +370,30 @@ export async function executeConsoleCommand(
           ),
       ) ||
       (needsRevision && (typeof result.revision !== "number" || result.revision < 0)) ||
+      (isMediaCommand(command.action) && needsRevision && result.revision! < 1) ||
+      ((isOemCommand(command.action) || isPackagingCommand(command.action)) &&
+        needsRevision &&
+        result.revision! < 1) ||
       (needsDigest && (typeof raw.digest !== "string" || !/^[a-f0-9]{64}$/.test(raw.digest))) ||
       (command.action === "compatibility_entity" &&
-        String(raw.product_variant_id).toLowerCase() !== command.variant_id.toLowerCase());
+        String(raw.product_variant_id).toLowerCase() !== command.variant_id.toLowerCase()) ||
+      ((command.action === "media_submit" ||
+        (command.action === "media_review" && command.decision !== "EDIT")) &&
+        String(raw.mapping_id).toLowerCase() !== command.mapping_id.toLowerCase()) ||
+      ((command.action === "oem_submit" ||
+        command.action === "packaging_submit" ||
+        ((command.action === "oem_review" || command.action === "packaging_review") &&
+          command.decision !== "EDIT")) &&
+        (String(raw.revision_id).toLowerCase() !== command.revision_id.toLowerCase() ||
+          raw.revision !== command.revision)) ||
+      ((command.action === "oem_propose" ||
+        command.action === "packaging_propose" ||
+        ((command.action === "oem_review" || command.action === "packaging_review") &&
+          command.decision === "EDIT")) &&
+        raw.revision !== command.revision + 1) ||
+      ((command.action === "oem_propose" || command.action === "packaging_propose") &&
+        command.head_id !== null &&
+        raw.head_id !== command.head_id);
     if (malformed) return { ok: false, code: "unavailable", message: commandError() };
     for (const field of requiredIds) result[field] = raw[field] as string;
     if (needsDigest) result.digest = raw.digest as string;
@@ -242,18 +413,38 @@ type ResultId =
   | "entity_id"
   | "product_variant_id"
   | "relationship_id"
-  | "root_relationship_id";
+  | "root_relationship_id"
+  | "mapping_id"
+  | "head_id"
+  | "revision_id";
 function resultShape(command: ConsoleCommand): {
   ids: ResultId[];
   digest: boolean;
   revision: boolean;
 } {
   switch (command.action) {
+    case "oem_source":
+    case "packaging_source":
+      return { ids: ["source_id"], digest: false, revision: false };
+    case "oem_propose":
+    case "packaging_propose":
+      return { ids: ["revision_id", "head_id"], digest: true, revision: true };
+    case "oem_submit":
+    case "packaging_submit":
+      return { ids: ["revision_id", "head_id"], digest: true, revision: true };
+    case "oem_review":
+    case "packaging_review":
+      return {
+        ids: ["revision_id", "head_id", "event_id"],
+        digest: command.decision === "EDIT",
+        revision: true,
+      };
     case "create":
     case "save":
       return { ids: ["variant_id"], digest: false, revision: true };
     case "source":
     case "compatibility_source":
+    case "media_source":
       return { ids: ["source_id"], digest: false, revision: false };
     case "compatibility_entity":
       return { ids: ["entity_id", "product_variant_id"], digest: false, revision: false };
@@ -261,10 +452,14 @@ function resultShape(command: ConsoleCommand): {
       return { ids: ["value_id", "root_value_id"], digest: true, revision: true };
     case "compatibility_propose":
       return { ids: ["relationship_id", "root_relationship_id"], digest: true, revision: true };
+    case "media_propose":
+      return { ids: ["mapping_id", "head_id"], digest: true, revision: true };
     case "submit":
       return { ids: ["value_id"], digest: true, revision: true };
     case "compatibility_submit":
       return { ids: ["relationship_id"], digest: true, revision: true };
+    case "media_submit":
+      return { ids: ["mapping_id"], digest: true, revision: true };
     case "review":
       return {
         ids:
@@ -280,6 +475,12 @@ function resultShape(command: ConsoleCommand): {
           command.decision === "EDIT"
             ? ["relationship_id", "root_relationship_id", "event_id"]
             : ["relationship_id", "event_id"],
+        digest: command.decision === "EDIT",
+        revision: true,
+      };
+    case "media_review":
+      return {
+        ids: ["mapping_id", "head_id", "event_id"],
         digest: command.decision === "EDIT",
         revision: true,
       };

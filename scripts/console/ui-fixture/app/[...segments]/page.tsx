@@ -8,6 +8,13 @@ import { mediaFixture } from "../../../media-fixture";
 import { compatibilityFixture } from "../../../compatibility-fixture";
 import { CompatibilityWorkbench } from "../../../../../components/console/CompatibilityWorkbench";
 import { OriginalIntake } from "../../../../../components/console/OriginalIntake";
+import sharp from "sharp";
+import { MediaMappingWorkbench } from "../../../../../components/console/MediaMappingWorkbench";
+import { mediaMappingFixture } from "../../../media-mapping-fixture";
+import { OemWorkbench } from "../../../../../components/console/OemWorkbench";
+import { oemFixture } from "../../../oem-fixture";
+import { packagingFixture } from "../../../packaging-fixture";
+import { PackagingWorkbench } from "../../../../../components/console/PackagingWorkbench";
 
 const id = "10000000-0000-4000-8000-000000000001";
 const sourceId = "10000000-0000-4000-8000-000000000002";
@@ -45,7 +52,47 @@ export default async function Page({
   const query = await searchParams;
   const mode = segments.at(-1);
   const viewer = query.role === "viewer";
-  if (mode === "originals")
+  if (mode === "packaging") {
+    const fixture = packagingFixture(query);
+    return (
+      <>
+        <h1>Packaging</h1>
+        <ProductWorkingNav id={fixture.data.variantId} active="packaging" packaging />
+        <PackagingWorkbench
+          key={`${fixture.selectedId}:${query.state ?? "pending"}`}
+          {...fixture}
+        />
+      </>
+    );
+  }
+  if (mode === "oem") {
+    const fixture = oemFixture(query);
+    return (
+      <>
+        <h1>OEM references</h1>
+        <ProductWorkingNav id={fixture.data.variantId} active="oem" oem />
+        <OemWorkbench key={`${fixture.selectedId}:${query.state ?? "pending"}`} {...fixture} />
+      </>
+    );
+  }
+  if (mode === "media" && segments.includes("products")) {
+    const original = await sharp({
+      create: { width: 320, height: 240, channels: 3, background: "#18705f" },
+    })
+      .png()
+      .toBuffer();
+    return (
+      <>
+        <h1>Image mappings</h1>
+        <ProductWorkingNav id={id} active="media" originals media compatibility />
+        <MediaMappingWorkbench {...mediaMappingFixture(query, original.length)} />
+      </>
+    );
+  }
+  if (mode === "originals") {
+    const raster = sharp({ create: { width: 32, height: 24, channels: 3, background: "#18705f" } });
+    const tiff = query.format === "tiff";
+    const original = await (tiff ? raster.tiff() : raster.png()).toBuffer();
     return (
       <>
         <h1>Original images</h1>
@@ -62,9 +109,9 @@ export default async function Page({
               {
                 intent_id: sourceId,
                 asset_id: rootId,
-                filename: "synthetic-original.png",
-                byte_size: 1200,
-                mime_type: "image/png",
+                filename: tiff ? "synthetic-original.tiff" : "synthetic-original.png",
+                byte_size: original.length,
+                mime_type: tiff ? "image/tiff" : "image/png",
                 width: 32,
                 height: 24,
                 source_kind: "other_reference",
@@ -80,6 +127,7 @@ export default async function Page({
         />
       </>
     );
+  }
   if (mode === "compatibility")
     return (
       <>

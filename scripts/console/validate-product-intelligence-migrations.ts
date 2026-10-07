@@ -25,6 +25,15 @@ const migrationNames = [
   "202609260013_product_intelligence_media_sources.sql",
   "202609260014_product_intelligence_original_intake.sql",
   "202609270015_product_intelligence_original_commands.sql",
+  "202610040016_product_intelligence_media_mapping_drafts.sql",
+  "202610040017_product_intelligence_media_mapping_review.sql",
+  "202610040018_product_intelligence_media_review_commands.sql",
+  "202610050019_product_intelligence_oem_sources.sql",
+  "202610050020_product_intelligence_oem_review.sql",
+  "202610050021_product_intelligence_oem_commands.sql",
+  "202610050022_product_intelligence_packaging_sources.sql",
+  "202610050023_product_intelligence_packaging_review.sql",
+  "202610050024_product_intelligence_packaging_commands.sql",
 ] as const;
 const migrations = await Promise.all(
   migrationNames.map(async (name) => ({
@@ -48,6 +57,15 @@ const compatibilityCommands = migrations[11].content;
 const mediaSources = migrations[12].content;
 const originalIntake = migrations[13].content;
 const originalCommands = migrations[14].content;
+const mediaMappingDrafts = migrations[15].content;
+const mediaMappingReview = migrations[16].content;
+const mediaReviewCommands = migrations[17].content;
+const oemSources = migrations[18].content;
+const oemReview = migrations[19].content;
+const oemCommands = migrations[20].content;
+const packagingSources = migrations[21].content;
+const packagingReview = migrations[22].content;
+const packagingCommands = migrations[23].content;
 const errors: string[] = [];
 
 const requiredTables = [
@@ -360,6 +378,255 @@ for (const [name, args] of [
   )
     errors.push(`Original command wrapper missing: ${name}.`);
 }
+
+for (const required of [
+  "public.media_mapping_heads",
+  "public.media_mapping_revisions",
+  "public.media_mapping_evidence",
+  "private.pi_propose_media_mapping",
+  "private.pi_submit_media_mapping",
+  "private.pi_media_original_digest",
+  "private.pi_media_mapping_digest",
+  "public.pi_media_mapping_states with (security_invoker=true)",
+  "immutable_mapping_revision",
+  "immutable_mapping_evidence",
+  "Open media mappings require human review",
+  "force row level security",
+  "revoke all on all functions in schema private from public,anon,authenticated,service_role",
+]) {
+  if (!mediaMappingDrafts.includes(required))
+    errors.push(`Media mapping draft contract missing: ${required}.`);
+}
+if (
+  /disable\s+trigger|create\s+function\s+public\.pi_(?:propose|submit)_media_mapping/i.test(
+    mediaMappingDrafts,
+  )
+) {
+  errors.push("Media mapping drafts must not disable guards or expose mutation wrappers.");
+}
+
+for (const required of [
+  "public.media_mapping_decisions",
+  "public.media_mapping_currents",
+  "private.pi_review_media_mapping",
+  "private.pi_append_media_mapping",
+  "private.pi_media_mapping_approval_valid",
+  "private.pi_guard_media_mapping_decision",
+  "private.pi_guard_media_mapping_current",
+  "public.pi_effective_media_mappings with (security_invoker=true)",
+  "public.pi_media_mapping_readiness with (security_invoker=true)",
+  "public.pi_media_mapping_metrics with (security_invoker=true)",
+  "'usage_rights_confirmed',true,'exact_product_confirmed',true",
+  "Invalid current media approval blocks publishable lifecycle states.",
+  "force row level security",
+  "revoke all on all functions in schema private from public,anon,authenticated,service_role",
+]) {
+  if (!mediaMappingReview.includes(required))
+    errors.push(`Media mapping review contract missing: ${required}.`);
+}
+if (
+  /disable\s+trigger|create\s+(?:or\s+replace\s+)?function\s+public\.pi_(?:propose|submit|review)_media_mapping/i.test(
+    mediaMappingReview,
+  )
+) {
+  errors.push("Media review must retain guards and private mutations at this checkpoint.");
+}
+
+for (const required of [
+  "private.pi_media_observation_keys",
+  "private.pi_media_review_observations",
+  "private.pi_validate_media_observation",
+  "private.pi_media_observation_signature_matches",
+  "public.pi_media_review_snapshot",
+  "public.pi_add_media_source",
+  "public.pi_propose_media_mapping",
+  "public.pi_submit_media_mapping",
+  "public.pi_review_media_mapping",
+  "public.pi_media_review_observed",
+  "parts[3] is distinct from auth.uid()::text",
+  "parts[4] is distinct from snapshot->>'adoption_id'",
+  "parts[10]::bigint<=current_second",
+  "parts[10]::bigint-parts[9]::bigint not between 1 and 300",
+  "extensions.hmac",
+  "immutable_media_observation",
+  "force row level security",
+  "'observation_digest',encode(extensions.digest(observation_token,'sha256'),'hex')",
+  "revoke all on all functions in schema private from public,anon,authenticated,service_role",
+])
+  if (!mediaReviewCommands.includes(required))
+    errors.push(`Observed media command contract missing: ${required}.`);
+if (
+  /disable\s+trigger|insert\s+into\s+private\.pi_media_observation_keys/i.test(mediaReviewCommands)
+)
+  errors.push("Observed media commands cannot disable guards or provision a real observer key.");
+
+for (const required of [
+  "create table public.oem_source_bindings",
+  "force row level security",
+  "immutable_oem_binding",
+  "private.pi_add_oem_source",
+  "private.pi_check_oem_source_target",
+  "private.pi_oem_source_matches",
+  "private.pi_oem_source_can_support_review",
+  "private.pi_guard_bound_oem_source",
+  "private.pi_begin_technical_command",
+  "private.pi_finish_technical_command",
+  "binding.manufacturer_name=requested_manufacturer",
+  "binding.reference_number=requested_reference",
+  "binding.source_digest=encode(extensions.digest(to_jsonb(source)::text,'sha256'),'hex')",
+  "'factory_record','controlled_drawing','approved_sample','verified_reference'",
+  "revoke all on all functions in schema private from public,anon,authenticated,service_role",
+])
+  if (!oemSources.includes(required)) errors.push(`OEM source contract missing: ${required}.`);
+if (
+  /create\s+(?:or\s+replace\s+)?function\s+public\.|insert\s+into\s+public\.oem_references|disable\s+trigger/i.test(
+    oemSources,
+  )
+)
+  errors.push(
+    "OEM intake cannot expose mutation RPCs, modify current OEM records or disable guards.",
+  );
+
+for (const required of [
+  "create table public.oem_revision_heads",
+  "create table public.oem_revisions",
+  "create table public.oem_revision_evidence",
+  "create table public.oem_revision_decisions",
+  "create table public.oem_revision_currents",
+  "force row level security",
+  "private.pi_propose_oem_revision",
+  "private.pi_submit_oem_revision",
+  "private.pi_review_oem_revision",
+  "private.pi_oem_revision_digest",
+  "private.pi_guard_oem_decision",
+  "private.pi_guard_oem_current",
+  "private.pi_guard_oem_evidence_insert",
+  "'known_conflicts'",
+  "'compatibility_not_asserted',true",
+  "'arcfort_reference_confirmed'",
+  "public.pi_effective_oem_references with (security_invoker=true)",
+  "public.pi_oem_readiness with (security_invoker=true)",
+  "private.pi_guard_current_oem",
+  "revoke all on all functions in schema private from public,anon,authenticated,service_role",
+])
+  if (!oemReview.includes(required)) errors.push(`OEM review contract missing: ${required}.`);
+if (
+  /disable\s+trigger|(?:insert\s+into|update|delete\s+from)\s+public\.oem_references\b|create\s+(?:or\s+replace\s+)?function\s+public\.pi_(?:propose|submit|review)_oem/i.test(
+    oemReview,
+  )
+)
+  errors.push(
+    "OEM review cannot overwrite original references, disable guards or expose application mutations.",
+  );
+
+for (const required of [
+  "create function public.pi_add_oem_source",
+  "create function public.pi_propose_oem_revision",
+  "create function public.pi_submit_oem_revision",
+  "create function public.pi_review_oem_revision",
+  "public.pi_oem_source_states with (security_invoker=true)",
+  "public.pi_oem_revision_states with (security_invoker=true)",
+  "private.pi_request_jwt_role()='authenticated' and public.pi_can_view_console()",
+  "candidate.proposal_digest=private.pi_oem_revision_digest(candidate.id)",
+  "revoke all on all functions in schema private from public,anon,authenticated,service_role",
+])
+  if (!oemCommands.includes(required))
+    errors.push(`OEM application contract missing: ${required}.`);
+if (
+  /disable\s+trigger|(?:insert\s+into|update|delete\s+from)\s+public\.(?:oem_references|compatibility_relationships|publish_records)\b|grant\s+.*\s+to\s+(?:anon|service_role)\b/i.test(
+    oemCommands,
+  )
+)
+  errors.push(
+    "OEM wrappers cannot overwrite source/fit/publication authority or grant anonymous/service access.",
+  );
+
+for (const required of [
+  "create table public.packaging_source_bindings",
+  "private.pi_add_packaging_source",
+  "private.pi_check_packaging_copy",
+  "private.pi_packaging_source_matches",
+  "private.pi_packaging_source_can_support_review",
+  "private.pi_packaging_original_digest",
+  "binding.original_packaging_id is not distinct from original_uuid",
+  "binding.variant_digest=private.pi_packaging_variant_digest(variant_uuid)",
+  "binding.source_digest=encode(extensions.digest(to_jsonb(source)::text,'sha256'),'hex')",
+  "packaging_source_quantity_pair_check",
+  "packaging_source_immutable",
+  "force row level security",
+  "'packaging_record','factory_record','controlled_drawing','approved_sample'",
+  "revoke all on all functions in schema private from public,anon,authenticated,service_role",
+])
+  if (!packagingSources.includes(required))
+    errors.push(`Packaging source contract missing: ${required}.`);
+if (
+  /create\s+(?:or\s+replace\s+)?function\s+public\.|(?:insert\s+into|update|delete\s+from)\s+public\.(?:packaging_records|product_variants|compatibility_relationships|publish_records)\b|disable\s+trigger|grant\s+.*\s+to\s+(?:anon|service_role)\b/i.test(
+    packagingSources,
+  )
+)
+  errors.push(
+    "Packaging intake cannot expose mutation RPCs, modify original/commercial/public records or disable guards.",
+  );
+
+for (const required of [
+  "create table public.packaging_revision_heads",
+  "create table public.packaging_revisions",
+  "create table public.packaging_revision_evidence",
+  "create table public.packaging_revision_decisions",
+  "create table public.packaging_revision_currents",
+  "private.pi_propose_packaging_revision",
+  "private.pi_submit_packaging_revision",
+  "private.pi_review_packaging_revision",
+  "private.pi_guard_packaging_decision",
+  "private.pi_guard_packaging_current",
+  "private.pi_guard_packaging_evidence_insert",
+  "'known_conflicts'",
+  "'commercial_terms_unchanged',true",
+  "'arcfort_packaging_confirmed'",
+  "candidate.quantity is not null",
+  "public.pi_effective_packaging_records with (security_invoker=true)",
+  "public.pi_packaging_readiness with (security_invoker=true)",
+  "private.pi_guard_current_packaging",
+  "coalesce(oem.unresolved_oem_count,0)",
+  "coalesce(packaging.unresolved_packaging_count,0)",
+  "force row level security",
+  "revoke all on all functions in schema private from public,anon,authenticated,service_role",
+])
+  if (!packagingReview.includes(required))
+    errors.push(`Packaging review contract missing: ${required}.`);
+if (
+  /disable\s+trigger|(?:insert\s+into|update|delete\s+from)\s+public\.packaging_records\b|create\s+(?:or\s+replace\s+)?function\s+public\.pi_(?:propose|submit|review)_packaging/i.test(
+    packagingReview,
+  )
+)
+  errors.push(
+    "Packaging review cannot overwrite original commercial records, disable guards or expose application mutations.",
+  );
+
+for (const required of [
+  "public.pi_add_packaging_source",
+  "public.pi_propose_packaging_revision",
+  "public.pi_submit_packaging_revision",
+  "public.pi_review_packaging_revision",
+  "private.pi_add_packaging_source",
+  "private.pi_review_packaging_revision",
+  "public.pi_packaging_source_current",
+  "public.pi_packaging_revision_fresh",
+  "conflict_source_ids",
+  "public.pi_packaging_source_states with (security_invoker=true)",
+  "public.pi_packaging_revision_states with (security_invoker=true)",
+  "revoke all on all functions in schema private from public,anon,authenticated,service_role",
+])
+  if (!packagingCommands.includes(required))
+    errors.push(`Packaging application contract missing: ${required}.`);
+if (
+  /disable\s+trigger|(?:insert\s+into|update|delete\s+from)\s+public\.(?:packaging_records|product_variants|publish_records)\b|grant\s+.*\s+to\s+(?:anon|service_role)\b/i.test(
+    packagingCommands,
+  )
+)
+  errors.push(
+    "Packaging application cannot change original/public data, disable guards or grant anonymous/service writes.",
+  );
 
 if (errors.length > 0) {
   console.error("Product Intelligence migration validation failed:");

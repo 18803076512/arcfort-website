@@ -447,6 +447,58 @@
   height: 220px;
   object-fit: contain;
 }
+.console-original-inspection {
+  padding: 20px 0;
+  margin-bottom: 24px;
+  border-block: 1px solid var(--console-border);
+  min-width: 0;
+}
+.console-inspection-heading,
+.console-inspection-tools {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.console-inspection-heading {
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 16px;
+}
+.console-inspection-heading > div {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+.console-inspection-tools {
+  flex-wrap: wrap;
+  margin-bottom: 12px;
+}
+.console-inspection-tools .console-icon-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+.console-inspection-zoom {
+  min-width: 44px;
+  text-align: center;
+  font-size: 13px;
+}
+.console-inspection-image {
+  width: 100%;
+  height: min(60vh, 600px);
+  min-height: 240px;
+  overflow: auto;
+  border: 1px solid var(--console-border);
+  background: #f1f3f4;
+}
+.console-inspection-image img {
+  display: block;
+  max-width: none;
+}
+.console-inspection-image[data-fit="true"] img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
 .console-upload-button {
   display: inline-flex;
   align-items: center;
@@ -466,6 +518,18 @@
   min-width: 0;
   overflow-wrap: anywhere;
 }
+.console-comparison.console-oem-comparison {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+.console-oem-workbench,
+.console-packaging-workbench {
+  overflow-wrap: anywhere;
+}
+.console-oem-workbench .console-editor-actions > label,
+.console-packaging-workbench .console-editor-actions > label {
+  flex: 1 1 240px;
+  max-width: 600px;
+}
 .console-root h3 {
   font-size: 15px;
   font-weight: 650;
@@ -479,6 +543,38 @@
 .console-source-note {
   padding-top: 12px;
   font-size: 14px;
+}
+.console-media-scopes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 24px;
+  border-bottom: 1px solid var(--console-border);
+  margin: 16px 0 24px;
+}
+.console-media-scopes a {
+  flex-wrap: wrap;
+  overflow-wrap: anywhere;
+  justify-content: flex-start;
+}
+.console-media-scopes [aria-current="page"] {
+  border-bottom: 3px solid #1e5e96;
+  font-weight: 600;
+}
+.console-media-legacy {
+  margin-bottom: 24px;
+  overflow-wrap: anywhere;
+}
+.console-media-legacy h2 {
+  font-size: 18px;
+}
+.console-media-evidence-row {
+  border-top: 1px solid var(--console-border);
+  padding: 12px 0;
+}
+.console-media-conflicts {
+  padding: 16px 0;
+  border-block: 1px solid #a12525;
+  margin-bottom: 24px;
 }
 .console-evidence-selection {
   margin-top: 24px;
@@ -547,7 +643,8 @@
   white-space: pre-wrap;
 }
 @media (max-width: 1100px) {
-  .console-comparison {
+  .console-comparison,
+  .console-comparison.console-oem-comparison {
     grid-template-columns: 1fr;
     gap: 12px;
   }

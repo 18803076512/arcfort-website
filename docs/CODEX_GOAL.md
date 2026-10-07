@@ -338,9 +338,224 @@ mobile behavior and conversion paths must satisfy the applicable repository gate
 
 ## Recommended Next Setup Phase
 
+Latest authorization (2026-10-07): the owner explicitly approved review, commit and push of
+B11-B16, C1-C4 and D1-D4 to `18803076512/arcfort-website` / `codex/v2-industrial-brand-system`,
+with explicit OEM and packaging disposable CI only. The [dated decision](../knowledge-base/decisions/2026-10-07-console-m4-media-oem-packaging-ci.md)
+supersedes the pending-approval status below. Native candidate acceptance is still unrun at this
+checkpoint; no merge, deployment, hosted or retained-local change is authorized. Keep V1 open.
+
 Retain the completed local/CI M3 baseline and review the next controlled product-data phase:
 
-Latest M4 checkpoint (2026-09-28): reviewed candidate `c4d7b703` passed both jobs in
+Latest local M4 checkpoint (2026-10-06): M4-D4 prepares explicit default-off disposable packaging
+form/Auth/RPC/observed-race/revocation acceptance. All 24 embedded suites / 1,384 assertions and a
+new actual-parser/public-wrapper five-revision packaging rollback rehearsal pass. The exact ledger
+retains unknown/10/12-piece synthetic history, historical-count conflicts, explicit human states,
+original commercial rows and zero publication. Sixty-seven guard/command/read/contract regressions,
+TypeScript, zero-warning lint and fresh 95-page production build pass. Native packaging acceptance
+is NOT_RUN; simulated actors and sequential replay do not prove the full service workflow. See the
+[D4 record](operations/product-intelligence-console-milestone-4.md#m4-d4-disposable-packaging-acceptance-preparation).
+No retained/hosted/provider operation, active setting, public-source change, push or deployment.
+A new exact B11-B16 plus C1-C4 plus D1-D4 CI-only question replaces the pending older scope; no
+approval is inferred. Next verify native isolated media/OEM/packaging, finish technical documents
+and collect real 15AK evidence for verified preview/QA/authorized publication. Full V1 remains
+active and incomplete under all twelve success criteria.
+
+Prior local M4 checkpoint (2026-10-06): M4-D3 adds narrow authenticated packaging commands, counted
+source/current/history reads and a default-off private workbench. All 24 embedded suites / 1,384
+assertions, complete public-type parity and exact 17-table replay/rollback checks pass. Seventeen
+packaging command/read groups and thirteen synthetic Edge browser groups across six widths pass;
+shared OEM/compatibility/media/command/privacy regressions pass. Unknown quantity remains null,
+commercial notes stay read-only, human acknowledgements reset on evidence/status changes, and
+readiness totals reject inconsistency. All 43 original packaging/commercial rows remain unchanged.
+See the [D3 record](operations/product-intelligence-console-milestone-4.md#m4-d3-packaging-application-workbench).
+Native Auth/PostgREST/concurrency/persisted owner review and real packaging evidence are still
+unproven. No retained/hosted migration, Docker/provider operation, active flag, public-source change
+or new push/deployment. D1-D3 are outside the pending B11-B16 plus C1-C4 CI scope. Next prepare
+disposable native packaging acceptance, then technical documents and real 15AK evidence for
+verified preview/QA/authorized publication. Full V1/all twelve criteria remain incomplete.
+
+Prior local M4 checkpoint (2026-10-05): M4-D2 prepares immutable physical packaging proposals,
+frozen human APPROVE/EDIT/REJECT, effective records and readiness. All 23 embedded suites / 1,332
+assertions, full public-type parity, two exact 17-table replays and five frozen TEST-ONLY
+reference proposals/confirmation-refusal/rollback pass. Missing records, unknown counts, reference
+approvals and unresolved conflicts block packaging readiness; historical count changes cannot hide
+new contradictory evidence. All 43 original packaging/commercial rows remain exact. See the
+[D2 record](operations/product-intelligence-console-milestone-4.md#m4-d2-frozen-packaging-human-review).
+Private SQL and simulated roles do not establish a usable browser workflow or real confirmation.
+No application mutation flag/RPC, native migration, retained/hosted write, public-source change or
+new push/deployment. D1/D2 are outside the pending B11-B16 plus C1-C4 CI-only scope. Next complete
+packaging application commands/read workbench and native acceptance, technical documents and real
+15AK evidence for verified preview/QA/authorized publication. Full V1/all twelve criteria remain
+incomplete; no smaller completion definition is substituted.
+
+Prior local M4 checkpoint (2026-10-05): M4-D1 prepares exact-SKU physical packaging source
+bindings and private immutable intake, preserving the full original packaging/commercial rows.
+All 22 embedded suites / 1,238 assertions, official public types, two exact 17-table source
+replays and a new four-real-identity/one-synthetic-draft packaging rollback rehearsal pass.
+Unknown counts stay null; reference-only sources do not confirm actual packaging. Existing
+disposable guards now refuse retained packaging sources and verify original retention, without
+native execution. See the [D1 record](operations/product-intelligence-console-milestone-4.md#m4-d1-physical-packaging-source-foundation).
+No application editor/review, public RPC, active flag, retained/hosted migration or public change.
+This new local batch is outside the pending B11-B16 plus C1-C4 CI-only question. Continue packaging
+proposals/human review/workbench/native acceptance, technical documents and real 15AK evidence,
+then governed verified preview/QA/publication. Full V1/all twelve criteria remain incomplete.
+
+Prior local M4 checkpoint (2026-10-05): M4-C4 prepares explicit default-off disposable OEM
+form/SDK/observed-race/revocation/retention acceptance. Twenty-one embedded suites / 1,130
+assertions and a new actual-parser/public-wrapper sequential five-revision OEM workflow pass,
+including exact ledger, unselected conflict, human statuses, original retention and 17-table
+rollback. Eight target, nine server and four OEM acceptance guard groups pass. Fresh production
+build, type/lint/contracts and public SEO/link/image/performance checks pass. Native acceptance is
+NOT_RUN. No-provider browser/HTTP acceptance is blocked because a read-only loopback Auth request
+responds despite a free bind; strengthened preflights now refuse before mutation. See the
+[C4 record](operations/product-intelligence-console-milestone-4.md#m4-c4-disposable-oem-acceptance-preparation).
+No public/canonical/retained/hosted write, activation, commit/push or deployment. A new exact
+B11-B16 plus C1-C4 CI-only question replaces pending B11-B16-only scope; no authorization inferred.
+Next separately authorize/verify native isolated OEM, then packaging/documents and real 15AK
+evidence. All twelve V1 criteria and the full workflow remain active and incomplete.
+
+Prior local M4 checkpoint (2026-10-05): M4-C3 adds typed OEM intake/proposal/submission/review
+commands, guarded current/fresh reads and the usable owner/editor/reviewer workbench. The independent
+application flag remains off; no native migration or activation occurs. Twenty-one embedded suites /
+1,130 assertions, complete official public types, exact source replays, fourteen OEM command/read
+test groups and fifteen synthetic Edge browser groups across six widths pass. Fresh production
+build and actual no-provider private-route smoke pass; original/canonical/public/compatibility/SEO/
+RFQ authority remains unchanged, with zero publication. See the
+[C3 record](operations/product-intelligence-console-milestone-4.md#m4-c3-oem-application-workbench)
+for exact limits. Native Auth/PostgREST/concurrency and real OEM document/human verification remain
+unproven. The late September 28 CI approval is already fulfilled and does not cover C1-C3; pending
+B11-B16-only scope is not enlarged. Next prepare native isolated OEM acceptance, then remaining
+packaging/documents and real 15AK evidence for the verified preview/QA/publication gates. Full V1
+and all twelve criteria remain incomplete; no commit/push, retained/hosted write or deployment.
+
+Prior local M4 checkpoint (2026-10-05): M4-C2 adds exact immutable OEM proposals, frozen human
+APPROVE/EDIT/REJECT, explicit original lineage, conflict-preserving corrections, private current/
+effective reads and readiness. Original OEM rows/public/compatibility remain unchanged and all OEM
+output is private, not publication-ready. All 20 embedded suites/1,082 assertions, complete public
+types/source parity, old media rehearsal and five real-identity TEST-ONLY OEM proposal/refusal/
+rollback checks pass. TypeScript/lint and fresh production/no-provider browser smoke pass. The
+[C2 record](operations/product-intelligence-console-milestone-4.md#m4-c2-frozen-oem-human-review)
+and [review decision](../knowledge-base/decisions/2026-10-05-console-m4-oem-human-review.md) retain
+exact evidence and limits. No application mutation/UI/activation, native/hosted/retained migration,
+real human product approval, commit/push or publication is added. The late September 28 CI-only
+approval was already fulfilled; neither it nor pending B11-B16 scope covers C1/C2. Next build OEM
+application contracts and the usable human workbench within M4-C, then packaging/documents and the
+full M4 gate. Native acceptance, real 15AK evidence, public output, verified preview/QA/publication
+and all twelve V1 criteria remain active and incomplete.
+
+Prior local M4 checkpoint (2026-10-05): M4-C1 adds private OEM/reference source intake, immutable
+exact-SKU/manufacturer/number bindings and stricter disposable pristine checks. Original OEM rows,
+public facts and compatibility remain unchanged; source eligibility is not confirmation or fitment.
+All 19 embedded suites/972 assertions, complete public-type/source parity, the existing media
+rehearsal and a rollback-only OEM rehearsal with four real 15AK identities plus one created synthetic
+draft pass. The [C1 record](operations/product-intelligence-console-milestone-4.md#m4-c1-oem-reference-source-foundation)
+and [source decision](../knowledge-base/decisions/2026-10-05-console-m4-oem-source-intake.md) retain the
+exact limits. No application command/UI, current OEM revision, human approval, retained/hosted write,
+native migration or publication is added. OEM proposals/review/workbench, packaging/documents,
+governed public output, preview/QA and the real pilot remain open. Next implement OEM revisions and
+human review within M4-C. The pending B11-B16 CI-only question does not cover this new C1 batch;
+do not silently expand any later response. Full V1 remains active and incomplete.
+
+Prior local M4 checkpoint (2026-10-05): B16 prepares native disposable media source/propose/submit/
+APPROVE/EDIT/REJECT acceptance, exact original observations, actor/signature/role refusals,
+PostgreSQL-observed receipt/fresh-approval contention and strict retained-source/no-publication
+counts. Random observer provisioning is guarded by a fresh full pristine check, stdin-only SQL,
+runtime-only configuration and exact-ID disable on success/failure; no actual key is provisioned.
+Six provisioning, seven server and eight target guard groups pass, along with read/command/
+inspector regressions, 18 embedded suites/892 assertions, type contracts, TypeScript/lint and fresh
+real no-provider production browser smoke. The restricted SWC build failed on Windows path access;
+ordinary local permissions passed without weakening the probe, and the owned server was stopped.
+The B16 review follow-up adds a rollback-only sequential media rehearsal through the actual domain
+parser, Node signer and SQL wrappers: five revisions, exact history/counts, refusal/revocation,
+key disable, zero publication and exact 17-table rollback parity pass. Synthetic evidence dates
+use the execution UTC date rather than a future local-calendar fixture. Simulated JWT actors and
+Storage metadata do not prove native Auth, original byte inspection or concurrency.
+The [B16 record](operations/product-intelligence-console-milestone-4.md#m4-b16-disposable-media-acceptance-preparation)
+and [disposable acceptance decision](../knowledge-base/decisions/2026-10-05-console-m4-disposable-media-acceptance.md)
+distinguish prepared scenarios from execution. Fresh native/CLI/Auth/PostgREST/Storage/race acceptance
+remains unrun. No retained/hosted write, active setting, new schema/public/canonical fact, commit/
+push, merge or deployment occurred. The earlier unanswered B11-B13-only question is now replaced
+by a pending exact B11-B16 CI-only question; no new approval is inferred. Next obtain that approval
+and run the prepared native gate, then real 15AK image/
+rights/match evidence. Activation/publication, supporting records, verified preview/QA, governed
+public media output and all twelve V1 criteria remain incomplete. Preserve the existing Docker data.
+
+Local M4-B15 checkpoint (2026-10-04): B15 connects counted exact-SKU originals, mappings, all
+related evidence and paginated history to a usable local editor/reviewer workbench. Source entry,
+propose, submit and APPROVE/EDIT/REJECT controls retain independent roles, frozen pending snapshots,
+exact original observation, separate rights/match evidence and explicit human acknowledgements.
+Seven read/domain groups and fourteen synthetic browser groups across six widths pass; current
+validity is distinguished from matching recorded observation and private output remains blocked.
+Existing 18 embedded suites/892 assertions, public-type/source parity, inspector/command and old
+original UI regressions pass. TypeScript, lint, fresh production build, compiled middleware and real
+unavailable-provider/disabled-feature browser smoke pass. The
+[B15 record](operations/product-intelligence-console-milestone-4.md#m4-b15-sku-media-mapping-workbench)
+and [workbench decision](../knowledge-base/decisions/2026-10-04-console-m4-media-mapping-workbench.md)
+retain exact scope, screenshot evidence and native/provider acceptance limitations. No commit/push,
+actual key, active flag, retained/hosted write or public/canonical data change occurred. Pending
+B11-B13-only CI permission is not extended to B14/B15. Next prepare and obtain fresh authorized
+disposable native/Auth/PostgREST/Storage/concurrency acceptance, then owner-supplied exact 15AK
+image/right/match evidence. Supporting records, public output, verified preview/QA/publication and
+all twelve V1 criteria remain incomplete; synthetic UI results are not real pilot approval.
+
+Local M4-B14 checkpoint (2026-10-04): B14 connects exact source/proposal/submission/review command
+contracts and prepares authenticated SQL wrappers with a mandatory short-lived server observation
+for application approval. The original inspector processes unchanged private bytes and rechecks the
+exact actor/adoption/candidate/original snapshot before signing; database HMAC verification, nonce
+uniqueness and atomic receipts remain independent from human rights/match confirmation. All 18
+embedded suites/892 assertions, official public-type/source parity, Node/pgcrypto HMAC parity,
+11 inspector groups and five media-command groups pass. TypeScript/lint, a fresh production build
+and actual unavailable-provider/disabled-observation browser smoke pass. The
+[B14 record](operations/product-intelligence-console-milestone-4.md#m4-b14-observed-media-review-commands)
+and [observation decision](../knowledge-base/decisions/2026-10-04-console-m4-observed-media-commands.md)
+retain unapplied/default-off scope, empty real key configuration and private-output boundaries.
+No commit/push, key provisioning, retained/hosted migration, active flag or canonical/public fact
+change occurred. The pending B11-B13 CI-only question does not authorize B14. Native/provider/race
+acceptance, counted effective review reads, explicit human controls, real 15AK evidence, supporting
+records, verified preview/QA/publication and full V1 remain open. Inspection is not rights, product
+match, public image eligibility or completion of the twelve criteria.
+
+Local M4-B13 checkpoint (2026-10-04): B13 implements private exact-SKU media APPROVE/EDIT/REJECT,
+immutable decision events, current/effective mappings and open/invalid approval readiness guards.
+All 17 embedded suites/831 assertions and complete official public-type/source parity pass; all
+four actual 15AK identities refuse reference-only approval with original rows and zero decisions/
+publication retained. Existing readiness columns/dashboard contracts are preserved. TypeScript,
+lint, fresh production build and real unavailable-provider browser smoke pass. The
+[B13 record](operations/product-intelligence-console-milestone-4.md#m4-b13-exact-sku-media-mapping-review)
+and [review decision](../knowledge-base/decisions/2026-10-04-console-m4-media-mapping-review.md) retain
+human declaration versus actual-byte evidence and private reviewed-original versus public output
+boundaries. Commands/UI and actual-byte observation binding are not exposed; native/provider/
+concurrency acceptance remains unrun. No commit/push, retained/hosted migration, active flag or
+canonical/public fact change occurred. New-batch submission needs separate authorization. Usable
+owner media review, real 15AK evidence, supporting records, verified preview/QA/publication and full
+V1 remain incomplete; private SQL and synthetic decisions do not close the twelve criteria.
+
+Local M4-B12 checkpoint (2026-10-04): B12 prepares immutable exact-SKU/role/slot media mapping
+drafts, separate source links, current-digest submission and an open-proposal lifecycle guard.
+All 16 embedded suites/722 assertions, complete official public-type parity, two exact 17-table
+replays and four synthetic pending proposals using actual 15AK identities preserve original rows
+with zero approval/publication. Migration/report/type contracts, TypeScript, lint and a fresh
+production build with real unavailable-provider browser smoke pass. The
+[B12 record](operations/product-intelligence-console-milestone-4.md#m4-b12-immutable-media-mapping-draft-foundation)
+and [mapping decision](../knowledge-base/decisions/2026-10-04-console-m4-media-mapping-drafts.md)
+retain the metadata-versus-bytes, private proposal and independent human-review boundaries. This
+is local schema preparation only, not complete readiness/dashboard integration, effective mapping
+or human APPROVE/EDIT/REJECT. No retained/hosted schema, active flag or public data changed. Existing
+B1-B10 approval and the pending B11-only submission question do not authorize a B12 push. Native/
+provider/concurrency acceptance, owner UI, real 15AK evidence and full V1 remain outstanding.
+
+Local M4-B11 checkpoint (2026-10-04): B11 adds authenticated stored-original inspection,
+unchanged-byte download and bounded zoom before later human media approval. Eight mocked-SDK
+groups, original-file/upload regressions, five synthetic browser groups at six widths, production
+default-off private HTTP, TypeScript, lint and public SEO/performance regressions pass. The full
+session HTTP smoke cannot pass without the currently unavailable local Auth provider; it was not
+weakened or rerun over retained data. New real-provider acceptance is prepared, not executed. See
+the [B11 record](operations/product-intelligence-console-milestone-4.md#m4-b11-private-stored-original-inspection).
+This batch remains local/unsubmitted, with no schema/data/approval/active-flag change. The replayed
+B1-B10 authorization is already fulfilled and does not authorize the new B11 push. Preserve the
+completed Docker recovery and retained stack. Full media mapping/review and V1 remain incomplete.
+
+Accepted M4 B1-B10 checkpoint (2026-09-28): reviewed candidate `c4d7b703` passed both jobs in
 [CI run 36411029604](https://github.com/18803076512/arcfort-website/actions/runs/36411029604).
 The authorized compatibility/media-original/cookie/acceptance batch passes native 15-suite /
 630-assertion SQL, complete type parity, exact source replay, Auth/RLS, actual Storage byte

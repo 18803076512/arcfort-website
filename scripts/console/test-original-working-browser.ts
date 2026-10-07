@@ -13,6 +13,7 @@ import {
   type OriginalUploadInput,
 } from "../../lib/domain/catalog/originals.ts";
 import { browserOrigin, privateResponse } from "./browser-server.ts";
+import { originalInspectionPath } from "../../lib/domain/catalog/original-inspection.ts";
 
 type Participant = { ctx: BrowserContext; page: Page; client: ConsoleClient };
 type Input = {
@@ -44,6 +45,7 @@ export async function runOriginalWorkingBrowser(input: Input) {
   assert.equal(identity.data?.lifecycle_state, "DRAFT");
   const pathname = `/console/products/${variantId}/originals`;
   const endpoint = browserOrigin + originalUploadPath;
+  const inspectionEndpoint = browserOrigin + originalInspectionPath;
   const results: string[] = [];
   const checkpoint = (name: string) => input.checkpoint(name);
   const small = await sharp({
@@ -172,6 +174,26 @@ export async function runOriginalWorkingBrowser(input: Input) {
     );
     return location;
   }
+  async function inspect(participant: Participant, result: Receipt, data: Buffer, status = 200) {
+    const response = await participant.ctx.request.post(inspectionEndpoint, {
+      headers: { origin: browserOrigin, "x-console-command": "1" },
+      data: { variant_id: variantId, asset_id: result.asset_id },
+      maxRedirects: 0,
+    });
+    assert.equal(response.status(), status);
+    privateResponse(response.headers());
+    if (status === 200) {
+      assert.equal(response.headers()["content-type"], "image/png");
+      assert.equal(response.headers()["content-length"], String(data.length));
+      assert.equal(response.headers()["x-content-type-options"], "nosniff");
+      assert.equal(response.headers()["cross-origin-resource-policy"], "same-origin");
+      assert.deepEqual(await response.body(), data);
+    } else {
+      const body = await response.json();
+      assert.deepEqual(Object.keys(body).sort(), ["code", "message", "ok"]);
+      assert.equal(body.ok, false);
+    }
+  }
 
   checkpoint("originals: real cookie-scoped owner form, storage readback and unchanged HTTP retry");
   assert.equal((await readOriginalIntakes(owner.client, variantId, 1))?.total, 0);
@@ -195,6 +217,35 @@ export async function runOriginalWorkingBrowser(input: Input) {
   const secondLocation = await stored(second.result, large);
   assert.notEqual(first.result.asset_id, second.result.asset_id);
   results.push("original reviewer form with >10 MiB HTTP and actual stored-byte fidelity");
+
+  checkpoint("originals: real stored-original inspection, private download and role access");
+  await inspect(owner, first.result, small);
+  await inspect(viewer, second.result, large);
+  await goto(owner.page, pathname);
+  const inspected = owner.page.waitForResponse((response) => response.url() === inspectionEndpoint);
+  await owner.page
+    .getByRole("button", { name: "Inspect synthetic-owner-original.png", exact: true })
+    .click();
+  const inspectionResponse = await inspected;
+  assert.equal(inspectionResponse.status(), 200);
+  privateResponse(inspectionResponse.headers());
+  assert.match((await inspectionResponse.request().allHeaders()).cookie ?? "", /sb-/);
+  assert.deepEqual(await inspectionResponse.body(), small);
+  await owner.page.waitForFunction(
+    () =>
+      document.querySelector<HTMLImageElement>(
+        'img[alt="Stored original: synthetic-owner-original.png"]',
+      )?.naturalWidth === 32,
+  );
+  await owner.page.getByRole("button", { name: "Zoom in", exact: true }).click();
+  const downloadPromise = owner.page.waitForEvent("download");
+  await owner.page.getByRole("link", { name: "Download original", exact: true }).click();
+  const download = await downloadPromise;
+  const chunks: Buffer[] = [];
+  for await (const chunk of await download.createReadStream()) chunks.push(Buffer.from(chunk));
+  assert.deepEqual(Buffer.concat(chunks), small);
+  await owner.page.getByRole("button", { name: "Close original inspection", exact: true }).click();
+  results.push("original private inspection, unchanged browser download and read-only-role access");
 
   checkpoint("originals: denied viewer/anonymous/origin, malformed bytes and changed receipt");
   await goto(viewer.page, pathname);
@@ -293,9 +344,25 @@ export async function runOriginalWorkingBrowser(input: Input) {
   return {
     results,
     screenshots,
+    originals: [
+      { ...first.result, bytes: small },
+      { ...second.result, bytes: large },
+    ],
+    assertRetained: async () => {
+      checkpoint(
+        "originals: re-read both unchanged Storage objects after media review and revocation",
+      );
+      await stored(first.result, small);
+      await stored(second.result, large);
+      assert.equal((await readOriginalIntakes(owner.client, variantId, 1))?.total, 2);
+      results.push(
+        "both original objects remain byte-identical, unapproved and not_attested after media review",
+      );
+    },
     assertRevoked: async () => {
       checkpoint("originals: revoked reviewer cannot replay completed upload or read stored bytes");
       await rejected(reviewer.ctx, second.metadata, large, 403);
+      await inspect(reviewer, second.result, large, 403);
       assert.equal(
         (
           await reviewer.client.rpc("pi_complete_media_upload", {
@@ -315,6 +382,7 @@ export async function runOriginalWorkingBrowser(input: Input) {
     assertLoggedOut: async () => {
       checkpoint("originals: logged-out browser cannot replay completed upload");
       await rejected(owner.ctx, first.metadata, small, 403);
+      await inspect(owner, first.result, small, 403);
       assert.equal((await readOriginalIntakes(owner.client, variantId, 1))?.total, 2);
       results.push("original logged-out HTTP replay denied with retained history");
     },

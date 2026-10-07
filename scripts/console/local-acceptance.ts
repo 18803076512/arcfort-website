@@ -11,7 +11,12 @@ export function assertAcceptanceInvocation(
   args: string[],
   env: Record<string, string | undefined>,
 ) {
-  assert.deepEqual(args, ["--local"], "Exactly --local is required.");
+  assert.ok(
+    args[0] === "--local" &&
+      args.slice(1).every((value) => ["--oem", "--packaging"].includes(value)) &&
+      new Set(args).size === args.length,
+    "Exactly --local, optionally followed by unique --oem and --packaging switches, is required.",
+  );
   assert.equal(env.CI, "true", "Disposable CI only.");
   for (const [key, value] of Object.entries(env)) {
     if (!value || key === "SUPABASE_TELEMETRY_DISABLED") continue;
@@ -22,6 +27,7 @@ export function assertAcceptanceInvocation(
       "Remove provider, database, application and Docker overrides before isolated acceptance.",
     );
   }
+  return { oem: args.includes("--oem"), packaging: args.includes("--packaging") };
 }
 
 export function assertLocalDocker(endpoint: string) {
@@ -84,13 +90,64 @@ export function assertPristineBaseline(value: unknown) {
       compatibilityRevisions: 0,
       compatibilitySources: 0,
       mediaSources: 0,
+      packagingSources: 0,
+      packagingHeads: 0,
+      packagingRevisions: 0,
+      packagingEvidence: 0,
+      packagingDecisions: 0,
+      packagingCurrents: 0,
+      oemSources: 0,
+      oemHeads: 0,
+      oemRevisions: 0,
+      oemEvidence: 0,
+      oemDecisions: 0,
+      oemCurrents: 0,
       uploadIntents: 0,
       uploadCompletions: 0,
+      mediaMappingHeads: 0,
+      mediaMappingRevisions: 0,
+      mediaMappingEvidence: 0,
+      mediaMappingDecisions: 0,
+      mediaMappingCurrents: 0,
+      mediaObservationKeys: 0,
+      mediaReviewObservations: 0,
       storageObjects: 0,
     },
     "A fresh imported disposable database is required; this runner never resets existing work.",
   );
 }
+
+export const pristineBaselineQuery = `select json_build_object(
+  'users',(select count(*) from auth.users), 'roles',(select count(*) from console_user_roles),
+  'adoptions',(select count(*) from private.pi_working_adoptions),
+  'drafts',(select count(*) from private.pi_product_draft_heads),
+  'events',(select count(*) from verification_events), 'products',(select count(*) from product_variants),
+  'compatibilityHeads',(select count(*) from compatibility_revision_heads),
+  'compatibilityRevisions',(select count(*) from compatibility_revisions),
+  'compatibilitySources',(select count(*) from compatibility_source_bindings),
+  'mediaSources',(select count(*) from media_source_bindings),
+  'packagingSources',(select count(*) from packaging_source_bindings),
+  'packagingHeads',(select count(*) from packaging_revision_heads),
+  'packagingRevisions',(select count(*) from packaging_revisions),
+  'packagingEvidence',(select count(*) from packaging_revision_evidence),
+  'packagingDecisions',(select count(*) from packaging_revision_decisions),
+  'packagingCurrents',(select count(*) from packaging_revision_currents),
+  'oemSources',(select count(*) from oem_source_bindings),
+  'oemHeads',(select count(*) from oem_revision_heads),
+  'oemRevisions',(select count(*) from oem_revisions),
+  'oemEvidence',(select count(*) from oem_revision_evidence),
+  'oemDecisions',(select count(*) from oem_revision_decisions),
+  'oemCurrents',(select count(*) from oem_revision_currents),
+  'uploadIntents',(select count(*) from media_upload_intents),
+  'uploadCompletions',(select count(*) from media_upload_completions),
+  'mediaMappingHeads',(select count(*) from media_mapping_heads),
+  'mediaMappingRevisions',(select count(*) from media_mapping_revisions),
+  'mediaMappingEvidence',(select count(*) from media_mapping_evidence),
+  'mediaMappingDecisions',(select count(*) from media_mapping_decisions),
+  'mediaMappingCurrents',(select count(*) from media_mapping_currents),
+  'mediaObservationKeys',(select count(*) from private.pi_media_observation_keys),
+  'mediaReviewObservations',(select count(*) from private.pi_media_review_observations),
+  'storageObjects',(select count(*) from storage.objects));`;
 
 const psqlArgs = [
   "exec",
@@ -115,7 +172,7 @@ const sqlSettings =
 
 // Only constructed after local socket, container, CLI status and project checks pass.
 export function openLocalAcceptance(args = process.argv.slice(2), env = process.env) {
-  assertAcceptanceInvocation(args, env);
+  const features = assertAcceptanceInvocation(args, env);
   const cliEnv = { ...env, SUPABASE_TELEMETRY_DISABLED: "1" };
   function command(file: string, args: string[], input?: string) {
     try {
@@ -260,5 +317,5 @@ export function openLocalAcceptance(args = process.argv.slice(2), env = process.
     return result.value;
   }
 
-  return { ...credentials, sql, json, asyncSql, withAuthorityLock };
+  return { ...credentials, ...features, sql, json, asyncSql, withAuthorityLock };
 }

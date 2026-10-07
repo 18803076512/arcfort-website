@@ -11,13 +11,42 @@ import {
 } from "./local-acceptance.ts";
 
 test("isolated acceptance requires exact CI/local invocation", () => {
-  assertAcceptanceInvocation(["--local"], { CI: "true" });
+  assert.deepEqual(assertAcceptanceInvocation(["--local"], { CI: "true" }), {
+    oem: false,
+    packaging: false,
+  });
+  assert.deepEqual(assertAcceptanceInvocation(["--local", "--oem"], { CI: "true" }), {
+    oem: true,
+    packaging: false,
+  });
+  assert.deepEqual(assertAcceptanceInvocation(["--local", "--packaging"], { CI: "true" }), {
+    oem: false,
+    packaging: true,
+  });
+  for (const switches of [
+    ["--oem", "--packaging"],
+    ["--packaging", "--oem"],
+  ])
+    assert.deepEqual(assertAcceptanceInvocation(["--local", ...switches], { CI: "true" }), {
+      oem: true,
+      packaging: true,
+    });
   for (const args of [
     [],
     ["--staging"],
     ["--local", "--staging"],
     ["--local", "--local"],
     ["--local", "--linked"],
+    ["--oem"],
+    ["--oem", "--local"],
+    ["--local", "--oem", "--oem"],
+    ["--local", "--oem=true"],
+    ["--local", "--oem", "--staging"],
+    ["--packaging"],
+    ["--packaging", "--local"],
+    ["--local", "--packaging=true"],
+    ["--local", "--packaging", "--packaging"],
+    ["--local", "--packaging", "--staging"],
   ])
     assert.throws(() => assertAcceptanceInvocation(args, { CI: "true" }));
   for (const CI of [undefined, "false", "1"])
@@ -25,34 +54,44 @@ test("isolated acceptance requires exact CI/local invocation", () => {
 });
 
 test("the integrated runner refuses a non-local target before host or provider access", () => {
-  const result = spawnSync(
-    process.execPath,
-    ["--experimental-strip-types", "scripts/console/test-working-isolated.ts", "--staging"],
-    {
-      env: {
-        NODE_ENV: "test",
-        CI: "true",
-        SystemRoot: process.env.SystemRoot,
-        PATH: process.env.PATH,
+  for (const args of [
+    ["--staging"],
+    ["--local", "--oem", "--staging"],
+    ["--oem", "--local"],
+    ["--local", "--packaging", "--staging"],
+    ["--packaging", "--local"],
+  ]) {
+    const result = spawnSync(
+      process.execPath,
+      ["--experimental-strip-types", "scripts/console/test-working-isolated.ts", ...args],
+      {
+        env: {
+          NODE_ENV: "test",
+          CI: "true",
+          SystemRoot: process.env.SystemRoot,
+          PATH: process.env.PATH,
+        },
+        encoding: "utf8",
+        timeout: 20_000,
+        windowsHide: true,
       },
-      encoding: "utf8",
-      timeout: 20_000,
-      windowsHide: true,
-    },
-  );
-  assert.equal(result.error, undefined);
-  assert.equal(result.status, 1);
-  assert.equal(result.stdout, "");
-  assert.match(
-    result.stderr,
-    /Working Console isolated acceptance failed at: local target preflight/,
-  );
+    );
+    assert.equal(result.error, undefined);
+    assert.equal(result.status, 1);
+    assert.equal(result.stdout, "");
+    assert.match(
+      result.stderr,
+      /Working Console isolated acceptance failed at: local target preflight/,
+    );
+  }
 });
 
 test("ambient provider, database, Docker and runtime overrides fail closed", () => {
   for (const key of [
     "CONSOLE_SUPABASE_URL",
     "CONSOLE_ENVIRONMENT",
+    "CONSOLE_OEM_ENABLED",
+    "CONSOLE_PACKAGING_ENABLED",
     "PRODUCT_INTELLIGENCE_SUPABASE_SERVICE_ROLE_KEY",
     "SUPABASE_ACCESS_TOKEN",
     "NEXT_PUBLIC_SUPABASE_URL",
@@ -70,6 +109,12 @@ test("ambient provider, database, Docker and runtime overrides fail closed", () 
     assert.throws(() =>
       assertAcceptanceInvocation(["--local"], { CI: "true", [key]: "synthetic-override" }),
     );
+  assert.throws(() =>
+    assertAcceptanceInvocation(["--local", "--oem"], {
+      CI: "true",
+      CONSOLE_OEM_ENABLED: "true",
+    }),
+  );
   assertAcceptanceInvocation(["--local"], {
     CI: "true",
     SUPABASE_TELEMETRY_DISABLED: "1",
@@ -163,8 +208,27 @@ test("existing accounts, working records and M2 pagination fixtures are never re
     compatibilityRevisions: 0,
     compatibilitySources: 0,
     mediaSources: 0,
+    packagingSources: 0,
+    packagingHeads: 0,
+    packagingRevisions: 0,
+    packagingEvidence: 0,
+    packagingDecisions: 0,
+    packagingCurrents: 0,
+    oemSources: 0,
+    oemHeads: 0,
+    oemRevisions: 0,
+    oemEvidence: 0,
+    oemDecisions: 0,
+    oemCurrents: 0,
     uploadIntents: 0,
     uploadCompletions: 0,
+    mediaMappingHeads: 0,
+    mediaMappingRevisions: 0,
+    mediaMappingEvidence: 0,
+    mediaMappingDecisions: 0,
+    mediaMappingCurrents: 0,
+    mediaObservationKeys: 0,
+    mediaReviewObservations: 0,
     storageObjects: 0,
   };
   assertPristineBaseline(good);
@@ -178,14 +242,36 @@ test("existing accounts, working records and M2 pagination fixtures are never re
     "compatibilityRevisions",
     "compatibilitySources",
     "mediaSources",
+    "packagingSources",
+    "packagingHeads",
+    "packagingRevisions",
+    "packagingEvidence",
+    "packagingDecisions",
+    "packagingCurrents",
+    "oemSources",
+    "oemHeads",
+    "oemRevisions",
+    "oemEvidence",
+    "oemDecisions",
+    "oemCurrents",
     "uploadIntents",
     "uploadCompletions",
+    "mediaMappingHeads",
+    "mediaMappingRevisions",
+    "mediaMappingEvidence",
+    "mediaMappingDecisions",
+    "mediaMappingCurrents",
+    "mediaObservationKeys",
+    "mediaReviewObservations",
     "storageObjects",
   ])
     assert.throws(() => assertPristineBaseline({ ...good, [key]: 1 }));
   const { compatibilitySources: _omitted, ...incomplete } = good;
   assert.equal(_omitted, 0);
   assert.throws(() => assertPristineBaseline(incomplete));
+  const { packagingSources: _omittedPackaging, ...withoutPackaging } = good;
+  assert.equal(_omittedPackaging, 0);
+  assert.throws(() => assertPristineBaseline(withoutPackaging));
   for (const products of [0, 42, 44, 1146])
     assert.throws(() => assertPristineBaseline({ ...good, products }));
 });

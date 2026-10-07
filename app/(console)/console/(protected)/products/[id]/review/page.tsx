@@ -5,6 +5,7 @@ import {
   consoleWorkingEnabled,
   consoleCompatibilityEnabled,
   consoleOriginalsEnabled,
+  consoleMediaReviewEnabled,
 } from "@/lib/console/working-config";
 import { TechnicalWorkbench } from "@/components/console/TechnicalWorkbench";
 import { ProductWorkingNav } from "@/components/console/ProductWorkingNav";
@@ -32,6 +33,7 @@ export default async function ReviewProductPage({
         active="review"
         compatibility={consoleCompatibilityEnabled()}
         originals={consoleOriginalsEnabled()}
+        media={consoleMediaReviewEnabled()}
       />
       <TechnicalWorkbench
         data={data}

@@ -5,6 +5,7 @@ import {
   consoleWorkingEnabled,
   consoleCompatibilityEnabled,
   consoleOriginalsEnabled,
+  consoleMediaReviewEnabled,
 } from "@/lib/console/working-config";
 import { ProductDraftForm } from "@/components/console/ProductDraftForm";
 import { ProductWorkingNav } from "@/components/console/ProductWorkingNav";
@@ -25,6 +26,7 @@ export default async function EditProductPage({ params }: { params: Promise<{ id
         active="edit"
         compatibility={consoleCompatibilityEnabled()}
         originals={consoleOriginalsEnabled()}
+        media={consoleMediaReviewEnabled()}
       />
       <ProductDraftForm draft={draft} />
     </>

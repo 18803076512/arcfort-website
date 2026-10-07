@@ -187,7 +187,7 @@ select throws_ok($$update evidence_sources set title='Tampered' where id=(select
   '55000',null,'bound source cannot change even with transaction capability');
 select throws_ok($$update media_source_bindings set media_role='gallery'$$,'55000',null,'binding cannot be edited');
 select throws_ok($$delete from media_source_bindings$$,'55000',null,'binding cannot be deleted');
-select throws_ok($$truncate media_source_bindings$$,'55000',null,'binding cannot be truncated');
+select throws_ok($$truncate media_source_bindings cascade$$,'55000',null,'binding guard rejects truncation even with referencing mapping tables');
 select throws_ok($$delete from evidence_sources where id=(select (result->>'source_id')::uuid from results where label='rights')$$,
   '55000',null,'bound source cannot be deleted even with transaction capability');
 select ok(pg_temp.matches('rights'),'hash drift probe begins with matching evidence');

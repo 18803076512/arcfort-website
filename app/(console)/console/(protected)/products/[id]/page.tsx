@@ -1,7 +1,11 @@
 import { ConsoleLink } from "@/components/console/ConsoleLink";
 import { ProductWorkingNav } from "@/components/console/ProductWorkingNav";
 import { readWorkingStates } from "@/lib/console/working";
-import { consoleCompatibilityEnabled, consoleOriginalsEnabled } from "@/lib/console/working-config";
+import {
+  consoleCompatibilityEnabled,
+  consoleOriginalsEnabled,
+  consoleMediaReviewEnabled,
+} from "@/lib/console/working-config";
 
 import Image from "next/image";
 import { notFound } from "next/navigation";
@@ -46,6 +50,7 @@ export default async function ProductDetailPage({
           id={id}
           compatibility={consoleCompatibilityEnabled()}
           originals={consoleOriginalsEnabled()}
+          media={consoleMediaReviewEnabled()}
         />
       )}
       <dl className="console-facts">

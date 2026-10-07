@@ -113,6 +113,13 @@ export type Database = {
             foreignKeyName: "compatibility_entities_product_variant_id_fkey";
             columns: ["product_variant_id"];
             isOneToOne: false;
+            referencedRelation: "pi_packaging_readiness";
+            referencedColumns: ["product_variant_id"];
+          },
+          {
+            foreignKeyName: "compatibility_entities_product_variant_id_fkey";
+            columns: ["product_variant_id"];
+            isOneToOne: false;
             referencedRelation: "pi_variant_readiness";
             referencedColumns: ["id"];
           },
@@ -477,6 +484,13 @@ export type Database = {
             foreignKeyName: "compatibility_source_bindings_product_variant_id_fkey";
             columns: ["product_variant_id"];
             isOneToOne: false;
+            referencedRelation: "pi_packaging_readiness";
+            referencedColumns: ["product_variant_id"];
+          },
+          {
+            foreignKeyName: "compatibility_source_bindings_product_variant_id_fkey";
+            columns: ["product_variant_id"];
+            isOneToOne: false;
             referencedRelation: "pi_variant_readiness";
             referencedColumns: ["id"];
           },
@@ -562,6 +576,13 @@ export type Database = {
             isOneToOne: false;
             referencedRelation: "product_series";
             referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "entity_documents_product_variant_id_fkey";
+            columns: ["product_variant_id"];
+            isOneToOne: false;
+            referencedRelation: "pi_packaging_readiness";
+            referencedColumns: ["product_variant_id"];
           },
           {
             foreignKeyName: "entity_documents_product_variant_id_fkey";
@@ -817,6 +838,326 @@ export type Database = {
         };
         Relationships: [];
       };
+      media_mapping_currents: {
+        Row: {
+          head_id: string;
+          mapping_id: string;
+          updated_at: string;
+          updated_by: string;
+        };
+        Insert: {
+          head_id: string;
+          mapping_id: string;
+          updated_at?: string;
+          updated_by: string;
+        };
+        Update: {
+          head_id?: string;
+          mapping_id?: string;
+          updated_at?: string;
+          updated_by?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "media_mapping_currents_head_id_fkey";
+            columns: ["head_id"];
+            isOneToOne: true;
+            referencedRelation: "media_mapping_heads";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "media_mapping_currents_head_id_fkey";
+            columns: ["head_id"];
+            isOneToOne: true;
+            referencedRelation: "pi_media_mapping_states";
+            referencedColumns: ["head_id"];
+          },
+          {
+            foreignKeyName: "media_mapping_currents_mapping_id_fkey";
+            columns: ["mapping_id"];
+            isOneToOne: true;
+            referencedRelation: "media_mapping_revisions";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "media_mapping_currents_mapping_id_fkey";
+            columns: ["mapping_id"];
+            isOneToOne: true;
+            referencedRelation: "pi_media_mapping_states";
+            referencedColumns: ["mapping_id"];
+          },
+        ];
+      };
+      media_mapping_decisions: {
+        Row: {
+          confirmation: Json;
+          conflict_resolution: string;
+          created_at: string;
+          created_by: string;
+          decision: Database["public"]["Enums"]["pi_review_decision"];
+          event_id: string;
+          mapping_id: string;
+          match_source_id: string | null;
+          observed_digest: string;
+          rights_source_id: string | null;
+          submitted_digest: string;
+        };
+        Insert: {
+          confirmation: Json;
+          conflict_resolution: string;
+          created_at?: string;
+          created_by: string;
+          decision: Database["public"]["Enums"]["pi_review_decision"];
+          event_id: string;
+          mapping_id: string;
+          match_source_id?: string | null;
+          observed_digest: string;
+          rights_source_id?: string | null;
+          submitted_digest: string;
+        };
+        Update: {
+          confirmation?: Json;
+          conflict_resolution?: string;
+          created_at?: string;
+          created_by?: string;
+          decision?: Database["public"]["Enums"]["pi_review_decision"];
+          event_id?: string;
+          mapping_id?: string;
+          match_source_id?: string | null;
+          observed_digest?: string;
+          rights_source_id?: string | null;
+          submitted_digest?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "media_mapping_decisions_event_id_fkey";
+            columns: ["event_id"];
+            isOneToOne: true;
+            referencedRelation: "verification_events";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "media_mapping_decisions_mapping_id_fkey";
+            columns: ["mapping_id"];
+            isOneToOne: true;
+            referencedRelation: "media_mapping_revisions";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "media_mapping_decisions_mapping_id_fkey";
+            columns: ["mapping_id"];
+            isOneToOne: true;
+            referencedRelation: "pi_media_mapping_states";
+            referencedColumns: ["mapping_id"];
+          },
+          {
+            foreignKeyName: "media_mapping_decisions_match_source_id_fkey";
+            columns: ["match_source_id"];
+            isOneToOne: false;
+            referencedRelation: "media_source_bindings";
+            referencedColumns: ["evidence_source_id"];
+          },
+          {
+            foreignKeyName: "media_mapping_decisions_rights_source_id_fkey";
+            columns: ["rights_source_id"];
+            isOneToOne: false;
+            referencedRelation: "media_source_bindings";
+            referencedColumns: ["evidence_source_id"];
+          },
+        ];
+      };
+      media_mapping_evidence: {
+        Row: {
+          evidence_source_id: string;
+          revision_id: string;
+        };
+        Insert: {
+          evidence_source_id: string;
+          revision_id: string;
+        };
+        Update: {
+          evidence_source_id?: string;
+          revision_id?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "media_mapping_evidence_evidence_source_id_fkey";
+            columns: ["evidence_source_id"];
+            isOneToOne: false;
+            referencedRelation: "media_source_bindings";
+            referencedColumns: ["evidence_source_id"];
+          },
+          {
+            foreignKeyName: "media_mapping_evidence_revision_id_fkey";
+            columns: ["revision_id"];
+            isOneToOne: false;
+            referencedRelation: "media_mapping_revisions";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "media_mapping_evidence_revision_id_fkey";
+            columns: ["revision_id"];
+            isOneToOne: false;
+            referencedRelation: "pi_media_mapping_states";
+            referencedColumns: ["mapping_id"];
+          },
+        ];
+      };
+      media_mapping_heads: {
+        Row: {
+          created_at: string;
+          created_by: string;
+          id: string;
+          media_role: string;
+          product_variant_id: string;
+          revision: number;
+          slot: number;
+        };
+        Insert: {
+          created_at?: string;
+          created_by: string;
+          id: string;
+          media_role: string;
+          product_variant_id: string;
+          revision: number;
+          slot: number;
+        };
+        Update: {
+          created_at?: string;
+          created_by?: string;
+          id?: string;
+          media_role?: string;
+          product_variant_id?: string;
+          revision?: number;
+          slot?: number;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "media_mapping_heads_product_variant_id_fkey";
+            columns: ["product_variant_id"];
+            isOneToOne: false;
+            referencedRelation: "pi_packaging_readiness";
+            referencedColumns: ["product_variant_id"];
+          },
+          {
+            foreignKeyName: "media_mapping_heads_product_variant_id_fkey";
+            columns: ["product_variant_id"];
+            isOneToOne: false;
+            referencedRelation: "pi_variant_readiness";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "media_mapping_heads_product_variant_id_fkey";
+            columns: ["product_variant_id"];
+            isOneToOne: false;
+            referencedRelation: "product_variants";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      media_mapping_revisions: {
+        Row: {
+          alt_text: string;
+          asset_digest: string;
+          created_at: string;
+          created_by: string;
+          head_id: string;
+          id: string;
+          media_asset_id: string;
+          original_digest: string;
+          original_intent_id: string;
+          predecessor_id: string | null;
+          proposal_digest: string;
+          reason: string;
+          review_state: string;
+          sequence: number;
+          submitted_digest: string | null;
+          variant_digest: string;
+          verification_status: Database["public"]["Enums"]["pi_verification_status"];
+        };
+        Insert: {
+          alt_text: string;
+          asset_digest: string;
+          created_at?: string;
+          created_by: string;
+          head_id: string;
+          id: string;
+          media_asset_id: string;
+          original_digest: string;
+          original_intent_id: string;
+          predecessor_id?: string | null;
+          proposal_digest: string;
+          reason: string;
+          review_state: string;
+          sequence: number;
+          submitted_digest?: string | null;
+          variant_digest: string;
+          verification_status: Database["public"]["Enums"]["pi_verification_status"];
+        };
+        Update: {
+          alt_text?: string;
+          asset_digest?: string;
+          created_at?: string;
+          created_by?: string;
+          head_id?: string;
+          id?: string;
+          media_asset_id?: string;
+          original_digest?: string;
+          original_intent_id?: string;
+          predecessor_id?: string | null;
+          proposal_digest?: string;
+          reason?: string;
+          review_state?: string;
+          sequence?: number;
+          submitted_digest?: string | null;
+          variant_digest?: string;
+          verification_status?: Database["public"]["Enums"]["pi_verification_status"];
+        };
+        Relationships: [
+          {
+            foreignKeyName: "media_mapping_revisions_head_id_fkey";
+            columns: ["head_id"];
+            isOneToOne: false;
+            referencedRelation: "media_mapping_heads";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "media_mapping_revisions_head_id_fkey";
+            columns: ["head_id"];
+            isOneToOne: false;
+            referencedRelation: "pi_media_mapping_states";
+            referencedColumns: ["head_id"];
+          },
+          {
+            foreignKeyName: "media_mapping_revisions_media_asset_id_fkey";
+            columns: ["media_asset_id"];
+            isOneToOne: false;
+            referencedRelation: "media_assets";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "media_mapping_revisions_original_intent_id_fkey";
+            columns: ["original_intent_id"];
+            isOneToOne: false;
+            referencedRelation: "media_upload_intents";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "media_mapping_revisions_predecessor_id_fkey";
+            columns: ["predecessor_id"];
+            isOneToOne: false;
+            referencedRelation: "media_mapping_revisions";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "media_mapping_revisions_predecessor_id_fkey";
+            columns: ["predecessor_id"];
+            isOneToOne: false;
+            referencedRelation: "pi_media_mapping_states";
+            referencedColumns: ["mapping_id"];
+          },
+        ];
+      };
       media_source_bindings: {
         Row: {
           assertion: string;
@@ -883,6 +1224,13 @@ export type Database = {
             isOneToOne: false;
             referencedRelation: "media_assets";
             referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "media_source_bindings_product_variant_id_fkey";
+            columns: ["product_variant_id"];
+            isOneToOne: false;
+            referencedRelation: "pi_packaging_readiness";
+            referencedColumns: ["product_variant_id"];
           },
           {
             foreignKeyName: "media_source_bindings_product_variant_id_fkey";
@@ -981,6 +1329,13 @@ export type Database = {
             foreignKeyName: "media_upload_intents_product_variant_id_fkey";
             columns: ["product_variant_id"];
             isOneToOne: false;
+            referencedRelation: "pi_packaging_readiness";
+            referencedColumns: ["product_variant_id"];
+          },
+          {
+            foreignKeyName: "media_upload_intents_product_variant_id_fkey";
+            columns: ["product_variant_id"];
+            isOneToOne: false;
             referencedRelation: "pi_variant_readiness";
             referencedColumns: ["id"];
           },
@@ -1054,6 +1409,13 @@ export type Database = {
             foreignKeyName: "oem_references_product_variant_id_fkey";
             columns: ["product_variant_id"];
             isOneToOne: false;
+            referencedRelation: "pi_packaging_readiness";
+            referencedColumns: ["product_variant_id"];
+          },
+          {
+            foreignKeyName: "oem_references_product_variant_id_fkey";
+            columns: ["product_variant_id"];
+            isOneToOne: false;
             referencedRelation: "pi_variant_readiness";
             referencedColumns: ["id"];
           },
@@ -1069,6 +1431,397 @@ export type Database = {
             columns: ["series_component_id"];
             isOneToOne: false;
             referencedRelation: "series_components";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      oem_revision_currents: {
+        Row: {
+          head_id: string;
+          revision_id: string;
+          updated_at: string;
+          updated_by: string;
+        };
+        Insert: {
+          head_id: string;
+          revision_id: string;
+          updated_at?: string;
+          updated_by: string;
+        };
+        Update: {
+          head_id?: string;
+          revision_id?: string;
+          updated_at?: string;
+          updated_by?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "oem_revision_currents_head_id_fkey";
+            columns: ["head_id"];
+            isOneToOne: true;
+            referencedRelation: "oem_revision_heads";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "oem_revision_currents_head_id_fkey";
+            columns: ["head_id"];
+            isOneToOne: true;
+            referencedRelation: "pi_oem_revision_states";
+            referencedColumns: ["head_id"];
+          },
+          {
+            foreignKeyName: "oem_revision_currents_revision_id_fkey";
+            columns: ["revision_id"];
+            isOneToOne: true;
+            referencedRelation: "oem_revisions";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "oem_revision_currents_revision_id_fkey";
+            columns: ["revision_id"];
+            isOneToOne: true;
+            referencedRelation: "pi_oem_revision_states";
+            referencedColumns: ["revision_id"];
+          },
+        ];
+      };
+      oem_revision_decisions: {
+        Row: {
+          approved_status: Database["public"]["Enums"]["pi_verification_status"] | null;
+          confirmation: Json;
+          conflict_resolution: string;
+          created_at: string;
+          created_by: string;
+          decision: Database["public"]["Enums"]["pi_review_decision"];
+          event_id: string;
+          observed_digest: string;
+          revision_id: string;
+          source_id: string | null;
+          submitted_digest: string;
+        };
+        Insert: {
+          approved_status?: Database["public"]["Enums"]["pi_verification_status"] | null;
+          confirmation: Json;
+          conflict_resolution: string;
+          created_at?: string;
+          created_by: string;
+          decision: Database["public"]["Enums"]["pi_review_decision"];
+          event_id: string;
+          observed_digest: string;
+          revision_id: string;
+          source_id?: string | null;
+          submitted_digest: string;
+        };
+        Update: {
+          approved_status?: Database["public"]["Enums"]["pi_verification_status"] | null;
+          confirmation?: Json;
+          conflict_resolution?: string;
+          created_at?: string;
+          created_by?: string;
+          decision?: Database["public"]["Enums"]["pi_review_decision"];
+          event_id?: string;
+          observed_digest?: string;
+          revision_id?: string;
+          source_id?: string | null;
+          submitted_digest?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "oem_revision_decisions_event_id_fkey";
+            columns: ["event_id"];
+            isOneToOne: true;
+            referencedRelation: "verification_events";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "oem_revision_decisions_revision_id_fkey";
+            columns: ["revision_id"];
+            isOneToOne: true;
+            referencedRelation: "oem_revisions";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "oem_revision_decisions_revision_id_fkey";
+            columns: ["revision_id"];
+            isOneToOne: true;
+            referencedRelation: "pi_oem_revision_states";
+            referencedColumns: ["revision_id"];
+          },
+          {
+            foreignKeyName: "oem_revision_decisions_source_id_fkey";
+            columns: ["source_id"];
+            isOneToOne: false;
+            referencedRelation: "oem_source_bindings";
+            referencedColumns: ["evidence_source_id"];
+          },
+          {
+            foreignKeyName: "oem_revision_decisions_source_id_fkey";
+            columns: ["source_id"];
+            isOneToOne: false;
+            referencedRelation: "pi_oem_source_states";
+            referencedColumns: ["evidence_source_id"];
+          },
+        ];
+      };
+      oem_revision_evidence: {
+        Row: {
+          evidence_source_id: string;
+          revision_id: string;
+        };
+        Insert: {
+          evidence_source_id: string;
+          revision_id: string;
+        };
+        Update: {
+          evidence_source_id?: string;
+          revision_id?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "oem_revision_evidence_evidence_source_id_fkey";
+            columns: ["evidence_source_id"];
+            isOneToOne: false;
+            referencedRelation: "oem_source_bindings";
+            referencedColumns: ["evidence_source_id"];
+          },
+          {
+            foreignKeyName: "oem_revision_evidence_evidence_source_id_fkey";
+            columns: ["evidence_source_id"];
+            isOneToOne: false;
+            referencedRelation: "pi_oem_source_states";
+            referencedColumns: ["evidence_source_id"];
+          },
+          {
+            foreignKeyName: "oem_revision_evidence_revision_id_fkey";
+            columns: ["revision_id"];
+            isOneToOne: false;
+            referencedRelation: "oem_revisions";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "oem_revision_evidence_revision_id_fkey";
+            columns: ["revision_id"];
+            isOneToOne: false;
+            referencedRelation: "pi_oem_revision_states";
+            referencedColumns: ["revision_id"];
+          },
+        ];
+      };
+      oem_revision_heads: {
+        Row: {
+          created_at: string;
+          created_by: string;
+          id: string;
+          product_variant_id: string;
+          revision: number;
+          slot: number;
+          source_oem_reference_id: string | null;
+        };
+        Insert: {
+          created_at?: string;
+          created_by: string;
+          id: string;
+          product_variant_id: string;
+          revision: number;
+          slot: number;
+          source_oem_reference_id?: string | null;
+        };
+        Update: {
+          created_at?: string;
+          created_by?: string;
+          id?: string;
+          product_variant_id?: string;
+          revision?: number;
+          slot?: number;
+          source_oem_reference_id?: string | null;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "oem_revision_heads_product_variant_id_fkey";
+            columns: ["product_variant_id"];
+            isOneToOne: false;
+            referencedRelation: "pi_packaging_readiness";
+            referencedColumns: ["product_variant_id"];
+          },
+          {
+            foreignKeyName: "oem_revision_heads_product_variant_id_fkey";
+            columns: ["product_variant_id"];
+            isOneToOne: false;
+            referencedRelation: "pi_variant_readiness";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "oem_revision_heads_product_variant_id_fkey";
+            columns: ["product_variant_id"];
+            isOneToOne: false;
+            referencedRelation: "product_variants";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "oem_revision_heads_source_oem_reference_id_fkey";
+            columns: ["source_oem_reference_id"];
+            isOneToOne: true;
+            referencedRelation: "oem_references";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      oem_revisions: {
+        Row: {
+          created_at: string;
+          created_by: string;
+          head_id: string;
+          id: string;
+          manufacturer_name: string;
+          original_digest: string | null;
+          predecessor_id: string | null;
+          proposal_digest: string;
+          reason: string;
+          reference_number: string;
+          review_state: string;
+          sequence: number;
+          submitted_digest: string | null;
+          variant_digest: string;
+          verification_status: Database["public"]["Enums"]["pi_verification_status"];
+        };
+        Insert: {
+          created_at?: string;
+          created_by: string;
+          head_id: string;
+          id: string;
+          manufacturer_name: string;
+          original_digest?: string | null;
+          predecessor_id?: string | null;
+          proposal_digest: string;
+          reason: string;
+          reference_number: string;
+          review_state: string;
+          sequence: number;
+          submitted_digest?: string | null;
+          variant_digest: string;
+          verification_status: Database["public"]["Enums"]["pi_verification_status"];
+        };
+        Update: {
+          created_at?: string;
+          created_by?: string;
+          head_id?: string;
+          id?: string;
+          manufacturer_name?: string;
+          original_digest?: string | null;
+          predecessor_id?: string | null;
+          proposal_digest?: string;
+          reason?: string;
+          reference_number?: string;
+          review_state?: string;
+          sequence?: number;
+          submitted_digest?: string | null;
+          variant_digest?: string;
+          verification_status?: Database["public"]["Enums"]["pi_verification_status"];
+        };
+        Relationships: [
+          {
+            foreignKeyName: "oem_revisions_head_id_fkey";
+            columns: ["head_id"];
+            isOneToOne: false;
+            referencedRelation: "oem_revision_heads";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "oem_revisions_head_id_fkey";
+            columns: ["head_id"];
+            isOneToOne: false;
+            referencedRelation: "pi_oem_revision_states";
+            referencedColumns: ["head_id"];
+          },
+          {
+            foreignKeyName: "oem_revisions_predecessor_id_fkey";
+            columns: ["predecessor_id"];
+            isOneToOne: false;
+            referencedRelation: "oem_revisions";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "oem_revisions_predecessor_id_fkey";
+            columns: ["predecessor_id"];
+            isOneToOne: false;
+            referencedRelation: "pi_oem_revision_states";
+            referencedColumns: ["revision_id"];
+          },
+        ];
+      };
+      oem_source_bindings: {
+        Row: {
+          assertion: string;
+          created_at: string;
+          created_by: string;
+          evidence_basis: string;
+          evidence_source_id: string;
+          manufacturer_name: string;
+          product_variant_id: string;
+          reference_number: string;
+          revision_label: string;
+          source_digest: string;
+          source_kind: string;
+          source_location: string;
+          variant_digest: string;
+        };
+        Insert: {
+          assertion: string;
+          created_at?: string;
+          created_by: string;
+          evidence_basis: string;
+          evidence_source_id: string;
+          manufacturer_name: string;
+          product_variant_id: string;
+          reference_number: string;
+          revision_label: string;
+          source_digest: string;
+          source_kind: string;
+          source_location: string;
+          variant_digest: string;
+        };
+        Update: {
+          assertion?: string;
+          created_at?: string;
+          created_by?: string;
+          evidence_basis?: string;
+          evidence_source_id?: string;
+          manufacturer_name?: string;
+          product_variant_id?: string;
+          reference_number?: string;
+          revision_label?: string;
+          source_digest?: string;
+          source_kind?: string;
+          source_location?: string;
+          variant_digest?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "oem_source_bindings_evidence_source_id_fkey";
+            columns: ["evidence_source_id"];
+            isOneToOne: true;
+            referencedRelation: "evidence_sources";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "oem_source_bindings_product_variant_id_fkey";
+            columns: ["product_variant_id"];
+            isOneToOne: false;
+            referencedRelation: "pi_packaging_readiness";
+            referencedColumns: ["product_variant_id"];
+          },
+          {
+            foreignKeyName: "oem_source_bindings_product_variant_id_fkey";
+            columns: ["product_variant_id"];
+            isOneToOne: false;
+            referencedRelation: "pi_variant_readiness";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "oem_source_bindings_product_variant_id_fkey";
+            columns: ["product_variant_id"];
+            isOneToOne: false;
+            referencedRelation: "product_variants";
             referencedColumns: ["id"];
           },
         ];
@@ -1140,11 +1893,428 @@ export type Database = {
             foreignKeyName: "packaging_records_product_variant_id_fkey";
             columns: ["product_variant_id"];
             isOneToOne: false;
+            referencedRelation: "pi_packaging_readiness";
+            referencedColumns: ["product_variant_id"];
+          },
+          {
+            foreignKeyName: "packaging_records_product_variant_id_fkey";
+            columns: ["product_variant_id"];
+            isOneToOne: false;
             referencedRelation: "pi_variant_readiness";
             referencedColumns: ["id"];
           },
           {
             foreignKeyName: "packaging_records_product_variant_id_fkey";
+            columns: ["product_variant_id"];
+            isOneToOne: false;
+            referencedRelation: "product_variants";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      packaging_revision_currents: {
+        Row: {
+          head_id: string;
+          revision_id: string;
+          updated_at: string;
+          updated_by: string;
+        };
+        Insert: {
+          head_id: string;
+          revision_id: string;
+          updated_at?: string;
+          updated_by: string;
+        };
+        Update: {
+          head_id?: string;
+          revision_id?: string;
+          updated_at?: string;
+          updated_by?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "packaging_revision_currents_head_id_fkey";
+            columns: ["head_id"];
+            isOneToOne: true;
+            referencedRelation: "packaging_revision_heads";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "packaging_revision_currents_head_id_fkey";
+            columns: ["head_id"];
+            isOneToOne: true;
+            referencedRelation: "pi_packaging_revision_states";
+            referencedColumns: ["head_id"];
+          },
+          {
+            foreignKeyName: "packaging_revision_currents_revision_id_fkey";
+            columns: ["revision_id"];
+            isOneToOne: true;
+            referencedRelation: "packaging_revisions";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "packaging_revision_currents_revision_id_fkey";
+            columns: ["revision_id"];
+            isOneToOne: true;
+            referencedRelation: "pi_packaging_revision_states";
+            referencedColumns: ["revision_id"];
+          },
+        ];
+      };
+      packaging_revision_decisions: {
+        Row: {
+          approved_status: Database["public"]["Enums"]["pi_verification_status"] | null;
+          confirmation: Json;
+          conflict_resolution: string;
+          created_at: string;
+          created_by: string;
+          decision: Database["public"]["Enums"]["pi_review_decision"];
+          event_id: string;
+          observed_digest: string;
+          revision_id: string;
+          source_id: string | null;
+          submitted_digest: string;
+        };
+        Insert: {
+          approved_status?: Database["public"]["Enums"]["pi_verification_status"] | null;
+          confirmation: Json;
+          conflict_resolution: string;
+          created_at?: string;
+          created_by: string;
+          decision: Database["public"]["Enums"]["pi_review_decision"];
+          event_id: string;
+          observed_digest: string;
+          revision_id: string;
+          source_id?: string | null;
+          submitted_digest: string;
+        };
+        Update: {
+          approved_status?: Database["public"]["Enums"]["pi_verification_status"] | null;
+          confirmation?: Json;
+          conflict_resolution?: string;
+          created_at?: string;
+          created_by?: string;
+          decision?: Database["public"]["Enums"]["pi_review_decision"];
+          event_id?: string;
+          observed_digest?: string;
+          revision_id?: string;
+          source_id?: string | null;
+          submitted_digest?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "packaging_revision_decisions_event_id_fkey";
+            columns: ["event_id"];
+            isOneToOne: true;
+            referencedRelation: "verification_events";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "packaging_revision_decisions_revision_id_fkey";
+            columns: ["revision_id"];
+            isOneToOne: true;
+            referencedRelation: "packaging_revisions";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "packaging_revision_decisions_revision_id_fkey";
+            columns: ["revision_id"];
+            isOneToOne: true;
+            referencedRelation: "pi_packaging_revision_states";
+            referencedColumns: ["revision_id"];
+          },
+          {
+            foreignKeyName: "packaging_revision_decisions_source_id_fkey";
+            columns: ["source_id"];
+            isOneToOne: false;
+            referencedRelation: "packaging_source_bindings";
+            referencedColumns: ["evidence_source_id"];
+          },
+          {
+            foreignKeyName: "packaging_revision_decisions_source_id_fkey";
+            columns: ["source_id"];
+            isOneToOne: false;
+            referencedRelation: "pi_packaging_source_states";
+            referencedColumns: ["evidence_source_id"];
+          },
+        ];
+      };
+      packaging_revision_evidence: {
+        Row: {
+          evidence_source_id: string;
+          revision_id: string;
+        };
+        Insert: {
+          evidence_source_id: string;
+          revision_id: string;
+        };
+        Update: {
+          evidence_source_id?: string;
+          revision_id?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "packaging_revision_evidence_evidence_source_id_fkey";
+            columns: ["evidence_source_id"];
+            isOneToOne: false;
+            referencedRelation: "packaging_source_bindings";
+            referencedColumns: ["evidence_source_id"];
+          },
+          {
+            foreignKeyName: "packaging_revision_evidence_evidence_source_id_fkey";
+            columns: ["evidence_source_id"];
+            isOneToOne: false;
+            referencedRelation: "pi_packaging_source_states";
+            referencedColumns: ["evidence_source_id"];
+          },
+          {
+            foreignKeyName: "packaging_revision_evidence_revision_id_fkey";
+            columns: ["revision_id"];
+            isOneToOne: false;
+            referencedRelation: "packaging_revisions";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "packaging_revision_evidence_revision_id_fkey";
+            columns: ["revision_id"];
+            isOneToOne: false;
+            referencedRelation: "pi_packaging_revision_states";
+            referencedColumns: ["revision_id"];
+          },
+        ];
+      };
+      packaging_revision_heads: {
+        Row: {
+          created_at: string;
+          created_by: string;
+          id: string;
+          original_packaging_id: string | null;
+          product_variant_id: string;
+          revision: number;
+          slot: number;
+        };
+        Insert: {
+          created_at?: string;
+          created_by: string;
+          id: string;
+          original_packaging_id?: string | null;
+          product_variant_id: string;
+          revision: number;
+          slot: number;
+        };
+        Update: {
+          created_at?: string;
+          created_by?: string;
+          id?: string;
+          original_packaging_id?: string | null;
+          product_variant_id?: string;
+          revision?: number;
+          slot?: number;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "packaging_revision_heads_original_packaging_id_fkey";
+            columns: ["original_packaging_id"];
+            isOneToOne: true;
+            referencedRelation: "packaging_records";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "packaging_revision_heads_product_variant_id_fkey";
+            columns: ["product_variant_id"];
+            isOneToOne: false;
+            referencedRelation: "pi_packaging_readiness";
+            referencedColumns: ["product_variant_id"];
+          },
+          {
+            foreignKeyName: "packaging_revision_heads_product_variant_id_fkey";
+            columns: ["product_variant_id"];
+            isOneToOne: false;
+            referencedRelation: "pi_variant_readiness";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "packaging_revision_heads_product_variant_id_fkey";
+            columns: ["product_variant_id"];
+            isOneToOne: false;
+            referencedRelation: "product_variants";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      packaging_revisions: {
+        Row: {
+          created_at: string;
+          created_by: string;
+          head_id: string;
+          id: string;
+          original_digest: string | null;
+          package_description: string;
+          predecessor_id: string | null;
+          proposal_digest: string;
+          quantity: number | null;
+          quantity_unit: string | null;
+          reason: string;
+          review_state: string;
+          sequence: number;
+          submitted_digest: string | null;
+          variant_digest: string;
+          verification_status: Database["public"]["Enums"]["pi_verification_status"];
+        };
+        Insert: {
+          created_at?: string;
+          created_by: string;
+          head_id: string;
+          id: string;
+          original_digest?: string | null;
+          package_description: string;
+          predecessor_id?: string | null;
+          proposal_digest: string;
+          quantity?: number | null;
+          quantity_unit?: string | null;
+          reason: string;
+          review_state: string;
+          sequence: number;
+          submitted_digest?: string | null;
+          variant_digest: string;
+          verification_status: Database["public"]["Enums"]["pi_verification_status"];
+        };
+        Update: {
+          created_at?: string;
+          created_by?: string;
+          head_id?: string;
+          id?: string;
+          original_digest?: string | null;
+          package_description?: string;
+          predecessor_id?: string | null;
+          proposal_digest?: string;
+          quantity?: number | null;
+          quantity_unit?: string | null;
+          reason?: string;
+          review_state?: string;
+          sequence?: number;
+          submitted_digest?: string | null;
+          variant_digest?: string;
+          verification_status?: Database["public"]["Enums"]["pi_verification_status"];
+        };
+        Relationships: [
+          {
+            foreignKeyName: "packaging_revisions_head_id_fkey";
+            columns: ["head_id"];
+            isOneToOne: false;
+            referencedRelation: "packaging_revision_heads";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "packaging_revisions_head_id_fkey";
+            columns: ["head_id"];
+            isOneToOne: false;
+            referencedRelation: "pi_packaging_revision_states";
+            referencedColumns: ["head_id"];
+          },
+          {
+            foreignKeyName: "packaging_revisions_predecessor_id_fkey";
+            columns: ["predecessor_id"];
+            isOneToOne: false;
+            referencedRelation: "packaging_revisions";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "packaging_revisions_predecessor_id_fkey";
+            columns: ["predecessor_id"];
+            isOneToOne: false;
+            referencedRelation: "pi_packaging_revision_states";
+            referencedColumns: ["revision_id"];
+          },
+        ];
+      };
+      packaging_source_bindings: {
+        Row: {
+          assertion: string;
+          created_at: string;
+          created_by: string;
+          evidence_basis: string;
+          evidence_source_id: string;
+          original_digest: string | null;
+          original_packaging_id: string | null;
+          package_description: string;
+          product_variant_id: string;
+          quantity: number | null;
+          quantity_unit: string | null;
+          revision_label: string;
+          source_digest: string;
+          source_kind: string;
+          source_location: string;
+          variant_digest: string;
+        };
+        Insert: {
+          assertion: string;
+          created_at?: string;
+          created_by: string;
+          evidence_basis: string;
+          evidence_source_id: string;
+          original_digest?: string | null;
+          original_packaging_id?: string | null;
+          package_description: string;
+          product_variant_id: string;
+          quantity?: number | null;
+          quantity_unit?: string | null;
+          revision_label: string;
+          source_digest: string;
+          source_kind: string;
+          source_location: string;
+          variant_digest: string;
+        };
+        Update: {
+          assertion?: string;
+          created_at?: string;
+          created_by?: string;
+          evidence_basis?: string;
+          evidence_source_id?: string;
+          original_digest?: string | null;
+          original_packaging_id?: string | null;
+          package_description?: string;
+          product_variant_id?: string;
+          quantity?: number | null;
+          quantity_unit?: string | null;
+          revision_label?: string;
+          source_digest?: string;
+          source_kind?: string;
+          source_location?: string;
+          variant_digest?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "packaging_source_bindings_evidence_source_id_fkey";
+            columns: ["evidence_source_id"];
+            isOneToOne: true;
+            referencedRelation: "evidence_sources";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "packaging_source_bindings_original_packaging_id_fkey";
+            columns: ["original_packaging_id"];
+            isOneToOne: false;
+            referencedRelation: "packaging_records";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "packaging_source_bindings_product_variant_id_fkey";
+            columns: ["product_variant_id"];
+            isOneToOne: false;
+            referencedRelation: "pi_packaging_readiness";
+            referencedColumns: ["product_variant_id"];
+          },
+          {
+            foreignKeyName: "packaging_source_bindings_product_variant_id_fkey";
+            columns: ["product_variant_id"];
+            isOneToOne: false;
+            referencedRelation: "pi_variant_readiness";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "packaging_source_bindings_product_variant_id_fkey";
             columns: ["product_variant_id"];
             isOneToOne: false;
             referencedRelation: "product_variants";
@@ -1229,6 +2399,13 @@ export type Database = {
             isOneToOne: false;
             referencedRelation: "media_assets";
             referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "product_media_product_variant_id_fkey";
+            columns: ["product_variant_id"];
+            isOneToOne: false;
+            referencedRelation: "pi_packaging_readiness";
+            referencedColumns: ["product_variant_id"];
           },
           {
             foreignKeyName: "product_media_product_variant_id_fkey";
@@ -1703,6 +2880,13 @@ export type Database = {
             foreignKeyName: "seo_records_product_variant_id_fkey";
             columns: ["product_variant_id"];
             isOneToOne: false;
+            referencedRelation: "pi_packaging_readiness";
+            referencedColumns: ["product_variant_id"];
+          },
+          {
+            foreignKeyName: "seo_records_product_variant_id_fkey";
+            columns: ["product_variant_id"];
+            isOneToOne: false;
             referencedRelation: "pi_variant_readiness";
             referencedColumns: ["id"];
           },
@@ -1768,6 +2952,13 @@ export type Database = {
             isOneToOne: false;
             referencedRelation: "product_series";
             referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "series_components_target_variant_id_fkey";
+            columns: ["target_variant_id"];
+            isOneToOne: false;
+            referencedRelation: "pi_packaging_readiness";
+            referencedColumns: ["product_variant_id"];
           },
           {
             foreignKeyName: "series_components_target_variant_id_fkey";
@@ -1924,6 +3115,13 @@ export type Database = {
             isOneToOne: false;
             referencedRelation: "technical_field_definitions";
             referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "technical_revision_heads_product_variant_id_fkey";
+            columns: ["product_variant_id"];
+            isOneToOne: false;
+            referencedRelation: "pi_packaging_readiness";
+            referencedColumns: ["product_variant_id"];
           },
           {
             foreignKeyName: "technical_revision_heads_product_variant_id_fkey";
@@ -2105,6 +3303,13 @@ export type Database = {
             foreignKeyName: "technical_source_bindings_product_variant_id_fkey";
             columns: ["product_variant_id"];
             isOneToOne: false;
+            referencedRelation: "pi_packaging_readiness";
+            referencedColumns: ["product_variant_id"];
+          },
+          {
+            foreignKeyName: "technical_source_bindings_product_variant_id_fkey";
+            columns: ["product_variant_id"];
+            isOneToOne: false;
             referencedRelation: "pi_variant_readiness";
             referencedColumns: ["id"];
           },
@@ -2239,6 +3444,13 @@ export type Database = {
             foreignKeyName: "technical_values_product_variant_id_fkey";
             columns: ["product_variant_id"];
             isOneToOne: false;
+            referencedRelation: "pi_packaging_readiness";
+            referencedColumns: ["product_variant_id"];
+          },
+          {
+            foreignKeyName: "technical_values_product_variant_id_fkey";
+            columns: ["product_variant_id"];
+            isOneToOne: false;
             referencedRelation: "pi_variant_readiness";
             referencedColumns: ["id"];
           },
@@ -2348,6 +3560,58 @@ export type Database = {
           },
         ];
       };
+      pi_effective_media_mappings: {
+        Row: {
+          alt_text: string | null;
+          head_id: string | null;
+          mapping_id: string | null;
+          mapping_origin: string | null;
+          media_asset_id: string | null;
+          product_variant_id: string | null;
+          publication_ready: boolean | null;
+          review_state: string | null;
+          review_valid: boolean | null;
+          role: string | null;
+          slot: number | null;
+          verification_status: Database["public"]["Enums"]["pi_verification_status"] | null;
+        };
+        Relationships: [];
+      };
+      pi_effective_oem_references: {
+        Row: {
+          head_id: string | null;
+          manufacturer_name: string | null;
+          product_variant_id: string | null;
+          publication_ready: boolean | null;
+          reference_id: string | null;
+          reference_number: string | null;
+          reference_origin: string | null;
+          review_state: string | null;
+          review_valid: boolean | null;
+          slot: number | null;
+          source_oem_reference_id: string | null;
+          verification_status: Database["public"]["Enums"]["pi_verification_status"] | null;
+        };
+        Relationships: [];
+      };
+      pi_effective_packaging_records: {
+        Row: {
+          head_id: string | null;
+          original_packaging_id: string | null;
+          package_description: string | null;
+          packaging_id: string | null;
+          packaging_origin: string | null;
+          product_variant_id: string | null;
+          publication_ready: boolean | null;
+          quantity: number | null;
+          quantity_unit: string | null;
+          review_state: string | null;
+          review_valid: boolean | null;
+          slot: number | null;
+          verification_status: Database["public"]["Enums"]["pi_verification_status"] | null;
+        };
+        Relationships: [];
+      };
       pi_effective_technical_values: {
         Row: {
           confirmation_requirements: string[] | null;
@@ -2383,6 +3647,13 @@ export type Database = {
             foreignKeyName: "technical_values_product_variant_id_fkey";
             columns: ["product_variant_id"];
             isOneToOne: false;
+            referencedRelation: "pi_packaging_readiness";
+            referencedColumns: ["product_variant_id"];
+          },
+          {
+            foreignKeyName: "technical_values_product_variant_id_fkey";
+            columns: ["product_variant_id"];
+            isOneToOne: false;
             referencedRelation: "pi_variant_readiness";
             referencedColumns: ["id"];
           },
@@ -2398,6 +3669,299 @@ export type Database = {
             columns: ["series_component_id"];
             isOneToOne: false;
             referencedRelation: "series_components";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      pi_media_mapping_metrics: {
+        Row: {
+          metric: string | null;
+          value: number | null;
+        };
+        Relationships: [];
+      };
+      pi_media_mapping_readiness: {
+        Row: {
+          invalid_current_media_mapping_count: number | null;
+          open_media_mapping_count: number | null;
+          product_variant_id: string | null;
+          reviewed_media_mapping_count: number | null;
+        };
+        Relationships: [];
+      };
+      pi_media_mapping_states: {
+        Row: {
+          alt_text: string | null;
+          head_id: string | null;
+          mapping_id: string | null;
+          match_evidence_count: number | null;
+          media_asset_id: string | null;
+          media_role: string | null;
+          product_variant_id: string | null;
+          proposal_digest: string | null;
+          review_state: string | null;
+          revision: number | null;
+          rights_evidence_count: number | null;
+          slot: number | null;
+          submitted_digest: string | null;
+          verification_status: Database["public"]["Enums"]["pi_verification_status"] | null;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "media_mapping_heads_product_variant_id_fkey";
+            columns: ["product_variant_id"];
+            isOneToOne: false;
+            referencedRelation: "pi_packaging_readiness";
+            referencedColumns: ["product_variant_id"];
+          },
+          {
+            foreignKeyName: "media_mapping_heads_product_variant_id_fkey";
+            columns: ["product_variant_id"];
+            isOneToOne: false;
+            referencedRelation: "pi_variant_readiness";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "media_mapping_heads_product_variant_id_fkey";
+            columns: ["product_variant_id"];
+            isOneToOne: false;
+            referencedRelation: "product_variants";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "media_mapping_revisions_media_asset_id_fkey";
+            columns: ["media_asset_id"];
+            isOneToOne: false;
+            referencedRelation: "media_assets";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      pi_oem_readiness: {
+        Row: {
+          invalid_current_oem_count: number | null;
+          oem_conflict_count: number | null;
+          open_oem_count: number | null;
+          product_variant_id: string | null;
+          unresolved_oem_count: number | null;
+        };
+        Relationships: [];
+      };
+      pi_oem_revision_states: {
+        Row: {
+          created_at: string | null;
+          head_id: string | null;
+          manufacturer_name: string | null;
+          product_variant_id: string | null;
+          proposal_digest: string | null;
+          proposal_fresh: boolean | null;
+          reason: string | null;
+          reference_number: string | null;
+          review_state: string | null;
+          revision: number | null;
+          revision_id: string | null;
+          slot: number | null;
+          source_oem_reference_id: string | null;
+          submitted_digest: string | null;
+          verification_status: Database["public"]["Enums"]["pi_verification_status"] | null;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "oem_revision_heads_product_variant_id_fkey";
+            columns: ["product_variant_id"];
+            isOneToOne: false;
+            referencedRelation: "pi_packaging_readiness";
+            referencedColumns: ["product_variant_id"];
+          },
+          {
+            foreignKeyName: "oem_revision_heads_product_variant_id_fkey";
+            columns: ["product_variant_id"];
+            isOneToOne: false;
+            referencedRelation: "pi_variant_readiness";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "oem_revision_heads_product_variant_id_fkey";
+            columns: ["product_variant_id"];
+            isOneToOne: false;
+            referencedRelation: "product_variants";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "oem_revision_heads_source_oem_reference_id_fkey";
+            columns: ["source_oem_reference_id"];
+            isOneToOne: true;
+            referencedRelation: "oem_references";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      pi_oem_source_states: {
+        Row: {
+          assertion: string | null;
+          evidence_basis: string | null;
+          evidence_date: string | null;
+          evidence_source_id: string | null;
+          manufacturer_name: string | null;
+          owner_name: string | null;
+          product_variant_id: string | null;
+          reference_number: string | null;
+          revision_label: string | null;
+          source_current: boolean | null;
+          source_kind: string | null;
+          source_level: Database["public"]["Enums"]["pi_source_level"] | null;
+          source_location: string | null;
+          source_reference: string | null;
+          title: string | null;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "oem_source_bindings_evidence_source_id_fkey";
+            columns: ["evidence_source_id"];
+            isOneToOne: true;
+            referencedRelation: "evidence_sources";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "oem_source_bindings_product_variant_id_fkey";
+            columns: ["product_variant_id"];
+            isOneToOne: false;
+            referencedRelation: "pi_packaging_readiness";
+            referencedColumns: ["product_variant_id"];
+          },
+          {
+            foreignKeyName: "oem_source_bindings_product_variant_id_fkey";
+            columns: ["product_variant_id"];
+            isOneToOne: false;
+            referencedRelation: "pi_variant_readiness";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "oem_source_bindings_product_variant_id_fkey";
+            columns: ["product_variant_id"];
+            isOneToOne: false;
+            referencedRelation: "product_variants";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      pi_packaging_readiness: {
+        Row: {
+          invalid_current_packaging_count: number | null;
+          missing_packaging_quantity_count: number | null;
+          open_packaging_count: number | null;
+          packaging_conflict_count: number | null;
+          packaging_count: number | null;
+          product_variant_id: string | null;
+          unresolved_packaging_count: number | null;
+        };
+        Relationships: [];
+      };
+      pi_packaging_revision_states: {
+        Row: {
+          conflict_source_ids: string[] | null;
+          created_at: string | null;
+          head_id: string | null;
+          original_packaging_id: string | null;
+          package_description: string | null;
+          product_variant_id: string | null;
+          proposal_digest: string | null;
+          proposal_fresh: boolean | null;
+          quantity: number | null;
+          quantity_unit: string | null;
+          reason: string | null;
+          review_state: string | null;
+          revision: number | null;
+          revision_id: string | null;
+          slot: number | null;
+          submitted_digest: string | null;
+          verification_status: Database["public"]["Enums"]["pi_verification_status"] | null;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "packaging_revision_heads_original_packaging_id_fkey";
+            columns: ["original_packaging_id"];
+            isOneToOne: true;
+            referencedRelation: "packaging_records";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "packaging_revision_heads_product_variant_id_fkey";
+            columns: ["product_variant_id"];
+            isOneToOne: false;
+            referencedRelation: "pi_packaging_readiness";
+            referencedColumns: ["product_variant_id"];
+          },
+          {
+            foreignKeyName: "packaging_revision_heads_product_variant_id_fkey";
+            columns: ["product_variant_id"];
+            isOneToOne: false;
+            referencedRelation: "pi_variant_readiness";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "packaging_revision_heads_product_variant_id_fkey";
+            columns: ["product_variant_id"];
+            isOneToOne: false;
+            referencedRelation: "product_variants";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      pi_packaging_source_states: {
+        Row: {
+          assertion: string | null;
+          evidence_basis: string | null;
+          evidence_date: string | null;
+          evidence_source_id: string | null;
+          original_packaging_id: string | null;
+          owner_name: string | null;
+          package_description: string | null;
+          product_variant_id: string | null;
+          quantity: number | null;
+          quantity_unit: string | null;
+          revision_label: string | null;
+          source_current: boolean | null;
+          source_kind: string | null;
+          source_level: Database["public"]["Enums"]["pi_source_level"] | null;
+          source_location: string | null;
+          source_reference: string | null;
+          title: string | null;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "packaging_source_bindings_evidence_source_id_fkey";
+            columns: ["evidence_source_id"];
+            isOneToOne: true;
+            referencedRelation: "evidence_sources";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "packaging_source_bindings_original_packaging_id_fkey";
+            columns: ["original_packaging_id"];
+            isOneToOne: false;
+            referencedRelation: "packaging_records";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "packaging_source_bindings_product_variant_id_fkey";
+            columns: ["product_variant_id"];
+            isOneToOne: false;
+            referencedRelation: "pi_packaging_readiness";
+            referencedColumns: ["product_variant_id"];
+          },
+          {
+            foreignKeyName: "packaging_source_bindings_product_variant_id_fkey";
+            columns: ["product_variant_id"];
+            isOneToOne: false;
+            referencedRelation: "pi_variant_readiness";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "packaging_source_bindings_product_variant_id_fkey";
+            columns: ["product_variant_id"];
+            isOneToOne: false;
+            referencedRelation: "product_variants";
             referencedColumns: ["id"];
           },
         ];
@@ -2441,6 +4005,37 @@ export type Database = {
         };
         Returns: Json;
       };
+      pi_add_media_source: {
+        Args: {
+          asset_uuid: string;
+          request_uuid: string;
+          requested_dimension: string;
+          requested_role: string;
+          source_copy: Json;
+          variant_uuid: string;
+        };
+        Returns: Json;
+      };
+      pi_add_oem_source: {
+        Args: {
+          request_uuid: string;
+          requested_manufacturer: string;
+          requested_reference: string;
+          source_copy: Json;
+          variant_uuid: string;
+        };
+        Returns: Json;
+      };
+      pi_add_packaging_source: {
+        Args: {
+          original_uuid?: string;
+          packaging_copy: Json;
+          request_uuid: string;
+          source_copy: Json;
+          variant_uuid: string;
+        };
+        Returns: Json;
+      };
       pi_add_technical_source: {
         Args: {
           field_uuid: string;
@@ -2481,6 +4076,23 @@ export type Database = {
         };
         Returns: boolean;
       };
+      pi_media_mapping_approval_valid: { Args: { mapping_uuid: string }; Returns: boolean };
+      pi_media_review_observed: { Args: { mapping_uuid: string }; Returns: boolean };
+      pi_media_review_snapshot: {
+        Args: {
+          expected_digest: string;
+          expected_revision: number;
+          mapping_uuid: string;
+          observer_key_uuid: string;
+        };
+        Returns: Json;
+      };
+      pi_oem_approval_valid: { Args: { revision_uuid: string }; Returns: boolean };
+      pi_oem_revision_fresh: { Args: { revision_uuid: string }; Returns: boolean };
+      pi_oem_source_current: { Args: { source_uuid: string }; Returns: boolean };
+      pi_packaging_approval_valid: { Args: { revision_uuid: string }; Returns: boolean };
+      pi_packaging_revision_fresh: { Args: { revision_uuid: string }; Returns: boolean };
+      pi_packaging_source_current: { Args: { source_uuid: string }; Returns: boolean };
       pi_product_working_states: {
         Args: { variant_ids: string[] };
         Returns: {
@@ -2501,6 +4113,49 @@ export type Database = {
           scope_label: string;
           subject_uuid: string;
           target_uuid: string;
+        };
+        Returns: Json;
+      };
+      pi_propose_media_mapping: {
+        Args: {
+          asset_uuid: string;
+          expected_revision: number;
+          head_uuid?: string;
+          mapping_copy: Json;
+          proposal_reason: string;
+          request_uuid: string;
+          requested_role: string;
+          requested_slot: number;
+          source_uuids: string[];
+          variant_uuid: string;
+        };
+        Returns: Json;
+      };
+      pi_propose_oem_revision: {
+        Args: {
+          expected_revision: number;
+          head_uuid?: string;
+          original_uuid?: string;
+          proposal_reason: string;
+          reference_copy: Json;
+          request_uuid: string;
+          requested_slot: number;
+          source_uuids: string[];
+          variant_uuid: string;
+        };
+        Returns: Json;
+      };
+      pi_propose_packaging_revision: {
+        Args: {
+          expected_revision: number;
+          head_uuid?: string;
+          original_uuid?: string;
+          packaging_copy: Json;
+          proposal_reason: string;
+          request_uuid: string;
+          requested_slot: number;
+          source_uuids: string[];
+          variant_uuid: string;
         };
         Returns: Json;
       };
@@ -2582,6 +4237,55 @@ export type Database = {
         };
         Returns: Json;
       };
+      pi_review_media_mapping: {
+        Args: {
+          confirmation: Json;
+          conflict_resolution: string;
+          decision: string;
+          expected_digest: string;
+          expected_revision: number;
+          mapping_uuid: string;
+          match_source_uuid: string;
+          observation_token: string;
+          replacement: Json;
+          request_uuid: string;
+          review_reason: string;
+          rights_source_uuid: string;
+        };
+        Returns: Json;
+      };
+      pi_review_oem_revision: {
+        Args: {
+          approved_status: Database["public"]["Enums"]["pi_verification_status"];
+          confirmation: Json;
+          conflict_resolution: string;
+          decision: string;
+          expected_digest: string;
+          expected_revision: number;
+          replacement: Json;
+          request_uuid: string;
+          review_reason: string;
+          revision_uuid: string;
+          source_uuid: string;
+        };
+        Returns: Json;
+      };
+      pi_review_packaging_revision: {
+        Args: {
+          approved_status: Database["public"]["Enums"]["pi_verification_status"];
+          confirmation: Json;
+          conflict_resolution: string;
+          decision: string;
+          expected_digest: string;
+          expected_revision: number;
+          replacement: Json;
+          request_uuid: string;
+          review_reason: string;
+          revision_uuid: string;
+          source_uuid: string;
+        };
+        Returns: Json;
+      };
       pi_review_technical_revision: {
         Args: {
           conflict_resolution: string;
@@ -2611,6 +4315,33 @@ export type Database = {
           expected_revision: number;
           relationship_uuid: string;
           request_uuid: string;
+        };
+        Returns: Json;
+      };
+      pi_submit_media_mapping: {
+        Args: {
+          expected_digest: string;
+          expected_revision: number;
+          mapping_uuid: string;
+          request_uuid: string;
+        };
+        Returns: Json;
+      };
+      pi_submit_oem_revision: {
+        Args: {
+          expected_digest: string;
+          expected_revision: number;
+          request_uuid: string;
+          revision_uuid: string;
+        };
+        Returns: Json;
+      };
+      pi_submit_packaging_revision: {
+        Args: {
+          expected_digest: string;
+          expected_revision: number;
+          request_uuid: string;
+          revision_uuid: string;
         };
         Returns: Json;
       };
