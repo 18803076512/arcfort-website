@@ -2120,3 +2120,16 @@ pending at this submission checkpoint. This is not release or real-product appro
 The final local rerun also passed all 24 SQL suites / 1,384 assertions, public type/HMAC parity,
 both exact 17-table imports and complete media/OEM/packaging rollback rehearsals. Built SEO,
 internal links, all 43 legacy-image disclosures, snippets and unchanged performance budgets pass.
+
+### First Combined Native Run
+
+Candidate `186baca39a5296bcb72b04482e0b6c492bd5bca5` was committed and pushed to the exact authorized
+branch. [Run 37568904066](https://github.com/18803076512/arcfort-website/actions/runs/37568904066)
+passed the complete quality job and native migrations, SQL/report/type, source reconciliation and
+Auth pagination steps. The combined browser step failed an assertion in stored-original inspection,
+before media/OEM/packaging acceptance. It reported zero page errors and external requests, with two
+successful original-upload responses. That partial result is not combined acceptance.
+
+The next candidate adds static substep and allowlisted test-file/line diagnostics only. No raw
+assertion values, provider response, cookies or credentials are printed, and no check is skipped or
+weakened. Exact failing assertion and complete native acceptance remain to be established.

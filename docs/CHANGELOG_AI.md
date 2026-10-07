@@ -6541,3 +6541,19 @@ retained database and historical report.
 - **Final Local Regression:** Fresh 24 SQL suites / 1,384 assertions, public type/HMAC parity, two
   exact imports and media/OEM/packaging rollback rehearsals pass. Public SEO, links, 43 legacy-image
   disclosures, snippets and performance budgets pass. These are not native provider acceptance.
+
+## 2026-10-07 - Combined CI Original-Inspection Diagnostic
+
+- **Task:** Locate the original-inspection assertion that stopped the first authorized native run.
+- **Files Changed:** `test-original-working-browser.ts`, `test-working-browser.ts`, M4 runbook and
+  this log. Added static checkpoint names and allowlisted test-script line locations only.
+- **Data Changed / Visual Changes / SEO Impact:** None. No runtime, permission or data-gate change.
+- **Validation:** Candidate `186baca3` / run `37568904066` passed quality and the native SQL/import/
+  Auth preparation steps, but failed original inspection before media/OEM/packaging browser phases.
+  Two uploads responded successfully; no page errors or external requests were reported.
+- **Known Issues:** The exact failed assertion and combined native gate remain unproven. Diagnostic
+  output intentionally omits assertion values, raw responses, credentials and cookies.
+- **Reusable Knowledge Added:** M4 runbook preserves exact failed candidate/run and evidence limits.
+- **Deployment:** No merge/deployment or retained/hosted change; fixes/reruns stay in the authorized
+  combined batch on the same branch. No repository rule override or reduced assertion.
+- **Next Recommended Action:** Rerun the instrumented native gate and repair the evidenced defect.

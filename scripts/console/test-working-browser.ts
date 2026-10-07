@@ -698,6 +698,10 @@ export async function runWorkingBrowser(input: BrowserInput) {
       JSON.stringify({
         phase,
         checkpoint,
+        failureLocation:
+          error instanceof Error
+            ? error.stack?.match(/scripts[\\/]console[\\/]test-[a-z-]+\.ts:\d+:\d+/)?.[0]
+            : undefined,
         completed: results,
         numericAssertion,
         failureKind,

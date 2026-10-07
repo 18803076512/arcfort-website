@@ -175,18 +175,25 @@ export async function runOriginalWorkingBrowser(input: Input) {
     return location;
   }
   async function inspect(participant: Participant, result: Receipt, data: Buffer, status = 200) {
+    const actor =
+      participant === owner ? "owner" : participant === reviewer ? "reviewer" : "viewer";
+    checkpoint(`originals: ${actor} stored inspection HTTP status`);
     const response = await participant.ctx.request.post(inspectionEndpoint, {
       headers: { origin: browserOrigin, "x-console-command": "1" },
       data: { variant_id: variantId, asset_id: result.asset_id },
       maxRedirects: 0,
     });
     assert.equal(response.status(), status);
+    checkpoint(`originals: ${actor} stored inspection privacy headers`);
     privateResponse(response.headers());
     if (status === 200) {
+      checkpoint(`originals: ${actor} stored inspection MIME and byte-length headers`);
       assert.equal(response.headers()["content-type"], "image/png");
       assert.equal(response.headers()["content-length"], String(data.length));
+      checkpoint(`originals: ${actor} stored inspection security headers`);
       assert.equal(response.headers()["x-content-type-options"], "nosniff");
       assert.equal(response.headers()["cross-origin-resource-policy"], "same-origin");
+      checkpoint(`originals: ${actor} stored inspection exact bytes`);
       assert.deepEqual(await response.body(), data);
     } else {
       const body = await response.json();
@@ -221,6 +228,7 @@ export async function runOriginalWorkingBrowser(input: Input) {
   checkpoint("originals: real stored-original inspection, private download and role access");
   await inspect(owner, first.result, small);
   await inspect(viewer, second.result, large);
+  checkpoint("originals: browser inspection navigation and response");
   await goto(owner.page, pathname);
   const inspected = owner.page.waitForResponse((response) => response.url() === inspectionEndpoint);
   await owner.page
@@ -228,9 +236,11 @@ export async function runOriginalWorkingBrowser(input: Input) {
     .click();
   const inspectionResponse = await inspected;
   assert.equal(inspectionResponse.status(), 200);
+  checkpoint("originals: browser inspection privacy, cookie and exact bytes");
   privateResponse(inspectionResponse.headers());
   assert.match((await inspectionResponse.request().allHeaders()).cookie ?? "", /sb-/);
   assert.deepEqual(await inspectionResponse.body(), small);
+  checkpoint("originals: browser decoded original image and zoom");
   await owner.page.waitForFunction(
     () =>
       document.querySelector<HTMLImageElement>(
@@ -238,6 +248,7 @@ export async function runOriginalWorkingBrowser(input: Input) {
       )?.naturalWidth === 32,
   );
   await owner.page.getByRole("button", { name: "Zoom in", exact: true }).click();
+  checkpoint("originals: browser download preserves exact original bytes");
   const downloadPromise = owner.page.waitForEvent("download");
   await owner.page.getByRole("link", { name: "Download original", exact: true }).click();
   const download = await downloadPromise;
