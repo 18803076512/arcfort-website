@@ -6,6 +6,7 @@ import type {
   Dialog,
   Locator,
   Page,
+  Request as BrowserRequest,
 } from "./browser-runtime/node_modules/playwright/index.js";
 import type { ConsoleClient } from "../../lib/console/client.ts";
 import { executeConsoleCommand } from "../../lib/console/commands.ts";
@@ -38,6 +39,7 @@ type Input = {
     request: ConsoleCommand;
   }>;
   checkpoint: (value: string) => void;
+  inspectionBody: (request: BrowserRequest) => Buffer;
 };
 function success(result: CommandResult) {
   assert.equal(result.ok, true, "Expected media command success.");
@@ -262,7 +264,7 @@ export async function runMediaWorkingBrowser(input: Input) {
     assert.equal(observed.status(), 200);
     privateResponse(observed.headers());
     assert.match((await observed.request().allHeaders()).cookie ?? "", /sb-/);
-    assert.deepEqual(await observed.body(), original.bytes);
+    assert.deepEqual(input.inspectionBody(observed.request()), original.bytes);
     await reviewer.page
       .getByText("Original checked / Inspection active", { exact: true })
       .waitFor();
@@ -271,6 +273,15 @@ export async function runMediaWorkingBrowser(input: Input) {
         document.querySelector<HTMLImageElement>('img[alt^="Stored original:"]')?.naturalWidth ===
         32,
     );
+    const rendered = await reviewer.page
+      .locator('img[alt^="Stored original:"]')
+      .evaluate(async (element) => {
+        const src = (element as HTMLImageElement).src;
+        if (!src.startsWith(`blob:${window.location.origin}/`))
+          throw new Error("Expected private blob.");
+        return Array.from(new Uint8Array(await (await fetch(src)).arrayBuffer()));
+      });
+    assert.deepEqual(Buffer.from(rendered), original.bytes);
     await reason(reviewer.page, "Synthetic human image review, never real product approval");
     await reviewer.page.getByLabel("Usage-rights evidence", { exact: true }).selectOption(rightsId);
     await reviewer.page.getByLabel("Exact-product evidence", { exact: true }).selectOption(matchId);

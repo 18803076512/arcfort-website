@@ -2,7 +2,11 @@ import assert from "node:assert/strict";
 import { createHash, randomBytes, randomUUID } from "node:crypto";
 import path from "node:path";
 import sharp from "sharp";
-import type { BrowserContext, Page } from "./browser-runtime/node_modules/playwright/index.js";
+import type {
+  BrowserContext,
+  Page,
+  Request as BrowserRequest,
+} from "./browser-runtime/node_modules/playwright/index.js";
 import type { ConsoleClient } from "../../lib/console/client.ts";
 import { readOriginalIntakes } from "../../lib/console/originals.ts";
 import { consoleOriginalsEnabled } from "../../lib/console/working-config.ts";
@@ -25,6 +29,7 @@ type Input = {
   output: string;
   goto: (page: Page, pathname: string) => Promise<void>;
   checkpoint: (value: string) => void;
+  inspectionBody: (request: BrowserRequest) => Buffer;
 };
 type Receipt = { ok: true; intent_id: string; asset_id: string };
 
@@ -239,7 +244,7 @@ export async function runOriginalWorkingBrowser(input: Input) {
   checkpoint("originals: browser inspection privacy, cookie and exact bytes");
   privateResponse(inspectionResponse.headers());
   assert.match((await inspectionResponse.request().allHeaders()).cookie ?? "", /sb-/);
-  assert.deepEqual(await inspectionResponse.body(), small);
+  assert.deepEqual(input.inspectionBody(inspectionResponse.request()), small);
   checkpoint("originals: browser decoded original image and zoom");
   await owner.page.waitForFunction(
     () =>
@@ -247,6 +252,15 @@ export async function runOriginalWorkingBrowser(input: Input) {
         'img[alt="Stored original: synthetic-owner-original.png"]',
       )?.naturalWidth === 32,
   );
+  const rendered = await owner.page
+    .getByRole("img", { name: "Stored original: synthetic-owner-original.png", exact: true })
+    .evaluate(async (element) => {
+      const src = (element as HTMLImageElement).src;
+      if (!src.startsWith(`blob:${window.location.origin}/`))
+        throw new Error("Expected private blob.");
+      return Array.from(new Uint8Array(await (await fetch(src)).arrayBuffer()));
+    });
+  assert.deepEqual(Buffer.from(rendered), small);
   await owner.page.getByRole("button", { name: "Zoom in", exact: true }).click();
   checkpoint("originals: browser download preserves exact original bytes");
   const downloadPromise = owner.page.waitForEvent("download");

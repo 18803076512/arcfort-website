@@ -79,6 +79,13 @@ export async function runWorkingBrowser(input: BrowserInput) {
   let originalResponses = 0;
   let originalRequestFailures = 0;
   const commandBodies = new WeakMap<BrowserRequest, Buffer>();
+  const inspectionBodies = new WeakMap<BrowserRequest, Buffer>();
+  function inspectionBody(request: BrowserRequest) {
+    const body = inspectionBodies.get(request);
+    assert.ok(body, "The real inspection response body was not retained.");
+    inspectionBodies.delete(request);
+    return body;
+  }
   const output = path.resolve(".tmp/console-working-browser", randomUUID());
   try {
     await mkdir(output, { recursive: true });
@@ -118,6 +125,14 @@ export async function runWorkingBrowser(input: BrowserInput) {
           // Forward the real server response unchanged; document navigation can evict its browser body.
           const response = await route.fetch({ maxRedirects: 0 });
           commandBodies.set(request, await response.body());
+          return route.fulfill({ response });
+        }
+        if (
+          request.url() === `${browserOrigin}/console/originals/inspect` &&
+          request.method() === "POST"
+        ) {
+          const response = await route.fetch({ maxRedirects: 0 });
+          inspectionBodies.set(request, await response.body());
           return route.fulfill({ response });
         }
         return route.continue();
@@ -515,6 +530,7 @@ export async function runWorkingBrowser(input: BrowserInput) {
     const originals = input.originals
       ? await runOriginalWorkingBrowser({
           variantId: id,
+          inspectionBody,
           owner: { ...owner, client: input.owner.client },
           reviewer: { ...reviewer, client: input.reviewer.client },
           viewer: { ...viewer, client: input.viewer.client },
@@ -538,6 +554,7 @@ export async function runWorkingBrowser(input: BrowserInput) {
             reviewer: { ...reviewer, client: input.reviewer.client, id: input.reviewer.id },
             viewer: { ...viewer, client: input.viewer.client },
             original: originals.originals[0],
+            inspectionBody,
             context,
             withAuthorityLock: input.media.withAuthorityLock,
             output,

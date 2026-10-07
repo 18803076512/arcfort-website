@@ -6557,3 +6557,23 @@ retained database and historical report.
 - **Deployment:** No merge/deployment or retained/hosted change; fixes/reruns stay in the authorized
   combined batch on the same branch. No repository rule override or reduced assertion.
 - **Next Recommended Action:** Rerun the instrumented native gate and repair the evidenced defect.
+
+## 2026-10-07 - Native Binary Inspection Evidence Repair
+
+- **Task:** Strengthen native browser byte evidence after diagnostic CI isolated a browser response
+  comparison failure, while direct HTTP and Storage bytes remained exact.
+- **Files Changed:** Working-browser parent, original/media browser tests, M4 runbook and this log.
+- **Components Changed:** Retain and forward unchanged real inspection responses; compare the
+  upstream bytes and the rendered private Blob bytes. Original download fidelity remains required.
+- **Data Changed / Visual Changes / SEO Impact:** None; no runtime, SQL, grant or public data change.
+- **Validation:** Run `37569568378` on `3e4488f5` isolated the failing line after quality/native
+  preparation passed. Standalone synthetic loopback Edge transport passed three modes, but did not
+  reproduce Linux CI. TypeScript and focused lint pass for the revised harness.
+- **Known Issues:** Full native acceptance remains pending; no claim that local transport explains
+  the Linux failure. No response is mocked or assertion bypassed; actual browser consumption and
+  original downloads still must match byte for byte.
+- **Reusable Knowledge Added:** Runbook distinguishes response-inspection evidence from consumed
+  bytes and records both failed candidates without claiming media/OEM/packaging completion.
+- **Deployment:** None; only the existing combined CI authorization and exact branch apply.
+- **Next Recommended Action:** Run the full native sequence on the repaired harness and verify its
+  exact ledgers, byte retention, rights/conflict review and revoked-access checks.

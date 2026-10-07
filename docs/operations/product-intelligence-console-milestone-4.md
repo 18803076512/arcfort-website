@@ -2133,3 +2133,21 @@ successful original-upload responses. That partial result is not combined accept
 The next candidate adds static substep and allowlisted test-file/line diagnostics only. No raw
 assertion values, provider response, cookies or credentials are printed, and no check is skipped or
 weakened. Exact failing assertion and complete native acceptance remain to be established.
+
+### Browser Binary Evidence Follow-Up
+
+The diagnostic candidate `3e4488f5d82e5837bc14f4bc5e01b486b98be7dc` / [run 37569568378](https://github.com/18803076512/arcfort-website/actions/runs/37569568378)
+again passed quality and native preparation, then identified the failure at the browser inspector's
+`Response.body()` comparison (`test-original-working-browser.ts:242`). The preceding direct owner
+and viewer HTTP checks passed exact MIME/length/security headers and byte equality, as did Storage
+readback and browser status/privacy/cookie assertions. This does not yet identify the browser/API
+difference's root cause or prove the subsequent download.
+
+A standalone loopback-only generated-PNG diagnostic passed Edge's plain, continued and unchanged
+pass-through responses, including browser-consumed bytes; it did not reproduce Linux CI's failure.
+No provider or existing local service was used. The native harness now retains real inspection
+responses through the same unchanged `route.fetch` / `route.fulfill({ response })` pattern already
+used for commands. It compares those bytes and additionally compares the browser's actual rendered
+Blob bytes; the original browser-download byte comparison remains required. Media review uses the
+same two-ended byte checks. No fixture response replaces the provider, no application code changes,
+and native acceptance remains pending until this exact candidate passes.
