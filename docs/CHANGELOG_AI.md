@@ -6577,3 +6577,20 @@ retained database and historical report.
 - **Deployment:** None; only the existing combined CI authorization and exact branch apply.
 - **Next Recommended Action:** Run the full native sequence on the repaired harness and verify its
   exact ledgers, byte retention, rights/conflict review and revoked-access checks.
+
+## 2026-10-07 - CSP-Compatible Browser Byte Verification
+
+- **Task:** Correct the new browser byte probe to respect the unchanged production CSP.
+- **Files Changed:** Original/media native-browser tests and their M4 runbook/log evidence.
+- **Data Changed / Visual Changes / SEO Impact:** None. CSP and all runtime behavior are unchanged.
+- **Validation:** Pure synthetic loopback control reproduced `fetch(blob:)` refusal under
+  `connect-src 'self'`. Native Blob downloads then matched the original in all three transport
+  modes. The pass-through case returned an empty diagnostic `Response.body()` despite identical
+  125-byte upstream, consumed Blob and browser download. TypeScript and focused lint pass.
+- **Known Issues:** The intermediate `a4055b77` CI candidate is superseded; complete native combined
+  acceptance still requires the new candidate. Browser download checks replace only the incompatible
+  probe, not upstream byte equality or actual image decode and download fidelity.
+- **Reusable Knowledge Added:** Runbook records this direct distinction between browser diagnostic
+  response retrieval and the bytes users actually view/download, without weakening CSP.
+- **Deployment:** None; same authorized branch and disposable-CI scope only.
+- **Next Recommended Action:** Verify the complete corrected native run and original-data retention.

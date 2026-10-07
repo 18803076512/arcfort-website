@@ -2151,3 +2151,12 @@ used for commands. It compares those bytes and additionally compares the browser
 Blob bytes; the original browser-download byte comparison remains required. Media review uses the
 same two-ended byte checks. No fixture response replaces the provider, no application code changes,
 and native acceptance remains pending until this exact candidate passes.
+
+The follow-up CSP control found that `connect-src 'self'` rejects the added `fetch(blob:)` test.
+CSP remains unchanged. Both original and media inspection now compare the browser's native download
+of the displayed Blob, alongside retained real upstream bytes and actual image decoding. The
+loopback control passed all three modes under the same CSP. In its pass-through case the browser
+diagnostic `Response.body()` returned zero bytes while the 125-byte upstream, consumed Blob and
+native download were identical. This directly demonstrates why browser diagnostic body retrieval
+alone is not byte-retention evidence, although it does not establish every detail of Linux CI's
+earlier mismatch. The intermediate `a4055b77` candidate is superseded by this CSP-compatible test.

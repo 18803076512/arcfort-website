@@ -252,15 +252,6 @@ export async function runOriginalWorkingBrowser(input: Input) {
         'img[alt="Stored original: synthetic-owner-original.png"]',
       )?.naturalWidth === 32,
   );
-  const rendered = await owner.page
-    .getByRole("img", { name: "Stored original: synthetic-owner-original.png", exact: true })
-    .evaluate(async (element) => {
-      const src = (element as HTMLImageElement).src;
-      if (!src.startsWith(`blob:${window.location.origin}/`))
-        throw new Error("Expected private blob.");
-      return Array.from(new Uint8Array(await (await fetch(src)).arrayBuffer()));
-    });
-  assert.deepEqual(Buffer.from(rendered), small);
   await owner.page.getByRole("button", { name: "Zoom in", exact: true }).click();
   checkpoint("originals: browser download preserves exact original bytes");
   const downloadPromise = owner.page.waitForEvent("download");

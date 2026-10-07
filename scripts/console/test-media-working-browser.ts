@@ -273,15 +273,12 @@ export async function runMediaWorkingBrowser(input: Input) {
         document.querySelector<HTMLImageElement>('img[alt^="Stored original:"]')?.naturalWidth ===
         32,
     );
-    const rendered = await reviewer.page
-      .locator('img[alt^="Stored original:"]')
-      .evaluate(async (element) => {
-        const src = (element as HTMLImageElement).src;
-        if (!src.startsWith(`blob:${window.location.origin}/`))
-          throw new Error("Expected private blob.");
-        return Array.from(new Uint8Array(await (await fetch(src)).arrayBuffer()));
-      });
-    assert.deepEqual(Buffer.from(rendered), original.bytes);
+    const downloaded = reviewer.page.waitForEvent("download");
+    await reviewer.page.getByRole("link", { name: "Download original", exact: true }).click();
+    const chunks: Buffer[] = [];
+    for await (const chunk of await (await downloaded).createReadStream())
+      chunks.push(Buffer.from(chunk));
+    assert.deepEqual(Buffer.concat(chunks), original.bytes);
     await reason(reviewer.page, "Synthetic human image review, never real product approval");
     await reviewer.page.getByLabel("Usage-rights evidence", { exact: true }).selectOption(rightsId);
     await reviewer.page.getByLabel("Exact-product evidence", { exact: true }).selectOption(matchId);
