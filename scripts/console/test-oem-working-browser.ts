@@ -94,14 +94,39 @@ export async function runOemWorkingBrowser(input: Input) {
     return value[0];
   }
   async function settled(participant: Participant) {
-    const latest = (await scope()).latest;
-    await participant.page
-      .locator(".console-fact-snapshot")
-      .filter({
-        has: participant.page.getByRole("heading", { name: "Latest proposal", exact: true }),
-      })
-      .getByText(`Revision ${latest.revision} / ${latest.state}`, { exact: true })
-      .waitFor();
+    const current = await scope();
+    const latest = current.latest;
+    const history = await readOemHistory(participant.client, variantId, current.id, 1);
+    assert.equal(history.items[0]?.state, latest.state);
+    assert.equal(history.items[0]?.revision, latest.revision);
+    const panel = participant.page.locator(".console-fact-snapshot").filter({
+      has: participant.page.getByRole("heading", { name: "Latest proposal", exact: true }),
+    });
+    try {
+      await panel
+        .getByText(`Revision ${latest.revision} / ${latest.state}`, { exact: true })
+        .waitFor();
+    } catch (error) {
+      const states = ["proposed", "pending", "approved", "rejected", "superseded"];
+      console.error(
+        JSON.stringify({
+          check: "OEM refreshed snapshot",
+          revision: latest.revision,
+          expectedState: states.includes(latest.state) ? latest.state : "invalid",
+          snapshotCount: await panel.count(),
+          renderedStates: await panel
+            .locator(".console-caption")
+            .allTextContents()
+            .then((values) =>
+              values.filter((value) =>
+                /^Revision [0-9]+ \/ (proposed|pending|approved|rejected|superseded)$/.test(value),
+              ),
+            ),
+          workbenchCount: await participant.page.locator(".console-oem-workbench").count(),
+        }),
+      );
+      throw error;
+    }
   }
   async function visit(participant: Participant, head?: string) {
     await goto(participant.page, pathname + (head ? `?head=${head}` : "?head=new"));

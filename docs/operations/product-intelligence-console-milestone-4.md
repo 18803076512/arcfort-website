@@ -2173,3 +2173,16 @@ explicit evidence reload. Other confirmations are dismissed and fail the sanitiz
 path; asynchronous handler errors are retained rather than thrown outside the main test. At least
 two actual reload confirmations must be exercised. No runtime guard, human evidence decision or
 database contract changes. Complete media/OEM/packaging native acceptance remains pending.
+
+### October 8 OEM Refresh Diagnostic
+
+Candidate `7fa5060e9552c84f105e01e93c9f088edaa9b732` / [run 37617278658](https://github.com/18803076512/arcfort-website/actions/runs/37617278658)
+passed quality and reached OEM after the complete media phase. OEM source/proposal/submission and
+refusal checks passed; its real reviewer approval returned success, but waiting for the refreshed
+latest-proposal snapshot timed out. Packaging and final cross-module revocation/retention remain
+unrun. This is not combined acceptance or proof of a runtime versus harness refresh defect.
+
+The next diagnostic verifies the acting participant's persisted history before waiting for the
+rendered state and reports only allowlisted review states/revisions and element counts on timeout.
+No page content, evidence text, provider response or credentials are logged; no runtime change or
+automatic reload is used to conceal a refresh defect.

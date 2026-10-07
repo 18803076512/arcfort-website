@@ -6610,3 +6610,17 @@ retained database and historical report.
   synthetic navigation response from an approval of product evidence.
 - **Deployment:** None; same authorized branch and disposable CI only, no retained/hosted writes.
 - **Next Recommended Action:** Run the corrected full native gate, preserving every evidence check.
+
+## 2026-10-08 - Native OEM Post-Approval Diagnostic
+
+- **Task:** Distinguish a persisted-history failure from a rendered-refresh failure after native OEM approval.
+- **Files Changed:** OEM native-browser harness, M4 runbook and this append-only log.
+- **Components Changed:** Test checks acting-participant history and emits only review-state enums,
+  revisions and element counts on timeout. It does not reload or bypass the expected refresh.
+- **Data Changed / Visual Changes / SEO Impact:** None; runtime and all evidence gates are unchanged.
+- **Validation:** Run `37617278658` at `7fa5060e` passed quality and media, then timed out after a
+  successful OEM approval response. No page errors or external requests were reported.
+- **Known Issues:** The rendered OEM state remains unproven; packaging and final retention await CI.
+- **Reusable Knowledge Added:** Runbook preserves this narrower checkpoint and evidence limits.
+- **Deployment:** None; exact previously authorized repository, branch and disposable CI only.
+- **Next Recommended Action:** Identify and fix the evidenced refresh/read defect, then run the complete gate.
