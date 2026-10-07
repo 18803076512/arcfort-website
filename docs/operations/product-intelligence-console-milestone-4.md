@@ -2186,3 +2186,28 @@ The next diagnostic verifies the acting participant's persisted history before w
 rendered state and reports only allowlisted review states/revisions and element counts on timeout.
 No page content, evidence text, provider response or credentials are logged; no runtime change or
 automatic reload is used to conceal a refresh defect.
+
+### OEM And Packaging Navigation Repair
+
+The diagnostic run [37697460689](https://github.com/18803076512/arcfort-website/actions/runs/37697460689)
+at `b6214b1c` confirmed a real stale rendered snapshot: database and acting-participant history
+were revision 1 `pending`, while the page remained revision 1 `proposed`. Quality passed; combined
+acceptance did not. The failure occurred at submission in this run, not the previous approval step.
+
+OEM and packaging now use fresh document requests after successful commands and record selection,
+matching existing Console navigation. Error inputs, retry receipts and discard confirmations remain
+intact; standalone source-entry refresh still preserves an unsaved copy. The
+[dated navigation decision](../../knowledge-base/decisions/2026-10-08-console-oem-packaging-document-navigation.md)
+supersedes the D4 refresh description only. Synthetic browser regressions explicitly require actual
+document requests rather than just a changed URL; native state/history/race checks remain required.
+
+Initial sandboxed local preview/browser launches failed due to dependency realpath and browser
+process restrictions, not application assertions. Scoped escalated loopback-only fixture runs use
+the existing dependencies without a database, account or new installation. TypeScript, focused lint
+and 31 OEM/packaging command/read tests pass. Native acceptance still awaits the repaired candidate.
+
+Fresh synthetic UI runs pass 15 OEM and 14 packaging groups across 360/390/768/1024/1280/1440 widths,
+including actual document-navigation assertions, pixel/overflow checks, error retention and role
+controls, with zero page errors or external requests. Reviewed OEM mobile and packaging desktop
+screenshots retain readable stacked/two-column layouts. Formatting, whitespace and the 670-file
+secret scan pass. These component fixtures do not replace native provider acceptance.

@@ -369,7 +369,7 @@ export function PackagingWorkbench({
                 window.confirm("Discard unsaved changes and select another package?")
               ) {
                 clearUnsaved();
-                router.push(`${url}?head=${event.target.value || "new"}`);
+                window.location.assign(`${url}?head=${event.target.value || "new"}`);
               }
             }}
           >
@@ -480,8 +480,7 @@ export function PackagingWorkbench({
             clearUnsaved();
             setDirty(false);
             setSourceDirty(false);
-            router.push(`${url}?head=${result.head_id ?? scope?.id ?? "new"}`);
-            router.refresh();
+            window.location.assign(`${url}?head=${result.head_id ?? scope?.id ?? "new"}`);
           }
         }}
       >

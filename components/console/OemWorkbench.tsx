@@ -341,7 +341,7 @@ export function OemWorkbench({
                 window.confirm("Discard unsaved changes and select another reference?")
               ) {
                 clearUnsaved();
-                router.push(`${url}?head=${event.target.value || "new"}`);
+                window.location.assign(`${url}?head=${event.target.value || "new"}`);
               }
             }}
           >
@@ -443,8 +443,7 @@ export function OemWorkbench({
             clearUnsaved();
             setDirty(false);
             setSourceDirty(false);
-            router.push(`${url}?head=${result.head_id ?? scope?.id ?? "new"}`);
-            router.refresh();
+            window.location.assign(`${url}?head=${result.head_id ?? scope?.id ?? "new"}`);
           }
         }}
       >

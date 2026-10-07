@@ -6624,3 +6624,23 @@ retained database and historical report.
 - **Reusable Knowledge Added:** Runbook preserves this narrower checkpoint and evidence limits.
 - **Deployment:** None; exact previously authorized repository, branch and disposable CI only.
 - **Next Recommended Action:** Identify and fix the evidenced refresh/read defect, then run the complete gate.
+
+## 2026-10-08 - OEM And Packaging Fresh Document Navigation
+
+- **Task:** Repair the native stale-state defect demonstrated by diagnostic CI `37697460689`.
+- **Files Changed:** OEM/packaging workbenches and synthetic browser tests, dated navigation decision,
+  M4 runbook and this append-only log.
+- **Components Changed:** Successful commands and record selection use full document requests,
+  preserving failure inputs, retry identity, unsaved-change confirmation and source-entry refresh.
+- **Data Changed / Visual Changes / SEO Impact:** None; no SQL, role, canonical/public route or claim change.
+- **Validation:** Diagnostic CI showed persisted revision 1 pending while the page stayed proposed.
+  New synthetic tests require real document requests; TypeScript, focused lint and 31 domain/read
+  tests pass. Complete native combined acceptance is still pending.
+- **Known Issues:** Native OEM/packaging and final cross-module retention/revocation remain unproven.
+- **Reusable Knowledge Added:** Dated decision restores the M2 document-navigation boundary for
+  these transitions and explicitly supersedes only the historical D4 refresh description.
+- **Deployment:** None; same approved branch/isolated CI only. No retained or hosted data changes.
+- **Next Recommended Action:** Verify complete native review, contention and retention before closing this batch.
+- **Local Browser Result:** 15 OEM and 14 packaging groups pass, each at six widths with actual
+  document-request assertions and no page errors/external requests. Representative screenshots,
+  formatting, whitespace and 670-file secret scan pass; no dependency install/change occurred.

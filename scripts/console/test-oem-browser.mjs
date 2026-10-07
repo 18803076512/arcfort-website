@@ -67,6 +67,15 @@ async function visit(query = "") {
   assert.match(response.headers()["x-robots-tag"], /noindex/);
   await page.getByRole("heading", { name: "OEM references", exact: true }).waitFor();
 }
+async function documentAction(action) {
+  await Promise.all([
+    page.waitForEvent("domcontentloaded"),
+    page.waitForRequest(
+      (request) => request.isNavigationRequest() && request.frame() === page.mainFrame(),
+    ),
+    action(),
+  ]);
+}
 const button = (name) => page.getByRole("button", { name, exact: true });
 const label = (name) => page.getByLabel(name, { exact: true });
 async function approveInputs(status = "OEM_REFERENCE") {
@@ -327,9 +336,12 @@ try {
   await visit();
   code = "";
   await approveInputs();
-  await button("Approve").click();
+  await documentAction(() => button("Approve").click());
   await page.waitForURL(new RegExp(`head=${id(2)}`));
   assert.equal(await page.locator('.console-command-error[role="alert"]').count(), 0);
+  await documentAction(() => label("Reference record").selectOption(""));
+  await page.waitForURL(/head=new/);
+  assert.equal(await label("Reference number").inputValue(), "");
   let confirmations = 0;
   const confirm = (dialog) => {
     if (dialog.type() === "confirm") {

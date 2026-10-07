@@ -39,9 +39,13 @@ await context.route("**/*", async (route) => {
     assert.equal(request.headers()["x-console-command"], "1");
     calls.push(request.postDataJSON());
     return route.fulfill({
-      status: 409,
+      status: code ? 409 : 200,
       contentType: "application/json",
-      body: JSON.stringify({ ok: false, code, message: "PRIVATE_SENTINEL" }),
+      body: JSON.stringify(
+        code
+          ? { ok: false, code, message: "PRIVATE_SENTINEL" }
+          : { ok: true, result: { revision_id: id(3), head_id: id(2), revision: 2 } },
+      ),
     });
   }
   assert.equal(request.method(), "GET");
@@ -54,6 +58,15 @@ async function visit(query = "") {
   assert.equal(response.status(), 200);
   assert.match(response.headers()["x-robots-tag"], /noindex/);
   await page.getByRole("heading", { name: "Packaging", exact: true }).waitFor();
+}
+async function documentAction(action) {
+  await Promise.all([
+    page.waitForEvent("domcontentloaded"),
+    page.waitForRequest(
+      (request) => request.isNavigationRequest() && request.frame() === page.mainFrame(),
+    ),
+    action(),
+  ]);
 }
 async function failed() {
   await page.locator('.console-command-error[role="alert"]').waitFor();
@@ -230,6 +243,17 @@ try {
   assert.match(await page.locator("body").innerText(), /Page 2/);
   await page.keyboard.press("Tab");
   assert.ok(await page.evaluate(() => document.activeElement !== document.body));
+  groups++;
+  await visit();
+  code = "";
+  await approval();
+  await documentAction(() => button("Approve").click());
+  await page.waitForURL(new RegExp(`head=${id(2)}`));
+  assert.equal(await page.locator('.console-command-error[role="alert"]').count(), 0);
+  await documentAction(() => label("Packaging record").selectOption(""));
+  await page.waitForURL(/head=new/);
+  assert.equal(await label("Package description").inputValue(), "");
+  code = "unavailable";
   groups++;
   for (const width of [1440, 1280, 1024, 768, 390, 360]) {
     await page.setViewportSize({ width, height: 900 });
