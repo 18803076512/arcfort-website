@@ -3,9 +3,9 @@
 Date: 2026-09-24
 Scope: local implementation toward the approved Console V1 architecture. M4 is not complete.
 
-Latest validation: [hydration recurrence](#october-8-hydration-recurrence), 2026-10-08.
-Candidate `90e18693` fails the strict page-error gate after 47 scenarios: React 418 and TypeError
-at the packaging history/responsive checkpoint. Current closure is **BLOCKED** pending repair.
+Latest validation: [cross-page hydration diagnosis](#october-9-cross-page-hydration-diagnosis).
+Candidate `83a53697` fails the strict page-error gate after 47 scenarios: React 418/HTML on the
+owner's 360px product history page, before packaging. Current closure is **BLOCKED** pending repair.
 Earlier `fb22f8aa` passes two native attempts; that non-reproduction did not resolve the fault.
 Candidate `74031362` previously
 passed [combined native acceptance](#october-8-combined-native-acceptance). Technical documents,
@@ -2322,3 +2322,24 @@ account identifiers or complete stacks; keep the original zero-error assertion u
 Synthetic production-mode UI checks without a database have not reproduced the fault. Investigate
 streaming layout timing as a hypothesis, not a confirmed cause. All CI-only authorization and
 real-product publication limits remain unchanged; no retained local stack is used for diagnosis.
+
+## October 9 Cross-Page Hydration Diagnosis
+
+At `83a5369783fef42c5a15391b9f45541b5f6d4a2e`,
+[run 37769648625](https://github.com/18803076512/arcfort-website/actions/runs/37769648625), quality
+and 47 scenario bodies complete, but final pageErrors=1 fails. The sanitized diagnostic identifies
+`418`, `HTML`, owner, width 360 and the initial read-only/responsive phase. Its `other` route is the
+product history route, the only section in that loop omitted from the previous allowlist; history
+is now explicitly named. This occurs before OEM/packaging and rules out a packaging-only cause.
+
+Inspect the existing pinned React build at its failing claim using a temporary CDP breakpoint.
+Only fixed HTML tag categories, child/template counts and readyState may leave the browser, never
+node text, attributes, React props, business values, credentials, full URLs or stacks. The breakpoint
+does not change renderer code, skip errors or stop at ordinary successful rendering. A local
+synthetic H1-to-H2 mismatch proves expected H1 / actual H2 are captured correctly and the real
+pageerror still fires. Add 24 bounded read-only history document loads to capture the intermittent
+case; this is a changed diagnostic experiment, not an identical rerun seeking green results.
+
+The temporary synthetic asynchronous layout experiments remain uncommitted until useful as a
+regression. Neither Edge nor pinned Chromium synthetic non-native probes reproduced the genuine
+fault. Root cause remains unproven; investigate shared private layout/streaming before runtime edits.

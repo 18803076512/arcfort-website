@@ -26,6 +26,7 @@ import { runOemWorkingBrowser } from "./test-oem-working-browser.ts";
 import { runPackagingWorkingBrowser } from "./test-packaging-working-browser.ts";
 import type { DisposableMediaObserver } from "./media-acceptance.ts";
 import type { openLocalAcceptance } from "./local-acceptance.ts";
+import { hydrationProbeTarget, installHydrationProbe } from "./hydration-probe.ts";
 
 type Account = { id: string; email: string; password: string; client: ConsoleClient };
 type BrowserInput = {
@@ -73,6 +74,8 @@ export async function runWorkingBrowser(input: BrowserInput) {
   let phase = "browser launch";
   let checkpoint: string | undefined;
   let pageErrors = 0;
+  const hydrationShapes: unknown[] = [];
+  const diagnosticsReady = new WeakMap<Page, Promise<void>>();
   const pageErrorDetails: {
     phase: string;
     checkpoint?: string;
@@ -102,6 +105,7 @@ export async function runWorkingBrowser(input: BrowserInput) {
   const output = path.resolve(".tmp/console-working-browser", randomUUID());
   try {
     await mkdir(output, { recursive: true });
+    const hydrationTarget = await hydrationProbeTarget();
     browser = await chromium.launch({
       headless: true,
       ...(process.env.PLAYWRIGHT_CHANNEL ? { channel: process.env.PLAYWRIGHT_CHANNEL } : {}),
@@ -150,7 +154,19 @@ export async function runWorkingBrowser(input: BrowserInput) {
         }
         return route.continue();
       });
-      value.on("page", (page) =>
+      value.on("page", (page) => {
+        const ready = installHydrationProbe(value, page, hydrationTarget, (shape) => {
+          if (hydrationShapes.length < 8)
+            hydrationShapes.push({
+              phase,
+              checkpoint,
+              role,
+              width: page.viewportSize()?.width,
+              shape,
+            });
+        });
+        void ready.catch(() => undefined);
+        diagnosticsReady.set(page, ready);
         page.on("pageerror", (error) => {
           pageErrors++;
           if (pageErrorDetails.length < 8) {
@@ -161,7 +177,7 @@ export async function runWorkingBrowser(input: BrowserInput) {
               role,
               route:
                 new URL(page.url()).pathname.match(
-                  /^\/console\/products\/[a-f0-9-]{36}\/(edit|review|compatibility|originals|media|oem|packaging)$/,
+                  /^\/console\/products\/[a-f0-9-]{36}\/(edit|review|history|compatibility|originals|media|oem|packaging)$/,
                 )?.[1] ?? "other",
               width: page.viewportSize()?.width,
               kind: reactCode
@@ -186,11 +202,12 @@ export async function runWorkingBrowser(input: BrowserInput) {
               ),
             });
           }
-        }),
-      );
+        });
+      });
       return value;
     }
     async function goto(page: Page, pathname: string) {
+      await diagnosticsReady.get(page);
       const response = await page.goto(`${browserOrigin}${pathname}`);
       assert.equal(response?.status(), 200);
       privateResponse(response!.headers());
@@ -540,6 +557,7 @@ export async function runWorkingBrowser(input: BrowserInput) {
     for (const width of [360, 390, 768, 1440]) {
       await page.setViewportSize({ width, height: 1000 });
       for (const section of ["edit", "review", "history"]) {
+        checkpoint = `owner ${section} at ${width}px`;
         await goto(page, `${product}/${section}`);
         assert.equal(
           await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1),
@@ -553,6 +571,18 @@ export async function runWorkingBrowser(input: BrowserInput) {
       }
     }
     results.push(phase);
+
+    phase = "bounded read-only history document hydration";
+    for (let iteration = 0; iteration < 12; iteration++) {
+      for (const width of [360, 1440]) {
+        checkpoint = `history document ${iteration + 1} at ${width}px`;
+        await page.setViewportSize({ width, height: 1000 });
+        await goto(page, `${product}/history`);
+        assert.equal(await page.getByRole("heading", { level: 1 }).count(), 1);
+      }
+    }
+    results.push(phase);
+    checkpoint = undefined;
 
     phase = "real compatibility browser forms, history and source boundaries";
     const compatibility = input.compatibilityTargetId
@@ -773,6 +803,7 @@ export async function runWorkingBrowser(input: BrowserInput) {
         originalRequestFailures,
         pageErrors,
         pageErrorDetails,
+        hydrationShapes,
         externalRequests,
       }),
     );

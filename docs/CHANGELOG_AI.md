@@ -6717,3 +6717,19 @@ retained database and historical report.
 - **Reusable Knowledge Added:** Exact recurrence, evidence limits and privacy-preserving diagnostic scope.
 - **Deployment:** None. Same authorized branch and disposable CI only; no retained/hosted data operations.
 - **Next Recommended Action:** Reproduce and repair hydration failure, then rerun all native gates.
+
+## 2026-10-09 - Cross-Page Hydration Claim Diagnosis
+
+- **Task:** Narrow a recurrent HTML hydration failure without changing runtime behavior or data.
+- **Files Changed:** Native browser harness, temporary hydration probe, Goal, M4 runbook and this log.
+- **Components Changed:** Test-only DOM-tag/count/readyState diagnostic at the already-failing React
+  claim, exact history route/checkpoints and 24 bounded extra read-only document loads.
+- **Data Changed / Visual Changes / SEO Impact:** None.
+- **Validation:** `83a53697` / run `37769648625` passes quality and 47 scenario bodies, then fails
+  pageErrors=1. Owner 360px product history reports React 418/HTML before packaging starts.
+  Local synthetic negative control confirms expected H1 / actual H2 capture and retained pageerror.
+- **Known Issues:** Runtime cause unproven; current candidate closure remains BLOCKED. Synthetic
+  async-layout probes have not reproduced the original issue and are not native acceptance evidence.
+- **Reusable Knowledge Added:** Cross-page recurrence and a strictly bounded diagnostic boundary.
+- **Deployment:** None; authorized branch/disposable CI only, no hosted or retained-local operations.
+- **Next Recommended Action:** Identify the mismatching DOM boundary, repair it and verify the native gate.

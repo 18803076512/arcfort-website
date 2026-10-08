@@ -338,7 +338,16 @@ mobile behavior and conversion paths must satisfy the applicable repository gate
 
 ## Recommended Next Setup Phase
 
-Latest diagnostic validation (2026-10-08): candidate `90e18693625e4153c052156182bf3befe9c61791`
+Latest diagnostic validation (2026-10-09): `83a5369783fef42c5a15391b9f45541b5f6d4a2e` /
+[run 37769648625](https://github.com/18803076512/arcfort-website/actions/runs/37769648625) passes
+quality and all 47 browser scenarios, then fails on one React `418/HTML` at the owner's 360px product
+history view, before packaging acceptance. The recurrence is not packaging-specific. Current
+closure remains **BLOCKED** pending repair. A temporary pinned-build diagnostic records only DOM
+tag names/counts and document loading state at the failing hydration claim; a synthetic H1/H2
+negative control proves it observes the mismatch. Bounded extra history reads change no data.
+No runtime fix, merge, deployment or hosted/retained-local operation is claimed or authorized.
+
+Prior diagnostic validation (2026-10-08): candidate `90e18693625e4153c052156182bf3befe9c61791`
 fails [run 37728451960](https://github.com/18803076512/arcfort-website/actions/runs/37728451960)
 after 47 browser scenarios: React hydration error 418 and a TypeError during the packaging history/
 responsive checkpoint. Quality passes; external requests remain zero. **Current closure is BLOCKED**
