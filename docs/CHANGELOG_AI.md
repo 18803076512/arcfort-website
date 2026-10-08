@@ -6702,3 +6702,18 @@ retained database and historical report.
 - **Deployment:** No merge/deploy or retained/hosted operations; all original approval limits apply.
 - **Next Recommended Action:** Keep the diagnostic and investigate recurrence before release;
   advance technical-document review and real 15AK evidence in the next authorized development batch.
+
+## 2026-10-08 - Reproduced Hydration Failure And Narrowed Diagnostics
+
+- **Task:** Classify the recurring final-page gate failure instead of treating earlier green runs as repair.
+- **Files Changed:** Native working/packaging browser harnesses, Goal checkpoint, M4 runbook and this log.
+- **Components Changed:** Test-only fixed role/route/viewport labels, per-action checkpoints and bounded
+  hydration/stream-error signatures. Runtime assertions and private logging boundaries remain intact.
+- **Data Changed / Visual Changes / SEO Impact:** None.
+- **Validation:** `90e18693` / run `37728451960` passes quality, completes 47 native browser scenarios,
+  then fails with React 418 and TypeError at packaging history/responsive views; zero external requests.
+- **Known Issues:** Current closure BLOCKED pending runtime diagnosis/repair. No causal component is
+  established yet. Production synthetic probes do not replace native acceptance or prove stability.
+- **Reusable Knowledge Added:** Exact recurrence, evidence limits and privacy-preserving diagnostic scope.
+- **Deployment:** None. Same authorized branch and disposable CI only; no retained/hosted data operations.
+- **Next Recommended Action:** Reproduce and repair hydration failure, then rerun all native gates.

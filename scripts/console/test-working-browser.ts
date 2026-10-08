@@ -78,7 +78,13 @@ export async function runWorkingBrowser(input: BrowserInput) {
     checkpoint?: string;
     kind: string;
     reactCode?: string;
+    hydrationKind?: string;
     clientChunk?: string;
+    streamHelper?: string;
+    missingDomParent: boolean;
+    role: string;
+    route: string;
+    width?: number;
   }[] = [];
   let externalRequests = 0;
   let screenshots = 0;
@@ -100,7 +106,7 @@ export async function runWorkingBrowser(input: BrowserInput) {
       headless: true,
       ...(process.env.PLAYWRIGHT_CHANNEL ? { channel: process.env.PLAYWRIGHT_CHANNEL } : {}),
     });
-    async function context() {
+    async function context(role = "anonymous") {
       const value = await browser!.newContext({
         viewport: { width: 1440, height: 1000 },
         serviceWorkers: "block",
@@ -152,6 +158,12 @@ export async function runWorkingBrowser(input: BrowserInput) {
             pageErrorDetails.push({
               phase,
               checkpoint,
+              role,
+              route:
+                new URL(page.url()).pathname.match(
+                  /^\/console\/products\/[a-f0-9-]{36}\/(edit|review|compatibility|originals|media|oem|packaging)$/,
+                )?.[1] ?? "other",
+              width: page.viewportSize()?.width,
               kind: reactCode
                 ? "react"
                 : /Failed to fetch|Load failed|NetworkError/.test(error.message)
@@ -164,9 +176,14 @@ export async function runWorkingBrowser(input: BrowserInput) {
                       ? error.name
                       : "other",
               reactCode,
+              hydrationKind: error.message.match(/args\[\]=(HTML|text)(?:&|$)/)?.[1],
               clientChunk: error.stack?.match(
                 /\/_next\/static\/chunks\/[a-zA-Z0-9._/-]+:\d+:\d+/,
               )?.[0],
+              streamHelper: error.stack?.match(/\bat (\$R[CS])\b/)?.[1],
+              missingDomParent: /Cannot read properties of null \(reading 'parentNode'\)/.test(
+                error.message,
+              ),
             });
           }
         }),
@@ -179,8 +196,8 @@ export async function runWorkingBrowser(input: BrowserInput) {
       privateResponse(response!.headers());
       await page.getByRole("heading", { level: 1 }).waitFor();
     }
-    async function login(account: Account) {
-      const ctx = await context();
+    async function login(account: Account, role: string) {
+      const ctx = await context(role);
       const page = await ctx.newPage();
       await goto(page, "/console/login");
       await page.getByLabel("Email", { exact: true }).fill(account.email);
@@ -252,9 +269,9 @@ export async function runWorkingBrowser(input: BrowserInput) {
       assert.equal((await response.json()).ok, false);
     }
     phase = "real form login and private cookies";
-    const owner = await login(input.owner);
-    const reviewer = await login(input.reviewer);
-    const viewer = await login(input.viewer);
+    const owner = await login(input.owner, "owner");
+    const reviewer = await login(input.reviewer, "reviewer");
+    const viewer = await login(input.viewer, "viewer");
     results.push(phase);
 
     phase = "HTTP anonymous, origin, malformed and oversized requests";

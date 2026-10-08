@@ -3,9 +3,11 @@
 Date: 2026-09-24
 Scope: local implementation toward the approved Console V1 architecture. M4 is not complete.
 
-Latest validation: [page-error follow-up](#october-8-page-error-revalidation), 2026-10-08.
-Candidate `fb22f8aa` passes quality and two complete native attempts, with a retained stability
-warning for three earlier page errors whose cause remains unknown. Candidate `74031362` previously
+Latest validation: [hydration recurrence](#october-8-hydration-recurrence), 2026-10-08.
+Candidate `90e18693` fails the strict page-error gate after 47 scenarios: React 418 and TypeError
+at the packaging history/responsive checkpoint. Current closure is **BLOCKED** pending repair.
+Earlier `fb22f8aa` passes two native attempts; that non-reproduction did not resolve the fault.
+Candidate `74031362` previously
 passed [combined native acceptance](#october-8-combined-native-acceptance). Technical documents,
 real 15AK evidence and M4 exit remain incomplete. Dated sections retain their historical scopes.
 
@@ -2303,3 +2305,20 @@ production release, and not justification to weaken the zero-error assertion. Th
 maintainer should inspect the now-bounded diagnostic on recurrence before any external release;
 the owner has not authorized merge/deployment or acceptance of release warnings. Avoid indefinite
 identical reruns merely to accumulate green results. All real 15AK evidence and V1 limits above remain.
+
+## October 8 Hydration Recurrence
+
+Candidate `90e18693625e4153c052156182bf3befe9c61791`,
+[run 37728451960](https://github.com/18803076512/arcfort-website/actions/runs/37728451960),
+passes quality but fails native browser closure after 47 scenarios. The bounded diagnostic records
+React error 418 and a TypeError at `packaging private history and six persisted responsive views`;
+external requests are zero. React's installed source identifies 418 as a hydration mismatch, but
+this evidence alone does not identify the component or prove that packaging data caused it.
+
+Current submission closure is **BLOCKED** until diagnosed and repaired. Instrument role, static
+route category, viewport, the individual responsive/final-proposal checkpoints, hydration kind
+and known stream-helper/null-parent signatures. Never log raw messages, private paths, form values,
+account identifiers or complete stacks; keep the original zero-error assertion unchanged.
+Synthetic production-mode UI checks without a database have not reproduced the fault. Investigate
+streaming layout timing as a hypothesis, not a confirmed cause. All CI-only authorization and
+real-product publication limits remain unchanged; no retained local stack is used for diagnosis.

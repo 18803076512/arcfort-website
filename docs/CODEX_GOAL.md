@@ -338,7 +338,16 @@ mobile behavior and conversion paths must satisfy the applicable repository gate
 
 ## Recommended Next Setup Phase
 
-Latest diagnostic validation (2026-10-08): `fb22f8aab6b501f67896999f3eb274a77acc494d` passes
+Latest diagnostic validation (2026-10-08): candidate `90e18693625e4153c052156182bf3befe9c61791`
+fails [run 37728451960](https://github.com/18803076512/arcfort-website/actions/runs/37728451960)
+after 47 browser scenarios: React hydration error 418 and a TypeError during the packaging history/
+responsive checkpoint. Quality passes; external requests remain zero. **Current closure is BLOCKED**
+pending diagnosis and repair, not an authorization or real-data blocker. The native diagnostic now
+separates fixed role/route/viewport/checkpoint labels and stream-error categories without private
+messages. Production-mode synthetic fixture probes have not reproduced the fault; they do not
+substitute for native acceptance. No deployment or hosted/retained-local change is authorized.
+
+Prior diagnostic validation (2026-10-08): `fb22f8aab6b501f67896999f3eb274a77acc494d` passes
 [run 37726932305](https://github.com/18803076512/arcfort-website/actions/runs/37726932305), including
 two complete native attempts with 47 browser scenarios, zero page errors and final retention checks.
 The added diagnostic does not change runtime or suppress errors. **Stability warning remains:**

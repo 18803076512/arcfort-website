@@ -520,6 +520,7 @@ export async function runPackagingWorkingBrowser(input: Input) {
     );
     assert.equal(history.total, 4);
     assert.doesNotMatch(JSON.stringify(history), /raw_snapshot|access_token|source_digest/);
+    checkpoint("packaging viewer persisted history");
     await visit(viewer, headId);
     for (const name of [
       "Approve",
@@ -531,6 +532,7 @@ export async function runPackagingWorkingBrowser(input: Input) {
     ])
       assert.equal(await viewer.page.getByRole("button", { name, exact: true }).count(), 0);
     for (const width of [360, 390, 768, 1024, 1280, 1440]) {
+      checkpoint(`packaging owner persisted view at ${width}px`);
       await owner.page.setViewportSize({ width, height: 1000 });
       await visit(owner, headId);
       assert.equal(await owner.page.getByRole("heading", { level: 1 }).count(), 1);
@@ -543,7 +545,9 @@ export async function runPackagingWorkingBrowser(input: Input) {
         fullPage: true,
       });
     }
+    checkpoint("packaging owner final retained proposal");
     await propose(corrected, headId);
+    checkpoint("packaging owner final retained submission");
     await submit();
     const revokedTarget = (await scope()).latest;
     const revokedReview = { ...review(revokedTarget, factoryId, "CONFIRMED"), resolution };
