@@ -6685,3 +6685,20 @@ retained database and historical report.
 - **Reusable Knowledge Added:** Exact failed final head and scoped diagnostic/privacy boundary.
 - **Deployment:** None; same authorized CI scope, no merge, hosted or retained-local operations.
 - **Next Recommended Action:** Classify and fix page errors, preserving the strict zero-error gate.
+
+## 2026-10-08 - Instrumented CI Revalidation With Stability Warning
+
+- **Task:** Verify the diagnostic candidate without treating non-reproduction as a root-cause fix.
+- **Files Changed:** Goal checkpoint, M4 runbook and this append-only log.
+- **Components Changed / Data Changed / Visual Changes / SEO Impact:** None in this record.
+- **Validation:** `fb22f8aa`, run `37726932305` attempts 1 and 2 pass: quality, 24 SQL suites /
+  1,384 assertions, 47 native browser scenarios, zero page errors/external requests and complete
+  final media/OEM/packaging ledgers, original/commercial retention and zero publication.
+- **Known Issues:** Earlier `16b4c06e` pageErrors=3 remains unexplained and unresolved. Two bounded
+  instrumented attempts did not reproduce it. CI submission is PASS_WITH_WARNINGS, not a claim
+  of complete runtime stability, M4/V1 completion or release approval.
+- **Reusable Knowledge Added:** Exact diagnostic attempts and the distinction between passing
+  present checks and proving the historical intermittent fault fixed.
+- **Deployment:** No merge/deploy or retained/hosted operations; all original approval limits apply.
+- **Next Recommended Action:** Keep the diagnostic and investigate recurrence before release;
+  advance technical-document review and real 15AK evidence in the next authorized development batch.

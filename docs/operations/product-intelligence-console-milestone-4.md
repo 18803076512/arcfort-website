@@ -3,11 +3,11 @@
 Date: 2026-09-24
 Scope: local implementation toward the approved Console V1 architecture. M4 is not complete.
 
-Current revalidation: [page-error follow-up](#october-8-page-error-revalidation), 2026-10-08.
-Candidate `74031362` passed [combined native acceptance](#october-8-combined-native-acceptance), but
-the documentation-only next candidate failed the zero-page-error gate after all 47 scenarios.
-Submission closure remains pending. Technical documents, real 15AK evidence and M4 exit remain
-incomplete. The original outline and dated sections below retain their historical scopes.
+Latest validation: [page-error follow-up](#october-8-page-error-revalidation), 2026-10-08.
+Candidate `fb22f8aa` passes quality and two complete native attempts, with a retained stability
+warning for three earlier page errors whose cause remains unknown. Candidate `74031362` previously
+passed [combined native acceptance](#october-8-combined-native-acceptance). Technical documents,
+real 15AK evidence and M4 exit remain incomplete. Dated sections retain their historical scopes.
 
 ## Objective And Boundaries
 
@@ -2283,9 +2283,23 @@ accepted candidate, but [run 37699781923](https://github.com/18803076512/arcfort
 failed the final zero-page-error assertion: all 47 browser scenarios completed, with three page
 errors and zero external requests. Quality and native SQL passed; final parent acceptance did not
 complete. The earlier green run remains historical evidence, not a waiver for this intermittent
-failure or a pass for the latest head. Current submission revalidation is BLOCKED by these errors.
+failure or a pass for that head. At that checkpoint, submission revalidation was BLOCKED by them.
 
 The next diagnostic retains at most eight static phase/checkpoint names, allowlisted error types,
 React numeric codes and static client-chunk locations. It logs no raw error message, page body,
 URL query, source data, session or credentials. The zero-error assertion remains unchanged. Do not
 rerun merely to obtain a green result; identify and resolve the evidenced failure first.
+
+Instrumented candidate `fb22f8aab6b501f67896999f3eb274a77acc494d` passes quality and native
+[run 37726932305](https://github.com/18803076512/arcfort-website/actions/runs/37726932305), attempts
+1 and 2. The second attempt reran only the database job to capture the intermittent failure with
+the new diagnostic. Both complete 47 scenarios, zero page errors/external requests, 24 SQL suites /
+1,384 assertions and the terminal parent/media/OEM/packaging retention checks. Neither attempt
+reproduced the error; no runtime fix or error suppression was added in this diagnostic candidate.
+
+Current CI submission result is PASS_WITH_WARNINGS. The precise warning is an unreproduced earlier
+three-page-error failure, with unknown cause. It is not marked resolved, not evidence of a clean
+production release, and not justification to weaken the zero-error assertion. The Console
+maintainer should inspect the now-bounded diagnostic on recurrence before any external release;
+the owner has not authorized merge/deployment or acceptance of release warnings. Avoid indefinite
+identical reruns merely to accumulate green results. All real 15AK evidence and V1 limits above remain.
