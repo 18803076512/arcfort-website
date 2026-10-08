@@ -73,6 +73,13 @@ export async function runWorkingBrowser(input: BrowserInput) {
   let phase = "browser launch";
   let checkpoint: string | undefined;
   let pageErrors = 0;
+  const pageErrorDetails: {
+    phase: string;
+    checkpoint?: string;
+    kind: string;
+    reactCode?: string;
+    clientChunk?: string;
+  }[] = [];
   let externalRequests = 0;
   let screenshots = 0;
   let originalRequests = 0;
@@ -138,8 +145,30 @@ export async function runWorkingBrowser(input: BrowserInput) {
         return route.continue();
       });
       value.on("page", (page) =>
-        page.on("pageerror", () => {
+        page.on("pageerror", (error) => {
           pageErrors++;
+          if (pageErrorDetails.length < 8) {
+            const reactCode = error.message.match(/Minified React error #(\d+)/)?.[1];
+            pageErrorDetails.push({
+              phase,
+              checkpoint,
+              kind: reactCode
+                ? "react"
+                : /Failed to fetch|Load failed|NetworkError/.test(error.message)
+                  ? "fetch"
+                  : /abort/i.test(error.name)
+                    ? "abort"
+                    : ["TypeError", "ReferenceError", "SyntaxError", "RangeError"].includes(
+                          error.name,
+                        )
+                      ? error.name
+                      : "other",
+              reactCode,
+              clientChunk: error.stack?.match(
+                /\/_next\/static\/chunks\/[a-zA-Z0-9._/-]+:\d+:\d+/,
+              )?.[0],
+            });
+          }
         }),
       );
       return value;
@@ -726,6 +755,7 @@ export async function runWorkingBrowser(input: BrowserInput) {
         originalResponses,
         originalRequestFailures,
         pageErrors,
+        pageErrorDetails,
         externalRequests,
       }),
     );

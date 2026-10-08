@@ -338,6 +338,13 @@ mobile behavior and conversion paths must satisfy the applicable repository gate
 
 ## Recommended Next Setup Phase
 
+Current revalidation (2026-10-08): final documentation candidate `16b4c06e` passed quality but
+[run 37699781923](https://github.com/18803076512/arcfort-website/actions/runs/37699781923) failed the
+zero-page-error gate after completing all 47 browser scenarios (three page errors, no external
+requests). Its runtime equals the accepted candidate below. Treat current submission closure as
+pending until the intermittent errors are classified and resolved; do not reuse the earlier green
+run as proof of the latest head. The next diagnostic emits bounded error classes, not private text.
+
 Latest accepted CI checkpoint (2026-10-08): B11-B16, C1-C4 and D1-D4 at `7403136272fa06c011e0c49a6af7904948279efa`
 pass both jobs in [run 37698778273](https://github.com/18803076512/arcfort-website/actions/runs/37698778273).
 The exact disposable candidate passes 24 native SQL suites / 1,384 assertions and 47 database-backed

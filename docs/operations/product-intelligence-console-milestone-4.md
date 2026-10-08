@@ -3,10 +3,11 @@
 Date: 2026-09-24
 Scope: local implementation toward the approved Console V1 architecture. M4 is not complete.
 
-Latest accepted checkpoint: [combined native acceptance](#october-8-combined-native-acceptance),
-2026-10-08, candidate `74031362`. Media/OEM/packaging and preceding workflows pass disposable CI;
-technical documents, real 15AK evidence and M4 exit remain incomplete. The original outline and
-dated sections below retain their historical scopes; they are not the latest execution status.
+Current revalidation: [page-error follow-up](#october-8-page-error-revalidation), 2026-10-08.
+Candidate `74031362` passed [combined native acceptance](#october-8-combined-native-acceptance), but
+the documentation-only next candidate failed the zero-page-error gate after all 47 scenarios.
+Submission closure remains pending. Technical documents, real 15AK evidence and M4 exit remain
+incomplete. The original outline and dated sections below retain their historical scopes.
 
 ## Objective And Boundaries
 
@@ -2274,3 +2275,17 @@ was modified. No merge/deployment/live acceptance or repository-rule override is
 Next controlled action: finish M4 technical-document intake/review and real 15AK evidence collection
 before implementing and verifying the full frozen preview/release gates. Keep all twelve V1
 criteria active; do not treat this submission milestone as V1 or M4 completion.
+
+## October 8 Page-Error Revalidation
+
+Documentation candidate `16b4c06e5f8d8a0f2f0dba1e22f06b7160716663` has no runtime diff from the
+accepted candidate, but [run 37699781923](https://github.com/18803076512/arcfort-website/actions/runs/37699781923)
+failed the final zero-page-error assertion: all 47 browser scenarios completed, with three page
+errors and zero external requests. Quality and native SQL passed; final parent acceptance did not
+complete. The earlier green run remains historical evidence, not a waiver for this intermittent
+failure or a pass for the latest head. Current submission revalidation is BLOCKED by these errors.
+
+The next diagnostic retains at most eight static phase/checkpoint names, allowlisted error types,
+React numeric codes and static client-chunk locations. It logs no raw error message, page body,
+URL query, source data, session or credentials. The zero-error assertion remains unchanged. Do not
+rerun merely to obtain a green result; identify and resolve the evidenced failure first.

@@ -6671,3 +6671,17 @@ retained database and historical report.
 - **Goal Evidence:** Company-evidence checks pass; Goal-report regeneration has no diff and retains
   43 structured products / zero strict verified SKUs, with existing media-rights/representative-image
   warnings unchanged. No synthetic CI approval is counted as a verified real SKU.
+
+## 2026-10-08 - Final-Head Page Error Revalidation
+
+- **Task:** Diagnose three intermittent browser page errors on the documentation-only final head.
+- **Files Changed:** Native browser diagnostics, Goal checkpoint, M4 runbook and this log.
+- **Components Changed:** Bounded test-only error classification; no raw private messages or skipped assertions.
+- **Data Changed / Visual Changes / SEO Impact:** None.
+- **Validation:** `16b4c06e` / run `37699781923` passed quality/native SQL and completed all 47 browser
+  scenarios, then failed pageErrors=3 (expected zero). Runtime is identical to earlier green `74031362`.
+- **Known Issues:** Current submission closure is pending; the old green candidate does not prove
+  the latest head. Full parent retention completion must be revalidated after resolving page errors.
+- **Reusable Knowledge Added:** Exact failed final head and scoped diagnostic/privacy boundary.
+- **Deployment:** None; same authorized CI scope, no merge, hosted or retained-local operations.
+- **Next Recommended Action:** Classify and fix page errors, preserving the strict zero-error gate.
