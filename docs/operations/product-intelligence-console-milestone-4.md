@@ -4,8 +4,9 @@ Date: 2026-09-24
 Scope: local implementation toward the approved Console V1 architecture. M4 is not complete.
 
 Latest validation: [cross-page hydration diagnosis](#october-9-cross-page-hydration-diagnosis).
-Candidate `83a53697` fails the strict page-error gate after 47 scenarios: React 418/HTML on the
-owner's 360px product history page, before packaging. Current closure is **BLOCKED** pending repair.
+Candidate `558b82f3` passes 48 scenarios with a debugger probe but does not reproduce the earlier
+`83a53697` HTML hydration failure. Stability closure is **BLOCKED** pending diagnosis/repair;
+instrumented non-reproduction alone is not a fix or release approval.
 Earlier `fb22f8aa` passes two native attempts; that non-reproduction did not resolve the fault.
 Candidate `74031362` previously
 passed [combined native acceptance](#october-8-combined-native-acceptance). Technical documents,
@@ -2343,3 +2344,17 @@ case; this is a changed diagnostic experiment, not an identical rerun seeking gr
 The temporary synthetic asynchronous layout experiments remain uncommitted until useful as a
 regression. Neither Edge nor pinned Chromium synthetic non-native probes reproduced the genuine
 fault. Root cause remains unproven; investigate shared private layout/streaming before runtime edits.
+
+Diagnostic result: `558b82f36dd3283cff7008f1fcd8c7d0bd304a35` /
+[run 37858262736](https://github.com/18803076512/arcfort-website/actions/runs/37858262736) passes
+both jobs, 48 browser scenarios and terminal media/OEM/packaging retention. No fault was captured.
+The debugger can affect scheduling and browser lifecycle, so this does not close stability or
+replace uninstrumented final acceptance. Do not repeat that identical experiment.
+
+The next bounded diagnostic removes CDP entirely. After the disposable production build, insert
+only a tag/count/readyState logger at React's already-failing hydration claim in its generated
+client asset; leave the original claim/error path untouched and restore the exact original asset
+on exit. No source/vendor dependency, retained server or deployed asset is changed. A synthetic
+H1/H2 negative control again records the expected/actual tags while retaining the real 418 error.
+Use 120 read-only history document loads to increase observation without changing fixture data or
+rerunning mutations. A passing instrumented build remains diagnostic evidence, not a runtime fix.

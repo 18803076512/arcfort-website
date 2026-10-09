@@ -1,9 +1,10 @@
 import assert from "node:assert/strict";
-import { readFile, readdir } from "node:fs/promises";
+import { readFile, readdir, writeFile } from "node:fs/promises";
 import path from "node:path";
-import type { BrowserContext, Page } from "./browser-runtime/node_modules/playwright/index.js";
 
-// Temporary, disposable-CI diagnostic. Stop only at React's already-failing claim, never on
+export const hydrationProbePrefix = "CONSOLE_HYDRATION_SHAPE:";
+
+// Temporary, disposable-build diagnostic. Record only an already-failing React claim, never
 // normal rendering. Inspect tag names/counts, not text, attributes, props, URLs or credentials.
 export async function hydrationProbeTarget(root = path.resolve(".next/static/chunks")) {
   for (const file of await readdir(root)) {
@@ -16,11 +17,10 @@ export async function hydrationProbeTarget(root = path.resolve(".next/static/chu
         source.slice(0, claim.index),
       );
     assert.ok(cursor, "Pinned React hydration diagnostic signature changed.");
-    const prefix = source.slice(0, claim.index + claim[0].indexOf("{") + 1).split("\n");
     return {
-      urlRegex: `/_next/static/chunks/${file.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}$`,
-      lineNumber: prefix.length - 1,
-      columnNumber: prefix.at(-1)!.length,
+      file: path.join(root, file),
+      source,
+      offset: claim.index + claim[0].indexOf("{") + 1,
       expression: `(() => {
         const allowed = new Set(["HTML","HEAD","BODY","DIV","MAIN","ASIDE","NAV","P","H1","H2","H3","SPAN","A","FORM","FIELDSET","LEGEND","LABEL","INPUT","SELECT","OPTION","TEXTAREA","BUTTON","SECTION","ARTICLE","DL","DT","DD","TABLE","TBODY","TR","TD","TH","SCRIPT","META","TITLE","LINK","TEMPLATE","#text","#comment"]);
         const tag = value => allowed.has(value) ? value : value == null ? "missing" : "other";
@@ -41,33 +41,21 @@ export async function hydrationProbeTarget(root = path.resolve(".next/static/chu
 }
 
 export async function installHydrationProbe(
-  context: BrowserContext,
-  page: Page,
   target: Awaited<ReturnType<typeof hydrationProbeTarget>>,
-  report: (shape: unknown) => void,
 ) {
-  const session = await context.newCDPSession(page);
-  await session.send("Debugger.enable");
-  const { breakpointId } = await session.send("Debugger.setBreakpointByUrl", {
-    urlRegex: target.urlRegex,
-    lineNumber: target.lineNumber,
-    columnNumber: target.columnNumber,
-  });
-  session.on("Debugger.paused", async (event) => {
-    try {
-      if (event.hitBreakpoints?.includes(breakpointId) && event.callFrames[0]) {
-        const { result, exceptionDetails } = await session.send("Debugger.evaluateOnCallFrame", {
-          callFrameId: event.callFrames[0].callFrameId,
-          expression: target.expression,
-          returnByValue: true,
-          silent: true,
-        });
-        report(exceptionDetails ? { diagnostic: "unavailable" } : result.value);
-      }
-    } catch {
-      report({ diagnostic: "unavailable" });
-    } finally {
-      await session.send("Debugger.resume").catch(() => undefined);
-    }
-  });
+  assert.equal(process.env.CI, "true", "Owned disposable build only.");
+  assert.equal(target.source.includes(hydrationProbePrefix), false);
+  const probe = `try{console.info(${JSON.stringify(hydrationProbePrefix)}+JSON.stringify(${target.expression}));}catch{}`;
+  const instrumented =
+    target.source.slice(0, target.offset) + probe + target.source.slice(target.offset);
+  assert.equal((await readFile(target.file, "utf8")) === target.source, true);
+  await writeFile(target.file, instrumented);
+  return async () => {
+    assert.equal(
+      (await readFile(target.file, "utf8")) === instrumented,
+      true,
+      "Owned diagnostic asset changed unexpectedly.",
+    );
+    await writeFile(target.file, target.source);
+  };
 }

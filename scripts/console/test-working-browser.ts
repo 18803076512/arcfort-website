@@ -26,7 +26,11 @@ import { runOemWorkingBrowser } from "./test-oem-working-browser.ts";
 import { runPackagingWorkingBrowser } from "./test-packaging-working-browser.ts";
 import type { DisposableMediaObserver } from "./media-acceptance.ts";
 import type { openLocalAcceptance } from "./local-acceptance.ts";
-import { hydrationProbeTarget, installHydrationProbe } from "./hydration-probe.ts";
+import {
+  hydrationProbePrefix,
+  hydrationProbeTarget,
+  installHydrationProbe,
+} from "./hydration-probe.ts";
 
 type Account = { id: string; email: string; password: string; client: ConsoleClient };
 type BrowserInput = {
@@ -75,7 +79,7 @@ export async function runWorkingBrowser(input: BrowserInput) {
   let checkpoint: string | undefined;
   let pageErrors = 0;
   const hydrationShapes: unknown[] = [];
-  const diagnosticsReady = new WeakMap<Page, Promise<void>>();
+  let restoreHydrationProbe: (() => Promise<void>) | undefined;
   const pageErrorDetails: {
     phase: string;
     checkpoint?: string;
@@ -105,7 +109,7 @@ export async function runWorkingBrowser(input: BrowserInput) {
   const output = path.resolve(".tmp/console-working-browser", randomUUID());
   try {
     await mkdir(output, { recursive: true });
-    const hydrationTarget = await hydrationProbeTarget();
+    restoreHydrationProbe = await installHydrationProbe(await hydrationProbeTarget());
     browser = await chromium.launch({
       headless: true,
       ...(process.env.PLAYWRIGHT_CHANNEL ? { channel: process.env.PLAYWRIGHT_CHANNEL } : {}),
@@ -155,18 +159,21 @@ export async function runWorkingBrowser(input: BrowserInput) {
         return route.continue();
       });
       value.on("page", (page) => {
-        const ready = installHydrationProbe(value, page, hydrationTarget, (shape) => {
-          if (hydrationShapes.length < 8)
+        page.on("console", (message) => {
+          const value = message.text();
+          if (
+            value.startsWith(hydrationProbePrefix) &&
+            value.length < 2048 &&
+            hydrationShapes.length < 8
+          )
             hydrationShapes.push({
               phase,
               checkpoint,
               role,
               width: page.viewportSize()?.width,
-              shape,
+              shape: JSON.parse(value.slice(hydrationProbePrefix.length)),
             });
         });
-        void ready.catch(() => undefined);
-        diagnosticsReady.set(page, ready);
         page.on("pageerror", (error) => {
           pageErrors++;
           if (pageErrorDetails.length < 8) {
@@ -207,7 +214,6 @@ export async function runWorkingBrowser(input: BrowserInput) {
       return value;
     }
     async function goto(page: Page, pathname: string) {
-      await diagnosticsReady.get(page);
       const response = await page.goto(`${browserOrigin}${pathname}`);
       assert.equal(response?.status(), 200);
       privateResponse(response!.headers());
@@ -573,7 +579,7 @@ export async function runWorkingBrowser(input: BrowserInput) {
     results.push(phase);
 
     phase = "bounded read-only history document hydration";
-    for (let iteration = 0; iteration < 12; iteration++) {
+    for (let iteration = 0; iteration < 60; iteration++) {
       for (const width of [360, 1440]) {
         checkpoint = `history document ${iteration + 1} at ${width}px`;
         await page.setViewportSize({ width, height: 1000 });
@@ -820,7 +826,11 @@ export async function runWorkingBrowser(input: BrowserInput) {
     try {
       if (browser) await browser.close();
     } finally {
-      await server.stop();
+      try {
+        await server.stop();
+      } finally {
+        await restoreHydrationProbe?.();
+      }
     }
   }
 }

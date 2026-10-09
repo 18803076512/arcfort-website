@@ -338,7 +338,15 @@ mobile behavior and conversion paths must satisfy the applicable repository gate
 
 ## Recommended Next Setup Phase
 
-Latest diagnostic validation (2026-10-09): `83a5369783fef42c5a15391b9f45541b5f6d4a2e` /
+Latest diagnostic validation (2026-10-09): `558b82f36dd3283cff7008f1fcd8c7d0bd304a35` /
+[run 37858262736](https://github.com/18803076512/arcfort-website/actions/runs/37858262736) passes
+quality, 48 browser scenarios and final media/OEM/packaging retention, but the debugger probe did
+not capture the intermittent error. This is not a root-cause repair. Replace the debugger with
+throw-site-only tag diagnostics in the owned disposable build, restore its bytes afterwards, and
+bound the read-only history experiment at 120 document loads. A synthetic negative control proves
+the original error still fires. Production sources, data and publication defaults are unchanged.
+
+Prior diagnostic validation (2026-10-09): `83a5369783fef42c5a15391b9f45541b5f6d4a2e` /
 [run 37769648625](https://github.com/18803076512/arcfort-website/actions/runs/37769648625) passes
 quality and all 47 browser scenarios, then fails on one React `418/HTML` at the owner's 360px product
 history view, before packaging acceptance. The recurrence is not packaging-specific. Current
