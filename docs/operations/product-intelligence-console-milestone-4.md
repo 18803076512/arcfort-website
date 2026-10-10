@@ -3,11 +3,10 @@
 Date: 2026-09-24
 Scope: local implementation toward the approved Console V1 architecture. M4 is not complete.
 
-Latest validation: [stream-boundary capture](#october-10-stream-boundary-capture).
-Candidate `37be0f0a` completes 48 scenario bodies but fails the final zero-error gate, capturing
-a comment cursor during loading and a subsequent stream-helper failure. Stability closure is
-**BLOCKED** pending diagnosis/repair. Earlier `558b82f3` debugger-enabled success did not fix it;
-instrumented non-reproduction alone is not a fix or release approval.
+Latest validation: [hydration replay repair](#october-10-hydration-replay-repair).
+The keyed-Fragment repair passes a locally reproduced delayed-module regression, including an
+uninstrumented run. Full native acceptance is pending, so stability closure remains **BLOCKED**.
+Earlier instrumented non-reproduction alone did not fix the fault or authorize a release.
 Earlier `fb22f8aa` passes two native attempts; that non-reproduction did not resolve the fault.
 Candidate `74031362` previously
 passed [combined native acceptance](#october-8-combined-native-acceptance). Technical documents,
@@ -2385,3 +2384,26 @@ sibling HTML categories and an allowlist of React boundary marker categories. It
 comment, attribute, prop, text, URL or stack. The same 120 read-only document bound, unchanged
 error gate and generated-byte restoration remain. This is diagnosis, not release acceptance.
 Runtime/public data, hosted/retained local stacks, SEO and RFQ remain unchanged.
+
+## October 10 Hydration Replay Repair
+
+`d732744e58c9b1b6160a246584ed8ad9eda8788d` /
+[run 38023797228](https://github.com/18803076512/arcfort-website/actions/runs/38023797228) passes
+quality and 48 scenario bodies, but records React 418/HTML plus `$RS` null-parent failure on owner
+media at 1280px. The enhanced capture shows a pending comment inside `console-root`, an empty fiber
+child list and reset host DOM state while its hydration parent still equals the fiber. This is a
+replayed host entry, not proof of a completion-tail mismatch: the diagnostic field
+`completingParent` meant only identity equality and must not be interpreted as a call-stack result.
+
+Delaying the synthetic fixture's error-page module reproduces the same shape and 28 errors over
+120 loads. Normal and small-chunk transmission alone each passed 60 loads. The pinned renderer
+lacks React's merged hydration-replay cursor restoration. The
+[dated decision](../../knowledge-base/decisions/2026-10-10-console-hydration-replay-boundary.md)
+records source evidence, the Console-only keyed Fragment, unchanged HTML/security/loading contracts
+and the removal condition. No dependency, scheduler or generated renderer patch remains.
+
+The repaired real Console layout passes 120 delayed-module synthetic loads; a second uninstrumented
+run counts 120 delayed requests and zero errors. Focused lint, full typecheck, boundary checks and
+ten browser-server guards pass. The native regression delays only the real error-page asset during
+120 history loads and verifies the delay was actually exercised. All business/data/error assertions
+remain. Full native repair acceptance is not yet run; local success does not close that gate.

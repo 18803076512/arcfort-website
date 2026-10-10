@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import type { ReactNode } from "react";
+import { Fragment, type ReactNode } from "react";
 import { SessionHistoryBoundary } from "@/components/console/SessionHistoryBoundary";
 import "./console.css";
 
@@ -15,8 +15,11 @@ export const metadata: Metadata = {
 export default function ConsoleLayout({ children }: { children: ReactNode }) {
   return (
     <div className="console-root">
-      <SessionHistoryBoundary />
-      {children}
+      {/* Keep lazy RSC children off the host fiber until bundled React includes #35494. */}
+      <Fragment key="console-content">
+        <SessionHistoryBoundary />
+        {children}
+      </Fragment>
     </div>
   );
 }

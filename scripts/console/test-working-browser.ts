@@ -26,11 +26,6 @@ import { runOemWorkingBrowser } from "./test-oem-working-browser.ts";
 import { runPackagingWorkingBrowser } from "./test-packaging-working-browser.ts";
 import type { DisposableMediaObserver } from "./media-acceptance.ts";
 import type { openLocalAcceptance } from "./local-acceptance.ts";
-import {
-  hydrationProbePrefix,
-  hydrationProbeTarget,
-  installHydrationProbe,
-} from "./hydration-probe.ts";
 
 type Account = { id: string; email: string; password: string; client: ConsoleClient };
 type BrowserInput = {
@@ -78,8 +73,8 @@ export async function runWorkingBrowser(input: BrowserInput) {
   let phase = "browser launch";
   let checkpoint: string | undefined;
   let pageErrors = 0;
-  const hydrationShapes: unknown[] = [];
-  let restoreHydrationProbe: (() => Promise<void>) | undefined;
+  let historyModuleDelayMs = 0;
+  let delayedHistoryModules = 0;
   const pageErrorDetails: {
     phase: string;
     checkpoint?: string;
@@ -109,7 +104,6 @@ export async function runWorkingBrowser(input: BrowserInput) {
   const output = path.resolve(".tmp/console-working-browser", randomUUID());
   try {
     await mkdir(output, { recursive: true });
-    restoreHydrationProbe = await installHydrationProbe(await hydrationProbeTarget());
     browser = await chromium.launch({
       headless: true,
       ...(process.env.PLAYWRIGHT_CHANNEL ? { channel: process.env.PLAYWRIGHT_CHANNEL } : {}),
@@ -142,6 +136,16 @@ export async function runWorkingBrowser(input: BrowserInput) {
           externalRequests++;
           return route.abort();
         }
+        if (
+          historyModuleDelayMs &&
+          /^\/_next\/static\/chunks\/app\/\(console\)\/console\/error-[a-f0-9]+\.js$/.test(
+            decodeURIComponent(new URL(request.url()).pathname),
+          )
+        ) {
+          // Exercise lazy RSC replay with the real, unchanged module and renderer.
+          delayedHistoryModules++;
+          await new Promise((resolve) => setTimeout(resolve, historyModuleDelayMs));
+        }
         if (request.url() === `${browserOrigin}/console/commands` && request.method() === "POST") {
           // Forward the real server response unchanged; document navigation can evict its browser body.
           const response = await route.fetch({ maxRedirects: 0 });
@@ -159,21 +163,6 @@ export async function runWorkingBrowser(input: BrowserInput) {
         return route.continue();
       });
       value.on("page", (page) => {
-        page.on("console", (message) => {
-          const value = message.text();
-          if (
-            value.startsWith(hydrationProbePrefix) &&
-            value.length < 2048 &&
-            hydrationShapes.length < 8
-          )
-            hydrationShapes.push({
-              phase,
-              checkpoint,
-              role,
-              width: page.viewportSize()?.width,
-              shape: JSON.parse(value.slice(hydrationProbePrefix.length)),
-            });
-        });
         page.on("pageerror", (error) => {
           pageErrors++;
           if (pageErrorDetails.length < 8) {
@@ -578,15 +567,23 @@ export async function runWorkingBrowser(input: BrowserInput) {
     }
     results.push(phase);
 
-    phase = "bounded read-only history document hydration";
+    phase = "bounded delayed-module history document hydration";
     for (let iteration = 0; iteration < 60; iteration++) {
       for (const width of [360, 1440]) {
+        historyModuleDelayMs = 8 + ((iteration * 2 + (width === 1440 ? 1 : 0)) % 40) * 8;
         checkpoint = `history document ${iteration + 1} at ${width}px`;
         await page.setViewportSize({ width, height: 1000 });
         await goto(page, `${product}/history`);
         assert.equal(await page.getByRole("heading", { level: 1 }).count(), 1);
       }
     }
+    historyModuleDelayMs = 0;
+    assert.equal(
+      delayedHistoryModules,
+      120,
+      "Every history document must exercise delayed replay.",
+    );
+    assert.equal(pageErrors, 0);
     results.push(phase);
     checkpoint = undefined;
 
@@ -771,13 +768,20 @@ export async function runWorkingBrowser(input: BrowserInput) {
     await writeFile(
       path.join(output, "result.json"),
       JSON.stringify(
-        { status: "PASS", scenarios: results, screenshots, pageErrors, externalRequests },
+        {
+          status: "PASS",
+          scenarios: results,
+          screenshots,
+          pageErrors,
+          externalRequests,
+          delayedHistoryModules,
+        },
         null,
         2,
       ),
     );
     console.log(
-      `Working Console database-backed browser acceptance passed: ${results.length} scenarios; synthetic-only screenshots and bounded report retained.`,
+      `Working Console database-backed browser acceptance passed: ${results.length} scenarios; ${delayedHistoryModules} delayed history modules; synthetic-only screenshots and bounded report retained.`,
     );
     return id;
   } catch (error) {
@@ -809,7 +813,7 @@ export async function runWorkingBrowser(input: BrowserInput) {
         originalRequestFailures,
         pageErrors,
         pageErrorDetails,
-        hydrationShapes,
+        delayedHistoryModules,
         externalRequests,
       }),
     );
@@ -826,11 +830,7 @@ export async function runWorkingBrowser(input: BrowserInput) {
     try {
       if (browser) await browser.close();
     } finally {
-      try {
-        await server.stop();
-      } finally {
-        await restoreHydrationProbe?.();
-      }
+      await server.stop();
     }
   }
 }

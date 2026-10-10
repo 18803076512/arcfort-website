@@ -6768,3 +6768,22 @@ retained database and historical report.
   distinguishes the related upstream report from a proven common cause. No governance rule changed.
 - **Deployment:** None; same owner-authorized branch and disposable CI only, no hosted/retained writes.
 - **Next Recommended Action:** Identify the unconsumed stream boundary, repair and run uninstrumented acceptance.
+
+## 2026-10-10 - Isolate Lazy Console Children From Host Hydration Replay
+
+- **Task:** Repair the reproduced Console hydration-replay failure without changing the renderer.
+- **Files Changed:** Console layout, native browser runner, removed hydration-probe helper, dated
+  replay-boundary decision, Goal, M4 runbook and this log.
+- **Components Changed:** One keyed Fragment around Console session/content children; no new DOM.
+  Native regression now verifies 120 delayed real error-module requests; renderer instrumentation removed.
+- **Data Changed / Visual Changes / SEO Impact:** None. Auth, loading, routes, RFQ and data gates unchanged.
+- **Validation:** `d732744e` / run `38023797228` captures reset-host/empty-child/comment-cursor failure
+  on media. Synthetic delayed-module baseline produces 28 page errors / 120 loads; repaired case
+  passes 120, then passes another 120 with uninstrumented bytes and exact delayed-request count.
+  Focused lint, full typecheck, Console boundary checks and ten server-isolation guards pass.
+- **Known Issues:** Full native candidate acceptance remains pending; no release/M4/V1 completion claim.
+  The real 15AK evidence, technical-document, preview and publication gates remain incomplete.
+- **Reusable Knowledge Added:** `2026-10-10-console-hydration-replay-boundary.md` records mechanism,
+  upstream fix, bounded workaround, before/after evidence and explicit reversal requirements.
+- **Deployment:** None; same approved branch and disposable CI only, no hosted/retained operations.
+- **Next Recommended Action:** Verify the complete uninstrumented native regression and retained ledgers.

@@ -338,6 +338,17 @@ mobile behavior and conversion paths must satisfy the applicable repository gate
 
 ## Recommended Next Setup Phase
 
+Current repair (2026-10-10): native diagnostic `d732744e` /
+[run 38023797228](https://github.com/18803076512/arcfort-website/actions/runs/38023797228) captures
+the same reset-host/empty-child/comment-cursor failure on media. Delaying the error-page module in
+a synthetic Console fixture reproduces 28 errors / 120 loads. A keyed Fragment in the real Console
+layout removes host-fiber replay; the same 120-load case passes, followed by another 120-load pass
+with uninstrumented renderer bytes. See the
+[replay-boundary decision](../knowledge-base/decisions/2026-10-10-console-hydration-replay-boundary.md).
+The temporary renderer probe is removed; the native runner now requires 120 actual delayed-module
+history requests and zero page errors. Full native acceptance of this repair is pending; do not
+claim release closure, deploy or touch retained/hosted data. Real 15AK and full V1 remain incomplete.
+
 Latest diagnostic validation (2026-10-10): `37be0f0a01aeeda73445352dc7d90bf997529d1a` /
 [run 38001300601](https://github.com/18803076512/arcfort-website/actions/runs/38001300601) passes
 quality and completes 48 scenario bodies, then fails the unchanged zero-page-error gate. At history
