@@ -338,7 +338,17 @@ mobile behavior and conversion paths must satisfy the applicable repository gate
 
 ## Recommended Next Setup Phase
 
-Latest diagnostic validation (2026-10-09): `558b82f36dd3283cff7008f1fcd8c7d0bd304a35` /
+Latest diagnostic validation (2026-10-10): `37be0f0a01aeeda73445352dc7d90bf997529d1a` /
+[run 38001300601](https://github.com/18803076512/arcfort-website/actions/runs/38001300601) passes
+quality and completes 48 scenario bodies, then fails the unchanged zero-page-error gate. At history
+document 8 / 1440px, the throw-site probe captures DIV/BODY/HTML against a comment inside a DIV,
+document still loading, two templates, followed by React 418/HTML and `$RS` null-parent failure.
+This directly narrows the fault to the streaming document boundary, not business-data mutation;
+the exact renderer mechanism remains unproven. Extend only fixed structural categories to identify
+the region, completion cursor and boundary markers before a runtime repair. No private values leave
+the browser. Current closure remains BLOCKED; no deployment or retained/hosted write is authorized.
+
+Prior diagnostic validation (2026-10-09): `558b82f36dd3283cff7008f1fcd8c7d0bd304a35` /
 [run 37858262736](https://github.com/18803076512/arcfort-website/actions/runs/37858262736) passes
 quality, 48 browser scenarios and final media/OEM/packaging retention, but the debugger probe did
 not capture the intermittent error. This is not a root-cause repair. Replace the debugger with

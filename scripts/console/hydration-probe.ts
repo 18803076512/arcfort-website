@@ -5,7 +5,7 @@ import path from "node:path";
 export const hydrationProbePrefix = "CONSOLE_HYDRATION_SHAPE:";
 
 // Temporary, disposable-build diagnostic. Record only an already-failing React claim, never
-// normal rendering. Inspect tag names/counts, not text, attributes, props, URLs or credentials.
+// normal rendering. Fixed structural categories only, never business text/props/URLs/credentials.
 export async function hydrationProbeTarget(root = path.resolve(".next/static/chunks")) {
   for (const file of await readdir(root)) {
     if (!file.endsWith(".js")) continue;
@@ -24,14 +24,29 @@ export async function hydrationProbeTarget(root = path.resolve(".next/static/chu
       expression: `(() => {
         const allowed = new Set(["HTML","HEAD","BODY","DIV","MAIN","ASIDE","NAV","P","H1","H2","H3","SPAN","A","FORM","FIELDSET","LEGEND","LABEL","INPUT","SELECT","OPTION","TEXTAREA","BUTTON","SECTION","ARTICLE","DL","DT","DD","TABLE","TBODY","TR","TD","TH","SCRIPT","META","TITLE","LINK","TEMPLATE","#text","#comment"]);
         const tag = value => allowed.has(value) ? value : value == null ? "missing" : "other";
+        const markers = new Map([["$", "complete"], ["$?", "pending"], ["$!", "client"], ["/$", "end"]]);
+        const marker = node => node?.nodeType === 8
+          ? (markers.get(node.data) ?? "other-comment")
+          : "not-comment";
+        const nodeShape = node => ({ tag: tag(node?.nodeName), marker: marker(node) });
+        const region = node => ["console-root", "console-workspace", "console-main"].find(value => node?.classList?.contains(value)) ?? "other";
         const expected = [];
         for (let fiber = ${claim[2]}; fiber && expected.length < 12; fiber = fiber.return)
           if (typeof fiber.type === "string") expected.push(tag(fiber.type.toUpperCase()));
         const actual = [];
         for (let node = ${cursor[2]}; node && actual.length < 12; node = node.parentNode)
           actual.push(tag(node.nodeName));
+        const children = [];
+        for (let fiber = ${claim[2]}.child; fiber && children.length < 12; fiber = fiber.sibling)
+          children.push({ tag: fiber.tag, host: typeof fiber.type === "string" ? tag(fiber.type.toUpperCase()) : "non-host" });
+        const siblings = [];
+        for (let node = ${cursor[2]}; node && siblings.length < 8; node = node.nextSibling)
+          siblings.push(nodeShape(node));
         return { expected, actual, readyState: document.readyState,
           parent: tag(typeof ${cursor[1]}?.type === "string" ? ${cursor[1]}.type.toUpperCase() : null),
+          completingParent: ${claim[2]} === ${cursor[1]},
+          region: region(${claim[2]}.stateNode), cursorParentRegion: region(${cursor[2]}?.parentNode),
+          children, siblings,
           bodyChildren: Array.from(document.body?.childNodes ?? []).slice(0,12).map(node => tag(node.nodeName)),
           templates: document.querySelectorAll("template").length };
       })()`,

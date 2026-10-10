@@ -3,9 +3,10 @@
 Date: 2026-09-24
 Scope: local implementation toward the approved Console V1 architecture. M4 is not complete.
 
-Latest validation: [cross-page hydration diagnosis](#october-9-cross-page-hydration-diagnosis).
-Candidate `558b82f3` passes 48 scenarios with a debugger probe but does not reproduce the earlier
-`83a53697` HTML hydration failure. Stability closure is **BLOCKED** pending diagnosis/repair;
+Latest validation: [stream-boundary capture](#october-10-stream-boundary-capture).
+Candidate `37be0f0a` completes 48 scenario bodies but fails the final zero-error gate, capturing
+a comment cursor during loading and a subsequent stream-helper failure. Stability closure is
+**BLOCKED** pending diagnosis/repair. Earlier `558b82f3` debugger-enabled success did not fix it;
 instrumented non-reproduction alone is not a fix or release approval.
 Earlier `fb22f8aa` passes two native attempts; that non-reproduction did not resolve the fault.
 Candidate `74031362` previously
@@ -2358,3 +2359,29 @@ on exit. No source/vendor dependency, retained server or deployed asset is chang
 H1/H2 negative control again records the expected/actual tags while retaining the real 418 error.
 Use 120 read-only history document loads to increase observation without changing fixture data or
 rerunning mutations. A passing instrumented build remains diagnostic evidence, not a runtime fix.
+
+## October 10 Stream-Boundary Capture
+
+Candidate `37be0f0a01aeeda73445352dc7d90bf997529d1a`,
+[run 38001300601](https://github.com/18803076512/arcfort-website/actions/runs/38001300601), passes
+quality and completes all 48 browser scenario bodies. The final zero-error gate fails with two
+errors at owner history document 8 / 1440px. The throw-site capture is:
+
+- Expected host ancestry: DIV, BODY, HTML; hydration parent: DIV.
+- Actual cursor ancestry: comment, DIV, BODY, HTML, other.
+- Document readyState: loading; two template elements remain.
+- React 418/HTML is followed by `$RS` with null `parentNode`; zero external requests.
+
+The failure is now directly observed during streamed document hydration. It is not a packaging-only
+or mutation-only issue. Installed React's completion path can throw when a host parent retains an
+unconsumed hydratable cursor; distinguish that path from a failed entry claim before changing runtime.
+The exact cause remains unproven. The upstream report
+[React #37321](https://github.com/react/react/issues/37321) describes a related streaming/parser race,
+but its different renderer version and captured node shape do not establish identity with this case.
+No upstream scheduler patch, delay, error suppression or dependency change is applied.
+
+The next bounded probe adds fixed known Console region names, fiber tag numbers, parent identity,
+sibling HTML categories and an allowlist of React boundary marker categories. It emits no raw
+comment, attribute, prop, text, URL or stack. The same 120 read-only document bound, unchanged
+error gate and generated-byte restoration remain. This is diagnosis, not release acceptance.
+Runtime/public data, hosted/retained local stacks, SEO and RFQ remain unchanged.
