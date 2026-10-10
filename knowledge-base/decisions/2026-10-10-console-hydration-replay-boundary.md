@@ -1,7 +1,7 @@
 # Console Hydration Replay Boundary
 
 Date: 2026-10-10
-Status: local regression passed; full native candidate acceptance pending.
+Status: local regression and full uninstrumented native candidate acceptance passed; CI scope only.
 
 ## Evidence
 
@@ -52,3 +52,13 @@ the delayed-module regression plus full native acceptance pass without it.
 
 This repairs the owner-authorized media/OEM/packaging CI batch only. It grants no merge, deployment,
 hosted/retained-local data operation, source-authority change or real-product publication approval.
+
+## Native Acceptance
+
+Candidate `3fffe5f91771576fdaa6fd524ffbc08bd3d5aff7` passes both jobs in
+[run 38024660872](https://github.com/18803076512/arcfort-website/actions/runs/38024660872).
+The uninstrumented browser runner completes 48 scenarios and counts all 120 delayed history modules
+with strict zero-error gates. All 24 SQL suites / 1,384 assertions pass, followed by exact final
+parent/media/OEM/packaging ledgers, revocation, original/commercial retention and zero publication.
+This resolves the reproduced replay regression for this candidate and tested matrix, not all future
+framework behavior or production/real-product acceptance. Full V1 and the real 15AK pilot remain open.

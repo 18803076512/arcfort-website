@@ -6787,3 +6787,19 @@ retained database and historical report.
   upstream fix, bounded workaround, before/after evidence and explicit reversal requirements.
 - **Deployment:** None; same approved branch and disposable CI only, no hosted/retained operations.
 - **Next Recommended Action:** Verify the complete uninstrumented native regression and retained ledgers.
+
+## 2026-10-10 - Accept The Uninstrumented Hydration Repair In Isolated CI
+
+- **Task:** Close the authorized media/OEM/packaging CI repair with exact candidate evidence.
+- **Files Changed:** Goal, M4 runbook, hydration-replay decision and this log; evidence-only follow-up.
+- **Components Changed / Data Changed / Visual Changes / SEO Impact:** None in this follow-up.
+- **Validation:** `3fffe5f9` / run `38024660872` passes both jobs: full quality/build/SEO/RFQ gates,
+  24 SQL suites / 1,384 assertions, 48 native browser scenarios, 120 counted delayed modules with
+  strict zero errors, and final native Auth/Storage/media/OEM/packaging ledgers and retention.
+- **Known Issues:** Isolated-batch result PASS_WITH_WARNINGS. Hydration replay is repaired for this
+  candidate/tested matrix; technical documents, real 15AK evidence, preview/publication and full V1
+  remain incomplete. Synthetic results are not real-product verification or live-release evidence.
+- **Reusable Knowledge Added:** Exact uninstrumented native acceptance and bounded reversal criteria
+  retained in the replay-boundary decision; historical failures preserved.
+- **Deployment:** None. No merge, hosted/retained-local operation or product publication.
+- **Next Recommended Action:** Develop governed technical-document review toward the real 15AK pilot.

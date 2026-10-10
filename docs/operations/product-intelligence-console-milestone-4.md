@@ -3,9 +3,10 @@
 Date: 2026-09-24
 Scope: local implementation toward the approved Console V1 architecture. M4 is not complete.
 
-Latest validation: [hydration replay repair](#october-10-hydration-replay-repair).
-The keyed-Fragment repair passes a locally reproduced delayed-module regression, including an
-uninstrumented run. Full native acceptance is pending, so stability closure remains **BLOCKED**.
+Latest validation: [uninstrumented native acceptance](#october-10-uninstrumented-native-acceptance).
+Candidate `3fffe5f9` passes both CI jobs, 48 native browser scenarios and all 120 delayed history
+modules, plus final retention. The reproduced hydration-replay regression is repaired. Current
+isolated-batch gate is **PASS_WITH_WARNINGS**, not production release or M4/V1 completion.
 Earlier instrumented non-reproduction alone did not fix the fault or authorize a release.
 Earlier `fb22f8aa` passes two native attempts; that non-reproduction did not resolve the fault.
 Candidate `74031362` previously
@@ -2407,3 +2408,31 @@ run counts 120 delayed requests and zero errors. Focused lint, full typecheck, b
 ten browser-server guards pass. The native regression delays only the real error-page asset during
 120 history loads and verifies the delay was actually exercised. All business/data/error assertions
 remain. Full native repair acceptance is not yet run; local success does not close that gate.
+
+## October 10 Uninstrumented Native Acceptance
+
+The preceding preparation status is superseded by candidate
+`3fffe5f91771576fdaa6fd524ffbc08bd3d5aff7` /
+[run 38024660872](https://github.com/18803076512/arcfort-website/actions/runs/38024660872).
+Both jobs pass. Exact evidence:
+
+- Quality: secrets, canonical/generation/evidence validators, Console foundation, lint, typecheck,
+  full build, RFQ, SEO/internal links/snippets and performance budgets pass.
+- Database: all 24 SQL suites / 1,384 assertions pass, with migration replay, type parity, exact
+  shadow reconciliation, Auth/RLS and large-catalog checks.
+- Browser: 48 real database-backed scenarios; all 120 delayed history-module requests counted;
+  strict zero-page-error and external-request gates pass. No renderer instrumentation remains.
+- Final native M3/compatibility/original/media/OEM/packaging checks pass: observed contention,
+  exact immutable bytes, private observation/review, historical ledgers, revocation and exact
+  original/commercial retention. Synthetic fixtures only; zero real-product publication.
+
+Release-QA result: **PASS_WITH_WARNINGS for the authorized isolated batch only**. The reproduced
+hydration-replay defect is resolved for the tested candidate/matrix with the documented bounded
+workaround; the earlier failing attempts remain part of the evidence trail. No merge, deploy,
+hosted mutation or retained-local operation occurred. PR #130 remains the submission destination.
+
+Remaining warnings belong to the wider goal: technical-document workflow, real 15AK verified facts
+and exact-image rights, verified preview/QA/publication and external release acceptance remain
+incomplete. No synthetic approval establishes a real commercial or technical fact. Continue next
+with governed technical documents and real 15AK evidence; do not reopen Docker recovery or expand
+the current external-write authorization. Data, visual output, public URLs, SEO and RFQ are unchanged.
