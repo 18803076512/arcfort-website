@@ -4,6 +4,7 @@ import { getAllProductCategories } from "@/lib/content/categories";
 import { getAllGuides } from "@/lib/content/guides";
 import { getAllProducts } from "@/lib/content/products";
 import { getSearchEligibleProductImages } from "@/lib/content/product-images";
+import { getAllProductSeries, getProductSeriesPath } from "@/lib/content/product-series";
 import { absoluteUrl, siteConfig } from "@/lib/content/site";
 
 export default function sitemap(): MetadataRoute.Sitemap {
@@ -53,6 +54,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     (application) => `/applications/${application.slug}`,
   );
   const guideRoutes = getAllGuides();
+  const seriesRoutes = getAllProductSeries();
 
   return [
     ...staticRoutes.map((route) => ({
@@ -79,6 +81,10 @@ export default function sitemap(): MetadataRoute.Sitemap {
     ...categoryRoutes.map((route) => ({
       url: absoluteUrl(route),
       lastModified: siteConfig.contentLastModified,
+    })),
+    ...seriesRoutes.map((series) => ({
+      url: absoluteUrl(getProductSeriesPath(series)),
+      lastModified: series.reviewedDate,
     })),
     ...getAllProducts().map((product) => {
       const route = `/products/${product.categorySlug}/${product.slug}`;

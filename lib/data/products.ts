@@ -1361,7 +1361,7 @@ export const arcfortProducts: ArcfortProductData[] = [
     "categorySlug": "tig-torch-parts",
     "shortDescription": "TIG Collet Body for TIG torch-head assembly and collet body replacement. Compatibility and ordering details can be confirmed by sample, drawing or model reference.",
     "description": "TIG Collet Body is a torch-head component that seats the collet, supports the cup assembly and forms part of the shielding gas path. It is supplied for TIG torch-head assembly and collet body replacement in distributor, importer, repair workshop and OEM sourcing programs. Because industrial welding products can vary by model, size, material and application, buyers should confirm tungsten diameter, torch series, thread and cup or gas lens configuration using an existing part, drawing, product photo or model reference before quotation. This review helps the sales team check the requested item without publishing unverified compatibility or technical specifications. ArcFort Weld can review mixed product lists and discuss standard export packing, small trial orders for standard items, and logo or private-label packaging when quantity and artwork requirements are available. Send the required quantity and destination country to receive MOQ, lead time and delivery options.",
-    "mainImage": "/images/products/tig-collet-body.jpg",
+    "mainImage": "/images/products/tig-collet-body-reference.jpg",
     "galleryImages": [],
     "material": "Copper material - specific grade to be confirmed",
     "size": "22, 24 and 47 mm body-length references are shown for different torch families",
@@ -1380,12 +1380,12 @@ export const arcfortProducts: ArcfortProductData[] = [
     "status": "active",
     "dataStatus": "needs_review",
     "sourceType": "unknown",
-    "sourceReference": "Renqiu Ailesen welding catalog PDF page 35 (catalog page 63): collet-body drawings and tables show 22, 24 and 47 mm references with family-specific bore and thread arrangements for 9/20 and 17/18/26 series. Final body, cup and collet combination must be confirmed together.",
+    "sourceReference": "Renqiu Ailesen welding catalog PDF page 35 (catalog page 63): collet-body drawings and tables show 22, 24 and 47 mm references with family-specific bore and thread arrangements for 9/20 and 17/18/26 series. Final body, cup and collet combination must be confirmed together. Image reference: local supplier archive 氩弧焊配件.jpg shows a TIG accessory group including collet bodies; exact body variant remains subject to confirmation.",
     "imageStatus": "supplier_photo",
     "compatibilityStatus": "reference_only",
     "oemStatus": "unknown",
-    "verifiedBy": "Official company catalog review",
-    "verifiedDate": "2026-08-12"
+    "verifiedBy": "Official company catalog and internal image asset review",
+    "verifiedDate": "2026-08-21"
   },
   {
     "id": "af-tig-cc-0004",

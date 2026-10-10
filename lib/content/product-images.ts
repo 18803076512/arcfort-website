@@ -1,5 +1,8 @@
 import { existsSync } from "node:fs";
 import path from "node:path";
+import { productImageAssets } from "@/lib/data/product-image-assets";
+import type { ProductImageAsset } from "@/lib/content/schemas";
+import { isSearchEligibleProductImageAsset } from "@/lib/content/product-image-evidence";
 
 export function hasPublicProductImage(imagePath?: string) {
   if (!imagePath?.startsWith("/images/products/")) {
@@ -12,21 +15,66 @@ export function hasPublicProductImage(imagePath?: string) {
 }
 
 type ProductImageSource = {
+  sku: string;
+  slug: string;
   mainImage: string;
   galleryImages: string[];
   imageStatus?: "own_photo" | "supplier_photo" | "placeholder" | "needs_photo";
 };
 
-export function getSearchEligibleProductImages(product: ProductImageSource) {
+function getProductImageAssets(product: ProductImageSource) {
   if (product.imageStatus !== "own_photo" && product.imageStatus !== "supplier_photo") {
     return [];
   }
 
-  return Array.from(
-    new Set(
-      [product.mainImage, ...product.galleryImages].filter((imagePath) =>
-        hasPublicProductImage(imagePath),
-      ),
-    ),
+  const assignedPaths = new Set([product.mainImage, ...product.galleryImages]);
+
+  return productImageAssets.filter(
+    (asset) =>
+      asset.sku === product.sku &&
+      asset.productSlug === product.slug &&
+      assignedPaths.has(asset.publicPath) &&
+      hasPublicProductImage(asset.publicPath),
   );
+}
+
+export function getDisplayEligibleProductImageAssets(product: ProductImageSource) {
+  return getProductImageAssets(product).filter((asset) => {
+    if (asset.publicationStatus === "search_eligible") {
+      return isSearchEligibleProductImageAsset(asset);
+    }
+
+    return (
+      ["legacy_reference", "display_only"].includes(asset.publicationStatus) &&
+      asset.contentMatchStatus !== "rejected"
+    );
+  });
+}
+
+export function getDisplayEligibleProductImages(product: ProductImageSource) {
+  return getDisplayEligibleProductImageAssets(product).map((asset) => asset.publicPath);
+}
+
+export function getSearchEligibleProductImages(product: ProductImageSource) {
+  return getProductImageAssets(product)
+    .filter(isSearchEligibleProductImageAsset)
+    .map((asset) => asset.publicPath);
+}
+
+export function getProductImageAltText(
+  product: ProductImageSource,
+  imagePath: string,
+  fallback: string,
+) {
+  return (
+    getProductImageAssets(product).find((asset) => asset.publicPath === imagePath)?.altText ??
+    fallback
+  );
+}
+
+export function getProductImageAsset(
+  product: ProductImageSource,
+  imagePath: string,
+): ProductImageAsset | undefined {
+  return getProductImageAssets(product).find((asset) => asset.publicPath === imagePath);
 }

@@ -10,10 +10,10 @@ type RfqListLinkProps = {
 
 const variantClasses = {
   header:
-    "ml-2 inline-flex min-h-11 items-center justify-center gap-2 bg-arc-blue px-4 text-xs font-bold uppercase tracking-[0.12em] text-white transition hover:bg-arc-midnight",
-  menu: "flex min-h-12 items-center justify-between bg-arc-blue px-3 text-sm font-bold uppercase tracking-[0.1em] text-white transition hover:bg-arc-midnight",
+    "inline-flex min-h-11 items-center justify-center gap-2 rounded bg-arc-signal px-4 text-sm font-bold text-white transition hover:bg-arc-copper",
+  menu: "flex min-h-12 items-center justify-between rounded bg-arc-signal px-4 text-sm font-bold text-white transition hover:bg-arc-copper",
   sticky:
-    "inline-flex min-h-12 min-w-0 items-center justify-center gap-2 overflow-hidden bg-arc-signal px-2 text-center text-[11px] font-bold uppercase tracking-[0.04em] text-arc-midnight transition hover:bg-white sm:px-3 sm:text-xs sm:tracking-[0.12em]",
+    "inline-flex min-h-12 min-w-0 items-center justify-center gap-2 overflow-hidden bg-arc-signal px-2 text-center text-sm font-bold text-white transition hover:bg-arc-copper sm:px-3",
 } as const;
 
 const countClasses = {
