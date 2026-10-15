@@ -1,5 +1,6 @@
 import { ConsoleLink } from "@/components/console/ConsoleLink";
 import { ProductWorkingNav } from "@/components/console/ProductWorkingNav";
+import { DocumentReadinessSummary } from "@/components/console/DocumentReadiness";
 import { readWorkingStates } from "@/lib/console/working";
 import {
   consoleCompatibilityEnabled,
@@ -13,6 +14,7 @@ import { requireConsoleAccess } from "@/lib/console/server";
 import {
   filters,
   readProductDetail,
+  readDocumentReadiness,
   readTechnicalData,
   type SearchParams,
 } from "@/lib/console/catalog";
@@ -37,6 +39,7 @@ export default async function ProductDetailPage({
   const query = await searchParams;
   const data = await readProductDetail(client, id);
   if (!data) notFound();
+  const documents = await readDocumentReadiness(client, id);
   const working = (await readWorkingStates(client, [id])).length > 0;
   const technical = await readTechnicalData(client, filters(query), { variantId: id });
   return (
@@ -84,6 +87,9 @@ export default async function ProductDetailPage({
         {data.readiness.blocker_count} blockers; {data.readiness.confirmed_technical_count}{" "}
         confirmed technical values; {data.readiness.eligible_main_image_count} eligible main images.
       </p>
+      {documents && (
+        <DocumentReadinessSummary data={documents} variantId={id} available={working} />
+      )}
       <h2>Technical Values</h2>
       <TechnicalTable data={technical} />
       <Pagination data={technical} params={query} path={`/console/products/${id}`} />

@@ -113,8 +113,22 @@ export type Database = {
             foreignKeyName: "compatibility_entities_product_variant_id_fkey";
             columns: ["product_variant_id"];
             isOneToOne: false;
+            referencedRelation: "pi_document_readiness";
+            referencedColumns: ["product_variant_id"];
+          },
+          {
+            foreignKeyName: "compatibility_entities_product_variant_id_fkey";
+            columns: ["product_variant_id"];
+            isOneToOne: false;
             referencedRelation: "pi_packaging_readiness";
             referencedColumns: ["product_variant_id"];
+          },
+          {
+            foreignKeyName: "compatibility_entities_product_variant_id_fkey";
+            columns: ["product_variant_id"];
+            isOneToOne: false;
+            referencedRelation: "pi_variant_document_readiness";
+            referencedColumns: ["id"];
           },
           {
             foreignKeyName: "compatibility_entities_product_variant_id_fkey";
@@ -484,8 +498,22 @@ export type Database = {
             foreignKeyName: "compatibility_source_bindings_product_variant_id_fkey";
             columns: ["product_variant_id"];
             isOneToOne: false;
+            referencedRelation: "pi_document_readiness";
+            referencedColumns: ["product_variant_id"];
+          },
+          {
+            foreignKeyName: "compatibility_source_bindings_product_variant_id_fkey";
+            columns: ["product_variant_id"];
+            isOneToOne: false;
             referencedRelation: "pi_packaging_readiness";
             referencedColumns: ["product_variant_id"];
+          },
+          {
+            foreignKeyName: "compatibility_source_bindings_product_variant_id_fkey";
+            columns: ["product_variant_id"];
+            isOneToOne: false;
+            referencedRelation: "pi_variant_document_readiness";
+            referencedColumns: ["id"];
           },
           {
             foreignKeyName: "compatibility_source_bindings_product_variant_id_fkey";
@@ -541,6 +569,484 @@ export type Database = {
         };
         Relationships: [];
       };
+      document_review_candidates: {
+        Row: {
+          created_at: string;
+          created_by: string;
+          evidence_digest: string;
+          evidence_source_ids: string[];
+          id: string;
+          original_digest: string;
+          predecessor_id: string | null;
+          proposal_digest: string;
+          reason: string;
+          scope_note: string;
+          sequence: number;
+          technical_document_id: string;
+          verification_status: Database["public"]["Enums"]["pi_verification_status"];
+        };
+        Insert: {
+          created_at?: string;
+          created_by: string;
+          evidence_digest: string;
+          evidence_source_ids: string[];
+          id: string;
+          original_digest: string;
+          predecessor_id?: string | null;
+          proposal_digest: string;
+          reason: string;
+          scope_note: string;
+          sequence: number;
+          technical_document_id: string;
+          verification_status: Database["public"]["Enums"]["pi_verification_status"];
+        };
+        Update: {
+          created_at?: string;
+          created_by?: string;
+          evidence_digest?: string;
+          evidence_source_ids?: string[];
+          id?: string;
+          original_digest?: string;
+          predecessor_id?: string | null;
+          proposal_digest?: string;
+          reason?: string;
+          scope_note?: string;
+          sequence?: number;
+          technical_document_id?: string;
+          verification_status?: Database["public"]["Enums"]["pi_verification_status"];
+        };
+        Relationships: [
+          {
+            foreignKeyName: "document_review_candidates_predecessor_id_fkey";
+            columns: ["predecessor_id"];
+            isOneToOne: false;
+            referencedRelation: "document_review_candidates";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "document_review_candidates_predecessor_id_fkey";
+            columns: ["predecessor_id"];
+            isOneToOne: false;
+            referencedRelation: "pi_effective_document_reviews";
+            referencedColumns: ["latest_candidate_id"];
+          },
+          {
+            foreignKeyName: "document_review_candidates_technical_document_id_fkey";
+            columns: ["technical_document_id"];
+            isOneToOne: false;
+            referencedRelation: "document_review_heads";
+            referencedColumns: ["technical_document_id"];
+          },
+        ];
+      };
+      document_review_currents: {
+        Row: {
+          candidate_id: string;
+          technical_document_id: string;
+          updated_at: string;
+          updated_by: string;
+        };
+        Insert: {
+          candidate_id: string;
+          technical_document_id: string;
+          updated_at?: string;
+          updated_by: string;
+        };
+        Update: {
+          candidate_id?: string;
+          technical_document_id?: string;
+          updated_at?: string;
+          updated_by?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "document_review_currents_candidate_id_fkey";
+            columns: ["candidate_id"];
+            isOneToOne: true;
+            referencedRelation: "document_review_decisions";
+            referencedColumns: ["candidate_id"];
+          },
+          {
+            foreignKeyName: "document_review_currents_technical_document_id_fkey";
+            columns: ["technical_document_id"];
+            isOneToOne: true;
+            referencedRelation: "document_review_heads";
+            referencedColumns: ["technical_document_id"];
+          },
+        ];
+      };
+      document_review_decisions: {
+        Row: {
+          candidate_id: string;
+          confirmation: Json;
+          conflict_resolution: string;
+          created_at: string;
+          created_by: string;
+          decision: Database["public"]["Enums"]["pi_review_decision"];
+          event_id: string;
+          observed_evidence_digest: string;
+          observed_original_digest: string | null;
+          rights_source_id: string | null;
+          scope_source_id: string | null;
+        };
+        Insert: {
+          candidate_id: string;
+          confirmation: Json;
+          conflict_resolution: string;
+          created_at?: string;
+          created_by: string;
+          decision: Database["public"]["Enums"]["pi_review_decision"];
+          event_id: string;
+          observed_evidence_digest: string;
+          observed_original_digest?: string | null;
+          rights_source_id?: string | null;
+          scope_source_id?: string | null;
+        };
+        Update: {
+          candidate_id?: string;
+          confirmation?: Json;
+          conflict_resolution?: string;
+          created_at?: string;
+          created_by?: string;
+          decision?: Database["public"]["Enums"]["pi_review_decision"];
+          event_id?: string;
+          observed_evidence_digest?: string;
+          observed_original_digest?: string | null;
+          rights_source_id?: string | null;
+          scope_source_id?: string | null;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "document_review_decisions_candidate_id_fkey";
+            columns: ["candidate_id"];
+            isOneToOne: true;
+            referencedRelation: "document_review_submissions";
+            referencedColumns: ["candidate_id"];
+          },
+          {
+            foreignKeyName: "document_review_decisions_event_id_fkey";
+            columns: ["event_id"];
+            isOneToOne: true;
+            referencedRelation: "verification_events";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "document_review_decisions_rights_source_id_fkey";
+            columns: ["rights_source_id"];
+            isOneToOne: false;
+            referencedRelation: "document_source_bindings";
+            referencedColumns: ["evidence_source_id"];
+          },
+          {
+            foreignKeyName: "document_review_decisions_scope_source_id_fkey";
+            columns: ["scope_source_id"];
+            isOneToOne: false;
+            referencedRelation: "document_source_bindings";
+            referencedColumns: ["evidence_source_id"];
+          },
+        ];
+      };
+      document_review_heads: {
+        Row: {
+          created_at: string;
+          created_by: string;
+          product_variant_id: string;
+          revision: number;
+          technical_document_id: string;
+        };
+        Insert: {
+          created_at?: string;
+          created_by: string;
+          product_variant_id: string;
+          revision: number;
+          technical_document_id: string;
+        };
+        Update: {
+          created_at?: string;
+          created_by?: string;
+          product_variant_id?: string;
+          revision?: number;
+          technical_document_id?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "document_review_heads_product_variant_id_fkey";
+            columns: ["product_variant_id"];
+            isOneToOne: false;
+            referencedRelation: "pi_document_readiness";
+            referencedColumns: ["product_variant_id"];
+          },
+          {
+            foreignKeyName: "document_review_heads_product_variant_id_fkey";
+            columns: ["product_variant_id"];
+            isOneToOne: false;
+            referencedRelation: "pi_packaging_readiness";
+            referencedColumns: ["product_variant_id"];
+          },
+          {
+            foreignKeyName: "document_review_heads_product_variant_id_fkey";
+            columns: ["product_variant_id"];
+            isOneToOne: false;
+            referencedRelation: "pi_variant_document_readiness";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "document_review_heads_product_variant_id_fkey";
+            columns: ["product_variant_id"];
+            isOneToOne: false;
+            referencedRelation: "pi_variant_readiness";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "document_review_heads_product_variant_id_fkey";
+            columns: ["product_variant_id"];
+            isOneToOne: false;
+            referencedRelation: "product_variants";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "document_review_heads_technical_document_id_fkey";
+            columns: ["technical_document_id"];
+            isOneToOne: true;
+            referencedRelation: "pi_effective_document_reviews";
+            referencedColumns: ["document_id"];
+          },
+          {
+            foreignKeyName: "document_review_heads_technical_document_id_fkey";
+            columns: ["technical_document_id"];
+            isOneToOne: true;
+            referencedRelation: "technical_document_bindings";
+            referencedColumns: ["technical_document_id"];
+          },
+        ];
+      };
+      document_review_submissions: {
+        Row: {
+          candidate_id: string;
+          created_at: string;
+          created_by: string;
+          submitted_digest: string;
+        };
+        Insert: {
+          candidate_id: string;
+          created_at?: string;
+          created_by: string;
+          submitted_digest: string;
+        };
+        Update: {
+          candidate_id?: string;
+          created_at?: string;
+          created_by?: string;
+          submitted_digest?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "document_review_submissions_candidate_id_fkey";
+            columns: ["candidate_id"];
+            isOneToOne: true;
+            referencedRelation: "document_review_candidates";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "document_review_submissions_candidate_id_fkey";
+            columns: ["candidate_id"];
+            isOneToOne: true;
+            referencedRelation: "pi_effective_document_reviews";
+            referencedColumns: ["latest_candidate_id"];
+          },
+        ];
+      };
+      document_source_bindings: {
+        Row: {
+          assertion: string;
+          created_at: string;
+          created_by: string;
+          dimension: string;
+          evidence_basis: string;
+          evidence_source_id: string;
+          original_digest: string;
+          product_variant_id: string;
+          revision_label: string | null;
+          scope_note: string;
+          source_digest: string;
+          source_kind: string;
+          source_location: string;
+          technical_document_id: string;
+        };
+        Insert: {
+          assertion: string;
+          created_at?: string;
+          created_by: string;
+          dimension: string;
+          evidence_basis: string;
+          evidence_source_id: string;
+          original_digest: string;
+          product_variant_id: string;
+          revision_label?: string | null;
+          scope_note: string;
+          source_digest: string;
+          source_kind: string;
+          source_location: string;
+          technical_document_id: string;
+        };
+        Update: {
+          assertion?: string;
+          created_at?: string;
+          created_by?: string;
+          dimension?: string;
+          evidence_basis?: string;
+          evidence_source_id?: string;
+          original_digest?: string;
+          product_variant_id?: string;
+          revision_label?: string | null;
+          scope_note?: string;
+          source_digest?: string;
+          source_kind?: string;
+          source_location?: string;
+          technical_document_id?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "document_source_bindings_evidence_source_id_fkey";
+            columns: ["evidence_source_id"];
+            isOneToOne: true;
+            referencedRelation: "evidence_sources";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "document_source_bindings_product_variant_id_fkey";
+            columns: ["product_variant_id"];
+            isOneToOne: false;
+            referencedRelation: "pi_document_readiness";
+            referencedColumns: ["product_variant_id"];
+          },
+          {
+            foreignKeyName: "document_source_bindings_product_variant_id_fkey";
+            columns: ["product_variant_id"];
+            isOneToOne: false;
+            referencedRelation: "pi_packaging_readiness";
+            referencedColumns: ["product_variant_id"];
+          },
+          {
+            foreignKeyName: "document_source_bindings_product_variant_id_fkey";
+            columns: ["product_variant_id"];
+            isOneToOne: false;
+            referencedRelation: "pi_variant_document_readiness";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "document_source_bindings_product_variant_id_fkey";
+            columns: ["product_variant_id"];
+            isOneToOne: false;
+            referencedRelation: "pi_variant_readiness";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "document_source_bindings_product_variant_id_fkey";
+            columns: ["product_variant_id"];
+            isOneToOne: false;
+            referencedRelation: "product_variants";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "document_source_bindings_technical_document_id_fkey";
+            columns: ["technical_document_id"];
+            isOneToOne: false;
+            referencedRelation: "pi_effective_document_reviews";
+            referencedColumns: ["document_id"];
+          },
+          {
+            foreignKeyName: "document_source_bindings_technical_document_id_fkey";
+            columns: ["technical_document_id"];
+            isOneToOne: false;
+            referencedRelation: "technical_document_bindings";
+            referencedColumns: ["technical_document_id"];
+          },
+        ];
+      };
+      document_upload_completions: {
+        Row: {
+          byte_verification: string;
+          created_at: string;
+          created_by: string;
+          intent_id: string;
+          storage_metadata: Json;
+          storage_object_id: string;
+          storage_version: string | null;
+        };
+        Insert: {
+          byte_verification?: string;
+          created_at?: string;
+          created_by: string;
+          intent_id: string;
+          storage_metadata: Json;
+          storage_object_id: string;
+          storage_version?: string | null;
+        };
+        Update: {
+          byte_verification?: string;
+          created_at?: string;
+          created_by?: string;
+          intent_id?: string;
+          storage_metadata?: Json;
+          storage_object_id?: string;
+          storage_version?: string | null;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "document_upload_completions_intent_id_fkey";
+            columns: ["intent_id"];
+            isOneToOne: true;
+            referencedRelation: "document_upload_intents";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      document_upload_intents: {
+        Row: {
+          actor_id: string;
+          created_at: string;
+          id: string;
+          manifest: Json;
+          reference_digest: string;
+          storage_path: string;
+          technical_document_id: string;
+        };
+        Insert: {
+          actor_id: string;
+          created_at?: string;
+          id: string;
+          manifest: Json;
+          reference_digest: string;
+          storage_path: string;
+          technical_document_id: string;
+        };
+        Update: {
+          actor_id?: string;
+          created_at?: string;
+          id?: string;
+          manifest?: Json;
+          reference_digest?: string;
+          storage_path?: string;
+          technical_document_id?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "document_upload_intents_technical_document_id_fkey";
+            columns: ["technical_document_id"];
+            isOneToOne: true;
+            referencedRelation: "pi_effective_document_reviews";
+            referencedColumns: ["document_id"];
+          },
+          {
+            foreignKeyName: "document_upload_intents_technical_document_id_fkey";
+            columns: ["technical_document_id"];
+            isOneToOne: true;
+            referencedRelation: "technical_document_bindings";
+            referencedColumns: ["technical_document_id"];
+          },
+        ];
+      };
       entity_documents: {
         Row: {
           created_at: string;
@@ -581,8 +1087,22 @@ export type Database = {
             foreignKeyName: "entity_documents_product_variant_id_fkey";
             columns: ["product_variant_id"];
             isOneToOne: false;
+            referencedRelation: "pi_document_readiness";
+            referencedColumns: ["product_variant_id"];
+          },
+          {
+            foreignKeyName: "entity_documents_product_variant_id_fkey";
+            columns: ["product_variant_id"];
+            isOneToOne: false;
             referencedRelation: "pi_packaging_readiness";
             referencedColumns: ["product_variant_id"];
+          },
+          {
+            foreignKeyName: "entity_documents_product_variant_id_fkey";
+            columns: ["product_variant_id"];
+            isOneToOne: false;
+            referencedRelation: "pi_variant_document_readiness";
+            referencedColumns: ["id"];
           },
           {
             foreignKeyName: "entity_documents_product_variant_id_fkey";
@@ -1036,8 +1556,22 @@ export type Database = {
             foreignKeyName: "media_mapping_heads_product_variant_id_fkey";
             columns: ["product_variant_id"];
             isOneToOne: false;
+            referencedRelation: "pi_document_readiness";
+            referencedColumns: ["product_variant_id"];
+          },
+          {
+            foreignKeyName: "media_mapping_heads_product_variant_id_fkey";
+            columns: ["product_variant_id"];
+            isOneToOne: false;
             referencedRelation: "pi_packaging_readiness";
             referencedColumns: ["product_variant_id"];
+          },
+          {
+            foreignKeyName: "media_mapping_heads_product_variant_id_fkey";
+            columns: ["product_variant_id"];
+            isOneToOne: false;
+            referencedRelation: "pi_variant_document_readiness";
+            referencedColumns: ["id"];
           },
           {
             foreignKeyName: "media_mapping_heads_product_variant_id_fkey";
@@ -1229,8 +1763,22 @@ export type Database = {
             foreignKeyName: "media_source_bindings_product_variant_id_fkey";
             columns: ["product_variant_id"];
             isOneToOne: false;
+            referencedRelation: "pi_document_readiness";
+            referencedColumns: ["product_variant_id"];
+          },
+          {
+            foreignKeyName: "media_source_bindings_product_variant_id_fkey";
+            columns: ["product_variant_id"];
+            isOneToOne: false;
             referencedRelation: "pi_packaging_readiness";
             referencedColumns: ["product_variant_id"];
+          },
+          {
+            foreignKeyName: "media_source_bindings_product_variant_id_fkey";
+            columns: ["product_variant_id"];
+            isOneToOne: false;
+            referencedRelation: "pi_variant_document_readiness";
+            referencedColumns: ["id"];
           },
           {
             foreignKeyName: "media_source_bindings_product_variant_id_fkey";
@@ -1329,8 +1877,22 @@ export type Database = {
             foreignKeyName: "media_upload_intents_product_variant_id_fkey";
             columns: ["product_variant_id"];
             isOneToOne: false;
+            referencedRelation: "pi_document_readiness";
+            referencedColumns: ["product_variant_id"];
+          },
+          {
+            foreignKeyName: "media_upload_intents_product_variant_id_fkey";
+            columns: ["product_variant_id"];
+            isOneToOne: false;
             referencedRelation: "pi_packaging_readiness";
             referencedColumns: ["product_variant_id"];
+          },
+          {
+            foreignKeyName: "media_upload_intents_product_variant_id_fkey";
+            columns: ["product_variant_id"];
+            isOneToOne: false;
+            referencedRelation: "pi_variant_document_readiness";
+            referencedColumns: ["id"];
           },
           {
             foreignKeyName: "media_upload_intents_product_variant_id_fkey";
@@ -1409,8 +1971,22 @@ export type Database = {
             foreignKeyName: "oem_references_product_variant_id_fkey";
             columns: ["product_variant_id"];
             isOneToOne: false;
+            referencedRelation: "pi_document_readiness";
+            referencedColumns: ["product_variant_id"];
+          },
+          {
+            foreignKeyName: "oem_references_product_variant_id_fkey";
+            columns: ["product_variant_id"];
+            isOneToOne: false;
             referencedRelation: "pi_packaging_readiness";
             referencedColumns: ["product_variant_id"];
+          },
+          {
+            foreignKeyName: "oem_references_product_variant_id_fkey";
+            columns: ["product_variant_id"];
+            isOneToOne: false;
+            referencedRelation: "pi_variant_document_readiness";
+            referencedColumns: ["id"];
           },
           {
             foreignKeyName: "oem_references_product_variant_id_fkey";
@@ -1640,8 +2216,22 @@ export type Database = {
             foreignKeyName: "oem_revision_heads_product_variant_id_fkey";
             columns: ["product_variant_id"];
             isOneToOne: false;
+            referencedRelation: "pi_document_readiness";
+            referencedColumns: ["product_variant_id"];
+          },
+          {
+            foreignKeyName: "oem_revision_heads_product_variant_id_fkey";
+            columns: ["product_variant_id"];
+            isOneToOne: false;
             referencedRelation: "pi_packaging_readiness";
             referencedColumns: ["product_variant_id"];
+          },
+          {
+            foreignKeyName: "oem_revision_heads_product_variant_id_fkey";
+            columns: ["product_variant_id"];
+            isOneToOne: false;
+            referencedRelation: "pi_variant_document_readiness";
+            referencedColumns: ["id"];
           },
           {
             foreignKeyName: "oem_revision_heads_product_variant_id_fkey";
@@ -1807,8 +2397,22 @@ export type Database = {
             foreignKeyName: "oem_source_bindings_product_variant_id_fkey";
             columns: ["product_variant_id"];
             isOneToOne: false;
+            referencedRelation: "pi_document_readiness";
+            referencedColumns: ["product_variant_id"];
+          },
+          {
+            foreignKeyName: "oem_source_bindings_product_variant_id_fkey";
+            columns: ["product_variant_id"];
+            isOneToOne: false;
             referencedRelation: "pi_packaging_readiness";
             referencedColumns: ["product_variant_id"];
+          },
+          {
+            foreignKeyName: "oem_source_bindings_product_variant_id_fkey";
+            columns: ["product_variant_id"];
+            isOneToOne: false;
+            referencedRelation: "pi_variant_document_readiness";
+            referencedColumns: ["id"];
           },
           {
             foreignKeyName: "oem_source_bindings_product_variant_id_fkey";
@@ -1893,8 +2497,22 @@ export type Database = {
             foreignKeyName: "packaging_records_product_variant_id_fkey";
             columns: ["product_variant_id"];
             isOneToOne: false;
+            referencedRelation: "pi_document_readiness";
+            referencedColumns: ["product_variant_id"];
+          },
+          {
+            foreignKeyName: "packaging_records_product_variant_id_fkey";
+            columns: ["product_variant_id"];
+            isOneToOne: false;
             referencedRelation: "pi_packaging_readiness";
             referencedColumns: ["product_variant_id"];
+          },
+          {
+            foreignKeyName: "packaging_records_product_variant_id_fkey";
+            columns: ["product_variant_id"];
+            isOneToOne: false;
+            referencedRelation: "pi_variant_document_readiness";
+            referencedColumns: ["id"];
           },
           {
             foreignKeyName: "packaging_records_product_variant_id_fkey";
@@ -2124,8 +2742,22 @@ export type Database = {
             foreignKeyName: "packaging_revision_heads_product_variant_id_fkey";
             columns: ["product_variant_id"];
             isOneToOne: false;
+            referencedRelation: "pi_document_readiness";
+            referencedColumns: ["product_variant_id"];
+          },
+          {
+            foreignKeyName: "packaging_revision_heads_product_variant_id_fkey";
+            columns: ["product_variant_id"];
+            isOneToOne: false;
             referencedRelation: "pi_packaging_readiness";
             referencedColumns: ["product_variant_id"];
+          },
+          {
+            foreignKeyName: "packaging_revision_heads_product_variant_id_fkey";
+            columns: ["product_variant_id"];
+            isOneToOne: false;
+            referencedRelation: "pi_variant_document_readiness";
+            referencedColumns: ["id"];
           },
           {
             foreignKeyName: "packaging_revision_heads_product_variant_id_fkey";
@@ -2303,8 +2935,22 @@ export type Database = {
             foreignKeyName: "packaging_source_bindings_product_variant_id_fkey";
             columns: ["product_variant_id"];
             isOneToOne: false;
+            referencedRelation: "pi_document_readiness";
+            referencedColumns: ["product_variant_id"];
+          },
+          {
+            foreignKeyName: "packaging_source_bindings_product_variant_id_fkey";
+            columns: ["product_variant_id"];
+            isOneToOne: false;
             referencedRelation: "pi_packaging_readiness";
             referencedColumns: ["product_variant_id"];
+          },
+          {
+            foreignKeyName: "packaging_source_bindings_product_variant_id_fkey";
+            columns: ["product_variant_id"];
+            isOneToOne: false;
+            referencedRelation: "pi_variant_document_readiness";
+            referencedColumns: ["id"];
           },
           {
             foreignKeyName: "packaging_source_bindings_product_variant_id_fkey";
@@ -2404,8 +3050,22 @@ export type Database = {
             foreignKeyName: "product_media_product_variant_id_fkey";
             columns: ["product_variant_id"];
             isOneToOne: false;
+            referencedRelation: "pi_document_readiness";
+            referencedColumns: ["product_variant_id"];
+          },
+          {
+            foreignKeyName: "product_media_product_variant_id_fkey";
+            columns: ["product_variant_id"];
+            isOneToOne: false;
             referencedRelation: "pi_packaging_readiness";
             referencedColumns: ["product_variant_id"];
+          },
+          {
+            foreignKeyName: "product_media_product_variant_id_fkey";
+            columns: ["product_variant_id"];
+            isOneToOne: false;
+            referencedRelation: "pi_variant_document_readiness";
+            referencedColumns: ["id"];
           },
           {
             foreignKeyName: "product_media_product_variant_id_fkey";
@@ -2880,8 +3540,22 @@ export type Database = {
             foreignKeyName: "seo_records_product_variant_id_fkey";
             columns: ["product_variant_id"];
             isOneToOne: false;
+            referencedRelation: "pi_document_readiness";
+            referencedColumns: ["product_variant_id"];
+          },
+          {
+            foreignKeyName: "seo_records_product_variant_id_fkey";
+            columns: ["product_variant_id"];
+            isOneToOne: false;
             referencedRelation: "pi_packaging_readiness";
             referencedColumns: ["product_variant_id"];
+          },
+          {
+            foreignKeyName: "seo_records_product_variant_id_fkey";
+            columns: ["product_variant_id"];
+            isOneToOne: false;
+            referencedRelation: "pi_variant_document_readiness";
+            referencedColumns: ["id"];
           },
           {
             foreignKeyName: "seo_records_product_variant_id_fkey";
@@ -2957,8 +3631,22 @@ export type Database = {
             foreignKeyName: "series_components_target_variant_id_fkey";
             columns: ["target_variant_id"];
             isOneToOne: false;
+            referencedRelation: "pi_document_readiness";
+            referencedColumns: ["product_variant_id"];
+          },
+          {
+            foreignKeyName: "series_components_target_variant_id_fkey";
+            columns: ["target_variant_id"];
+            isOneToOne: false;
             referencedRelation: "pi_packaging_readiness";
             referencedColumns: ["product_variant_id"];
+          },
+          {
+            foreignKeyName: "series_components_target_variant_id_fkey";
+            columns: ["target_variant_id"];
+            isOneToOne: false;
+            referencedRelation: "pi_variant_document_readiness";
+            referencedColumns: ["id"];
           },
           {
             foreignKeyName: "series_components_target_variant_id_fkey";
@@ -2972,6 +3660,121 @@ export type Database = {
             columns: ["target_variant_id"];
             isOneToOne: false;
             referencedRelation: "product_variants";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      technical_document_bindings: {
+        Row: {
+          created_at: string;
+          created_by: string;
+          document_digest: string;
+          entity_document_id: string;
+          issued_date: string | null;
+          link_digest: string;
+          owner_name: string;
+          prior_document_id: string | null;
+          product_variant_id: string;
+          revision_label: string | null;
+          scope_note: string;
+          source_location: string;
+          technical_document_id: string;
+          variant_digest: string;
+        };
+        Insert: {
+          created_at?: string;
+          created_by: string;
+          document_digest: string;
+          entity_document_id: string;
+          issued_date?: string | null;
+          link_digest: string;
+          owner_name: string;
+          prior_document_id?: string | null;
+          product_variant_id: string;
+          revision_label?: string | null;
+          scope_note: string;
+          source_location: string;
+          technical_document_id: string;
+          variant_digest: string;
+        };
+        Update: {
+          created_at?: string;
+          created_by?: string;
+          document_digest?: string;
+          entity_document_id?: string;
+          issued_date?: string | null;
+          link_digest?: string;
+          owner_name?: string;
+          prior_document_id?: string | null;
+          product_variant_id?: string;
+          revision_label?: string | null;
+          scope_note?: string;
+          source_location?: string;
+          technical_document_id?: string;
+          variant_digest?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "technical_document_bindings_entity_document_id_fkey";
+            columns: ["entity_document_id"];
+            isOneToOne: true;
+            referencedRelation: "entity_documents";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "technical_document_bindings_prior_document_id_fkey";
+            columns: ["prior_document_id"];
+            isOneToOne: false;
+            referencedRelation: "pi_effective_document_reviews";
+            referencedColumns: ["document_id"];
+          },
+          {
+            foreignKeyName: "technical_document_bindings_prior_document_id_fkey";
+            columns: ["prior_document_id"];
+            isOneToOne: false;
+            referencedRelation: "technical_document_bindings";
+            referencedColumns: ["technical_document_id"];
+          },
+          {
+            foreignKeyName: "technical_document_bindings_product_variant_id_fkey";
+            columns: ["product_variant_id"];
+            isOneToOne: false;
+            referencedRelation: "pi_document_readiness";
+            referencedColumns: ["product_variant_id"];
+          },
+          {
+            foreignKeyName: "technical_document_bindings_product_variant_id_fkey";
+            columns: ["product_variant_id"];
+            isOneToOne: false;
+            referencedRelation: "pi_packaging_readiness";
+            referencedColumns: ["product_variant_id"];
+          },
+          {
+            foreignKeyName: "technical_document_bindings_product_variant_id_fkey";
+            columns: ["product_variant_id"];
+            isOneToOne: false;
+            referencedRelation: "pi_variant_document_readiness";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "technical_document_bindings_product_variant_id_fkey";
+            columns: ["product_variant_id"];
+            isOneToOne: false;
+            referencedRelation: "pi_variant_readiness";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "technical_document_bindings_product_variant_id_fkey";
+            columns: ["product_variant_id"];
+            isOneToOne: false;
+            referencedRelation: "product_variants";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "technical_document_bindings_technical_document_id_fkey";
+            columns: ["technical_document_id"];
+            isOneToOne: true;
+            referencedRelation: "technical_documents";
             referencedColumns: ["id"];
           },
         ];
@@ -3120,8 +3923,22 @@ export type Database = {
             foreignKeyName: "technical_revision_heads_product_variant_id_fkey";
             columns: ["product_variant_id"];
             isOneToOne: false;
+            referencedRelation: "pi_document_readiness";
+            referencedColumns: ["product_variant_id"];
+          },
+          {
+            foreignKeyName: "technical_revision_heads_product_variant_id_fkey";
+            columns: ["product_variant_id"];
+            isOneToOne: false;
             referencedRelation: "pi_packaging_readiness";
             referencedColumns: ["product_variant_id"];
+          },
+          {
+            foreignKeyName: "technical_revision_heads_product_variant_id_fkey";
+            columns: ["product_variant_id"];
+            isOneToOne: false;
+            referencedRelation: "pi_variant_document_readiness";
+            referencedColumns: ["id"];
           },
           {
             foreignKeyName: "technical_revision_heads_product_variant_id_fkey";
@@ -3303,8 +4120,22 @@ export type Database = {
             foreignKeyName: "technical_source_bindings_product_variant_id_fkey";
             columns: ["product_variant_id"];
             isOneToOne: false;
+            referencedRelation: "pi_document_readiness";
+            referencedColumns: ["product_variant_id"];
+          },
+          {
+            foreignKeyName: "technical_source_bindings_product_variant_id_fkey";
+            columns: ["product_variant_id"];
+            isOneToOne: false;
             referencedRelation: "pi_packaging_readiness";
             referencedColumns: ["product_variant_id"];
+          },
+          {
+            foreignKeyName: "technical_source_bindings_product_variant_id_fkey";
+            columns: ["product_variant_id"];
+            isOneToOne: false;
+            referencedRelation: "pi_variant_document_readiness";
+            referencedColumns: ["id"];
           },
           {
             foreignKeyName: "technical_source_bindings_product_variant_id_fkey";
@@ -3444,8 +4275,22 @@ export type Database = {
             foreignKeyName: "technical_values_product_variant_id_fkey";
             columns: ["product_variant_id"];
             isOneToOne: false;
+            referencedRelation: "pi_document_readiness";
+            referencedColumns: ["product_variant_id"];
+          },
+          {
+            foreignKeyName: "technical_values_product_variant_id_fkey";
+            columns: ["product_variant_id"];
+            isOneToOne: false;
             referencedRelation: "pi_packaging_readiness";
             referencedColumns: ["product_variant_id"];
+          },
+          {
+            foreignKeyName: "technical_values_product_variant_id_fkey";
+            columns: ["product_variant_id"];
+            isOneToOne: false;
+            referencedRelation: "pi_variant_document_readiness";
+            referencedColumns: ["id"];
           },
           {
             foreignKeyName: "technical_values_product_variant_id_fkey";
@@ -3521,6 +4366,19 @@ export type Database = {
         };
         Relationships: [];
       };
+      pi_document_readiness: {
+        Row: {
+          document_conflict_count: number | null;
+          document_count: number | null;
+          invalid_document_approval_count: number | null;
+          open_document_review_count: number | null;
+          product_variant_id: string | null;
+          reviewed_document_count: number | null;
+          unavailable_original_count: number | null;
+          unresolved_document_count: number | null;
+        };
+        Relationships: [];
+      };
       pi_effective_compatibility_relationships: {
         Row: {
           buyer_confirmation_required: boolean | null;
@@ -3556,6 +4414,87 @@ export type Database = {
             columns: ["target_entity_id"];
             isOneToOne: false;
             referencedRelation: "compatibility_entities";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      pi_effective_document_reviews: {
+        Row: {
+          current_candidate_id: string | null;
+          current_valid: boolean | null;
+          document_id: string | null;
+          has_conflict: boolean | null;
+          latest_candidate_id: string | null;
+          open_review: boolean | null;
+          original_current: boolean | null;
+          prior_document_id: string | null;
+          product_variant_id: string | null;
+          publication_ready: boolean | null;
+          reviewed: boolean | null;
+          revision: number | null;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "document_review_currents_candidate_id_fkey";
+            columns: ["current_candidate_id"];
+            isOneToOne: true;
+            referencedRelation: "document_review_decisions";
+            referencedColumns: ["candidate_id"];
+          },
+          {
+            foreignKeyName: "technical_document_bindings_prior_document_id_fkey";
+            columns: ["prior_document_id"];
+            isOneToOne: false;
+            referencedRelation: "pi_effective_document_reviews";
+            referencedColumns: ["document_id"];
+          },
+          {
+            foreignKeyName: "technical_document_bindings_prior_document_id_fkey";
+            columns: ["prior_document_id"];
+            isOneToOne: false;
+            referencedRelation: "technical_document_bindings";
+            referencedColumns: ["technical_document_id"];
+          },
+          {
+            foreignKeyName: "technical_document_bindings_product_variant_id_fkey";
+            columns: ["product_variant_id"];
+            isOneToOne: false;
+            referencedRelation: "pi_document_readiness";
+            referencedColumns: ["product_variant_id"];
+          },
+          {
+            foreignKeyName: "technical_document_bindings_product_variant_id_fkey";
+            columns: ["product_variant_id"];
+            isOneToOne: false;
+            referencedRelation: "pi_packaging_readiness";
+            referencedColumns: ["product_variant_id"];
+          },
+          {
+            foreignKeyName: "technical_document_bindings_product_variant_id_fkey";
+            columns: ["product_variant_id"];
+            isOneToOne: false;
+            referencedRelation: "pi_variant_document_readiness";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "technical_document_bindings_product_variant_id_fkey";
+            columns: ["product_variant_id"];
+            isOneToOne: false;
+            referencedRelation: "pi_variant_readiness";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "technical_document_bindings_product_variant_id_fkey";
+            columns: ["product_variant_id"];
+            isOneToOne: false;
+            referencedRelation: "product_variants";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "technical_document_bindings_technical_document_id_fkey";
+            columns: ["document_id"];
+            isOneToOne: true;
+            referencedRelation: "technical_documents";
             referencedColumns: ["id"];
           },
         ];
@@ -3647,8 +4586,22 @@ export type Database = {
             foreignKeyName: "technical_values_product_variant_id_fkey";
             columns: ["product_variant_id"];
             isOneToOne: false;
+            referencedRelation: "pi_document_readiness";
+            referencedColumns: ["product_variant_id"];
+          },
+          {
+            foreignKeyName: "technical_values_product_variant_id_fkey";
+            columns: ["product_variant_id"];
+            isOneToOne: false;
             referencedRelation: "pi_packaging_readiness";
             referencedColumns: ["product_variant_id"];
+          },
+          {
+            foreignKeyName: "technical_values_product_variant_id_fkey";
+            columns: ["product_variant_id"];
+            isOneToOne: false;
+            referencedRelation: "pi_variant_document_readiness";
+            referencedColumns: ["id"];
           },
           {
             foreignKeyName: "technical_values_product_variant_id_fkey";
@@ -3711,8 +4664,22 @@ export type Database = {
             foreignKeyName: "media_mapping_heads_product_variant_id_fkey";
             columns: ["product_variant_id"];
             isOneToOne: false;
+            referencedRelation: "pi_document_readiness";
+            referencedColumns: ["product_variant_id"];
+          },
+          {
+            foreignKeyName: "media_mapping_heads_product_variant_id_fkey";
+            columns: ["product_variant_id"];
+            isOneToOne: false;
             referencedRelation: "pi_packaging_readiness";
             referencedColumns: ["product_variant_id"];
+          },
+          {
+            foreignKeyName: "media_mapping_heads_product_variant_id_fkey";
+            columns: ["product_variant_id"];
+            isOneToOne: false;
+            referencedRelation: "pi_variant_document_readiness";
+            referencedColumns: ["id"];
           },
           {
             foreignKeyName: "media_mapping_heads_product_variant_id_fkey";
@@ -3770,8 +4737,22 @@ export type Database = {
             foreignKeyName: "oem_revision_heads_product_variant_id_fkey";
             columns: ["product_variant_id"];
             isOneToOne: false;
+            referencedRelation: "pi_document_readiness";
+            referencedColumns: ["product_variant_id"];
+          },
+          {
+            foreignKeyName: "oem_revision_heads_product_variant_id_fkey";
+            columns: ["product_variant_id"];
+            isOneToOne: false;
             referencedRelation: "pi_packaging_readiness";
             referencedColumns: ["product_variant_id"];
+          },
+          {
+            foreignKeyName: "oem_revision_heads_product_variant_id_fkey";
+            columns: ["product_variant_id"];
+            isOneToOne: false;
+            referencedRelation: "pi_variant_document_readiness";
+            referencedColumns: ["id"];
           },
           {
             foreignKeyName: "oem_revision_heads_product_variant_id_fkey";
@@ -3826,8 +4807,22 @@ export type Database = {
             foreignKeyName: "oem_source_bindings_product_variant_id_fkey";
             columns: ["product_variant_id"];
             isOneToOne: false;
+            referencedRelation: "pi_document_readiness";
+            referencedColumns: ["product_variant_id"];
+          },
+          {
+            foreignKeyName: "oem_source_bindings_product_variant_id_fkey";
+            columns: ["product_variant_id"];
+            isOneToOne: false;
             referencedRelation: "pi_packaging_readiness";
             referencedColumns: ["product_variant_id"];
+          },
+          {
+            foreignKeyName: "oem_source_bindings_product_variant_id_fkey";
+            columns: ["product_variant_id"];
+            isOneToOne: false;
+            referencedRelation: "pi_variant_document_readiness";
+            referencedColumns: ["id"];
           },
           {
             foreignKeyName: "oem_source_bindings_product_variant_id_fkey";
@@ -3889,8 +4884,22 @@ export type Database = {
             foreignKeyName: "packaging_revision_heads_product_variant_id_fkey";
             columns: ["product_variant_id"];
             isOneToOne: false;
+            referencedRelation: "pi_document_readiness";
+            referencedColumns: ["product_variant_id"];
+          },
+          {
+            foreignKeyName: "packaging_revision_heads_product_variant_id_fkey";
+            columns: ["product_variant_id"];
+            isOneToOne: false;
             referencedRelation: "pi_packaging_readiness";
             referencedColumns: ["product_variant_id"];
+          },
+          {
+            foreignKeyName: "packaging_revision_heads_product_variant_id_fkey";
+            columns: ["product_variant_id"];
+            isOneToOne: false;
+            referencedRelation: "pi_variant_document_readiness";
+            referencedColumns: ["id"];
           },
           {
             foreignKeyName: "packaging_revision_heads_product_variant_id_fkey";
@@ -3947,8 +4956,22 @@ export type Database = {
             foreignKeyName: "packaging_source_bindings_product_variant_id_fkey";
             columns: ["product_variant_id"];
             isOneToOne: false;
+            referencedRelation: "pi_document_readiness";
+            referencedColumns: ["product_variant_id"];
+          },
+          {
+            foreignKeyName: "packaging_source_bindings_product_variant_id_fkey";
+            columns: ["product_variant_id"];
+            isOneToOne: false;
             referencedRelation: "pi_packaging_readiness";
             referencedColumns: ["product_variant_id"];
+          },
+          {
+            foreignKeyName: "packaging_source_bindings_product_variant_id_fkey";
+            columns: ["product_variant_id"];
+            isOneToOne: false;
+            referencedRelation: "pi_variant_document_readiness";
+            referencedColumns: ["id"];
           },
           {
             foreignKeyName: "packaging_source_bindings_product_variant_id_fkey";
@@ -3965,6 +4988,38 @@ export type Database = {
             referencedColumns: ["id"];
           },
         ];
+      };
+      pi_variant_document_readiness: {
+        Row: {
+          approved_seo_count: number | null;
+          blocker_count: number | null;
+          compatibility_conflict_count: number | null;
+          compatibility_count: number | null;
+          confirmed_compatibility_count: number | null;
+          confirmed_technical_count: number | null;
+          document_conflict_count: number | null;
+          document_count: number | null;
+          eligible_main_image_count: number | null;
+          id: string | null;
+          invalid_document_approval_count: number | null;
+          is_shadow: boolean | null;
+          legacy_data_status: string | null;
+          legacy_main_image_count: number | null;
+          legacy_status: string | null;
+          lifecycle_state: Database["public"]["Enums"]["pi_product_lifecycle"] | null;
+          media_count: number | null;
+          open_document_review_count: number | null;
+          public_slug: string | null;
+          reviewed_document_count: number | null;
+          seo_record_count: number | null;
+          sku: string | null;
+          technical_conflict_count: number | null;
+          technical_value_count: number | null;
+          unavailable_original_count: number | null;
+          unresolved_document_count: number | null;
+          unresolved_technical_count: number | null;
+        };
+        Relationships: [];
       };
       pi_variant_readiness: {
         Row: {
@@ -4002,6 +5057,25 @@ export type Database = {
           source_copy: Json;
           subject_uuid: string;
           target_uuid: string;
+        };
+        Returns: Json;
+      };
+      pi_add_document_reference: {
+        Args: {
+          document_copy: Json;
+          prior_document_uuid?: string;
+          request_uuid: string;
+          variant_uuid: string;
+        };
+        Returns: Json;
+      };
+      pi_add_document_source: {
+        Args: {
+          document_uuid: string;
+          request_uuid: string;
+          requested_dimension: string;
+          source_copy: Json;
+          variant_uuid: string;
         };
         Returns: Json;
       };
@@ -4046,12 +5120,21 @@ export type Database = {
         };
         Returns: Json;
       };
+      pi_begin_document_upload: {
+        Args: { document_uuid: string; manifest: Json; request_uuid: string };
+        Returns: Json;
+      };
       pi_begin_media_upload: {
         Args: { manifest: Json; request_uuid: string; variant_uuid: string };
         Returns: Json;
       };
+      pi_can_upload_document: { Args: { object_name: string }; Returns: boolean };
       pi_can_upload_original: { Args: { object_name: string }; Returns: boolean };
       pi_can_view_console: { Args: never; Returns: boolean };
+      pi_complete_document_upload: {
+        Args: { intent_uuid: string; request_uuid: string };
+        Returns: Json;
+      };
       pi_complete_media_upload: {
         Args: { intent_uuid: string; request_uuid: string };
         Returns: Json;
@@ -4061,6 +5144,22 @@ export type Database = {
         Returns: Json;
       };
       pi_current_shadow_counts: { Args: never; Returns: Json };
+      pi_document_approval_valid: { Args: { candidate_uuid: string }; Returns: boolean };
+      pi_document_original_current: { Args: { document_uuid: string }; Returns: boolean };
+      pi_document_original_snapshot: {
+        Args: { document_uuid: string; variant_uuid: string };
+        Returns: Json;
+      };
+      pi_document_review_observed: { Args: { candidate_uuid: string }; Returns: boolean };
+      pi_document_review_snapshot: {
+        Args: {
+          candidate_uuid: string;
+          expected_digest: string;
+          expected_revision: number;
+          observer_key_uuid: string;
+        };
+        Returns: Json;
+      };
       pi_ensure_product_compatibility_entity: {
         Args: { request_uuid: string; variant_uuid: string };
         Returns: Json;
@@ -4116,6 +5215,17 @@ export type Database = {
         };
         Returns: Json;
       };
+      pi_propose_document_review: {
+        Args: {
+          document_uuid: string;
+          expected_revision: number;
+          proposal_reason: string;
+          request_uuid: string;
+          review_copy: Json;
+          variant_uuid: string;
+        };
+        Returns: Json;
+      };
       pi_propose_media_mapping: {
         Args: {
           asset_uuid: string;
@@ -4168,6 +5278,19 @@ export type Database = {
           request_uuid: string;
           scope_label: string;
           value_copy: Json;
+          variant_uuid: string;
+        };
+        Returns: Json;
+      };
+      pi_read_document_references: {
+        Args: { page_number: number; variant_uuid: string };
+        Returns: Json;
+      };
+      pi_read_document_review: {
+        Args: {
+          document_uuid: string;
+          history_page: number;
+          source_page: number;
           variant_uuid: string;
         };
         Returns: Json;
@@ -4234,6 +5357,23 @@ export type Database = {
           replacement_evidence: Json;
           request_uuid: string;
           review_reason: string;
+        };
+        Returns: Json;
+      };
+      pi_review_document: {
+        Args: {
+          candidate_uuid: string;
+          confirmation: Json;
+          conflict_resolution: string;
+          decision: string;
+          expected_digest: string;
+          expected_revision: number;
+          observation_token: string;
+          replacement: Json;
+          request_uuid: string;
+          review_reason: string;
+          rights_source_uuid: string;
+          scope_source_uuid: string;
         };
         Returns: Json;
       };
@@ -4314,6 +5454,15 @@ export type Database = {
           expected_digest: string;
           expected_revision: number;
           relationship_uuid: string;
+          request_uuid: string;
+        };
+        Returns: Json;
+      };
+      pi_submit_document_review: {
+        Args: {
+          candidate_uuid: string;
+          expected_digest: string;
+          expected_revision: number;
           request_uuid: string;
         };
         Returns: Json;

@@ -15,6 +15,15 @@ import { OemWorkbench } from "../../../../../components/console/OemWorkbench";
 import { oemFixture } from "../../../oem-fixture";
 import { packagingFixture } from "../../../packaging-fixture";
 import { PackagingWorkbench } from "../../../../../components/console/PackagingWorkbench";
+import { DocumentLibrary } from "../../../../../components/console/DocumentLibrary";
+import { Pagination } from "../../../../../components/console/CatalogViews";
+import { documentFixture } from "../../../document-fixture";
+import { documentReviewFixture } from "../../../document-review-fixture";
+import { DocumentReviewWorkbench } from "../../../../../components/console/DocumentReviewWorkbench";
+import { ReadinessWorkspace } from "../../../../../components/console/ReadinessWorkspace";
+import { DocumentReadinessSummary } from "../../../../../components/console/DocumentReadiness";
+import { filters } from "../../../../../lib/console/catalog";
+import { documentReadinessFixture, readinessFixture } from "../../../document-readiness-fixture";
 
 const id = "10000000-0000-4000-8000-000000000001";
 const sourceId = "10000000-0000-4000-8000-000000000002";
@@ -52,6 +61,52 @@ export default async function Page({
   const query = await searchParams;
   const mode = segments.at(-1);
   const viewer = query.role === "viewer";
+  if (mode === "readiness") {
+    const filter = filters(query);
+    return (
+      <ReadinessWorkspace
+        data={readinessFixture(filter, query.enabled !== "false")}
+        filter={filter}
+        params={query}
+      />
+    );
+  }
+  if (mode === "document-readiness")
+    return (
+      <>
+        <h1>Product Evidence</h1>
+        <DocumentReadinessSummary data={documentReadinessFixture(query.state)} variantId={id} />
+      </>
+    );
+  if (segments.at(-2) === "documents") {
+    const data = documentReviewFixture(query);
+    return (
+      <>
+        <h1>Document review</h1>
+        <ProductWorkingNav id={data.document.variant_id} active="documents" documents />
+        <DocumentReviewWorkbench
+          key={`${data.revision}:${data.evidenceDigest}:${data.latest?.decision}:${data.current?.human_valid}:${data.originalCurrent}`}
+          data={data}
+        />
+      </>
+    );
+  }
+  if (mode === "documents") {
+    const global = !segments.includes("products");
+    const data = documentFixture(query, global);
+    return (
+      <>
+        <h1>{global ? "Technical Library" : "Technical documents"}</h1>
+        {data.variantId && <ProductWorkingNav id={data.variantId} active="documents" documents />}
+        <DocumentLibrary data={{ ...data, reviewEnabled: true }} />
+        <Pagination
+          data={data}
+          params={query}
+          path={global ? "/console/documents" : `/console/products/${data.variantId}/documents`}
+        />
+      </>
+    );
+  }
   if (mode === "packaging") {
     const fixture = packagingFixture(query);
     return (

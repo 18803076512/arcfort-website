@@ -191,6 +191,9 @@
   max-width: 400px;
   overflow-wrap: anywhere;
 }
+.console-root td.console-document-readiness-cell {
+  min-width: 248px;
+}
 .console-root tr:last-child td {
   border-bottom: 0;
 }
@@ -524,6 +527,103 @@
 .console-oem-workbench,
 .console-packaging-workbench {
   overflow-wrap: anywhere;
+}
+.console-document-library {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+.console-document-library table {
+  min-width: 840px;
+  table-layout: fixed;
+}
+.console-document-library th:nth-child(1) {
+  width: 30%;
+}
+.console-document-library th:nth-child(2) {
+  width: 25%;
+}
+.console-document-library th:nth-child(3) {
+  width: 29%;
+}
+.console-document-library th:nth-child(4) {
+  width: 16%;
+}
+.console-document-actions {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.console-document-review {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+.console-document-review > section,
+.console-document-review > .console-editor-grid {
+  margin: 24px 0;
+  padding-block: 20px;
+  border-top: 1px solid var(--console-border);
+}
+.console-document-review table {
+  min-width: 760px;
+  table-layout: fixed;
+}
+.console-document-review [aria-label="Document evidence"] th:first-child {
+  width: 88px;
+}
+.console-document-review .console-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  max-width: 100%;
+}
+.console-document-review .console-button svg {
+  flex-shrink: 0;
+}
+.console-document-review input[type="checkbox"],
+.console-document-review input[type="radio"] {
+  appearance: auto;
+  width: 18px;
+  height: 18px;
+  min-height: 18px;
+  flex: 0 0 18px;
+  margin: 0;
+  padding: 0;
+  accent-color: #1e5e96;
+}
+.console-document-review td:has(input[type="checkbox"]) {
+  text-align: center;
+}
+.console-document-review .console-review-select {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  width: 44px;
+  min-height: 44px;
+}
+.console-review-options,
+.console-form-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px 24px;
+  margin: 20px 0;
+  padding: 0;
+  border: 0;
+  min-width: 0;
+}
+.console-review-options legend {
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+.console-review-options label {
+  display: flex;
+  align-items: center;
+  min-height: 44px;
+}
+.console-document-review fieldset > .console-editor-grid {
+  margin-block: 20px;
 }
 .console-oem-workbench .console-editor-actions > label,
 .console-packaging-workbench .console-editor-actions > label {

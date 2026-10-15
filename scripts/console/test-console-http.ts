@@ -68,9 +68,15 @@ function privacy(response: Response) {
   assert.match(response.headers.get("x-robots-tag") ?? "", /nofollow/i);
   assert.equal(response.headers.get("referrer-policy"), "no-referrer");
   assert.equal(response.headers.has("x-console-media-observation"), false);
+  assert.equal(response.headers.has("x-console-document-observation"), false);
 }
 // Only the streaming upload skips middleware. Inspection stays inside it.
-for (const path of ["/console/originals", "/console/originals/inspect"]) {
+for (const path of [
+  "/console/originals",
+  "/console/originals/inspect",
+  "/console/documents/upload",
+  "/console/documents/inspect",
+]) {
   for (const method of ["GET", "HEAD", "OPTIONS", "PUT", "PATCH", "DELETE"]) {
     const response = await request(path, { method });
     assert.equal(response.status, 405);
@@ -97,6 +103,12 @@ assert.equal(
   404,
   "No out-of-cookie-scope alias.",
 );
+assert.equal(
+  (await request("/api/console/documents/upload")).status,
+  404,
+  "No document alias outside the cookie scope.",
+);
+assert.equal((await request("/api/console/documents/inspect")).status, 404);
 for (const path of [
   "/console/login",
   "/console/recover",
@@ -105,6 +117,9 @@ for (const path of [
   "/console/products",
   "/console/series",
   "/console/technical-data",
+  "/console/documents",
+  "/console/products/10000000-0000-4000-8000-000000000001/documents",
+  "/console/products/10000000-0000-4000-8000-000000000001/documents/10000000-0000-4000-8000-000000000002",
   "/console/readiness",
   "/console/media",
   "/console/media?view=assets&assignment=unassigned",
@@ -199,6 +214,8 @@ for (const path of [
   "/console/auth/callback",
   "/console/originals",
   "/console/originals/inspect",
+  "/console/documents/upload",
+  "/console/documents/inspect",
   "/_next/static/qa-missing.js",
 ]) {
   const response = await request(path, { headers: stagingHeaders });
@@ -237,6 +254,20 @@ const stagingInspection = await request("/console/originals/inspect", {
 });
 assert.equal(stagingInspection.status, 404);
 privacy(stagingInspection);
+const stagingDocumentInspection = await request("/console/documents/inspect", {
+  method: "POST",
+  headers: stagingHeaders,
+  body: "synthetic denied input",
+});
+assert.equal(stagingDocumentInspection.status, 404);
+privacy(stagingDocumentInspection);
+const stagingDocument = await request("/console/documents/upload", {
+  method: "POST",
+  headers: stagingHeaders,
+  body: "synthetic denied input",
+});
+assert.equal(stagingDocument.status, 404);
+privacy(stagingDocument);
 const stagingRobots = await request("/robots.txt", { headers: stagingHeaders });
 assert.equal(stagingRobots.status, 200);
 assert.equal(await stagingRobots.text(), "User-agent: *\nDisallow: /\n");

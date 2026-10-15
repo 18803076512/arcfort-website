@@ -1,6 +1,6 @@
 import "server-only";
 
-// Upload and inspection share the same single-loopback decoder budget.
+// Image/document upload and inspection share the same single-loopback work budget.
 const activeActors = new Set<string>();
 
 export function claimOriginalWork(actor: string): (() => void) | null {

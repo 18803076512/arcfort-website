@@ -24,6 +24,7 @@ import { runOriginalWorkingBrowser } from "./test-original-working-browser.ts";
 import { runMediaWorkingBrowser } from "./test-media-working-browser.ts";
 import { runOemWorkingBrowser } from "./test-oem-working-browser.ts";
 import { runPackagingWorkingBrowser } from "./test-packaging-working-browser.ts";
+import { runDocumentWorkingBrowser } from "./test-document-working-browser.ts";
 import type { DisposableMediaObserver } from "./media-acceptance.ts";
 import type { openLocalAcceptance } from "./local-acceptance.ts";
 
@@ -42,6 +43,11 @@ type BrowserInput = {
   };
   oem?: { local: ReturnType<typeof openLocalAcceptance>; foreignVariantId: string };
   packaging?: { local: ReturnType<typeof openLocalAcceptance>; foreignVariantId: string };
+  documents?: {
+    local: ReturnType<typeof openLocalAcceptance>;
+    foreignVariantId: string;
+    observer: DisposableMediaObserver;
+  };
   revokeReviewer: () => Promise<void>;
 };
 
@@ -63,6 +69,8 @@ export async function runWorkingBrowser(input: BrowserInput) {
       observer: input.media?.observer,
       oem: input.oem?.local.oem === true,
       packaging: input.packaging?.local.packaging === true,
+      documents: input.documents?.local.documents === true,
+      documentObserver: input.documents?.observer,
     });
   } catch {
     console.error("Working browser failed before login: owned production build/server startup.");
@@ -153,7 +161,9 @@ export async function runWorkingBrowser(input: BrowserInput) {
           return route.fulfill({ response });
         }
         if (
-          request.url() === `${browserOrigin}/console/originals/inspect` &&
+          ["/console/originals/inspect", "/console/documents/inspect"].some(
+            (path) => request.url() === `${browserOrigin}${path}`,
+          ) &&
           request.method() === "POST"
         ) {
           const response = await route.fetch({ maxRedirects: 0 });
@@ -686,6 +696,27 @@ export async function runWorkingBrowser(input: BrowserInput) {
       : undefined;
     screenshots += packaging?.screenshots ?? 0;
 
+    phase = "real document forms, original bytes, human decisions and independent ledgers";
+    const documents = input.documents
+      ? await runDocumentWorkingBrowser({
+          variantId: id,
+          foreignVariantId: input.documents.foreignVariantId,
+          owner: { ...owner, client: input.owner.client },
+          reviewer: { ...reviewer, client: input.reviewer.client, id: input.reviewer.id },
+          viewer: { ...viewer, client: input.viewer.client },
+          local: input.documents.local,
+          context,
+          output,
+          goto,
+          command,
+          inspectionBody,
+          checkpoint: (value) => {
+            checkpoint = value;
+          },
+        })
+      : undefined;
+    screenshots += documents?.screenshots ?? 0;
+
     phase = "revoked reviewer and logout cannot reuse browser credentials";
     checkpoint = "prepare pending proposal";
     await goto(page, reviewPath);
@@ -716,6 +747,7 @@ export async function runWorkingBrowser(input: BrowserInput) {
     if (media) await media.assertRevoked();
     if (oem) await oem.assertRevoked();
     if (packaging) await packaging.assertRevoked();
+    if (documents) await documents.assertRevoked();
     if (compatibility) {
       await compatibility.assertRevoked();
       results.push(...compatibility.results);
@@ -760,6 +792,10 @@ export async function runWorkingBrowser(input: BrowserInput) {
     if (packaging) {
       await packaging.assertLoggedOut();
       results.push(...packaging.results);
+    }
+    if (documents) {
+      await documents.assertLoggedOut();
+      results.push(...documents.results);
     }
     results.push(phase);
     checkpoint = "no page errors or external requests";

@@ -29,6 +29,10 @@ test("browser server receives only system paths and local public configuration",
     CONSOLE_ORIGINALS_ENABLED: "true",
     CONSOLE_MEDIA_REVIEW_ENABLED: "true",
     CONSOLE_OEM_ENABLED: "true",
+    CONSOLE_DOCUMENTS_ENABLED: "true",
+    CONSOLE_DOCUMENT_REVIEW_ENABLED: "true",
+    CONSOLE_DOCUMENT_OBSERVATION_KEY_ID: "do-not-pass",
+    CONSOLE_DOCUMENT_OBSERVATION_SECRET_HEX: "do-not-pass",
     CONSOLE_MEDIA_OBSERVATION_KEY_ID: "do-not-pass",
     CONSOLE_MEDIA_OBSERVATION_SECRET_HEX: "do-not-pass",
     HTTP_PROXY: "do-not-pass",
@@ -39,6 +43,10 @@ test("browser server receives only system paths and local public configuration",
   assert.equal(env.CONSOLE_ORIGINALS_ENABLED, undefined);
   assert.equal(env.CONSOLE_MEDIA_REVIEW_ENABLED, undefined);
   assert.equal(env.CONSOLE_OEM_ENABLED, undefined);
+  assert.equal(env.CONSOLE_DOCUMENTS_ENABLED, undefined);
+  assert.equal(env.CONSOLE_DOCUMENT_REVIEW_ENABLED, undefined);
+  assert.equal(env.CONSOLE_DOCUMENT_OBSERVATION_KEY_ID, undefined);
+  assert.equal(env.CONSOLE_DOCUMENT_OBSERVATION_SECRET_HEX, undefined);
   assert.equal(env.CONSOLE_MEDIA_OBSERVATION_KEY_ID, undefined);
   assert.equal(env.CONSOLE_MEDIA_OBSERVATION_SECRET_HEX, undefined);
   assert.equal(env.PATH, "synthetic-path");
@@ -163,6 +171,87 @@ test("media observation is explicit, original-dependent and runtime-only", () =>
   assert.equal(build.CONSOLE_MEDIA_OBSERVATION_KEY_ID, undefined);
   assert.equal(build.CONSOLE_MEDIA_OBSERVATION_SECRET_HEX, undefined);
   assert.equal(runtime.CONSOLE_MEDIA_OBSERVATION_SECRET_HEX, observer.secretHex);
+});
+
+test("document observation requires its own explicit domain, independent of raster originals", () => {
+  const documentObserver = {
+    id: "96000000-0000-4000-8000-000000000002",
+    secretHex: "b".repeat(64),
+  };
+  const ambient = {
+    CI: "true",
+    CONSOLE_DOCUMENTS_ENABLED: "true",
+    CONSOLE_DOCUMENT_REVIEW_ENABLED: "true",
+  };
+  const library = browserServerEnvironment("sb_publishable_synthetic", ambient, {
+    documents: true,
+  });
+  assert.equal(library.CONSOLE_DOCUMENTS_ENABLED, "true");
+  assert.equal(library.CONSOLE_DOCUMENT_REVIEW_ENABLED, undefined);
+  assert.equal(library.CONSOLE_DOCUMENT_OBSERVATION_SECRET_HEX, undefined);
+  const runtime = browserServerEnvironment("sb_publishable_synthetic", ambient, {
+    documents: true,
+    documentObserver,
+  });
+  assert.equal(runtime.CONSOLE_DOCUMENT_REVIEW_ENABLED, "true");
+  assert.equal(runtime.CONSOLE_ORIGINALS_ENABLED, undefined);
+  assert.equal(runtime.CONSOLE_MEDIA_REVIEW_ENABLED, undefined);
+  assert.equal(runtime.CONSOLE_DOCUMENT_OBSERVATION_KEY_ID, documentObserver.id);
+  assert.equal(runtime.CONSOLE_DOCUMENT_OBSERVATION_SECRET_HEX, documentObserver.secretHex);
+  const build = browserBuildEnvironment(runtime);
+  assert.equal(build.CONSOLE_DOCUMENTS_ENABLED, "true");
+  assert.equal(build.CONSOLE_DOCUMENT_REVIEW_ENABLED, "true");
+  assert.equal(build.CONSOLE_DOCUMENT_OBSERVATION_KEY_ID, undefined);
+  assert.equal(build.CONSOLE_DOCUMENT_OBSERVATION_SECRET_HEX, undefined);
+  assert.equal(runtime.CONSOLE_DOCUMENT_OBSERVATION_SECRET_HEX, documentObserver.secretHex);
+  for (const documents of [undefined, false])
+    assert.throws(() =>
+      browserServerEnvironment("sb_publishable_synthetic", ambient, {
+        documents,
+        documentObserver,
+      }),
+    );
+  for (const invalid of [
+    { ...documentObserver, id: "invalid" },
+    { ...documentObserver, secretHex: "PRIVATE_SENTINEL" },
+  ])
+    assert.throws(
+      () =>
+        browserServerEnvironment("sb_publishable_synthetic", ambient, {
+          documents: true,
+          documentObserver: invalid,
+        }),
+      (error) => error instanceof Error && !error.message.includes("PRIVATE_SENTINEL"),
+    );
+});
+
+test("joint browser runtime rejects domain reuse and excludes all signing material from build", () => {
+  const observer = { id: "96000000-0000-4000-8000-000000000001", secretHex: "a".repeat(64) };
+  const documentObserver = {
+    id: "96000000-0000-4000-8000-000000000002",
+    secretHex: "b".repeat(64),
+  };
+  const features = { originals: true, observer, documents: true, documentObserver };
+  const runtime = browserServerEnvironment("sb_publishable_synthetic", { CI: "true" }, features);
+  const build = browserBuildEnvironment(runtime);
+  for (const domain of ["MEDIA", "DOCUMENT"]) {
+    assert.equal(runtime[`CONSOLE_${domain}_REVIEW_ENABLED`], "true");
+    assert.equal(build[`CONSOLE_${domain}_REVIEW_ENABLED`], "true");
+    for (const suffix of ["KEY_ID", "SECRET_HEX"])
+      assert.equal(build[`CONSOLE_${domain}_OBSERVATION_${suffix}`], undefined);
+  }
+  for (const reused of [
+    observer,
+    { ...documentObserver, secretHex: observer.secretHex },
+    { ...documentObserver, id: observer.id },
+  ])
+    assert.throws(() =>
+      browserServerEnvironment(
+        "sb_publishable_synthetic",
+        { CI: "true" },
+        { ...features, documentObserver: reused },
+      ),
+    );
 });
 
 test("a busy local port is refused and its existing owner is left running", async () => {

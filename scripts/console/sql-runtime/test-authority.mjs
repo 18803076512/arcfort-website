@@ -12,8 +12,13 @@ import { rehearseOemIntake } from "./rehearse-oem-intake.mjs";
 import { rehearseOemWorkflow } from "./rehearse-oem-workflow.mjs";
 import { rehearsePackagingWorkflow } from "./rehearse-packaging-workflow.mjs";
 import { rehearsePackagingIntake } from "./rehearse-packaging-intake.mjs";
+import { rehearseDocumentIntake } from "./rehearse-document-intake.mjs";
+import { rehearseObserverProvisioning } from "./rehearse-observer-provisioning.mjs";
+import { rehearseDocumentWorkflow } from "./rehearse-document-workflow.mjs";
 
 import { buildShadowCatalog } from "../build-shadow-catalog.ts";
+import { assertPristineBaseline, pristineBaselineQuery } from "../local-acceptance.ts";
+import { signDocumentObservation } from "../../../lib/console/document-observation.ts";
 import {
   DatabaseSqlAssertionError,
   prepareDatabaseTest,
@@ -78,6 +83,7 @@ try {
   await checkEmbeddedPublicTypes(db, root, {
     write: process.argv.includes("--write-public-types"),
   });
+  await rehearseObserverProvisioning(db);
   const syntheticKey = Buffer.alloc(32, 7);
   const observationPayload =
     "v1|96000000-0000-4000-8000-000000000001|synthetic UTF8 original observation";
@@ -100,6 +106,61 @@ try {
     );
   console.log(
     "Node/pgcrypto HMAC parity and tamper refusal passed with an isolated synthetic key.",
+  );
+
+  await db.exec("begin");
+  try {
+    const docId = (n) => `a8100000-0000-4000-8000-${String(n).padStart(12, "0")}`;
+    const snapshot = {
+      candidate_id: docId(1),
+      document_id: docId(2),
+      variant_id: docId(3),
+      adoption_id: docId(4),
+      revision: 1,
+      digest: "a".repeat(64),
+      original_digest: "b".repeat(64),
+      evidence_digest: "c".repeat(64),
+    };
+    const key = { id: docId(5), secret: syntheticKey };
+    await db.query("select set_config('request.jwt.claim.sub',$1,true)", [docId(6)]);
+    await db.query(
+      `insert into private.pi_document_observation_keys values($1,$2,
+      clock_timestamp()-interval '1 hour',clock_timestamp()+interval '1 hour',true)`,
+      [key.id, key.secret],
+    );
+    const token = signDocumentObservation(snapshot, docId(6), key);
+    assert.deepEqual(
+      (
+        await db.query("select private.pi_validate_document_observation($1,$2::jsonb) as parts", [
+          token,
+          JSON.stringify(snapshot),
+        ])
+      ).rows[0].parts,
+      token.split("|"),
+    );
+    for (const invalid of [
+      token.replace("document-v1", "v1"),
+      token.slice(0, -64) + "0".repeat(64),
+      signDocumentObservation({ ...snapshot, evidence_digest: "d".repeat(64) }, docId(6), key),
+      signDocumentObservation(snapshot, docId(7), key),
+    ]) {
+      await db.exec("savepoint document_signature_refusal");
+      await assert.rejects(
+        db.query("select private.pi_validate_document_observation($1,$2::jsonb)", [
+          invalid,
+          JSON.stringify(snapshot),
+        ]),
+        (error) => error.code === "23514",
+      );
+      await db.exec(
+        "rollback to savepoint document_signature_refusal; release savepoint document_signature_refusal",
+      );
+    }
+  } finally {
+    await db.exec("rollback");
+  }
+  console.log(
+    "Actual Node document signer accepted by the SQL validator; domain, signature, evidence and actor tampering refused. Synthetic key rolled back.",
   );
 
   const probe = (
@@ -205,9 +266,12 @@ rollback;
     console.log(`Real-source shadow replay ${pass}: all 17 source tables match.`);
   }
 
+  assertPristineBaseline((await db.query(pristineBaselineQuery)).rows[0].json_build_object);
+  console.log("Actual pristine-baseline SQL and all empty review ledgers passed before rehearsal.");
   await rehearseMediaWorkflow(db, catalog, tables);
   await rehearseOemWorkflow(db, catalog, tables);
   await rehearsePackagingWorkflow(db, catalog, tables);
+  await rehearseDocumentWorkflow(db, catalog, tables);
 
   const ownerId = "90000000-0000-4000-8000-000000000001";
   await db.query("insert into auth.users(id,email) values ($1,'authority-owner@example.invalid')", [
@@ -802,6 +866,7 @@ rollback;
   );
   await rehearseOemIntake(db, ledger.pilot_variant_ids, tables);
   await rehearsePackagingIntake(db, ledger.pilot_variant_ids, tables);
+  await rehearseDocumentIntake(db, ledger.pilot_variant_ids, tables);
   console.log(
     `Embedded SQL PASS: ${assertions} pgTAP assertions, negative controls, two real-source replays and post-adoption service-role denial.`,
   );
@@ -811,6 +876,8 @@ rollback;
 } catch (error) {
   // The in-memory fixture has no secrets; concise SQL errors are useful for local development.
   console.error(error instanceof Error ? error.message : "Isolated SQL test failed.");
+  if (error?.where) console.error(error.where);
+  if (error?.position) console.error(`SQL position: ${error.position}`);
   process.exitCode = 1;
 } finally {
   await db.close();

@@ -1,8 +1,14 @@
 import assert from "node:assert/strict";
 import { spawn } from "node:child_process";
+import { parseArgs } from "node:util";
 import { startBrowserServer, assertPortAvailable } from "./browser-server.ts";
 
 assert.equal(process.env.CI, "true", "Explicit local QA invocation required.");
+const { values } = parseArgs({
+  options: { "provider-absent": { type: "boolean", default: false } },
+  strict: true,
+  allowPositionals: false,
+});
 const server = await startBrowserServer("sb_publishable_synthetic_http_boundary_only");
 try {
   const matchers = spawn(
@@ -20,7 +26,11 @@ try {
   );
   const child = spawn(
     process.execPath,
-    ["--experimental-strip-types", "scripts/console/test-console-http.ts"],
+    [
+      "--experimental-strip-types",
+      "scripts/console/test-console-http.ts",
+      ...(values["provider-absent"] ? ["--provider-absent"] : []),
+    ],
     {
       stdio: "inherit",
       windowsHide: true,

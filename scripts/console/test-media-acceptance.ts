@@ -6,6 +6,9 @@ import {
   disposableObserverDisableSql,
   disposableObserverInsertSql,
   provisionDisposableMediaObserver,
+  provisionDisposableObservers,
+  disposableDocumentObserverInsertSql,
+  disposableDocumentObserverDisableSql,
 } from "./media-acceptance.ts";
 
 const baseline = {
@@ -19,6 +22,19 @@ const baseline = {
   compatibilityRevisions: 0,
   compatibilitySources: 0,
   mediaSources: 0,
+  documents: 0,
+  documentLinks: 0,
+  documentBindings: 0,
+  documentUploadIntents: 0,
+  documentUploadCompletions: 0,
+  documentSources: 0,
+  documentReviewHeads: 0,
+  documentReviewCandidates: 0,
+  documentReviewSubmissions: 0,
+  documentReviewDecisions: 0,
+  documentReviewCurrents: 0,
+  documentObservationKeys: 0,
+  documentReviewObservations: 0,
   packagingSources: 0,
   packagingHeads: 0,
   packagingRevisions: 0,
@@ -197,6 +213,214 @@ test("failed disable cannot retain observer material or report success", () =>
     assert.throws(() => owned.disable());
     assert.equal(owned.observer.secretHex, "");
   }));
+
+test("document key builders are domain-specific and never report malformed material", () => {
+  const id = "96000000-0000-4000-8000-000000000002";
+  const secretHex = "b".repeat(64);
+  const insert = disposableDocumentObserverInsertSql({ id, secretHex });
+  const disable = disposableDocumentObserverDisableSql(id);
+  assert.match(insert, /^insert into private\.pi_document_observation_keys/);
+  assert.match(disable, /^update private\.pi_document_observation_keys set enabled=false/);
+  assert.ok(disable.includes(id));
+  assert.doesNotMatch(
+    insert + disable,
+    /pi_media_|\b(begin|commit|rollback|delete|truncate|drop)\b/i,
+  );
+  assert.equal(disable.includes(secretHex), false);
+  for (const invalid of ["", "not-a-uuid", `${id}';select 1;--`]) {
+    assert.throws(() => disposableDocumentObserverInsertSql({ id: invalid, secretHex }));
+    assert.throws(() => disposableDocumentObserverDisableSql(invalid));
+  }
+  for (const builder of [disposableObserverInsertSql, disposableDocumentObserverInsertSql]) {
+    for (const invalid of ["", "a".repeat(63), "A".repeat(64), "PRIVATE_SENTINEL"]) {
+      assert.throws(
+        () => builder({ id, secretHex: invalid }),
+        (error) =>
+          error instanceof Error && error.message === "Invalid disposable observer material.",
+      );
+    }
+  }
+});
+
+test("joint provisioning checks one full baseline and creates independent domains atomically", () =>
+  withCI(() => {
+    let reads = 0;
+    const writes: string[] = [];
+    const owned = provisionDisposableObservers(
+      {
+        json: (query) => {
+          assert.equal(query, pristineBaselineQuery);
+          reads++;
+          return baseline;
+        },
+        sql: (query) => {
+          writes.push(query);
+          if (query.startsWith("update")) return query.match(/where id='([a-f0-9-]+)'/)![1];
+          return "";
+        },
+      },
+      { documents: true },
+    );
+    assert.equal(reads, 1);
+    assert.equal(writes.length, 1);
+    assert.ok(owned.documentObserver);
+    assert.ok(owned.documentObserver.id !== owned.observer.id);
+    assert.ok(owned.documentObserver.secretHex !== owned.observer.secretHex);
+    assert.equal((writes[0].match(/\bbegin;/g) ?? []).length, 1);
+    assert.equal((writes[0].match(/\bcommit;/g) ?? []).length, 1);
+    assert.equal((writes[0].match(/insert into/g) ?? []).length, 2);
+    assert.ok(writes[0].includes(disposableObserverInsertSql(owned.observer)));
+    assert.ok(writes[0].includes(disposableDocumentObserverInsertSql(owned.documentObserver)));
+    owned.disable();
+    assert.equal(writes.length, 3);
+    assert.equal(owned.observer.secretHex, "");
+    assert.equal(owned.documentObserver.secretHex, "");
+    assert.equal(writes[1], disposableObserverDisableSql(owned.observer.id));
+    assert.equal(writes[2], disposableDocumentObserverDisableSql(owned.documentObserver.id));
+  }));
+
+test("joint provisioning fails closed for every changed or missing baseline field", () =>
+  withCI(() => {
+    for (const key of Object.keys(baseline)) {
+      const missing = Object.fromEntries(Object.entries(baseline).filter(([name]) => name !== key));
+      for (const invalid of [missing, { ...baseline, [key]: key === "products" ? 44 : 1 }]) {
+        let writes = 0;
+        assert.throws(() =>
+          provisionDisposableObservers(
+            {
+              json: () => invalid,
+              sql: () => {
+                writes++;
+                return "";
+              },
+            },
+            { documents: true },
+          ),
+        );
+        assert.equal(writes, 0);
+      }
+    }
+    let reads = 0;
+    assert.throws(() =>
+      provisionDisposableObservers(
+        {
+          json: () => {
+            reads++;
+            return baseline;
+          },
+          sql: () => "",
+        },
+        { documents: "true" as unknown as boolean },
+      ),
+    );
+    assert.equal(reads, 0);
+  }));
+
+test("joint cleanup attempts both owned domains after either disable fails and clears all material", () =>
+  withCI(() => {
+    for (const domain of ["media", "document"]) {
+      for (const failure of ["throw", "missing"]) {
+        const writes: string[] = [];
+        const owned = provisionDisposableObservers(
+          {
+            json: () => baseline,
+            sql: (query) => {
+              writes.push(query);
+              if (!query.startsWith("update")) return "";
+              if (query.includes(`pi_${domain}_`)) {
+                if (failure === "throw") throw new Error("PRIVATE_SENTINEL");
+                return "";
+              }
+              return query.match(/where id='([a-f0-9-]+)'/)![1];
+            },
+          },
+          { documents: true },
+        );
+        assert.throws(
+          () => owned.disable(),
+          (error) =>
+            error instanceof Error &&
+            error.message ===
+              "Owned disposable key disable is unverified; private output suppressed.",
+        );
+        assert.equal(writes.length, 3);
+        assert.equal(owned.observer.secretHex, "");
+        assert.equal(owned.documentObserver?.secretHex, "");
+      }
+    }
+  }));
+
+test("failed atomic provisioning attempts both disables without reporting provider output", () =>
+  withCI(() => {
+    for (const failDisable of [false, true]) {
+      const writes: string[] = [];
+      assert.throws(
+        () =>
+          provisionDisposableObservers(
+            {
+              json: () => baseline,
+              sql: (query) => {
+                writes.push(query);
+                if (writes.length === 1 || (failDisable && writes.length === 2))
+                  throw new Error("PRIVATE_SENTINEL");
+                return "";
+              },
+            },
+            { documents: true },
+          ),
+        (error) =>
+          error instanceof Error &&
+          error.message ===
+            (failDisable
+              ? "Disposable observer provisioning failed; owned key disable is unverified; private output suppressed."
+              : "Disposable observer provisioning failed; private output suppressed."),
+      );
+      assert.equal(writes.length, 3);
+      assert.match(writes[1], /^update private\.pi_media_observation_keys/);
+      assert.match(writes[2], /^update private\.pi_document_observation_keys/);
+      assert.doesNotMatch(writes.slice(1).join("\n"), /secret|decode|delete|truncate/);
+    }
+  }));
+
+test("the compatibility wrapper stays media-only by default", () =>
+  withCI(() => {
+    const writes: string[] = [];
+    const owned = provisionDisposableMediaObserver({
+      json: () => baseline,
+      sql: (query) => {
+        writes.push(query);
+        return query.match(/where id='([a-f0-9-]+)'/)?.[1] ?? "";
+      },
+    });
+    assert.equal(owned.documentObserver, undefined);
+    owned.disable();
+    assert.equal(writes.length, 2);
+    assert.doesNotMatch(writes.join("\n"), /pi_document_/);
+  }));
+
+test("failed provisioning does not mistake an unexpected cleanup receipt for verification", () =>
+  withCI(() => {
+    let writes = 0;
+    assert.throws(
+      () =>
+        provisionDisposableObservers(
+          {
+            json: () => baseline,
+            sql: () => {
+              writes++;
+              if (writes === 1) throw new Error("PRIVATE_SENTINEL");
+              return "unexpected receipt";
+            },
+          },
+          { documents: true },
+        ),
+      (error) =>
+        error instanceof Error &&
+        error.message ===
+          "Disposable observer provisioning failed; owned key disable is unverified; private output suppressed.",
+    );
+    assert.equal(writes, 3);
+  }));
 test("provisioning uses stdin SQL and owned-server environment, never a CLI secret argument", () => {
   const local = readFileSync(new URL("./local-acceptance.ts", import.meta.url), "utf8");
   assert.match(local, /command\("docker", psqlArgs, sqlSettings \+ query\)/);
@@ -206,10 +430,9 @@ test("provisioning uses stdin SQL and owned-server environment, never a CLI secr
   const runner = readFileSync(new URL("./test-working-isolated.ts", import.meta.url), "utf8");
   assert.ok(
     runner.indexOf("assertPristineBaseline(pristine)") <
-      runner.indexOf("observer = provisionDisposableMediaObserver(local)"),
+      runner.indexOf(
+        "observer = provisionDisposableObservers(local, { documents: local.documents })",
+      ),
   );
-  assert.doesNotMatch(
-    runner,
-    /CONSOLE_MEDIA_OBSERVATION_SECRET_HEX|CONSOLE_MEDIA_OBSERVATION_KEY_ID/,
-  );
+  assert.doesNotMatch(runner, /CONSOLE_(MEDIA|DOCUMENT)_OBSERVATION_(SECRET_HEX|KEY_ID)/);
 });

@@ -7,6 +7,7 @@ import {
 } from "next/dist/build/analysis/get-page-static-info.js";
 import { getMiddlewareRouteMatcher } from "next/dist/shared/lib/router/utils/middleware-route-matcher.js";
 import { originalUploadPath } from "../../lib/domain/catalog/originals.ts";
+import { documentUploadPath } from "../../lib/domain/catalog/documents.ts";
 import { consoleCookieOptions } from "../../lib/console/config.ts";
 
 function verify(matchers: MiddlewareMatcher[], label: string) {
@@ -21,9 +22,11 @@ function verify(matchers: MiddlewareMatcher[], label: string) {
     publicKey: "sb_publishable_synthetic",
   });
   assert.equal(cookie.path, "/console");
-  assert.ok(originalUploadPath.startsWith(cookie.path + "/"));
-  for (const pathname of [originalUploadPath, originalUploadPath + "/"])
-    assert.equal(match(pathname, local, {}), false, `${label}: exact upload skips body clone`);
+  for (const uploadPath of [originalUploadPath, documentUploadPath]) {
+    assert.ok(uploadPath.startsWith(cookie.path + "/"));
+    for (const pathname of [uploadPath, uploadPath + "/"])
+      assert.equal(match(pathname, local, {}), false, `${label}: exact upload skips body clone`);
+  }
   for (const pathname of [
     "/console",
     "/console/",
@@ -40,6 +43,13 @@ function verify(matchers: MiddlewareMatcher[], label: string) {
     "/console/originals.rsc",
     "/console/Originals",
     "/console/%6friginals",
+    "/console/documents",
+    "/console/documents/upload/child",
+    "/console/documents/upload-extra",
+    "/console/documents/upload.json",
+    "/console/documents/Upload",
+    "/console/documents/%75pload",
+    "/console/documents/inspect",
   ])
     assert.equal(match(pathname, local, {}), true, `${label}: ${pathname} retains middleware`);
   for (const pathname of ["/", "/rfq", "/api/rfq", "/api/console/originals", "/console-other"])
@@ -52,6 +62,9 @@ function verify(matchers: MiddlewareMatcher[], label: string) {
     for (const pathname of [
       originalUploadPath,
       originalUploadPath + "/",
+      documentUploadPath,
+      documentUploadPath + "/",
+      "/console/documents/inspect",
       "/",
       "/api/rfq",
       "/console/auth/session",

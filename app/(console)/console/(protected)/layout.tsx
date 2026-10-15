@@ -2,7 +2,7 @@ import { ConsoleLink } from "@/components/console/ConsoleLink";
 
 import type { ReactNode } from "react";
 import { requireConsoleAccess } from "@/lib/console/server";
-import { consoleWorkingEnabled } from "@/lib/console/working-config";
+import { consoleWorkingEnabled, consoleDocumentsEnabled } from "@/lib/console/working-config";
 
 export default async function ProtectedLayout({ children }: { children: ReactNode }) {
   const access = await requireConsoleAccess();
@@ -22,6 +22,9 @@ export default async function ProtectedLayout({ children }: { children: ReactNod
           <ConsoleLink href="/console/series">Product Series</ConsoleLink>
           <ConsoleLink href="/console/technical-data">Technical Evidence</ConsoleLink>
           <ConsoleLink href="/console/media">Product Media</ConsoleLink>
+          {consoleDocumentsEnabled() && (
+            <ConsoleLink href="/console/documents">Technical Library</ConsoleLink>
+          )}
         </nav>
         <div className="console-session">
           <p>{access.roles.join(", ")}</p>

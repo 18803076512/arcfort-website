@@ -72,6 +72,16 @@ const securityHeaders = [
 ] as const;
 
 const nextConfig: NextConfig = {
+  // The disposable PDF child loads its dependencies independently of the route bundle.
+  outputFileTracingIncludes: {
+    "/console/documents/{upload,inspect}": [
+      "./lib/console/document-parser.mjs",
+      "./node_modules/pdf-lib/**/*",
+      "./node_modules/@pdf-lib/**/*",
+      "./node_modules/pako/**/*",
+      "./node_modules/tslib/**/*",
+    ],
+  },
   logging: { incomingRequests: { ignore: [/^\/console(?:\/|\?|$)/] } },
   compress: true,
   poweredByHeader: false,

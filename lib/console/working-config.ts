@@ -31,3 +31,13 @@ export function consoleOemEnabled(env: Record<string, string | undefined> = proc
 export function consolePackagingEnabled(env: Record<string, string | undefined> = process.env) {
   return env.CONSOLE_PACKAGING_ENABLED === "true" && consoleWorkingEnabled(env);
 }
+
+export function consoleDocumentsEnabled(env: Record<string, string | undefined> = process.env) {
+  return env.CONSOLE_DOCUMENTS_ENABLED === "true" && consoleWorkingEnabled(env);
+}
+
+export function consoleDocumentReviewEnabled(
+  env: Record<string, string | undefined> = process.env,
+) {
+  return env.CONSOLE_DOCUMENT_REVIEW_ENABLED === "true" && consoleDocumentsEnabled(env);
+}

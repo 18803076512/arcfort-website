@@ -128,11 +128,26 @@ try {
 
 const directory = path.resolve("supabase", "tests", "database");
 const names = (await readdir(directory)).filter((file) => file.endsWith(".test.sql")).sort();
-assert.equal(names.length, 24, "Review the QA coverage when adding or removing a database suite.");
+assert.equal(names.length, 32, "Review the QA coverage when adding or removing a database suite.");
+const documentPlans = new Map([
+  ["product_intelligence_document_commands.test.sql", 30],
+  ["product_intelligence_document_inspection.test.sql", 24],
+  ["product_intelligence_document_observation.test.sql", 119],
+  ["product_intelligence_document_reads.test.sql", 23],
+  ["product_intelligence_document_references.test.sql", 79],
+  ["product_intelligence_document_review.test.sql", 88],
+  ["product_intelligence_document_sources.test.sql", 65],
+  ["product_intelligence_document_uploads.test.sql", 69],
+]);
+assert.deepEqual(
+  names.filter((name) => name.startsWith("product_intelligence_document_")),
+  [...documentPlans.keys()].sort(),
+);
 let assertions = 0;
 for (const suite of names) {
   const original = await readFile(path.join(directory, suite), "utf8");
   const prepared = prepareDatabaseTest(suite, original);
+  if (documentPlans.has(suite)) assert.equal(prepared.expectedAssertions, documentPlans.get(suite));
   const body = original.replace(/\r\n/g, "\n").split("\nselect * from finish();")[0];
   assert(
     prepared.sql.startsWith(body),
@@ -142,7 +157,7 @@ for (const suite of names) {
 }
 assert.equal(
   assertions,
-  1384,
+  1881,
   "Review the expected PostgreSQL assertion baseline when tests change.",
 );
 const stagingEnvironment: NodeJS.ProcessEnv = {

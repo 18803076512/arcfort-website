@@ -14,14 +14,17 @@ test("isolated acceptance requires exact CI/local invocation", () => {
   assert.deepEqual(assertAcceptanceInvocation(["--local"], { CI: "true" }), {
     oem: false,
     packaging: false,
+    documents: false,
   });
   assert.deepEqual(assertAcceptanceInvocation(["--local", "--oem"], { CI: "true" }), {
     oem: true,
     packaging: false,
+    documents: false,
   });
   assert.deepEqual(assertAcceptanceInvocation(["--local", "--packaging"], { CI: "true" }), {
     oem: false,
     packaging: true,
+    documents: false,
   });
   for (const switches of [
     ["--oem", "--packaging"],
@@ -30,6 +33,17 @@ test("isolated acceptance requires exact CI/local invocation", () => {
     assert.deepEqual(assertAcceptanceInvocation(["--local", ...switches], { CI: "true" }), {
       oem: true,
       packaging: true,
+      documents: false,
+    });
+  for (const switches of [
+    ["--documents"],
+    ["--documents", "--oem", "--packaging"],
+    ["--packaging", "--documents", "--oem"],
+  ])
+    assert.deepEqual(assertAcceptanceInvocation(["--local", ...switches], { CI: "true" }), {
+      oem: switches.includes("--oem"),
+      packaging: switches.includes("--packaging"),
+      documents: true,
     });
   for (const args of [
     [],
@@ -47,6 +61,10 @@ test("isolated acceptance requires exact CI/local invocation", () => {
     ["--local", "--packaging=true"],
     ["--local", "--packaging", "--packaging"],
     ["--local", "--packaging", "--staging"],
+    ["--documents", "--local"],
+    ["--local", "--documents=true"],
+    ["--local", "--documents", "--documents"],
+    ["--local", "--documents", "--staging"],
   ])
     assert.throws(() => assertAcceptanceInvocation(args, { CI: "true" }));
   for (const CI of [undefined, "false", "1"])
@@ -60,6 +78,7 @@ test("the integrated runner refuses a non-local target before host or provider a
     ["--oem", "--local"],
     ["--local", "--packaging", "--staging"],
     ["--packaging", "--local"],
+    ["--local", "--documents", "--staging"],
   ]) {
     const result = spawnSync(
       process.execPath,
@@ -92,6 +111,10 @@ test("ambient provider, database, Docker and runtime overrides fail closed", () 
     "CONSOLE_ENVIRONMENT",
     "CONSOLE_OEM_ENABLED",
     "CONSOLE_PACKAGING_ENABLED",
+    "CONSOLE_DOCUMENTS_ENABLED",
+    "CONSOLE_DOCUMENT_REVIEW_ENABLED",
+    "CONSOLE_DOCUMENT_OBSERVATION_KEY_ID",
+    "CONSOLE_DOCUMENT_OBSERVATION_SECRET_HEX",
     "PRODUCT_INTELLIGENCE_SUPABASE_SERVICE_ROLE_KEY",
     "SUPABASE_ACCESS_TOKEN",
     "NEXT_PUBLIC_SUPABASE_URL",
@@ -208,6 +231,19 @@ test("existing accounts, working records and M2 pagination fixtures are never re
     compatibilityRevisions: 0,
     compatibilitySources: 0,
     mediaSources: 0,
+    documents: 0,
+    documentLinks: 0,
+    documentBindings: 0,
+    documentUploadIntents: 0,
+    documentUploadCompletions: 0,
+    documentSources: 0,
+    documentReviewHeads: 0,
+    documentReviewCandidates: 0,
+    documentReviewSubmissions: 0,
+    documentReviewDecisions: 0,
+    documentReviewCurrents: 0,
+    documentObservationKeys: 0,
+    documentReviewObservations: 0,
     packagingSources: 0,
     packagingHeads: 0,
     packagingRevisions: 0,
@@ -242,6 +278,19 @@ test("existing accounts, working records and M2 pagination fixtures are never re
     "compatibilityRevisions",
     "compatibilitySources",
     "mediaSources",
+    "documents",
+    "documentLinks",
+    "documentBindings",
+    "documentUploadIntents",
+    "documentUploadCompletions",
+    "documentSources",
+    "documentReviewHeads",
+    "documentReviewCandidates",
+    "documentReviewSubmissions",
+    "documentReviewDecisions",
+    "documentReviewCurrents",
+    "documentObservationKeys",
+    "documentReviewObservations",
     "packagingSources",
     "packagingHeads",
     "packagingRevisions",
@@ -272,6 +321,25 @@ test("existing accounts, working records and M2 pagination fixtures are never re
   const { packagingSources: _omittedPackaging, ...withoutPackaging } = good;
   assert.equal(_omittedPackaging, 0);
   assert.throws(() => assertPristineBaseline(withoutPackaging));
+  for (const key of [
+    "documents",
+    "documentLinks",
+    "documentBindings",
+    "documentUploadIntents",
+    "documentUploadCompletions",
+    "documentSources",
+    "documentReviewHeads",
+    "documentReviewCandidates",
+    "documentReviewSubmissions",
+    "documentReviewDecisions",
+    "documentReviewCurrents",
+    "documentObservationKeys",
+    "documentReviewObservations",
+  ] as const) {
+    const incompleteDocuments: Record<string, number> = { ...good };
+    delete incompleteDocuments[key];
+    assert.throws(() => assertPristineBaseline(incompleteDocuments));
+  }
   for (const products of [0, 42, 44, 1146])
     assert.throws(() => assertPristineBaseline({ ...good, products }));
 });

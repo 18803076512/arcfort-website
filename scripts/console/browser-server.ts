@@ -10,6 +10,8 @@ import {
   consoleOemEnabled,
   consolePackagingEnabled,
   consoleWorkingEnabled,
+  consoleDocumentsEnabled,
+  consoleDocumentReviewEnabled,
 } from "../../lib/console/working-config.ts";
 import { originalUuid } from "../../lib/domain/catalog/originals.ts";
 import type { DisposableMediaObserver } from "./media-acceptance.ts";
@@ -22,6 +24,8 @@ type BrowserFeatures = {
   compatibility?: boolean;
   originals?: boolean;
   observer?: DisposableMediaObserver;
+  documents?: boolean;
+  documentObserver?: DisposableMediaObserver;
 };
 
 export function browserServerEnvironment(
@@ -54,10 +58,35 @@ export function browserServerEnvironment(
   if (features.oem === true) env.CONSOLE_OEM_ENABLED = "true";
   if (features.packaging === true) env.CONSOLE_PACKAGING_ENABLED = "true";
   if (features.originals) env.CONSOLE_ORIGINALS_ENABLED = "true";
+  if (features.documents === true) env.CONSOLE_DOCUMENTS_ENABLED = "true";
+  if (features.documentObserver) {
+    assert.equal(features.documents, true, "Document review requires document acceptance.");
+    assert.match(features.documentObserver.id, originalUuid);
+    assert.ok(
+      /^[a-f0-9]{64}$/.test(features.documentObserver.secretHex),
+      "Invalid document observer material.",
+    );
+    if (features.observer) {
+      assert.ok(
+        features.documentObserver.id !== features.observer.id,
+        "Observer domains must be distinct.",
+      );
+      assert.ok(
+        features.documentObserver.secretHex !== features.observer.secretHex,
+        "Observer domains must use independent material.",
+      );
+    }
+    env.CONSOLE_DOCUMENT_REVIEW_ENABLED = "true";
+    env.CONSOLE_DOCUMENT_OBSERVATION_KEY_ID = features.documentObserver.id;
+    env.CONSOLE_DOCUMENT_OBSERVATION_SECRET_HEX = features.documentObserver.secretHex;
+  }
   if (features.observer) {
     assert.equal(features.originals, true, "Media review requires original acceptance.");
     assert.match(features.observer.id, originalUuid);
-    assert.match(features.observer.secretHex, /^[a-f0-9]{64}$/);
+    assert.ok(
+      /^[a-f0-9]{64}$/.test(features.observer.secretHex),
+      "Invalid media observer material.",
+    );
     env.CONSOLE_MEDIA_REVIEW_ENABLED = "true";
     env.CONSOLE_MEDIA_OBSERVATION_KEY_ID = features.observer.id;
     env.CONSOLE_MEDIA_OBSERVATION_SECRET_HEX = features.observer.secretHex;
@@ -67,6 +96,8 @@ export function browserServerEnvironment(
   assert.equal(consoleMediaReviewEnabled(env), Boolean(features.observer));
   assert.equal(consoleOemEnabled(env), features.oem === true);
   assert.equal(consolePackagingEnabled(env), features.packaging === true);
+  assert.equal(consoleDocumentsEnabled(env), features.documents === true);
+  assert.equal(consoleDocumentReviewEnabled(env), Boolean(features.documentObserver));
   return env;
 }
 
@@ -74,6 +105,8 @@ export function browserBuildEnvironment(runtime: NodeJS.ProcessEnv) {
   const env = { ...runtime };
   delete env.CONSOLE_MEDIA_OBSERVATION_KEY_ID;
   delete env.CONSOLE_MEDIA_OBSERVATION_SECRET_HEX;
+  delete env.CONSOLE_DOCUMENT_OBSERVATION_KEY_ID;
+  delete env.CONSOLE_DOCUMENT_OBSERVATION_SECRET_HEX;
   return env;
 }
 

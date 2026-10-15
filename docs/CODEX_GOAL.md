@@ -338,6 +338,173 @@ mobile behavior and conversion paths must satisfy the applicable repository gate
 
 ## Recommended Next Setup Phase
 
+E1-E11 review/CI checkpoint (2026-10-15): owner authorized the exact branch push and expanded
+permission to PR 130/main merge and deployment, subject to verified release gates and exact
+environment preflight. The workflow now explicitly includes `--oem --packaging --documents`;
+branch deployment suppression and default-off application settings remain unchanged. Fresh local
+75-test, 1,881-assertion SQL/replay/rollback, build/HTTP, traced-package, lint/typecheck, performance,
+SEO and secret checks pass. Native E-batch CI is still pending, not proven by local preparation.
+See the [authorization decision](../knowledge-base/decisions/2026-10-15-console-m4-document-ci-authorization.md).
+No real data, retained/hosted migration or feature activation has occurred at this checkpoint.
+
+Local M4-E11b preparation (2026-10-15): the explicit `--documents` switch now connects the real
+document browser workflow, joint observers and exact independent ledger/noninterference checks.
+The complete sequential in-memory command/signer/DTO/ledger rehearsal passes with five revisions,
+current invalidation, human decisions, readiness, revocation and rollback. This replaces E11a's
+temporary unsupported-switch state, not its authorization or evidence boundary. The CI invocation
+is unchanged; native Auth/Storage/forms/refresh/races are NOT_RUN. See the
+[E11b runbook](operations/product-intelligence-console-milestone-4.md#m4-e11b-native-document-acceptance-preparation)
+and [decision](../knowledge-base/decisions/2026-10-15-console-m4-native-document-acceptance.md).
+Next obtain exact E1-E11 review/commit/push/isolated-CI authority and review the full candidate before
+external execution. No retained/hosted write, activation, deployment or real-data approval is implied.
+
+Local M4-E11a preparation (2026-10-15): repaired the stale media acceptance fixture and prepared
+single-baseline, transactional media/document observer provisioning with independent keys,
+all-owned-key cleanup and build-secret exclusion. The existing integrated runner remains
+media-only; `--documents` deliberately fails before host access until native document forms and
+independent ledgers are wired. See the
+[E11a runbook](operations/product-intelligence-console-milestone-4.md#m4-e11a-document-acceptance-foundation)
+and [decision](../knowledge-base/decisions/2026-10-15-console-m4-document-acceptance-foundation.md).
+This is infrastructure preparation, not completed E11/native acceptance. E1-E11a remain local,
+uncommitted, unapplied and outside fulfilled B/C/D authority. Next complete real document
+browser/ledger acceptance, then seek exact E-batch CI authority; preserve all real-data gates.
+
+Local M4-E10 preparation (2026-10-14): registered document review now contributes a separate blocker
+family, guarded lifecycle transitions and private product/list summaries. Zero documents remains
+"not recorded", never verified; independent versions, open successors and invalid prior approvals
+remain visible. All 34 embedded migrations / 32 suites / 1,881 assertions, actual SQL-to-count DTOs,
+source replay/rollback and public-member parity pass. Seven new readiness groups within a 63-test
+application run, 22 guard/type tests, five browser groups / 12 screenshots, final build/HTTP and
+public SEO/performance checks pass. See the
+[E10 runbook](operations/product-intelligence-console-milestone-4.md#m4-e10-document-readiness-integration)
+and [decision](../knowledge-base/decisions/2026-10-14-console-m4-document-readiness.md).
+E1-E10 remain local/uncommitted/unapplied and outside fulfilled prior CI authority. Next prepare
+native disposable document acceptance, then request exact E-batch review/commit/push/CI permission.
+Actual Auth/Storage/persisted decisions/races/full CLI types, real 15AK evidence and full V1 remain
+incomplete. No real data, right, key, publication or production source changed.
+
+Local M4-E9 preparation (2026-10-14): the default-off document review workbench now supports strict
+source/proposal/submission and human decisions, counted evidence/history and separately visible
+current/open reviews. Signed inspection plus three declarations and qualifying sources are required
+for approval; document review is not product publication readiness. All 33 embedded migrations /
+32 suites / 1,852 assertions, actual SQL-to-DTO checks, public-member parity and rollback pass.
+The 50 focused plus 28 shared command tests, 14 new plus 14 existing synthetic browser groups,
+final build/HTTP/traced packages and public SEO/performance checks pass. See the
+[E9 record](operations/product-intelligence-console-milestone-4.md#m4-e9-counted-document-review-workbench)
+and [decision](../knowledge-base/decisions/2026-10-14-console-m4-document-workbench.md).
+E1-E9 remain local/uncommitted/unapplied, outside fulfilled prior CI authorization. Next integrate
+document readiness and prepare native isolated acceptance before separately authorized E-batch CI.
+Real Auth/Storage/persisted decisions/races/full CLI types, actual 15AK evidence, verified preview/
+QA/publication and full V1 remain incomplete. No real fact, right, key or publication was changed.
+
+Local M4-E8 preparation (2026-10-13): migration 32 and the existing private PDF inspector now bind
+document-specific signed byte observations to authenticated human review. Independent key/domain,
+five-minute expiry, exact actor/adoption/candidate/original/all-evidence binding and atomic nonce
+consumption preserve E7's separate human evidence gates. Ordinary downloads never issue approval
+tokens; no key or feature is activated. All 32 embedded suites / 1,828 assertions, actual Node-to-SQL
+signer parity, complete public-member parity, two source replays, exact rollback and 44 application
+tests pass. Both trace-only built handlers, provider-absent HTTP boundaries, typecheck/lint/build,
+public SEO and performance checks pass. See the
+[E8 record](operations/product-intelligence-console-milestone-4.md#m4-e8-signed-document-observation)
+and [decision](../knowledge-base/decisions/2026-10-13-console-m4-document-observation.md).
+E1-E8 remain local/uncommitted/unapplied and outside fulfilled prior CI approval. Next implement
+reviewer command forms, counted current/open DTOs and readiness/UI, then separately authorized
+native acceptance. Historical observation is not current validity, human understanding or verified
+technical truth. Native providers/races/full CLI types, real 15AK and full V1 remain incomplete.
+
+Local M4-E7 preparation (verified 2026-10-13): migration 31 adds immutable document-review candidates,
+submissions and human APPROVE/EDIT/REJECT, with exact rights/scope sources, all-known-evidence
+snapshots, atomic correction and guarded current pointers. It exposes no public approval or
+readiness projection and does not attest bytes. All 31 embedded suites / 1,762 assertions,
+complete public-member type parity, actual pristine-baseline SQL, two source replays and five
+reference-only approval refusals pass, preserving original data and exact rollback. The 26 guard/
+report/library tests, 14 PDF regressions, typecheck, lint, build and performance checks pass.
+See the [E7 record](operations/product-intelligence-console-milestone-4.md#m4-e7-frozen-document-human-review)
+and [decision](../knowledge-base/decisions/2026-10-12-console-m4-document-human-review.md).
+E1-E7 remain local/uncommitted/unapplied to retained or hosted services, outside prior CI approval.
+Next bind domain-separated trusted byte observation to these decisions, then implement reviewer
+commands, counted/open-current DTOs, readiness and UI before separately authorized native acceptance.
+Human-only SQL fixtures are not application approval or real 15AK evidence; full V1 remains incomplete.
+
+Local M4-E6 preparation (2026-10-12): migration 30 supplies immutable document-review evidence
+bindings for separate usage-rights and exact-SKU-scope assertions. Sources bind the current completed
+original snapshot; unknown dates/versions and contradictions remain explicit. It adds no public
+command, approval, signature or UI. All 30 embedded suites / 1,674 assertions pass, along with
+complete public-member type parity, source retention/rollback, 26 report/guard/library tests,
+14 PDF service regressions, lint/typecheck/build and performance checks. The strict report baseline
+now explicitly covers all six E-series suites; missing/failed assertions remain blocking.
+See the [E6 record](operations/product-intelligence-console-milestone-4.md#m4-e6-document-review-evidence-foundation)
+and [decision](../knowledge-base/decisions/2026-10-12-console-m4-document-sources.md).
+E1-E6 remain local/uncommitted/unapplied and outside prior CI approval. Next implement frozen
+document-review candidates, bound trusted observation and human APPROVE/EDIT/REJECT, then UI/native
+acceptance. Metadata evidence intake is not completed human review, verified 15AK or full V1.
+
+Local M4-E5 preparation (2026-10-12): recorded document originals now have exact-SKU private
+inspection and download-only UI. Migration 29 binds the current reference, intent, completion and
+Storage object; the handler checks actual bytes/hash/pages and rechecks access/snapshot before
+release. No durable observation, human approval or fact upgrade is implied. All 29 embedded suites
+/ 1,609 assertions, seven inspection groups, PDF/raster/shared regressions, 14 synthetic browser
+groups/ten screenshots, both independent traced packages, current production HTTP/build and public
+performance/SEO checks pass. See the [E5 record](operations/product-intelligence-console-milestone-4.md#m4-e5-private-pdf-inspection)
+and [decision](../knowledge-base/decisions/2026-10-12-console-m4-document-inspection.md).
+E1-E5 remain local/uncommitted/unapplied, outside earlier CI authority. Native document providers,
+full CLI types, trusted observation, human rights/scope review and real 15AK publication remain
+unproven. Next implement the bound observation and human review workflow, then obtain exact-batch
+native acceptance authorization. Full V1 is active and incomplete, not reduced to this local batch.
+
+Local M4-E4 preparation (2026-10-12): the default-off Technical Library now has counted global and
+exact-SKU pages, immutable reference/version intake, original-upload controls and actor-only pending
+retry recovery. Migration 28 and strict DTO projection preserve null unknowns and pending review.
+All 28 embedded suites / 1,585 assertions, five library unit groups, shared command/guard regressions,
+ten synthetic browser groups/eight screenshots across six widths, PDF/raster regressions, built
+HTTP/package checks, typecheck, source lint, production build and public performance/SEO checks pass.
+See the [E4 record](operations/product-intelligence-console-milestone-4.md#m4-e4-counted-technical-library)
+and [decision](../knowledge-base/decisions/2026-10-12-console-m4-document-library.md).
+E1-E4 remain local, uncommitted and unapplied, outside earlier CI authorization. No real document,
+rights, exact-SKU approval or public fact changed. Next implement private original inspection and
+governed human document review, then separately authorized native acceptance. Full V1 and the real
+15AK workflow remain incomplete; a working synthetic fixture is not provider or owner acceptance.
+
+Local M4-E3 preparation (2026-10-11): migration 27 adds authenticated reference/upload wrappers and
+the separately default-off `/console/documents/upload` handler. It validates actual PDF bytes,
+uploads without overwrite and compares complete stored-byte readback before metadata completion;
+the ledger remains `not_attested`. All 27 embedded suites / 1,562 assertions, seven upload-service
+groups, six PDF groups, nine raster-upload regressions, exact built/source middleware matching,
+isolated traced-handler parser/SSR-cookie checks and owned-server default-off HTTP checks pass.
+The [E3 record](operations/product-intelligence-console-milestone-4.md#m4-e3-authenticated-pdf-upload-and-packaging)
+separates mocked provider, actual child process and actual HTTP evidence. E1-E3 remain local,
+uncommitted and unapplied. No native document Auth/Storage/browser acceptance or current flag is
+enabled; existing CI permission does not cover this batch. Next build usable Technical Library
+intake/version views and private inspection/human rights/exact-scope review, followed by separately
+authorized native acceptance. Full V1 and the real 15AK pilot remain incomplete.
+
+Local M4-E2 preparation (2026-10-11): migration 26 adds private PDF intent/completion ledgers and
+restrictive managed-evidence Storage policies without changing E1 references. A server-only,
+bounded child-process parser preserves PDF bytes; metadata completion remains explicitly
+`not_attested`. All 26 embedded suites / 1,532 assertions, six actual PDF-byte/process groups,
+original-raster regression, generated public types, guards, source lint, typecheck, build,
+performance and secret checks pass. The document rehearsal links five synthetic Storage metadata
+rows with exact rollback; no actual provider upload or document approval is claimed. See the
+[E2 runbook](operations/product-intelligence-console-milestone-4.md#m4-e2-private-pdf-original-foundation)
+and [decision](../knowledge-base/decisions/2026-10-11-console-m4-document-original-intake.md).
+Next implement authenticated default-off upload/readback and built parser packaging, then private
+inspection/human review and the Technical Library. E1/E2 remain uncommitted and unapplied; native
+acceptance and exact external-write approval remain required. Real 15AK and full V1 are incomplete.
+
+Local M4-E1 preparation (2026-10-11): migration 25 reuses private technical documents and entity
+links with immutable exact-SKU reference bindings, explicit unknown issue date/revision, retained
+prior-version lineage and no uploaded-file or confirmation claim. All 25 embedded SQL suites /
+1,463 assertions pass, including 79 new checks and ten synthetic references across four 15AK
+identities plus a created draft with original-row/audit/receipt rollback. Type generation, local
+guards, source lint, typecheck, build, performance and secrets pass within the
+[E1 evidence scope](operations/product-intelligence-console-milestone-4.md#m4-e1-private-technical-document-reference-intake).
+No public command/UI, real document, native acceptance, push or database activation is performed.
+Next complete document-file inspection, human review and Technical Library, then the remaining
+real 15AK/preview/QA/publication gates. Full V1 remains active and incomplete; the prior CI approval
+does not extend to this new E batch. The
+[dated decision](../knowledge-base/decisions/2026-10-11-console-m4-document-reference-intake.md)
+records metadata-versus-file evidence, scope and forward-only retention.
+
 Current acceptance (2026-10-10): `3fffe5f91771576fdaa6fd524ffbc08bd3d5aff7` passes both jobs in
 [run 38024660872](https://github.com/18803076512/arcfort-website/actions/runs/38024660872): 48 native
 browser scenarios, all 120 delayed history modules, zero-page-error gates, 24 SQL suites / 1,384

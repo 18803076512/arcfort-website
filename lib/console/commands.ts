@@ -13,7 +13,10 @@ import {
   consoleMediaReviewEnabled,
   consoleOemEnabled,
   consolePackagingEnabled,
+  consoleDocumentsEnabled,
+  consoleDocumentReviewEnabled,
 } from "./working-config.ts";
+import { isDocumentReviewCommand } from "../domain/catalog/document-review.ts";
 import { isOemCommand } from "../domain/catalog/oem.ts";
 import { isPackagingCommand } from "../domain/catalog/packaging.ts";
 import { isCompatibilityCommand } from "../domain/catalog/compatibility.ts";
@@ -65,13 +68,17 @@ export async function readConsoleCommand(request: Request): Promise<unknown> {
 
 export function canRunConsoleCommand(roles: ConsoleRole[], action: ConsoleCommand["action"]) {
   const allowed: ConsoleRole[] =
+    action === "document_review" ||
     action === "review" ||
     action === "compatibility_review" ||
     action === "media_review" ||
     action === "oem_review" ||
     action === "packaging_review"
       ? ["owner", "reviewer"]
-      : action === "source" ||
+      : action === "document_reference" ||
+          action === "document_source" ||
+          action === "document_submit" ||
+          action === "source" ||
           action === "submit" ||
           action === "compatibility_source" ||
           action === "compatibility_submit" ||
@@ -110,13 +117,63 @@ export async function executeConsoleCommand(
     (isCompatibilityCommand(command.action) && !consoleCompatibilityEnabled(env)) ||
     (isMediaCommand(command.action) && !consoleMediaReviewEnabled(env)) ||
     (isOemCommand(command.action) && !consoleOemEnabled(env)) ||
-    (isPackagingCommand(command.action) && !consolePackagingEnabled(env))
+    (isPackagingCommand(command.action) && !consolePackagingEnabled(env)) ||
+    (command.action === "document_reference" && !consoleDocumentsEnabled(env)) ||
+    (isDocumentReviewCommand(command.action) && !consoleDocumentReviewEnabled(env))
   )
     return { ok: false, code: "42501", message: commandError("42501") };
   try {
     const request_uuid = command.request_id;
     const response = await (async () => {
       switch (command.action) {
+        case "document_source":
+          return client.rpc("pi_add_document_source", {
+            request_uuid,
+            variant_uuid: command.variant_id,
+            document_uuid: command.document_id,
+            requested_dimension: command.dimension,
+            source_copy: command.source,
+          });
+        case "document_propose":
+          return client.rpc("pi_propose_document_review", {
+            request_uuid,
+            variant_uuid: command.variant_id,
+            document_uuid: command.document_id,
+            expected_revision: command.revision,
+            review_copy: command.copy,
+            proposal_reason: command.reason,
+          });
+        case "document_submit":
+          return client.rpc("pi_submit_document_review", {
+            request_uuid,
+            candidate_uuid: command.candidate_id,
+            expected_revision: command.revision,
+            expected_digest: command.digest,
+          });
+        case "document_review":
+          return client.rpc("pi_review_document", {
+            request_uuid,
+            candidate_uuid: command.candidate_id,
+            expected_revision: command.revision,
+            expected_digest: command.digest,
+            decision: command.decision,
+            review_reason: command.reason,
+            confirmation: command.confirmation ?? {},
+            rights_source_uuid: command.rights_source_id as string,
+            scope_source_uuid: command.scope_source_id as string,
+            conflict_resolution: command.resolution,
+            replacement: command.replacement,
+            observation_token: command.observation as string,
+          });
+        case "document_reference":
+          return client.rpc("pi_add_document_reference", {
+            request_uuid,
+            variant_uuid: command.variant_id,
+            document_copy: command.copy,
+            ...(command.prior_document_id === null
+              ? {}
+              : { prior_document_uuid: command.prior_document_id }),
+          });
         case "packaging_source":
           return client.rpc("pi_add_packaging_source", {
             request_uuid,
@@ -369,6 +426,20 @@ export async function executeConsoleCommand(
             raw[field],
           ),
       ) ||
+      (isDocumentReviewCommand(command.action) &&
+        needsRevision &&
+        (!Number.isSafeInteger(result.revision) ||
+          result.revision! < 1 ||
+          result.revision! > 999999999999999)) ||
+      (command.action === "document_propose" &&
+        (raw.document_id !== command.document_id || raw.revision !== command.revision + 1)) ||
+      ((command.action === "document_submit" ||
+        (command.action === "document_review" && command.decision !== "EDIT")) &&
+        (raw.candidate_id !== command.candidate_id || raw.revision !== command.revision)) ||
+      (command.action === "document_submit" && raw.digest !== command.digest) ||
+      (command.action === "document_review" &&
+        command.decision === "EDIT" &&
+        (raw.candidate_id === command.candidate_id || raw.revision !== command.revision + 1)) ||
       (needsRevision && (typeof result.revision !== "number" || result.revision < 0)) ||
       (isMediaCommand(command.action) && needsRevision && result.revision! < 1) ||
       ((isOemCommand(command.action) || isPackagingCommand(command.action)) &&
@@ -416,13 +487,29 @@ type ResultId =
   | "root_relationship_id"
   | "mapping_id"
   | "head_id"
-  | "revision_id";
+  | "revision_id"
+  | "document_id"
+  | "link_id"
+  | "candidate_id";
 function resultShape(command: ConsoleCommand): {
   ids: ResultId[];
   digest: boolean;
   revision: boolean;
 } {
   switch (command.action) {
+    case "document_source":
+      return { ids: ["source_id"], digest: false, revision: false };
+    case "document_propose":
+    case "document_submit":
+      return { ids: ["candidate_id", "document_id"], digest: true, revision: true };
+    case "document_review":
+      return {
+        ids: ["candidate_id", "document_id", "event_id"],
+        digest: command.decision === "EDIT",
+        revision: true,
+      };
+    case "document_reference":
+      return { ids: ["document_id", "link_id"], digest: false, revision: false };
     case "oem_source":
     case "packaging_source":
       return { ids: ["source_id"], digest: false, revision: false };

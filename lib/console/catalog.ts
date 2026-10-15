@@ -1,7 +1,11 @@
 import { Constants } from "../supabase/database.types.ts";
 import type { ConsoleClient } from "./client.ts";
 import { checkConsoleAccess } from "./access.ts";
-import { consoleWorkingEnabled } from "./working-config.ts";
+import { consoleDocumentReviewEnabled, consoleWorkingEnabled } from "./working-config.ts";
+import {
+  documentReadinessColumns,
+  parseDocumentReadiness,
+} from "../domain/catalog/document-readiness.ts";
 
 export class ConsoleReadError extends Error {
   constructor() {
@@ -43,7 +47,7 @@ export function filters(params: SearchParams) {
   const searchBy = single(params, "searchBy") || "sku";
   if (!["sku", "name"].includes(searchBy)) throw new ConsoleInputError();
   const blocker = single(params, "blocker") || "all";
-  if (!["all", "technical", "image", "compatibility", "seo"].includes(blocker))
+  if (!["all", "technical", "image", "compatibility", "seo", "documents"].includes(blocker))
     throw new ConsoleInputError();
   return { page: Number(pageText), q, category, lifecycle, verification, searchBy, blocker };
 }
@@ -135,28 +139,107 @@ export async function readProducts(client: ConsoleClient, filter: Filters) {
   return { ...result, categories };
 }
 
-export async function readReadiness(client: ConsoleClient, filter: Filters) {
+export async function readReadiness(
+  client: ConsoleClient,
+  filter: Filters,
+  env: Record<string, string | undefined> = process.env,
+) {
+  const documentsEnabled = consoleDocumentReviewEnabled(env);
+  if (filter.blocker === "documents" && !documentsEnabled) throw new ConsoleInputError();
   await authorize(client);
-  let query = client
-    .from("pi_variant_readiness")
-    .select(
-      "id,sku,lifecycle_state,is_shadow,blocker_count,unresolved_technical_count,technical_conflict_count,eligible_main_image_count,approved_seo_count,compatibility_conflict_count,compatibility_count,confirmed_compatibility_count",
-      { count: "exact" },
-    );
+  const columns =
+    "id,sku,lifecycle_state,is_shadow,blocker_count,unresolved_technical_count,technical_conflict_count,eligible_main_image_count,approved_seo_count,compatibility_conflict_count,compatibility_count,confirmed_compatibility_count" as const;
+  let query = documentsEnabled
+    ? client
+        .from("pi_variant_document_readiness")
+        .select(`${columns},${documentReadinessColumns}`, { count: "exact" })
+    : client.from("pi_variant_readiness").select(columns, { count: "exact" });
   if (filter.q) query = query.ilike("sku", literalPattern(filter.q));
   if (filter.blocker === "technical") query = query.gt("unresolved_technical_count", 0);
   else if (filter.blocker === "image") query = query.eq("eligible_main_image_count", 0);
   else if (filter.blocker === "seo") query = query.eq("approved_seo_count", 0);
   else if (filter.blocker === "compatibility")
     query = query.gt("compatibility_count", 0).eq("confirmed_compatibility_count", 0);
+  else if (filter.blocker === "documents") query = query.gt("unresolved_document_count", 0);
   else query = query.gt("blocker_count", 0);
-  return page(
+  const result = page(
     await query
       .order("sku")
       .order("id")
       .range(...range(filter)),
     filter,
   );
+  const documentWorkingIds = new Set<string>();
+  if (documentsEnabled) {
+    const expected = Math.min(pageSize, Math.max(0, result.total - (filter.page - 1) * pageSize));
+    if (
+      !Number.isSafeInteger(result.total) ||
+      result.items.length !== expected ||
+      new Set(result.items.map((item) => item.id)).size !== result.items.length
+    )
+      throw new ConsoleReadError();
+    const ids = result.items.map((item) => item.id);
+    if (
+      ids.some(
+        (id) =>
+          !id ||
+          !/^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(id),
+      )
+    )
+      throw new ConsoleReadError();
+    if (ids.length) {
+      const working = await client.rpc("pi_product_working_states", {
+        variant_ids: ids as string[],
+      });
+      if (
+        working.error ||
+        !working.data ||
+        working.data.some((row) => !ids.includes(row.product_variant_id))
+      )
+        throw new ConsoleReadError();
+      for (const row of working.data) documentWorkingIds.add(row.product_variant_id);
+      if (documentWorkingIds.size !== working.data.length) throw new ConsoleReadError();
+    }
+    await authorize(client);
+  }
+  return {
+    ...result,
+    documentsEnabled,
+    items: result.items.map((item) => {
+      const documents = documentsEnabled ? parseDocumentReadiness(item) : null;
+      if (
+        documentsEnabled &&
+        (!documents ||
+          !item.id ||
+          !item.sku ||
+          !Number.isSafeInteger(item.blocker_count) ||
+          (item.blocker_count ?? -1) < Number(!!documents.unresolved_document_count) ||
+          (filter.blocker === "documents" && documents.unresolved_document_count === 0))
+      )
+        throw new ConsoleReadError();
+      return { ...item, documents, documentReviewAvailable: documentWorkingIds.has(item.id!) };
+    }),
+  };
+}
+
+export async function readDocumentReadiness(
+  client: ConsoleClient,
+  id: string,
+  env: Record<string, string | undefined> = process.env,
+) {
+  if (!consoleDocumentReviewEnabled(env)) return null;
+  uuid(id);
+  await authorize(client);
+  const result = await client
+    .from("pi_document_readiness")
+    .select(`product_variant_id,${documentReadinessColumns}`)
+    .eq("product_variant_id", id)
+    .single();
+  const counts = parseDocumentReadiness(result.data);
+  if (result.error || result.data?.product_variant_id !== id || !counts)
+    throw new ConsoleReadError();
+  await authorize(client);
+  return counts;
 }
 
 export async function readSeries(client: ConsoleClient, filter: Filters) {

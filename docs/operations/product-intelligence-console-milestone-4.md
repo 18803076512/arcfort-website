@@ -2436,3 +2436,910 @@ and exact-image rights, verified preview/QA/publication and external release acc
 incomplete. No synthetic approval establishes a real commercial or technical fact. Continue next
 with governed technical documents and real 15AK evidence; do not reopen Docker recovery or expand
 the current external-write authorization. Data, visual output, public URLs, SEO and RFQ are unchanged.
+
+## M4-E1 Private Technical Document Reference Intake
+
+Prepared October 10, locally verified October 11, 2026. Base commit `32d5d208`; E1 remains an
+uncommitted local batch on `codex/v2-industrial-brand-system`. The preceding native acceptance
+belongs to B11-B16/C1-C4/D1-D4 and does not prove or authorize this new batch.
+
+Objective: retain exact-SKU document identity, provenance and versions before file inspection and
+human review. Migration `202610100025_product_intelligence_document_references.sql` reuses the
+original document/link tables without changing their columns or importer. A new immutable binding
+retains custodian, source location/scope, nullable issue date/revision, prior reference, actor and
+document/link/identity hashes. The private command is not exposed to application callers. The
+[decision](../../knowledge-base/decisions/2026-10-11-console-m4-document-reference-intake.md)
+defines forward retention and explicitly separates metadata from actual file, rights and fact evidence.
+
+Files: migration 25; `product_intelligence_document_references.test.sql`; generated
+`lib/supabase/database.types.ts`; `scripts/console/sql-runtime/rehearse-document-intake.mjs` and
+`test-authority.mjs`; migration validator; local acceptance baseline, its tests and final native
+non-interference check; Goal/progress report, decision and AI changelog. No component, route,
+dependency, active environment setting, public product fact, visual, SEO, compatibility or RFQ change.
+
+Executed local evidence:
+
+- `console:authority:test:embedded`: 25 migrations, original public column contract unchanged,
+  complete generated public type member matches, 25 suites / **1,463 assertions** including
+  **79 document assertions**, runner pass/fail/count controls and two exact 17-table shadow replays.
+- The additional document rehearsal creates ten TEST-ONLY references: initial and follow-up versions
+  for four imported 15AK identities and one created synthetic draft. Unknown dates/revisions stay
+  null; both versions remain privately bound. Cross-SKU lineage, changed receipt and publication
+  injection fail at their exact gates. Original records, audit and receipt rollback compare exactly.
+- `console:migrations:validate`, eight `console:working:test:guards`, Console boundary unit checks,
+  full typecheck and secret scan pass. The new pristine checks reject missing/nonzero document,
+  entity-link or binding counts. No native acceptance runner was executed.
+- Full source lint passes with `eslint . --ignore-pattern '.tmp/**' --max-warnings=0`. Plain
+  `eslint .` first scanned untracked, Git-ignored hydration experiments/generated output under
+  `.tmp` and failed there. `git ls-files .tmp` is empty. No tracked rule or source file was excluded,
+  no diagnostic artifact was deleted, and the lint configuration was not weakened.
+- Local `next build` succeeds, including lint/type checks and all 95 static pages. The first sandboxed
+  attempt hit Windows SWC path canonicalization access denial; the approved local unsandboxed
+  build passed. No deployment/server/provider mutation follows from a build.
+- `performance:budget` passes: homepage 126.6 KiB / 140 KiB, product center 127.8 / 145,
+  shared CSS 9.9 / 15. Goal report retains 43 structured products and zero strictly verified SKUs;
+  only schema/test inventory changed. Public data/evidence are unchanged.
+
+Release-QA: **PASS_WITH_WARNINGS for local E1 preparation only**. Native Supabase Auth/PostgREST,
+multi-connection races, complete CLI type drift check, file inspection and a document UI are NOT_RUN
+or not implemented; this is not E workflow/M4/full-V1 acceptance. Existing local tests simulate
+actors and contain no actual document, human approval, stored file or product publication.
+External release/activation is BLOCKED pending its exact authorization and applicable evidence.
+
+No commit/push/merge, hosted or retained-local migration, Docker/WSL operation, reset, file upload or
+production change was performed. Rollback is code-only before application; afterwards preserve
+append-only references and use reviewed forward corrections. Next develop immutable private
+document-file intake/inspection and human association review, then usable counted Technical Library
+reads and separately authorized real isolated acceptance. Full 15AK evidence and M5/M6 remain open.
+
+## M4-E2 Private PDF Original Foundation
+
+Date: October 11, 2026. Local E2 preparation on the uncommitted E1 batch, base `32d5d208`.
+No new external-write authorization has been supplied. No retained/hosted database operation occurs.
+
+Migration 26 reserves one immutable PDF upload per unchanged E1 reference, with an actor-generated
+path, exact reference digest, stable request receipts and 100-new-intent/24-hour bound. Restrictive
+policies seal only the `working-documents/` namespace of the existing private evidence bucket.
+Completion retains observed Storage metadata and explicitly stays `not_attested`. It does not
+alter E1 reference rows, create technical facts, grant rights, approve a human review or publish.
+The [E2 decision](../../knowledge-base/decisions/2026-10-11-console-m4-document-original-intake.md)
+retains byte/metadata/security limitations and forward-only correction requirements.
+
+`lib/console/document-files.ts` and `document-parser.mjs` add a server-only unchanged-PDF byte
+validator using pinned `pdf-lib` 1.17.1 in a timed, environment-stripped child process. It checks
+bounded structural content, not rendering or malware clearance. Original raster validation remains
+separate. There is no HTTP upload/inspection endpoint or UI yet. No real company document was
+opened or modified. Test PDFs are generated in memory, synthetic and not delivered as evidence.
+
+Files changed in E2: migration 26 and `product_intelligence_document_uploads.test.sql`; generated
+database types; two parser modules and `scripts/console/test-document-files.ts`; package/lockfile;
+the quality workflow's new byte-test command; migration validator; pristine baseline/tests and
+native final zero-document guard; the existing document rehearsal extended with synthetic Storage
+metadata; Goal/report, this runbook, dated decision and changelog. No UI component, public route,
+canonical data, SEO, RFQ, commercial policy or active environment setting changed.
+
+Executed evidence:
+
+- Full embedded authority runner: **26 migrations, 26 suites / 1,532 assertions**, including
+  **69 document-upload assertions**. Exact original column contract/public type member, runner
+  negative controls, two 17-table shadow replays and all prior domain rehearsals pass.
+- Ten TEST-ONLY references across four imported 15AK identities and one created draft now also
+  reserve/complete five synthetic Storage rows. Reference rows stay exact/private/unapproved;
+  original catalog rows, receipts, audit and all Storage rows compare exactly after rollback.
+  This fixture does not invoke real Storage/Auth APIs or prove stored file bytes/concurrent calls.
+- `console:documents:files:test`: six groups pass using real in-memory PDF bytes and actual parser
+  processes. Compressed/plain object fidelity, filename/signature/type/truncation/page/dimension
+  refusals, script/form/attachment/launch/encryption refusals, bounded streams, capacity, cancel,
+  forced process deadline and an actual 15-second stalled-read deadline all pass.
+- `console:originals:test`: all six raster groups still pass, including unchanged EXIF/bytes and
+  the actual stalled-stream deadline. No image code/policy was generalized to accept PDFs.
+- Migration validation, eight acceptance guards, full typecheck and source lint pass. Source lint
+  excludes only Git-ignored `.tmp/**` diagnostics, as documented in E1. No rule was relaxed.
+- Local production build passes all 95 static pages with existing routes; performance stays within
+  unchanged budgets (homepage 126.6 KiB, product center 127.8 KiB, shared CSS 9.9 KiB). This build
+  does not prove a future upload handler can resolve the child parser artifact.
+- npm added only five pinned-lock packages; existing versions unchanged. The current official npm
+  bulk advisory lookup for these five exact versions returned no entries. Secret scanning passes.
+  Goal report remains 43 structured products / zero strictly verified SKUs; only test/schema inventory changes.
+
+Release-QA: **PASS_WITH_WARNINGS for local E2 preparation only**. Native Auth/Storage upload/readback,
+multi-connection races, full CLI type parity, built-handler parser packaging and browser workflow
+are NOT_RUN/not implemented. The process heap setting is not an RSS limit or OS sandbox; structural
+PDF acceptance is not full content decoding, a security certificate or a verified technical value.
+Real files, private inspection, human rights/exact-scope review and full V1 remain incomplete.
+
+No commit/push/merge/deploy, Docker/WSL mutation, actual upload, retained/hosted migration, deletion or
+data authority transition occurred. Next build the authenticated default-off upload/readback path,
+verify packaged parser execution, then connect private inspection and human review. Submit E scope
+to disposable native CI only after fresh exact-batch/branch authorization; retain all existing data.
+
+## M4-E3 Authenticated PDF Upload And Packaging
+
+Date: October 11, 2026. Local E3 preparation on uncommitted E1/E2, base `32d5d208`.
+No new commit/push/CI, retained/hosted migration or application activation permission exists.
+
+Migration 27 exposes three user-session wrappers for the existing private reference/reservation/
+completion commands. `lib/domain/catalog/documents.ts`, `lib/console/document-upload.ts` and
+`app/(console)/console/documents/upload/route.ts` provide exact metadata parsing, authenticated raw
+upload and unchanged stored-byte reconciliation, using the existing session client and shared
+image/document work slots. The new local-only flag defaults off. Document bytes are never rewritten;
+reference rows and metadata-only completion remain separate from trusted observation and review.
+
+Supporting files: `working-config.ts`, `original-work.ts`, `.env.example`, exact middleware matcher,
+project-root parser resolution and route-specific Next trace includes; generated Supabase types;
+SQL wrapper tests and two preceding suites' current wrapper-grant assertions; migration validator;
+PDF service/package/child tests, existing matcher/HTTP runner and checks; package scripts and quality
+workflow gates; Goal/report, this runbook, changelog and the
+[E3 decision](../../knowledge-base/decisions/2026-10-11-console-m4-document-upload-application.md).
+No visual component or public product/data/URL/SEO/RFQ change occurs. The private route is noindex.
+
+### Executed Checks
+
+- Embedded authority runner: **27 migrations, 27 suites / 1,562 pgTAP assertions**, including
+  **30 new wrapper assertions**. Full generated public member parity, two exact 17-table source
+  replays, all prior rehearsals, document immutability/data retention and exact rollback pass.
+  Full native CLI type generation, real Auth/PostgREST and multi-connection races are NOT_RUN.
+- `console:documents:upload:test`: **7 groups pass** with real PDF bytes/parser children and the
+  actual Supabase SDK against synthetic transport. Covers default-off/environment/origin/role
+  gates; strict metadata, MIME/size/encoding; unchanged byte/hash/page-count reconciliation;
+  upload timeout/duplicate retry; wrong path/document/receipt; revoked completion; corrupted or
+  different readback; shared capacity, cancellation and a PDF exceeding 10 MiB. No actual Storage
+  object is created. A readback failure returns service failure instead of blaming submitted bytes.
+- `console:documents:files:test`: **6 groups pass**, including real 15-second stalled-read timeout,
+  child deadline/cancel, compressed-object active-content refusal and capacity recovery.
+- `console:originals:upload:test`: **9 groups pass**, retaining all raster original contracts.
+- `console:documents:package:test`: **PASS** from **1,713 actual traced files** copied outside the
+  repository. The built handler runs the real PDF child/dependencies, preserves over-10-MiB bytes,
+  runs actual SSR refresh logic, returns `/console` HttpOnly SameSite cookies and covers 200/403/
+  405/409/422/429/503 private responses. The provider is mocked and the Request cookie interface is
+  adapted; this is not full Next HTTP dispatch or real provider acceptance. No source dependency
+  fallback is used. The test's own unique temporary directory is removed after child exit.
+- Source and built middleware matchers: **PASS**, only two exact raw upload paths skip cloning;
+  surrounding/encoded/case routes and staging host remain matched. Cookie scope stays `/console`.
+- `CI=true console:originals:http:test -- --provider-absent`: **PASS** on a freshly built owned
+  loopback server. Real Next HTTP checks cover default-off document methods, private response
+  headers, no out-of-cookie alias, staging GET/POST refusal, login/auth boundaries, public shells,
+  social images, sitemap/robots and CSRF. Provider absence is verified by connection refusal;
+  the server exits and its port is verified free. No retained process or database is changed.
+- Migration validator, 8 pristine local-acceptance guards, 10 browser-server guards, Console
+  boundary unit checks, full typecheck and source lint: **PASS**. Lint still excludes only ignored
+  `.tmp/**` diagnostic artifacts, without changing the lint configuration.
+- Production build: **PASS**, 95 static pages plus the new private dynamic handler. Internal-link,
+  built image-evidence and snippet checks pass. Performance budgets unchanged: homepage 126.6 KiB,
+  product center 127.8 KiB, shared CSS 9.9 KiB. Goal report retains 43 products / zero verified SKUs.
+- Final secret scan: **PASS**, 690 tracked/untracked repository text files. RFQ constraints,
+  email templates and provider deadline regressions pass; no real email or buyer data is used.
+
+Windows sandbox `realpath`/SWC access prevented a non-elevated build/package run; the same local
+checks succeeded through approved elevation. The first package harness requested an untraced
+`next/server` testing helper; the harness was corrected to adapt the Request cookie interface,
+without adding fake production dependencies or changing the parser gate. A TypeScript Buffer generic
+annotation was corrected. All reported final checks use the corrected current source.
+
+### Gate And Remaining Work
+
+Release-QA is **PASS_WITH_WARNINGS for local E3 preparation only**; external release/activation is
+**BLOCKED**. No real document upload, trusted persisted observation, human rights/scope review,
+Technical Library UI, responsive owner workflow or native document acceptance is proven. The PDF
+parser remains structural only, not full rendering/malware clearance, an RSS limit or OS sandbox.
+No company/product evidence is upgraded, and no full V1 or real 15AK completion is claimed.
+
+No commit, push, merge, deployment, Docker/WSL change, retained/hosted migration, cleanup or
+production authority change occurred. The tested temporary HTTP server and parser processes have
+exited. No active feature flag was retained. Next build the Technical Library intake/version and
+private inspection/review workflow, then obtain exact E-batch authorization for native isolated CI.
+
+## M4-E4 Counted Technical Library
+
+Date: October 12, 2026. Local E4 preparation on uncommitted E1-E3, base `32d5d208`.
+Earlier B11-B16/C1-C4/D1-D4 authorization is fulfilled and does not include E1-E4 submission.
+
+### Scope And Files
+
+- Migration `202610110028_product_intelligence_document_reads.sql`, its pgTAP suite and generated
+  public types: counted working-SKU reads, 25-row pages, current-role enforcement and pending
+  actor-only upload request IDs. Unknown date/revision and pending-review states remain explicit.
+- `lib/console/documents.ts`, `lib/domain/catalog/documents.ts` and both existing command modules:
+  strict projected DTOs, reference parser, independent flag/role gates and minimal safe receipts.
+- `components/console/DocumentLibrary.tsx`, both `/console/documents` and
+  `/console/products/[id]/documents` pages, `ProductWorkingNav`, protected layout and scoped Console
+  CSS: library, reference/version registration, original retry controls, mobile layout and navigation.
+- `scripts/console/document-fixture.ts`, library/browser tests, fixture pages/layout/README,
+  existing HTTP checks, migration validator, package scripts and prepared quality workflow gates.
+  This record, Goal/report, changelog and the
+  [E4 decision](../../knowledge-base/decisions/2026-10-12-console-m4-document-library.md) retain scope.
+
+No real SKU, company/technical/compatibility/media evidence, rights, commercial term or approval
+changed. No public route/URL/canonical/schema/SEO/RFQ change. Existing public-source authority is
+retained. The library is default-off, authenticated, no-store and noindex, with no public download.
+
+### Executed Checks
+
+- Embedded authority runner: **28 migrations / 28 suites / 1,585 pgTAP assertions**, including
+  **23 new read assertions**. Complete generated public-member parity, two exact 17-table shadow
+  replays and prior rehearsals pass. Document reference/completion fixtures roll back exactly.
+  The pending-upload test uses its own one-reference SKU, avoiding random page-placement assumptions.
+- `console:documents:library:test`: **5 groups pass**, covering all source pairs, null unknowns,
+  valid dates, injection refusal, exact RPC arguments, role/flag/auth gates, malformed receipts,
+  safe errors, missing/wrong scopes, duplicate/truncated pages and exact totals on empty pages.
+  Actual SDK transport is mocked; it makes no native-provider requests.
+- Shared commands and guards: **58 tests pass** across library, base Console, compatibility,
+  media, OEM, packaging, pristine-local, browser-server and boundary suites. No role expansion to
+  publisher/viewer, environment activation or retained stack access is introduced.
+- PDF file/parser checks: **6 groups pass** including actual stalled-stream and child deadlines.
+  PDF upload **7 groups** and raster upload/read **9 groups** pass. These use synthetic bytes and
+  mocked provider transport, not actual company evidence or private Storage objects.
+- `console:documents:ui:test`: **10 groups pass**, five synthetic reference POSTs and six synthetic
+  upload POSTs, zero page errors and zero external requests. Checks exact payloads/source pairs,
+  stable retries, new-version lineage, own pending recovery after refresh, mismatched receipts,
+  retained file selection, role/stale/foreign-pending gates, unsaved navigation, count/pagination,
+  keyboard focus and six widths. Eight screenshots under `.tmp/console-document-ui/` were inspected.
+  Readable fixed table columns use a focusable horizontal region; long-title mobile upload controls
+  stay in bounds. A Playwright label selector was corrected to use the rendered combobox role;
+  application access rules were not weakened. No native browser/Auth/persistence acceptance claimed.
+- Final `CI=true console:originals:http:test -- --provider-absent`: **PASS**, rebuilds the current
+  source and runs actual Next HTTP/default-off privacy, no unauthenticated catalog payload, exact
+  upload matcher/cookie scope, staging host, CSRF and public shell checks. Both new page routes are
+  included. Provider absence is verified; the owned HTTP process exits and port 3000 is free.
+- After that rebuild completes, `console:documents:package:test`: **PASS**, 1,713 traced files,
+  real child parser and SSR refresh cookies, over-10-MiB byte fidelity and all seven response statuses.
+  An earlier overlapping package check observed an unfinished trace and failed; its result is not
+  counted. Sequential final checks pass without changing packaging or acceptance requirements.
+- Typecheck, source lint (only ignored `.tmp/**` excluded), migration validator and build pass.
+  The build retains 95 static pages plus private dynamic routes. Public links, image-evidence and
+  snippet checks pass. Homepage JS 126.6 KiB, product center 127.8 KiB and shared CSS 9.9 KiB remain
+  within unchanged budgets. Formatting and diff whitespace checks pass; the final secret scan finds
+  no high-confidence secret patterns in 700 repository text files. Goal report retains 43 structured
+  products and zero strictly verified SKUs, with existing rights/company-media warnings unchanged.
+
+### Gate And Remaining Work
+
+Release-QA: **PASS_WITH_WARNINGS for local E4 preparation; external activation/release BLOCKED**.
+Native document Auth/PostgREST/Storage/browser/races and full native CLI type parity remain NOT_RUN.
+No durable trusted document observation, private stored-original inspection or human rights/exact-SKU
+approval is implemented. Upload metadata remains `not_attested`; structural parsing is not full
+rendering, malware clearance or an OS memory sandbox. No live RFQ/inbox claim is made.
+
+No commit/push/CI dispatch/merge/deploy, retained/hosted database write, original deletion, Docker/WSL
+change or public authority transition occurred. No real feature flag was enabled and no repository
+rule was overridden. The loopback UI fixture is synthetic only; it must not receive private data.
+Next implement private stored-original inspection and governed human review before native document
+acceptance and exact-batch CI approval. Full V1 and the real 15AK workflow remain active/incomplete.
+
+## M4-E5 Private PDF Inspection
+
+Date: October 12, 2026. Local uncommitted preparation on E1-E4, base `32d5d208`.
+Destination: local source and synthetic/embedded tests only; no external release authorized.
+
+### Scope And Files
+
+- Migration `202610120029_product_intelligence_document_inspection.sql`, matching SQL suite and
+  generated public types add a read-only current snapshot with exact SKU/document, receipt and
+  Storage identity/version/metadata checks. Anonymous/service execution is revoked.
+- `lib/console/document-inspection.ts`, `lib/domain/catalog/document-inspection.ts` and
+  `app/(console)/console/documents/inspect/route.ts` implement bounded input, current reader roles,
+  shared processing slots, unchanged PDF validation and pre/post-read checks. Responses carry no
+  private Storage coordinates or hashes and use attachment/no-store/noindex/nosniff/sandbox headers.
+- `StoredDocumentInspection.tsx`, `DocumentLibrary.tsx` and the scoped document action CSS add
+  download-only inspection, safe retry/cancel, counted client reads, temporary URL cleanup and focus
+  return. Missing/pending/stale originals are disabled; viewers/publishers gain no write authority.
+- Inspection service tests, document browser/package tests, HTTP/matcher checks, migration validator,
+  `next.config.ts`, package script and prepared quality workflow cover the new route. Goal/report,
+  changelog, fixture README and the dated decision preserve this batch's evidence boundaries.
+
+No canonical product/company/technical/compatibility/media/commercial data or public SEO route,
+schema, sitemap, RFQ flow or source authority changed. Upload completion remains `not_attested`.
+
+### Executed Checks
+
+- Embedded authority: **29 migrations / 29 suites / 1,609 pgTAP assertions**, including **24 new
+  snapshot assertions**. Tests include role revocation, incomplete uploads, wrong SKU, version,
+  metadata, path, owner, bucket, missing object and UTC snapshot stability; no approval/publication.
+  Complete public-member type parity, two exact 17-table replays and prior rehearsals pass.
+  A synthetic missing-object test changes only the in-memory object ID; Supabase's delete guard
+  remains active. This is not native Storage deletion or provider/race acceptance.
+- Inspection service: **7 groups pass**, actual SDK with mocked transport and real PDF parser.
+  Covers default-off/local/origin/body gates, all five current readers, initial/mid-read revocation,
+  changed actor, snapshot/manifest errors, actual hash/page/size/structure, missing object, cancellation,
+  shared-slot recovery and more-than-10-MiB unchanged bytes. Private diagnostics are not exposed.
+- Combined PDF/raster regression: **35 Node tests pass**, including the six-group PDF-byte script,
+  seven upload groups, eleven raster inspection groups and nine raster upload/read groups. Library,
+  shared commands and local/browser/boundary guards add **58 passing tests**.
+- Synthetic browser: **14 groups pass**, five reference POSTs, six upload POSTs and 26 inspection
+  POSTs; zero page errors/external requests. Covers all E4 behavior plus download fidelity, readonly
+  users, disabled states, receipt/page/length mismatches, retries, cancellation and URL cleanup.
+  Ten screenshots across six widths include desktop/mobile inspection. No inline PDF renderer,
+  native Auth, persistence, human review or actual private document is involved.
+- Production build and actual owned-server HTTP: **PASS**. The initial `--provider-absent` run
+  correctly refused because local port 54321 had an existing service. It is not counted as passing.
+  A read-only Auth settings probe confirmed invite-only/no-autoconfirm; the final normal-mode run
+  checked invalid-form/no-credential boundaries, private methods/headers, no `/api` alias, source
+  and built middleware, staging isolation and public shells. The test's own port 3000 is released;
+  the existing provider is neither stopped nor changed. This does not establish document acceptance.
+- Sequential post-build package check: **PASS**, each route copied from its own **1,713-file trace**
+  into a separate temporary directory. Both run the actual PDF child and SSR refresh, preserve
+  more-than-10-MiB originals and cover 200/403/405/409/422/429/503. Inspection checks attachment/CSP,
+  safe receipt and exact bytes. No source dependency fallback or native provider request occurs.
+- Typecheck, full source lint (only ignored `.tmp/**` excluded), migration validation, formatting,
+  diff whitespace and secret scanning pass. Public links/image-evidence/snippets and unchanged
+  performance budgets pass: homepage 126.6 KiB, product center 127.8 KiB, shared CSS 9.9 KiB.
+
+### Gate And Remaining Work
+
+Local E5 preparation: **PASS_WITH_WARNINGS**. External activation/release: **BLOCKED** by missing
+exact E-batch authorization and native document Auth/PostgREST/Storage/browser/race/full-CLI-type
+evidence. The implementation does not persist trusted observations or human rights/scope decisions.
+Structural parsing/download does not prove malware clearance, full rendering, human reading or
+technical truth. No live RFQ/inbox claim, product verification or publication is made.
+
+The [dated decision](../../knowledge-base/decisions/2026-10-12-console-m4-document-inspection.md)
+records the identity/download/evidence boundary. No rules were overridden. No commit/push/CI
+dispatch/merge/deployment, DB reset/migration, real upload, file deletion, Docker/WSL change or
+feature activation occurred. The remaining 3901 preview is synthetic-only, with no persistence.
+Next implement bound trusted document observation and human rights/exact-SKU review, then perform
+separately authorized native acceptance. The full V1 goal and real 15AK workflow remain incomplete.
+
+## M4-E6 Document Review Evidence Foundation
+
+Date: October 12, 2026. Local uncommitted foundation on E1-E5, base `32d5d208`.
+Destination: source preparation and embedded/synthetic checks only, not external activation.
+
+### Scope And Files
+
+- Migration `202610120030_product_intelligence_document_sources.sql`, matching 65-assertion SQL
+  suite and regenerated public schema types: immutable source-to-document/SKU/original bindings,
+  separate rights/scope dimensions, role/authority/receipt gates and review eligibility checks.
+- `rehearse-document-intake.mjs`: fifteen TEST-ONLY sources, including five contradictions, against
+  four real 15AK identities plus one synthetic draft. Existing original records remain unchanged.
+- Migration validator, `local-acceptance.ts`, its tests and `test-working-isolated.ts`: new-table
+  preparation checks and exact empty-baseline refusal. No retained stack is reset or migrated.
+- `test-database-test-report.ts`: reviewed 30-suite / 1,674-assertion baseline with explicit names
+  and plans for the six document suites, preserving strict report failure/skip/TODO controls.
+- Goal/report, changelog, this runbook and the dated E6 decision retain the source/evidence boundary.
+
+No UI/component, browser route, actual document, canonical product/company/technical/media record,
+rights flag, compatibility, commercial term, SEO, RFQ or production authority changed in E6.
+The source command remains private/ungranted; no signed observation or human decision is added yet.
+
+### Executed Checks
+
+- Embedded authority: **30 migrations / 30 suites / 1,674 pgTAP assertions PASS**. The 65 new source
+  checks cover incomplete/stale originals, dimension/SKU/document scope, immutable source/binding,
+  role/revocation/service refusal, actor-scoped replay, strict fields, source classification, unknown/
+  invalid dates, RLS, authority cleanup and zero verification/publication. Initial snapshot comparison
+  exposed fixture timezone formatting; setting its initial timezone to UTC fixed the fixture without
+  changing production hashes or relaxing equality.
+- Complete public schema member parity and both exact 17-table source replays **PASS**. Full native
+  CLI type parity remains NOT_RUN. The extended document rehearsal preserves all old source rows,
+  documents, facts and mappings; generated source records cannot match existing field-specific
+  technical sources. All commands, audit, receipts and synthetic Storage rows roll back exactly.
+- **26 tests PASS** across SQL-report validation, type-contract normalization, pristine acceptance,
+  browser environment guards, library and application boundaries. The stale 24-suite / 1,384 baseline
+  was detected, not bypassed; all six new suites and their actual assertions were reviewed before
+  updating it to 30 / 1,674. Native provider tests were not dispatched.
+- PDF upload and inspection regressions: **14 groups PASS**, real parser with mocked SDK transport.
+  These do not establish a real private file or an authorized human decision.
+- Typecheck, complete source lint (only ignored `.tmp/**` excluded), migration validation and
+  production build **PASS**, with 96 generated outputs. An earlier build handle was lost on
+  continuation; no completion was claimed from it. After confirming no active build remained, a
+  fresh run completed with captured exit 0.
+- Performance budgets **PASS** and unchanged: homepage 126.6 KiB, product center 127.8 KiB and shared
+  CSS 9.9 KiB. Formatting, diff whitespace, secrets and refreshed goal report are checked at close-out.
+  No new visual surface or route was changed, so E6 adds no new responsive/browser acceptance claim.
+
+### Gate And Next Action
+
+Local E6 foundation: **PASS_WITH_WARNINGS**. External release/activation: **BLOCKED**. Current native
+document Auth/PostgREST/Storage/races/full CLI types, source intake UI, frozen review candidates,
+trusted signed observation and explicit human rights/exact-scope decisions remain required.
+Owner-supplied real evidence must subsequently pass technical/media governance; neither metadata
+matching nor a `can_support_review` result confirms a document or technical value. For real product
+confirmation, hand off to technical-verification and the applicable media/compatibility skills.
+
+E1-E6 remain uncommitted/unapplied and need fresh exact-batch/branch authorization before submission.
+No external writes, retained/hosted migration, actual upload, key provisioning, active flag, Docker/
+WSL change, merge, deployment or rule override occurred. New reusable knowledge is the
+[E6 decision](../../knowledge-base/decisions/2026-10-12-console-m4-document-sources.md).
+Next implement the frozen candidate and signed/human document review contract, preserving known
+contradictions and immutable originals. Full V1 and the real 15AK end-to-end pilot remain incomplete.
+
+## M4-E7 Frozen Document Human Review
+
+Prepared October 12; final local verification October 13, 2026 (Asia/Shanghai).
+Local uncommitted preparation on E1-E6, base `32d5d208`.
+Destination: isolated in-memory SQL and local code verification only.
+
+### Scope And Files
+
+- `supabase/migrations/202610120031_product_intelligence_document_review.sql`: five forced-RLS
+  review tables, immutable candidate/submission/decision records, exact source/original snapshots,
+  private propose/submit/review commands, independent event/current guards and human-validity helper.
+- `supabase/tests/database/product_intelligence_document_review.test.sql`: 88 assertions for
+  permissions, exact retries, scope, declarations, evidence selection, stale evidence/originals,
+  conflict resolution, EDIT rollback, REJECT retention, immutable history, RLS and no publication.
+- `product_intelligence_document_sources.test.sql`: bound-source TRUNCATE now expects the stronger
+  foreign-key refusal `0A000`, which precedes its existing `55000` immutability trigger. No test is
+  skipped and the unchanged 65-assertion source suite still passes.
+- `lib/supabase/database.types.ts`: generated complete public member; existing GraphQL/helper/enum
+  portions preserved. `validate-product-intelligence-migrations.ts` and `test-database-test-report.ts`
+  explicitly require migration 31, seven document suites and the reviewed 1,762-assertion baseline.
+- `local-acceptance.ts`, `test-local-acceptance.ts`, `test-working-isolated.ts`: all five new ledgers
+  must be explicitly empty in a pristine disposable target; missing counts also fail. No reset added.
+- `sql-runtime/rehearse-document-intake.mjs`: five frozen/submitted TEST-ONLY review candidates,
+  with selected reference sources and retained unselected contradictions. `test-authority.mjs`
+  executes the real pristine-baseline SQL after source replay and includes bounded fixture-only
+  SQL error context to locate migration failures.
+- Goal/report, this runbook, changelog and the dated E7 decision record scope, evidence and next gates.
+
+No frontend component, route, visual output, real document/product/source, technical fact, fitment,
+rights flag, commercial term, SEO, RFQ or production authority changed. No public review wrapper,
+signed observation, effective/readiness projection or active reviewer interface is claimed.
+
+### Executed Checks
+
+- **31 migrations / 31 suites / 1,762 embedded pgTAP assertions PASS**, including all 88 review
+  assertions. An initial PL/pgSQL CASE expression required parentheses; it was corrected before
+  the complete suite passed. Full public schema member parity, strict negative report controls,
+  two exact 17-table source replays and actual pristine-query execution also pass.
+- **Five reference-only approval refusals PASS**, against four actual 15AK identities plus one
+  synthetic draft. Human checkboxes and a resolution string cannot replace qualifying evidence.
+  Five contradictions remain; zero decisions/current approvals/publications are created. All
+  original source rows remain exact; every fixture, ledger, receipt, audit and Storage row rolls
+  back exactly. Successful human-decision cases use only the separate synthetic SQL suite.
+- **26 Node tests PASS**: pristine-target guards, browser server boundaries, SQL-report contract,
+  generated type contract, document library and Console boundaries. **14 PDF upload/inspection
+  groups PASS** with real parser and mocked transport; no native document provider is inferred.
+- Typecheck, full source lint (only ignored `.tmp/**` excluded), migration validation and production
+  build **PASS**, exit 0 and 96 generated outputs. No build/test process is left running.
+- Performance **PASS**: homepage 126.6 KiB, product center 127.8 KiB, shared CSS 9.9 KiB, unchanged.
+  Goal report remains **43 structured / 0 strictly verified SKUs** with existing media warnings.
+  Formatting and diff checks pass; the tracked/untracked secret scan passes across 714 files.
+  No UI change means no new
+  responsive/browser evidence is claimed for E7.
+
+### Gate And Next Action
+
+Local E7 SQL preparation: **PASS_WITH_WARNINGS**. Application activation/external release: **BLOCKED**.
+Required remaining checks include native Auth/PostgREST/Storage, full CLI types, multi-connection
+races, domain-separated signed byte observation, current/open review projection and readiness,
+authenticated command/UI integration and real human acceptance. Metadata equality and the private
+human-validity helper are not byte attestation or product/publication approval.
+
+Next bind the existing PDF byte inspector to a document-specific observation and guarded application
+decision, then complete the reviewer UI/native gate. Real product confirmation remains a separate
+technical-verification/media/compatibility handoff using owner-supplied qualifying evidence.
+
+E1-E7 remain local/uncommitted and unapplied to retained/hosted environments. No key provisioning,
+actual upload, flag activation, Docker/WSL change, external write, merge, deployment or rule override.
+New reusable knowledge: [E7 decision](../../knowledge-base/decisions/2026-10-12-console-m4-document-human-review.md).
+Previous CI authorization remains fulfilled and does not cover E1-E7. Full V1 and the real 15AK
+verified-preview/QA/publication workflow remain active and incomplete.
+
+## M4-E8 Signed Document Observation
+
+Date: October 13, 2026 (Asia/Shanghai). Local uncommitted preparation on E1-E7, base `32d5d208`.
+Destination: embedded SQL, synthetic transport, independent packaged handlers and owned-loopback
+HTTP checks only. No retained or hosted service changes.
+
+### Scope And Files
+
+- Migration `202610130032_product_intelligence_document_observation.sql` and its 66-assertion suite:
+  private empty key table, immutable observation ledger, snapshot/token validation, authenticated
+  source/propose/submit/review wrappers and separate historical-observation boolean.
+- `lib/console/document-observation.ts`: strict snapshot parsing and domain-separated Node signer;
+  `lib/console/document-inspection.ts`, domain inspection parser, working config and inspect route:
+  default-off reviewer mode, complete byte validation, actor/snapshot rechecks and optional private
+  response header. `.env.example` contains names/disabled defaults only, not provisioned secrets.
+- Generated public schema types, migration/report validators, pristine-target guards/tests and
+  working-acceptance checks include the new contracts and explicitly empty private key/ledger counts.
+- Embedded runner verifies the actual Node signer against SQL using a rolled-back synthetic key.
+  Inspection tests, browser-environment guards, packaged-handler tests and HTTP privacy checks cover
+  the new boundary, including no signature header on refusals and no ordinary-download token.
+- This runbook, Goal/report, changelog and the E8 decision retain implementation and evidence scope.
+
+No frontend component is added/removed or visually changed. No actual product/document/source,
+technical/compatibility/commercial fact, media right, public route, SEO or RFQ behavior changes.
+The existing UI does not yet request signed review mode. Public SQL wrappers are not completed
+application command forms, counted review DTOs, readiness integration or human acceptance.
+
+### Executed Checks
+
+- **32 migrations / 32 embedded suites / 1,828 pgTAP assertions PASS**, including 66 observation
+  checks. Wrong identity/domain/digests, expired/future/oversized/tampered tokens, invalid key state,
+  missing human declarations, revoked roles and repeated nonces are refused. Nonce collision rolls
+  back the event/decision/current advance. Raw tokens/keys do not appear in receipts/audit/events.
+- The actual Node signer is accepted by the database validator; signed wrong actor/evidence, media
+  domain and signature tampering are refused. Fixture key creation is rolled back. Complete public
+  schema-member parity, two exact 17-table replays and actual pristine-baseline SQL pass.
+- Five reference-only review refusals preserve ten TEST-ONLY references, five metadata-only
+  completions, fifteen unqualified sources, five contradictions and five submitted candidates.
+  Existing data and every synthetic ledger/Storage/audit/receipt row roll back exactly. No actual
+  15AK approval/publication is inferred from these embedded fixtures.
+- **44 Node tests PASS**: 11 PDF inspection/observation groups, seven upload groups and 26 shared
+  guard/report/library groups. Actual PDF parsing uses mocked provider transport, not native Auth.
+  Typecheck, full source lint (only ignored `.tmp/**` excluded) and migration validation pass.
+- **Both independent trace-only packages PASS**, each copied from 1,713 traced files without source
+  dependency fallback. Actual built upload/inspect handlers validate unchanged >10-MiB PDFs, SSR
+  cookie refresh, seven response statuses and private errors. Reviewer mode verifies its signature
+  independently; ordinary downloads and all error responses have no observation header.
+- **Current production build and owned-server HTTP checks PASS in provider-absent mode**. The initial
+  normal-mode run failed its expected invalid-form 400 with provider-unavailable 503. Subsequent
+  read-only probes proved both ports 3000/54321 free and provider ECONNREFUSED before selecting the
+  existing explicit `--provider-absent` mode. No retained service was stopped, started or reset.
+  Both source/built middleware matchers, CSRF, default-off uploads/inspection, private/noindex
+  responses, virtual-host isolation, public shell and social-image checks pass. The owned server
+  stops and port 3000 is verified free. Live-provider form validation is NOT_PROVEN by this run.
+- Built internal links (80 HTML/two dynamic source pages), image-evidence projection (43 disclosed
+  legacy images, zero rights-approved exact search images), snippets and performance pass. Public
+  budgets remain 126.6 KiB home, 127.8 KiB product center and 9.9 KiB CSS. Goal report remains
+  **43 structured / 0 strictly verified SKUs**, with existing media warnings. No new visual surface
+  means no additional E8 screenshot claim. Formatting/diff checks pass; the tracked/untracked
+  secret scan passes across 718 files. No required build/test process is left running.
+
+### Gate And Next Action
+
+Local E8 preparation: **PASS_WITH_WARNINGS**. Application activation/external release: **BLOCKED**.
+Native document Auth/PostgREST/Storage, multi-connection races, full native CLI types, strict command
+forms, counted current/open DTOs, readiness and human reviewer UI/acceptance remain required.
+Observed history must be combined with current human validity; an open successor stays visible.
+Parsing/signing does not establish human understanding, malware clearance or technical truth.
+
+Fresh read-only GitHub checks confirmed the earlier authorized B/C/D batch is already fulfilled:
+runtime `3fffe5f9` [CI 38024660872](https://github.com/18803076512/arcfort-website/actions/runs/38024660872)
+passed both jobs including persisted media/OEM/packaging acceptance; docs/remote tip `32d5d208`
+[CI 38043090274](https://github.com/18803076512/arcfort-website/actions/runs/38043090274) also passed.
+PR #130 remains OPEN/unmerged. This readback does not cover E1-E8 or authorize another push.
+
+No commit/push/CI dispatch, merge/deployment, actual upload/key, feature activation, retained/hosted
+migration, Docker/WSL change or repository-rule override occurred. New reusable knowledge is the
+[E8 decision](../../knowledge-base/decisions/2026-10-13-console-m4-document-observation.md).
+Next integrate reviewer commands and counted current/open readiness/UI before separately authorized
+native acceptance. Real 15AK evidence, verified preview/QA/publication and full V1 remain incomplete.
+
+## M4-E9 Counted Document Review Workbench
+
+Date: October 14, 2026 (Asia/Shanghai). Local E9 preparation on uncommitted E1-E8, base `32d5d208`.
+This records a local application milestone, not native acceptance or completion of Console V1.
+
+### Scope And Files
+
+- `lib/domain/catalog/document-review.ts`, shared domain/Console command modules: strict source,
+  propose, submit and APPROVE/EDIT/REJECT inputs, exact RPC mappings and narrow receipt validation.
+- `supabase/migrations/202610140033_product_intelligence_document_workbench.sql`, generated public
+  database types, migration/report validators and observation SQL tests: bounded reader-only RPC,
+  current/latest/open state, counted source/history pages and independent selected-source details.
+- `lib/console/document-review.ts`, document library DTO and
+  `app/(console)/console/(protected)/products/[id]/documents/[documentId]/page.tsx`: fail-closed typed
+  projection, repeated snapshot/actor checks, gated private route and library review entry points.
+- `components/console/DocumentReviewWorkbench.tsx`, `StoredDocumentInspection.tsx`,
+  `DocumentLibrary.tsx` and Console CSS: role-specific source/proposal/decision forms, explicit signed
+  inspection, expiry, revision history, unsaved pagination, reload and accessible native controls.
+- Review fixture/unit/browser scripts, existing document browser and HTTP checks, actual SQL intake
+  rehearsal, package commands and quality workflow: local reproducible tests; no CI dispatch.
+- This runbook, Goal/report, changelog, fixture README and the
+  [E9 decision](../../knowledge-base/decisions/2026-10-14-console-m4-document-workbench.md).
+
+No component is removed. No dependency, canonical product field, real evidence, commercial policy,
+public route, SEO schema, RFQ handler or public-source authority changes in E9. Its visual change is
+only the private document review workspace, with unframed sections and contained mobile table scroll.
+
+### Contracts And Trust
+
+Sources/history use independent 25-row counted pages; latest/current selected sources are separately
+bounded and validated. An open successor stays visible even with a valid older approval. Effective
+document review requires current human evidence validity plus historical signed observation and no
+open work; it does not promote product facts, public-download rights or publication readiness.
+
+Sources preserve unknown dates/revisions and class/basis/assertion. Approval requires matching
+frozen rights/scope sources, conflict resolution, signed inspection and all three declarations.
+Closing, expiring or changing decision clears observation/declarations. Tokens remain in memory,
+never DOM text, browser storage, URLs or reports. EDIT and REJECT send no approval-only data.
+Exact historical receipt replay can outlive token expiry; a new approval still requires SQL validity.
+
+Both application and SQL readers recheck evidence/access. Repeated normalized reads detect drift,
+not a single atomic native multi-request transaction. The application flag remains separate from
+authenticated SQL permissions. Product-wide readiness/publication integration remains a next gate.
+
+### Verified Local Evidence
+
+- `node --conditions=react-server --experimental-strip-types scripts/console/sql-runtime/test-authority.mjs`:
+  all 33 migrations and 32 suites / **1,852 assertions**, including 90 document-observation/read
+  assertions. Complete generated public-member parity, actual Node/SQL signature parity, two exact
+  17-table source replays, pristine baseline, reference-only refusal and complete rollback pass.
+  Five actual SQL document-read results pass the application DTO parser inside the rolled-back
+  four-15AK-plus-synthetic rehearsal. No real document bytes or human approval are asserted.
+- Focused Node run: **50 tests** covering document parser/upload/inspection/library/review, browser
+  server isolation, strict SQL reports and local-acceptance guards; the PDF file additionally logs
+  its six fidelity/security/resource groups. Seven review groups cover every role, exact payloads,
+  expired historical input, RPC/result binding, malformed counts/snapshots and revocation/drift.
+  Shared Console/media/OEM/packaging command regression: **28 tests** pass.
+- `console:documents:review:ui:test`: **14 groups / eight screenshots**, nine command requests and
+  16 inspection requests (development Strict Mode may cancel/replay a mount). Roles, current/open
+  separation, null evidence metadata, dirty-state interlocks, receipt identity, signed inspection,
+  explicit declarations, wrong/unsigned/expired/truncated/denied inspection, timer expiry/reinspection,
+  EDIT/REJECT, stale reload, unsaved counted pagination and successful transport pass.
+- Existing `console:documents:ui:test`: **14 groups / ten screenshots**, including ordinary inspection,
+  upload, cancellation, byte identity, URL cleanup, provenance, retries and keyboard behavior pass.
+  Both browser runs cover 360/390/768/1024/1280/1440px with zero page errors or external requests.
+  Screenshots under `.tmp/console-document-review-ui/` and `.tmp/console-document-ui/` are synthetic.
+- Screenshot review caught invisible selected-state glyphs under generic input styles. Native
+  appearance and 44px evidence targets were restored and the complete new browser matrix rerun.
+  Earlier locator failures used label text that included textarea/select contents; role-based
+  accessible locators fixed the harness without removing assertions. No native UI success is claimed.
+- Current production build and owned-server HTTP boundaries pass, including the exact document-review
+  route, private noindex/no-store responses, no unauthenticated catalog leakage, CSRF, staging/public
+  host separation and source/built middleware parity. Read-only checks prove port 54321 free plus
+  ECONNREFUSED; explicit provider-absent mode is used. No provider is stopped to create that result.
+  Owned port 3000 is released afterward; the separate 3901 synthetic fixture remains for inspection.
+- Both trace-only built upload/inspection packages pass from **1,713 files each**, including unchanged
+  greater-than-10-MiB PDF, isolated parser children, SSR refresh cookies, seven status classes and
+  signed observation headers. No repository dependency fallback or native provider call occurs.
+- Full typecheck, source lint, migration validation, public SEO, built internal links, snippets and
+  performance budgets pass. Public source counts remain 43 products / zero strictly verified SKUs.
+- RFQ constraints/reference, email templates and provider-timeout regressions pass; company evidence
+  validation/gates and Goal report reconcile with unchanged blocked evidence. Tracked/untracked
+  secret scanning passes across 727 text files; changed code/new decision formatting and diff checks
+  pass. These tests do not prove real mailbox delivery or a deployed lead channel.
+
+### Gate And Next Action
+
+Local E9 preparation: **PASS_WITH_WARNINGS**. Activation/external release: **BLOCKED**. Native document
+Auth/PostgREST/Storage, persisted browser decisions, races and full native CLI types are unrun. The
+human understanding, legal rights and technical truth of a real PDF cannot be established by a
+synthetic successful signature. Real 15AK evidence, verified preview/QA/publication and full V1 remain
+incomplete. Prepare product-level document readiness and native isolated acceptance next, then seek
+exact E-batch review/commit/push/CI authority before external execution.
+
+E1-E9 remain local/uncommitted/unapplied. No retained/hosted write, actual upload/key, active setting,
+Docker/WSL change, commit/push/CI/merge/deployment or repository-rule override occurred. Prior B/C/D
+approval is fulfilled and not expanded. The dated E9 decision preserves the reusable boundaries.
+
+## M4-E10 Document Readiness Integration
+
+Date: October 14, 2026 (Asia/Shanghai). Local uncommitted preparation on E1-E9, base `32d5d208`.
+The preceding E9 turn made verified progress; E10 adds a new authoritative readiness contract rather
+than restating a wait. The V1 objective and all twelve success criteria remain unchanged.
+
+### Scope And Files
+
+- `supabase/migrations/202610140034_product_intelligence_document_readiness.sql`: authenticated
+  booleans, effective document reviews, seven-count readiness, compatibility-preserving base views,
+  optional extended projection and document lifecycle guard. No retained/hosted application.
+- `supabase/tests/database/product_intelligence_document_observation.test.sql`, generated
+  `lib/supabase/database.types.ts`, migration validator, SQL report baseline and
+  `scripts/console/sql-runtime/rehearse-document-intake.mjs`: 29 added assertions and actual SQL DTO
+  parsing across four retained 15AK identities plus a synthetic draft, all rolled back.
+- `lib/domain/catalog/document-readiness.ts`, `lib/console/catalog.ts`: bounded count DTO, exact
+  server-side document filter/pagination, access rechecks and working-only document navigation.
+- `components/console/DocumentReadiness.tsx`, `ReadinessWorkspace.tsx`, private product and readiness
+  page routes, Console CSS: reusable overview/list components and stable document-column width.
+- `scripts/console/document-readiness-fixture.ts`, `test-document-readiness.ts`,
+  `test-document-readiness-browser.mjs`, UI-fixture route/README, package and quality workflow:
+  reproducible local coverage only, no CI dispatch or document native opt-in.
+- Goal/report, this runbook, changelog and the
+  [E10 decision](../../knowledge-base/decisions/2026-10-14-console-m4-document-readiness.md).
+
+No component is removed. No dependency, canonical product value, source right, commercial term,
+public URL, metadata, schema, sitemap, RFQ handler or public-source authority changes.
+
+### Contract
+
+Registered versions are independent. Reviewed requires a current original snapshot, valid human
+approval, historical signed byte observation and no open latest proposal. Source/original drift
+preserves history but invalidates current readiness. Zero documents remains explicitly unrecorded,
+not a new mandatory-document rule or a positive verification claim. One or more unresolved versions
+add exactly one blocker family, without clearing any other evidence gate. VERIFIED,
+READY_FOR_PUBLISH, QA_PASSED and PUBLISHED transitions/updates are guarded; existing lifecycle
+history is not rewritten. The existing readiness view has twenty columns and dashboard nine metrics.
+
+The default-off UI shows document counts, overlapping unresolved causes and current working-SKU
+entry points. Non-working records keep their counts but no unavailable document link. Database
+guards are independent of UI flags. This is a snapshot projection, not a byte download, publication
+token, positive product verification or public document permission.
+
+### Verified Evidence
+
+- `console:authority:test:embedded`: **34 migrations / 32 suites / 1,881 pgTAP assertions** pass,
+  including 119 in the document observation/readiness suite. Null/unauthorized helpers, reader RLS,
+  original absence/drift, signed approval, historical key disable, open successors, evidence drift,
+  conflicts and all four document lifecycle guards are covered. Other lifecycle gates remain active;
+  the document trigger also has an isolated temporary-table probe to distinguish its own refusals.
+- Complete generated public-member parity, Node/SQL signer parity, two exact 17-table source replays,
+  pristine baseline, reference-only refusal and complete rollback pass. Five actual SQL count rows
+  pass the application parser and retain both independent versions, including the missing prior
+  original. This does not assert actual bytes or human approval for real 15AK evidence.
+- Combined document/Console/media/OEM/packaging application run: **63 tests pass**, including
+  **seven new readiness groups**. A separate catalog/auth/isolation/type run passes **22 tests**.
+  Strict SQL-report validation reconciles all 32 suites / 1,881 planned assertions.
+- `console:documents:readiness:ui:test`: **five groups / 12 screenshots**, covering
+  360/390/768/1024/1280/1440px, actual reusable components, counts, empty/reviewed states, default-off
+  columns, working-only links, GET filters, preserved pagination and keyboard document navigation.
+  Zero page errors, external requests or mutation requests. The source is synthetic, not a provider.
+  Report/screenshots: `.tmp/console-document-readiness-ui/`. Manual screenshot review caught excess
+  row height on mobile; a scoped 248px column minimum fixed it and the full matrix passed again.
+- Final production build and owned-server provider-absent HTTP pass. Port 54321 absence is proven
+  by free bind and ECONNREFUSED, never manufactured by stopping a service. Private noindex/no-store,
+  CSRF, source/built middleware, anonymous payload and host isolation remain intact. The owned 3000
+  server releases its port; the separate synthetic 3901 fixture is available for inspection.
+- Full typecheck/lint, migration validation and public SEO/snippet/link/performance checks pass.
+  SEO checks retain 40 indexable products / six categories / zero series / 17 guides. Built link
+  checks cover 80 HTML and two dynamic source pages. Homepage JS is 126.6 KiB; shared CSS 9.9 KiB.
+  No performance budget was increased. Formatting/diff and tracked/untracked secret checks pass.
+
+### Gate And Next Action
+
+Local preparation: **PASS_WITH_WARNINGS**. Activation/external release: **BLOCKED**. Native document
+Auth/PostgREST/Storage, persisted browser decisions, concurrency and full native CLI types are still
+unrun. Existing document workbench command-success refresh behavior must be checked in that native
+run; synthetic transport cannot prove refreshed persisted state. Real 15AK rights, exact technical
+facts, preview/QA/publication and full V1 remain incomplete; 43 structured / zero strictly verified
+SKUs is unchanged. No real upload, key, right, evidence approval or publication is claimed.
+
+E1-E10 remain local/uncommitted/unapplied. No retained/hosted write, Docker/WSL change, activation,
+push/CI/merge/deployment or rule override. Prior B/C/D authorization remains fulfilled, not expanded.
+Next prepare native isolated document acceptance, then request exact E-batch CI authority. Continue
+collecting real 15AK evidence separately; implementation tests cannot supply it.
+
+## M4-E11a Document Acceptance Foundation
+
+Date: October 15, 2026 (Asia/Shanghai). Local preparation, base `32d5d208`.
+Scope: the shared test infrastructure prerequisite for E11, not the complete native acceptance.
+
+### Scope And Files
+
+- `scripts/console/media-acceptance.ts`: domain-specific document key builders, one-baseline joint
+  transaction, independent material, all-owned-key disable attempts and sanitized failure receipts.
+  The existing `provisionDisposableMediaObserver` wrapper remains media-only.
+- `scripts/console/browser-server.ts`: explicit document feature/observer options, rejection of
+  cross-domain key reuse, runtime-only material and four build-environment exclusions.
+- `scripts/console/test-media-acceptance.ts`: restore the thirteen missing document baseline
+  counters; add atomicity, domain, missing/nonempty ledger, cleanup and error-suppression cases.
+- `scripts/console/test-browser-server.ts`, `test-local-acceptance.ts`: document isolation and
+  build tests, ambient rejection, and explicit refusal of the not-yet-supported `--documents`.
+- `scripts/console/sql-runtime/rehearse-observer-provisioning.mjs`, `test-authority.mjs`: run actual
+  shared SQL builders against memory, verify ID-specific disable without deletion, and roll back
+  a late second-domain failure. No provider keys are provisioned.
+- Goal, this runbook, changelog and the
+  [E11a decision](../../knowledge-base/decisions/2026-10-15-console-m4-document-acceptance-foundation.md).
+
+No application component is added, changed or removed. No schema/dependency/canonical data,
+visual, public route, metadata, sitemap, RFQ, publication or authority change. The integrated
+runner and CI invocation are not switched to document acceptance. Existing E1-E10 changes remain
+untouched except for the listed test infrastructure and appended status records.
+
+### Verified Evidence
+
+- Before repair, the media observer test file reproduced **3 failed / 3 passed** due to missing
+  document counters. The production pristine assertion was correct and was not weakened.
+- Focused media/browser/local acceptance tests: **33 passed**. Coverage includes independent
+  random domains, one baseline/read and one insert transaction, every missing/nonempty baseline
+  field, invalid options/material, partial cleanup failures, unexpected receipts, backward
+  media-only behavior, build exclusions and refusal before host/provider access.
+- Embedded authority run: **34 migrations / 32 suites / 1,881 pgTAP assertions passed**. Added
+  actual SQL builder/disable/late-failure rollback checks leave zero keys. Complete public-member
+  parity, Node/SQL HMAC parity, two 17-table source replays and exact rollback still pass.
+- Typecheck, full ESLint, scoped formatting, diff whitespace and secret checks pass.
+- Build, responsive UI, public SEO/RFQ and native provider checks were **not rerun for E11a**:
+  this batch changes only test helpers and documentation. E10 evidence remains historical and
+  does not prove the missing native E11 workflow.
+
+### Gate And Next Action
+
+Foundation preparation: **PASS_WITH_WARNINGS**. Native document acceptance and external
+activation/release: **BLOCKED**. E11 still needs actual document upload/inspection/source/proposal/
+submission/APPROVE/EDIT/REJECT forms, persisted refresh, exact independent ledger/noninterference
+checks, role/origin/replay/revocation refusals and observed multi-connection contention. Only then
+may the runner accept `--documents` and use the prepared joint helper. This guard prevents a
+feature-only invocation from reporting acceptance success.
+
+No commit/push/CI/merge/deployment, retained/hosted write, actual upload/key, active flag or
+Docker/WSL operation occurred. Prior B/C/D approval is fulfilled, not extended. No rule override.
+The next code batch is the native document browser/ledger harness, followed by exact E-batch CI
+authorization. Real 15AK rights/technical facts, verified preview/QA/publication and all twelve V1
+criteria remain required; 43 structured / zero strictly verified SKUs is unchanged.
+
+## M4-E11b Native Document Acceptance Preparation
+
+Date: October 15, 2026 (Asia/Shanghai). Local uncommitted candidate on base `32d5d208`.
+This completes native harness preparation, not native acceptance or the full V1.
+
+### Scope And Files
+
+- `scripts/console/document-acceptance.ts`: synthetic reference/evidence fixtures, independent
+  exact-count/history/attribution/Storage ledger query and 33-table noninterference snapshots.
+- `scripts/console/test-document-working-browser.ts`: actual forms and private HTTP/Storage
+  workflow, signed inspection/download, current invalidation, five revisions, human decisions,
+  acting-browser refresh, wrong-role/origin/SKU/token refusals, observed contention, readiness,
+  revocation/logout, exact retained bytes and desktop/mobile screenshot capture.
+- `scripts/console/local-acceptance.ts`, `test-local-acceptance.ts`: unique explicit `--documents`
+  alongside existing switches, exact local/CI/environment refusal and unchanged fresh-baseline gate.
+- `scripts/console/test-working-isolated.ts`, `test-working-browser.ts`, `test-media-acceptance.ts`:
+  joint observer lifecycle, runtime-only document configuration, actual response-byte retention,
+  active-editor refusal, browser entry, independent final ledger and historical-key-disable check.
+- `scripts/console/test-document-acceptance.ts`, `package.json`, `.github/workflows/quality.yml`:
+  four focused guard groups and future unit CI integration. The native CI command still omits
+  `--documents`; changing it and dispatching requires exact owner authorization.
+- `scripts/console/sql-runtime/rehearse-document-workflow.mjs`, `test-authority.mjs`: actual parser/
+  public wrappers/signer/DTO and native ledger query in sequential memory, followed by exact rollback.
+- Goal, this runbook, changelog and the
+  [E11b decision](../../knowledge-base/decisions/2026-10-15-console-m4-native-document-acceptance.md).
+
+No application component, schema, dependency, public route, canonical evidence, visual design,
+SEO, RFQ or publication behavior changes. No real document/right/technical fact is approved.
+E11b replaces only E11a's temporary unsupported CLI switch after wiring the missing workflow.
+
+### Scenario And Evidence
+
+One synthetic non-shadow DRAFT SKU receives two immutable references, the second naming the first
+as a prior version. Only the first receives a PDF; its reference-only original metadata stays
+private and unconfirmed. Two qualifying synthetic sources support the first approval. An unselected
+third contradictory source invalidates that current approval. Subsequent revisions are submitted,
+edited into an unconfirmed successor, rejected, approved after explicit conflict resolution, then
+followed by an open fifth candidate. Missing-resolution refusal is SQL `22023`, not `23514`.
+
+The independent ledger requires 2 references/links/bindings, 1 upload/completion, 3 evidence bindings,
+1 head, 5 candidates/submissions, 4 decisions (APPROVE/EDIT/REJECT/APPROVE), current revision 4 and
+2 signed observations. Final readiness is 2 versions / 0 reviewed / 2 unresolved / 1 missing
+original / 1 open review / 0 invalid currents / 1 unresolved conflict. Zero publication and no raw
+tokens in receipts/events are mandatory. Original tables and retained Storage bytes stay unchanged.
+
+- **PASS:** 37 focused document/media/browser/local guard tests, including exact ledger mutations,
+  omitted fields, input/target refusal, original defaults, independent observers and build isolation.
+- **PASS:** 34 embedded migrations / 32 suites / 1,881 pgTAP assertions, complete public-member
+  parity, Node/SQL HMAC parity, two 17-table source replays and exact rollback. The new sequential
+  five-revision rehearsal passes the actual native ledger query, signed synthetic approvals,
+  counted DTO/readiness, source invalidation, editor/revocation/refusal and historical key disable.
+- **PASS:** Typecheck, full lint, scoped formatting, diff checks and repository secret scan.
+- **NOT_RUN:** Actual native Auth/PostgREST/Storage, browser forms/refresh/downloads/screenshots,
+  observed multi-connection contention and full native CLI types for E1-E11. The harness contains
+  these checks; its presence is not success evidence. No native result.json is claimed.
+- **NOT_RERUN:** Public build/UI/SEO/RFQ checks for this test-only change; the full candidate must
+  pass clean quality and native CI before release conclusions. E10 evidence remains historical.
+
+The embedded rehearsal initially exposed test-harness assumptions: rollback must precede role
+restoration after an aborted transaction; synthetic Storage metadata needs the embedded test owner;
+missing conflict resolution is a bounded-input refusal. These were corrected in test code without
+changing runtime permissions, product evidence or expected native behavior.
+
+### Gate And Next Action
+
+Local harness preparation: **PASS_WITH_WARNINGS**. Native acceptance and external activation/release:
+**BLOCKED**. `--documents` is available only by explicit invocation; existing CI does not activate it.
+Request exact authorization to review, commit and push E1-E11 to `18803076512/arcfort-website`,
+`codex/v2-industrial-brand-system`, and run disposable CI with document/OEM/packaging coverage.
+No merge, deployment, retained-local or hosted migration/write is included. Prior B/C/D permission
+is fulfilled and does not cover this batch. E1-E11 remain local, uncommitted and unapplied.
+
+No real key/upload, data/rights approval, activation, Docker/WSL operation or rule override occurred.
+Real 15AK evidence, verified preview, release QA, controlled publication and all twelve V1 success
+criteria remain incomplete. The next material step is full-candidate review and authorized native CI.
+
+## E1-E11 Reviewed CI Candidate
+
+Date: 2026-10-15 (Asia/Shanghai). Base: `32d5d208fcd0cfde6ae624c3fb565e5112ae006c`.
+
+The owner authorized reviewed E1-E11 commit/push to the existing branch and, in a follow-up naming
+PR 130/main and deployment consequences, expanded merge/deployment/modification permission. The
+[authorization record](../../knowledge-base/decisions/2026-10-15-console-m4-document-ci-authorization.md)
+supersedes the earlier CI-only approval restriction, not data evidence or release requirements.
+Only the disposable CI invocation is activated here: `--oem --packaging --documents`.
+
+Pre-commit review covered the complete E-batch file inventory and the PDF parser/process bounds,
+immutable reference/upload/source/review SQL, permissions, signer/nonce/receipt boundaries,
+counted readers, private routes, command forms and independent native ledgers. No blocking finding
+for isolated CI was identified. Native provider, persisted refresh and contention remain unverified.
+
+Fresh checks on the current candidate:
+
+- PASS: 75 document/shared guard groups; 34 embedded migrations, 32 suites / 1,881 pgTAP assertions,
+  signer parity, independent five-revision document ledger, two source replays and exact rollback.
+- PASS: typecheck, zero-warning lint, current production build and provider-absent HTTP boundaries.
+- PASS: both handlers execute solely from their 1,713 traced files, including the PDF child,
+  greater-than-10-MiB bytes, refresh cookies and response/privacy contracts with mock providers.
+- PASS: migration validation, public performance budget, SEO, built links, image-evidence and
+  snippet audits; 743-file secret scan and whitespace check.
+- PENDING: current clean native CI and release preflight. Old successful runs do not satisfy this.
+
+Canonical data, public URLs, RFQ, retained local services, hosted database and feature flags are
+unchanged. Git branch auto-deployment remains disabled. No native pass, merge, live deployment,
+database application or real evidence approval is claimed by this checkpoint.

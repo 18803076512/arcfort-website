@@ -9,7 +9,7 @@ import {
   pristineBaselineQuery,
   sqlLiteral,
 } from "./local-acceptance.ts";
-import { provisionDisposableMediaObserver } from "./media-acceptance.ts";
+import { provisionDisposableObservers } from "./media-acceptance.ts";
 import {
   checkInviteOnlyProvider,
   createConsoleClient,
@@ -32,6 +32,12 @@ import { runCompatibilityAcceptance } from "./test-compatibility-isolated.ts";
 import { readMediaMappings } from "../../lib/console/media-mapping.ts";
 import { assertOemLedger, oemLedgerQuery } from "./oem-acceptance.ts";
 import { assertPackagingLedger, packagingLedgerQuery } from "./packaging-acceptance.ts";
+import {
+  assertDocumentLedger,
+  documentLedgerCounts,
+  documentLedgerQuery,
+} from "./document-acceptance.ts";
+import { readDocumentReview } from "../../lib/console/document-review.ts";
 
 let checkpoint = "local target preflight";
 async function main() {
@@ -103,6 +109,10 @@ async function main() {
   });
   if (local.oem) process.env.CONSOLE_OEM_ENABLED = "true";
   if (local.packaging) process.env.CONSOLE_PACKAGING_ENABLED = "true";
+  if (local.documents) {
+    process.env.CONSOLE_DOCUMENTS_ENABLED = "true";
+    process.env.CONSOLE_DOCUMENT_REVIEW_ENABLED = "true";
+  }
   const sessions: ConsoleClient[] = [];
   function session() {
     const cookies = new Map<string, string>();
@@ -169,10 +179,11 @@ async function main() {
     },
     copy,
   });
-  let observer: ReturnType<typeof provisionDisposableMediaObserver> | undefined;
+  let observer: ReturnType<typeof provisionDisposableObservers> | undefined;
   try {
     checkpoint = "pristine disposable media observer provisioning";
-    observer = provisionDisposableMediaObserver(local);
+    observer = provisionDisposableObservers(local, { documents: local.documents });
+    assert.equal(Boolean(observer.documentObserver), local.documents);
     checkpoint = "real Auth sessions and pre-adoption denial";
     const owner = await fixture("owner");
     const editor = await fixture("editor");
@@ -548,6 +559,46 @@ async function main() {
         "42501",
       );
     }
+    if (local.documents) {
+      checkpoint = "active editor cannot review documents at application or database";
+      failure(
+        await executeConsoleCommand(editor.client, {
+          action: "document_review",
+          request_id: randomUUID(),
+          candidate_id: randomUUID(),
+          revision: 1,
+          digest: "a".repeat(64),
+          decision: "REJECT",
+          reason: "TEST-ONLY role refusal",
+          resolution: "",
+          confirmation: null,
+          rights_source_id: null,
+          scope_source_id: null,
+          replacement: null,
+          observation: null,
+        }),
+        "42501",
+      );
+      assert.equal(
+        (
+          await editor.client.rpc("pi_review_document", {
+            request_uuid: randomUUID(),
+            candidate_uuid: randomUUID(),
+            expected_revision: 1,
+            expected_digest: "a".repeat(64),
+            decision: "REJECT",
+            review_reason: "TEST-ONLY role refusal",
+            confirmation: {},
+            rights_source_uuid: null as unknown as string,
+            scope_source_uuid: null as unknown as string,
+            conflict_resolution: "",
+            replacement: null,
+            observation_token: null as unknown as string,
+          })
+        ).error?.code,
+        "42501",
+      );
+    }
     checkpoint = "revocation denies still-valid sessions at handler and database";
     assert.equal(
       (
@@ -590,6 +641,9 @@ async function main() {
       media: { observer: observer.observer, withAuthorityLock: local.withAuthorityLock },
       ...(local.oem ? { oem: { local, foreignVariantId: id } } : {}),
       ...(local.packaging ? { packaging: { local, foreignVariantId: id } } : {}),
+      ...(local.documents && observer.documentObserver
+        ? { documents: { local, foreignVariantId: id, observer: observer.documentObserver } }
+        : {}),
       revokeReviewer: async () => {
         assert.equal(
           (
@@ -630,6 +684,18 @@ async function main() {
     );
     assert.deepEqual(local.json(originalOemQuery), originalOem);
     assert.deepEqual(local.json(originalPackagingQuery), originalPackaging);
+    if (local.documents)
+      assertDocumentLedger(
+        local.json(
+          documentLedgerQuery(
+            local.sql("select id from product_variants where sku='AF-MIG-TS-9998';"),
+            reviewer.id,
+          ),
+        ),
+      );
+    else
+      for (const table of Object.keys(documentLedgerCounts))
+        assert.equal(local.sql(`select count(*) from ${table};`), "0");
     if (local.packaging)
       assertPackagingLedger(
         local.json(
@@ -670,7 +736,7 @@ async function main() {
         assert.equal(local.sql(`select count(*) from ${table};`), "0");
     assert.equal(local.sql("select count(*) from media_upload_intents;"), "2");
     assert.equal(local.sql("select count(*) from media_upload_completions;"), "2");
-    assert.equal(local.sql("select count(*) from storage.objects;"), "2");
+    assert.equal(local.sql("select count(*) from storage.objects;"), local.documents ? "3" : "2");
     assert.equal(
       local.sql(`select count(*) from media_upload_intents i
       join media_upload_completions c on c.intent_id=i.id
@@ -743,6 +809,28 @@ async function main() {
       "0",
     );
     observer.disable();
+    if (local.documents) {
+      assert.equal(
+        local.sql("select count(*) from private.pi_document_observation_keys where enabled;"),
+        "0",
+      );
+      const document = local.json<{ variant: string; document: string }>(
+        "select json_build_object('variant',product_variant_id,'document',technical_document_id) from document_review_heads;",
+      );
+      const retained = await readDocumentReview(
+        owner.client,
+        document.variant,
+        document.document,
+        1,
+        1,
+      );
+      assert.equal(retained?.current?.revision, 4);
+      assert.equal(retained?.current?.human_valid, true);
+      assert.equal(retained?.current?.observed, true);
+      assert.equal(retained?.latest?.revision, 5);
+      assert.equal(retained?.open, true);
+      assertDocumentLedger(local.json(documentLedgerQuery(document.variant, reviewer.id)));
+    }
     assert.equal(
       local.sql("select count(*) from private.pi_media_observation_keys where enabled;"),
       "0",
@@ -773,6 +861,10 @@ async function main() {
     if (local.packaging)
       console.log(
         "Packaging opt-in native acceptance passed: real forms, explicit unknown count, historical-count conflict, Auth/RPC refusals, observed races and exact original/commercial retention. TEST-ONLY, not real packaging evidence or publication.",
+      );
+    if (local.documents)
+      console.log(
+        "Document opt-in native acceptance passed: real PDF bytes/forms, human decisions, persisted refresh, observed contention, independent versions/readiness and exact ledger. TEST-ONLY, not real document rights, SKU verification or publication.",
       );
   } finally {
     // No data deletion: preserve failed fixtures for inspection until the disposable stack is stopped.

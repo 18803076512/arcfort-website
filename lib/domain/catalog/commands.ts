@@ -1,4 +1,10 @@
 import { validateProductDraftCopy, type ProductDraftCopy } from "./drafts.ts";
+import { validDocumentCopy, type DocumentReferenceCommand } from "./documents.ts";
+import {
+  isDocumentReviewCommand,
+  validDocumentReviewCommand,
+  type DocumentReviewCommand,
+} from "./document-review.ts";
 import { OEM_SOURCE_FIELDS, oemSourceClasses, type OemCommand } from "./oem.ts";
 import {
   PACKAGING_SOURCE_FIELDS,
@@ -53,6 +59,8 @@ type CompatibilityReviewTarget = { relationship_id: string; revision: number; di
 export type ConsoleCommand = Base &
   (
     | OemCommand
+    | DocumentReferenceCommand
+    | DocumentReviewCommand
     | PackagingCommand
     | { action: "create"; identity: DraftIdentity; copy: ProductDraftCopy }
     | { action: "save"; variant_id: string; revision: number; copy: ProductDraftCopy }
@@ -155,6 +163,9 @@ export type CommandResult =
         mapping_id?: string;
         head_id?: string;
         revision_id?: string;
+        document_id?: string;
+        link_id?: string;
+        candidate_id?: string;
       };
     }
   | { ok: false; code: string; message: string; fields?: string[] };
@@ -295,7 +306,14 @@ export function parseConsoleCommand(input: unknown): ConsoleCommand {
   const value = record(input);
   uuid(value.request_id, "request_id");
   const base = ["action", "request_id"];
-  if (value.action === "create" || value.action === "save") {
+  if (isDocumentReviewCommand(value.action)) {
+    if (!validDocumentReviewCommand(value)) throw new CommandInputError();
+  } else if (value.action === "document_reference") {
+    keys(value, [...base, "variant_id", "prior_document_id", "copy"]);
+    uuid(value.variant_id, "variant_id");
+    if (value.prior_document_id !== null) uuid(value.prior_document_id, "prior_document_id");
+    if (!validDocumentCopy(value.copy)) throw new CommandInputError(["copy"]);
+  } else if (value.action === "create" || value.action === "save") {
     keys(value, [
       ...base,
       ...(value.action === "create" ? ["identity"] : ["variant_id", "revision"]),

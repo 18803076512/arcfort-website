@@ -60,8 +60,8 @@ export async function middleware(request: NextRequest) {
 export const config = {
   matcher: [
     "/console",
-    // Only the streaming upload owns refresh/auth itself; all other Console paths stay matched.
-    "/console/((?!originals/?$).*)",
+    // Exact streaming uploads own refresh/auth; all surrounding Console paths stay matched.
+    "/console/((?!(?:originals|documents/upload)/?$).*)",
     {
       source: "/:path*",
       has: [{ type: "host", value: "console-staging\\.arcfortweld\\.com\\.?" }],

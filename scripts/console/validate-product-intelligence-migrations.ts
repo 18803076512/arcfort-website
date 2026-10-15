@@ -34,6 +34,16 @@ const migrationNames = [
   "202610050022_product_intelligence_packaging_sources.sql",
   "202610050023_product_intelligence_packaging_review.sql",
   "202610050024_product_intelligence_packaging_commands.sql",
+  "202610100025_product_intelligence_document_references.sql",
+  "202610110026_product_intelligence_document_uploads.sql",
+  "202610110027_product_intelligence_document_commands.sql",
+  "202610110028_product_intelligence_document_reads.sql",
+  "202610120029_product_intelligence_document_inspection.sql",
+  "202610120030_product_intelligence_document_sources.sql",
+  "202610120031_product_intelligence_document_review.sql",
+  "202610130032_product_intelligence_document_observation.sql",
+  "202610140033_product_intelligence_document_workbench.sql",
+  "202610140034_product_intelligence_document_readiness.sql",
 ] as const;
 const migrations = await Promise.all(
   migrationNames.map(async (name) => ({
@@ -66,6 +76,10 @@ const oemCommands = migrations[20].content;
 const packagingSources = migrations[21].content;
 const packagingReview = migrations[22].content;
 const packagingCommands = migrations[23].content;
+const documentReferences = migrations[24].content;
+const documentUploads = migrations[25].content;
+const documentCommands = migrations[26].content;
+const documentReads = migrations[27].content;
 const errors: string[] = [];
 
 const requiredTables = [
@@ -627,6 +641,255 @@ if (
   errors.push(
     "Packaging application cannot change original/public data, disable guards or grant anonymous/service writes.",
   );
+
+for (const required of [
+  "create table public.technical_document_bindings",
+  "private.pi_add_document_reference",
+  "private.pi_document_reference_matches",
+  "private.pi_check_document_reference_copy",
+  "binding.variant_digest=private.pi_document_variant_digest(variant_uuid)",
+  "binding.document_digest=encode(extensions.digest(to_jsonb(document)::text,'sha256'),'hex')",
+  "binding.link_digest=encode(extensions.digest(to_jsonb(link)::text,'sha256'),'hex')",
+  "'needs_confirmation','private'",
+  "'file_inspection','not_performed'",
+  "document_reference_immutable",
+  "document_reference_link_immutable",
+  "immutable_document_binding_table",
+  "force row level security",
+  "revoke all on all functions in schema private from public,anon,authenticated,service_role",
+])
+  if (!documentReferences.includes(required))
+    errors.push(`Private document-reference contract missing: ${required}.`);
+if (
+  /create\s+(?:or\s+replace\s+)?function\s+public\.|(?:insert\s+into|update|delete\s+from)\s+(?:storage\.|public\.(?:product_variants|evidence_sources|technical_values|verification_events|publish_records))\b|disable\s+trigger|grant\s+.*\s+to\s+(?:anon|service_role)\b/i.test(
+    documentReferences,
+  )
+)
+  errors.push(
+    "Document references cannot enable public commands, files, confirmations or publication.",
+  );
+
+for (const required of [
+  "create table public.document_upload_intents",
+  "create table public.document_upload_completions",
+  "private.pi_begin_document_upload",
+  "private.pi_complete_document_upload",
+  "private.pi_document_upload_current",
+  "private.pi_validate_document_manifest",
+  "public.pi_can_upload_document",
+  "'working-documents/'",
+  "'not_attested'",
+  "pi_managed_document_insert",
+  "pi_managed_document_update",
+  "pi_managed_document_delete",
+  "as restrictive",
+  "force row level security",
+  "'application/pdf'",
+  "interval '24 hours'",
+  "revoke all on all functions in schema private from public,anon,authenticated,service_role",
+])
+  if (!documentUploads.includes(required))
+    errors.push(`Private document-upload contract missing: ${required}.`);
+if (
+  /disable\s+trigger|(?:insert\s+into|update|delete\s+from)\s+(?:storage\.|public\.(?:technical_documents|entity_documents|product_variants|technical_values|verification_events|publish_records))\b|grant\s+.*\s+to\s+(?:anon|service_role)\b/i.test(
+    documentUploads,
+  )
+)
+  errors.push(
+    "Document upload preparation cannot edit references/files/facts or grant service/anonymous access.",
+  );
+
+for (const signature of [
+  "pi_add_document_reference(uuid,uuid,jsonb,uuid)",
+  "pi_begin_document_upload(uuid,uuid,jsonb)",
+  "pi_complete_document_upload(uuid,uuid)",
+]) {
+  if (
+    !documentCommands.includes(
+      `revoke all on function public.${signature} from public,anon,authenticated,service_role;`,
+    ) ||
+    !documentCommands.includes(`grant execute on function public.${signature} to authenticated;`)
+  )
+    errors.push(`Document user-session command grant missing: ${signature}.`);
+}
+if (
+  /disable\s+trigger|(?:insert\s+into|update|delete\s+from)\s+(?:public\.|storage\.)|grant\s+.*\s+to\s+(?:anon|service_role)\b/i.test(
+    documentCommands,
+  )
+)
+  errors.push(
+    "Document wrappers must delegate to private guards without data edits or service grants.",
+  );
+
+for (const required of [
+  "perform private.pi_require_console_reader()",
+  "private.pi_is_working_variant(binding.product_variant_id)",
+  "limit 25 offset (page_number-1)*25",
+  "'total',(select count(*) from scoped)",
+  "intent.actor_id=auth.uid()",
+  "command.actor_id=auth.uid()",
+  "done.intent_id is null",
+  "revoke all on function public.pi_read_document_references(uuid,integer) from public,anon,authenticated,service_role;",
+  "grant execute on function public.pi_read_document_references(uuid,integer) to authenticated;",
+])
+  if (!documentReads.includes(required))
+    errors.push(`Document library read contract missing: ${required}.`);
+if (
+  /\b(?:insert\s+into|update|delete\s+from|truncate)\b|grant\s+.*\s+to\s+(?:anon|service_role)\b/i.test(
+    documentReads,
+  )
+)
+  errors.push("Document library reads cannot mutate records or grant anonymous/service access.");
+
+const documentInspection = migrations[28].content;
+for (const required of [
+  "perform private.pi_require_console_reader()",
+  "private.pi_document_upload_current(intent.id)",
+  "object_row.id=done.storage_object_id",
+  "object_row.version is not distinct from done.storage_version",
+  "object_row.metadata=done.storage_metadata",
+  "object_row.owner_id=intent.actor_id::text",
+  "binding.product_variant_id=variant_uuid",
+  "binding.technical_document_id=document_uuid",
+  "'snapshot_digest'",
+  "revoke all on function public.pi_document_original_snapshot(uuid,uuid) from public,anon,authenticated,service_role;",
+  "grant execute on function public.pi_document_original_snapshot(uuid,uuid) to authenticated;",
+])
+  if (!documentInspection.includes(required))
+    errors.push(`Document snapshot contract missing: ${required}.`);
+if (
+  /\b(?:insert\s+into|update|delete\s+from|truncate)\b|grant\s+.*\s+to\s+(?:anon|service_role)\b/i.test(
+    documentInspection,
+  )
+)
+  errors.push("Document snapshots cannot mutate records or grant anonymous/service access.");
+
+const documentSources = migrations[29].content;
+for (const required of [
+  "create table public.document_source_bindings",
+  "force row level security",
+  "private.pi_add_document_source",
+  "private.pi_document_source_can_support_review",
+  "original:=public.pi_document_original_snapshot(variant_uuid,document_uuid)",
+  "source.evidence_date is not null",
+  "binding.assertion='supports'",
+  "source.source_level='A'",
+  "document_source_immutable",
+  "revoke all on all functions in schema private from public,anon,authenticated,service_role",
+])
+  if (!documentSources.includes(required))
+    errors.push(`Document evidence-source contract missing: ${required}.`);
+if (
+  /create\s+(?:or\s+replace\s+)?function\s+public\.|disable\s+trigger|(?:insert\s+into|update|delete\s+from)\s+(?:storage\.|public\.(?:technical_documents|entity_documents|product_variants|technical_values|verification_events|publish_records))\b|grant\s+.*\s+to\s+(?:anon|service_role)\b/i.test(
+    documentSources,
+  )
+)
+  errors.push(
+    "Document evidence intake cannot approve, publish, edit originals or expose commands.",
+  );
+
+const documentReview = migrations[30].content;
+for (const required of [
+  "create table public.document_review_heads",
+  "create table public.document_review_candidates",
+  "create table public.document_review_submissions",
+  "create table public.document_review_decisions",
+  "create table public.document_review_currents",
+  "force row level security",
+  "private.pi_propose_document_review",
+  "private.pi_submit_document_review",
+  "private.pi_review_document",
+  "private.pi_document_review_approval_valid",
+  "private.pi_document_review_evidence_digest",
+  "exact_document_review_decision",
+  "exact_document_review_current",
+  "original_inspected",
+  "usage_rights_confirmed",
+  "exact_scope_confirmed",
+  "revoke all on all functions in schema private from public,anon,authenticated,service_role",
+])
+  if (!documentReview.includes(required))
+    errors.push(`Document human-review contract missing: ${required}.`);
+if (
+  /create\s+(?:or\s+replace\s+)?function\s+public\.|disable\s+trigger|(?:insert\s+into|update|delete\s+from)\s+(?:storage\.|public\.(?:technical_documents|entity_documents|product_variants|technical_values|compatibility_relationships|publish_records))\b|grant\s+.*\s+to\s+(?:anon|service_role)\b/i.test(
+    documentReview,
+  )
+)
+  errors.push("Private document review cannot expose commands, modify facts/originals or publish.");
+
+const documentObservation = migrations[31].content;
+for (const required of [
+  "create table private.pi_document_observation_keys",
+  "create table private.pi_document_review_observations",
+  "enabled boolean not null default false",
+  "private.pi_read_document_review_snapshot",
+  "public.pi_document_review_snapshot",
+  "private.pi_validate_document_observation",
+  "private.pi_document_observation_signature_matches",
+  "parts[1]<>'document-v1'",
+  "parts[13]::bigint-parts[12]::bigint not between 1 and 300",
+  "parts[11] is distinct from snapshot->>'evidence_digest'",
+  "public.pi_review_document",
+  "public.pi_document_review_observed",
+  "immutable_document_observation",
+  "'observation_digest',encode(extensions.digest(observation_token,'sha256'),'hex')",
+])
+  if (!documentObservation.includes(required))
+    errors.push(`Document observation contract missing: ${required}.`);
+if (
+  /insert\s+into\s+private\.pi_document_observation_keys|disable\s+trigger|grant\s+.*\s+to\s+(?:anon|service_role)\b/i.test(
+    documentObservation,
+  )
+)
+  errors.push("Document observation cannot provision a key or widen caller grants.");
+
+const documentWorkbench = migrations[32]?.content ?? "";
+for (const required of [
+  "private.pi_document_review_source_json",
+  "private.pi_document_review_candidate_json",
+  "public.pi_read_document_review",
+  "perform private.pi_require_console_reader()",
+  "private.pi_document_review_approval_valid",
+  "public.pi_document_review_observed",
+  "'latest'",
+  "'current'",
+  "'selected_sources'",
+  "limit 25 offset (source_page-1)*25",
+  "limit 25 offset (history_page-1)*25",
+  "'total',(select count(*) from sources)",
+  "revoke all on all functions in schema private from public,anon,authenticated,service_role",
+])
+  if (!documentWorkbench.includes(required))
+    errors.push(`Document workbench read missing: ${required}.`);
+if (
+  /\b(?:insert\s+into|update|delete\s+from|truncate)\b|grant\s+.*\s+to\s+(?:anon|service_role)\b/i.test(
+    documentWorkbench,
+  )
+)
+  errors.push("Document workbench reads cannot write, publish or widen grants.");
+
+const documentReadiness = migrations[33]?.content ?? "";
+for (const required of [
+  "public.pi_document_original_current",
+  "public.pi_document_approval_valid",
+  "public.pi_document_review_observed(candidate_uuid)",
+  "public.pi_effective_document_reviews with (security_invoker=true)",
+  "original_current and current_valid and not open_review as reviewed",
+  "false as publication_ready",
+  "public.pi_document_readiness with (security_invoker=true)",
+  "public.pi_variant_document_readiness with (security_invoker=true)",
+  "coalesce(documents.unresolved_document_count,0)>0",
+  "private.pi_guard_current_documents",
+  "product_variants_01_document_guard",
+])
+  if (!documentReadiness.includes(required))
+    errors.push(`Document readiness contract missing: ${required}.`);
+if (
+  /\b(?:insert\s+into|delete\s+from|truncate|disable\s+trigger)\b|grant\s+.*\s+to\s+(?:anon|service_role)\b/i.test(
+    documentReadiness,
+  )
+)
+  errors.push("Document readiness cannot mutate data, bypass guards or widen grants.");
 
 if (errors.length > 0) {
   console.error("Product Intelligence migration validation failed:");

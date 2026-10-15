@@ -6803,3 +6803,378 @@ retained database and historical report.
   retained in the replay-boundary decision; historical failures preserved.
 - **Deployment:** None. No merge, hosted/retained-local operation or product publication.
 - **Next Recommended Action:** Develop governed technical-document review toward the real 15AK pilot.
+
+## 2026-10-11 - Prepare Private Exact-SKU Technical Document References
+
+- **Task:** M4-E1 immutable reference intake and version provenance, without file or approval claims.
+- **Files Changed:** Migration 25 and its SQL suite; generated database types; embedded document
+  rehearsal and authority runner; migration validator; local acceptance baseline/tests and final
+  non-interference check; Goal, generated goal report, M4 runbook, dated document decision and this log.
+- **Components Changed:** Private SQL intake/matching/immutability functions and reference binding
+  ledger. Existing document/link table shapes retained; no application command, route or UI added.
+- **Data Changed:** No canonical/retained/hosted data. Synthetic in-memory references roll back.
+  All actual technical values, compatibility, rights, identities and publication states are unchanged.
+- **Visual Changes / SEO Impact:** None; public URLs, metadata, RFQ and website authority unchanged.
+- **Validation:** 25 embedded SQL suites / 1,463 assertions (79 new); official public type generator;
+  two exact shadow replays; ten synthetic reference versions across four 15AK identities plus a new
+  draft; exact original/audit/receipt rollback; eight acceptance guards; migration/boundary checks,
+  typecheck, source lint, 95-page production build, performance and secret scan pass. Plain directory
+  lint encountered ignored diagnostic artifacts; source lint explicitly excludes only `.tmp`.
+  Build required approved local execution after sandbox Windows path denial. Full details in M4.
+- **Known Issues:** Local preparation PASS_WITH_WARNINGS only. No real documents or native acceptance;
+  file inspection, human review, Technical Library UI, verified preview/publication and real 15AK
+  remain incomplete. No metadata declaration becomes a confirmed fact or a file-byte attestation.
+- **Reusable Knowledge Added:** `2026-10-11-console-m4-document-reference-intake.md` records reference
+  versus file evidence, explicit unknown dates/versions, exact scope and forward-only retention.
+- **Deployment:** None. Uncommitted local batch; no push, merge, database activation or rule override.
+- **Next Recommended Action:** Implement private document-file intake and inspection before human
+  document association review and the usable Technical Library workbench.
+
+## 2026-10-11 - Prepare Immutable Private PDF Original Intake
+
+- **Task:** M4-E2 document upload ledgers, managed Storage policy and bounded unchanged-byte parsing.
+- **Files Changed:** Migration 26 and SQL suite; generated types; document file/parser modules and
+  byte tests; package/lockfile and quality test command; migration validator; acceptance baseline,
+  guards and zero-document final check; document rehearsal; Goal/report, M4 runbook, decision and log.
+- **Components Changed:** Private begin/complete commands, read-only RLS predicate, immutable upload
+  ledgers and server-only child-process PDF validator. No upload endpoint, UI or public route yet.
+- **Data Changed:** Synthetic memory-only fixtures. E1 reference history and all real product,
+  technical, compatibility, media, commercial and publication records are unchanged.
+- **Visual Changes / SEO Impact:** None. Public source authority and RFQ remain unchanged.
+- **Validation:** 26 embedded SQL suites / 1,532 assertions (69 new); exact public types and shadow
+  replays; five metadata-only document attachments across four 15AK identities plus a draft with
+  full original/audit/receipt/Storage rollback; six actual PDF groups and six raster regressions;
+  migration/acceptance guards, source lint, typecheck, 95-page build, performance and secrets pass.
+  Five new dependency versions have no entries in the dated npm advisory lookup; no existing
+  dependency version changed. This is not a general absence-of-vulnerabilities claim.
+- **Known Issues:** Local E2 PASS_WITH_WARNINGS only. No native upload/readback, packaged API parser
+  proof, real document inspection or human review. Structural parsing is not rendering/malware
+  clearance; V8 old-space bound is not total memory/OS isolation. Full V1/real 15AK remain incomplete.
+- **Reusable Knowledge Added:** `2026-10-11-console-m4-document-original-intake.md` records immutable
+  reference attachment, metadata-versus-byte proof, parser limits and next integration gates.
+- **Deployment:** None. E1/E2 remain local/uncommitted/unapplied. No push, merge, retained/hosted
+  database change, original deletion, active flag, publication or rule override.
+- **Next Recommended Action:** Add authenticated default-off raw PDF upload and stored-byte readback,
+  prove parser packaging in the built handler, then private inspection and human document review.
+
+## 2026-10-11 - Connect Private PDF Upload And Verify Runtime Packaging
+
+- **Task:** M4-E3 authenticated default-off raw document upload and exact stored-byte reconciliation.
+- **Files Changed:** Migration 27, new wrapper pgTAP suite and current grant assertions in two prior
+  document suites; generated Supabase types; `lib/domain/catalog/documents.ts`, document upload
+  service and private route; working configuration/shared work-budget comment; parser path and
+  `next.config.ts` trace includes; `.env.example`, middleware; document service/package/child tests,
+  existing matcher/HTTP tests and runner, migration validator, package/workflow commands; Goal,
+  generated progress report, M4 operations record, this log and the dated E3 decision.
+- **Components Changed:** Three authenticated RPC wrappers, one private upload handler, strict
+  input/result DTOs and shared image/PDF capacity. No visual component created or removed.
+- **Data Changed:** Synthetic memory/transport fixtures only. No real document, image, SKU, fact,
+  compatibility, rights, approval, commercial policy or public source authority changed.
+- **Visual Changes:** None. Technical Library UI and real owner interaction remain pending.
+- **SEO Impact:** None on public routes/data. The new internal route is private/no-store/noindex;
+  source/built middleware and real default-off HTTP preserve staging isolation and public pages.
+- **Validation:** 27 embedded suites / 1,562 SQL assertions, including 30 new command assertions;
+  full public-type member parity, two 17-table replays and unchanged reference/ledger rollback;
+  seven PDF upload groups, six PDF-byte/process groups, nine raster-upload regressions; isolated
+  built handler from 1,713 traced files with actual child parser and SSR refresh, mocked provider;
+  actual owned-server HTTP/default-off guards and cleanup; migration, local/browser/boundary guards,
+  typecheck, lint, 95-page production build, performance, built links/image evidence/snippets.
+  Final 690-file secret scan and RFQ constraints/email/provider-timeout regressions pass.
+- **Known Issues:** Local preparation PASS_WITH_WARNINGS, external release BLOCKED. Native document
+  Auth/Storage/browser/race and full CLI type parity remain unproven. No durable trusted document
+  observation, human rights/exact-scope review or UI yet. Parser is not full rendering/malware
+  clearance or OS memory isolation. Full V1 and the real 15AK pilot remain incomplete.
+- **Reusable Knowledge Added:** `2026-10-11-console-m4-document-upload-application.md` records the
+  default-off application boundary, transient byte reconciliation, traced parser packaging and
+  separate mocked-provider versus real-HTTP evidence limits. No rule override.
+- **Deployment:** None. E1-E3 remain uncommitted/unapplied, outside prior CI authorization. No push,
+  merge, deploy, retained/hosted database write, Docker/WSL change or real upload. Owned test server
+  and parser processes exited; temporary package copy removed. No flag was retained as enabled.
+- **Next Recommended Action:** Build counted Technical Library intake/version views plus private
+  original inspection and human rights/exact-SKU review, then obtain exact-batch native CI approval.
+
+## 2026-10-12 - Connect Counted Technical Library And SKU Document Intake
+
+- **Task:** M4-E4 local Technical Library, reference/version registration and original-upload UI.
+- **Files Changed:** Migration 28, pgTAP read suite, generated public types; document domain/read
+  modules and existing command parser/service; `DocumentLibrary`, two private document pages,
+  working/sidebar navigation and scoped Console CSS; document fixture/unit/browser tests, fixture
+  layout/routes/README, HTTP checks, migration validator, package/workflow scripts; Goal/report,
+  M4 runbook, this log and the dated E4 decision.
+- **Components Changed:** Added counted global/SKU library and metadata/version/PDF forms. Reused
+  shared commands, tables, pagination, navigation, unsaved guards and icons. No component removed.
+- **Data Changed:** Synthetic memory/transport fixtures only. Real documents, facts, product images,
+  compatibility, rights, approvals, commercial policy and public source authority are unchanged.
+- **Visual Changes:** Private Console forms, readable scrollable table columns, status/lineage rows,
+  icon actions and responsive one-column mobile intake. Public visuals are unchanged.
+- **SEO Impact:** None on public pages; new internal pages remain authenticated/noindex/no-store.
+- **Validation:** 28 SQL suites / 1,585 assertions; complete public-type parity and exact shadow
+  replays/rollback; 58 library/shared command/guard tests; six PDF byte groups, seven PDF upload and
+  nine raster regressions; ten browser groups/eight inspected screenshots at six widths; current
+  build, HTTP privacy, sequential isolated package test, typecheck, lint and public SEO/performance
+  checks pass, plus formatting/diff and a 700-file secret scan. Goal report remains 43 structured
+  products / zero strictly verified SKUs. An intermediate trace read during HTTP rebuilding was
+  discarded and rerun serially.
+- **Known Issues:** Local preparation PASS_WITH_WARNINGS only; external activation/release BLOCKED.
+  Native document provider/browser/race acceptance and full CLI types remain unproven. Private
+  inspection, durable observation and human rights/scope review remain next; no upload becomes
+  verified evidence. Full V1 and real 15AK publication remain incomplete.
+- **Reusable Knowledge Added:** `2026-10-12-console-m4-document-library.md` records counted scope,
+  actor-only pending recovery, immutable versions, safe UI state and evidence boundaries.
+- **Deployment:** None. E1-E4 are local/uncommitted/unapplied, outside the completed older CI scope.
+  No real upload, DB write, Docker/WSL change, flag activation, push, merge, deployment or override.
+- **Next Recommended Action:** Add private stored-original inspection and explicit human document
+  rights/exact-SKU review, then prepare native isolated acceptance under fresh exact-batch approval.
+
+## 2026-10-12 - Inspect Stored Private Document Originals
+
+- **Task:** M4-E5 read-only exact-SKU original inspection and checked PDF downloads.
+- **Files Changed:** Migration 29, SQL suite and public types; document inspection domain/service/
+  private route; `StoredDocumentInspection`, `DocumentLibrary`, scoped action CSS; service/browser/
+  package/HTTP/matcher tests, migration validator, Next trace config and package/workflow scripts;
+  Goal/report, M4 runbook, fixture README, this log and the dated E5 decision.
+- **Components Changed:** Added private download panel and inspection action. Reused PDF parser,
+  work limits, role checks and Console controls; no component removed.
+- **Data Changed:** Synthetic fixtures only. No real evidence, facts, rights, SKU, compatibility,
+  commercial terms, approvals, publication or public source authority changed.
+- **Visual Changes:** Private icon actions and responsive download/status panel; public site unchanged.
+- **SEO Impact:** None publicly. Inspection stays authenticated/noindex/no-store and has no API alias.
+- **Validation:** 29 embedded suites / 1,609 assertions; complete public-member parity and exact
+  replays/rollback; seven inspection groups, 35 combined file/upload/inspection tests and 58 shared
+  command/guard tests; 14 browser groups/ten screenshots; both isolated 1,713-file production packages;
+  build, normal-mode owned HTTP, typecheck, lint, migration/format/diff/secret and SEO/performance checks.
+  Provider-absent smoke correctly refused a running local provider; normal smoke used only read-only
+  settings and invalid forms, without stopping or changing that service.
+- **Known Issues:** Local preparation PASS_WITH_WARNINGS; external release BLOCKED. Native document
+  provider/browser/race/full CLI types, durable trusted observation and human rights/scope review are
+  pending. Parsing/download is not malware clearance or approval. Full V1/real 15AK remain incomplete.
+- **Reusable Knowledge Added:** `2026-10-12-console-m4-document-inspection.md` records snapshot,
+  transient byte checking, download-only UI, evidence limits and retained-service-safe verification.
+- **Deployment:** None. E1-E5 remain local/uncommitted/unapplied, outside the completed prior CI batch.
+  No real upload, DB write, Docker change, active flag, push, merge, deployment or rule override.
+- **Next Recommended Action:** Implement trusted document observation and explicit human rights/
+  exact-SKU review, then obtain exact-batch authorization for native isolated acceptance.
+
+## 2026-10-12 - Bind Document Review Evidence To Exact Originals
+
+- **Task:** M4-E6 private rights/exact-SKU evidence-intake foundation for later human document review.
+- **Files Changed:** Migration 30, document-source SQL suite, public types; document rehearsal,
+  migration validator, pristine-local guard/tests and working acceptance; SQL-report baseline test;
+  Goal/report, M4 runbook, this log and the dated E6 decision.
+- **Components Changed:** Added private SQL source intake, immutable bindings and eligibility checks.
+  No frontend component or command endpoint created/removed.
+- **Data Changed:** Synthetic metadata fixtures only. Fifteen temporary sources preserve five
+  contradictions and unknowns; real products, files, technical facts, fitment, rights and terms unchanged.
+- **Visual Changes:** None.
+- **SEO Impact:** None; public data, URLs, metadata, schema, sitemap and RFQ are untouched.
+- **Validation:** 30 embedded suites / 1,674 assertions, complete public-member parity, two 17-table
+  replays and exact source/receipt/audit/Storage rollback; 26 report/guard/library tests; 14 PDF service
+  regressions; typecheck, full source lint, migration validation, production build and performance.
+  Corrected a fixture timezone comparison and reviewed the stale 24-suite report baseline; no test
+  failure criterion or production gate was weakened. Formatting/diff/secrets checked at close-out.
+- **Known Issues:** Local foundation PASS_WITH_WARNINGS; external activation BLOCKED. No public source
+  intake, frozen review candidate, signed observation, human decision or native document acceptance.
+  Full CLI types and real 15AK end-to-end completion remain unproven; source eligibility is not approval.
+- **Reusable Knowledge Added:** `2026-10-12-console-m4-document-sources.md` records exact-original
+  source scope, separate evidence dimensions, explicit unknowns, immutable history and review limits.
+- **Deployment:** None. E1-E6 local/uncommitted/unapplied; no push/CI/merge, retained DB write, real upload,
+  Docker change, key provision, feature activation, deployment or repository-rule override.
+- **Next Recommended Action:** Add frozen document-review candidates, signed byte observation and
+  explicit human APPROVE/EDIT/REJECT before reviewer UI and separately authorized native acceptance.
+
+## 2026-10-13 - Freeze Document Reviews And Preserve Human Decisions
+
+- **Task:** M4-E7 private document candidate/submission and human APPROVE/EDIT/REJECT contracts.
+- **Files Changed:** Migration 31 and its 88-assertion SQL suite; source-suite FK refusal assertion;
+  generated public types; migration/report validators; pristine-local guard/tests and working
+  acceptance; embedded runner and document rehearsal; Goal/report, M4 runbook, this log and E7 decision.
+- **Components Changed:** Five forced-RLS review tables and private command/event/current guards.
+  No frontend component, public endpoint or readiness projection added/removed.
+- **Data Changed:** Synthetic SQL fixtures only. Frozen evidence snapshots retain all known sources
+  and contradictions; no real technical/compatibility/commercial fact, document, image or rights change.
+- **Visual Changes:** None.
+- **SEO Impact:** None; public URLs, content, metadata, schema, sitemap and RFQ are unchanged.
+- **Validation:** 31 embedded suites / 1,762 assertions; complete public-member parity, actual pristine
+  SQL, two 17-table replays and five reference-only approval refusals with exact rollback; 26 Node
+  guard/report/library tests and 14 PDF service groups; typecheck, full source lint, migration
+  validation, production build (96 outputs) and performance. Fixed initial migration CASE syntax;
+  retained all source tests, updating only the FK-precedence refusal code. Formatting/diff and
+  tracked/untracked secret scanning (714 files) pass.
+- **Known Issues:** Local SQL preparation PASS_WITH_WARNINGS; application activation BLOCKED.
+  Human declarations do not prove byte inspection. Document-specific signing, authenticated review
+  commands, current/open DTOs and readiness, UI, native providers/races/full CLI types remain required.
+  Real 15AK and full V1 remain incomplete; 43 structured products / zero strictly verified SKUs.
+- **Reusable Knowledge Added:** `2026-10-12-console-m4-document-human-review.md` records frozen
+  candidates, all-known-source invalidation, atomic corrections, immutable human history and trust limits.
+- **Deployment:** None. E1-E7 local/uncommitted/unapplied to retained or hosted services; no push/CI,
+  merge, real upload, key provision, active flag, Docker operation, deployment or rule override.
+- **Next Recommended Action:** Bind trusted document byte observation to the private human decision
+  contract, then implement reviewer UI and separately authorized native acceptance.
+
+## 2026-10-13 - Bind Document Byte Observation To Human Review
+
+- **Task:** M4-E8 document-specific signing and authenticated observed-review contracts.
+- **Files Changed:** Migration 32 and its 66-assertion SQL suite; generated public types; document
+  signer/inspection/domain parser/route/config and environment example; migration/report/pristine
+  guards and tests; embedded runner; inspection/package/HTTP/environment tests; Goal/report, M4
+  runbook, this log and E8 decision. The runbook retains the detailed path and check scope.
+- **Components Changed:** Independent private key/observation tables, exact pending snapshot and
+  token validators, authenticated review wrappers, reviewer-only signed PDF inspection. No frontend
+  component added/removed and no review form/readiness integration yet.
+- **Data Changed:** Rolled-back synthetic fixtures only. No real key, upload, document/source,
+  technical/compatibility/rights/commercial fact or publication change.
+- **Visual Changes:** None; ordinary download behavior is preserved.
+- **SEO Impact:** None; public content, routes, metadata, schema, sitemap and RFQ remain unchanged.
+- **Validation:** 32 embedded suites / 1,828 assertions, actual Node-to-SQL signer parity, full public
+  schema-member parity, two exact 17-table replays and reference-only refusals/rollback; 44 Node tests;
+  both 1,713-file trace-only packages; typecheck/lint/build, migration checks, public SEO/performance.
+  Normal HTTP mode initially failed with absent-provider 503. After proving port-free/ECONNREFUSED,
+  existing provider-absent HTTP mode passed without any service change. Formatting/diff and the
+  tracked/untracked secret scan (718 files) pass; native-provider success is not claimed.
+- **Known Issues:** Local preparation PASS_WITH_WARNINGS; activation/release BLOCKED. Command forms,
+  counted current/open review DTOs, readiness/UI, native providers/races/full CLI types and real
+  human acceptance remain. Historical observation is not current validity, human understanding or
+  technical truth. Full V1 and real 15AK remain incomplete, with 43 structured / zero verified SKUs.
+- **Reusable Knowledge Added:** `2026-10-13-console-m4-document-observation.md` records independent
+  signing, complete snapshot binding, atomic nonce consumption, historical replay and trust limits.
+- **Deployment:** None. E1-E8 local/uncommitted/unapplied; no push/CI/merge/deploy, retained DB writes,
+  real upload/key, active flag, Docker/WSL change or rule override. Read-only GitHub verification
+  confirms prior B/C/D authorization fulfilled, both cited runs green and PR #130 still unmerged.
+- **Next Recommended Action:** Implement reviewer command forms, counted current/open review and
+  readiness UI, then obtain exact E-batch native acceptance authorization.
+
+## 2026-10-14 - Add Counted Document Human Review Workbench
+
+- **Task:** M4-E9 strict document commands, counted current/open review and human workflow UI.
+- **Files Changed:** Migration 33, generated public types and observation SQL suite; document-review
+  domain/read/command modules; private review route, library/inspection/workbench components and
+  Console CSS; fixtures, unit/browser/HTTP/SQL-rehearsal tests, validators, package/workflow scripts;
+  Goal/report, M4 runbook, fixture README, this log and E9 decision. The runbook lists exact scope.
+- **Components Changed:** Added DocumentReviewWorkbench and scoped read DTO; added gated library
+  review links and signed inspection callback; no component removed.
+- **Data Changed:** Synthetic rollback/mock fixtures only; no real source, technical/compatibility/
+  commercial fact, original, right or publication changed.
+- **Visual Changes:** Private current/latest decision sections, evidence/history tables, source and
+  human forms, native radio/checkbox states, 44px evidence targets and contained mobile scrolling.
+- **SEO Impact:** None; public content, routes, metadata, schema, sitemap and RFQ remain unchanged.
+- **Validation:** 33 migrations / 32 embedded suites / 1,852 assertions, actual SQL-to-DTO checks,
+  public-member parity, two source replays and rollback; 50 focused plus 28 shared command tests;
+  14 new plus 14 existing browser groups / 18 screenshots across six widths; final build, private
+  provider-absent HTTP, both trace-only packages, typecheck/lint and public SEO/performance pass.
+  Screenshot review exposed hidden checked glyphs; native appearance was restored and rerun passed.
+  RFQ/company-evidence regressions, Goal report, formatting/diff and 727-file secret scan pass.
+- **Known Issues:** Local preparation PASS_WITH_WARNINGS; activation/external release BLOCKED.
+  Native providers, persisted browser decisions, races/full native CLI types and product-level
+  document readiness remain. Full V1/real 15AK preview/QA/publication incomplete; 43 structured /
+  zero strictly verified SKUs. Synthetic byte observation is not human understanding or technical truth.
+- **Reusable Knowledge Added:** `2026-10-14-console-m4-document-workbench.md` records counted reads,
+  current/open separation, snapshot/replay limits, approval interlocks and native evidence boundaries.
+- **Deployment:** None. E1-E9 local/uncommitted/unapplied; no push/CI/merge/deploy, retained/hosted
+  write, real upload/key, feature activation, Docker/WSL change or rule override. The 3901 fixture is
+  synthetic only; owned HTTP-test port 3000 was released.
+- **Next Recommended Action:** Integrate document readiness and prepare native isolated acceptance,
+  then request exact E-batch CI authority while collecting real 15AK rights and technical evidence.
+
+## 2026-10-14 - Integrate Document Review Into Product Readiness
+
+- **Task:** M4-E10 product-level document blockers, lifecycle guards and private readiness UI.
+- **Files Changed:** Migration 34, generated public types, document observation SQL suite, SQL
+  rehearsal/validators/report baseline; catalog reader and document-count domain module; private
+  product/readiness routes, DocumentReadiness/ReadinessWorkspace components and Console CSS;
+  fixtures/unit/browser tests, package/workflow preparation, Goal/report, runbook, fixture README,
+  this log and E10 decision. Exact paths are listed in the M4-E10 runbook.
+- **Components Changed:** Added document summary/cell and shared readiness workspace; no removal.
+- **Data Changed:** Synthetic and rolled-back fixtures only. No real document, source, technical,
+  compatibility, rights, commercial or publication data changed. Zero documents is not verification.
+- **Visual Changes:** Private document counters, filter/list column and working-only entry points;
+  scoped stable column width corrects excessive mobile row height while preserving contained scroll.
+- **SEO Impact:** None. Existing public routes, metadata, schema, sitemap and RFQ are unchanged.
+- **Validation:** 34 embedded migrations / 32 suites / 1,881 assertions, public-member parity,
+  actual SQL-to-count DTOs, source replay/rollback; 63 application tests including seven new groups,
+  22 guard/type tests, five browser groups / 12 screenshots at six widths, final build/HTTP privacy,
+  typecheck/lint, public SEO/links/snippets/performance, formatting/diff and secret scan pass.
+- **Known Issues:** Local preparation PASS_WITH_WARNINGS; activation/external release BLOCKED.
+  Native providers, persisted decisions/refresh, races and full CLI types remain unproven. Real 15AK
+  rights/facts, verified preview/QA/publication and full V1 remain incomplete; 43 structured / zero
+  strictly verified SKUs. Snapshot readiness never substitutes for fresh bytes or human truth.
+- **Reusable Knowledge Added:** `2026-10-14-console-m4-document-readiness.md` records independent
+  version blockers, zero-document semantics, unchanged contracts, role gates and reversal boundaries.
+- **Deployment:** None. E1-E10 local/uncommitted/unapplied; no push/CI/merge/deploy, retained/hosted
+  writes, actual upload/key, activation, Docker/WSL change or rule override. Prior B/C/D approval is
+  fulfilled and does not cover this batch. Owned HTTP port 3000 released; 3901 is synthetic only.
+- **Next Recommended Action:** Prepare native disposable document acceptance and seek exact E-batch
+  CI authorization; collect real 15AK rights and technical evidence without changing public facts.
+
+## 2026-10-15 - Repair And Prepare Disposable Document Acceptance Infrastructure
+
+- **Task:** M4-E11a stale baseline fixture repair and shared media/document observer foundation;
+  complete native E11 document acceptance is explicitly not claimed.
+- **Files Changed:** Media acceptance helper/test, browser server/helper test, local acceptance
+  test, embedded authority runner/new observer rehearsal; Goal, M4 runbook, this log and E11a
+  decision. Exact paths are listed in the E11a runbook.
+- **Components Changed:** Test-only provisioning/environment helpers; no application UI change.
+- **Data Changed:** In-memory synthetic fixtures only. No real key, original, right, product,
+  technical, compatibility, commercial or publication data changed.
+- **Visual Changes:** None.
+- **SEO Impact:** None; public routes, metadata, schema, sitemap and RFQ unchanged.
+- **Validation:** Reproduced three stale-fixture failures before repair; 33 focused tests pass.
+  Actual in-memory dual-domain SQL/disable/failure rollback, 34 migrations / 32 suites / 1,881
+  pgTAP assertions, public-member parity, source replays/rollback, typecheck, lint, formatting,
+  whitespace and secret checks pass. Build/UI/native provider checks not rerun for test-only scope.
+- **Known Issues:** Local foundation PASS_WITH_WARNINGS; native acceptance/external activation
+  BLOCKED. The integrated runner still rejects `--documents`; real provider/forms/refresh/races
+  and exact ledgers must be wired before enabling it. Full V1/real 15AK remain incomplete.
+- **Reusable Knowledge Added:** `2026-10-15-console-m4-document-acceptance-foundation.md` records
+  single-baseline atomic provisioning, independent domains, cleanup/secret limits and no fake pass.
+- **Deployment:** None. E1-E11a local/uncommitted/unapplied; no push/CI/merge/deploy, retained/hosted
+  write, actual upload/key, activation, Docker/WSL change or rule override. Prior authority unchanged.
+- **Next Recommended Action:** Complete native document browser/ledger acceptance, then obtain
+  exact E-batch CI authority; collect real 15AK rights and technical evidence separately.
+
+## 2026-10-15 - Prepare Native Disposable Document Workflow Acceptance
+
+- **Task:** M4-E11b native browser/HTTP/Storage workflow and independent ledger preparation.
+- **Files Changed:** New document acceptance fixture/ledger, native browser harness, guard tests and
+  embedded workflow rehearsal; local/native/browser runner integration, media guard, package/unit
+  workflow entry, Goal, runbook, this log and dated E11b decision. Exact paths are in the runbook.
+- **Components Changed:** Test infrastructure only; no application component added/removed/changed.
+- **Data Changed:** Synthetic rolled-back in-memory records only; no real original, right, fact,
+  commercial term, product or publication data changed.
+- **Visual Changes:** None; native desktop/mobile capture is prepared, not executed.
+- **SEO Impact:** None; public URLs, metadata, structured data, sitemap and RFQ unchanged.
+- **Validation:** 37 focused guards; 34 migrations / 32 suites / 1,881 embedded assertions; new
+  actual parser/wrapper/signer/DTO/ledger five-revision workflow, invalidation/readiness/revocation,
+  exact source replay/noninterference/rollback; typecheck/lint/format/diff/secrets pass. Corrected
+  test-only cleanup, embedded Storage fixture and expected refusal-code assumptions during rehearsal.
+- **Known Issues:** Local preparation PASS_WITH_WARNINGS; native acceptance/external activation
+  BLOCKED. Real provider/browser refresh/contention/full CLI types are NOT_RUN. CLI opt-in is wired
+  but CI activation is withheld. Real 15AK evidence and V1 preview/QA/publication remain incomplete.
+- **Reusable Knowledge Added:** `2026-10-15-console-m4-native-document-acceptance.md` records exact
+  native ledger, persisted-refresh requirements, independent version blockers and rehearsal limits.
+- **Deployment:** None. E1-E11 local/uncommitted/unapplied; no push/CI/merge/deploy, retained/hosted
+  write, actual upload/key, activation, Docker/WSL operation or repository-rule override.
+- **Next Recommended Action:** Obtain exact E-batch review/commit/push/isolated-CI authority, review
+  the full candidate, then verify native document/OEM/packaging acceptance without changing real facts.
+
+## 2026-10-15 - Review And Authorize E1-E11 Native CI Candidate
+
+- **Task:** Complete local pre-commit review and enable the explicitly authorized disposable
+  document acceptance alongside OEM and packaging regression.
+- **Files Changed:** `.github/workflows/quality.yml`, Goal, M4 runbook, this log and
+  `knowledge-base/decisions/2026-10-15-console-m4-document-ci-authorization.md`; the pending commit
+  also contains the E1-E11 implementation and tests recorded in the preceding entries.
+- **Components Changed:** No additional runtime/UI component changes in this checkpoint.
+- **Data Changed:** None; synthetic SQL rehearsals rolled back exactly. No retained/hosted write.
+- **Visual Changes:** None in this checkpoint; document UI belongs to the recorded E4/E9/E10 work.
+- **SEO Impact:** None; fresh public SEO/link/image/snippet and performance checks pass.
+- **Validation:** Full candidate review found no blocker to isolated CI; 75 focused tests,
+  34 migrations / 32 suites / 1,881 embedded assertions, replay/rollback, typecheck, lint,
+  build/HTTP, traced handlers, migration validation, whitespace and secret scan pass.
+- **Known Issues:** Native E-batch execution and release preflight remain pending. Real 15AK
+  evidence, verified preview/QA/publication and full V1 are not complete.
+- **Reusable Knowledge Added:** Dated exact-destination authorization and preservation limits.
+- **Deployment:** Owner expanded prior CI-only authority to merge/deploy/modify, following explicit
+  identification of PR 130/main and possible production deployment. No merge/deployment or
+  database activation has occurred at this checkpoint. No factual gate is overridden.
+- **Next Recommended Action:** Push the reviewed E-batch, verify clean native document/OEM/packaging
+  CI, then assess the exact release environment without replacing retained data or inventing facts.

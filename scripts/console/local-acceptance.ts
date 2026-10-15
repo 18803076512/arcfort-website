@@ -13,9 +13,9 @@ export function assertAcceptanceInvocation(
 ) {
   assert.ok(
     args[0] === "--local" &&
-      args.slice(1).every((value) => ["--oem", "--packaging"].includes(value)) &&
+      args.slice(1).every((value) => ["--oem", "--packaging", "--documents"].includes(value)) &&
       new Set(args).size === args.length,
-    "Exactly --local, optionally followed by unique --oem and --packaging switches, is required.",
+    "Exactly --local, optionally followed by unique --oem, --packaging and --documents switches, is required.",
   );
   assert.equal(env.CI, "true", "Disposable CI only.");
   for (const [key, value] of Object.entries(env)) {
@@ -27,7 +27,11 @@ export function assertAcceptanceInvocation(
       "Remove provider, database, application and Docker overrides before isolated acceptance.",
     );
   }
-  return { oem: args.includes("--oem"), packaging: args.includes("--packaging") };
+  return {
+    oem: args.includes("--oem"),
+    packaging: args.includes("--packaging"),
+    documents: args.includes("--documents"),
+  };
 }
 
 export function assertLocalDocker(endpoint: string) {
@@ -90,6 +94,19 @@ export function assertPristineBaseline(value: unknown) {
       compatibilityRevisions: 0,
       compatibilitySources: 0,
       mediaSources: 0,
+      documents: 0,
+      documentLinks: 0,
+      documentBindings: 0,
+      documentUploadIntents: 0,
+      documentUploadCompletions: 0,
+      documentSources: 0,
+      documentReviewHeads: 0,
+      documentReviewCandidates: 0,
+      documentReviewSubmissions: 0,
+      documentReviewDecisions: 0,
+      documentReviewCurrents: 0,
+      documentObservationKeys: 0,
+      documentReviewObservations: 0,
       packagingSources: 0,
       packagingHeads: 0,
       packagingRevisions: 0,
@@ -126,6 +143,19 @@ export const pristineBaselineQuery = `select json_build_object(
   'compatibilityRevisions',(select count(*) from compatibility_revisions),
   'compatibilitySources',(select count(*) from compatibility_source_bindings),
   'mediaSources',(select count(*) from media_source_bindings),
+  'documents',(select count(*) from technical_documents),
+  'documentLinks',(select count(*) from entity_documents),
+  'documentBindings',(select count(*) from technical_document_bindings),
+  'documentUploadIntents',(select count(*) from document_upload_intents),
+  'documentUploadCompletions',(select count(*) from document_upload_completions),
+  'documentSources',(select count(*) from document_source_bindings),
+  'documentReviewHeads',(select count(*) from document_review_heads),
+  'documentReviewCandidates',(select count(*) from document_review_candidates),
+  'documentReviewSubmissions',(select count(*) from document_review_submissions),
+  'documentReviewDecisions',(select count(*) from document_review_decisions),
+  'documentReviewCurrents',(select count(*) from document_review_currents),
+  'documentObservationKeys',(select count(*) from private.pi_document_observation_keys),
+  'documentReviewObservations',(select count(*) from private.pi_document_review_observations),
   'packagingSources',(select count(*) from packaging_source_bindings),
   'packagingHeads',(select count(*) from packaging_revision_heads),
   'packagingRevisions',(select count(*) from packaging_revisions),

@@ -9,7 +9,11 @@ import {
   Package,
 } from "lucide-react";
 import { ConsoleLink } from "./ConsoleLink";
-import { consoleOemEnabled, consolePackagingEnabled } from "../../lib/console/working-config";
+import {
+  consoleOemEnabled,
+  consolePackagingEnabled,
+  consoleDocumentsEnabled,
+} from "../../lib/console/working-config";
 
 export function ProductWorkingNav({
   id,
@@ -19,6 +23,7 @@ export function ProductWorkingNav({
   media = false,
   oem = consoleOemEnabled(),
   packaging = consolePackagingEnabled(),
+  documents = consoleDocumentsEnabled(),
 }: {
   id: string;
   active?:
@@ -29,12 +34,14 @@ export function ProductWorkingNav({
     | "originals"
     | "media"
     | "oem"
-    | "packaging";
+    | "packaging"
+    | "documents";
   compatibility?: boolean;
   originals?: boolean;
   media?: boolean;
   oem?: boolean;
   packaging?: boolean;
+  documents?: boolean;
 }) {
   return (
     <nav className="console-working-nav" aria-label="Product working views">
@@ -95,6 +102,16 @@ export function ProductWorkingNav({
         >
           <Package size={18} aria-hidden="true" />
           Packaging
+        </ConsoleLink>
+      )}
+      {documents && (
+        <ConsoleLink
+          href={`/console/products/${id}/documents`}
+          className="console-action"
+          aria-current={active === "documents" ? "page" : undefined}
+        >
+          <FileText size={18} aria-hidden="true" />
+          Technical documents
         </ConsoleLink>
       )}
       {media && (
