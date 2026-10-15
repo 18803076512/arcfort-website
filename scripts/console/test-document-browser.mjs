@@ -175,6 +175,12 @@ async function selectPdf(n = 1) {
 }
 try {
   await visit();
+  await page
+    .getByRole("row")
+    .filter({ has: page.getByText("Synthetic drawing 4", { exact: true }) })
+    .getByRole("cell")
+    .filter({ hasText: /^Upload recorded/ })
+    .waitFor();
   await fill();
   await button("Register reference").click();
   await failed();

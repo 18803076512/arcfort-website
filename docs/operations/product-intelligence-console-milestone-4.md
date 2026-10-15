@@ -3343,3 +3343,31 @@ Fresh checks on the current candidate:
 Canonical data, public URLs, RFQ, retained local services, hosted database and feature flags are
 unchanged. Git branch auto-deployment remains disabled. No native pass, merge, live deployment,
 database application or real evidence approval is claimed by this checkpoint.
+
+## E1-E11 First Native CI Follow-Up
+
+Date: 2026-10-16 (Asia/Shanghai). Candidate: `bae0bae62bce268d521f0c7310b44548f7a07e6a`.
+[Run 38717230925](https://github.com/18803076512/arcfort-website/actions/runs/38717230925)
+completed with both jobs failed; no merge or deployment followed.
+
+The quality job stopped because OEM/packaging guards still expected the old two-switch command.
+Both now require the authorized three-switch invocation, and a document guard checks its exact
+placement, normal-entry defaults and absent application activation settings. All 13 guard tests
+pass; the complete 36-command foundation step also passed locally after the expectation fix.
+
+The database job passed native migrations, pgTAP, generated types, source parity and Auth/pagination
+before the document browser stopped at `Upload recorded`. Upload HTTP success was already asserted,
+but the exact-text locator cannot match a cell also containing filename, page count and review
+guidance. The real synthetic component reproduces exact-count zero and row/cell prefix-count one.
+The corrected locator is row-scoped, uses the status prefix and does not force a reload. A whitespace
+boundary is intentionally absent because DOM text concatenates the following paragraph. Fourteen
+synthetic library groups pass with zero page errors/external requests; typecheck and scoped lint pass.
+This diagnoses the locator only, not native persistence or command-success refresh.
+
+Changes are confined to the document browser/acceptance tests, OEM/packaging guard expectations and
+these records. Application UI, migrations, real data, URLs, SEO, RFQ and default-off settings remain
+unchanged. A separate public 60-case read-only smoke passed geometry/canonical/image assertions but
+failed its final page-error assertion with one React hydration error. Its original error lacked
+route attribution; a diagnostic rerun is required. Neither native acceptance nor public release is
+declared passed. Next push the reviewed test repair under existing authority, rerun native CI and
+resolve the public-page error before considering PR 130/main release.

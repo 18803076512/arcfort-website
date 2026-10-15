@@ -327,7 +327,8 @@ export async function runDocumentWorkingBrowser(input: Input) {
   await owner.page
     .getByRole("row")
     .filter({ has: owner.page.getByText(documentTestCopy.title, { exact: true }) })
-    .getByText("Upload recorded", { exact: true })
+    .getByRole("cell")
+    .filter({ hasText: /^Upload recorded/ })
     .waitFor();
   const intent = await owner.client
     .from("document_upload_intents")

@@ -111,7 +111,7 @@ test("authorized disposable CI explicitly opts into packaging while normal entry
   const runs = jobs["product-intelligence-database"].steps
     .map((step: { run?: string }) => step.run)
     .filter((run: string | undefined) => run?.includes("--packaging"));
-  assert.deepEqual(runs, ["npm run console:working:test:local -- --oem --packaging"]);
+  assert.deepEqual(runs, ["npm run console:working:test:local -- --oem --packaging --documents"]);
   assert.doesNotMatch(JSON.stringify(jobs.quality), /--oem|--packaging/);
   const scripts = JSON.parse(readFileSync("package.json", "utf8")).scripts;
   assert.doesNotMatch(workflow, /CONSOLE_OEM_ENABLED|CONSOLE_PACKAGING_ENABLED/);

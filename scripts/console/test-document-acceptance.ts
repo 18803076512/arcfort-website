@@ -1,5 +1,6 @@
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
+import { createRequire } from "node:module";
 import { test } from "node:test";
 import { parseConsoleCommand } from "../../lib/domain/catalog/commands.ts";
 import {
@@ -140,4 +141,18 @@ test("native document entry is opt-in and binds browser, ledger, cleanup and rev
   assert.match(document, /input\.inspectionBody/);
   assert.match(document, /assertDocumentLedger/);
   assert.match(document, /documentNonInterferenceQueries/);
+});
+
+test("authorized document CI retains OEM and packaging without enabling normal entrypoints", () => {
+  const workflow = readFileSync(".github/workflows/quality.yml", "utf8");
+  const yaml = createRequire(import.meta.url)("js-yaml");
+  const jobs = yaml.load(workflow).jobs;
+  const runs = jobs["product-intelligence-database"].steps
+    .map((step: { run?: string }) => step.run)
+    .filter((run: string | undefined) => run?.includes("--documents"));
+  assert.deepEqual(runs, ["npm run console:working:test:local -- --oem --packaging --documents"]);
+  assert.doesNotMatch(JSON.stringify(jobs.quality), /--oem|--packaging|--documents/);
+  assert.doesNotMatch(workflow, /CONSOLE_(DOCUMENTS|DOCUMENT_REVIEW)_ENABLED/);
+  const scripts = JSON.parse(readFileSync("package.json", "utf8")).scripts;
+  assert.doesNotMatch(scripts["console:working:test:local"], /--documents|CONSOLE_DOCUMENT/);
 });

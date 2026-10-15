@@ -103,7 +103,7 @@ test("authorized disposable CI explicitly opts into OEM while normal entrypoints
   const runs = jobs["product-intelligence-database"].steps
     .map((step: { run?: string }) => step.run)
     .filter((run: string | undefined) => run?.includes("--oem"));
-  assert.deepEqual(runs, ["npm run console:working:test:local -- --oem --packaging"]);
+  assert.deepEqual(runs, ["npm run console:working:test:local -- --oem --packaging --documents"]);
   assert.doesNotMatch(JSON.stringify(jobs.quality), /--oem|--packaging/);
   const scripts = JSON.parse(readFileSync("package.json", "utf8")).scripts;
   assert.doesNotMatch(workflow, /CONSOLE_OEM_ENABLED|CONSOLE_PACKAGING_ENABLED/);

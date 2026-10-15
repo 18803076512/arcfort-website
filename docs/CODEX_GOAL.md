@@ -338,6 +338,16 @@ mobile behavior and conversion paths must satisfy the applicable repository gate
 
 ## Recommended Next Setup Phase
 
+E1-E11 native CI follow-up (2026-10-16): committed candidate `bae0bae6` failed run
+`38717230925`. Quality guards still expected the pre-document CI command; the native document
+browser stopped at an exact-text upload-state locator after HTTP upload success. The recorded
+cell also contains file metadata, so exact text cannot match it. Test-only corrections preserve
+all three explicit acceptance switches and scope the status to the intended document row/cell.
+Thirteen guard tests, fourteen synthetic document browser groups, typecheck and scoped lint pass.
+Native persisted refresh, later document steps and release remain unproven until rerun. A separate
+public six-width smoke observed one React hydration error without route attribution; diagnostic
+rerun is pending. No merge, deployment, activation or retained/hosted database write occurred.
+
 E1-E11 review/CI checkpoint (2026-10-15): owner authorized the exact branch push and expanded
 permission to PR 130/main merge and deployment, subject to verified release gates and exact
 environment preflight. The workflow now explicitly includes `--oem --packaging --documents`;

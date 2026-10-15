@@ -7178,3 +7178,25 @@ retained database and historical report.
   database activation has occurred at this checkpoint. No factual gate is overridden.
 - **Next Recommended Action:** Push the reviewed E-batch, verify clean native document/OEM/packaging
   CI, then assess the exact release environment without replacing retained data or inventing facts.
+
+## 2026-10-16 - Repair E1-E11 CI Guard And Upload-State Tests
+
+- **Task:** Diagnose the first E-batch native CI failure and repair test assumptions without
+  changing runtime behavior or weakening native persistence/ledger assertions.
+- **Files Changed:** `scripts/console/test-document-acceptance.ts`, `test-document-browser.mjs`,
+  `test-document-working-browser.ts`, `test-oem-acceptance.ts`, `test-packaging-acceptance.ts`
+  in the same directory; Goal, M4 runbook and this log.
+- **Components Changed:** None; row-scoped browser status locator and workflow guard tests only.
+- **Data Changed:** None. **Visual Changes:** None. **SEO Impact:** None; public routes/RFQ untouched.
+- **Validation:** 13 guard tests, 14 synthetic document browser groups, typecheck and scoped lint
+  pass. Full 36-command foundation step passed after workflow guard repair. Original native run
+  `38717230925` failed; replacement native result remains pending.
+- **Known Issues:** HTTP upload success does not prove persisted UI refresh. Later native document
+  workflow remains unverified. Public six-width smoke recorded one unattributed hydration error;
+  diagnostic rerun is required before release. Real 15AK evidence and full V1 remain incomplete.
+- **Reusable Knowledge Added:** M4 runbook records the nested-cell text locator failure and the
+  distinction between synthetic selector reproduction and native persisted-state acceptance.
+- **Deployment:** None; no retained/hosted write, feature activation, merge or production change.
+  Existing exact-branch CI authorization applies; no new repository-rule override.
+- **Next Recommended Action:** Verify the repaired candidate in native document/OEM/packaging CI
+  and diagnose the public hydration error before PR 130/main release.
