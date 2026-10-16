@@ -11,8 +11,8 @@ import {
   qualityRfqPrompt,
 } from "../lib/content/quality-control.ts";
 
-const pageSource = readFileSync("app/quality-control/page.tsx", "utf8");
-const rfqSource = readFileSync("app/rfq/page.tsx", "utf8");
+const pageSource = readFileSync("app/(public)/quality-control/page.tsx", "utf8");
+const rfqSource = readFileSync("app/(public)/rfq/page.tsx", "utf8");
 const errors: string[] = [];
 
 function expect(condition: boolean, message: string) {

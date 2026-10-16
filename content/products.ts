@@ -1,8 +1,14 @@
 import { arcfortProducts, type ArcfortProductData } from "@/lib/data/products";
-import { type Product, type SpecRow, type WeldingProcess } from "@/lib/content/schemas";
+import {
+  type Product,
+  type ProductTechnicalSourceField,
+  type SpecRow,
+  type WeldingProcess,
+} from "@/lib/content/schemas";
 import { isUnconfirmedValue } from "@/lib/content/display";
 import { getProductBuyingProfile } from "@/lib/content/product-buying-profiles";
 import { isLegacyProductPath } from "@/lib/content/product-redirects";
+import { getProductTechnicalSpecificationProjection } from "@/lib/content/product-technical-facts";
 import { siteConfig } from "@/lib/content/site";
 
 const processByCategorySlug: Record<string, WeldingProcess> = {
@@ -32,18 +38,33 @@ function hasMissingProductValue(field: [string, string | undefined]): field is [
 }
 
 function createSpecifications(product: ArcfortProductData): SpecRow[] {
+  const technicalProjection = getProductTechnicalSpecificationProjection(product.slug);
+  const managedSourceFields = new Set(technicalProjection.managedSourceFields);
+  const fallbackTechnicalRows: SpecRow[] = [];
+  const addFallbackTechnicalRow = (
+    sourceField: ProductTechnicalSourceField,
+    label: string,
+    value: string | undefined,
+  ) => {
+    if (!managedSourceFields.has(sourceField) && value) {
+      fallbackTechnicalRows.push({ label, value });
+    }
+  };
+
+  addFallbackTechnicalRow("material", "Material", product.material);
+  addFallbackTechnicalRow("size", "Size", product.size);
+  addFallbackTechnicalRow("thread", "Thread", product.thread);
+  addFallbackTechnicalRow("weight", "Weight", product.weight);
+  addFallbackTechnicalRow("surfaceTreatment", "Surface Treatment", product.surfaceTreatment);
   const rows = [
     { label: "Product Name", value: product.name },
     { label: "SKU", value: product.sku },
     { label: "Category", value: product.category },
-    { label: "Material", value: product.material },
-    { label: "Size", value: product.size },
-    { label: "Thread", value: product.thread },
+    ...technicalProjection.rows,
+    ...fallbackTechnicalRows,
     { label: "Compatible Brand", value: product.compatibleBrand },
     { label: "Compatible Model", value: product.compatibleModel },
     { label: "OEM Number", value: product.oemNumber },
-    { label: "Weight", value: product.weight },
-    { label: "Surface Treatment", value: product.surfaceTreatment },
     { label: "Application", value: product.application },
     { label: "Package", value: product.package },
     { label: "MOQ", value: product.moq },
@@ -66,19 +87,35 @@ function createCompatibility(product: ArcfortProductData) {
 }
 
 function createMissingFields(product: ArcfortProductData) {
-  const fields: Array<[string, string | undefined]> = [
-    ["Material", product.material],
-    ["Size", product.size],
-    ["Thread", product.thread],
-    ["Compatible Brand", product.compatibleBrand],
-    ["Compatible Model", product.compatibleModel],
-    ["OEM Number", product.oemNumber],
-    ["Weight", product.weight],
-    ["Surface Treatment", product.surfaceTreatment],
-    ["Package", product.package],
+  const technicalProjection = getProductTechnicalSpecificationProjection(product.slug);
+  const managedSourceFields = new Set(technicalProjection.managedSourceFields);
+  const fields: Array<{
+    label: string;
+    value: string | undefined;
+    sourceField?: ProductTechnicalSourceField;
+  }> = [
+    { label: "Material", value: product.material, sourceField: "material" },
+    { label: "Size", value: product.size, sourceField: "size" },
+    { label: "Thread", value: product.thread, sourceField: "thread" },
+    { label: "Compatible Brand", value: product.compatibleBrand },
+    { label: "Compatible Model", value: product.compatibleModel },
+    { label: "OEM Number", value: product.oemNumber },
+    { label: "Weight", value: product.weight, sourceField: "weight" },
+    {
+      label: "Surface Treatment",
+      value: product.surfaceTreatment,
+      sourceField: "surfaceTreatment",
+    },
+    { label: "Package", value: product.package },
   ];
 
-  return fields.filter(hasMissingProductValue).map(([label]) => label);
+  const legacyMissingFields = fields
+    .filter(({ sourceField }) => !sourceField || !managedSourceFields.has(sourceField))
+    .map(({ label, value }) => [label, value] as [string, string | undefined])
+    .filter(hasMissingProductValue)
+    .map(([label]) => label);
+
+  return Array.from(new Set([...technicalProjection.confirmationLabels, ...legacyMissingFields]));
 }
 
 function createRelatedProductSlugs(product: ArcfortProductData) {

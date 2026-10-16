@@ -1,7 +1,12 @@
 import Link from "next/link";
-import { AddToRfqButton } from "@/components/rfq/AddToRfqButton";
-import type { Product, ProductCategory } from "@/lib/content/schemas";
 import { ProductVisual } from "@/components/content/ProductVisual";
+import { AddToRfqButton } from "@/components/rfq/AddToRfqButton";
+import {
+  getProductCardSpecificationRows,
+  getProductFamilyLabel,
+  getProductProcessLabel,
+} from "@/lib/content/product-presentation";
+import type { Product, ProductCategory } from "@/lib/content/schemas";
 
 type ProductCardProps = {
   product: Product;
@@ -11,85 +16,79 @@ type ProductCardProps = {
 
 export function ProductCard({ product, category, denseMobile = false }: ProductCardProps) {
   const href = `/products/${category.slug}/${product.slug}`;
+  const [selectionCue] = getProductCardSpecificationRows(product);
+  const productContext = [getProductProcessLabel(product), getProductFamilyLabel(product)]
+    .filter((value, index, values) => value && values.indexOf(value) === index)
+    .join(" / ");
 
   return (
-    <article className="group flex h-full min-w-0 flex-col border border-slate-200 bg-white shadow-sm transition hover:-translate-y-1 hover:border-arc-blue hover:shadow-industrial">
-      <Link href={href} aria-label={`View ${product.title}`}>
+    <article className="group flex h-full min-w-0 flex-col overflow-hidden rounded-md border border-arc-line bg-white transition hover:border-slate-300 hover:shadow-industrial">
+      <Link href={href} aria-label={`View ${product.title}`} className="block">
         <ProductVisual
+          sku={product.sku}
+          slug={product.slug}
           label={product.imageLabel}
-          title={product.title}
-          category={category.code}
           mainImage={product.mainImage}
           imageStatus={product.imageStatus}
           compact
           denseMobile={denseMobile}
         />
       </Link>
+
       <div className={`flex flex-1 flex-col ${denseMobile ? "p-3 sm:p-5" : "p-5"}`}>
-        <div className="flex items-start justify-between gap-3">
-          <div
-            className={`min-w-0 truncate font-bold uppercase text-arc-blue ${
-              denseMobile
-                ? "text-[10px] tracking-[0.08em] sm:text-xs sm:tracking-[0.16em]"
-                : "text-xs tracking-[0.16em]"
-            }`}
-          >
-            {category.shortTitle}
-          </div>
-          <div
-            className={`shrink-0 whitespace-nowrap text-right text-[11px] font-bold uppercase tracking-[0.12em] text-slate-600 ${
-              denseMobile ? "hidden sm:block" : ""
-            }`}
-          >
-            {product.sku}
-          </div>
-        </div>
+        <p className="truncate text-xs font-bold text-arc-blue">{productContext}</p>
         <h3
-          className={`mt-3 break-words font-display font-black leading-tight text-arc-midnight ${
-            denseMobile ? "min-h-[3.75rem] text-base sm:min-h-0 sm:text-xl" : "text-xl"
+          className={`mt-2 break-words font-display font-black leading-tight text-arc-midnight ${
+            denseMobile ? "min-h-12 text-base sm:text-xl" : "min-h-14 text-xl"
           }`}
         >
           <Link href={href} className="transition hover:text-arc-blue">
             {product.title}
           </Link>
         </h3>
-        <p
-          className={`mt-3 flex-1 text-sm leading-6 text-slate-600 ${
-            denseMobile ? "hidden sm:block" : ""
-          }`}
+
+        <dl
+          className={`mt-3 border-t border-arc-line pt-3 ${denseMobile ? "hidden sm:block" : ""}`}
         >
-          {product.shortDescription}
-        </p>
+          <div className="flex min-w-0 items-center justify-between gap-3 text-xs">
+            <dt className="shrink-0 font-semibold text-slate-500">SKU</dt>
+            <dd className="truncate font-bold text-arc-midnight">{product.sku}</dd>
+          </div>
+          {selectionCue ? (
+            <div className="mt-2 flex min-w-0 items-center justify-between gap-3 text-xs">
+              <dt className="shrink-0 font-semibold text-slate-500">{selectionCue.label}</dt>
+              <dd className="truncate font-bold text-arc-midnight">{selectionCue.value}</dd>
+            </div>
+          ) : null}
+        </dl>
+
         <div
           data-nosnippet
           data-snippet-region="product-card-actions"
-          className={`border-t border-slate-100 pt-4 ${
-            denseMobile
-              ? "mt-4 grid gap-2 sm:mt-5 sm:flex sm:items-center sm:justify-between sm:gap-3"
-              : "mt-5 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between"
-          }`}
+          className="mt-auto flex min-h-12 items-end justify-between gap-3 border-t border-arc-line pt-3"
         >
           <Link
             href={href}
-            className={`inline-flex min-h-10 items-center font-bold uppercase text-arc-blue transition hover:text-arc-copper ${
-              denseMobile
-                ? "justify-center text-[11px] tracking-[0.08em] sm:justify-start sm:text-sm sm:tracking-[0.14em]"
-                : "text-sm tracking-[0.14em]"
-            }`}
+            className="inline-flex min-h-11 items-center text-sm font-bold text-arc-blue transition hover:text-arc-copper"
           >
-            <span className={denseMobile ? "sm:hidden" : "hidden"}>Details</span>
-            <span className={denseMobile ? "hidden sm:inline" : "inline"}>View Details</span>
+            <span className={denseMobile ? "sm:hidden" : "hidden"}>View</span>
+            <span className={denseMobile ? "hidden sm:inline" : "inline"}>View Product</span>
+            <span className="ml-2" aria-hidden="true">
+              &rarr;
+            </span>
           </Link>
-          <AddToRfqButton
-            variant="compact"
-            item={{
-              sku: product.sku,
-              name: product.title,
-              category: category.title,
-              categorySlug: category.slug,
-              slug: product.slug,
-            }}
-          />
+          <div className="transition lg:pointer-events-none lg:opacity-0 lg:group-hover:pointer-events-auto lg:group-hover:opacity-100 lg:group-focus-within:pointer-events-auto lg:group-focus-within:opacity-100">
+            <AddToRfqButton
+              variant="card"
+              item={{
+                sku: product.sku,
+                name: product.title,
+                category: category.title,
+                categorySlug: category.slug,
+                slug: product.slug,
+              }}
+            />
+          </div>
         </div>
       </div>
     </article>

@@ -59,14 +59,14 @@ export function StickyContactBar() {
         <a
           href={buildWhatsAppHref()}
           aria-label="Send an ArcFort Weld product inquiry by WhatsApp"
-          className="inline-flex min-h-12 min-w-0 items-center justify-center overflow-hidden border border-white/15 px-2 text-center text-[11px] font-bold uppercase tracking-[0.04em] text-white transition hover:border-arc-signal hover:text-arc-signal sm:px-3 sm:text-xs sm:tracking-[0.12em]"
+          className="inline-flex min-h-12 min-w-0 items-center justify-center overflow-hidden border border-white/20 px-2 text-center text-sm font-bold text-white transition hover:border-white sm:px-3"
         >
           WhatsApp
         </a>
         <a
           href={buildEmailHref({ subject: "ArcFort Weld mobile website inquiry" })}
           aria-label="Send an ArcFort Weld product inquiry by email"
-          className="hidden min-h-12 min-w-0 items-center justify-center overflow-hidden border border-white/15 px-2 text-center text-[11px] font-bold uppercase tracking-[0.04em] text-white transition hover:border-arc-signal hover:text-arc-signal sm:inline-flex sm:px-3 sm:text-xs sm:tracking-[0.12em]"
+          className="hidden min-h-12 min-w-0 items-center justify-center overflow-hidden border border-white/20 px-2 text-center text-sm font-bold text-white transition hover:border-white sm:inline-flex sm:px-3"
         >
           Email
         </a>

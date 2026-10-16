@@ -1,0 +1,11 @@
+{
+  "name": "arcfort-console-isolated-sql-runtime",
+  "private": true,
+  "type": "module",
+  "description": "Optional, local-only PostgreSQL WASM tests; not a Supabase or concurrency acceptance substitute.",
+  "dependencies": {
+    "@electric-sql/pglite": "0.5.8",
+    "@electric-sql/pglite-pgtap": "0.0.9",
+    "@supabase/postgrest-typegen": "0.2.0"
+  }
+}

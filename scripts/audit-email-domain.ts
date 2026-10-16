@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-export {};
+import { fetchReadOnlyWithRetry } from "./live-audit-fetch.ts";
 
 type DnsAnswer = {
   type?: number;
@@ -21,6 +21,8 @@ const dnsType = {
   MX: 15,
   TXT: 16,
 } as const;
+const retriedDnsHosts = new Set<string>();
+let dnsRetryAttemptCount = 0;
 
 function getOption(name: string) {
   const inlinePrefix = `--${name}=`;
@@ -48,10 +50,7 @@ function decodeTxt(value: string) {
   return value.trim().replace(/^"|"$/g, "").replace(/"\s*"/g, "");
 }
 
-async function queryDns(
-  name: string,
-  type: keyof typeof dnsType,
-): Promise<DnsLookupResponse> {
+async function queryDns(name: string, type: keyof typeof dnsType): Promise<DnsLookupResponse> {
   const endpoints = [
     `https://cloudflare-dns.com/dns-query?name=${encodeURIComponent(name)}&type=${type}`,
     `https://dns.google/resolve?name=${encodeURIComponent(name)}&type=${type}`,
@@ -60,21 +59,31 @@ async function queryDns(
 
   for (const endpoint of endpoints) {
     try {
-      const response = await fetch(endpoint, {
-        headers: {
-          Accept: "application/dns-json",
-          "User-Agent": "ArcFort-Email-Domain-Audit/1.0",
+      const { response, data: result } = await fetchReadOnlyWithRetry<DnsResponse>(
+        endpoint,
+        {
+          headers: {
+            Accept: "application/dns-json",
+            "User-Agent": "ArcFort-Email-Domain-Audit/1.0",
+          },
+          cache: "no-store",
         },
-        cache: "no-store",
-        signal: AbortSignal.timeout(12_000),
-      });
+        {
+          attempts: 3,
+          timeoutMs: 12_000,
+          baseDelayMs: 500,
+          read: async (result) => (await result.json()) as DnsResponse,
+          onRetry: (event) => {
+            dnsRetryAttemptCount += 1;
+            retriedDnsHosts.add(new URL(event.url).hostname);
+          },
+        },
+      );
 
       if (!response.ok) {
         failures.push(`${new URL(endpoint).hostname}: HTTP ${response.status}`);
         continue;
       }
-
-      const result = (await response.json()) as DnsResponse;
 
       if (typeof result.Status !== "number") {
         failures.push(`${new URL(endpoint).hostname}: invalid DNS response`);
@@ -104,10 +113,7 @@ function answers(result: DnsResponse, type: keyof typeof dnsType) {
 async function main() {
   const domain = normalizeDnsName(getOption("domain") || "arcfortweld.com", "Domain");
   const selector = normalizeDnsName(getOption("selector") || "resend", "DKIM selector");
-  const mailFromLabel = normalizeDnsName(
-    getOption("mail-from") || "send",
-    "MAIL FROM label",
-  );
+  const mailFromLabel = normalizeDnsName(getOption("mail-from") || "send", "MAIL FROM label");
   const strict = args.includes("--strict");
   const dkimName = `${selector}._domainkey.${domain}`;
   const dmarcName = `_dmarc.${domain}`;
@@ -210,6 +216,10 @@ async function main() {
     console.warn(`\nWarnings (${warnings.length})`);
     warnings.forEach((warning) => console.warn(`- ${warning}`));
   }
+
+  console.log(
+    `DNS transient retries: ${dnsRetryAttemptCount} attempt${dnsRetryAttemptCount === 1 ? "" : "s"} across ${retriedDnsHosts.size} provider${retriedDnsHosts.size === 1 ? "" : "s"}`,
+  );
 
   if (errors.length > 0) {
     console.error(`\nBlocking authentication errors (${errors.length})`);

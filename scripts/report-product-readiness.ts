@@ -8,6 +8,15 @@ import {
   validateCsvFile,
   type ProductImportRow,
 } from "./product-import-utils.ts";
+import {
+  validateProductImageAssets,
+  type ProductImageAssetValidation,
+} from "./product-image-asset-utils.ts";
+import {
+  assessProductMainImageEvidence,
+  productMainImageEvidenceGapLabels,
+  type ProductMainImageEvidence,
+} from "./product-image-readiness-utils.ts";
 
 const outputPath = path.join(process.cwd(), "docs", "product-readiness-report.md");
 
@@ -106,19 +115,64 @@ function formatProductTable(rows: ProductImportRow[], getNotes: (row: ProductImp
   ].join("\n");
 }
 
-function buildReport(inputPath: string, rows: ProductImportRow[]) {
+function formatMainImageEvidenceTable(
+  entries: Array<{ row: ProductImportRow; evidence: ProductMainImageEvidence }>,
+) {
+  if (entries.length === 0) {
+    return "No active main-image evidence gaps found.";
+  }
+
+  return [
+    "| SKU | Product | CSV image status | Registry state | Source | Rights | Match | Controls to complete |",
+    "| --- | --- | --- | --- | --- | --- | --- | --- |",
+    ...entries.map(({ row, evidence }) => {
+      const asset = evidence.asset;
+      const gaps = evidence.gaps.map((gap) => productMainImageEvidenceGapLabels[gap]).join(", ");
+
+      return `| ${row.sku} | ${row.name} | ${row.image_status} | ${asset?.publication_status ?? "unregistered"} | ${asset?.source_kind ?? "unregistered"} | ${asset?.usage_rights_status ?? "unregistered"} | ${asset?.content_match_status ?? "unregistered"} | ${gaps || "None"} |`;
+    }),
+  ].join("\n");
+}
+
+function buildReport(
+  inputPath: string,
+  rows: ProductImportRow[],
+  imageAssets: ProductImageAssetValidation,
+) {
   const missingMainImageRows = getMissingImageRows(rows);
   const imageReviewRows = getImageReviewRows(rows);
   const missingGalleryRows = getMissingGalleryRows(rows);
   const activeRows = rows.filter((row) => row.status === "active");
   const draftRows = rows.filter((row) => row.status === "draft");
   const activeImageReviewRows = getImageReviewRows(activeRows);
+  const mainImageEvidence = rows.map((row) => ({
+    row,
+    evidence: assessProductMainImageEvidence(row, imageAssets.rows, publicImageExists),
+  }));
+  const activeMainImageEvidence = mainImageEvidence.filter(
+    (entry) => entry.row.status === "active",
+  );
+  const activeRowsWithRegisteredPublicMainImages = activeMainImageEvidence.filter(
+    (entry) => entry.evidence.hasRegisteredPublicMainImage,
+  );
+  const activeRowsWithSearchEligibleExactMainImages = activeMainImageEvidence.filter(
+    (entry) => entry.evidence.hasSearchEligibleExactMainImage,
+  );
+  const activeLegacyMainImageRows = activeMainImageEvidence.filter(
+    (entry) => entry.evidence.asset?.publication_status === "legacy_reference",
+  );
+  const activeMainImageEvidenceGaps = activeMainImageEvidence.filter(
+    (entry) => !entry.evidence.hasSearchEligibleExactMainImage,
+  );
+  const blockedMainImageRows = mainImageEvidence.filter(
+    (entry) => entry.evidence.asset?.publication_status === "blocked",
+  );
   const rowsWithPlaceholderFields = rows
     .map((row) => ({ row, fields: getPlaceholderFields(row) }))
     .filter((entry) => entry.fields.length > 0);
   const confirmedDataRows = rows.filter((row) => row.data_status === "confirmed");
   const ownPhotoRows = rows.filter((row) => row.image_status === "own_photo");
-  const reviewedPhotoRows = rows.filter(
+  const csvOwnOrSupplierPhotoRows = rows.filter(
     (row) => row.image_status === "own_photo" || row.image_status === "supplier_photo",
   );
   const confirmedCompatibilityRows = rows.filter((row) => row.compatibility_status === "confirmed");
@@ -137,14 +191,21 @@ function buildReport(inputPath: string, rows: ProductImportRow[]) {
     `- Draft products: ${draftRows.length}`,
     `- Products with confirmed data status: ${confirmedDataRows.length}`,
     `- Products with own-photo image status: ${ownPhotoRows.length}`,
-    `- Products with reviewed own or supplier photos: ${reviewedPhotoRows.length}`,
-    `- Products requiring a reviewed product photo: ${imageReviewRows.length}`,
-    `- Active products requiring a reviewed product photo: ${activeImageReviewRows.length}`,
+    `- Products whose CSV image status is own_photo or supplier_photo: ${csvOwnOrSupplierPhotoRows.length}`,
+    `- Active products with registered public main images: ${activeRowsWithRegisteredPublicMainImages.length}`,
+    `- Active products with search-eligible exact main images: ${activeRowsWithSearchEligibleExactMainImages.length}`,
+    `- Active products using retained legacy-reference main images: ${activeLegacyMainImageRows.length}`,
+    `- Active products still requiring exact main-image evidence: ${activeMainImageEvidenceGaps.length}`,
+    `- Products with blocked main-image assets: ${blockedMainImageRows.length}`,
+    `- Products whose CSV image status is needs_photo or placeholder: ${imageReviewRows.length}`,
+    `- Active products whose CSV image status is needs_photo or placeholder: ${activeImageReviewRows.length}`,
     `- Products with confirmed compatibility status: ${confirmedCompatibilityRows.length}`,
     `- Products with confirmed OEM status: ${confirmedOemRows.length}`,
     `- Missing main images: ${missingMainImageRows.length}`,
     `- Missing gallery images: ${missingGalleryRows.length}`,
     `- Products with high-priority placeholder fields: ${rowsWithPlaceholderFields.length}`,
+    "",
+    "The CSV `image_status` is workflow metadata. It does not approve ownership, website-use rights, exact-product identity or image-search eligibility. Those decisions come only from the canonical image asset registry.",
     "",
     formatStatusCounts("Publication Status", countBy(rows, "status")),
     "",
@@ -156,7 +217,13 @@ function buildReport(inputPath: string, rows: ProductImportRow[]) {
     "",
     formatStatusCounts("OEM Status", countBy(rows, "oem_status")),
     "",
-    "## Images Requiring Review",
+    "## Active Main-Image Evidence Gap Queue",
+    "",
+    "Every active product below has a retained public reference image but still lacks one or more controls required for a rights-approved, exact-product, search-eligible main image.",
+    "",
+    formatMainImageEvidenceTable(activeMainImageEvidenceGaps),
+    "",
+    "## Draft / Needs-Photo Queue",
     "",
     formatProductTable(
       imageReviewRows,
@@ -194,25 +261,31 @@ function buildReport(inputPath: string, rows: ProductImportRow[]) {
     "",
     "## Next Actions",
     "",
-    "1. Keep products with `needs_photo` or `placeholder` image status as `draft` until a reviewed product photo is available.",
-    "2. Confirm high-priority product fields from samples, drawings, factory data or supplier catalogs.",
-    "3. Change `data_status`, `image_status`, `compatibility_status` and `oem_status` only when the supporting data is actually confirmed.",
-    "4. Run `npm run products:report`, `npm run products:validate`, `npm run products:check-images` and `npm run build` before publishing SKU updates.",
+    "1. Replace retained family references with exact-product images and complete source owner, original file, website-use rights, reviewer and review date evidence.",
+    "2. Keep products with `needs_photo` or `placeholder` image status as `draft` until a reviewed exact-product photo is available.",
+    "3. Confirm high-priority product fields from samples, drawings, factory data or supplier catalogs.",
+    "4. Change `data_status`, `image_status`, `compatibility_status` and `oem_status` only when the supporting data is actually confirmed.",
+    "5. Run `npm run products:report`, `npm run images:assets:validate`, `npm run images:assets:report`, `npm run products:validate`, `npm run products:check-images` and `npm run build` before publishing SKU updates.",
     "",
   ].join("\n");
 }
 
 const inputPath = resolveValidationInputPath(process.argv[2]);
 const result = validateCsvFile(inputPath);
+const imageAssets = validateProductImageAssets({ productInputPath: inputPath });
 
-if (result.errors.length > 0) {
-  console.error("Product readiness report failed because the product CSV has validation errors.");
+if (result.errors.length > 0 || imageAssets.errors.length > 0) {
+  console.error(
+    "Product readiness report failed because the product CSV or image asset registry has validation errors.",
+  );
+  imageAssets.errors.forEach((issue) => console.error(`- ${issue.message}`));
   process.exit(1);
 }
 
 mkdirSync(path.dirname(outputPath), { recursive: true });
-writeFileSync(outputPath, buildReport(inputPath, result.rows));
+writeFileSync(outputPath, buildReport(inputPath, result.rows, imageAssets));
 
 console.log(`Product readiness report written to ${path.relative(process.cwd(), outputPath)}`);
 console.log(`Products checked: ${result.rows.length}`);
+console.log(`Image assets checked: ${imageAssets.rows.length}`);
 console.log(`Validation warnings: ${result.warnings.length}`);

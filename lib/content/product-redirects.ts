@@ -37,6 +37,14 @@ export const legacyProductRedirects = [
   },
 ] as const;
 
+export const heldProductSeriesRedirects = [
+  {
+    categorySlug: "mig-mag-torch-parts",
+    seriesSlug: "15ak-mig-mag-torch-parts",
+    destination: "/products/mig-mag-torch-parts",
+  },
+] as const;
+
 const legacyProductPaths = new Set(
   legacyProductRedirects.map(({ categorySlug, productSlug }) => `${categorySlug}/${productSlug}`),
 );

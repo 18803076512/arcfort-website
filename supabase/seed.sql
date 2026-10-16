@@ -1,0 +1,3 @@
+-- Milestone 1 intentionally seeds no users and no confirmed product facts.
+-- Bootstrap the first owner with a controlled service-role operation in a named non-production
+-- environment after creating the invite-only Auth user. Never commit user credentials here.
