@@ -338,6 +338,27 @@ mobile behavior and conversion paths must satisfy the applicable repository gate
 
 ## Recommended Next Setup Phase
 
+Release follow-up (verified 2026-10-17): PR 130 merged on 2026-10-16 as
+`4ea67a0c2c10277d6a6c4defbb6a41afe1495921`, after documentation head `98875f1f` passed both
+jobs in run `38892905692`. The merge tree exactly matches that tested head, and main run
+`38894287382` also passed both jobs, including all 55 native browser scenarios and the document,
+OEM and packaging opt-ins. However, Vercel deployment `dpl_4C9eFRRbG5a7SFi3u9CCkw8NUivN`
+failed. Website release/live acceptance is **BLOCKED**, not completed by green GitHub checks.
+The owner completed ordinary Vercel login. Read-only Build Logs identify a missing isolated
+Playwright type import in `scripts/console/test-browser-server-smoke.ts:20`: production installed
+root dependencies but typechecked test scripts. The original failure is reproduced locally, and
+the scoped build-config repair passes with no isolated test dependencies. Full script typechecking
+and strict application checking remain required. See the
+[build-scope decision](../knowledge-base/decisions/2026-10-17-production-typescript-scope.md).
+Read-only public checks still return 200 for home/products/RFQ/robots/sitemap, Console login is
+404, and robots does not yet contain the candidate's Console exclusion. RFQ still reports email
+and attachments configured, storage not ready; no inquiry was sent. See the
+[deployment follow-up](operations/pr-130-release-gate-2026-10-16.md#merge-and-failed-deployment-follow-up).
+The owner explicitly authorized the repair, follow-up PR on the same branch, full CI, then main
+merge and the existing Vercel production deployment. Fresh CI and live verification remain pending.
+No hosted/retained migration, Console activation or real-product publication occurred. Full V1,
+M5/M6 and real 15AK evidence remain unfinished.
+
 M4 native acceptance (2026-10-16): exact candidate
 `2fbead813b1c86dbf7e5591ca04658bd4ad01e94` passed both jobs in
 [run 38851302412](https://github.com/18803076512/arcfort-website/actions/runs/38851302412).

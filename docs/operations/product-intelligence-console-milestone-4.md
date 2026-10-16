@@ -3457,3 +3457,17 @@ technical data and human test decisions are not real ArcFort approvals. No retai
 service, key, feature flag or real data changed. M5 preview/QA/release snapshots, environment-specific
 activation and the real 15AK pilot remain unfinished. Follow the separately scoped
 [PR 130 website release gate](pr-130-release-gate-2026-10-16.md) before merging/deploying.
+
+## Post-Merge Native Revalidation
+
+Verified 2026-10-17. Documentation head `98875f1f` passed run `38892905692`, then PR 130 merged
+to main as `4ea67a0c2c10277d6a6c4defbb6a41afe1495921`. Main run `38894287382` passed both jobs
+and repeats the 1,881 SQL assertions, 55 browser scenarios, 120 delayed history modules and all
+three native opt-in acceptance summaries. No file-tree change separates the tested head and merge.
+
+The automatic Vercel Production deployment failed separately. Native acceptance remains valid for
+the tested code, but no new public deployment, hosted/retained schema application, real-owner M4
+activation or product publication is established. After owner login, the actual provider error was
+identified and reproduced: production typechecking included scripts requiring separately installed
+Playwright types. The scoped build-config repair preserves full CI script checks; see the
+[release follow-up](pr-130-release-gate-2026-10-16.md#merge-and-failed-deployment-follow-up).
