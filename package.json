@@ -9,6 +9,7 @@
     "start": "next start",
     "lint": "eslint . --max-warnings=0",
     "typecheck": "tsc --noEmit",
+    "test:public-hydration": "node --experimental-strip-types scripts/test-public-hydration.ts",
     "validate:products": "node scripts/validate-product-csv.mjs docs/product-sku-template.csv",
     "generate:products": "node scripts/generate-products-from-csv.mjs docs/product-sku-template.csv",
     "generate:products:write": "node scripts/generate-products-from-csv.mjs docs/product-sku-template.csv --write",

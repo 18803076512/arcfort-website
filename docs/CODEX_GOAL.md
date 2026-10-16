@@ -338,6 +338,17 @@ mobile behavior and conversion paths must satisfy the applicable repository gate
 
 ## Recommended Next Setup Phase
 
+Release-preflight repair (2026-10-16): public delayed-module testing reproduced React 418 at the
+claimed MAIN host. A keyed Fragment now isolates lazy public children without DOM/route/style
+changes. The new unchanged-byte 120-load regression fails the old build and passes the repair;
+all 60 ordinary six-width cases and build/SEO/performance checks pass. See the
+[public replay decision](../knowledge-base/decisions/2026-10-16-public-hydration-replay-boundary.md).
+Native run `38821534860` at `af2afbed` passed quality and document upload/storage/inspection/retry,
+then timed out on the evidence-dimension selector. Real synthetic components reproduce the nested
+select-label and evidence-cell exact-text mismatch; role-based selectors and fourteen review UI
+groups pass. These are test-only Console changes, not proof of remaining native review/ledger steps.
+Next rerun the combined candidate in clean CI. Release, activation and full V1 remain incomplete.
+
 E1-E11 native CI follow-up (2026-10-16): committed candidate `bae0bae6` failed run
 `38717230925`. Quality guards still expected the pre-document CI command; the native document
 browser stopped at an exact-text upload-state locator after HTTP upload success. The recorded

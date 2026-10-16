@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import type { ReactNode } from "react";
+import { Fragment, type ReactNode } from "react";
 import { AnalyticsTracker } from "@/components/AnalyticsTracker";
 import { StructuredData } from "@/components/content/StructuredData";
 import { Footer } from "@/components/Footer";
@@ -96,7 +96,8 @@ export default function PublicLayout({ children }: Readonly<{ children: ReactNod
       <AnalyticsTracker />
       <Header />
       <main id="main-content" tabIndex={-1}>
-        {children}
+        {/* Keep lazy RSC children off the host fiber until bundled React includes #35494. */}
+        <Fragment key="public-content">{children}</Fragment>
       </main>
       <Footer />
       <StickyContactBar />

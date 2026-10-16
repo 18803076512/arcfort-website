@@ -3371,3 +3371,29 @@ failed its final page-error assertion with one React hydration error. Its origin
 route attribution; a diagnostic rerun is required. Neither native acceptance nor public release is
 declared passed. Next push the reviewed test repair under existing authority, rerun native CI and
 resolve the public-page error before considering PR 130/main release.
+
+## E1-E11 Second Native CI Follow-Up
+
+Date: 2026-10-16 (Asia/Shanghai). Candidate: `af2afbed16f5e196afcdfc84d8b219ebe4418852`.
+[Run 38821534860](https://github.com/18803076512/arcfort-website/actions/runs/38821534860)
+passed quality. Native migrations, types, parity and Auth checks passed; document acceptance now
+passes real PDF upload, persisted row refresh, exact Storage/inspection bytes and idempotent retry.
+It then times out at the evidence-dimension selector, before registering the first review source.
+No final document ledger or complete native pass is claimed.
+
+The synthetic real workbench reproduces exact-label count zero for both Evidence dimension and
+Assertion, while exact-name combobox count is one. Their enclosing labels include option text.
+Likewise, a source title is nested with additional paragraphs in its table cell: exact text finds
+zero while the exact labeled source checkbox finds one. Native selection now uses combobox roles
+and waits for the exact source checkbox inside Document evidence; independent DTO checks remain.
+Fourteen review UI groups cover these controls and pass with no page errors or external requests.
+The evidence registration/refresh, human decisions, races and independent final ledger still require
+the next native run. No Console runtime, SQL, credentials or verification status changed.
+
+Separate release preflight diagnosed and repaired public MAIN-host hydration replay. The
+[dated decision](../../knowledge-base/decisions/2026-10-16-public-hydration-replay-boundary.md)
+records a failing old-build negative control, passing repaired-build 120-load regression and
+60-case six-width smoke. The quality workflow now runs that unchanged-byte regression after build
+using the existing pinned browser runtime. Public content, URLs, RFQ and evidence remain unchanged.
+Next commit/push this reviewed candidate under existing authorization and require both clean jobs
+before any release conclusion. No merge, deployment, retained/hosted write or activation occurred.

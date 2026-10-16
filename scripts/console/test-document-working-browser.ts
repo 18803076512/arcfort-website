@@ -177,13 +177,15 @@ export async function runDocumentWorkingBrowser(input: Input) {
   async function record(kind: "rights" | "scope" | "contradiction") {
     const copy = documentTestSource(kind);
     await button(owner.page, "Add evidence").click();
-    await field(owner.page, "Evidence dimension").selectOption(
-      kind === "rights" ? "usage_rights" : "exact_scope",
-    );
+    await owner.page
+      .getByRole("combobox", { name: "Evidence dimension", exact: true })
+      .selectOption(kind === "rights" ? "usage_rights" : "exact_scope");
     await owner.page
       .getByRole("combobox", { name: "Evidence basis", exact: true })
       .selectOption(copy.evidence_basis);
-    await field(owner.page, "Assertion").selectOption(copy.assertion);
+    await owner.page
+      .getByRole("combobox", { name: "Assertion", exact: true })
+      .selectOption(copy.assertion);
     for (const [name, value] of [
       ["Evidence title", copy.title],
       ["Evidence owner", copy.owner_name],
@@ -199,7 +201,7 @@ export async function runDocumentWorkingBrowser(input: Input) {
     assert.ok(id);
     await owner.page
       .getByRole("table", { name: "Document evidence" })
-      .getByText(copy.title, { exact: true })
+      .getByRole("checkbox", { name: `Select ${copy.title}`, exact: true })
       .waitFor();
     assert.ok((await data()).sources.items.some((source) => source.source_id === id));
     return id;

@@ -7200,3 +7200,28 @@ retained database and historical report.
   Existing exact-branch CI authorization applies; no new repository-rule override.
 - **Next Recommended Action:** Verify the repaired candidate in native document/OEM/packaging CI
   and diagnose the public hydration error before PR 130/main release.
+
+## 2026-10-16 - Fix Public Hydration Replay And Document Evidence Selectors
+
+- **Task:** Resolve the reproduced public release blocker and the next native document test failure.
+- **Files Changed:** `app/(public)/layout.tsx`, `scripts/test-public-hydration.ts`, `package.json`,
+  `.github/workflows/quality.yml`, document working/review browser tests, Goal, M4 runbook, this log
+  and `knowledge-base/decisions/2026-10-16-public-hydration-replay-boundary.md`.
+- **Components Changed:** Public layout gets a keyed Fragment without additional DOM. No Console
+  application component changes; evidence controls use role-based test locators.
+- **Data Changed:** None. **Visual Changes:** None; six-width screenshot/layout checks pass.
+- **SEO Impact:** URLs, metadata, canonical, structured data, sitemap and RFQ remain unchanged;
+  build, SEO/link/image/snippet audits and performance budget pass.
+- **Validation:** Public stress first reproduced 21 errors/120 loads. The permanent regression
+  fails the old build with two errors/120 loads, then passes the repair with zero errors/120 loads
+  and 777 delayed modules. All 60 ordinary six-width cases pass. Fourteen document review browser
+  groups and 13 acceptance guards pass; build, scoped lint/typecheck and formatting pass.
+- **Known Issues:** Native run `38821534860` passed quality and document upload/storage/inspection/
+  retry, then failed before evidence registration on a selector. Subsequent native review/ledger
+  steps and combined-candidate CI are pending. Real 15AK evidence and full V1 remain incomplete.
+- **Reusable Knowledge Added:** Public replay decision records direct host/cursor evidence,
+  upstream cause, bounded workaround, negative/positive tests and reversal condition; M4 runbook
+  records nested-label/cell selector failures without attributing them to runtime persistence.
+- **Deployment:** None; no merge, activation, retained/hosted write or repository-rule override.
+- **Next Recommended Action:** Verify clean native document/OEM/packaging and public hydration CI,
+  then resume exact-environment release preflight while preserving all real evidence gates.

@@ -214,6 +214,20 @@ try {
 
   await visit();
   await button("Add evidence").click();
+  await page
+    .getByRole("combobox", { name: "Evidence dimension", exact: true })
+    .selectOption("exact_scope");
+  await page
+    .getByRole("combobox", { name: "Evidence dimension", exact: true })
+    .selectOption("usage_rights");
+  await page.getByRole("combobox", { name: "Assertion", exact: true }).selectOption("supports");
+  await page
+    .getByRole("combobox", { name: "Assertion", exact: true })
+    .selectOption("reference_only");
+  await page
+    .getByRole("table", { name: "Document evidence" })
+    .getByRole("checkbox", { name: "Select Synthetic evidence 1", exact: true })
+    .waitFor();
   for (const [name, value] of [
     ["Evidence title", "TEST-ONLY catalog"],
     ["Evidence owner", "Synthetic owner"],
