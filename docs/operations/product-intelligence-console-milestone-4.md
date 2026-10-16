@@ -3397,3 +3397,27 @@ records a failing old-build negative control, passing repaired-build 120-load re
 using the existing pinned browser runtime. Public content, URLs, RFQ and evidence remain unchanged.
 Next commit/push this reviewed candidate under existing authorization and require both clean jobs
 before any release conclusion. No merge, deployment, retained/hosted write or activation occurred.
+
+## E1-E11 Native Review-State Follow-Up
+
+Date: 2026-10-16 (Asia/Shanghai). Candidate: `1393deca9f6704bc228d95fbcd8f964ad700da50`.
+[Run 38850141849](https://github.com/18803076512/arcfort-website/actions/runs/38850141849)
+passed quality, including the actual Linux 120-load public hydration regression with zero errors.
+The native document run now completes source registration and persisted source projection,
+proposal/submission, signed inspection and exact original download. It then times out at the
+unconditional Conflict resolution fill in the first-approval helper. No final approval/ledger pass
+is claimed for this run.
+
+The first candidate is NEEDS_FACTORY_CONFIRMATION with two supporting sources and no contradiction.
+The application correctly renders Conflict resolution only for DATA_CONFLICT. The native helper
+now branches on the independently read candidate state: no-conflict asserts that the field is
+absent; conflict still requires filling it. The existing missing-resolution server refusal test
+for the later conflicting revision remains unchanged. The synthetic review fixture now also has
+a faithful two-source unconfirmed state instead of testing conflict-only approvals.
+
+Local results: 15 review browser groups, eight screenshots, ten mocked command requests and
+18 inspections pass without page errors or external requests. Thirteen review/acceptance unit
+groups, typecheck, scoped lint, formatting and diff checks pass. No runtime component, SQL,
+technical claim, right, source authority or production setting changed. Next run the exact
+candidate in clean native CI; do not infer later human decisions/races/ledger success from these
+synthetic checks. Real 15AK and full V1 remain incomplete.

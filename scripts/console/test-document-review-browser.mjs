@@ -171,11 +171,12 @@ async function inspect() {
     .waitFor();
   await wait(async () => !(await field(ack[0]).isDisabled()));
 }
-async function approvalFields() {
+async function approvalFields(conflict = true) {
   await field("Reason").fill("TEST-ONLY human decision");
   await field("Rights evidence").selectOption(id(300));
   await field("Exact-scope evidence").selectOption(id(301));
-  await field("Conflict resolution").fill("TEST-ONLY resolution, not a real claim");
+  if (conflict) await field("Conflict resolution").fill("TEST-ONLY resolution, not a real claim");
+  else assert.equal(await field("Conflict resolution").count(), 0);
 }
 async function capture(name) {
   const file = path.join(output, `${name}.png`);
@@ -300,6 +301,19 @@ try {
   const urls = await page.evaluate(() => window.documentUrls);
   assert.ok(urls.created.length > 0);
   assert.ok(urls.created.every((value) => urls.revoked.includes(value)));
+  groups++;
+
+  await visit("?state=unconfirmed");
+  await approvalFields(false);
+  await inspect();
+  for (const name of ack) await field(name).check();
+  sent = await commandAfter(() => button("Record approval").click());
+  assert.equal(sent.decision, "APPROVE");
+  assert.equal(sent.resolution, "");
+  assert.equal(sent.observation, lastToken);
+  assert.equal(sent.confirmation.original_inspected, true);
+  assert.equal(sent.confirmation.usage_rights_confirmed, true);
+  assert.equal(sent.confirmation.exact_scope_confirmed, true);
   groups++;
 
   for (const mode of ["unsigned", "wrong", "expired", "short", "denied"]) {

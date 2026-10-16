@@ -7225,3 +7225,24 @@ retained database and historical report.
 - **Deployment:** None; no merge, activation, retained/hosted write or repository-rule override.
 - **Next Recommended Action:** Verify clean native document/OEM/packaging and public hydration CI,
   then resume exact-environment release preflight while preserving all real evidence gates.
+
+## 2026-10-16 - Match Native Document Approval To Actual Conflict State
+
+- **Task:** Repair the first-approval helper's conflict-only assumption without weakening conflict
+  resolution or human-inspection requirements.
+- **Files Changed:** `scripts/console/test-document-working-browser.ts`,
+  `scripts/console/document-review-fixture.ts`, `scripts/console/test-document-review-browser.mjs`,
+  `scripts/console/test-document-review.ts`, Goal, M4 runbook and this log.
+- **Components Changed:** Tests/fixtures only. **Data Changed:** Synthetic fixture only; no real data.
+- **Visual Changes:** None. **SEO Impact:** None; no public/runtime/RFQ change.
+- **Validation:** 15 review browser groups, 13 review/acceptance unit groups, typecheck, scoped lint,
+  formatting and diff checks pass. Candidate `1393deca` quality CI passed, including 120 Linux
+  hydration loads. Its native run failed at the absent conflict-resolution field after source
+  registration, proposal/submission and signed original inspection/download.
+- **Known Issues:** First and subsequent native human decisions, concurrency, final ledger and
+  combined-candidate CI are still pending. Full V1 and real 15AK evidence remain incomplete.
+- **Reusable Knowledge Added:** M4 runbook distinguishes missing confirmation from actual conflict
+  and records why synthetic review coverage must include both states.
+- **Deployment:** None; no merge, activation, retained/hosted database write or rule override.
+- **Next Recommended Action:** Re-run native document acceptance with both real candidate states;
+  retain all refusal, independent-ledger and noninterference assertions before release.

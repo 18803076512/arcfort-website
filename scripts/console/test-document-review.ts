@@ -14,6 +14,14 @@ import { documentId as id, documentEnv } from "./document-fixture.ts";
 import { documentReviewRaw, documentReviewFixture } from "./document-review-fixture.ts";
 const env = { ...documentEnv, CONSOLE_DOCUMENT_REVIEW_ENABLED: "true" };
 const raw = documentReviewRaw();
+test("unconfirmed review fixture has no contradiction or invented conflict resolution", () => {
+  const data = documentReviewFixture({ state: "unconfirmed" });
+  assert.equal(data.latest?.verification_status, "NEEDS_FACTORY_CONFIRMATION");
+  assert.equal(data.latest?.resolution, null);
+  assert.equal(data.latest?.decision, null);
+  assert.equal(data.sources.total, 2);
+  assert.ok(data.sources.items.every((source) => source.assertion === "supports"));
+});
 const source = Object.fromEntries(
   Object.entries(raw.sources.items[0]).filter(
     ([field]) => !["source_id", "dimension", "current", "qualifies", "created_at"].includes(field),

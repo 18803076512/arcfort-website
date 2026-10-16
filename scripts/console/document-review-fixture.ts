@@ -10,7 +10,8 @@ export function documentReviewRaw(query: Record<string, string> = {}) {
   const document = documentFixture().items[3];
   document.prior_document_id = null;
   const missing = query.state === "missing",
-    stale = query.state === "stale";
+    stale = query.state === "stale",
+    unconfirmed = query.state === "unconfirmed";
   if (missing)
     Object.assign(document, {
       upload_state: "missing",
@@ -18,27 +19,30 @@ export function documentReviewRaw(query: Record<string, string> = {}) {
       byte_size: null,
       page_count: null,
     });
-  const sources: DocumentReviewSource[] = Array.from({ length: query.many ? 28 : 3 }, (_, n) => ({
-    source_id: id(300 + n),
-    dimension: n === 1 ? "exact_scope" : "usage_rights",
-    title: query.long
-      ? `Synthetic evidence ${n + 1} ${"TESTONLY".repeat(40)}`
-      : `Synthetic evidence ${n + 1}`,
-    source_kind: "company_record",
-    source_level: "A",
-    evidence_basis:
-      n === 1 ? "controlled_drawing" : n < 2 ? "company_ownership" : "company_catalog",
-    evidence_date: n < 2 ? "2026-01-01" : null,
-    owner_name: "Synthetic custodian",
-    revision_label: null,
-    source_reference: "TEST-ONLY reference",
-    source_location: "Synthetic page 1",
-    scope_note: "Synthetic scope, not real evidence",
-    assertion: n < 2 ? "supports" : "contradicts",
-    current: !stale && !missing,
-    qualifies: n < 2 && !stale && !missing,
-    created_at: "2026-01-01T00:00:00Z",
-  }));
+  const sources: DocumentReviewSource[] = Array.from(
+    { length: unconfirmed ? 2 : query.many ? 28 : 3 },
+    (_, n) => ({
+      source_id: id(300 + n),
+      dimension: n === 1 ? "exact_scope" : "usage_rights",
+      title: query.long
+        ? `Synthetic evidence ${n + 1} ${"TESTONLY".repeat(40)}`
+        : `Synthetic evidence ${n + 1}`,
+      source_kind: "company_record",
+      source_level: "A",
+      evidence_basis:
+        n === 1 ? "controlled_drawing" : n < 2 ? "company_ownership" : "company_catalog",
+      evidence_date: n < 2 ? "2026-01-01" : null,
+      owner_name: "Synthetic custodian",
+      revision_label: null,
+      source_reference: "TEST-ONLY reference",
+      source_location: "Synthetic page 1",
+      scope_note: "Synthetic scope, not real evidence",
+      assertion: n < 2 ? "supports" : "contradicts",
+      current: !stale && !missing,
+      qualifies: n < 2 && !stale && !missing,
+      created_at: "2026-01-01T00:00:00Z",
+    }),
+  );
   const count = missing ? 0 : query.many ? 30 : query.state === "successor" ? 2 : 1;
   const make = (revision: number, approved = false): DocumentCandidate => ({
     candidate_id: id(200 + revision),
@@ -48,7 +52,7 @@ export function documentReviewRaw(query: Record<string, string> = {}) {
     sources: [id(300), id(301)],
     original_digest: "a".repeat(64),
     evidence_digest: "c".repeat(64),
-    verification_status: "DATA_CONFLICT",
+    verification_status: unconfirmed ? "NEEDS_FACTORY_CONFIRMATION" : "DATA_CONFLICT",
     reason: "Synthetic proposal",
     created_at: "2026-01-01T00:00:00Z",
     submitted: (query.state !== "draft" && revision === count) || approved,

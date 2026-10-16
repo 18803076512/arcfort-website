@@ -273,9 +273,16 @@ export async function runDocumentWorkingBrowser(input: Input) {
     await reviewer.page
       .getByRole("combobox", { name: "Exact-scope evidence", exact: true })
       .selectOption(scopeId);
-    await reviewer.page
-      .getByRole("textbox", { name: "Conflict resolution", exact: true })
-      .fill("TEST-ONLY contradiction reconciled for acceptance, not real evidence");
+    const resolution = reviewer.page.getByRole("textbox", {
+      name: "Conflict resolution",
+      exact: true,
+    });
+    if (latest.verification_status === "DATA_CONFLICT") {
+      await resolution.fill("TEST-ONLY contradiction reconciled for acceptance, not real evidence");
+    } else {
+      assert.equal(latest.verification_status, "NEEDS_FACTORY_CONFIRMATION");
+      assert.equal(await resolution.count(), 0);
+    }
     for (const name of [
       "I inspected this original document",
       "I confirm the usage rights for this document",

@@ -338,6 +338,15 @@ mobile behavior and conversion paths must satisfy the applicable repository gate
 
 ## Recommended Next Setup Phase
 
+E1-E11 native review-state follow-up (2026-10-16): run `38850141849` at `1393deca` passed quality,
+including all 120 public hydration loads with zero errors. Native document evidence registration,
+proposal/submission and signed original inspection/download now pass, but the first approval helper
+incorrectly tried to fill Conflict resolution for a NEEDS_FACTORY_CONFIRMATION candidate. The UI
+correctly omits that field without DATA_CONFLICT. The test now asserts absence in the first case and
+still fills it for the later conflicting revision. A faithful two-source unconfirmed fixture,
+15 review browser groups and 13 review/acceptance tests pass; native remainder is pending rerun.
+No application, SQL, real evidence or production state changed in this test-only follow-up.
+
 Release-preflight repair (2026-10-16): public delayed-module testing reproduced React 418 at the
 claimed MAIN host. A keyed Fragment now isolates lazy public children without DOM/route/style
 changes. The new unchanged-byte 120-load regression fails the old build and passes the repair;
