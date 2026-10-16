@@ -7246,3 +7246,26 @@ retained database and historical report.
 - **Deployment:** None; no merge, activation, retained/hosted database write or rule override.
 - **Next Recommended Action:** Re-run native document acceptance with both real candidate states;
   retain all refusal, independent-ledger and noninterference assertions before release.
+
+## 2026-10-16 - Verify Complete Native M4 Acceptance And Website Release Gate
+
+- **Task:** Verify successful current native CI and bind the authorized PR 130 website release to
+  an exact candidate, destination, warnings and rollback baseline.
+- **Files Changed:** Goal, M4 runbook, public-hydration decision, this log and
+  `docs/operations/pr-130-release-gate-2026-10-16.md`.
+- **Components Changed:** None. **Data Changed:** None. **Visual Changes:** None.
+- **SEO Impact:** None from these records; current SEO/link/image/snippet and public-route checks pass.
+- **Validation:** Candidate `2fbead813b1c86dbf7e5591ca04658bd4ad01e94`, run `38851302412`, both jobs
+  successful. Verified 32 SQL suites / 1,881 assertions, generated types, exact source parity,
+  Auth/RLS, 55 database-backed browser scenarios and 120 delayed history modules. Document/OEM/
+  packaging opt-ins passed actual forms, persisted refresh, contention, independent ledgers and
+  noninterference. Public quality passed 120 hydration loads with zero errors and all existing gates.
+- **Known Issues:** Synthetic acceptance does not establish real 15AK facts/rights. Existing legacy
+  images, inbox evidence, hosted activation, M5 preview/QA/release snapshots and full V1 remain open.
+  CI reports/screenshots were runner-local; no downloadable artifact was uploaded by this workflow.
+- **Reusable Knowledge Added:** Native acceptance limits and the exact website-only release/rollback
+  boundary are recorded; public hydration decision now includes completed Linux CI evidence.
+- **Deployment:** Not yet performed. Owner authorization covers reviewed PR 130/main website release;
+  fresh documentation-head CI and actual live verification remain required. No rule override.
+- **Next Recommended Action:** Complete the authorized website-code release and live verification,
+  preserving independent database/activation and real-product evidence gates.

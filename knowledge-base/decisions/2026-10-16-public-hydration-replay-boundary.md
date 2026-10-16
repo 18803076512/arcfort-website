@@ -1,7 +1,7 @@
 # Public Hydration Replay Boundary
 
 Date: 2026-10-16 (Asia/Shanghai).
-Status: scoped repair and local negative/positive regression verified; clean CI pending.
+Status: scoped repair, local negative/positive regression and clean Linux CI verified.
 
 ## Evidence
 
@@ -53,3 +53,13 @@ Existing owner authorization covers reviewed PR 130 release only after applicabl
 Remove the workaround only after the actually bundled renderer contains the upstream fix and the
 unchanged-byte regression passes without it. Removing it before then restores a reproduced failure.
 No canonical data, commercial terms, evidence state, SEO routes or public-source authority changes.
+
+## Clean CI Follow-Up
+
+Exact candidate `2fbead813b1c86dbf7e5591ca04658bd4ad01e94` passed both jobs in
+[run 38851302412](https://github.com/18803076512/arcfort-website/actions/runs/38851302412).
+Quality job `116812871006` completed all 120 public hydration loads with zero page errors, plus
+build, lint/typecheck, governed projections, SEO and performance checks. Database job
+`116812870616` separately passed the complete native document/OEM/packaging acceptance.
+This closes the pending CI statements above; it does not prove production deployment or RFQ inbox
+delivery. The workaround and reversal condition are unchanged.

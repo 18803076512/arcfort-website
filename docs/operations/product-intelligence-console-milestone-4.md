@@ -3421,3 +3421,39 @@ groups, typecheck, scoped lint, formatting and diff checks pass. No runtime comp
 technical claim, right, source authority or production setting changed. Next run the exact
 candidate in clean native CI; do not infer later human decisions/races/ledger success from these
 synthetic checks. Real 15AK and full V1 remain incomplete.
+
+## E1-E11 Native Acceptance Passed
+
+Date: 2026-10-16 (Asia/Shanghai). Tested candidate:
+`2fbead813b1c86dbf7e5591ca04658bd4ad01e94`.
+[Run 38851302412](https://github.com/18803076512/arcfort-website/actions/runs/38851302412)
+completed successfully: database job `116812870616`, quality job `116812871006`.
+The earlier three failed native runs remain historical diagnostics, not successful acceptance.
+
+- Native disposable migrations, both pgTAP/report paths (32 suites / 1,881 assertions), generated
+  database types, repeated exact 17-table source reconciliation and Auth/RLS/1,103-row pagination
+  all passed. The retained Windows stack and hosted project were not used.
+- The combined production-build browser acceptance completed 55 scenarios with 120 deliberately
+  delayed history modules. The explicit `--oem --packaging --documents` invocation passed all three
+  opt-in acceptance summaries after the independent final assertions.
+- Document acceptance covers two immutable references in one lineage, one exact PDF original,
+  three evidence bindings, five submitted candidates, four human decisions and two signed
+  observations. The decision sequence is APPROVE, EDIT, REJECT, APPROVE, pending; current sequence
+  remains four. Tokens are absent from receipts/events and publication count is zero.
+- Observed lock contention, competing proposals, copied/tampered observations, conflict resolution,
+  reviewer revocation, logout and observer disablement passed. Thirty-three unrelated tables are
+  compared exactly before/after document work. Final readiness remains two documents, zero currently
+  reviewed, two unresolved, one missing original, one open review and one conflict.
+- Quality passed the complete foundation/content/RFQ/secret checks, deterministic generation,
+  lint/typecheck/build, traced PDF routes, SEO/link/image/snippet audits and performance budget.
+  Public hydration completed 120 loads with zero page errors.
+
+Evidence is the completed job logs and assertions in the tested source. This workflow does not
+upload downloadable browser artifacts; CI screenshots/reports were runner-local, not retained
+artifact evidence. Local synthetic and public-browser reports remain separate local evidence.
+
+Result: the implemented M4 workflows now have native disposable acceptance. Synthetic rights,
+technical data and human test decisions are not real ArcFort approvals. No retained/hosted schema,
+service, key, feature flag or real data changed. M5 preview/QA/release snapshots, environment-specific
+activation and the real 15AK pilot remain unfinished. Follow the separately scoped
+[PR 130 website release gate](pr-130-release-gate-2026-10-16.md) before merging/deploying.

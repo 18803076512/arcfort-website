@@ -338,6 +338,20 @@ mobile behavior and conversion paths must satisfy the applicable repository gate
 
 ## Recommended Next Setup Phase
 
+M4 native acceptance (2026-10-16): exact candidate
+`2fbead813b1c86dbf7e5591ca04658bd4ad01e94` passed both jobs in
+[run 38851302412](https://github.com/18803076512/arcfort-website/actions/runs/38851302412).
+Native checks include 32 SQL suites / 1,881 assertions, generated types, repeated 17-table exact
+source parity, Auth/RLS/pagination and 55 database-backed browser scenarios with 120 delayed history
+modules. Explicit OEM, packaging and document acceptance passed, including real synthetic PDF
+bytes, persisted refresh, human decisions, observed contention, independent ledgers and retention.
+Public quality includes 120 hydration loads with zero errors. This supersedes the pending native
+results below, not the historical failures or real-evidence gates. See the
+[release gate](operations/pr-130-release-gate-2026-10-16.md).
+Next finish the authorized PR 130/main website-code release and live verification. Hosted/retained
+migrations, Console activation, verified preview/QA/publication and the real 15AK pilot are separate
+unfinished work. All 43 structured SKUs remain unverified; full V1 is not complete.
+
 E1-E11 native review-state follow-up (2026-10-16): run `38850141849` at `1393deca` passed quality,
 including all 120 public hydration loads with zero errors. Native document evidence registration,
 proposal/submission and signed original inspection/download now pass, but the first approval helper
