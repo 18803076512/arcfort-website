@@ -72,6 +72,8 @@ const securityHeaders = [
 ] as const;
 
 const nextConfig: NextConfig = {
+  // Test-only runtimes are installed separately; full CI typechecking still uses tsconfig.json.
+  typescript: { tsconfigPath: "tsconfig.build.json" },
   // The disposable PDF child loads its dependencies independently of the route bundle.
   outputFileTracingIncludes: {
     "/console/documents/{upload,inspect}": [

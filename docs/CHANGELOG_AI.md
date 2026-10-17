@@ -7269,3 +7269,56 @@ retained database and historical report.
   fresh documentation-head CI and actual live verification remain required. No rule override.
 - **Next Recommended Action:** Complete the authorized website-code release and live verification,
   preserving independent database/activation and real-product evidence gates.
+
+## 2026-10-17 - Record Authorized Merge And Failed Production Deployment
+
+- **Task:** Revalidate the October 16 release attempt after interruption, separating successful
+  merge/native CI from the failed provider deployment and preserving the actual next blocker.
+- **Files Changed:** `docs/CODEX_GOAL.md`, M4 operations record,
+  `docs/operations/pr-130-release-gate-2026-10-16.md` and this log. An ignored read-only production
+  browser helper was prepared but not executed against the failed release.
+- **Components Changed:** None. **Data Changed:** None. **Visual Changes:** None in this follow-up.
+- **SEO Impact:** No new live release is verified. Existing public robots/sitemap remain reachable;
+  the candidate's Console robots exclusion is not present on the public domain.
+- **Validation:** Documentation head `98875f1f` passed both jobs in `38892905692`; PR 130 merged
+  normally as `4ea67a0c` on October 16. File trees match. Main run `38894287382` passed both jobs,
+  with 1,881 SQL assertions, 55 native browser scenarios and all document/OEM/packaging opt-ins.
+  October 17 read-only home/products/RFQ/robots/sitemap checks return 200; Console login returns 404.
+- **Known Issues:** Vercel deployment `dpl_4C9eFRRbG5a7SFi3u9CCkw8NUivN` / GitHub deployment
+  `7117884289` failed. Exact build error is unavailable without provider login or a sanitized log.
+  Optional plugin access was denied by browser approval and not bypassed; ordinary login requested.
+  Public RFQ still reports configured email/attachments but storage not ready. Inbox delivery,
+  real 15AK evidence, hosted activation and full V1 remain unproven.
+- **Reusable Knowledge Added:** Exact merge/deployment identity, current failed-release boundary,
+  public availability evidence and safe log-access handoff are preserved in the operations record.
+- **Deployment:** Attempted and FAILED, not live. No database/retained-stack operation, account or
+  provider configuration change, Console activation, evidence approval or rule override occurred.
+- **Next Recommended Action:** Read the exact Vercel build failure, repair its demonstrated cause,
+  then verify both provider deployment and actual public website before claiming release completion.
+
+## 2026-10-17 - Separate Production And Test Typechecking
+
+- **Task:** Repair the demonstrated Vercel build failure after the owner completed login and
+  explicitly authorized the same-branch fix, follow-up PR, full CI, main merge and deployment.
+- **Files Changed:** `next.config.ts`, `tsconfig.build.json`, `scripts/test-build-types.ts`,
+  `package.json`, `.github/workflows/quality.yml`, Goal/M4/PR 130 release records, the new
+  `knowledge-base/decisions/2026-10-17-production-typescript-scope.md` and this log.
+- **Components Changed:** Production TypeScript root selection and CI build ordering only.
+  Application and complete test typechecking retain the same strict compiler options.
+- **Data Changed:** None. **Visual Changes:** None. **SEO Impact:** No route, metadata, canonical,
+  sitemap, robots, product-image or public-content change.
+- **Validation:** An isolated source copy without nested browser/SQL dependencies reproduces the
+  original Next build's exact missing Playwright type error; the repaired build passes with 96
+  static outputs. Scope/compiler parity and an in-memory application type-error negative control
+  pass. Complete local typecheck, lint excluding ignored `.tmp/**`, 749-file secret scan and diff
+  whitespace checks pass. The copy links root dependencies; fresh Linux npm-ci validation remains
+  a required independent gate before merge. Existing runtime dependencies were not moved/deleted.
+- **Known Issues:** The original production deployment remains failed. This local fix does not
+  prove a new deployment, RFQ inbox delivery, real 15AK evidence or full Console V1 completion.
+  Next's inherited-plugin suggestion is informational; the parsed plugin is retained.
+- **Reusable Knowledge Added:** Production/test dependency boundary, root-only build regression,
+  owner authorization, exact cause and source-only rollback are recorded in the dated decision.
+- **Deployment:** Repair-head CI, follow-up PR merge and production/live verification pending.
+  No database, retained stack, Console switch, paid service or permission change; no rule override.
+- **Next Recommended Action:** Run complete clean CI for this repair, then verify the exact main
+  deployment and actual buyer-facing pages under the existing scoped authorization.

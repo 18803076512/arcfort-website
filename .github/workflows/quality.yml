@@ -114,6 +114,12 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Verify strict application scope without isolated test dependencies
+        run: npm run test:build-types -- --root-only
+
+      - name: Build with root dependencies only
+        run: npm run build
+
       - name: Install isolated browser types for complete TypeScript checking
         working-directory: scripts/console/browser-runtime
         run: npm ci --ignore-scripts
@@ -259,9 +265,6 @@ jobs:
 
       - name: Type-check
         run: npm run typecheck
-
-      - name: Build
-        run: npm run build
 
       - name: Test public hydration with delayed unchanged modules
         run: npm run test:public-hydration
