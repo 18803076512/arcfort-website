@@ -4,6 +4,91 @@ This append-only log records substantial Codex work so future sessions can under
 why it changed and which risks remain. Add the newest entry at the top, below this introduction. Do
 not include secrets, buyer PII, private prospect data or unconfirmed claims.
 
+## 2026-10-25 - Protect The Full Discovery And Product Inquiry Journey
+
+- **Task:** Implemented the owner's continued website-ecosystem repair request as a bounded
+  improvement to discovery, product/category navigation, SKU inquiry context and existing monitoring.
+- **Files Changed:** `scripts/buyer-journey-audit.ts`, its negative-control test,
+  `scripts/audit-live-seo.ts`, `package.json`, `.github/workflows/quality.yml`, this log and
+  `knowledge-base/seo/website-ecosystem-2026-10-25.md`. The submission also retains the completed
+  PR 132 release/follow-up documentation from the preceding work.
+- **Components / Visual / Data Changed:** No public UI, product fact, publication state, media,
+  compatibility, business policy, database, DNS or provider setting changed. No new dependency.
+- **SEO Impact:** Read-only audit now traverses from home through eligible canonical HTML pages;
+  it detects disconnected linked islands and excludes self-only, nofollow, query-variant and inert
+  markup shortcuts. Every active public product must have direct category/body links and exact SKU
+  context in RFQ plus configured email and WhatsApp fallbacks. Existing URLs remain unchanged.
+- **Validation:** New graph/context negative controls, bounded-retry tests, build, full typecheck,
+  lint, static/built SEO/link/image/snippet checks, performance and complete local HTTP audit passed.
+  Live production health passed: 88 sitemap URLs, 82/82 reachable HTML pages, maximum depth 2,
+  40/40 product journeys, existing redirect/404 checks, RFQ readiness and security headers.
+  Public DOM/styles were not changed; no new visual review or inbox-delivery proof is claimed.
+- **Known Issues:** GSC affected URLs remain unavailable. GA4, DMARC, RFQ inbox/storage and exact
+  product/image evidence are existing bounded follow-ups. The audit checks public links, not email
+  delivery, actual Google indexing, form interaction, accessibility or sales conversion.
+- **Reusable Knowledge Added:** A website maintenance matrix, five-SKU evidence priority and
+  canonical source/intake handoff; tests reproduce failures the former union-of-links audit misses.
+- **Deployment:** Local candidate validated; submit to the same authorized repository/main website
+  pipeline, verify exact-head CI before merge, then record actual release in the PR. Existing
+  six-hour health workflow consumes the enhanced script; no new scheduled task or message action.
+- **Next Recommended Action:** Finish this monitoring release, then obtain current GSC redirect
+  errors and the five prioritized MIG products' exact measurements/photos to improve buyer content.
+
+## 2026-10-25 - Verify Remaining Indexing Evidence And Buyer Paths
+
+- **Task:** Continued the authorized indexing review after production release, checked the original
+  Search Console notices and reviewed site-wide discoverability and product inquiry paths.
+- **Files Changed:** This log, the dated indexing review and
+  `knowledge-base/seo/indexing-follow-up-2026-10-25.md`.
+- **Components / Visual / Data Changed:** None. Documentation and read-only analysis only.
+- **SEO Impact:** No additional route or metadata change. All 82 sitemap HTML pages are reachable
+  within two link hops from home; all 40 product pages have contextual inbound links and product-
+  specific RFQ links. No duplicate complete title, H1 or description metadata was found.
+- **Validation:** Matched production-build HTML plus live dynamic catalog/RFQ responses; complete
+  link-graph traversal and metadata comparison. Main CI run `40201693055` passed both jobs for
+  released merge `8c1bbe14d52267b0065d964c2c549d1e5dca8eca`. No runtime edits required a rebuild.
+- **Known Issues:** The October 22 original notices confirm both a 48-page validation pass and a
+  separate redirect-error notification, but contain no affected-URL list or attachment. The known
+  GSC subscription limitation remains. Three MIG contact-tip descriptions and two TIG ceramic-cup
+  descriptions repeat after normalizing product names; this is not proof of search cannibalization.
+  Exact product facts and image rights remain unconfirmed under the existing evidence gates.
+- **Reusable Knowledge Added:** Eight priority URL inspections, a complete 82-page link inventory,
+  redirect triage steps, existing intake references and the boundary between email notices,
+  crawlability and Google indexing. No private message headers or tracking URLs were persisted.
+- **Deployment:** Existing PR 132 production release retained; no second runtime release, Google
+  submission, DNS/account change or email send. Browser fallback requires access authorization
+  under the browser tool rules; current notices alone cannot close the reported redirect issue.
+- **Next Recommended Action:** Read the actual Search Console redirect-error and validation
+  reports through an authorized browser session or an owner-supplied export, then repair only
+  demonstrated URL failures; strengthen the priority MIG product evidence in parallel.
+
+## 2026-10-25 - Publish And Verify Indexing Repair
+
+- **Task:** Completed the owner's authorized PR 132 merge and existing Vercel website release.
+- **Files Changed:** The seven-file repair in PR 132; this completion record and the dated indexing
+  review capture the resulting release evidence. No additional runtime change in this record.
+- **Components / Visual / Data Changed:** Metadata and redirect behavior only in the repair;
+  no visual, product, media, commercial, RFQ, database, DNS or account-setting change.
+- **SEO Impact:** Six missing-page families retain 404/noindex without an inherited homepage
+  canonical. Two compound legacy aliases reach their existing destination in one permanent hop,
+  including query parameters. All 88 sitemap URLs retain their canonical addresses.
+- **Validation:** PR head `37c7a45ac8295a354247b3ff9a6455053063c33c` passed both complete CI jobs in
+  run `40164509618` and the Vercel preview. Merge `8c1bbe14d52267b0065d964c2c549d1e5dca8eca`
+  has the same file tree. Production `health:production` passed: 88 sitemap URLs / 82 HTML pages /
+  6 downloads; 2 category, 5 product and 2 combined legacy redirects; 6 missing-page families;
+  RFQ readiness, core sender DNS and security headers. No transient retries or terminal failures.
+  IndexNow dry run found 88 URLs and submitted nothing. No real RFQ/email was sent.
+- **Deployment:** PR 132 merged to `main`; Vercel deployment
+  `EKocWfUfQ5LoCtTPcmCbhcNh5rrs` reports success for the exact merge. Latest live responses and
+  the complete audit verify the repair after an initial probe during the deployment transition.
+- **Known Issues:** Owner-accepted, pre-existing GSC access, GA4, DMARC, RFQ inbox/storage and
+  product-evidence follow-ups remain. Technical health does not establish Google indexing.
+- **Reusable Knowledge Added:** Exact commit/tree/deployment identity, release gate
+  `PASS_WITH_WARNINGS`, production evidence, residual boundaries and rollback in
+  `knowledge-base/seo/indexing-review-2026-10-25.md`; the PR description also records completion.
+- **Next Recommended Action:** Obtain current GSC indexing and validation exports, inspect the
+  original 48 URLs and unresolved reasons, then prioritize verified MIG/MAG purchasing evidence.
+
 ## 2026-10-25 - Indexing Repair Publication Authorization
 
 - **Task:** Recorded the owner's explicit approval after review of the tested indexing repair.

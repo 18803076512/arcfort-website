@@ -3,6 +3,47 @@
 检查日期：2026-10-25。线上基线对应仓库 main `f7d109fddcf9305c02882f75f47c5c6fd0f7b4b1`。
 目标站点：<https://www.arcfortweld.com>。本批次聚焦规范地址、旧链接跳转和索引回归检查。
 
+## 最新发布结论（2026-10-25）
+
+**发布门禁：PASS_WITH_WARNINGS。已获业主授权，修复已合并并在官网验证生效。**
+
+- 修复 PR：<https://github.com/18803076512/arcfort-website/pull/132>。
+- 已验证候选：`37c7a45ac8295a354247b3ff9a6455053063c33c`；合并后的 main：
+  `8c1bbe14d52267b0065d964c2c549d1e5dca8eca`。两者文件树相同：
+  `a5d6c2c192891a7588e4f2ba88b1106c4fef3072`。
+- PR 完整 CI 的 `quality` 与 `product-intelligence-database` 两项均成功：
+  <https://github.com/18803076512/arcfort-website/actions/runs/40164509618>。
+  包含生产构建、完整类型检查、lint、SEO、链接、图片证据、性能、公开页面 hydration、
+  本地数据库及 Console 回归；本次新增的 HTTP 索引路由检查也通过。
+- 合并后的 main 提交再次完成两项完整 CI，均为 `success`：
+  <https://github.com/18803076512/arcfort-website/actions/runs/40201693055>。
+- Vercel 对合并提交返回 `success`：
+  <https://vercel.com/liangchenhuis-projects/arcfort-website/EKocWfUfQ5LoCtTPcmCbhcNh5rrs>。
+- 正式域名上的 `npm run health:production` 通过：88 条 sitemap 地址（82 个 HTML、
+  6 个文件）、2 条旧分类、5 条旧产品、2 条叠加别名（含查询参数）和 6 类 404 均通过；
+  无请求重试或终止失败。旧别名一次 308 到原目标，错误页仍为 404/noindex 且无 canonical。
+  robots、首页、RFQ 状态及安全响应头检查通过。
+- 首次抽样发生在部署切换期间，仍见旧行为；后续最新响应与完整审计均确认修复。
+  不将中间状态作为最终结果，也不把普通 HTTP 审计当作 Googlebot 或真实收录证据。
+- `npm run indexing:submit -- --dry-run` 读取到 88 条地址；没有发送 IndexNow 请求。
+  未进行 Google 收录请求、GSC 验证操作或真实测试邮件发送。
+
+本批次适用门禁为代码构建/类型/静态检查、元数据、路由、重定向、404、站点地图、robots、
+安全与只读 RFQ 状态。产品、媒体、业务事实、页面视觉、交互和数据库均未改动。既有 CI
+仍完成其全面回归；不声称取得新的视觉验收或最终邮箱投递证据。
+
+非阻塞遗留事项已在授权前告知业主：GSC 第三方接口不可用，不能逐页确认原 48 个地址；
+GA4 未配置；DMARC 缺失；RFQ 邮件、买家确认和附件通道报告就绪，但持久存储未就绪，
+最终邮箱投递未实测。GSC HTML 标签缺失不能据此否定 DNS 验证。这些均未由本批修复造成，
+本次授权不包含 DNS、付费服务、统计账户或存储配置变更。
+
+后续责任与动作：业主提供 Search Console 导出及真实业务/图片证据；网站维护者据此复核
+48 页当前状态与其余排除原因，优先完善 MIG/MAG 采购页面。回滚可回退 PR 132 的源码更改，
+无需数据库迁移。下文保留修复前证据与授权过程；历史阻塞已解除。
+
+后续已读取原始通知并核查 82 页链接结构；执行队列与结果见
+`indexing-follow-up-2026-10-25.md`。邮件未附具体错误 URL，不能据其正文复原受影响清单。
+
 ## 通知的正确含义
 
 用户提供的 Google 通知称，48 个网页的“已发现 - 尚未编入索引”问题通过修正验证。
@@ -13,7 +54,7 @@ GSC Wizard 本次返回 `payment_required / subscription_required`，未取得�
 后台记录、URL 检查额度、逐页索引状态或最近搜索表现。没有进行索引提交、付费操作或账户变更。
 可以直接从 Google Search Console 导出报告继续核查，无须为了这次核查购买第三方订阅。
 
-## 线上实测
+## 修复前线上实测
 
 来源：2026-10-25 普通 HTTP GET 全量站点地图检查、仓库 `seo:audit:live` 和扩展路由检查。
 这不是经过验证的 Googlebot 抓取，也不是 Google 收录结果。

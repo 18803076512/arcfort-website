@@ -216,6 +216,9 @@ jobs:
       - name: Test bounded production-audit retries
         run: npm run test:live-audit
 
+      - name: Test crawl reachability and product inquiry audit
+        run: npm run test:buyer-journey-audit
+
       - name: Test RFQ constraints
         run: npm run test:rfq
 
