@@ -40,9 +40,8 @@ export const metadata: Metadata = {
     icon: "/favicon.svg",
   },
   manifest: "/site.webmanifest",
-  alternates: {
-    canonical: "/",
-  },
+  // Each indexable page declares its canonical through buildMetadata.
+  // A layout fallback would incorrectly canonicalize every missing route to home.
   robots: {
     index: true,
     follow: true,

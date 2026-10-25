@@ -4,6 +4,53 @@ This append-only log records substantial Codex work so future sessions can under
 why it changed and which risks remain. Add the newest entry at the top, below this introduction. Do
 not include secrets, buyer PII, private prospect data or unconfirmed claims.
 
+## 2026-10-25 - Indexing Repair Publication Authorization
+
+- **Task:** Recorded the owner's explicit approval after review of the tested indexing repair.
+- **Files Changed:** This log and `knowledge-base/seo/indexing-review-2026-10-25.md`.
+- **Data Changed / SEO Impact:** Documentation only; the previously validated runtime patch is unchanged.
+- **Authorization:** Submit the repair to `18803076512/arcfort-website`, run checks, then merge `main`
+  and deploy through the existing website pipeline. This resolves the preceding automatic approval
+  rejection. DNS, account settings, new paid services, database migrations and new product claims
+  remain outside scope.
+- **Validation / Deployment:** Existing local evidence retained; current remote CI and actual
+  production deployment must still be verified. No publication is claimed by this authorization entry.
+- **Reusable Knowledge Added:** Explicit destination/action scope in the dated indexing review.
+- **Known Issues / Next Recommended Action:** Publish and verify the scoped repair, then obtain the
+  current GSC URL export; the existing analytics and product-evidence follow-ups remain unchanged.
+
+## 2026-10-25 - Public Indexing Route Hygiene
+
+- **Task:** Reviewed the owner's 48-URL validation notice against the live site and corrected
+  inherited home canonicals on missing pages plus overlapping legacy category/product redirects.
+- **Files Changed:** `app/(public)/layout.tsx`, `lib/content/product-redirects.ts`, `next.config.ts`,
+  `scripts/audit-live-seo.ts`, `.github/workflows/quality.yml`, this log and
+  `knowledge-base/seo/indexing-review-2026-10-25.md`.
+- **Components And Visual Changes:** Metadata-only layout correction; no new UI, DOM, style or
+  interaction changes. Existing recovery navigation and RFQ behavior remain unchanged.
+- **Data Changed:** No product facts, identifiers, media evidence, commercial policy or database
+  data changed. Two compound legacy aliases are derived from the existing redirect registries.
+- **SEO Impact:** All existing 88 sitemap entries retain their URLs/indexability. Missing pages
+  retain HTTP 404/noindex without a home canonical. Compound MIG aliases reach the same final
+  category in one permanent hop, preserving query parameters. The read-only audit now checks
+  redirect destinations and six not-found route families; CI runs it on the production build.
+- **Validation:** Build (96 static outputs), full typecheck, lint, static SEO, built links/images/
+  snippets, performance budget, bounded-retry tests and secret scan passed. Expanded audit produced
+  10 expected failures against the previous live behavior and passed against the repaired build,
+  including all 88 sitemap URLs. No visual/browser check is claimed for this non-visual change.
+- **Known Issues:** GSC Wizard subscription access is unavailable, so the 48 URLs and current
+  Google-selected canonicals remain unverified. GA4, DMARC and final RFQ inbox/storage evidence
+  remain separate operational follow-ups. Normal domain redirects and product evidence gates stay.
+- **Reusable Knowledge Added:** Dated indexing review, exact evidence boundaries, priority page
+  strategy and Search Console export/verification checklist in the linked knowledge record.
+- **Deployment:** Local candidate only. Automatic approval rejected creating the GitHub tree for
+  these seven files, citing missing explicit authorization to publish code/operational documents
+  to `18803076512/arcfort-website`. No remote branch/PR, merge or deployment was performed. The
+  owner must authorize that destination and publication before external work resumes. No DNS,
+  account, database or analytics settings changed.
+- **Next Recommended Action:** Obtain the current GSC indexing/redirect-error URL export and
+  compare it with the final production behavior; then strengthen real MIG product evidence.
+
 ## Required Entry Schema
 
 Every substantial completed task must add one dated entry containing:

@@ -3,6 +3,7 @@
 import { siteConfig } from "../lib/content/site.ts";
 import {
   isLegacyProductPath,
+  legacyCategoryProductRedirects,
   legacyCategoryRedirects,
   legacyProductRedirects,
 } from "../lib/content/product-redirects.ts";
@@ -61,6 +62,14 @@ const retryBaseDelayMs = getPositiveIntegerArg("--retry-base-delay-ms", 500);
 const maxTerminalRequestFailures = getPositiveIntegerArg("--max-request-failures", 8);
 const errors: string[] = [];
 const warnings: string[] = [];
+const missingPagePaths = [
+  "/__arcfort_indexing_audit_missing__",
+  "/products/__arcfort_indexing_audit_missing__",
+  "/products/mig-mag-torch-parts/__arcfort_indexing_audit_missing__",
+  "/products/mig-mag-torch-parts/series/__arcfort_indexing_audit_missing__",
+  "/guides/__arcfort_indexing_audit_missing__",
+  "/applications/__arcfort_indexing_audit_missing__",
+] as const;
 const retriedUrls = new Set<string>();
 let retryAttemptCount = 0;
 let terminalRequestFailureCount = 0;
@@ -447,15 +456,39 @@ async function auditPermanentRedirect(sourcePath: string, destinationPath: strin
     errors.push(`Expected permanent redirect for ${sourcePath}, received HTTP ${response.status}.`);
   }
 
-  if (
-    !resolvedLocation ||
-    resolvedLocation.pathname !== expectedLocation.pathname ||
-    resolvedLocation.search !== expectedLocation.search
-  ) {
+  if (!resolvedLocation || resolvedLocation.href !== expectedLocation.href) {
     errors.push(
       `Redirect mismatch: ${sourcePath} -> ${location ?? "missing Location header"}; expected ${destinationPath}.`,
     );
   }
+
+  // A valid first Location alone does not prove the destination is healthy.
+  const destination = await auditUrl(new URL(destinationPath, `${canonicalBaseUrl}/`).href);
+  if (
+    destination.status !== 200 ||
+    normalizeComparableUrl(destination.finalUrl) !== normalizeComparableUrl(expectedLocation.href)
+  ) {
+    errors.push(`Redirect target must be a direct HTTP 200: ${destinationPath}.`);
+  }
+  const expectedCanonical = new URL(destinationPath, `${canonicalBaseUrl}/`);
+  expectedCanonical.search = "";
+  if (
+    destination.noIndex ||
+    !destination.canonical ||
+    normalizeComparableUrl(destination.canonical) !== normalizeComparableUrl(expectedCanonical.href)
+  ) {
+    errors.push(`Redirect target must be indexable and self-canonical: ${destinationPath}.`);
+  }
+}
+
+async function auditMissingPage(path: string) {
+  const row = await auditUrl(new URL(path, `${canonicalBaseUrl}/`).href);
+  if (row.status !== 404 || row.finalUrl !== row.requestedUrl) {
+    errors.push(`Missing page must return HTTP 404 without a redirect: ${path}.`);
+  }
+  if (!row.noIndex) errors.push(`Missing page must be noindex: ${path}.`);
+  if (row.canonical)
+    errors.push(`Missing page must not inherit a canonical: ${path} -> ${row.canonical}.`);
 }
 
 function checkDuplicates(rows: PageAudit[], field: "title" | "description") {
@@ -920,6 +953,14 @@ async function main() {
     );
   }
 
+  for (const redirect of legacyCategoryProductRedirects) {
+    await auditPermanentRedirect(redirect.source, redirect.destination);
+    const query = "?utm_source=seo-audit&reference=14%2F116";
+    await auditPermanentRedirect(`${redirect.source}${query}`, `${redirect.destination}${query}`);
+  }
+
+  for (const path of missingPagePaths) await auditMissingPage(path);
+
   for (const pdfPath of [
     "/downloads/arcfort-distributor-sourcing-guide.pdf",
     "/downloads/renqiu-ailesen-welding-catalog.pdf",
@@ -971,6 +1012,10 @@ async function main() {
   console.log(`Sitemap images checked: ${sitemapImageUrls.length}`);
   console.log(`Legacy category redirects checked: ${legacyCategoryRedirects.length}`);
   console.log(`Legacy product redirects checked: ${legacyProductRedirects.length}`);
+  console.log(
+    `Combined category/product aliases checked (with and without query): ${legacyCategoryProductRedirects.length}`,
+  );
+  console.log(`Missing-page route families checked: ${missingPagePaths.length}`);
   console.log(
     `Transient retries: ${retryAttemptCount} attempt${retryAttemptCount === 1 ? "" : "s"} across ${retriedUrls.size} URL${retriedUrls.size === 1 ? "" : "s"}`,
   );
