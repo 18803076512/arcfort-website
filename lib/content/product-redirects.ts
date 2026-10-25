@@ -37,6 +37,17 @@ export const legacyProductRedirects = [
   },
 ] as const;
 
+// Resolve overlapping category/product aliases before the broad category rules.
+// Their final destinations are unchanged; old links no longer need two redirects.
+export const legacyCategoryProductRedirects = legacyCategoryRedirects.flatMap((category) =>
+  legacyProductRedirects
+    .filter((product) => product.categorySlug === category.destinationCategorySlug)
+    .map((product) => ({
+      source: `/products/${category.sourceCategorySlug}/${product.productSlug}`,
+      destination: product.destination,
+    })),
+);
+
 export const heldProductSeriesRedirects = [
   {
     categorySlug: "mig-mag-torch-parts",

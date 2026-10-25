@@ -278,6 +278,20 @@ jobs:
       - name: Audit built product image evidence
         run: npm run seo:images
 
+      - name: Audit built indexing routes and redirect destinations
+        timeout-minutes: 5
+        run: |
+          npm run start -- --hostname 127.0.0.1 --port 3105 > /tmp/arcfort-indexing-server.log 2>&1 &
+          indexing_server_pid=$!
+          trap 'kill "$indexing_server_pid" 2>/dev/null || true' EXIT
+          for attempt in {1..30}; do
+            if curl --fail --silent --output /dev/null http://127.0.0.1:3105/; then
+              break
+            fi
+            sleep 1
+          done
+          npm run seo:audit:live -- --fetch-base-url http://127.0.0.1:3105
+
       - name: Audit search snippets and social preview
         run: npm run seo:snippets
 

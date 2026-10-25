@@ -2,6 +2,7 @@ import type { NextConfig } from "next";
 import { withBotId } from "botid/next/config";
 import {
   heldProductSeriesRedirects,
+  legacyCategoryProductRedirects,
   legacyCategoryRedirects,
   legacyProductRedirects,
 } from "./lib/content/product-redirects";
@@ -98,6 +99,11 @@ const nextConfig: NextConfig = {
   },
   async redirects() {
     return [
+      ...legacyCategoryProductRedirects.map(({ source, destination }) => ({
+        source,
+        destination,
+        permanent: true,
+      })),
       ...legacyCategoryRedirects.flatMap(({ sourceCategorySlug, destinationCategorySlug }) => [
         {
           source: `/products/${sourceCategorySlug}`,
