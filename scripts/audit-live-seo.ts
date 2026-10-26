@@ -12,6 +12,7 @@ import { defaultRetryableHttpStatuses, fetchReadOnlyWithRetry } from "./live-aud
 import {
   auditBuyerJourneys,
   extractJourneyLinks,
+  readJourneyRobots,
   type JourneyLink,
 } from "./buyer-journey-audit.ts";
 
@@ -367,8 +368,7 @@ async function auditUrl(canonicalUrl: string): Promise<PageAudit> {
     canonical: getCanonical(html),
     htmlLang: htmlTag ? getAttribute(htmlTag, "lang") : undefined,
     h1Count: (html.match(/<h1\b/gi) ?? []).length,
-    noIndex: /(?:^|[\s,])(?:noindex|none)(?=$|[\s,])/i.test(robots),
-    noFollow: /(?:^|[\s,])(?:nofollow|none)(?=$|[\s,])/i.test(robots),
+    ...readJourneyRobots(robots),
     openGraphTitle: getPropertyMetaContent(html, "og:title"),
     openGraphDescription: getPropertyMetaContent(html, "og:description"),
     openGraphImage: getPropertyMetaContent(html, "og:image"),

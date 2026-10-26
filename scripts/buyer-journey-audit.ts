@@ -24,6 +24,15 @@ type JourneySite = {
   whatsappHref: string;
 };
 
+export function readJourneyRobots(robots: string) {
+  // X-Robots-Tag permits an agent prefix without a space, e.g. googlebot:noindex.
+  const directives = new Set(robots.toLowerCase().split(/[\s,:]+/));
+  return {
+    noIndex: directives.has("noindex") || directives.has("none"),
+    noFollow: directives.has("nofollow") || directives.has("none"),
+  };
+}
+
 function decodeAttribute(value: string) {
   return value
     .replace(/&#(x[0-9a-f]+|[0-9]+);/gi, (entity, code: string) => {

@@ -7,12 +7,14 @@ not include secrets, buyer PII, private prospect data or unconfirmed claims.
 ## 2026-10-26 - Reject Ambiguous Inquiry Parameters Before Release
 
 - **Task:** Completed final candidate review of PR 133 and corrected an audit false negative.
-- **Files Changed:** Buyer-journey audit and its test, the ecosystem maintenance record and this log.
+- **Files Changed:** Buyer-journey audit and its test, live SEO integration, the ecosystem maintenance
+  record and this log.
 - **Data / Components / Visual / SEO Impact:** Audit-only. No public page, product or provider change.
 - **Validation:** A duplicate `product` parameter was accepted by the first audit candidate even
   though the existing RFQ page rejects array-valued parameters and clears prefill. The new negative
   control first failed on that candidate, then passed after requiring a single query value for RFQ,
   email-body and WhatsApp-text SKU context. Existing link and SKU negative controls remain enforced.
+  Robots-policy tests retain agent-prefixed headers without spaces and treat `none` as noindex/nofollow.
 - **Known Issues:** Current public product links do not exhibit this error. GSC, GA4, DMARC,
   inbox/storage and real-product evidence follow-ups remain unchanged.
 - **Reusable Knowledge Added:** The distinction between URLSearchParams' first-value lookup and

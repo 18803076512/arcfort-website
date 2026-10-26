@@ -3,6 +3,7 @@ import assert from "node:assert/strict";
 import {
   auditBuyerJourneys,
   extractJourneyLinks,
+  readJourneyRobots,
   type JourneyPage,
 } from "./buyer-journey-audit.ts";
 
@@ -12,6 +13,20 @@ const site = {
   whatsappHref: "https://wa.me/123456789",
 };
 const product = { sku: "AF-TEST-1", categorySlug: "parts", slug: "tip" };
+for (const policy of [
+  "none",
+  "NONE",
+  "googlebot:none",
+  "noindex, nofollow",
+  "googlebot:noindex,nofollow",
+]) {
+  assert.deepEqual(readJourneyRobots(policy), { noIndex: true, noFollow: true });
+}
+assert.deepEqual(readJourneyRobots("googlebot:noindex"), { noIndex: true, noFollow: false });
+assert.deepEqual(readJourneyRobots("nofollow"), { noIndex: false, noFollow: true });
+for (const policy of ["", "index, follow", "noindexing,nofollowing"]) {
+  assert.deepEqual(readJourneyRobots(policy), { noIndex: false, noFollow: false });
+}
 const categoryPath = "/products/parts";
 const productPath = `${categoryPath}/tip`;
 const context = encodeURIComponent("Product: Tip\r\nSKU: AF-TEST-1\r\nQuantity:");
