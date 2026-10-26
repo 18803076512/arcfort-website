@@ -94,6 +94,15 @@ const wrongDestinations = productMarkup
   .replace("/rfq?", "https://other.test/rfq?");
 assert.equal(audit(fixture(wrongDestinations)).productsPassed, 0);
 
+// Next's RFQ page ignores array-valued product parameters, even when both values match.
+for (const parameter of ["product", "body", "text"]) {
+  const duplicate = productMarkup.replace(
+    `${parameter}=${context}`,
+    `${parameter}=${context}&amp;${parameter}=${context}`,
+  );
+  assert.equal(audit(fixture(duplicate)).productsPassed, 0, `Duplicate ${parameter} must fail`);
+}
+
 // Header/global links and inert markup cannot stand in for a product-specific body CTA.
 assert.equal(audit(fixture(productMarkup.replaceAll("main>", "header>"))).productsPassed, 0);
 for (const wrapper of [

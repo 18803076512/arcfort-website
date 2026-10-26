@@ -88,6 +88,11 @@ function containsExactSku(value: string | null, sku: string) {
   return skuLines.length === 1 && skuLines[0].replace(/^SKU\s*:\s*/i, "") === sku;
 }
 
+function hasUniqueSkuParameter(url: URL, parameter: string, sku: string) {
+  const values = url.searchParams.getAll(parameter);
+  return values.length === 1 && containsExactSku(values[0], sku);
+}
+
 export function auditBuyerJourneys(
   pages: JourneyPage[],
   products: JourneyProduct[],
@@ -185,7 +190,7 @@ export function auditBuyerJourneys(
         (url) =>
           url.origin === rfqUrl.origin &&
           url.pathname === rfqUrl.pathname &&
-          containsExactSku(url.searchParams.get("product"), product.sku),
+          hasUniqueSkuParameter(url, "product", product.sku),
       )
     ) {
       failures.push("RFQ link does not preserve the exact SKU");
@@ -195,7 +200,7 @@ export function auditBuyerJourneys(
         (url) =>
           url.protocol === "mailto:" &&
           url.pathname.toLowerCase() === emailUrl.pathname.toLowerCase() &&
-          containsExactSku(url.searchParams.get("body"), product.sku),
+          hasUniqueSkuParameter(url, "body", product.sku),
       )
     ) {
       failures.push("sales email fallback does not preserve the exact SKU");
@@ -205,7 +210,7 @@ export function auditBuyerJourneys(
         (url) =>
           url.origin === whatsappUrl.origin &&
           url.pathname === whatsappUrl.pathname &&
-          containsExactSku(url.searchParams.get("text"), product.sku),
+          hasUniqueSkuParameter(url, "text", product.sku),
       )
     ) {
       failures.push("WhatsApp fallback does not preserve the exact SKU");

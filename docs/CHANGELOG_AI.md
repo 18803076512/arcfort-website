@@ -4,6 +4,22 @@ This append-only log records substantial Codex work so future sessions can under
 why it changed and which risks remain. Add the newest entry at the top, below this introduction. Do
 not include secrets, buyer PII, private prospect data or unconfirmed claims.
 
+## 2026-10-26 - Reject Ambiguous Inquiry Parameters Before Release
+
+- **Task:** Completed final candidate review of PR 133 and corrected an audit false negative.
+- **Files Changed:** Buyer-journey audit and its test, the ecosystem maintenance record and this log.
+- **Data / Components / Visual / SEO Impact:** Audit-only. No public page, product or provider change.
+- **Validation:** A duplicate `product` parameter was accepted by the first audit candidate even
+  though the existing RFQ page rejects array-valued parameters and clears prefill. The new negative
+  control first failed on that candidate, then passed after requiring a single query value for RFQ,
+  email-body and WhatsApp-text SKU context. Existing link and SKU negative controls remain enforced.
+- **Known Issues:** Current public product links do not exhibit this error. GSC, GA4, DMARC,
+  inbox/storage and real-product evidence follow-ups remain unchanged.
+- **Reusable Knowledge Added:** The distinction between URLSearchParams' first-value lookup and
+  the RFQ page's single-value contract is captured in the test and operations record.
+- **Deployment:** Same PR 133 candidate; new head requires fresh CI before the authorized merge.
+- **Next Recommended Action:** Complete exact-head CI and release verification for this repair.
+
 ## 2026-10-25 - Protect The Full Discovery And Product Inquiry Journey
 
 - **Task:** Implemented the owner's continued website-ecosystem repair request as a bounded
