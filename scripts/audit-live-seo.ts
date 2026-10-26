@@ -9,6 +9,12 @@ import {
 } from "../lib/content/product-redirects.ts";
 import { arcfortProducts } from "../lib/data/products.ts";
 import { defaultRetryableHttpStatuses, fetchReadOnlyWithRetry } from "./live-audit-fetch.ts";
+import {
+  auditBuyerJourneys,
+  extractJourneyLinks,
+  readJourneyRobots,
+  type JourneyLink,
+} from "./buyer-journey-audit.ts";
 
 type PageAudit = {
   canonicalUrl: string;
@@ -22,6 +28,7 @@ type PageAudit = {
   htmlLang?: string;
   h1Count?: number;
   noIndex?: boolean;
+  noFollow?: boolean;
   openGraphTitle?: string;
   openGraphDescription?: string;
   openGraphImage?: string;
@@ -42,6 +49,7 @@ type PageAudit = {
   brokenFragmentLinks?: string[];
   duplicateIdCount?: number;
   internalLinks?: string[];
+  journeyLinks?: JourneyLink[];
   googleVerificationTagPresent?: boolean;
   analyticsAvailable?: boolean;
 };
@@ -360,7 +368,7 @@ async function auditUrl(canonicalUrl: string): Promise<PageAudit> {
     canonical: getCanonical(html),
     htmlLang: htmlTag ? getAttribute(htmlTag, "lang") : undefined,
     h1Count: (html.match(/<h1\b/gi) ?? []).length,
-    noIndex: robots.toLowerCase().includes("noindex"),
+    ...readJourneyRobots(robots),
     openGraphTitle: getPropertyMetaContent(html, "og:title"),
     openGraphDescription: getPropertyMetaContent(html, "og:description"),
     openGraphImage: getPropertyMetaContent(html, "og:image"),
@@ -381,6 +389,7 @@ async function auditUrl(canonicalUrl: string): Promise<PageAudit> {
     brokenFragmentLinks: fragments.brokenLinks,
     duplicateIdCount: fragments.duplicateIdCount,
     internalLinks: getInternalLinks(html, canonicalUrl),
+    journeyLinks: extractJourneyLinks(html, canonicalUrl),
     googleVerificationTagPresent: Boolean(getMetaContent(html, "google-site-verification")),
     analyticsAvailable: /data-analytics-available\s*=\s*["']true["']/i.test(html),
   };
@@ -854,6 +863,26 @@ async function main() {
   }
 
   const htmlAudits = audits.filter((row) => row.contentType.includes("text/html"));
+  const buyerJourneys = auditBuyerJourneys(
+    htmlAudits.map((row) => ({
+      url: row.canonicalUrl,
+      eligible:
+        row.status === 200 &&
+        !row.noIndex &&
+        Boolean(row.canonical) &&
+        normalizeComparableUrl(row.canonical!) === normalizeComparableUrl(row.canonicalUrl) &&
+        normalizeComparableUrl(row.finalUrl) === normalizeComparableUrl(row.requestedUrl),
+      links: row.journeyLinks ?? [],
+      followLinks: !row.noFollow,
+    })),
+    arcfortProducts.filter(
+      (product) =>
+        (product.status ?? "active") === "active" &&
+        !isLegacyProductPath(product.categorySlug, product.slug),
+    ),
+    { ...siteConfig, url: canonicalBaseUrl },
+  );
+  errors.push(...buyerJourneys.errors);
   const linkedUrls = new Set(htmlAudits.flatMap((row) => row.internalLinks ?? []));
   const homeAudit = htmlAudits.find((row) => new URL(row.canonicalUrl).pathname === "/");
   const privacyAudit = htmlAudits.find((row) => new URL(row.canonicalUrl).pathname === "/privacy");
@@ -1008,6 +1037,13 @@ async function main() {
     `Sitemap URLs with lastmod: ${sitemapEntries.filter((entry) => entry.lastModified).length}`,
   );
   console.log(`HTML pages checked: ${htmlAudits.length}`);
+  console.log(
+    `HTML pages reachable from home: ${buyerJourneys.reachablePages}/${buyerJourneys.htmlPages}`,
+  );
+  console.log(`Maximum HTML link depth: ${buyerJourneys.maxDepth ?? "unknown"}`);
+  console.log(
+    `Product category/RFQ/email/WhatsApp paths passed: ${buyerJourneys.productsPassed}/${buyerJourneys.productsChecked}`,
+  );
   console.log(`Non-HTML files checked: ${audits.length - htmlAudits.length}`);
   console.log(`Sitemap images checked: ${sitemapImageUrls.length}`);
   console.log(`Legacy category redirects checked: ${legacyCategoryRedirects.length}`);
