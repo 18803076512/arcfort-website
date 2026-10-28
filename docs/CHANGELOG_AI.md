@@ -4,6 +4,43 @@ This append-only log records substantial Codex work so future sessions can under
 why it changed and which risks remain. Add the newest entry at the top, below this introduction. Do
 not include secrets, buyer PII, private prospect data or unconfirmed claims.
 
+## 2026-10-28 - Check Crawl Permission And Make Indexing Submissions Reviewable
+
+- **Task:** Continued the owner's indexing-ecosystem request with effective robots policy checks and
+  an explicit, bounded IndexNow notification workflow.
+- **Files Changed:** `scripts/robots-policy.ts`, `scripts/test-robots-policy.ts`,
+  `scripts/indexnow-workflow.ts`, `scripts/test-indexnow-workflow.ts`, `scripts/submit-indexnow.ts`,
+  `scripts/audit-live-seo.ts`, `package.json`, `.github/workflows/quality.yml`,
+  `docs/search-indexing-submission.md`, the ecosystem maintenance record and this log.
+- **Components / Data / Visual Changes:** No public component, product evidence, URL, sitemap entry,
+  lastmod, robots directive, DNS, account, analytics or database setting changed. No new dependency.
+- **SEO Impact:** Live checks now evaluate Googlebot/Bingbot rules against sitemap pages/files/images
+  and the sitemap, with effective API/Console exclusions. Previously a blocking product rule or a
+  bot-specific block could pass the two text-presence checks. The notification CLI now defaults to
+  preview, prints the exact URL list, checks key scope/content, rejects noncanonical or nonsitemap
+  targets, and requires --submit plus a reviewed URL file. All selected targets are checked before
+  the one POST. HTTP 200/202 are explicitly not described as indexing. POST retries are disabled.
+- **Validation:** Robots grouping/wildcard/precedence/encoding and old-check false-negative controls;
+  submission default/argument/sitemap/list/key/robots/redirect/noindex/canonical/transport controls;
+  real offline CLI with network disabled; existing buyer-journey and bounded-retry tests; production
+  build, full typecheck, lint, SEO content/links/images/snippets and performance checks passed.
+  Complete local HTTP audit: 88 sitemap URLs, both bot policies, 82 reachable HTML pages and 40
+  product inquiry paths. Live read-only IndexNow preview verified the sitemap, key and Bingbot policy.
+  No IndexNow POST, GSC write or real RFQ was performed. The loopback server needed an explicit
+  127.0.0.1 hostname because this host disallows network-interface enumeration; the audit then passed.
+- **Known Issues:** Actual Google per-URL state and the 48 notice URLs remain unknown. Existing
+  GA4/DMARC/inbox/storage/product-evidence follow-ups remain bounded and unchanged. Robots checks
+  do not simulate crawler cache/rendering; this submission tool covers current sitemap additions
+  and updates, not deletions/migrations. Existing no-argument callers now preview instead of writing.
+- **Reusable Knowledge Added:** A release-to-notification-to-GSC-evidence workflow, lastmod rules,
+  exact-list handoff, 200/202 interpretation and safe failure handling in the indexing runbook.
+- **Deployment:** Candidate for the existing authorized repository/main website pipeline; exact-head
+  remote CI, Vercel deployment and post-release live verification must be recorded in the PR.
+- **Prior Release Verified:** PR 133 merged as eee6a88b58e5e2480d50944458d33724e33aae69; both main CI
+  jobs in run 40421320144 succeeded, completing its previously pending automatic recheck.
+- **Next Recommended Action:** Obtain native GSC exports of Redirect error and the validated 48 URLs,
+  then inspect actual affected URLs and compare last-crawl dates with the deployed fixes.
+
 ## 2026-10-26 - Reject Ambiguous Inquiry Parameters Before Release
 
 - **Task:** Completed final candidate review of PR 133 and corrected an audit false negative.

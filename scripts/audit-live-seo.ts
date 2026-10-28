@@ -9,6 +9,7 @@ import {
 } from "../lib/content/product-redirects.ts";
 import { arcfortProducts } from "../lib/data/products.ts";
 import { defaultRetryableHttpStatuses, fetchReadOnlyWithRetry } from "./live-audit-fetch.ts";
+import { auditRobotsPolicy } from "./robots-policy.ts";
 import {
   auditBuyerJourneys,
   extractJourneyLinks,
@@ -923,13 +924,12 @@ async function main() {
     errors.push(`robots.txt returned HTTP ${robotsResponse.status}.`);
   }
 
-  if (!robotsText.includes(`Sitemap: ${canonicalBaseUrl}/sitemap.xml`)) {
-    errors.push("robots.txt does not reference the canonical sitemap URL.");
-  }
-
-  if (!/Disallow:\s*\/api\//i.test(robotsText)) {
-    errors.push("robots.txt does not disallow the RFQ API path.");
-  }
+  const robotsAudit = auditRobotsPolicy(
+    robotsText,
+    [...urls, ...sitemapImageUrls],
+    canonicalBaseUrl,
+  );
+  errors.push(...robotsAudit.errors);
 
   const filteredCatalogAudit = await auditUrl(
     `${canonicalBaseUrl}/products?q=seo-audit&category=mig-mag-torch-parts`,
@@ -1046,6 +1046,9 @@ async function main() {
   );
   console.log(`Non-HTML files checked: ${audits.length - htmlAudits.length}`);
   console.log(`Sitemap images checked: ${sitemapImageUrls.length}`);
+  console.log(
+    `Robots crawl policy: ${robotsAudit.publicUrlsChecked} URLs, ${robotsAudit.crawlers.join(" / ")}`,
+  );
   console.log(`Legacy category redirects checked: ${legacyCategoryRedirects.length}`);
   console.log(`Legacy product redirects checked: ${legacyProductRedirects.length}`);
   console.log(
