@@ -219,6 +219,9 @@ jobs:
       - name: Test crawl reachability and product inquiry audit
         run: npm run test:buyer-journey-audit
 
+      - name: Test robots policy and IndexNow submission controls
+        run: npm run test:indexing-controls
+
       - name: Test RFQ constraints
         run: npm run test:rfq
 
