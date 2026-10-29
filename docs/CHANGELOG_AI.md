@@ -4,6 +4,51 @@ This append-only log records substantial Codex work so future sessions can under
 why it changed and which risks remain. Add the newest entry at the top, below this introduction. Do
 not include secrets, buyer PII, private prospect data or unconfirmed claims.
 
+## 2026-10-29 - Correct Quick RFQ Starter Readiness
+
+- **Task:** Prevent generic quick-starter copy from filling a required buyer quantity or implying
+  that product details were provided when they were not.
+- **Files Changed:** `app/(public)/rfq/RfqForm.tsx`, the dated website-ecosystem review and this log.
+- **Components Changed:** Four RFQ quick-starter presets. **Data Changed:** None. **Visual Changes:**
+  No layout change; quantity remains blank after choosing a starter.
+- **SEO Impact:** No URL, metadata, canonical, sitemap, robots or structured-data change.
+- **Validation:** `test:rfq`, lint, typecheck, production build, `seo:audit`, `seo:links` and
+  performance budget passed. Local Chromium at 390px clicked all four starters; each left quantity
+  empty and readiness at “Technical details needed”. Eight local page/viewport combinations across
+  home, products, a product detail and RFQ returned 200 with one H1, zero horizontal overflow and
+  no page errors.
+- **Known Issues:** Real RFQ inbox placement and production behavior for this candidate are unverified.
+  GA4, DMARC, GSC error URLs and exact product evidence remain separate open items.
+- **Reusable Knowledge Added:** The dated operations review records the false-readiness cause and
+  local browser evidence.
+- **Deployment:** Owner authorized this patch for GitHub `main` and the Vercel production site;
+  merge, deployment and live verification are pending at this record checkpoint.
+- **Next Recommended Action:** Review this exact RFQ patch for release, then verify the production
+  browser behavior after an authorized deployment.
+
+## 2026-10-29 - Review Live Website And Acquisition Ecosystem
+
+- **Task:** Audit the confirmed public website, repository and production buyer path; record
+  verified results and the remaining external evidence gates.
+- **Files Changed:** `docs/operations/website-ecosystem-review-2026-10-29.md` and this log.
+- **Components / Data / Visual Changes:** None. No public product, route, design, URL, runtime,
+  DNS, provider or account setting changed.
+- **SEO Impact:** Read-only production audit passed for 88 sitemap URLs, 82 homepage-reachable HTML
+  pages and 40/40 product inquiry paths. Google per-URL indexing status remains unverified.
+- **Validation:** Production RFQ readiness, email-domain, live SEO and security-header audits passed;
+  local lint, complete typecheck, production build and 758-file secret-pattern scan passed. The
+  browser-runtime's separately locked dependencies were installed for complete typechecking.
+  No live RFQ was sent or mailbox delivery claimed.
+- **Known Issues:** Sales/buyer inbox placement remains unverified; DMARC is absent; GA4 is inactive;
+  GSC Wizard is blocked by subscription status and original Search Console redirect-error URLs
+  remain unavailable. Exact product imagery and technical evidence remain under review.
+- **Reusable Knowledge Added:** The dated operations review records the current live evidence,
+  evidence limits and prioritized handoff for RFQ, sender identity, measurement, product facts and
+  Google indexing.
+- **Deployment:** None. No external write, production change or rule override.
+- **Next Recommended Action:** Run one controlled synthetic RFQ from a real browser and match the
+  reference in the sales and buyer mailboxes before treating inquiries as a proven lead channel.
+
 ## 2026-10-28 - Check Crawl Permission And Make Indexing Submissions Reviewable
 
 - **Task:** Continued the owner's indexing-ecosystem request with effective robots policy checks and
