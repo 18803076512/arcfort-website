@@ -4,6 +4,44 @@ This append-only log records substantial Codex work so future sessions can under
 why it changed and which risks remain. Add the newest entry at the top, below this introduction. Do
 not include secrets, buyer PII, private prospect data or unconfirmed claims.
 
+## 2026-10-29 - Close RFQ Readiness And Email Audit Evidence Gaps
+
+- **Task:** Trace the product-to-inquiry-to-delivery operating loop, correct RFQ readiness
+  misclassifications and align production evidence reports with checks actually performed.
+- **Files Changed:** `lib/rfq-qualification.ts`, `lib/rfq-email.ts`,
+  `docs/rfq-email-delivery.md`, `scripts/test-rfq-email.ts`,
+  `scripts/audit-email-domain.ts`, `scripts/email-domain-audit-policy.ts`,
+  `scripts/test-live-audit-fetch.ts`, `scripts/fixtures/mock-dns-servfail.mjs`,
+  `scripts/report-acquisition-readiness.ts`, `scripts/report-goal-progress.ts`,
+  `docs/operations/acquisition-production-evidence.json`, `docs/acquisition-readiness-report.md`,
+  `docs/goal-progress-report.md`, `docs/operations/website-ecosystem-review-2026-10-29.md`,
+  `docs/operations/website-ecosystem-operating-loop.md`,
+  `knowledge-base/seo/website-ecosystem-2026-10-25.md`,
+  `knowledge-base/sales/rfq-delivery-and-qualification.md` and this log.
+- **Components / Data / Visual Changes:** RFQ readiness guidance, sales-email wording and production
+  DNS audit behavior change; no product fact, compatibility, image, company claim or visual layout
+  changes. The production evidence date advances only for read-only checks performed on 2026-10-29.
+- **SEO Impact:** No public URL, canonical, robots, sitemap, structured data or indexing submission
+  changes. The previous 88-URL production audit remains a read-only observation, not Google indexing
+  evidence.
+- **Validation:** RFQ focused tests, bounded live-audit and full-CLI DNS-failure tests, product and
+  image validators, real read-only email-domain audit, production health, SEO/internal links,
+  performance, secret scan, lint, typecheck, build, formatting and diff checks passed. Local
+  Playwright checked four quantity cases at 390px and 1440px with no horizontal overflow or form
+  submission. The release gate is recorded in the final task report.
+- **Known Issues:** Sales and buyer inbox placement, credential rotation, DMARC, GA4 conversion,
+  current GSC error URLs and exact-product image/technical evidence remain unverified or incomplete.
+  `AF-MIG-CT-0006` must use a separate evidence intake from the 15AK pilot.
+- **Reusable Knowledge Added:** `docs/operations/website-ecosystem-operating-loop.md` maps every
+  handoff and the fault-isolation sequence. The sales RFQ knowledge record now distinguishes
+  buyer-provided detail from verified fit. Report dates separate fresh production checks from older
+  product, company, Search Console and mailbox evidence.
+- **Deployment:** Owner authorized this exact batch for PR merge to `main` and Vercel production;
+  PR, CI, deployment and live verification were pending at this candidate checkpoint. No DNS or
+  provider setting change is included.
+- **Next Recommended Action:** Run one controlled synthetic RFQ and match its reference in the
+  sales and buyer mailboxes before claiming a proven lead channel.
+
 ## 2026-10-29 - Correct Quick RFQ Starter Readiness
 
 - **Task:** Prevent generic quick-starter copy from filling a required buyer quantity or implying

@@ -190,7 +190,7 @@ export function buildInquiryEmailText(
     `RFQ Reference: ${reference}`,
     `Quotation Readiness: ${readiness.label}`,
     "",
-    "Confirmed Signals:",
+    "Buyer details detected:",
     ...readiness.confirmedSignals.map((item) => `- ${item}`),
     "",
     "Sales Follow-up Checklist:",
@@ -312,7 +312,7 @@ export function buildInquiryEmailHtml(
   ].join("");
   const readinessContent = `
     <div style="margin: 0 0 14px; color: #071524; font-size: 15px; font-weight: 800;">${safeText(readiness.label)}</div>
-    <div style="margin: 0 0 8px; color: #526174; font-size: 12px; font-weight: 700; text-transform: uppercase;">Confirmed signals</div>
+    <div style="margin: 0 0 8px; color: #526174; font-size: 12px; font-weight: 700; text-transform: uppercase;">Buyer details detected</div>
     ${bulletList(readiness.confirmedSignals)}
     <div style="margin: 16px 0 8px; color: #526174; font-size: 12px; font-weight: 700; text-transform: uppercase;">Sales follow-up checklist</div>
     ${bulletList(readiness.followUpItems)}`;

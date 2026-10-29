@@ -1,6 +1,6 @@
 # RFQ Delivery And Qualification Baseline
 
-Evidence baseline: 2026-08-29; repository review 2026-09-01
+Evidence baseline: 2026-08-29; repository workflow review 2026-10-29
 
 ## Purpose
 
@@ -14,17 +14,21 @@ The current RFQ route collects buyer name, company, email, WhatsApp, country, pr
 quantity, message, source context and controlled attachments. Server-side controls cover validation,
 file signatures and size limits, BotID, rate limiting, idempotency and stable inquiry references.
 
-The qualification helper classifies an inquiry as ready for sales review only when quantity,
-destination country and product evidence are present. Product evidence may be a model, part number,
-SKU, drawing, sample, photo, thread, size, material or dimensional reference. Compatibility and
-unconfirmed specifications still require buyer-supplied evidence and technical review.
+The qualification helper classifies an inquiry as ready for sales review only when a buyer quantity
+or order plan, destination country and concrete product evidence are present. Product evidence is a
+specific model, part/SKU or drawing reference, a dimension, or an attached file. Merely asking for a
+model, photo, material or MOQ does not count as supplying that detail. When the quantity field points
+to selected product lines, each selected line must include its own quantity or order plan; numbered
+notes in additional requirements are not product lines. This is an intake hint, not verification of
+compatibility, technical specifications or price. Those still require buyer-supplied evidence and
+technical review.
 
 ## Delivery Evidence
 
 - Active delivery mode: email.
 - Sales notification, buyer confirmation and attachment handling are configured.
 - Provider acceptance was last recorded on 2026-07-26.
-- Production RFQ status was last checked on 2026-08-29.
+- Production RFQ read-only status was last checked on 2026-10-29.
 - Sales-mailbox placement: not externally confirmed.
 - Buyer-mailbox placement: not externally confirmed.
 - Optional Supabase inquiry storage: not configured; email remains the active delivery path.

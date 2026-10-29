@@ -179,7 +179,7 @@ After adding Vercel environment variables and redeploying:
 10. Check the buyer test inbox for the confirmation email and matching reference.
 11. Confirm uploaded files appear as email attachments in the sales notification.
 12. Confirm both messages show the ArcFort Weld HTML layout and remain readable when HTML is disabled.
-13. Confirm the sales message shows `Quotation Readiness`, confirmed signals and a follow-up checklist.
+13. Confirm the sales message shows `Quotation Readiness`, buyer details detected and a follow-up checklist.
 14. Confirm the buyer message does not promise an unverified response deadline.
 15. If Supabase is configured, confirm the inquiry row and reference appear in `rfq_inquiries`.
 

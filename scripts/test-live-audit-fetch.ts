@@ -1,9 +1,12 @@
 #!/usr/bin/env node
 
 import assert from "node:assert/strict";
+import { spawnSync } from "node:child_process";
 import { once } from "node:events";
 import { createServer } from "node:http";
+import { fileURLToPath } from "node:url";
 import { fetchReadOnlyWithRetry } from "./live-audit-fetch.ts";
+import { classifyDnsLookupFailure, isDefinitiveDnsStatus } from "./email-domain-audit-policy.ts";
 
 const requestCounts = new Map<string, number>();
 
@@ -65,6 +68,33 @@ assert(address && typeof address !== "string");
 const baseUrl = `http://127.0.0.1:${address.port}`;
 
 try {
+  assert.equal(isDefinitiveDnsStatus(0), true);
+  assert.equal(isDefinitiveDnsStatus(3), true);
+  assert.equal(isDefinitiveDnsStatus(2), false);
+  assert.equal(isDefinitiveDnsStatus(undefined), false);
+  for (const label of ["DKIM", "SPF", "custom MAIL FROM MX"] as const) {
+    assert.equal(classifyDnsLookupFailure(label, "both providers failed").severity, "error");
+  }
+  assert.equal(classifyDnsLookupFailure("DMARC", "both providers failed").severity, "warning");
+
+  const failedDnsAudit = spawnSync(
+    process.execPath,
+    [
+      "--import",
+      fileURLToPath(new URL("./fixtures/mock-dns-servfail.mjs", import.meta.url)),
+      "--experimental-strip-types",
+      fileURLToPath(new URL("./audit-email-domain.ts", import.meta.url)),
+    ],
+    { encoding: "utf8", timeout: 10_000 },
+  );
+  assert.equal(failedDnsAudit.error, undefined);
+  assert.equal(failedDnsAudit.status, 1);
+  assert.match(failedDnsAudit.stderr, /Blocking authentication errors \(3\)/);
+  assert.match(failedDnsAudit.stderr, /DKIM was not verified/);
+  assert.match(failedDnsAudit.stderr, /SPF was not verified/);
+  assert.match(failedDnsAudit.stderr, /custom MAIL FROM MX was not verified/);
+  assert.match(failedDnsAudit.stderr, /DMARC was not verified/);
+
   let statusRetries = 0;
   const transient = await fetchReadOnlyWithRetry(
     `${baseUrl}/transient-status`,
@@ -155,7 +185,7 @@ try {
     /Retrying non-read-only method POST is not allowed/,
   );
 
-  console.log("Live audit bounded-retry tests passed.");
+  console.log("Live audit bounded-retry and DNS failure tests passed.");
 } finally {
   server.closeAllConnections();
   server.close();

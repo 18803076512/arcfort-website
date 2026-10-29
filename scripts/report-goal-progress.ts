@@ -111,16 +111,7 @@ const representativeCompanyMedia = companyEvidence.mediaRows.filter(
   (row) => row.evidence_status === "representative_only",
 );
 const pilotProductSlugs = new Set(productTechnicalFacts.map((fact) => fact.productSlug));
-const reportEvidenceDate = [
-  acquisitionEvidence.asOf,
-  ...companyEvidence.claimRows.map((row) => row.reviewed_date),
-  ...companyEvidence.mediaRows.map((row) => row.reviewed_date),
-]
-  .filter(Boolean)
-  .sort()
-  .at(-1);
-
-if (!reportEvidenceDate) errors.push("Goal progress evidence does not contain a review date.");
+if (!acquisitionEvidence.asOf) errors.push("Acquisition evidence does not contain a review date.");
 
 function assertEqual(actual: number, expected: number, label: string) {
   if (actual !== expected) {
@@ -212,7 +203,7 @@ const ctrPercent = `${(acquisitionEvidence.searchConsole.ctr * 100).toFixed(2)}%
 const reportSource = [
   "# ArcFort Weld Goal Progress Report",
   "",
-  `Product, company and acquisition evidence reviewed through ${reportEvidenceDate}. Source revision: \`${shadow.sourceRevision}\`. Schema/test inventory reflects the current repository, not that evidence date. Do not edit this report manually.`,
+  `Production acquisition evidence checked through ${acquisitionEvidence.asOf}. Product and company states reflect the current repository; individual source records retain their own review dates. Source revision: \`${shadow.sourceRevision}\`. Schema/test inventory reflects the current repository, not the acquisition evidence date. Do not edit this report manually.`,
   "",
   "## Executive Status",
   "",
