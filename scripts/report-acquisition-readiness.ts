@@ -269,7 +269,7 @@ function buildReport(
   return [
     "# Acquisition Readiness Report",
     "",
-    `Evidence date: ${evidence.asOf}. This internal report separates repository facts, verified production behavior and business evidence that still requires external confirmation.`,
+    `Production evidence checked through ${evidence.asOf}. Search Console, provider, mailbox and product evidence retain the separate dates and confirmation states shown below. This internal report separates repository facts, verified production behavior and business evidence that still requires external confirmation.`,
     "",
     "## Executive Status",
     "",

@@ -12,7 +12,7 @@ export type RfqQuotationReadiness = {
 };
 
 const technicalReferencePattern =
-  /\b(?:model|part\s*(?:number|no\.?|reference)|sku|drawing|sample|photo|thread|size|material|compatible|compatibility)\b/i;
+  /\b(?:model|part\s*(?:number|no\.?|reference)|sku|drawing(?:\s*(?:number|no\.?))?)\s*(?::|#|-)?\s*(?=[a-z0-9._/-]*\d)[a-z0-9._/-]+\b/i;
 const dimensionalReferencePattern =
   /(?:\bM\d+\b|#\s*\d+\b|\b\d+(?:\.\d+)?\s*(?:mm|cm|inch|inches)\b|\b(?:MB|WP|PT|PK|CB)\s*-?\s*\d+\b)/i;
 const packagingPattern =
@@ -20,13 +20,55 @@ const packagingPattern =
 const deliveryPattern =
   /\b(?:incoterm|fob|cif|cfr|exw|shipping|shipment|freight|air freight|sea freight|port|destination city)\b/i;
 
+const quantityPlanPattern =
+  /\b(?:trial|sample|initial|repeat|annual|monthly|quarterly|mixed)\s+(?:order|program)\b/i;
+const quantityWithUnitPattern =
+  /\b(?:\d{1,3}(?:,\d{3})+|\d+)(?:\.\d+)?\s*(?:pcs?|pieces?|units?|sets?|pairs?|kg|tonnes?|tons?|rolls?|cartons?|boxes?|containers?|pallets?)\b/i;
+const bareQuantityPattern =
+  /^\s*(?:~\s*|about\s+|around\s+|approx(?:imately)?\.?\s+)?(?:\d{1,3}(?:,\d{3})+|\d+)(?:\.\d+)?\s*$/i;
+
+function hasDirectQuantityEvidence(value: string) {
+  const hasExplicitCount = quantityWithUnitPattern.test(value) || bareQuantityPattern.test(value);
+
+  if (hasExplicitCount) {
+    return true;
+  }
+
+  if (/\b(?:moq|minimum order quantity)\b/i.test(value)) {
+    return false;
+  }
+
+  return quantityPlanPattern.test(value);
+}
+
+function hasBuyerQuantityEvidence(quantity: string, productText: string) {
+  const trimmedQuantity = quantity.trim();
+
+  if (trimmedQuantity !== "See selected product line quantities") {
+    return hasDirectQuantityEvidence(trimmedQuantity);
+  }
+
+  const selectedProductSection = /^Selected products:\n([\s\S]*?)(?=\n\n|$)/.exec(productText)?.[1];
+  const selectedLines = selectedProductSection
+    ? selectedProductSection.split("\n").filter((line) => /^\d+\.\s/.test(line))
+    : [];
+
+  return (
+    selectedLines.length > 0 &&
+    selectedLines.every((line) => {
+      const requestedQuantity = /\|\s*Requested quantity:\s*([^|]+)/i.exec(line)?.[1]?.trim();
+      return requestedQuantity ? hasDirectQuantityEvidence(requestedQuantity) : false;
+    })
+  );
+}
+
 export function buildRfqQuotationReadiness(
   payload: Pick<RfqTextValues, "country" | "quantity" | "productRequirements" | "message">,
   attachments: RfqQualificationAttachment[],
 ): RfqQuotationReadiness {
   const productText = payload.productRequirements.trim();
   const combinedText = `${payload.productRequirements}\n${payload.message}`;
-  const hasQuantity = Boolean(payload.quantity.trim());
+  const hasQuantity = hasBuyerQuantityEvidence(payload.quantity, productText);
   const hasCountry = Boolean(payload.country.trim());
   const hasAttachment = attachments.length > 0;
   const hasTechnicalReference = technicalReferencePattern.test(productText);
@@ -34,7 +76,7 @@ export function buildRfqQuotationReadiness(
   const hasProductEvidence = hasAttachment || hasTechnicalReference || hasDimensionalReference;
   const isReadyForSalesReview = hasQuantity && hasCountry && hasProductEvidence;
   const confirmedSignals = [
-    hasQuantity ? "Requested quantity provided" : "",
+    hasQuantity ? "Quantity or order plan provided" : "",
     hasCountry ? "Destination country provided" : "",
     hasAttachment
       ? `${attachments.length} supporting file${attachments.length === 1 ? "" : "s"} attached`

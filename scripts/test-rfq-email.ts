@@ -63,6 +63,7 @@ for (const html of [inquiryHtml, confirmationHtml]) {
 
 assert.match(inquiryHtml, /New Website RFQ/);
 assert.match(inquiryHtml, /Quotation Readiness/);
+assert.match(inquiryHtml, /Buyer details detected/);
 assert.match(inquiryHtml, /Ready for sales review/);
 assert.match(inquiryHtml, /Sales follow-up checklist/);
 assert.match(inquiryHtml, /Lead Source/);
@@ -85,6 +86,7 @@ assert.match(confirmationHtml, /add%20details%20to%20RFQ%20AF-RFQ-20260801-TEST0
 assert.doesNotMatch(confirmationHtml, /rfq\/drawing-&lt;revision-a&gt;\.pdf/);
 
 assert.match(inquiryText, /Quotation Readiness: Ready for sales review/);
+assert.match(inquiryText, /Buyer details detected:/);
 assert.match(inquiryText, /Sales Follow-up Checklist:/);
 assert.match(inquiryText, /Lead Source: Distributor outreach email/);
 assert.match(inquiryText, /Sales Response Actions:/);
@@ -112,6 +114,79 @@ assert.equal(incompleteReadiness.status, "technical_details_needed");
 assert.match(incompleteReadiness.followUpItems.join("\n"), /part number/);
 assert.match(incompleteReadiness.followUpItems.join("\n"), /sample photos/);
 assert.doesNotMatch(incompleteReadiness.label, /New Zealand|Trial order/);
+
+const genericRequestReadiness = buildRfqQuotationReadiness(
+  {
+    country: "Canada",
+    quantity: "Please advise MOQ",
+    productRequirements: "Please advise a model and material; I can send a photo later.",
+    message: "",
+  },
+  [],
+);
+assert.equal(genericRequestReadiness.status, "technical_details_needed");
+assert.doesNotMatch(
+  genericRequestReadiness.confirmedSignals.join("\n"),
+  /quantity or order plan provided|Product reference/i,
+);
+
+for (const [quantity, expectedStatus] of [
+  ["500", "ready_for_sales_review"],
+  ["500 pcs", "ready_for_sales_review"],
+  ["Trial order", "ready_for_sales_review"],
+  ["Please advise MOQ for 15AK", "technical_details_needed"],
+  ["Please advise MOQ for a trial order", "technical_details_needed"],
+] as const) {
+  const readiness = buildRfqQuotationReadiness(
+    {
+      country: "Canada",
+      quantity,
+      productRequirements: "SKU: AF-MIG-CT-0005",
+      message: "",
+    },
+    [],
+  );
+  assert.equal(readiness.status, expectedStatus, `Quantity evidence: ${quantity}`);
+  if (quantity === "Trial order") {
+    assert.ok(readiness.confirmedSignals.includes("Quantity or order plan provided"));
+  }
+}
+
+const selectedLineReadiness = buildRfqQuotationReadiness(
+  {
+    country: "Canada",
+    quantity: "See selected product line quantities",
+    productRequirements:
+      "Selected products:\n1. MIG Contact Tip | SKU: AF-MIG-CT-0005 | Requested quantity: 500 pcs",
+    message: "",
+  },
+  [],
+);
+assert.equal(selectedLineReadiness.status, "ready_for_sales_review");
+
+const selectedLineWithNumberedAdditionalDetails = buildRfqQuotationReadiness(
+  {
+    country: "Canada",
+    quantity: "See selected product line quantities",
+    productRequirements:
+      "Selected products:\n1. MIG Contact Tip | SKU: AF-MIG-CT-0005 | Requested quantity: 500 pcs\n\nAdditional product requirements:\n1. Use private-label carton",
+    message: "",
+  },
+  [],
+);
+assert.equal(selectedLineWithNumberedAdditionalDetails.status, "ready_for_sales_review");
+
+const missingSelectedLineQuantity = buildRfqQuotationReadiness(
+  {
+    country: "Canada",
+    quantity: "See selected product line quantities",
+    productRequirements:
+      "Selected products:\n1. MIG Contact Tip | SKU: AF-MIG-CT-0005 | Requested quantity: 500 pcs\n2. MIG Swan Neck | SKU: AF-MIG-SN-0010",
+    message: "",
+  },
+  [],
+);
+assert.equal(missingSelectedLineQuantity.status, "technical_details_needed");
 
 const missingCommercialDetailsReadiness = buildRfqQuotationReadiness(
   {

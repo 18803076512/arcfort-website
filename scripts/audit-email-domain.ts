@@ -1,6 +1,11 @@
 #!/usr/bin/env node
 
 import { fetchReadOnlyWithRetry } from "./live-audit-fetch.ts";
+import {
+  classifyDnsLookupFailure,
+  isDefinitiveDnsStatus,
+  type DnsLookupLabel,
+} from "./email-domain-audit-policy.ts";
 
 type DnsAnswer = {
   type?: number;
@@ -85,8 +90,10 @@ async function queryDns(name: string, type: keyof typeof dnsType): Promise<DnsLo
         continue;
       }
 
-      if (typeof result.Status !== "number") {
-        failures.push(`${new URL(endpoint).hostname}: invalid DNS response`);
+      if (!isDefinitiveDnsStatus(result.Status)) {
+        failures.push(
+          `${new URL(endpoint).hostname}: ${typeof result.Status === "number" ? `DNS status ${result.Status}` : "invalid DNS response"}`,
+        );
         continue;
       }
 
@@ -139,13 +146,14 @@ async function main() {
     { label: "SPF", result: spfResult },
     { label: "custom MAIL FROM MX", result: mxResult },
   ] as Array<{
-    label: string;
+    label: DnsLookupLabel;
     result: DnsResponse & { lookupError?: string };
   }>;
 
   for (const lookup of lookups) {
     if (lookup.result.lookupError) {
-      warnings.push(`${lookup.label} was not verified: ${lookup.result.lookupError}`);
+      const finding = classifyDnsLookupFailure(lookup.label, lookup.result.lookupError);
+      (finding.severity === "error" ? errors : warnings).push(finding.message);
     }
   }
 
@@ -153,7 +161,7 @@ async function main() {
   const dkimRecord = dkimRecords.find((record) => /(?:^|;)\s*p=[A-Za-z0-9+/=]+/.test(record));
 
   if (dkimResult.lookupError) {
-    // The lookup warning above is sufficient; do not infer record state.
+    // The lookup finding above is sufficient; do not infer record state.
   } else if (dkimRecord) {
     console.log(`DKIM: present at ${dkimName}`);
   } else {
@@ -164,7 +172,7 @@ async function main() {
   const spfRecord = spfRecords.find((record) => /^v=spf1\b/i.test(record));
 
   if (spfResult.lookupError) {
-    // The lookup warning above is sufficient; do not infer record state.
+    // The lookup finding above is sufficient; do not infer record state.
   } else if (!spfRecord) {
     errors.push(`SPF record is missing at ${mailFromName}.`);
   } else if (!/\binclude:amazonses\.com\b/i.test(spfRecord)) {
@@ -176,7 +184,7 @@ async function main() {
   const mxRecords = answers(mxResult, "MX");
 
   if (mxResult.lookupError) {
-    // The lookup warning above is sufficient; do not infer record state.
+    // The lookup finding above is sufficient; do not infer record state.
   } else if (
     !mxRecords.some((record) =>
       /feedback-smtp\.[^\s.]+(?:\.[^\s.]+)*\.amazonses\.com\.?$/i.test(record),
@@ -191,7 +199,7 @@ async function main() {
   const dmarcRecord = dmarcRecords.find((record) => /^v=DMARC1\b/i.test(record));
 
   if (dmarcResult.lookupError) {
-    // The lookup warning above is sufficient; do not infer record state.
+    // The lookup finding above is sufficient; do not infer record state.
   } else if (!dmarcRecord) {
     warnings.push(
       `DMARC is missing at ${dmarcName}. Start with "v=DMARC1; p=none; adkim=r; aspf=r; pct=100" after confirming the sender domain in Resend.`,

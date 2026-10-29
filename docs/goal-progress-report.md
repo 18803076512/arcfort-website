@@ -1,6 +1,6 @@
 # ArcFort Weld Goal Progress Report
 
-Product, company and acquisition evidence reviewed through 2026-09-01. Source revision: `f185ebc9ebba875bc59141b872780297804fef894866108fa14d65bf995fc41b`. Schema/test inventory reflects the current repository, not that evidence date. Do not edit this report manually.
+Production acquisition evidence checked through 2026-10-29. Product and company states reflect the current repository; individual source records retain their own review dates. Source revision: `f185ebc9ebba875bc59141b872780297804fef894866108fa14d65bf995fc41b`. Schema/test inventory reflects the current repository, not the acquisition evidence date. Do not edit this report manually.
 
 ## Executive Status
 
