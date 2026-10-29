@@ -82,8 +82,8 @@ const rfqQuickTemplates = [
     title: "Mixed consumables list",
     description: "For distributors buying several welding torch consumables together.",
     productRequirements:
-      "Mixed welding consumables inquiry: MIG/MAG torch parts, TIG torch parts, plasma cutting consumables or welding accessories. Please review by product list, photo, drawing or reference part.",
-    quantity: "Please advise a suitable MOQ for a mixed order",
+      "Mixed welding consumables inquiry: MIG/MAG torch parts, TIG torch parts, plasma cutting consumables or welding accessories. Add the exact items and variants needed.",
+    quantity: "",
     message:
       "Please quote available items, MOQ, lead time, export packing options and shipment from Tianjin Port.",
   },
@@ -91,8 +91,8 @@ const rfqQuickTemplates = [
     title: "OEM packaging request",
     description: "For private label, logo or carton design discussion.",
     productRequirements:
-      "OEM welding product inquiry. Products, logo artwork, label requirement, carton design and packaging details can be provided for review.",
-    quantity: "Quantity depends on MOQ and packaging requirement",
+      "OEM welding product inquiry. Add the product list and requested logo, label, carton or private-label details.",
+    quantity: "",
     message:
       "Please confirm OEM packaging options, MOQ policy, lead time and what artwork files are required.",
   },
@@ -100,8 +100,8 @@ const rfqQuickTemplates = [
     title: "Replacement part check",
     description: "For matching by drawing, current part or model reference.",
     productRequirements:
-      "Replacement welding part inquiry. Compatibility should be confirmed by sample photo, drawing, torch model, machine model or existing reference part.",
-    quantity: "Small trial order first, repeat order after confirmation",
+      "Replacement welding part inquiry. Add the existing assembly and the component that needs replacement.",
+    quantity: "",
     message:
       "Please review fit, material, size and packaging details after the reference information is provided.",
   },
@@ -109,8 +109,8 @@ const rfqQuickTemplates = [
     title: "Machine and accessory inquiry",
     description: "For welding machines, cutting machines and workshop accessories.",
     productRequirements:
-      "Welding machine, cutting machine or welding accessory inquiry. Required process, application, accessories and destination country can be provided for quotation review.",
-    quantity: "Please advise a suitable MOQ for the selected model",
+      "Welding machine, cutting machine or welding accessory inquiry. Add the required process, application and exact item needed.",
+    quantity: "",
     message:
       "Please confirm available models, accessory scope, packing, payment terms and delivery options.",
   },
