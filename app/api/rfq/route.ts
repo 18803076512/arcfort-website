@@ -60,10 +60,10 @@ type AttachmentRecord = {
 
 type EmailNotificationResult = {
   configured: boolean;
-  delivered: boolean;
+  providerAccepted: boolean;
   recipient: string;
   attachmentCount: number;
-  buyerConfirmationDelivered: boolean;
+  buyerConfirmationProviderAccepted: boolean;
   notificationId: string | null;
   buyerConfirmationId: string | null;
 };
@@ -294,10 +294,10 @@ async function sendEmailNotification(
   if (!apiKey || !from) {
     return {
       configured: false,
-      delivered: false,
+      providerAccepted: false,
       recipient,
       attachmentCount: 0,
-      buyerConfirmationDelivered: false,
+      buyerConfirmationProviderAccepted: false,
       notificationId: null,
       buyerConfirmationId: null,
     };
@@ -328,7 +328,7 @@ async function sendEmailNotification(
   }
 
   const notificationId = await getResendMessageId(response);
-  let buyerConfirmationDelivered = false;
+  let buyerConfirmationProviderAccepted = false;
   let buyerConfirmationId: string | null = null;
 
   try {
@@ -349,7 +349,7 @@ async function sendEmailNotification(
       }),
     });
 
-    buyerConfirmationDelivered = buyerResponse.ok;
+    buyerConfirmationProviderAccepted = buyerResponse.ok;
 
     if (buyerResponse.ok) {
       buyerConfirmationId = await getResendMessageId(buyerResponse);
@@ -360,15 +360,15 @@ async function sendEmailNotification(
         ? `[RFQ ${reference}] Resend buyer confirmation timed out.`
         : `[RFQ ${reference}] Resend buyer confirmation failed.`,
     );
-    buyerConfirmationDelivered = false;
+    buyerConfirmationProviderAccepted = false;
   }
 
   return {
     configured: true,
-    delivered: true,
+    providerAccepted: true,
     recipient,
     attachmentCount: emailAttachments.length,
-    buyerConfirmationDelivered,
+    buyerConfirmationProviderAccepted,
     notificationId,
     buyerConfirmationId,
   };
@@ -632,16 +632,16 @@ export async function POST(request: Request) {
         ? emailResult.value
         : {
             configured: emailConfigured,
-            delivered: false,
+            providerAccepted: false,
             recipient: emailRecipient,
             attachmentCount: 0,
-            buyerConfirmationDelivered: false,
+            buyerConfirmationProviderAccepted: false,
             notificationId: null,
             buyerConfirmationId: null,
           };
     const storageDeliveryComplete =
       stored && (files.length === 0 || storageDelivery.attachmentsStored);
-    const deliverySucceeded = storageDeliveryComplete || emailNotification.delivered;
+    const deliverySucceeded = storageDeliveryComplete || emailNotification.providerAccepted;
     const responseBody = {
       stored,
       storageConfigured,
@@ -649,18 +649,22 @@ export async function POST(request: Request) {
       attachmentsStored: storageDelivery.attachmentsStored,
       storageAttachmentCount: storageDelivery.attachmentCount,
       emailConfigured: emailNotification.configured,
-      emailDelivered: emailNotification.delivered,
+      // Legacy fields remain aliases for clients that already consume this response.
+      // A Resend 2xx response is provider acceptance, not inbox placement.
+      emailDelivered: emailNotification.providerAccepted,
+      emailProviderAccepted: emailNotification.providerAccepted,
       emailRecipient: emailNotification.recipient,
       emailAttachmentCount: emailNotification.attachmentCount,
-      buyerConfirmationDelivered: emailNotification.buyerConfirmationDelivered,
+      buyerConfirmationDelivered: emailNotification.buyerConfirmationProviderAccepted,
+      buyerConfirmationProviderAccepted: emailNotification.buyerConfirmationProviderAccepted,
       backendConfigured: deliverySucceeded,
     };
     const deliveryLog = {
       event: "rfq_delivery_result",
       reference,
       accepted: deliverySucceeded,
-      emailAccepted: emailNotification.delivered,
-      buyerConfirmationAccepted: emailNotification.buyerConfirmationDelivered,
+      emailAccepted: emailNotification.providerAccepted,
+      buyerConfirmationAccepted: emailNotification.buyerConfirmationProviderAccepted,
       emailAttachmentCount: emailNotification.attachmentCount,
       inquiryStored: stored,
       attachmentsStored: storageDelivery.attachmentsStored,

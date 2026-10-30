@@ -70,3 +70,17 @@ GitHub Production 部署 `7405196555` 状态为 `success`，对应 Vercel 正式
 通过正常 TLS 校验读取正式站 `/rfq` 与其客户端脚本，新模板文字已存在，旧 MOQ
 预填文字不再存在。该检查证明客户端资源已发布；真实线上浏览器点击和实际邮箱收件
 仍未完成，不能用本次只读检查代替。
+
+## 同日询盘资格与巡检修复发布核验
+
+后续 PR #136 的 `quality`、`product-intelligence-database` 和 Vercel 预览检查均通过，
+合并为 `main` 提交 `2f5142047b3d5f73b2c4fb48c1aacf9aa4ad05f9`。对应 GitHub Production
+部署 `7414278741` 状态为 `success`；主分支 CI `40886912177` 两个作业最终均为
+`success`。本地工作树随后快进到该合并提交，状态干净。
+
+发布后只读 `health:production` 通过：88 条 sitemap 地址、82 个 HTML 页面、40/40
+产品询价路径、RFQ 状态、核心发信域记录与安全响应头正常，DMARC 仍为警告。
+正常 TLS 校验读取正式站 `/rfq` 和它引用的 11 个脚本；客户端资源包含新的
+“Quantity or order plan provided”与 MOQ 边界逻辑。发布前本地 Playwright 在 390px
+和 1440px 核对四种数量输入的提示与无横向溢出，未提交询价。
+服务商接受、销售收件和买家确认收件仍是不同验收环节；本次发布未证明真实双邮箱收件。

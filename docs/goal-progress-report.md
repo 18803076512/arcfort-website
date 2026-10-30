@@ -6,6 +6,8 @@ Production acquisition evidence checked through 2026-10-29. Product and company 
 
 ArcFort Weld currently has 43 structured product records, including 40 active public records and 3 drafts. Under the strict evidence gate defined below, 0 products qualify as verified high-quality SKUs. Structured page count and verified product readiness are deliberately reported separately.
 
+**Search measurement: Historical baseline; current search performance is unknown.** Recorded Search Console data ends 2026-08-09, 81 days before the production evidence date 2026-10-29. The internal review threshold is 35 days (a 28-day comparison window plus seven days for export and review). Do not infer a current trend, indexing status or conversion result from these numbers.
+
 The current Product Intelligence repository contains 34 versioned migrations and 1881 declared pgTAP assertions across 32 test files. These are inventory counts, not executed-pass or milestone-completion claims. [CODEX_GOAL.md](CODEX_GOAL.md) links the current phase, candidate-specific acceptance evidence and approval boundaries. Local results do not prove hosted parity or authorize migration, adoption or publication.
 
 ## SKU Milestones
@@ -58,8 +60,8 @@ Factory ownership, certifications, capacity, customer cases, distributor coverag
 
 - Production deployment recorded: Yes
 - Production sitemap URLs at evidence date: 88
-- Search Console baseline (2026-06-26 to 2026-08-09): 8 clicks, 422 impressions, 1.90% CTR
-- Next comparable Search Console review: on or after 2026-09-12
+- Historical Search Console baseline (2026-06-26 to 2026-08-09): 8 clicks, 422 impressions, 1.90% CTR
+- Next comparable Search Console review: Review overdue since 2026-09-12; obtain a new native Search Console export and compare equivalent periods.
 - Search Console sitemap submission: External confirmation required
 - RFQ delivery mode: email
 - RFQ repository production-ready state: Yes
@@ -77,7 +79,7 @@ Factory ownership, certifications, capacity, customer cases, distributor coverag
 4. Capture rights-approved exact 15AK main, connection-detail, dimensional and packaging images, then complete the product media review gate.
 5. Collect company-owned factory, production, inspection, packing, warehouse and shipment images with source owner, rights, reviewer and date.
 6. Verify one synthetic production RFQ reaches both controlled inboxes with the same inquiry reference; confirm credential rotation, DMARC and GA4 conversion evidence.
-7. Export the next comparable Search Console period on or after 2026-09-12 and update the governed SEO baseline.
+7. Review overdue since 2026-09-12; obtain a new native Search Console export and compare equivalent periods. Update the governed SEO baseline only after reviewing the native export.
 
 ## Known Data Boundary
 

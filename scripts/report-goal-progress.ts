@@ -17,6 +17,10 @@ import {
   type ProductImportRow,
 } from "./product-import-utils.ts";
 import { validateProductImageAssets } from "./product-image-asset-utils.ts";
+import {
+  formatSearchConsoleFreshness,
+  formatSearchConsoleReviewSchedule,
+} from "./search-console-freshness.ts";
 
 type AcquisitionEvidence = {
   asOf: string;
@@ -200,6 +204,15 @@ if (errors.length > 0) {
 }
 
 const ctrPercent = `${(acquisitionEvidence.searchConsole.ctr * 100).toFixed(2)}%`;
+const searchMeasurement = formatSearchConsoleFreshness(
+  acquisitionEvidence.asOf,
+  acquisitionEvidence.searchConsole.dataEnd,
+);
+const searchReview = formatSearchConsoleReviewSchedule(
+  acquisitionEvidence.asOf,
+  acquisitionEvidence.searchConsole.dataEnd,
+  acquisitionEvidence.searchConsole.nextComparableReviewOnOrAfter,
+);
 const reportSource = [
   "# ArcFort Weld Goal Progress Report",
   "",
@@ -208,6 +221,8 @@ const reportSource = [
   "## Executive Status",
   "",
   `ArcFort Weld currently has ${products.length} structured product records, including ${activeProducts.length} active public records and ${draftProducts.length} drafts. Under the strict evidence gate defined below, ${strictVerifiedProducts.length} products qualify as verified high-quality SKUs. Structured page count and verified product readiness are deliberately reported separately.`,
+  "",
+  searchMeasurement,
   "",
   `The current Product Intelligence repository contains ${migrationFiles.length} versioned migrations and ${databaseAssertionCount} declared pgTAP assertions across ${databaseTestFiles.length} test files. These are inventory counts, not executed-pass or milestone-completion claims. [CODEX_GOAL.md](CODEX_GOAL.md) links the current phase, candidate-specific acceptance evidence and approval boundaries. Local results do not prove hosted parity or authorize migration, adoption or publication.`,
   "",
@@ -258,8 +273,8 @@ const reportSource = [
   "",
   `- Production deployment recorded: ${acquisitionEvidence.production.deploymentVerified ? "Yes" : "No"}`,
   `- Production sitemap URLs at evidence date: ${acquisitionEvidence.production.sitemapUrlCount}`,
-  `- Search Console baseline (${acquisitionEvidence.searchConsole.dataStart} to ${acquisitionEvidence.searchConsole.dataEnd}): ${acquisitionEvidence.searchConsole.clicks} clicks, ${acquisitionEvidence.searchConsole.impressions} impressions, ${ctrPercent} CTR`,
-  `- Next comparable Search Console review: on or after ${acquisitionEvidence.searchConsole.nextComparableReviewOnOrAfter}`,
+  `- Historical Search Console baseline (${acquisitionEvidence.searchConsole.dataStart} to ${acquisitionEvidence.searchConsole.dataEnd}): ${acquisitionEvidence.searchConsole.clicks} clicks, ${acquisitionEvidence.searchConsole.impressions} impressions, ${ctrPercent} CTR`,
+  `- Next comparable Search Console review: ${searchReview}`,
   `- Search Console sitemap submission: ${externalState(acquisitionEvidence.searchConsole.sitemapSubmissionConfirmed)}`,
   `- RFQ delivery mode: ${acquisitionEvidence.rfq.deliveryMode}`,
   `- RFQ repository production-ready state: ${acquisitionEvidence.rfq.productionReady ? "Yes" : "No"}`,
@@ -277,7 +292,7 @@ const reportSource = [
   "4. Capture rights-approved exact 15AK main, connection-detail, dimensional and packaging images, then complete the product media review gate.",
   "5. Collect company-owned factory, production, inspection, packing, warehouse and shipment images with source owner, rights, reviewer and date.",
   "6. Verify one synthetic production RFQ reaches both controlled inboxes with the same inquiry reference; confirm credential rotation, DMARC and GA4 conversion evidence.",
-  `7. Export the next comparable Search Console period on or after ${acquisitionEvidence.searchConsole.nextComparableReviewOnOrAfter} and update the governed SEO baseline.`,
+  `7. ${searchReview} Update the governed SEO baseline only after reviewing the native export.`,
   "",
   "## Known Data Boundary",
   "",

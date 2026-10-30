@@ -36,6 +36,7 @@ function buildReport() {
   }
 
   const productBySlug = new Map(arcfortProducts.map((product) => [product.slug, product]));
+  const generalM6ContactTip = arcfortProducts.find((product) => product.sku === "AF-MIG-CT-0006");
   const confirmedFacts = result.facts.filter((fact) => fact.verificationStatus === "CONFIRMED");
   const needsConfirmationFacts = result.facts.filter(
     (fact) => fact.verificationStatus === "NEEDS_FACTORY_CONFIRMATION",
@@ -61,6 +62,8 @@ function buildReport() {
     `- Data conflicts: ${conflicts.length}`,
     `- Completed factory confirmation rows: ${completedIntakeRows.length} of ${result.technicalIntakeRows.length}`,
     `- Approved company-owned image requests: ${approvedImages.length} of ${result.imageIntakeRows.length}`,
+    `- Independent CT0006 catalog-reference intake rows: ${result.generalM6ContactTipIntakeRows.length}`,
+    `- Independent CT0006 factory-confirmed intake rows: ${result.generalM6ContactTipIntakeRows.filter((row) => row.verification_status === "CONFIRMED").length}`,
     "",
     "## Technical Fact Matrix",
     "",
@@ -99,6 +102,19 @@ function buildReport() {
       const approved = rows.filter((row) => row.review_status === "approved").length;
       return `| ${product?.sku ?? productSlug} | ${escapeTable(product?.name ?? productSlug)} | ${rows.length} | ${approved} |`;
     }),
+    "",
+    "## Separate General M6 x 27 mm Contact Tip Review",
+    "",
+    `\`AF-MIG-CT-0006\` is not in the 15AK exact-SKU intake. Its existing product record cites a general M6 x 27 mm company-catalog table on PDF page 20 (catalog page 33), while its product \`source_type\` is \`${generalM6ContactTip?.sourceType ?? "unknown"}\`. These rows are internal catalog-reference questions only; they do not create public field-level technical facts or confirm final SKU length, material or fit.`,
+    "",
+    "Use `data/intake/general-m6-27-contact-tip-technical-confirmation.csv` for factory responses. Preserve the source reference and enter confirmed values only with exact-SKU evidence, a reviewer and an ISO date. Keep image provenance and rights review in the existing product image asset queue.",
+    "",
+    "| SKU | Field | Catalog reference | Verification | Source | Required factory check |",
+    "| --- | --- | --- | --- | --- | --- |",
+    ...result.generalM6ContactTipIntakeRows.map(
+      (row) =>
+        `| ${row.sku} | ${escapeTable(row.label)} | ${escapeTable(`${row.reference_value}${row.reference_unit ? ` ${row.reference_unit}` : ""}`)} | ${row.verification_status} | ${escapeTable(row.source_reference)} | ${escapeTable(row.requested_confirmation)} |`,
+    ),
     "",
     "## Confirmation Gate",
     "",

@@ -126,38 +126,11 @@ function bulletList(items: string[]) {
     .join("")}</ul>`;
 }
 
-function buildBuyerEmailHref(email: string, reference: string) {
-  return `mailto:${encodeURIComponent(email.trim())}?subject=${encodeURIComponent(
-    `Re: ArcFort Weld RFQ ${reference}`,
-  )}`;
-}
-
-function buildBuyerWhatsAppHref(whatsapp: string) {
-  const normalizedValue = whatsapp.trim();
-  const digits = normalizedValue.replace(/\D/g, "");
-
-  if (!normalizedValue.startsWith("+") || digits.length < 8 || digits.length > 15) {
-    return "";
-  }
-
-  return `https://wa.me/${digits}`;
-}
-
 function buyerContactActions(payload: RfqEmailPayload, reference: string) {
-  const emailHref = buildBuyerEmailHref(payload.email, reference);
-  const whatsappHref = buildBuyerWhatsAppHref(payload.whatsapp);
-  const actions = [
-    `<td style="width: ${whatsappHref ? "50%" : "100%"}; padding: 0 ${whatsappHref ? "6px" : "0"} 8px 0;"><a href="${escapeHtml(emailHref)}" style="display: block; background: #0f4c81; padding: 13px 16px; color: #ffffff; font-size: 13px; font-weight: 700; text-align: center; text-decoration: none;">Reply by Email</a></td>`,
-    whatsappHref
-      ? `<td style="width: 50%; padding: 0 0 8px 6px;"><a href="${escapeHtml(whatsappHref)}" style="display: block; border: 1px solid #0f4c81; padding: 12px 16px; color: #0f4c81; font-size: 13px; font-weight: 700; text-align: center; text-decoration: none;">Open WhatsApp</a></td>`
-      : "",
-  ].join("");
-
   return `
-    <table role="presentation" cellspacing="0" cellpadding="0" border="0" style="width: 100%;">
-      <tr>${actions}</tr>
-    </table>
-    <div style="margin-top: 8px; color: #526174; font-size: 12px; line-height: 1.6;">Verify the recipient and keep ${safeText(reference)} in the reply. WhatsApp is shown only when the buyer supplied an international-format number.</div>`;
+    <div>Reply to this notification; the buyer address is set as Reply-To. Verify the recipient and include ${safeText(reference)}.</div>
+    <div style="margin-top: 8px;">Buyer email (copy manually): ${safeText(payload.email)}</div>
+    ${payload.whatsapp.trim() ? `<div style="margin-top: 8px;">Buyer WhatsApp (copy manually): ${safeText(payload.whatsapp)}</div>` : ""}`;
 }
 
 function attachmentText(attachments: RfqEmailAttachment[], includePath: boolean) {
@@ -182,8 +155,6 @@ export function buildInquiryEmailText(
 ) {
   const readiness = buildRfqQuotationReadiness(payload, attachments);
   const sourceSummary = buildRfqLeadSourceSummary(payload.sourceAttribution, payload.sourcePath);
-  const buyerEmailHref = buildBuyerEmailHref(payload.email, reference);
-  const buyerWhatsAppHref = buildBuyerWhatsAppHref(payload.whatsapp);
 
   return [
     "New RFQ inquiry from ArcFort Weld website",
@@ -200,8 +171,9 @@ export function buildInquiryEmailText(
     ...sourceSummary.details.map((item) => `- ${item}`),
     "",
     "Sales Response Actions:",
-    `- Reply by email: ${buyerEmailHref}`,
-    ...(buyerWhatsAppHref ? [`- Open WhatsApp: ${buyerWhatsAppHref}`] : []),
+    "- Reply to this notification; the buyer address is set as Reply-To.",
+    `- Buyer email (copy manually): ${payload.email}`,
+    ...(payload.whatsapp.trim() ? [`- Buyer WhatsApp (copy manually): ${payload.whatsapp}`] : []),
     "",
     `Name: ${payload.name}`,
     `Company: ${payload.company}`,

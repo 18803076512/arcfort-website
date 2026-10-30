@@ -57,6 +57,9 @@ type RfqResponse = {
   attachmentsStored?: boolean;
   storageAttachmentCount?: number;
   emailConfigured?: boolean;
+  emailProviderAccepted?: boolean;
+  buyerConfirmationProviderAccepted?: boolean;
+  // Legacy response aliases; these indicate provider acceptance, not inbox placement.
   emailDelivered?: boolean;
   emailRecipient?: string;
   emailAttachmentCount?: number;
@@ -147,16 +150,6 @@ function createFileSummary(files: File[]) {
   return files.map((file) => file.name).join(", ");
 }
 
-function createFallbackExcerpt(value: string, limit: number) {
-  const trimmedValue = value.trim();
-
-  if (trimmedValue.length <= limit) {
-    return trimmedValue;
-  }
-
-  return `${trimmedValue.slice(0, limit).trimEnd()}\n[Additional details shortened. Please paste the full list or attach it.]`;
-}
-
 function getStoredSourceAttribution(): SourceAttribution {
   try {
     const rawValue = window.sessionStorage.getItem(sourceAttributionStorageKey);
@@ -191,6 +184,12 @@ export function RfqForm({
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [submissionResult, setSubmissionResult] = useState<RfqResponse | null>(null);
+  const submittedEmailProviderAccepted =
+    submissionResult?.emailProviderAccepted ?? submissionResult?.emailDelivered ?? false;
+  const submittedBuyerConfirmationProviderAccepted =
+    submissionResult?.buyerConfirmationProviderAccepted ??
+    submissionResult?.buyerConfirmationDelivered ??
+    false;
   const [failedReference, setFailedReference] = useState("");
   const [submittedRequirements, setSubmittedRequirements] = useState("");
   const submissionAttemptRef = useRef<RfqSubmissionAttempt | null>(null);
@@ -548,9 +547,13 @@ export function RfqForm({
       setSubmissionResult(result);
       setIsSubmitted(true);
       clearRfqList();
+      const emailProviderAccepted = Boolean(result.emailProviderAccepted ?? result.emailDelivered);
+      const buyerConfirmationProviderAccepted = Boolean(
+        result.buyerConfirmationProviderAccepted ?? result.buyerConfirmationDelivered,
+      );
       trackAnalyticsEvent("rfq_submit_success", {
-        email_delivered: Boolean(result.emailDelivered),
-        buyer_confirmation_delivered: Boolean(result.buyerConfirmationDelivered),
+        email_provider_accepted: emailProviderAccepted,
+        buyer_confirmation_provider_accepted: buyerConfirmationProviderAccepted,
         attachment_count: result.emailAttachmentCount ?? 0,
         selected_product_count: selectedProducts.length,
         backend_configured: Boolean(result.backendConfigured),
@@ -558,9 +561,9 @@ export function RfqForm({
         storage_delivery_complete: Boolean(result.storageDeliveryComplete),
         attachments_stored: Boolean(result.attachmentsStored),
         delivery_channel:
-          result.emailDelivered && result.stored
+          emailProviderAccepted && result.stored
             ? "email_and_storage"
-            : result.emailDelivered
+            : emailProviderAccepted
               ? "email"
               : "storage",
         quotation_readiness: quotationReadiness.status,
@@ -593,13 +596,6 @@ export function RfqForm({
     }
   }
 
-  const fallbackRequirements = createFallbackExcerpt(productRequirementsForSubmission, 2400);
-  const fallbackAdditionalMessage = createFallbackExcerpt(values.message, 800);
-  const fallbackSubject = encodeURIComponent(
-    failedReference
-      ? `ArcFort Weld RFQ ${failedReference} - ${values.company || "Buyer Inquiry"}`
-      : `ArcFort Weld RFQ - ${values.company || "Buyer Inquiry"}`,
-  );
   const fallbackMessage = [
     ...(failedReference ? [`RFQ Reference: ${failedReference}`, ""] : []),
     `Name: ${values.name || "Not provided"}`,
@@ -610,13 +606,11 @@ export function RfqForm({
     `Quantity: ${quantityForSubmission || "Not provided"}`,
     "",
     "Product Requirements:",
-    fallbackRequirements || "Not provided",
+    productRequirementsForSubmission || "Not provided",
     "",
     "Message:",
-    fallbackAdditionalMessage || "No additional message.",
+    values.message.trim() || "No additional message.",
   ].join("\n");
-  const fallbackEmailHref = `${siteConfig.emailHref}?subject=${fallbackSubject}&body=${encodeURIComponent(fallbackMessage)}`;
-  const fallbackWhatsappHref = `${siteConfig.whatsappHref}?text=${encodeURIComponent(fallbackMessage)}`;
 
   if (isSubmitted) {
     const submittedProductRequirements =
@@ -626,36 +620,52 @@ export function RfqForm({
       <div className="border border-slate-200 bg-white p-6 shadow-sm sm:p-8">
         <div className="border-l-4 border-arc-signal bg-arc-frost p-5">
           <p className="text-sm font-bold uppercase tracking-[0.18em] text-arc-blue">
-            Inquiry Received
+            Inquiry Submitted
           </p>
           <h2 className="mt-3 font-display text-3xl font-black text-arc-midnight">
             Thank you for your inquiry.
           </h2>
           <p className="mt-3 text-sm leading-6 text-slate-700">
-            {submissionResult?.emailDelivered
-              ? "Your RFQ has been sent to the ArcFort Weld sales email for follow-up."
-              : "Your RFQ has been securely recorded for sales follow-up."}
+            Your inquiry was submitted through the website. Please save the RFQ reference below for
+            any follow-up.
           </p>
           {submissionResult?.reference ? (
             <p className="mt-3 text-sm font-bold text-arc-midnight">
               RFQ Reference: {submissionResult.reference}
             </p>
           ) : null}
-          {submissionResult?.emailDelivered && submissionResult.emailAttachmentCount ? (
+          <p className="mt-3 text-sm leading-6 text-slate-700">
+            For an update, quote your RFQ reference when contacting us by{" "}
+            <a className="font-bold underline underline-offset-2" href={siteConfig.emailHref}>
+              email
+            </a>{" "}
+            or{" "}
+            <a
+              className="font-bold underline underline-offset-2"
+              href={siteConfig.whatsappHref}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              WhatsApp
+            </a>
+            .
+          </p>
+          {submittedEmailProviderAccepted && submissionResult?.emailAttachmentCount ? (
             <p className="mt-2 text-sm leading-6 text-slate-700">
-              Attachments included in email: {submissionResult.emailAttachmentCount}
+              Attachments submitted for review: {submissionResult.emailAttachmentCount}
             </p>
           ) : null}
-          {!submissionResult?.emailDelivered &&
+          {!submittedEmailProviderAccepted &&
           submissionResult?.attachmentsStored &&
           submissionResult.storageAttachmentCount ? (
             <p className="mt-2 text-sm leading-6 text-slate-700">
               Attachments stored with this inquiry: {submissionResult.storageAttachmentCount}
             </p>
           ) : null}
-          {submissionResult?.buyerConfirmationDelivered ? (
+          {submittedBuyerConfirmationProviderAccepted ? (
             <p className="mt-2 text-sm leading-6 text-slate-700">
-              A confirmation copy has also been sent to {values.email}.
+              A confirmation email was requested for {values.email}. If it does not arrive, use your
+              RFQ reference when contacting us.
             </p>
           ) : null}
         </div>
@@ -731,15 +741,28 @@ export function RfqForm({
           {failedReference ? (
             <p className="mt-2 font-bold">RFQ Reference: {failedReference}</p>
           ) : null}
+          <label htmlFor="rfq-fallback-details" className="mt-3 block font-bold">
+            Copy these details into your email or WhatsApp message. Add attachments again if needed.
+          </label>
+          <textarea
+            id="rfq-fallback-details"
+            readOnly
+            value={fallbackMessage}
+            rows={8}
+            onFocus={(event) => event.currentTarget.select()}
+            className="mt-2 w-full border-red-300 bg-white p-3 text-sm leading-6 text-slate-900"
+          />
           <div className="mt-3 flex flex-col gap-2 sm:flex-row">
             <a
-              href={fallbackEmailHref}
+              href={siteConfig.emailHref}
               className="inline-flex min-h-11 items-center justify-center border border-red-300 bg-white px-4 font-bold transition hover:border-red-700"
             >
               Email {siteConfig.email}
             </a>
             <a
-              href={fallbackWhatsappHref}
+              href={siteConfig.whatsappHref}
+              target="_blank"
+              rel="noopener noreferrer"
               className="inline-flex min-h-11 items-center justify-center border border-red-300 bg-white px-4 font-bold transition hover:border-red-700"
             >
               WhatsApp {siteConfig.whatsapp}

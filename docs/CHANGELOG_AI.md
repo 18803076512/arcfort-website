@@ -4,6 +4,44 @@ This append-only log records substantial Codex work so future sessions can under
 why it changed and which risks remain. Add the newest entry at the top, below this introduction. Do
 not include secrets, buyer PII, private prospect data or unconfirmed claims.
 
+## 2026-10-30 - Bound RFQ Acceptance And Evidence Freshness
+
+- **Task:** Complete the core website handoff by distinguishing RFQ provider acceptance from inbox
+  placement, keeping buyer details out of contact URLs, flagging stale Search Console evidence, and
+  opening a separate technical confirmation queue for `AF-MIG-CT-0006`.
+- **Files Changed:** RFQ form, API and email templates; RFQ tests and delivery guidance; Search
+  Console freshness helper, test, report generators and generated reports; independent CT0006
+  intake, technical validator, report, product handoff and dated decision; operating-loop and SEO
+  knowledge; `package.json`, CI quality workflow and this log.
+- **Components / Data / Visual Changes:** RFQ success and failure messages now state bounded
+  submission results. Failed submissions preserve the form and show selectable details for manual
+  fallback; email and WhatsApp links contain only base contact URLs. The sales notification uses
+  `Reply-To` and plain buyer contact text. The four CT0006 intake rows remain unconfirmed catalog
+  references; no public product fact, image, compatibility or company claim changed.
+- **SEO Impact:** No URL, metadata, canonical, sitemap, robots or structured-data change. Reports
+  label the 2026-08-09 Search Console data as an 81-day-old historical baseline against the
+  2026-10-29 production evidence date; current search performance remains unknown.
+- **Validation:** RFQ constraint, email and timeout tests; Search Console freshness boundary and
+  calendar-date tests; technical, product, image and compatibility validators; generated reports;
+  SEO, internal-link, built-image and snippet audits; performance budget; secret scan, lint,
+  typecheck, production build, formatting and diff checks passed locally. The independent release
+  review found and the validator now rejects impossible evidence dates such as `2026-02-30`.
+  Local Playwright at 390px and 1440px exercised mocked RFQ success and failure: references,
+  retained fields, selectable fallback details, fixed contact links, no horizontal overflow or
+  browser errors. No real RFQ or email was sent.
+- **Known Issues:** Matching sales and buyer inbox receipt remains unverified. DMARC is missing,
+  GA4 is inactive, current native GSC data and error URLs are unavailable, and exact-product
+  technical facts, image rights and company visuals remain incomplete. CT0006 is not a confirmed
+  SKU specification or 15AK relationship.
+- **Reusable Knowledge Added:** The RFQ delivery guide states the API's legacy `*Delivered` aliases
+  mean provider acceptance; the Search Console baseline records its overdue export handoff; the
+  CT0006 decision keeps the general M6 x 27 mm reference separate from the 15AK 25 mm intake.
+- **Deployment:** Local candidate only. The earlier approval covered PR #136 and its production
+  release; this change set needs separate exact-target authorization before PR merge or deployment.
+- **Next Recommended Action:** Obtain that authorization after the final release gate, then verify
+  exact-head CI, production deployment and read-only live health. Prove inbox placement with one
+  separately authorized controlled RFQ and matching references in both mailboxes.
+
 ## 2026-10-29 - Close RFQ Readiness And Email Audit Evidence Gaps
 
 - **Task:** Trace the product-to-inquiry-to-delivery operating loop, correct RFQ readiness

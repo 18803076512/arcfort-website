@@ -28,6 +28,7 @@
     "images:triage:validate": "node --experimental-strip-types scripts/validate-local-image-triage.ts",
     "images:triage:board": "npm run images:triage:validate && node --experimental-strip-types scripts/generate-local-image-triage-board.ts",
     "acquisition:report": "node --experimental-strip-types scripts/report-acquisition-readiness.ts",
+    "test:search-console-freshness": "node --experimental-strip-types scripts/test-search-console-freshness.ts",
     "company:evidence:validate": "node --experimental-strip-types scripts/validate-company-evidence.ts",
     "company:evidence:test": "node --experimental-strip-types scripts/test-company-evidence.ts",
     "goal:report": "node --experimental-strip-types scripts/report-goal-progress.ts",

@@ -18,6 +18,12 @@ catalog or indexed resource. The workbook deliberately omits every `notes_intern
 The workbook is not a product database and must not publish or confirm data automatically. The CSV
 files in `data/intake/` and the governed registries remain the repository source of truth.
 
+`AF-MIG-CT-0006` is outside this four-product 15AK workbook. Its general M6 x 27 mm catalog
+reference uses `data/intake/general-m6-27-contact-tip-technical-confirmation.csv` and the existing
+product image asset task; do not replace it with the 15AK 25 mm reference. After exact-SKU evidence
+is reviewed, a separate PR must map any CT0006 canonical technical facts to this independent queue
+and update the technical validator before a public value is promoted.
+
 The older local `arcfort-15ak-factory-evidence-intake.xlsx` remains a historical four-product helper.
 Do not use it for the 46-candidate component matrix or delete it without an explicit archive
 decision. The current combined workbook supersedes it for new 15AK evidence collection.

@@ -27,11 +27,18 @@ technical review.
 
 - Active delivery mode: email.
 - Sales notification, buyer confirmation and attachment handling are configured.
+- A successful Resend response establishes provider acceptance only. The API fields
+  `emailProviderAccepted` and `buyerConfirmationProviderAccepted` state this directly; legacy
+  `emailDelivered` and `buyerConfirmationDelivered` are compatible aliases, not mailbox evidence.
 - Provider acceptance was last recorded on 2026-07-26.
 - Production RFQ read-only status was last checked on 2026-10-29.
 - Sales-mailbox placement: not externally confirmed.
 - Buyer-mailbox placement: not externally confirmed.
 - Optional Supabase inquiry storage: not configured; email remains the active delivery path.
+- On a failed website submission, the form preserves the buyer's fields and shows selectable
+  fallback details. Email and WhatsApp links use only the base contacts, with no buyer data in URLs.
+- Sales notification actions use the buyer email as `Reply-To` and show buyer contact details as
+  text. No buyer email address or phone number is placed in an action URL.
 
 Provider acceptance is not proof of inbox placement. The website must not claim proven end-to-end
 delivery until one controlled browser submission produces the same inquiry reference in the sales

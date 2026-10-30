@@ -32,6 +32,8 @@ values in the series record.
 
 The general M6 1.2 mm contact-tip record is deliberately excluded. Its current source describes a
 general M6 x 27 reference and does not document it inside the same 15AK catalog group.
+Its separate factory review uses
+[`general-m6-27-contact-tip-ct0006.md`](general-m6-27-contact-tip-ct0006.md).
 
 ## Catalog Component Evidence
 

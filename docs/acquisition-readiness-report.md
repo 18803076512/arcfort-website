@@ -6,6 +6,8 @@ Production evidence checked through 2026-10-29. Search Console, provider, mailbo
 
 ArcFort Weld is live and indexable. The RFQ path is configured through the email provider, while final inbox placement still requires external confirmation. The next growth constraint is not another general page. It is stronger product evidence, verified measurement and disciplined follow-up on the pages already receiving search impressions.
 
+**Search measurement: Historical baseline; current search performance is unknown.** Recorded Search Console data ends 2026-08-09, 81 days before the production evidence date 2026-10-29. The internal review threshold is 35 days (a 28-day comparison window plus seven days for export and review). Do not infer a current trend, indexing status or conversion result from these numbers.
+
 - Production deployment verified: Yes
 - Canonical production URL: https://www.arcfortweld.com
 - Production sitemap URLs: 88
@@ -24,13 +26,13 @@ ArcFort Weld is live and indexable. The RFQ path is configured through the email
 - Application pages: 6
 - Buyer guides: 17
 - RFQ production-ready status: Yes
-- Search Console baseline: 8 clicks / 422 impressions / 1.90% CTR
+- Historical Search Console baseline (2026-06-26 to 2026-08-09): 8 clicks / 422 impressions / 1.90% CTR
 
 ## Acquisition Channels
 
 | Channel           | Evidence                                                                                             | Current status                                                                                   | Next control                                                                                                     |
 | ----------------- | ---------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------ | ---------------------------------------------------------------------------------------------------------------- |
-| Organic search    | Search Console export for 2026-06-26 through 2026-08-09                                              | 8 clicks and 422 impressions recorded                                                            | Compare a clean 28-day post-change window on or after 2026-09-12                                                 |
+| Organic search    | Search Console export for 2026-06-26 through 2026-08-09                                              | Historical: 8 clicks and 422 impressions recorded                                                | Review overdue since 2026-09-12; obtain a new native Search Console export and compare equivalent periods.       |
 | Website RFQ       | Production status and controlled provider acceptance                                                 | Email delivery mode; sales notification, buyer confirmation and attachments are configured       | Confirm matching references in the sales and buyer inboxes                                                       |
 | Email / WhatsApp  | arcfortweld@outlook.com and +86-18803076512 are visible across major buyer paths                     | Direct fallback contacts available                                                               | Track non-PII click and qualified-inquiry outcomes                                                               |
 | Product catalog   | 40 active pages across 6 categories, 0 governed public series and 10 catalog-series evidence records | 40 active products retain legacy-reference main images; 0 have search-eligible exact main images | Replace legacy references with rights-approved exact-product views, then verify product and series relationships |
@@ -128,7 +130,7 @@ These items cannot be proven from public page content or repository files. Updat
 6. Complete the 15AK evidence intake, resolve the 602 page-identity conflict and work through the detailed 24KD/25AK/36KD/40KD/501D/602 component confirmation and image queues in `docs/product-series-component-evidence-report.md` before publishing another series.
 7. Confirm material, dimensions, interfaces and fitment for active products from drawings, samples or approved supplier/company records.
 8. Confirm GA4 Realtime and `rfq_submit_success` / lead events without recording buyer PII.
-9. Export Search Console again on or after 2026-09-12; prioritize high-impression low-click existing URLs before adding overlapping content.
+9. Review overdue since 2026-09-12; obtain a new native Search Console export and compare equivalent periods. Prioritize high-impression low-click existing URLs only after the current export is reviewed.
 10. Configure Supabase only if searchable inquiry history, attachment retention or multi-user sales operations are needed.
 
 ## Update Workflow
