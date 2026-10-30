@@ -11,6 +11,8 @@ This internal report separates company-catalog references from confirmed ArcFort
 - Data conflicts: 0
 - Completed factory confirmation rows: 0 of 15
 - Approved company-owned image requests: 0 of 20
+- Independent CT0006 catalog-reference intake rows: 4
+- Independent CT0006 factory-confirmed intake rows: 0
 
 ## Technical Fact Matrix
 
@@ -58,6 +60,19 @@ Use `data/intake/15ak-product-image-intake.csv`. Main, connection/detail, dimens
 | AF-MIG-CT-0005 | MIG Contact Tip M6 1.0mm |                5 |               0 |
 | AF-MIG-TH-0007 | MIG Tip Holder for MB15  |                5 |               0 |
 | AF-MIG-GN-0008 | MIG Gas Nozzle for MB15  |                5 |               0 |
+
+## Separate General M6 x 27 mm Contact Tip Review
+
+`AF-MIG-CT-0006` is not in the 15AK exact-SKU intake. Its existing product record cites a general M6 x 27 mm company-catalog table on PDF page 20 (catalog page 33), while its product `source_type` is `unknown`. These rows are internal catalog-reference questions only; they do not create public field-level technical facts or confirm final SKU length, material or fit.
+
+Use `data/intake/general-m6-27-contact-tip-technical-confirmation.csv` for factory responses. Preserve the source reference and enter confirmed values only with exact-SKU evidence, a reviewer and an ISO date. Keep image provenance and rights review in the existing product image asset queue.
+
+| SKU            | Field                    | Catalog reference | Verification               | Source                                                                                            | Required factory check                                                              |
+| -------------- | ------------------------ | ----------------- | -------------------------- | ------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------- |
+| AF-MIG-CT-0006 | Material options         | E-Cu / CuCrZr     | NEEDS_FACTORY_CONFIRMATION | Renqiu Ailesen welding catalog PDF page 20 (catalog page 33) general M6 x 27 mm contact-tip table | Confirm the material grade supplied for this exact SKU and physical variant         |
+| AF-MIG-CT-0006 | Wire size reference      | 1.2 mm            | NEEDS_FACTORY_CONFIRMATION | Renqiu Ailesen welding catalog PDF page 20 (catalog page 33) general M6 x 27 mm contact-tip table | Measure the wire bore on the exact supplied contact tip                             |
+| AF-MIG-CT-0006 | Overall length reference | 27 mm             | NEEDS_FACTORY_CONFIRMATION | Renqiu Ailesen welding catalog PDF page 20 (catalog page 33) general M6 x 27 mm contact-tip table | Measure the overall length on the exact supplied contact tip                        |
+| AF-MIG-CT-0006 | Thread reference         | M6                | NEEDS_FACTORY_CONFIRMATION | Renqiu Ailesen welding catalog PDF page 20 (catalog page 33) general M6 x 27 mm contact-tip table | Confirm the thread designation and mating holder for the exact supplied contact tip |
 
 ## Confirmation Gate
 

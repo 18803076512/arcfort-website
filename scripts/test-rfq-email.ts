@@ -69,8 +69,11 @@ assert.match(inquiryHtml, /Sales follow-up checklist/);
 assert.match(inquiryHtml, /Lead Source/);
 assert.match(inquiryHtml, /Distributor outreach email/);
 assert.match(inquiryHtml, /Reply to Buyer/);
-assert.match(inquiryHtml, /mailto:buyer%40example\.com\?subject=Re%3A%20ArcFort%20Weld%20RFQ/);
-assert.match(inquiryHtml, /https:\/\/wa\.me\/10000000000/);
+assert.match(inquiryHtml, /Reply to this notification; the buyer address is set as Reply-To/);
+assert.match(inquiryHtml, /Buyer WhatsApp \(copy manually\): \+1 000 000 0000/);
+const inquiryHrefs = [...inquiryHtml.matchAll(/\bhref="([^"]+)"/g)].map((match) => match[1]);
+assert.ok(inquiryHrefs.length > 0);
+assert.ok(inquiryHrefs.every((href) => !/buyer|10000000000/i.test(href ?? "")));
 assert.match(inquiryHtml, /Inquiry Source/);
 assert.match(inquiryHtml, /drawing-&lt;revision-a&gt;\.pdf/);
 assert.match(inquiryHtml, /rfq\/drawing-&lt;revision-a&gt;\.pdf/);
@@ -90,7 +93,9 @@ assert.match(inquiryText, /Buyer details detected:/);
 assert.match(inquiryText, /Sales Follow-up Checklist:/);
 assert.match(inquiryText, /Lead Source: Distributor outreach email/);
 assert.match(inquiryText, /Sales Response Actions:/);
-assert.match(inquiryText, /https:\/\/wa\.me\/10000000000/);
+assert.match(inquiryText, /Reply to this notification; the buyer address is set as Reply-To/);
+assert.match(inquiryText, /Buyer WhatsApp \(copy manually\): \+1 000 000 0000/);
+assert.doesNotMatch(inquiryText, /mailto:buyer|wa\.me\/10000000000/i);
 assert.match(inquiryText, /rfq\/drawing-<revision-a>\.pdf/);
 assert.match(confirmationText, /Information that can help us review faster:/);
 assert.match(confirmationText, /arcfortweld@outlook\.com/);
@@ -222,7 +227,7 @@ const invalidWhatsAppHtml = buildInquiryEmailHtml(
   requestMeta,
 );
 assert.doesNotMatch(invalidWhatsAppHtml, /https:\/\/wa\.me\/02012345678/);
-assert.match(invalidWhatsAppHtml, /Reply by Email/);
+assert.match(invalidWhatsAppHtml, /Buyer WhatsApp \(copy manually\): 020 1234 5678/);
 
 const encodedEmailHtml = buildInquiryEmailHtml(
   { ...payload, email: "buyer@example.com?body=untrusted" },
@@ -230,7 +235,11 @@ const encodedEmailHtml = buildInquiryEmailHtml(
   reference,
   requestMeta,
 );
-assert.match(encodedEmailHtml, /mailto:buyer%40example\.com%3Fbody%3Duntrusted\?subject=/);
-assert.doesNotMatch(encodedEmailHtml, /mailto:buyer@example\.com\?body=/);
+assert.match(encodedEmailHtml, /Buyer email \(copy manually\): buyer@example\.com\?body=untrusted/);
+assert.ok(
+  [...encodedEmailHtml.matchAll(/\bhref="([^"]+)"/g)].every(
+    (match) => !/buyer|untrusted/i.test(match[1] ?? ""),
+  ),
+);
 
 console.log("RFQ email template tests passed.");

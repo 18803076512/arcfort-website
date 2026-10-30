@@ -23,6 +23,11 @@ import {
 } from "./product-image-asset-utils.ts";
 import { assessProductMainImageEvidence } from "./product-image-readiness-utils.ts";
 import { validateProductSeriesComponentEvidence } from "./product-series-component-utils.ts";
+import {
+  formatSearchConsoleFreshness,
+  formatSearchConsoleReviewSchedule,
+  isValidIsoEvidenceDate,
+} from "./search-console-freshness.ts";
 
 type EvidenceState = boolean | null;
 
@@ -90,10 +95,6 @@ function evidenceLabel(value: EvidenceState, trueLabel: string, falseLabel: stri
   return "Needs external confirmation";
 }
 
-function isIsoDate(value: string) {
-  return /^\d{4}-\d{2}-\d{2}$/.test(value) && !Number.isNaN(Date.parse(`${value}T00:00:00Z`));
-}
-
 function validateEvidence(evidence: AcquisitionEvidence) {
   const dates = [
     evidence.asOf,
@@ -109,7 +110,7 @@ function validateEvidence(evidence: AcquisitionEvidence) {
     evidence.securityOperations.emailAuthenticationChecked,
   ];
 
-  if (dates.some((value) => !isIsoDate(value))) {
+  if (dates.some((value) => !isValidIsoEvidenceDate(value))) {
     errors.push("Production evidence contains an invalid ISO date.");
   }
 
@@ -255,6 +256,15 @@ function buildReport(
     (asset) => asset.usage_rights_status === "approved",
   ).length;
   const ctrPercent = `${(evidence.searchConsole.ctr * 100).toFixed(2)}%`;
+  const searchMeasurement = formatSearchConsoleFreshness(
+    evidence.asOf,
+    evidence.searchConsole.dataEnd,
+  );
+  const searchReview = formatSearchConsoleReviewSchedule(
+    evidence.asOf,
+    evidence.searchConsole.dataEnd,
+    evidence.searchConsole.nextComparableReviewOnOrAfter,
+  );
 
   if (activeRowsWithoutRegisteredPublicMainImages.length > 0) {
     errors.push(
@@ -275,6 +285,8 @@ function buildReport(
     "",
     "ArcFort Weld is live and indexable. The RFQ path is configured through the email provider, while final inbox placement still requires external confirmation. The next growth constraint is not another general page. It is stronger product evidence, verified measurement and disciplined follow-up on the pages already receiving search impressions.",
     "",
+    searchMeasurement,
+    "",
     `- Production deployment verified: ${evidence.production.deploymentVerified ? "Yes" : "No"}`,
     `- Canonical production URL: ${evidence.production.url}`,
     `- Production sitemap URLs: ${evidence.production.sitemapUrlCount}`,
@@ -293,13 +305,13 @@ function buildReport(
     `- Application pages: ${applications.length}`,
     `- Buyer guides: ${guides.length}`,
     `- RFQ production-ready status: ${evidence.rfq.productionReady ? "Yes" : "No"}`,
-    `- Search Console baseline: ${evidence.searchConsole.clicks} clicks / ${evidence.searchConsole.impressions} impressions / ${ctrPercent} CTR`,
+    `- Historical Search Console baseline (${evidence.searchConsole.dataStart} to ${evidence.searchConsole.dataEnd}): ${evidence.searchConsole.clicks} clicks / ${evidence.searchConsole.impressions} impressions / ${ctrPercent} CTR`,
     "",
     "## Acquisition Channels",
     "",
     "| Channel | Evidence | Current status | Next control |",
     "| --- | --- | --- | --- |",
-    `| Organic search | Search Console export for ${evidence.searchConsole.dataStart} through ${evidence.searchConsole.dataEnd} | ${evidence.searchConsole.clicks} clicks and ${evidence.searchConsole.impressions} impressions recorded | Compare a clean 28-day post-change window on or after ${evidence.searchConsole.nextComparableReviewOnOrAfter} |`,
+    `| Organic search | Search Console export for ${evidence.searchConsole.dataStart} through ${evidence.searchConsole.dataEnd} | Historical: ${evidence.searchConsole.clicks} clicks and ${evidence.searchConsole.impressions} impressions recorded | ${searchReview} |`,
     `| Website RFQ | Production status and controlled provider acceptance | Email delivery mode; sales notification, buyer confirmation and attachments are configured | Confirm matching references in the sales and buyer inboxes |`,
     `| Email / WhatsApp | ${siteConfig.email} and ${siteConfig.whatsapp} are visible across major buyer paths | Direct fallback contacts available | Track non-PII click and qualified-inquiry outcomes |`,
     `| Product catalog | ${activeRows.length} active pages across ${productCategories.length} categories, ${productSeries.length} governed public series and ${productSeriesEvidence.length} catalog-series evidence records | ${activeRowsUsingLegacyMainImages.length} active products retain legacy-reference main images; ${activeRowsWithSearchEligibleExactMainImages.length} have search-eligible exact main images | Replace legacy references with rights-approved exact-product views, then verify product and series relationships |`,
@@ -386,7 +398,7 @@ function buildReport(
     "6. Complete the 15AK evidence intake, resolve the 602 page-identity conflict and work through the detailed 24KD/25AK/36KD/40KD/501D/602 component confirmation and image queues in `docs/product-series-component-evidence-report.md` before publishing another series.",
     "7. Confirm material, dimensions, interfaces and fitment for active products from drawings, samples or approved supplier/company records.",
     "8. Confirm GA4 Realtime and `rfq_submit_success` / lead events without recording buyer PII.",
-    `9. Export Search Console again on or after ${evidence.searchConsole.nextComparableReviewOnOrAfter}; prioritize high-impression low-click existing URLs before adding overlapping content.`,
+    `9. ${searchReview} Prioritize high-impression low-click existing URLs only after the current export is reviewed.`,
     "10. Configure Supabase only if searchable inquiry history, attachment retention or multi-user sales operations are needed.",
     "",
     "## Update Workflow",

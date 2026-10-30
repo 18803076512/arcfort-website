@@ -205,6 +205,9 @@ jobs:
           npm run goal:report
           git diff --exit-code -- lib/data/products.ts lib/data/product-image-assets.ts lib/data/product-series-component-facts.ts docs/product-readiness-report.md docs/product-image-tasks.csv docs/product-series-component-evidence-report.md docs/product-series-readiness-report.md docs/compatibility-readiness-report.md docs/product-technical-evidence-report.md docs/product-image-asset-report.md docs/acquisition-readiness-report.md docs/goal-progress-report.md
 
+      - name: Test Search Console evidence freshness
+        run: npm run test:search-console-freshness
+
       - name: Verify promotion campaign links
         run: |
           npm run promotion:check
