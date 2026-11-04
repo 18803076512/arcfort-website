@@ -3,6 +3,7 @@
 import { fetchReadOnlyWithRetry } from "./live-audit-fetch.ts";
 import {
   classifyDnsLookupFailure,
+  hasDmarcAggregateReportUri,
   isDefinitiveDnsStatus,
   type DnsLookupLabel,
 } from "./email-domain-audit-policy.ts";
@@ -202,7 +203,7 @@ async function main() {
     // The lookup finding above is sufficient; do not infer record state.
   } else if (!dmarcRecord) {
     warnings.push(
-      `DMARC is missing at ${dmarcName}. Start with "v=DMARC1; p=none; adkim=r; aspf=r; pct=100" after confirming the sender domain in Resend.`,
+      `DMARC is missing at ${dmarcName}. After confirming the sender domain in Resend, a first-phase policy can be "v=DMARC1; p=none; adkim=r; aspf=r; pct=100". This record has no rua address, so it will not deliver aggregate reports; add reporting only to a verified controlled mailbox or service.`,
     );
   } else {
     const policy = /(?:^|;)\s*p=(none|quarantine|reject)(?:;|$)/i.exec(dmarcRecord)?.[1];
@@ -212,9 +213,15 @@ async function main() {
     } else {
       console.log(`DMARC: present with p=${policy.toLowerCase()}`);
 
+      if (!hasDmarcAggregateReportUri(dmarcRecord)) {
+        warnings.push(
+          "DMARC has no syntactically valid rua mailto address. This record cannot request aggregate reports; check alignment with a controlled received message until a verified reporting address or service is approved.",
+        );
+      }
+
       if (policy.toLowerCase() === "none") {
         warnings.push(
-          "DMARC is in monitoring mode. Move to quarantine/reject only after reviewing legitimate mail alignment.",
+          "DMARC p=none does not enforce authentication. Review legitimate sender alignment and actual aggregate-report receipt, if configured, before considering quarantine or reject.",
         );
       }
     }

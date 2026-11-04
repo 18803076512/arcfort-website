@@ -208,6 +208,12 @@ jobs:
       - name: Test Search Console evidence freshness
         run: npm run test:search-console-freshness
 
+      - name: Test RFQ inbox evidence gate
+        run: npm run test:rfq-inbox-evidence
+
+      - name: Test sender-domain audit policy
+        run: npm run test:email-domain
+
       - name: Verify promotion campaign links
         run: |
           npm run promotion:check

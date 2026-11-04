@@ -22,6 +22,11 @@ import {
   type ProductImageAssetValidation,
 } from "./product-image-asset-utils.ts";
 import { assessProductMainImageEvidence } from "./product-image-readiness-utils.ts";
+import {
+  formatRfqCheckedOutcome,
+  validateRfqInboxEvidence,
+  type RfqInboxEvidence,
+} from "./rfq-inbox-evidence.ts";
 import { validateProductSeriesComponentEvidence } from "./product-series-component-utils.ts";
 import {
   formatSearchConsoleFreshness,
@@ -41,7 +46,7 @@ type AcquisitionEvidence = {
     liveSeoAuditChecked: string;
     securityHeadersChecked: string;
   };
-  rfq: {
+  rfq: RfqInboxEvidence & {
     statusChecked: string;
     productionReady: boolean;
     deliveryMode: string;
@@ -49,8 +54,6 @@ type AcquisitionEvidence = {
     buyerConfirmationReady: boolean;
     attachmentDeliveryReady: boolean;
     providerAcceptanceVerified: string;
-    salesMailboxPlacementConfirmed: EvidenceState;
-    buyerMailboxPlacementConfirmed: EvidenceState;
     supabaseStorageReady: boolean;
   };
   searchConsole: {
@@ -96,6 +99,7 @@ function evidenceLabel(value: EvidenceState, trueLabel: string, falseLabel: stri
 }
 
 function validateEvidence(evidence: AcquisitionEvidence) {
+  errors.push(...validateRfqInboxEvidence(evidence.rfq, evidence.asOf));
   const dates = [
     evidence.asOf,
     evidence.production.indexNowLastAccepted,
@@ -265,6 +269,33 @@ function buildReport(
     evidence.searchConsole.dataEnd,
     evidence.searchConsole.nextComparableReviewOnOrAfter,
   );
+  const bothInboxesConfirmed =
+    evidence.rfq.salesMailboxPlacementConfirmed === true &&
+    evidence.rfq.buyerMailboxPlacementConfirmed === true;
+  const attachmentConfirmed = evidence.rfq.salesAttachmentPresentConfirmed === true;
+  const missingMailbox =
+    evidence.rfq.salesMailboxPlacementConfirmed === false ||
+    evidence.rfq.buyerMailboxPlacementConfirmed === false;
+  const rfqSummary = bothInboxesConfirmed
+    ? attachmentConfirmed
+      ? "a controlled RFQ was observed in both mailboxes with its sales attachment"
+      : "a controlled RFQ was observed in both mailboxes, while sales-attachment receipt still needs resolution"
+    : missingMailbox
+      ? "at least one checked mailbox did not contain the controlled RFQ"
+      : "final inbox placement still requires external confirmation";
+  const rfqNextControl = bothInboxesConfirmed
+    ? attachmentConfirmed
+      ? "Review qualified inquiry follow-up and future delivery health"
+      : evidence.rfq.salesAttachmentPresentConfirmed === false
+        ? "Investigate the missing test attachment in the sales message"
+        : "Verify the controlled test attachment in the sales mailbox"
+    : missingMailbox
+      ? "Investigate the missing controlled message before another authorized test"
+      : "Confirm matching references in both inboxes and the sales test attachment";
+  const rfqConfiguration = evidence.rfq.productionReady
+    ? `The RFQ path reports configuration readiness in ${evidence.rfq.deliveryMode} delivery mode`
+    : "The RFQ path is not configuration ready";
+  const rfqChannelStatus = `Delivery mode: ${evidence.rfq.deliveryMode}; sales email ${evidence.rfq.salesEmailReady ? "configured" : "not configured"}, buyer confirmation ${evidence.rfq.buyerConfirmationReady ? "configured" : "not configured"}, attachment path ${evidence.rfq.attachmentDeliveryReady ? "configured" : "not configured"}`;
 
   if (activeRowsWithoutRegisteredPublicMainImages.length > 0) {
     errors.push(
@@ -283,7 +314,7 @@ function buildReport(
     "",
     "## Executive Status",
     "",
-    "ArcFort Weld is live and indexable. The RFQ path is configured through the email provider, while final inbox placement still requires external confirmation. The next growth constraint is not another general page. It is stronger product evidence, verified measurement and disciplined follow-up on the pages already receiving search impressions.",
+    `ArcFort Weld is live and indexable. ${rfqConfiguration}; ${rfqSummary}. The next growth constraint is stronger product evidence, verified measurement and disciplined follow-up on the pages already receiving search impressions.`,
     "",
     searchMeasurement,
     "",
@@ -304,7 +335,7 @@ function buildReport(
     `- Governed product image assets: ${imageAssets.rows.length}`,
     `- Application pages: ${applications.length}`,
     `- Buyer guides: ${guides.length}`,
-    `- RFQ production-ready status: ${evidence.rfq.productionReady ? "Yes" : "No"}`,
+    `- RFQ configuration-ready status: ${evidence.rfq.productionReady ? "Yes" : "No"}`,
     `- Historical Search Console baseline (${evidence.searchConsole.dataStart} to ${evidence.searchConsole.dataEnd}): ${evidence.searchConsole.clicks} clicks / ${evidence.searchConsole.impressions} impressions / ${ctrPercent} CTR`,
     "",
     "## Acquisition Channels",
@@ -312,7 +343,7 @@ function buildReport(
     "| Channel | Evidence | Current status | Next control |",
     "| --- | --- | --- | --- |",
     `| Organic search | Search Console export for ${evidence.searchConsole.dataStart} through ${evidence.searchConsole.dataEnd} | Historical: ${evidence.searchConsole.clicks} clicks and ${evidence.searchConsole.impressions} impressions recorded | ${searchReview} |`,
-    `| Website RFQ | Production status and controlled provider acceptance | Email delivery mode; sales notification, buyer confirmation and attachments are configured | Confirm matching references in the sales and buyer inboxes |`,
+    `| Website RFQ | Production status and governed delivery checks | ${rfqChannelStatus} | ${rfqNextControl} |`,
     `| Email / WhatsApp | ${siteConfig.email} and ${siteConfig.whatsapp} are visible across major buyer paths | Direct fallback contacts available | Track non-PII click and qualified-inquiry outcomes |`,
     `| Product catalog | ${activeRows.length} active pages across ${productCategories.length} categories, ${productSeries.length} governed public series and ${productSeriesEvidence.length} catalog-series evidence records | ${activeRowsUsingLegacyMainImages.length} active products retain legacy-reference main images; ${activeRowsWithSearchEligibleExactMainImages.length} have search-eligible exact main images | Replace legacy references with rights-approved exact-product views, then verify product and series relationships |`,
     `| Distributor / OEM | Dedicated service pages, builders and buyer workbooks | Operational buyer preparation paths are published | Review completed workbooks and qualified RFQs, not page count |`,
@@ -325,9 +356,10 @@ function buildReport(
     `- Buyer confirmation configured: ${evidence.rfq.buyerConfirmationReady ? "Yes" : "No"}`,
     `- Attachment delivery configured: ${evidence.rfq.attachmentDeliveryReady ? "Yes" : "No"}`,
     `- Provider acceptance last verified: ${evidence.rfq.providerAcceptanceVerified}`,
-    `- Sales inbox placement: ${evidenceLabel(evidence.rfq.salesMailboxPlacementConfirmed, "Confirmed", "Failed")}`,
-    `- Buyer inbox placement: ${evidenceLabel(evidence.rfq.buyerMailboxPlacementConfirmed, "Confirmed", "Failed")}`,
-    `- Optional Supabase inquiry storage: ${evidence.rfq.supabaseStorageReady ? "Configured" : "Not configured; email capture remains the active delivery path"}`,
+    `- Sales inbox placement: ${formatRfqCheckedOutcome(evidence.rfq.salesMailboxPlacementConfirmed, evidence.rfq.inboxVerification?.sales?.checkedAt ?? null)}`,
+    `- Buyer inbox placement: ${formatRfqCheckedOutcome(evidence.rfq.buyerMailboxPlacementConfirmed, evidence.rfq.inboxVerification?.buyer?.checkedAt ?? null)}`,
+    `- Test attachment in sales mailbox: ${formatRfqCheckedOutcome(evidence.rfq.salesAttachmentPresentConfirmed, evidence.rfq.inboxVerification?.sales?.checkedAt ?? null, "attachment")}`,
+    `- Optional Supabase inquiry storage: ${evidence.rfq.supabaseStorageReady ? "Configured" : "Not configured"}`,
     "",
     "## Product Evidence",
     "",
@@ -391,8 +423,8 @@ function buildReport(
     "## Highest-Impact Next Actions",
     "",
     "1. Confirm that the exposed Resend credential has been rotated, then record only the confirmation state, never the key.",
-    "2. Add a monitoring-mode DMARC TXT record only after DNS-change approval, then rerun the email-domain audit.",
-    "3. Confirm one matching RFQ reference in the sales mailbox and one in the buyer-confirmation mailbox.",
+    "2. Add a first-phase DMARC `p=none` TXT record only after DNS-change approval, then rerun the email-domain audit. Aggregate reporting requires an approved controlled `rua` address.",
+    `3. ${rfqNextControl}.`,
     "4. Work through `docs/product-image-asset-report.md`: confirm source and usage rights, then replace migration-period references with exact-product images.",
     "5. Supply exact, legally usable product photos for the three blocked draft SKUs; do not publish their current placeholders as product evidence.",
     "6. Complete the 15AK evidence intake, resolve the 602 page-identity conflict and work through the detailed 24KD/25AK/36KD/40KD/501D/602 component confirmation and image queues in `docs/product-series-component-evidence-report.md` before publishing another series.",
@@ -405,7 +437,7 @@ function buildReport(
     "",
     "1. Update `docs/operations/acquisition-production-evidence.json` after a real provider, mailbox, DNS or analytics check.",
     "2. Update product CSV and reviewed product images through the existing SKU workflow.",
-    "3. Run `npm run products:report`, `npm run series:components:validate`, `npm run series:components:report`, `npm run series:report`, `npm run compatibility:report`, `npm run technical:report`, `npm run images:assets:report` and `npm run acquisition:report`.",
+    "3. Run `npm run products:report`, `npm run series:components:validate`, `npm run series:components:report`, `npm run series:report`, `npm run compatibility:report`, `npm run technical:report`, `npm run images:assets:report`, `npm run acquisition:report` and `npm run goal:report`.",
     "4. Run the required SEO, lint, type, build, performance and security checks before deployment.",
     "",
   ].join("\n");

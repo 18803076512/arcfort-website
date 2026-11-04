@@ -18,6 +18,11 @@ import {
 } from "./product-import-utils.ts";
 import { validateProductImageAssets } from "./product-image-asset-utils.ts";
 import {
+  formatRfqCheckedOutcome,
+  validateRfqInboxEvidence,
+  type RfqInboxEvidence,
+} from "./rfq-inbox-evidence.ts";
+import {
   formatSearchConsoleFreshness,
   formatSearchConsoleReviewSchedule,
 } from "./search-console-freshness.ts";
@@ -29,11 +34,9 @@ type AcquisitionEvidence = {
     deploymentVerified: boolean;
     sitemapUrlCount: number;
   };
-  rfq: {
+  rfq: RfqInboxEvidence & {
     productionReady: boolean;
     deliveryMode: string;
-    salesMailboxPlacementConfirmed: boolean | null;
-    buyerMailboxPlacementConfirmed: boolean | null;
   };
   searchConsole: {
     dataStart: string;
@@ -72,6 +75,7 @@ errors.push(...companyEvidence.errors.map((error) => `Company evidence: ${error}
 warnings.push(...companyEvidence.warnings.map((warning) => `Company evidence: ${warning}`));
 
 const acquisitionEvidence = JSON.parse(readFileSync(evidencePath, "utf8")) as AcquisitionEvidence;
+errors.push(...validateRfqInboxEvidence(acquisitionEvidence.rfq, acquisitionEvidence.asOf));
 const shadow = JSON.parse(readFileSync(shadowPath, "utf8")) as ShadowCatalog;
 
 const products = productValidation.rows;
@@ -213,6 +217,22 @@ const searchReview = formatSearchConsoleReviewSchedule(
   acquisitionEvidence.searchConsole.dataEnd,
   acquisitionEvidence.searchConsole.nextComparableReviewOnOrAfter,
 );
+const bothInboxesConfirmed =
+  acquisitionEvidence.rfq.salesMailboxPlacementConfirmed === true &&
+  acquisitionEvidence.rfq.buyerMailboxPlacementConfirmed === true;
+const attachmentConfirmed = acquisitionEvidence.rfq.salesAttachmentPresentConfirmed === true;
+const missingMailbox =
+  acquisitionEvidence.rfq.salesMailboxPlacementConfirmed === false ||
+  acquisitionEvidence.rfq.buyerMailboxPlacementConfirmed === false;
+const rfqFollowup = bothInboxesConfirmed
+  ? attachmentConfirmed
+    ? "Monitor future RFQ delivery and qualified sales follow-up"
+    : acquisitionEvidence.rfq.salesAttachmentPresentConfirmed === false
+      ? "Investigate the missing test attachment in the sales message"
+      : "Verify the controlled test attachment in the sales mailbox"
+  : missingMailbox
+    ? "Investigate the missing controlled RFQ before another authorized test"
+    : "Verify one controlled production RFQ reaches both mailboxes with the same reference and its selected attachment reaches sales";
 const reportSource = [
   "# ArcFort Weld Goal Progress Report",
   "",
@@ -277,9 +297,10 @@ const reportSource = [
   `- Next comparable Search Console review: ${searchReview}`,
   `- Search Console sitemap submission: ${externalState(acquisitionEvidence.searchConsole.sitemapSubmissionConfirmed)}`,
   `- RFQ delivery mode: ${acquisitionEvidence.rfq.deliveryMode}`,
-  `- RFQ repository production-ready state: ${acquisitionEvidence.rfq.productionReady ? "Yes" : "No"}`,
-  `- Sales-mailbox placement: ${externalState(acquisitionEvidence.rfq.salesMailboxPlacementConfirmed)}`,
-  `- Buyer-mailbox placement: ${externalState(acquisitionEvidence.rfq.buyerMailboxPlacementConfirmed)}`,
+  `- RFQ configuration-ready state: ${acquisitionEvidence.rfq.productionReady ? "Yes" : "No"}`,
+  `- Sales-mailbox placement: ${formatRfqCheckedOutcome(acquisitionEvidence.rfq.salesMailboxPlacementConfirmed, acquisitionEvidence.rfq.inboxVerification.sales.checkedAt)}`,
+  `- Buyer-mailbox placement: ${formatRfqCheckedOutcome(acquisitionEvidence.rfq.buyerMailboxPlacementConfirmed, acquisitionEvidence.rfq.inboxVerification.buyer.checkedAt)}`,
+  `- Test attachment in sales mailbox: ${formatRfqCheckedOutcome(acquisitionEvidence.rfq.salesAttachmentPresentConfirmed, acquisitionEvidence.rfq.inboxVerification.sales.checkedAt, "attachment")}`,
   `- GA4 RFQ conversion event: ${externalState(acquisitionEvidence.analytics.rfqConversionEventConfirmed)}`,
   `- Email-provider credential rotation after exposure: ${externalState(acquisitionEvidence.securityOperations.resendCredentialRotatedAfterExternalExposure)}`,
   `- DMARC status: ${externalState(acquisitionEvidence.securityOperations.dmarcStatusConfirmed)}`,
@@ -291,7 +312,7 @@ const reportSource = [
   "3. Return Level A 15AK measurements, drawings or approved sample records for the four pilot products and reconcile each fact by stable ID.",
   "4. Capture rights-approved exact 15AK main, connection-detail, dimensional and packaging images, then complete the product media review gate.",
   "5. Collect company-owned factory, production, inspection, packing, warehouse and shipment images with source owner, rights, reviewer and date.",
-  "6. Verify one synthetic production RFQ reaches both controlled inboxes with the same inquiry reference; confirm credential rotation, DMARC and GA4 conversion evidence.",
+  `6. ${rfqFollowup}; confirm credential rotation, DMARC and GA4 conversion evidence.`,
   `7. ${searchReview} Update the governed SEO baseline only after reviewing the native export.`,
   "",
   "## Known Data Boundary",

@@ -33,6 +33,17 @@ search eligible. The 73 local candidates also remain `needs_confirmation`, `unve
 Keep the Airtable base ID, access tokens, reviewer contact details and private account information
 out of Git. Repository documentation identifies the base by name only.
 
+### 2026-10-30 Read-Only Source Check
+
+The four P0 image decisions still lack replacement file, rights approval, exact-product match,
+evidence reference, reviewer and review date. All 15 technical reviews remain
+`NEEDS_FACTORY_CONFIRMATION` without confirmed values or review evidence. All 20 image requests
+remain requested, and the 73 local asset triage rows remain unverified. Searches for 15AK, CT0006,
+ArcFort and MIG originals in the connected Google Drive and Dropbox scopes returned no matching
+files. These search results do not establish that no offline original exists; no row may advance
+until its actual source is supplied and reviewed. The general M6 x 27 mm CT0006 catalog reference
+belongs to its separate exact-SKU queue, not the four-product 15AK intake.
+
 ## Authority Boundary
 
 - Airtable values are proposed reviewer input, not public product data.

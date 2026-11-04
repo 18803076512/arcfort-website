@@ -114,7 +114,7 @@ async function main() {
   console.log("ArcFort Weld live RFQ check");
   console.log(`Base URL: ${baseUrl}`);
   console.log(`HTTP status: ${statusResponse.status}`);
-  console.log(`Production ready: ${Boolean(status.productionReady)}`);
+  console.log(`Production configuration ready: ${Boolean(status.productionReady)}`);
   console.log(`Inquiry capture ready: ${Boolean(status.inquiryCaptureReady)}`);
   console.log(`Attachment delivery ready: ${Boolean(status.attachmentDeliveryReady)}`);
   console.log(`Delivery mode: ${status.deliveryMode ?? "unknown"}`);
@@ -144,7 +144,7 @@ async function main() {
   console.log(`Storage conflict key: ${status.storage?.conflictKey ?? "unknown"}`);
 
   if (!statusResponse.ok || !status.ok || !status.productionReady) {
-    throw new Error("The live RFQ status endpoint is not production-ready.");
+    throw new Error("The live RFQ status endpoint is not configuration-ready.");
   }
 
   if (
@@ -189,7 +189,7 @@ async function main() {
   }
 
   if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-    throw new Error("Pass a valid test inbox with --email=buyer@example.com.");
+    throw new Error("Pass a valid, receivable controlled test inbox with --email=<address>.");
   }
 
   const formData = new FormData();
@@ -258,7 +258,7 @@ async function main() {
   }
 
   console.log(
-    "The email provider accepted the test. Confirm final inbox placement and the matching RFQ reference in Outlook or Resend logs.",
+    "The email provider accepted the test. Check the matching RFQ reference in both actual mailboxes; Resend logs alone do not prove inbox receipt.",
   );
 }
 
