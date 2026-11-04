@@ -1,18 +1,18 @@
 # Acquisition Readiness Report
 
-Production evidence checked through 2026-10-29. Search Console, provider, mailbox and product evidence retain the separate dates and confirmation states shown below. This internal report separates repository facts, verified production behavior and business evidence that still requires external confirmation.
+Production evidence checked through 2026-11-04. Search Console, provider, mailbox and product evidence retain the separate dates and confirmation states shown below. This internal report separates repository facts, verified production behavior and business evidence that still requires external confirmation.
 
 ## Executive Status
 
-ArcFort Weld is live and indexable. The RFQ path is configured through the email provider, while final inbox placement still requires external confirmation. The next growth constraint is not another general page. It is stronger product evidence, verified measurement and disciplined follow-up on the pages already receiving search impressions.
+ArcFort Weld is live and indexable. The RFQ path reports configuration readiness in email delivery mode; final inbox placement still requires external confirmation. The next growth constraint is stronger product evidence, verified measurement and disciplined follow-up on the pages already receiving search impressions.
 
-**Search measurement: Historical baseline; current search performance is unknown.** Recorded Search Console data ends 2026-08-09, 81 days before the production evidence date 2026-10-29. The internal review threshold is 35 days (a 28-day comparison window plus seven days for export and review). Do not infer a current trend, indexing status or conversion result from these numbers.
+**Search measurement: Historical baseline; current search performance is unknown.** Recorded Search Console data ends 2026-08-09, 87 days before the production evidence date 2026-11-04. The internal review threshold is 35 days (a 28-day comparison window plus seven days for export and review). Do not infer a current trend, indexing status or conversion result from these numbers.
 
 - Production deployment verified: Yes
 - Canonical production URL: https://www.arcfortweld.com
 - Production sitemap URLs: 88
-- Live SEO audit checked: 2026-10-29
-- Security headers checked: 2026-10-29
+- Live SEO audit checked: 2026-11-04
+- Security headers checked: 2026-11-04
 - Active public products: 40
 - Draft products held from publication: 3
 - Product categories: 6
@@ -25,22 +25,22 @@ ArcFort Weld is live and indexable. The RFQ path is configured through the email
 - Governed product image assets: 46
 - Application pages: 6
 - Buyer guides: 17
-- RFQ production-ready status: Yes
+- RFQ configuration-ready status: Yes
 - Historical Search Console baseline (2026-06-26 to 2026-08-09): 8 clicks / 422 impressions / 1.90% CTR
 
 ## Acquisition Channels
 
-| Channel           | Evidence                                                                                             | Current status                                                                                   | Next control                                                                                                     |
-| ----------------- | ---------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------ | ---------------------------------------------------------------------------------------------------------------- |
-| Organic search    | Search Console export for 2026-06-26 through 2026-08-09                                              | Historical: 8 clicks and 422 impressions recorded                                                | Review overdue since 2026-09-12; obtain a new native Search Console export and compare equivalent periods.       |
-| Website RFQ       | Production status and controlled provider acceptance                                                 | Email delivery mode; sales notification, buyer confirmation and attachments are configured       | Confirm matching references in the sales and buyer inboxes                                                       |
-| Email / WhatsApp  | arcfortweld@outlook.com and +86-18803076512 are visible across major buyer paths                     | Direct fallback contacts available                                                               | Track non-PII click and qualified-inquiry outcomes                                                               |
-| Product catalog   | 40 active pages across 6 categories, 0 governed public series and 10 catalog-series evidence records | 40 active products retain legacy-reference main images; 0 have search-eligible exact main images | Replace legacy references with rights-approved exact-product views, then verify product and series relationships |
-| Distributor / OEM | Dedicated service pages, builders and buyer workbooks                                                | Operational buyer preparation paths are published                                                | Review completed workbooks and qualified RFQs, not page count                                                    |
+| Channel           | Evidence                                                                                             | Current status                                                                                          | Next control                                                                                                     |
+| ----------------- | ---------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------- |
+| Organic search    | Search Console export for 2026-06-26 through 2026-08-09                                              | Historical: 8 clicks and 422 impressions recorded                                                       | Review overdue since 2026-09-12; obtain a new native Search Console export and compare equivalent periods.       |
+| Website RFQ       | Production status and governed delivery checks                                                       | Delivery mode: email; sales email configured, buyer confirmation configured, attachment path configured | Confirm matching references in both inboxes and the sales test attachment                                        |
+| Email / WhatsApp  | arcfortweld@outlook.com and +86-18803076512 are visible across major buyer paths                     | Direct fallback contacts available                                                                      | Track non-PII click and qualified-inquiry outcomes                                                               |
+| Product catalog   | 40 active pages across 6 categories, 0 governed public series and 10 catalog-series evidence records | 40 active products retain legacy-reference main images; 0 have search-eligible exact main images        | Replace legacy references with rights-approved exact-product views, then verify product and series relationships |
+| Distributor / OEM | Dedicated service pages, builders and buyer workbooks                                                | Operational buyer preparation paths are published                                                       | Review completed workbooks and qualified RFQs, not page count                                                    |
 
 ## RFQ And Delivery Evidence
 
-- Production status checked: 2026-10-29
+- Production status checked: 2026-11-04
 - Delivery mode: email
 - Sales email configured: Yes
 - Buyer confirmation configured: Yes
@@ -48,7 +48,8 @@ ArcFort Weld is live and indexable. The RFQ path is configured through the email
 - Provider acceptance last verified: 2026-07-26
 - Sales inbox placement: Needs external confirmation
 - Buyer inbox placement: Needs external confirmation
-- Optional Supabase inquiry storage: Not configured; email capture remains the active delivery path
+- Test attachment in sales mailbox: Needs external confirmation
+- Optional Supabase inquiry storage: Not configured
 
 ## Product Evidence
 
@@ -102,7 +103,7 @@ Draft product pages remain excluded from static generation and sitemap publicati
 
 ## Email Domain Authentication
 
-- Public DNS checked: 2026-10-29
+- Public DNS checked: 2026-11-04
 - DKIM public key: Present
 - SPF for custom MAIL FROM: Present
 - Custom MAIL FROM MX: Present
@@ -123,8 +124,8 @@ These items cannot be proven from public page content or repository files. Updat
 ## Highest-Impact Next Actions
 
 1. Confirm that the exposed Resend credential has been rotated, then record only the confirmation state, never the key.
-2. Add a monitoring-mode DMARC TXT record only after DNS-change approval, then rerun the email-domain audit.
-3. Confirm one matching RFQ reference in the sales mailbox and one in the buyer-confirmation mailbox.
+2. Add a first-phase DMARC `p=none` TXT record only after DNS-change approval, then rerun the email-domain audit. Aggregate reporting requires an approved controlled `rua` address.
+3. Confirm matching references in both inboxes and the sales test attachment.
 4. Work through `docs/product-image-asset-report.md`: confirm source and usage rights, then replace migration-period references with exact-product images.
 5. Supply exact, legally usable product photos for the three blocked draft SKUs; do not publish their current placeholders as product evidence.
 6. Complete the 15AK evidence intake, resolve the 602 page-identity conflict and work through the detailed 24KD/25AK/36KD/40KD/501D/602 component confirmation and image queues in `docs/product-series-component-evidence-report.md` before publishing another series.
@@ -137,5 +138,5 @@ These items cannot be proven from public page content or repository files. Updat
 
 1. Update `docs/operations/acquisition-production-evidence.json` after a real provider, mailbox, DNS or analytics check.
 2. Update product CSV and reviewed product images through the existing SKU workflow.
-3. Run `npm run products:report`, `npm run series:components:validate`, `npm run series:components:report`, `npm run series:report`, `npm run compatibility:report`, `npm run technical:report`, `npm run images:assets:report` and `npm run acquisition:report`.
+3. Run `npm run products:report`, `npm run series:components:validate`, `npm run series:components:report`, `npm run series:report`, `npm run compatibility:report`, `npm run technical:report`, `npm run images:assets:report`, `npm run acquisition:report` and `npm run goal:report`.
 4. Run the required SEO, lint, type, build, performance and security checks before deployment.

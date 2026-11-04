@@ -12,3 +12,12 @@ export function classifyDnsLookupFailure(label: DnsLookupLabel, lookupError: str
     message: `${label} was not verified: ${lookupError}`,
   };
 }
+
+export function hasDmarcAggregateReportUri(record: string) {
+  const rua = /(?:^|;)\s*rua\s*=\s*([^;]+)/i.exec(record)?.[1];
+  return Boolean(
+    rua
+      ?.split(",")
+      .some((uri) => /^mailto:[^\s@,;!]+@[^\s@,;!]+(?:![0-9]+[kKmMgGtT]?)?$/i.test(uri.trim())),
+  );
+}

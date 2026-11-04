@@ -131,13 +131,14 @@ The audit verifies the current Resend DKIM key plus the `send.arcfortweld.com` S
 FROM MX records. It reports a missing DMARC policy as a warning so production monitoring continues
 while the policy is introduced. Use `-- --strict` only after every warning has been resolved.
 
-Audit observed on 2026-08-13:
+Read-only audit last observed on 2026-11-04:
 
 - Resend DKIM is published at `resend._domainkey.arcfortweld.com`.
 - The custom MAIL FROM SPF and MX records are published at `send.arcfortweld.com`.
 - `_dmarc.arcfortweld.com` is not published and remains an email-authentication gap.
 
-Add this TXT record in Cloudflare as the cautious first phase:
+After the owner authorizes the exact Cloudflare zone and DNS change, the cautious first-phase TXT
+record is:
 
 ```text
 Name: _dmarc
@@ -148,7 +149,10 @@ Content: v=DMARC1; p=none; adkim=r; aspf=r; pct=100
 Keep `p=none` while confirming that legitimate Resend messages align correctly. Do not move to
 `p=quarantine` or `p=reject` until delivery has been monitored and any other legitimate sender has
 been identified. Add aggregate reporting only after a dedicated mailbox or a reviewed DMARC
-monitoring service is available; do not point reports at an unverified address.
+monitoring service is available; do not point reports at an unverified address. The initial record
+above has no `rua` tag and cannot deliver aggregate reports. Until a controlled reporting address is
+approved, use a controlled received message's authentication results to check alignment; do not
+describe that check as aggregate-report monitoring.
 
 ## Optional Supabase Storage
 
@@ -168,7 +172,10 @@ available to PostgREST conflict handling.
 
 ## Test After Deployment
 
-After adding Vercel environment variables and redeploying:
+After adding Vercel environment variables and redeploying, follow
+[Controlled Production Acceptance](rfq-production-readiness.md#controlled-production-acceptance).
+The owner must authorize the real test submission, and the reviewer must be able to inspect both
+the sales mailbox and a controlled buyer test mailbox. Then:
 
 1. Open `https://www.arcfortweld.com/api/rfq/status`.
 2. Confirm `email.ready` is `true` after Resend variables are configured.
@@ -226,14 +233,16 @@ npm run test:rfq
 - `emailConfigured:false`: `RESEND_API_KEY` or `RFQ_EMAIL_FROM` is missing in Vercel.
 - `emailProviderAccepted:false` (also `emailDelivered:false`): Resend was not configured, rejected
   the sales request, or the request failed before an acceptance response.
-- `backendConfigured:false`: Neither Resend delivery nor Supabase storage is configured.
+- `backendConfigured:false`: Resend did not accept the sales email request, and Supabase did not
+  fully store the inquiry and selected attachments. A provider can be configured and still fail
+  this check.
 - HTTP `502`: delivery providers were configured but no channel succeeded. Check Resend and
   Supabase logs using the returned RFQ reference.
 - HTTP `503`: no automated delivery provider is configured in that environment.
 - Attachment error: reduce file count, reduce file size, or send large files directly by email.
 - Sender rejected: verify `arcfortweld.com` in Resend and confirm DNS records in Cloudflare.
-- DMARC warning: publish the monitoring policy above, wait for DNS propagation, then rerun
-  `npm run email:audit:live`.
+- DMARC warning: after authorization, publish the first-phase policy above, wait for DNS
+  propagation, then rerun `npm run email:audit:live`.
 - `Please reload the RFQ form and try again`: the submission was too fast, too old, or missing
   form timing data. Reload `/rfq` and submit again.
 

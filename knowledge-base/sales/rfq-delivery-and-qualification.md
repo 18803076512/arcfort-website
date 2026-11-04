@@ -31,7 +31,7 @@ technical review.
   `emailProviderAccepted` and `buyerConfirmationProviderAccepted` state this directly; legacy
   `emailDelivered` and `buyerConfirmationDelivered` are compatible aliases, not mailbox evidence.
 - Provider acceptance was last recorded on 2026-07-26.
-- Production RFQ read-only status was last checked on 2026-10-29.
+- Production RFQ read-only status was last checked on 2026-11-04.
 - Sales-mailbox placement: not externally confirmed.
 - Buyer-mailbox placement: not externally confirmed.
 - Optional Supabase inquiry storage: not configured; email remains the active delivery path.
@@ -42,7 +42,8 @@ technical review.
 
 Provider acceptance is not proof of inbox placement. The website must not claim proven end-to-end
 delivery until one controlled browser submission produces the same inquiry reference in the sales
-mailbox and buyer confirmation mailbox.
+mailbox and buyer confirmation mailbox, and its selected test attachment is present in the sales
+message. These are separately recorded outcomes.
 
 ## Qualified Inquiry Minimum
 
@@ -61,9 +62,15 @@ For a useful quotation, sales should obtain:
 1. Use synthetic, non-sensitive test details and a controlled buyer mailbox.
 2. Submit through the production browser form, including one allowed test attachment.
 3. Record only the generated inquiry reference, timestamps and pass/fail outcome in operations
-   evidence; do not commit message content or addresses.
+   evidence; do not commit message content or addresses. Use the `inboxVerification` fields in
+   `docs/operations/acquisition-production-evidence.json`: submission reference and UTC time,
+   separately observed reference, receipt and check times for each mailbox, plus reviewer ID and
+   review time. A checked failure uses `false` with a check time; an unchecked mailbox stays null.
 4. Match the reference in the sales notification and buyer confirmation.
-5. Confirm attachment availability and sender-domain authentication.
+5. Confirm attachment availability and sender-domain authentication separately. Record the selected
+   test attachment outcome in `rfq.salesAttachmentPresentConfirmed`; it requires observed sales
+   mailbox receipt and uses that inspection's check time. Mailbox evidence alone does not establish
+   that an attachment was included.
 6. Update `docs/operations/acquisition-production-evidence.json` and regenerate reports.
 
 ## Remaining Owner Evidence

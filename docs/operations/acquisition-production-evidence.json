@@ -1,15 +1,15 @@
 {
-  "asOf": "2026-10-29",
+  "asOf": "2026-11-04",
   "production": {
     "url": "https://www.arcfortweld.com",
     "deploymentVerified": true,
     "sitemapUrlCount": 88,
     "indexNowLastAccepted": "2026-08-13",
-    "liveSeoAuditChecked": "2026-10-29",
-    "securityHeadersChecked": "2026-10-29"
+    "liveSeoAuditChecked": "2026-11-04",
+    "securityHeadersChecked": "2026-11-04"
   },
   "rfq": {
-    "statusChecked": "2026-10-29",
+    "statusChecked": "2026-11-04",
     "productionReady": true,
     "deliveryMode": "email",
     "salesEmailReady": true,
@@ -18,6 +18,23 @@
     "providerAcceptanceVerified": "2026-07-26",
     "salesMailboxPlacementConfirmed": null,
     "buyerMailboxPlacementConfirmed": null,
+    "salesAttachmentPresentConfirmed": null,
+    "inboxVerification": {
+      "submittedReference": null,
+      "submittedAt": null,
+      "sales": {
+        "observedReference": null,
+        "receivedAt": null,
+        "checkedAt": null
+      },
+      "buyer": {
+        "observedReference": null,
+        "receivedAt": null,
+        "checkedAt": null
+      },
+      "reviewedBy": null,
+      "reviewedAt": null
+    },
     "supabaseStorageReady": false
   },
   "searchConsole": {
@@ -37,7 +54,7 @@
   },
   "securityOperations": {
     "resendCredentialRotatedAfterExternalExposure": null,
-    "emailAuthenticationChecked": "2026-10-29",
+    "emailAuthenticationChecked": "2026-11-04",
     "dkimRecordPresent": true,
     "spfRecordPresent": true,
     "mailFromMxRecordPresent": true,

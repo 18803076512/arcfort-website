@@ -4,6 +4,51 @@ This append-only log records substantial Codex work so future sessions can under
 why it changed and which risks remain. Add the newest entry at the top, below this introduction. Do
 not include secrets, buyer PII, private prospect data or unconfirmed claims.
 
+## 2026-11-04 - Gate RFQ Inbox Evidence And Repair Delivery Handoff
+
+- **Task:** Continue the verified-source-to-sales operating loop after the prior production release.
+  Prevent a bare mailbox boolean from becoming a confirmed delivery claim, correct stale RFQ and
+  DMARC instructions, and recheck available 15AK/CT0006 source material.
+- **Files Changed:** `docs/operations/acquisition-production-evidence.json`,
+  `scripts/rfq-inbox-evidence.ts`, its focused test, both report generators and generated reports;
+  the email-domain audit/policy/test and live RFQ check; `package.json`, the CI quality workflow,
+  RFQ delivery/readiness runbooks, the ecosystem review, Airtable intake record, RFQ sales knowledge
+  record and this log.
+- **Components / Data / Visual Changes:** No public component or layout changed. The evidence JSON
+  gained blank, non-PII submission, per-mailbox, sales-attachment and review fields; all three
+  outcomes remain null. No technical fact, image right, SKU relationship, product page or company
+  claim advanced.
+- **SEO Impact:** No public URL, metadata, canonical, sitemap, robots or indexing change. The
+  acquisition report now names `goal:report` in its regeneration workflow and correctly distinguishes
+  an initial DMARC `p=none` policy from aggregate reporting that needs a controlled `rua` address.
+  Report readiness labels now describe configuration, and future inbox confirmations show check
+  dates.
+- **Validation:** RFQ inbox negative controls, RFQ constraints/email/timeouts, Search Console
+  freshness, sender-domain and bounded live-audit tests passed. Both reports generated with the
+  existing unknown inbox states. Lint, TypeScript, production build and secret scan passed. The
+  2026-11-04 read-only production health run passed: RFQ configuration, 88 sitemap URLs, 82/82
+  reachable HTML pages, 40/40 product inquiry paths and security headers. DKIM, SPF and MAIL FROM MX
+  were present; DMARC remained missing, GA4 inactive and Search Console HTML verification absent.
+  The first DNS audit without the environment proxy could not reach either public resolver and
+  correctly failed closed; the proxy-backed audit passed. Existing `p=none` records without `rua`
+  now warn about absent aggregate reporting. Prettier, performance budget and `git diff --check`
+  passed. No real RFQ, email or DNS write occurred.
+- **Known Issues:** Sales and buyer inbox receipt and attachment arrival remain unverified. DMARC,
+  Resend credential-rotation confirmation, GA4, current native GSC evidence and exact-product
+  technical/media rights remain open. Connected Drive and Dropbox searches found no new matching
+  original; the Airtable 15AK intake remains unapproved. Search absence does not prove no offline
+  original exists.
+- **Reusable Knowledge Added:** The controlled RFQ runbook defines reference, UTC mailbox,
+  attachment and reviewer evidence fields; the sales record keeps attachment proof separate from
+  mailbox proof.
+  The Airtable intake record dates the read-only 15AK/CT0006 source check.
+- **Deployment:** Local candidate only. Previous PR #137 was verified merged to `main` at
+  `84eb5714fe2c6d1b2c7c655dc4a53906dcd6f8e0`, with successful main CI and Vercel production
+  deployment. That approval does not cover this new batch; no push, PR merge or deployment occurred.
+- **Next Recommended Action:** Review and release this exact evidence-gate batch after new
+  destination-specific authorization, then run one separately authorized controlled browser RFQ
+  and inspect the same reference in both mailboxes and its sales attachment.
+
 ## 2026-10-30 - Bound RFQ Acceptance And Evidence Freshness
 
 - **Task:** Complete the core website handoff by distinguishing RFQ provider acceptance from inbox

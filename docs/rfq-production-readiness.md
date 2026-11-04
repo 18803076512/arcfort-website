@@ -2,6 +2,8 @@
 
 This checklist is for turning the ArcFort Weld RFQ form into a real inquiry capture channel.
 It does not contain secrets and should be safe to commit.
+Use [RFQ Email Delivery](rfq-email-delivery.md) for the current API response contract and provider
+semantics when maintaining this checklist.
 
 ## Current Goal
 
@@ -11,13 +13,15 @@ contacts. Production readiness means a buyer submission must also reach the sale
 Minimum production target:
 
 - RFQ form accepts required fields and valid attachments.
-- Website sends an email notification to `arcfortweld@outlook.com`.
-- Website sends an automatic confirmation email to the buyer email when Resend is configured.
+- Website requests an email notification to `arcfortweld@outlook.com`.
+- Website requests a confirmation email to the buyer email when Resend is configured.
 - Sales and buyer emails use separate Resend idempotency keys derived from a stable browser
   submission token, protecting unchanged retries from duplicate delivery for 24 hours.
-- Every accepted or rejected submission receives a traceable `AF-RFQ-...` reference.
+- Every API response includes a traceable `AF-RFQ-...` reference; a network abort may prevent the
+  browser from receiving it.
 - Sales notification includes source path, landing page, referrer and UTM fields when available.
-- Buyer sees success only after email delivery or database storage succeeds.
+- Buyer sees success only after Resend accepts the sales request or Supabase stores the inquiry and
+  every selected attachment. Provider acceptance does not prove either mailbox received an email.
 - Resend and Supabase run independently, so one channel can still capture the inquiry if the other
   provider fails.
 - Each Resend request has a 12-second timeout. A stalled buyer confirmation does not reverse an
@@ -27,8 +31,11 @@ Minimum production target:
   does not create a duplicate row or reset the existing inquiry status.
 - A Supabase-only submission with selected files succeeds only when both the inquiry row and files
   are stored. Saving file names without the files does not produce a buyer success state.
-- Large or failed submissions still direct the buyer to email or WhatsApp.
-- Browser submissions to `POST /api/rfq` pass Vercel BotID Basic verification before inquiry parsing.
+- Large or failed submissions preserve the buyer's fields and any returned RFQ reference, show
+  selectable details for manual copying, and link to the base email and WhatsApp contacts. Buyer
+  details are not placed in those URLs.
+- Browser submissions to `POST /api/rfq` run Vercel BotID Basic before inquiry parsing. A verified
+  bot is rejected; a BotID outage falls back to the application's origin, timing and rate controls.
 - No API keys, email passwords or database secrets are committed to the repository.
 
 ## Required Email Delivery Setup
@@ -65,8 +72,8 @@ Do not use personal Outlook passwords for website email sending.
 
 ## Optional Supabase Inquiry Storage
 
-Email delivery is the minimum requirement. Supabase is optional but useful for inquiry records and
-attachment metadata.
+An accepted sales email request is the minimum configured path. Actual sales-mailbox receipt is a
+separate launch check. Supabase is optional but useful for inquiry records and attachment metadata.
 
 Set these variables only if inquiry database storage is required:
 
@@ -85,7 +92,16 @@ Security rules:
 - Never prefix server-only keys with `NEXT_PUBLIC_`.
 - Rotate the service role key immediately if exposed.
 
-## Deployment Steps
+## Controlled Production Acceptance
+
+Use this sequence only after the owner authorizes one real test submission and the reviewer can
+inspect both the sales mailbox and a controlled, receivable buyer test mailbox. Use synthetic,
+non-sensitive buyer details and a harmless small test attachment; `example.com` is not a receivable
+buyer inbox. Do not repeat an ambiguous timed-out submission automatically.
+
+The first four setup steps apply only when the relevant provider configuration still needs a
+change. A test-submission authorization does not authorize a DNS, Resend or Vercel change; obtain
+exact-destination approval for any such write. Readiness and inbox placement are separate checks.
 
 1. Verify `arcfortweld.com` in Resend.
 2. Add the Resend DNS records in Cloudflare.
@@ -93,18 +109,38 @@ Security rules:
 4. Redeploy the Vercel production deployment.
 5. Open `https://www.arcfortweld.com/api/rfq/status`.
 6. Confirm `email.ready` is `true`.
-7. Submit a test RFQ in a real browser at `https://www.arcfortweld.com/rfq` so the BotID challenge is
-   attached to the request.
-8. Confirm the success message says the RFQ was sent to sales email.
-9. Confirm the page displays an `AF-RFQ-...` reference.
-10. Confirm the sales notification subject and body contain the same reference.
-11. Confirm the success message says a confirmation copy was sent to the buyer email.
-12. Confirm `arcfortweld@outlook.com` receives the sales notification.
-13. Confirm the buyer test inbox receives the confirmation email and matching reference.
-14. Submit one test with a small PDF or JPG attachment and confirm the attachment arrives in the
-    sales notification.
-15. Submit one test URL with `?utm_source=test&utm_medium=qa&utm_campaign=rfq-check` and confirm
-    the sales notification includes the UTM fields.
+7. Open `https://www.arcfortweld.com/rfq?utm_source=test&utm_medium=qa&utm_campaign=rfq-check`
+   in a normal browser, enter the controlled buyer mailbox, note the UTC time immediately before
+   clicking Submit, and submit one RFQ with a small PDF or JPG test attachment so the BotID
+   challenge is attached to the request.
+8. Confirm the success page says the inquiry was submitted and asks the buyer to save its reference;
+   it must not claim sales or buyer inbox receipt.
+9. Record the displayed `AF-RFQ-...` reference and whether buyer confirmation was requested.
+10. Confirm the sales notification with that reference and attachment actually appears in
+    `arcfortweld@outlook.com`, including the expected source and UTM fields.
+11. Confirm the buyer confirmation with the same reference actually appears in the controlled
+    buyer inbox. If either message is missing, inspect the relevant Resend request and mailbox
+    folders without treating provider acceptance as inbox proof.
+
+Record the result in `docs/operations/acquisition-production-evidence.json` without buyer names,
+addresses, message text or attachments. Set `rfq.inboxVerification.submittedReference` to the page
+reference and `submittedAt` to the UTC time noted immediately before the submit click, not the
+later success-screen time. For each mailbox, set `observedReference` to the reference actually seen,
+`receivedAt` to the message's UTC receipt time and `checkedAt` to the UTC inspection time. Set the
+matching
+`salesMailboxPlacementConfirmed` or `buyerMailboxPlacementConfirmed` flag to `true` only after
+checking that mailbox. If a mailbox was checked and the message was absent, set its flag to `false`,
+keep `observedReference` and `receivedAt` null, and record `checkedAt`. Leave an unchecked mailbox
+and its flag null. Set `salesAttachmentPresentConfirmed` to `true` only when the selected test
+attachment is present in the received sales message, `false` when the message was inspected and its
+attachment is absent, or null when unchecked. It requires a confirmed sales mailbox result and
+shares that mailbox's `checkedAt` inspection time. Record an internal reviewer name or ID in
+`reviewedBy`, the UTC review time in `reviewedAt`, and the latest check date in `asOf`. The validator
+allows a reference date one UTC day either side of submission because the browser can reuse a valid
+submission token across midnight.
+Run `npm run acquisition:report` and `npm run goal:report`; neither report may mark a mailbox
+confirmed from a bare boolean. Do not call the full RFQ path proven until both mailbox flags and
+the sales attachment flag are confirmed for this test.
 
 ## Repeatable Live Check
 
@@ -115,9 +151,9 @@ npm run rfq:check-live
 ```
 
 BotID-protected submissions require a browser-generated challenge. Send a controlled test from the
-deployed `/rfq` page instead of a command-line HTTP client. A successful page response proves that
-the production API and Resend accepted the message; confirm final inbox placement and the matching
-RFQ reference in Outlook or Resend logs.
+deployed `/rfq` page instead of a command-line HTTP client. A successful page response means Resend
+accepted the sales request or Supabase stored the inquiry and required attachments. Check both
+mailboxes for the matching reference; a Resend response or log alone cannot prove inbox placement.
 
 ## Abuse Protection
 
@@ -218,12 +254,13 @@ After Resend is configured, `https://www.arcfortweld.com/api/rfq/status` should 
 }
 ```
 
-If Supabase is not configured, `storage.ready` can remain `false`. Email delivery alone is enough
-for the first production inquiry workflow.
+If Supabase is not configured, `storage.ready` can remain `false`. Resend provider acceptance can
+produce a successful website response, but the real sales inbox must still be checked before the
+channel is called a proven lead path.
 
-`productionReady` is true only when the environment can capture the inquiry and deliver selected
-attachments. For a Supabase-only setup, both the RFQ table and private attachment bucket are
-required.
+`productionReady` reports configuration that can capture the inquiry and submit selected
+attachments; it does not report mailbox receipt. For a Supabase-only setup, both the RFQ table and
+private attachment bucket are required.
 
 Before deployment, run:
 
@@ -233,13 +270,14 @@ npm run test:rfq
 
 ## Test RFQ Content
 
-Use a realistic test message:
+Use a synthetic test message, replacing the buyer-email placeholder with an actual controlled,
+receivable test mailbox before submitting:
 
 ```text
 Name: Test Buyer
 Company: Test Distributor
-Email: buyer@example.com
-WhatsApp: +1 000 000 0000
+Email: [controlled buyer test mailbox]
+WhatsApp: [leave blank unless a controlled test number is available]
 Country: United States
 Product Requirements:
 MIG Contact Tip M6 1.0mm, 500 pcs. Please confirm material, package and lead time.
@@ -258,9 +296,12 @@ After testing, mark the email as an internal test and do not treat it as a real 
 - Sender rejected: verify `arcfortweld.com` DNS records in Resend.
 - Attachment rejected: reduce file count or file size. Current limits are 5 files and 4 MB total,
   keeping the multipart request below Vercel's 4.5 MB Function payload limit.
-- `backendConfigured:false` after submit: neither Resend email nor Supabase storage is ready.
-- HTTP `502`: at least one provider is configured, but no delivery channel completed. Use the
-  displayed RFQ reference and prefilled email or WhatsApp fallback, then check provider logs.
+- `backendConfigured:false` after submit: neither Resend accepted the sales request nor Supabase
+  stored the inquiry and required attachments.
+- HTTP `502`: at least one provider is configured, but no channel accepted or stored the inquiry.
+  Keep the displayed RFQ reference, copy the selectable details into the chosen email or WhatsApp
+  app, and add attachments again if needed. The contact links contain no buyer details or query
+  parameters. Check provider logs before deciding whether to retry an ambiguous submission.
 - HTTP `503`: neither Resend nor Supabase is configured in that environment.
 
 ## Launch Decision
@@ -268,7 +309,8 @@ After testing, mark the email as an internal test and do not treat it as a real 
 The site is ready for active inquiry traffic when:
 
 - `/api/rfq/status` shows `email.ready:true`.
-- A real test RFQ reaches `arcfortweld@outlook.com`.
+- One authorized controlled RFQ reaches `arcfortweld@outlook.com` and the controlled buyer inbox
+  with the same reference; the sales copy includes the submitted test attachment.
 - Email and WhatsApp backup links are visible on `/rfq`, product pages and the footer.
 
 Until then, the website can still receive manual inquiries by visible email and WhatsApp, but the
