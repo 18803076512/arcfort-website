@@ -104,6 +104,7 @@
     "products:refresh-copy": "node --experimental-strip-types scripts/refresh-catalog-product-copy.ts",
     "products:refresh-copy:write": "node --experimental-strip-types scripts/refresh-catalog-product-copy.ts --write",
     "test:rfq": "node --experimental-strip-types scripts/test-rfq-constraints.ts && node --experimental-strip-types scripts/test-rfq-email.ts && node --experimental-strip-types scripts/test-rfq-provider-timeout.ts",
+    "test:rfq:ui": "node --experimental-strip-types scripts/test-rfq-form-browser.ts",
     "test:rfq-email": "node --experimental-strip-types scripts/test-rfq-email.ts",
     "test:product-search": "node --experimental-strip-types scripts/test-product-search.ts",
     "test:product-series": "node --experimental-strip-types scripts/test-product-series.ts",

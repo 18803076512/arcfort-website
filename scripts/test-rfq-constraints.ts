@@ -13,6 +13,7 @@ import { validateRfqFileContents } from "../lib/rfq-file-content.ts";
 import {
   getRfqSubmissionFailureMessage,
   isRfqSubmissionAbortError,
+  runRfqRequestWithDeadline,
   rfqSubmissionTimeoutMs,
   rfqSubmissionTimeoutSeconds,
 } from "../lib/rfq-client.ts";
@@ -61,8 +62,45 @@ assert.equal(rfqSubmissionTimeoutMs, 45_000);
 assert.equal(rfqSubmissionTimeoutSeconds, 45);
 assert.equal(isRfqSubmissionAbortError(abortError), true);
 assert.equal(isRfqSubmissionAbortError(new Error("Network unavailable")), false);
-assert.match(getRfqSubmissionFailureMessage(abortError), /same protected submission identifier/i);
-assert.match(getRfqSubmissionFailureMessage(new Error("Network unavailable")), /try again/i);
+assert.match(
+  getRfqSubmissionFailureMessage(abortError),
+  /contact our sales team.*attempt reference.*before submitting again/i,
+);
+assert.match(
+  getRfqSubmissionFailureMessage(new Error("Network unavailable"), false),
+  /was not sent/i,
+);
+assert.match(
+  getRfqSubmissionFailureMessage(new Error("Network unavailable")),
+  /check your email.*contact our sales team.*before submitting again/i,
+);
+
+let stalledRequestCalls = 0;
+let stalledRequestSignal: AbortSignal | undefined;
+let testWatchdog: ReturnType<typeof setTimeout> | undefined;
+const deadlineStart = Date.now();
+try {
+  await assert.rejects(
+    Promise.race([
+      runRfqRequestWithDeadline((signal) => {
+        stalledRequestCalls++;
+        stalledRequestSignal = signal;
+        return new Promise<Response>(() => {});
+      }, 20),
+      new Promise<never>((_, reject) => {
+        testWatchdog = setTimeout(() => reject(new Error("RFQ deadline did not settle.")), 1000);
+      }),
+    ]),
+    (error) => isRfqSubmissionAbortError(error),
+  );
+} finally {
+  if (testWatchdog !== undefined) {
+    clearTimeout(testWatchdog);
+  }
+}
+assert.equal(stalledRequestCalls, 1);
+assert.equal(stalledRequestSignal?.aborted, true);
+assert.ok(Date.now() - deadlineStart < 1000);
 
 const missingEmail = validateRfqTextValues({
   ...validValues,

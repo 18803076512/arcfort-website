@@ -37,6 +37,10 @@ technical review.
 - Optional Supabase inquiry storage: not configured; email remains the active delivery path.
 - On a failed website submission, the form preserves the buyer's fields and shows selectable
   fallback details. Email and WhatsApp links use only the base contacts, with no buyer data in URLs.
+- BotID's browser fetch wrapper can wait for its challenge before calling native `fetch`. Its wait
+  does not consume the request's `AbortSignal`, so the client needs an independent deadline that
+  rejects the waiting promise and aborts the eventual native request. An attempt reference shown
+  before a response is only a reconciliation key; it never proves provider acceptance or receipt.
 - Sales notification actions use the buyer email as `Reply-To` and show buyer contact details as
   text. No buyer email address or phone number is placed in an action URL.
 

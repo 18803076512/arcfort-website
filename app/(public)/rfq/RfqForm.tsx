@@ -38,10 +38,14 @@ import {
 import {
   getRfqSubmissionFailureMessage,
   isRfqSubmissionAbortError,
-  rfqSubmissionTimeoutMs,
+  runRfqRequestWithDeadline,
   rfqSubmissionTimeoutSeconds,
 } from "@/lib/rfq-client";
-import { getOrCreateRfqSubmissionAttempt, type RfqSubmissionAttempt } from "@/lib/rfq-idempotency";
+import {
+  createRfqReferenceFromSubmissionToken,
+  getOrCreateRfqSubmissionAttempt,
+  type RfqSubmissionAttempt,
+} from "@/lib/rfq-idempotency";
 import { buildRfqQuotationReadiness } from "@/lib/rfq-qualification";
 
 type RfqFormValues = RfqTextValues;
@@ -190,7 +194,7 @@ export function RfqForm({
     submissionResult?.buyerConfirmationProviderAccepted ??
     submissionResult?.buyerConfirmationDelivered ??
     false;
-  const [failedReference, setFailedReference] = useState("");
+  const [attemptReference, setAttemptReference] = useState("");
   const [submittedRequirements, setSubmittedRequirements] = useState("");
   const submissionAttemptRef = useRef<RfqSubmissionAttempt | null>(null);
   const formStartTrackedRef = useRef(false);
@@ -243,7 +247,7 @@ export function RfqForm({
         submission: undefined,
       };
     });
-    setFailedReference("");
+    setAttemptReference("");
   }, [selectedProducts.length]);
 
   function trackRfqFormStart(
@@ -300,7 +304,7 @@ export function RfqForm({
       [field]: undefined,
       submission: undefined,
     }));
-    setFailedReference("");
+    setAttemptReference("");
   }
 
   function applyQuickTemplate(template: (typeof rfqQuickTemplates)[number]) {
@@ -324,7 +328,7 @@ export function RfqForm({
       message: undefined,
       submission: undefined,
     }));
-    setFailedReference("");
+    setAttemptReference("");
   }
 
   function validateForm() {
@@ -369,7 +373,7 @@ export function RfqForm({
       attachments: undefined,
       submission: undefined,
     }));
-    setFailedReference("");
+    setAttemptReference("");
   }
 
   function handleRemoveSelectedProduct(item: RfqListItem) {
@@ -379,7 +383,7 @@ export function RfqForm({
       productRequirements: undefined,
       submission: undefined,
     }));
-    setFailedReference("");
+    setAttemptReference("");
     trackAnalyticsEvent("rfq_list_remove", {
       item_name: item.name,
       item_sku: item.sku,
@@ -399,7 +403,7 @@ export function RfqForm({
       quantity: undefined,
       submission: undefined,
     }));
-    setFailedReference("");
+    setAttemptReference("");
   }
 
   function handleClearSelectedProducts() {
@@ -409,7 +413,7 @@ export function RfqForm({
       productRequirements: undefined,
       submission: undefined,
     }));
-    setFailedReference("");
+    setAttemptReference("");
     trackAnalyticsEvent("rfq_list_clear", {
       item_count: selectedProducts.length,
       location: "rfq_form",
@@ -440,78 +444,83 @@ export function RfqForm({
     const productRequirements = productRequirementsForSubmission;
 
     setIsSubmitting(true);
-    setErrors((currentErrors) => ({
-      ...currentErrors,
-      submission: undefined,
-    }));
-    setFailedReference("");
-    trackAnalyticsEvent("rfq_submit_start", {
-      attachment_count: attachments.length,
-      selected_product_count: selectedProducts.length,
-      has_additional_requirements: Boolean(values.productRequirements.trim()),
-      quotation_readiness: quotationReadiness.status,
-      confirmed_signal_count: quotationReadiness.confirmedSignals.length,
-      form_placement: formPlacement,
-    });
-
-    const formData = new FormData();
-    const sourceAttribution = getStoredSourceAttribution();
-    const sourcePath = sanitizeSourcePath(window.location.pathname, "/rfq");
-    const submissionFingerprint = JSON.stringify({
-      values: {
-        ...values,
-        productRequirements,
-        quantity: quantityForSubmission,
-      },
-      sourcePath,
-      sourceAttribution,
-      attachments: attachments.map((file) => ({
-        name: file.name,
-        size: file.size,
-        type: file.type,
-        lastModified: file.lastModified,
-      })),
-    });
-    const submissionAttempt = getOrCreateRfqSubmissionAttempt(
-      submissionAttemptRef.current,
-      submissionFingerprint,
-    );
-    submissionAttemptRef.current = submissionAttempt;
-
-    formData.append("submissionToken", submissionAttempt.token);
-    formData.append("name", values.name);
-    formData.append("company", values.company);
-    formData.append("email", values.email);
-    formData.append("whatsapp", values.whatsapp);
-    formData.append("country", values.country);
-    formData.append("productRequirements", productRequirements);
-    formData.append("quantity", quantityForSubmission);
-    formData.append("message", values.message);
-    formData.append("website", website);
-    formData.append("startedAt", String(startedAt));
-    formData.append("sourcePath", sourcePath);
-
-    for (const field of sourceAttributionFields) {
-      formData.append(field, sourceAttribution[field]);
-    }
-
-    for (const file of attachments) {
-      formData.append("attachments", file);
-    }
-
-    const requestController = new AbortController();
-    const requestTimeout = window.setTimeout(
-      () => requestController.abort(),
-      rfqSubmissionTimeoutMs,
-    );
+    let requestStarted = false;
+    let preparedReference = "";
+    let responseReference = "";
 
     try {
-      const response = await fetch("/api/rfq", {
-        method: "POST",
-        body: formData,
-        signal: requestController.signal,
+      setErrors((currentErrors) => ({
+        ...currentErrors,
+        submission: undefined,
+      }));
+      setAttemptReference("");
+      trackAnalyticsEvent("rfq_submit_start", {
+        attachment_count: attachments.length,
+        selected_product_count: selectedProducts.length,
+        has_additional_requirements: Boolean(values.productRequirements.trim()),
+        quotation_readiness: quotationReadiness.status,
+        confirmed_signal_count: quotationReadiness.confirmedSignals.length,
+        form_placement: formPlacement,
       });
-      const result = (await response.json()) as RfqResponse;
+
+      const formData = new FormData();
+      const sourceAttribution = getStoredSourceAttribution();
+      const sourcePath = sanitizeSourcePath(window.location.pathname, "/rfq");
+      const submissionFingerprint = JSON.stringify({
+        values: {
+          ...values,
+          productRequirements,
+          quantity: quantityForSubmission,
+        },
+        sourcePath,
+        sourceAttribution,
+        attachments: attachments.map((file) => ({
+          name: file.name,
+          size: file.size,
+          type: file.type,
+          lastModified: file.lastModified,
+        })),
+      });
+      const submissionAttempt = getOrCreateRfqSubmissionAttempt(
+        submissionAttemptRef.current,
+        submissionFingerprint,
+      );
+      submissionAttemptRef.current = submissionAttempt;
+      preparedReference = createRfqReferenceFromSubmissionToken(submissionAttempt.token) ?? "";
+      setAttemptReference(preparedReference);
+
+      formData.append("submissionToken", submissionAttempt.token);
+      formData.append("name", values.name);
+      formData.append("company", values.company);
+      formData.append("email", values.email);
+      formData.append("whatsapp", values.whatsapp);
+      formData.append("country", values.country);
+      formData.append("productRequirements", productRequirements);
+      formData.append("quantity", quantityForSubmission);
+      formData.append("message", values.message);
+      formData.append("website", website);
+      formData.append("startedAt", String(startedAt));
+      formData.append("sourcePath", sourcePath);
+
+      for (const field of sourceAttributionFields) {
+        formData.append(field, sourceAttribution[field]);
+      }
+
+      for (const file of attachments) {
+        formData.append("attachments", file);
+      }
+
+      requestStarted = true;
+      const { response, result } = await runRfqRequestWithDeadline(async (signal) => {
+        const response = await fetch("/api/rfq", {
+          method: "POST",
+          body: formData,
+          signal,
+        });
+        responseReference = response.headers.get("X-RFQ-Reference") ?? "";
+        const result = (await response.json()) as RfqResponse;
+        return { response, result };
+      });
 
       if (!response.ok || !result.ok) {
         const responseErrors =
@@ -522,7 +531,7 @@ export function RfqForm({
               "Automated RFQ delivery is unavailable. Please use email or WhatsApp.",
           } satisfies FormErrors);
 
-        setFailedReference(result.reference ?? "");
+        setAttemptReference(result.reference || responseReference || preparedReference);
         setErrors(responseErrors);
         focusFirstInvalidField(responseErrors);
         trackAnalyticsEvent("rfq_submit_error", {
@@ -579,25 +588,30 @@ export function RfqForm({
     } catch (error) {
       const timedOut = isRfqSubmissionAbortError(error);
 
-      setFailedReference("");
+      setAttemptReference(requestStarted ? responseReference || preparedReference : "");
       setErrors({
-        submission: getRfqSubmissionFailureMessage(error),
+        submission: getRfqSubmissionFailureMessage(error, requestStarted),
       });
       trackAnalyticsEvent("rfq_submit_error", {
-        failure_stage: timedOut ? "request_timeout" : "network_or_parse",
-        timeout_seconds: timedOut ? rfqSubmissionTimeoutSeconds : undefined,
+        failure_stage: !requestStarted
+          ? "preparation"
+          : timedOut
+            ? "request_timeout"
+            : "network_or_parse",
+        timeout_seconds: requestStarted && timedOut ? rfqSubmissionTimeoutSeconds : undefined,
         attachment_count: attachments.length,
         selected_product_count: selectedProducts.length,
         form_placement: formPlacement,
       });
     } finally {
-      window.clearTimeout(requestTimeout);
       setIsSubmitting(false);
     }
   }
 
   const fallbackMessage = [
-    ...(failedReference ? [`RFQ Reference: ${failedReference}`, ""] : []),
+    ...(attemptReference
+      ? [`RFQ attempt reference (delivery unconfirmed): ${attemptReference}`, ""]
+      : []),
     `Name: ${values.name || "Not provided"}`,
     `Company: ${values.company || "Not provided"}`,
     `Email: ${values.email || "Not provided"}`,
@@ -694,7 +708,7 @@ export function RfqForm({
             setAttachments([]);
             setErrors({});
             setSubmissionResult(null);
-            setFailedReference("");
+            setAttemptReference("");
             setSubmittedRequirements("");
             submissionAttemptRef.current = null;
             setIsSubmitted(false);
@@ -738,8 +752,10 @@ export function RfqForm({
         >
           <p className="font-black">Automated delivery needs your attention.</p>
           <p className="mt-2 leading-6">{errors.submission}</p>
-          {failedReference ? (
-            <p className="mt-2 font-bold">RFQ Reference: {failedReference}</p>
+          {attemptReference ? (
+            <p className="mt-2 font-bold">
+              RFQ attempt reference: {attemptReference}. Delivery is not confirmed.
+            </p>
           ) : null}
           <label htmlFor="rfq-fallback-details" className="mt-3 block font-bold">
             Copy these details into your email or WhatsApp message. Add attachments again if needed.
@@ -769,6 +785,15 @@ export function RfqForm({
             </a>
           </div>
         </div>
+      ) : null}
+      {attemptReference && !isSubmitting && !errors.submission ? (
+        <p
+          role="status"
+          className="mb-6 border-l-4 border-red-700 bg-red-50 p-4 text-sm text-red-950"
+        >
+          RFQ attempt reference: <strong>{attemptReference}</strong>. Delivery is not confirmed;
+          correct the highlighted fields before any further action.
+        </p>
       ) : null}
       <section
         id="selected-products"
@@ -1145,6 +1170,11 @@ export function RfqForm({
           {isSubmitting
             ? `Securely sending your inquiry. This can take up to ${rfqSubmissionTimeoutSeconds} seconds; keep this page open.`
             : "Your inquiry is validated before submission. Large or sensitive files can also be sent directly by email after initial contact."}
+          {isSubmitting && attemptReference ? (
+            <span className="mt-1 block font-semibold text-arc-midnight">
+              RFQ attempt reference: {attemptReference}. Delivery is not confirmed.
+            </span>
+          ) : null}
         </p>
       </div>
     </form>

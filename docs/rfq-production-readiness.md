@@ -17,23 +17,25 @@ Minimum production target:
 - Website requests a confirmation email to the buyer email when Resend is configured.
 - Sales and buyer emails use separate Resend idempotency keys derived from a stable browser
   submission token, protecting unchanged retries from duplicate delivery for 24 hours.
-- Every API response includes a traceable `AF-RFQ-...` reference; a network abort may prevent the
-  browser from receiving it.
+- Every API response includes a traceable `AF-RFQ-...` reference. The browser also derives an
+  attempt reference from its stable submission token before sending; this is a lookup aid, not proof
+  that the request or either email was accepted.
 - Sales notification includes source path, landing page, referrer and UTM fields when available.
 - Buyer sees success only after Resend accepts the sales request or Supabase stores the inquiry and
   every selected attachment. Provider acceptance does not prove either mailbox received an email.
 - Resend and Supabase run independently, so one channel can still capture the inquiry if the other
   provider fails.
 - Each Resend request has a 12-second timeout. A stalled buyer confirmation does not reverse an
-  already accepted sales notification, and a stalled sales request returns a bounded failure before
-  the browser's 45-second limit.
+  already accepted sales notification. The browser has an independent 45-second deadline covering
+  BotID's pre-request challenge, the request and response parsing; aborting a fetch alone cannot
+  end a stalled BotID challenge.
 - Optional Supabase rows and attachment paths are idempotent by RFQ reference. An unchanged retry
   does not create a duplicate row or reset the existing inquiry status.
 - A Supabase-only submission with selected files succeeds only when both the inquiry row and files
   are stored. Saving file names without the files does not produce a buyer success state.
-- Large or failed submissions preserve the buyer's fields and any returned RFQ reference, show
-  selectable details for manual copying, and link to the base email and WhatsApp contacts. Buyer
-  details are not placed in those URLs.
+- Large or failed submissions preserve the buyer's fields and any attempt or returned RFQ reference,
+  clearly mark delivery as unconfirmed, show selectable details for manual copying, and link to the
+  base email and WhatsApp contacts. Buyer details are not placed in those URLs.
 - Browser submissions to `POST /api/rfq` run Vercel BotID Basic before inquiry parsing. A verified
   bot is rejected; a BotID outage falls back to the application's origin, timing and rate controls.
 - No API keys, email passwords or database secrets are committed to the repository.
@@ -188,6 +190,14 @@ do not enable it without billing approval. The infrastructure rule cannot be ver
 repository and should be confirmed in the Vercel project dashboard.
 
 ## Production Verification Record
+
+On 2026-11-04 the owner reported a controlled browser submission that remained at `Submitting...`
+without a displayed reference, and no new matching email in either controlled Outlook inbox or
+junk folder. The exact click time and the Vercel/Resend request result were unavailable. This is an
+unreconciled attempt, not evidence that the provider accepted or rejected the inquiry. No automatic
+retry was made and the inbox verification evidence remains unset. A local repair now bounds the
+BotID challenge wait independently; production behavior still requires release and a separately
+authorized controlled check.
 
 Controlled browser verification attempted on 2026-08-13:
 
