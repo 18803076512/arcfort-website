@@ -195,9 +195,14 @@ On 2026-11-04 the owner reported a controlled browser submission that remained a
 without a displayed reference, and no new matching email in either controlled Outlook inbox or
 junk folder. The exact click time and the Vercel/Resend request result were unavailable. This is an
 unreconciled attempt, not evidence that the provider accepted or rejected the inquiry. No automatic
-retry was made and the inbox verification evidence remains unset. A local repair now bounds the
-BotID challenge wait independently; production behavior still requires release and a separately
-authorized controlled check.
+retry was made and the inbox verification evidence remains unset. The owner cannot currently provide
+the click time or provider logs, so the attempt remains unreconciled. The independent BotID deadline
+repair was later released through PR #139 as `main` commit
+`19474d5d97fd3a4e1a917ab54676aff9958e5999`. GitHub Production deployment `7549418150`
+reported success for that exact commit; both PR and main quality/database CI jobs passed. The live
+`/rfq` script contains the new attempt-reference and timeout copy, and read-only
+`npm run health:production` passed. No new live RFQ was sent as part of release verification, so
+sales/buyer inbox placement and attachment receipt still require a separately authorized check.
 
 Controlled browser verification attempted on 2026-08-13:
 

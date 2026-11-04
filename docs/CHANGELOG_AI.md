@@ -7703,3 +7703,28 @@ retained database and historical report.
 - **Next Recommended Action:** Review the tested candidate, obtain scoped authorization for PR/main
   and production release, then verify the exact deployment. Reconcile the original attempt from
   Vercel/Resend logs before authorizing any further controlled live submission.
+
+## 2026-11-04 - Verify RFQ Production Release And Preserve Unreconciled Attempt
+
+- **Task:** Record the exact release and live read-only checks for the RFQ browser deadline repair.
+- **Files Changed:** RFQ readiness, ecosystem operating loop and this append-only release record.
+- **Components Changed:** None in this evidence follow-up. **Data Changed:** No buyer data or
+  provider settings. **Visual Changes:** None. **SEO Impact:** None.
+- **Validation:** PR #139 candidate `07e545b0cd6cddab96dbe63a5e2f2429ab1340f6` passed quality
+  and Product Intelligence database CI in run `41850879353`; main merge
+  `19474d5d97fd3a4e1a917ab54676aff9958e5999` passed both jobs again in run `41852629329`.
+  GitHub Production deployment `7549418150` reported success for the exact merge
+  commit. The live `/rfq` script contains the new attempt-reference and timeout copy. Post-deploy
+  `health:production` passed 88 sitemap URLs, 82/82 reachable HTML pages, 40/40 product inquiry
+  paths, RFQ readiness, core sender DNS and security headers.
+- **Known Issues:** The owner reported no new mail in either controlled Outlook mailbox for the
+  earlier stuck attempt, but cannot currently provide its click time or provider logs. Its provider
+  acceptance and inbox/attachment outcomes remain unknown; evidence flags stay null. DMARC is
+  missing, GA4 inactive and current Search Console evidence unavailable.
+- **Reusable Knowledge Added:** A successful production deployment and read-only health check do not
+  prove a particular RFQ reached either mailbox.
+- **Deployment:** The runtime repair is live on `www.arcfortweld.com` at merge commit `19474d5`.
+  This follow-up records evidence only and makes no provider or DNS change.
+- **Next Recommended Action:** Obtain read-only Vercel/Resend request evidence for the old attempt
+  when available; then authorize one controlled browser RFQ with matching sales/buyer and attachment
+  inspection. Do not retry the ambiguous attempt automatically.
