@@ -284,6 +284,9 @@ jobs:
       - name: Test public hydration with delayed unchanged modules
         run: npm run test:public-hydration
 
+      - name: Test RFQ browser failure and reference states
+        run: npm run test:rfq:ui
+
       - name: Verify traced document upload runtime
         run: npm run console:documents:package:test
 

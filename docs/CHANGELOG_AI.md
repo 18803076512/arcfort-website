@@ -7675,3 +7675,31 @@ retained database and historical report.
   No database, retained stack, Console switch, paid service or permission change; no rule override.
 - **Next Recommended Action:** Run complete clean CI for this repair, then verify the exact main
   deployment and actual buyer-facing pages under the existing scoped authorization.
+
+## 2026-11-04 - Bound RFQ Browser Wait And Preserve Attempt Reference
+
+- **Task:** Repair the reported persistent RFQ submitting state while preserving evidence boundaries
+  for one unreconciled controlled production attempt.
+- **Files Changed:** RFQ form, client deadline helper, focused and browser tests, CI quality gate,
+  RFQ delivery/readiness and sales knowledge records, and this log.
+- **Components Changed:** The browser now enforces a 45-second deadline across BotID challenge,
+  request and response parsing; synchronous preparation errors also clear the loading state. A
+  token-derived attempt reference is visible while waiting and after an ambiguous failure, always
+  labeled as unconfirmed. Server validation references remain visible.
+- **Data Changed:** None; no buyer content or mailbox addresses were committed. **Visual Changes:**
+  RFQ pending and failure states show an attempt reference. **SEO Impact:** None.
+- **Validation:** Local RFQ unit tests, production build, lint, typecheck, performance budget, secret
+  scan and isolated browser regression passed. Browser tests covered preparation failure, server
+  validation, network failure, an indefinitely stalled protected fetch, a late response and zero
+  outbound RFQ POSTs. Candidate CI and production verification remain pending.
+- **Known Issues:** The reported production attempt has no observed reference or runtime log and
+  cannot be classified as accepted or rejected. Both controlled Outlook inboxes were reported empty;
+  sales and buyer receipt plus attachment presence remain unverified. DMARC, GA4, current GSC and
+  exact product image evidence gaps remain open.
+- **Reusable Knowledge Added:** BotID's pre-request challenge is not bounded by a fetch abort signal;
+  an independent deadline is required. Attempt references are lookup aids, not delivery evidence.
+- **Deployment:** None in this batch; exact-destination release authorization and fresh CI are
+  pending. No provider setting, DNS, database or paid service was changed.
+- **Next Recommended Action:** Review the tested candidate, obtain scoped authorization for PR/main
+  and production release, then verify the exact deployment. Reconcile the original attempt from
+  Vercel/Resend logs before authorizing any further controlled live submission.

@@ -57,9 +57,11 @@ Email flow:
 - When files are selected and Resend is unavailable, Supabase counts as a complete delivery only
   after the inquiry row and every selected file are stored.
 - The browser shows success only when Resend accepts the sales request or Supabase stores the inquiry
-  and required attachments. Otherwise it preserves the form and any stable RFQ reference, shows
-  selectable inquiry details on the page, and links to the base email and WhatsApp contacts. Buyer
-  details are never placed in those link URLs; the buyer can copy the details into the chosen app.
+  and required attachments. An independent 45-second deadline includes BotID's challenge wait,
+  request and response parsing; it clears the loading state even if the challenge never settles.
+  Otherwise the form and a token-derived attempt reference remain visible, with delivery explicitly
+  unconfirmed, alongside selectable details and base email/WhatsApp contacts. Buyer details are
+  never placed in those link URLs; the buyer can copy the details into the chosen app.
 
 Attachment limits:
 
