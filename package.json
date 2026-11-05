@@ -51,6 +51,7 @@
     "console:packaging:commands:test": "node --experimental-strip-types scripts/console/test-packaging-commands.ts",
     "console:packaging:reads:test": "node --experimental-strip-types scripts/console/test-packaging-reads.ts",
     "console:packaging:ui:test": "node scripts/console/test-packaging-browser.mjs",
+    "console:packaging:hydration:ui:test": "node scripts/console/test-packaging-hydration-browser.mjs",
     "console:packaging:acceptance:test": "node --experimental-strip-types scripts/console/test-packaging-acceptance.ts",
     "console:originals:test": "node --conditions=react-server --experimental-strip-types scripts/console/test-original-files.ts",
     "console:documents:files:test": "node --conditions=react-server --experimental-strip-types scripts/console/test-document-files.ts",

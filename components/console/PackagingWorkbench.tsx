@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Check, Pencil, Plus, RotateCcw, Save, Send, X } from "lucide-react";
 import type {
@@ -287,6 +287,8 @@ export function PackagingWorkbench({
   const [sourceDirty, setSourceDirty] = useState(false),
     [sourceBusy, setSourceBusy] = useState(false),
     [resetVersion, setResetVersion] = useState(0);
+  const [hydrated, setHydrated] = useState(false);
+  useEffect(() => setHydrated(true), []);
   const command = useConsoleCommand(),
     clearUnsaved = useUnsavedChanges(dirty || sourceDirty);
   const copy: PackagingCopy = {
@@ -295,7 +297,7 @@ export function PackagingWorkbench({
     quantity_unit: known ? unit : null,
   };
   const url = `/console/products/${data.variantId}/packaging`,
-    blocked = command.busy || sourceBusy,
+    blocked = !hydrated || command.busy || sourceBusy,
     stale = command.error?.code === "40001";
   const slot = Array.from({ length: 100 }, (_, n) => n).find(
     (n) => !data.scopes.some((row) => row.slot === n),
@@ -349,6 +351,11 @@ export function PackagingWorkbench({
   };
   return (
     <div className="console-packaging-workbench">
+      {!hydrated && (
+        <p className="console-caption" role="status">
+          Preparing packaging editor…
+        </p>
+      )}
       <p className="console-caption">{data.sku} / Private packaging / Publication blocked</p>
       <p className={data.readiness.unresolved ? "console-conflict" : "console-caption"}>
         {data.readiness.count === 0
@@ -761,7 +768,7 @@ export function PackagingWorkbench({
           data={data}
           copy={copy}
           originalId={originalId || null}
-          blocked={command.busy}
+          blocked={blocked}
           onBusy={setSourceBusy}
           onDirty={setSourceDirty}
           onCreated={() => router.refresh()}
