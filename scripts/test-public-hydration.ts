@@ -78,6 +78,9 @@ try {
   browser = await chromium.launch({
     headless: true,
     ...(process.env.PLAYWRIGHT_CHANNEL ? { channel: process.env.PLAYWRIGHT_CHANNEL } : {}),
+    ...(process.env.PLAYWRIGHT_EXECUTABLE_PATH
+      ? { executablePath: process.env.PLAYWRIGHT_EXECUTABLE_PATH }
+      : {}),
   });
   const context = await browser.newContext({ serviceWorkers: "block" });
   await context.route("**/*", async (route) => {

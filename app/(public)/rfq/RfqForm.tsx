@@ -183,6 +183,7 @@ export function RfqForm({
   });
   const [website, setWebsite] = useState("");
   const [startedAt] = useState(() => Date.now());
+  const [isInteractive, setIsInteractive] = useState(false);
   const [attachments, setAttachments] = useState<File[]>([]);
   const [errors, setErrors] = useState<FormErrors>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -230,6 +231,10 @@ export function RfqForm({
   );
 
   const fileSummary = useMemo(() => createFileSummary(attachments), [attachments]);
+
+  useEffect(() => {
+    setIsInteractive(true);
+  }, []);
 
   useEffect(() => {
     if (selectedProducts.length === 0) {
@@ -730,453 +735,489 @@ export function RfqForm({
       data-rfq-form-placement={formPlacement}
       className="border border-slate-200 bg-white p-6 shadow-sm sm:p-8"
     >
-      <label className="sr-only" htmlFor="website">
-        Website
-      </label>
-      <input
-        id="website"
-        name="website"
-        type="text"
-        value={website}
-        onChange={(event) => setWebsite(event.target.value)}
-        autoComplete="off"
-        tabIndex={-1}
-        className="hidden"
-        aria-hidden="true"
-      />
-      {errors.submission ? (
-        <div
-          role="alert"
-          aria-live="assertive"
-          className="mb-6 border-l-4 border-red-700 bg-red-50 p-4 text-sm text-red-950"
-        >
-          <p className="font-black">Automated delivery needs your attention.</p>
-          <p className="mt-2 leading-6">{errors.submission}</p>
-          {attemptReference ? (
-            <p className="mt-2 font-bold">
-              RFQ attempt reference: {attemptReference}. Delivery is not confirmed.
-            </p>
-          ) : null}
-          <label htmlFor="rfq-fallback-details" className="mt-3 block font-bold">
-            Copy these details into your email or WhatsApp message. Add attachments again if needed.
-          </label>
-          <textarea
-            id="rfq-fallback-details"
-            readOnly
-            value={fallbackMessage}
-            rows={8}
-            onFocus={(event) => event.currentTarget.select()}
-            className="mt-2 w-full border-red-300 bg-white p-3 text-sm leading-6 text-slate-900"
-          />
-          <div className="mt-3 flex flex-col gap-2 sm:flex-row">
-            <a
-              href={siteConfig.emailHref}
-              className="inline-flex min-h-11 items-center justify-center border border-red-300 bg-white px-4 font-bold transition hover:border-red-700"
-            >
-              Email {siteConfig.email}
-            </a>
-            <a
-              href={siteConfig.whatsappHref}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex min-h-11 items-center justify-center border border-red-300 bg-white px-4 font-bold transition hover:border-red-700"
-            >
-              WhatsApp {siteConfig.whatsapp}
-            </a>
-          </div>
-        </div>
-      ) : null}
-      {attemptReference && !isSubmitting && !errors.submission ? (
-        <p
-          role="status"
-          className="mb-6 border-l-4 border-red-700 bg-red-50 p-4 text-sm text-red-950"
-        >
-          RFQ attempt reference: <strong>{attemptReference}</strong>. Delivery is not confirmed;
-          correct the highlighted fields before any further action.
-        </p>
-      ) : null}
-      <section
-        id="selected-products"
-        className="mb-6 scroll-mt-32 border-y-4 border-arc-signal bg-arc-midnight p-4 text-white sm:p-5"
-        aria-labelledby="selected-products-title"
+      <div
+        id="rfq-load-status"
+        role="status"
+        className="mb-6 min-h-36 border-l-4 border-arc-blue bg-slate-50 p-4 text-sm text-slate-700 sm:min-h-28"
       >
-        <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
-          <div>
-            <div className="flex items-center gap-3">
-              <h2
-                id="selected-products-title"
-                className="font-display text-2xl font-black text-white"
-              >
-                Selected Products
-              </h2>
-              <span className="inline-flex h-7 min-w-7 items-center justify-center bg-arc-signal px-2 text-xs font-black text-arc-midnight">
-                {selectedProducts.length}
-              </span>
-            </div>
-            <p className="mt-2 max-w-2xl text-sm leading-6 text-slate-300">
-              Build one inquiry from several product pages. Add quantity and a model, size or
-              drawing reference for each line when available; SKU and category details are included
-              automatically.
-            </p>
-          </div>
-          {selectedProducts.length > 0 ? (
-            <button
-              type="button"
-              onClick={handleClearSelectedProducts}
-              className="min-h-10 self-start border border-white/30 px-3 text-xs font-bold uppercase tracking-[0.1em] text-white transition hover:border-arc-signal hover:text-arc-signal"
-            >
-              Clear List
-            </button>
-          ) : null}
-        </div>
-
-        {selectedProducts.length > 0 ? (
-          <div className="mt-5 divide-y divide-white/15 border-y border-white/15">
-            {selectedProducts.map((item) => (
-              <div
-                key={`${item.categorySlug}/${item.slug}`}
-                className="grid gap-4 py-5 sm:grid-cols-2 lg:grid-cols-[minmax(12rem,0.8fr)_minmax(9rem,0.35fr)_minmax(14rem,0.65fr)_auto] lg:items-end"
-              >
-                <div className="min-w-0 sm:col-span-2 lg:col-span-1">
-                  <Link
-                    href={`/products/${item.categorySlug}/${item.slug}`}
-                    className="break-words font-bold text-white transition hover:text-arc-signal"
-                  >
-                    {item.name}
-                  </Link>
-                  <p className="mt-1 break-words text-xs leading-5 text-slate-300">
-                    SKU: {item.sku} | {item.category}
-                  </p>
-                </div>
-                <label
-                  htmlFor={`line-quantity-${item.categorySlug}-${item.slug}`}
-                  className="block min-w-0"
-                >
-                  <span className="block text-[11px] font-bold uppercase tracking-[0.12em] text-slate-300">
-                    Quantity / Unit
-                  </span>
-                  <input
-                    id={`line-quantity-${item.categorySlug}-${item.slug}`}
-                    type="text"
-                    value={item.requestedQuantity ?? ""}
-                    maxLength={rfqLineItemFieldLimits.requestedQuantity}
-                    placeholder="500 pcs"
-                    onChange={(event) =>
-                      handleLineItemChange(item, "requestedQuantity", event.target.value)
-                    }
-                    className="mt-2 min-h-11 w-full border-white/20 bg-white/10 text-sm text-white placeholder:text-slate-400 focus:border-arc-signal focus:ring-arc-signal"
-                  />
-                </label>
-                <label
-                  htmlFor={`line-reference-${item.categorySlug}-${item.slug}`}
-                  className="block min-w-0"
-                >
-                  <span className="block text-[11px] font-bold uppercase tracking-[0.12em] text-slate-300">
-                    Variant / Model / Reference
-                  </span>
-                  <input
-                    id={`line-reference-${item.categorySlug}-${item.slug}`}
-                    type="text"
-                    value={item.buyerReference ?? ""}
-                    maxLength={rfqLineItemFieldLimits.buyerReference}
-                    placeholder="M6 1.0 mm / drawing item 2"
-                    onChange={(event) =>
-                      handleLineItemChange(item, "buyerReference", event.target.value)
-                    }
-                    className="mt-2 min-h-11 w-full border-white/20 bg-white/10 text-sm text-white placeholder:text-slate-400 focus:border-arc-signal focus:ring-arc-signal"
-                  />
-                </label>
-                <button
-                  type="button"
-                  onClick={() => handleRemoveSelectedProduct(item)}
-                  className="min-h-11 w-full border border-white/25 px-3 text-xs font-bold uppercase tracking-[0.1em] text-slate-200 transition hover:border-arc-signal hover:text-arc-signal sm:w-auto lg:shrink-0"
-                  aria-label={`Remove ${item.name} from RFQ list`}
-                >
-                  Remove
-                </button>
-              </div>
-            ))}
-          </div>
-        ) : (
-          <div className="mt-5 flex flex-col gap-3 border-t border-white/15 pt-4 sm:flex-row sm:items-center sm:justify-between">
-            <p className="text-sm leading-6 text-slate-300">
-              No products selected yet. You can still enter your requirements manually below.
-            </p>
-            <Link
-              href="/products"
-              className="inline-flex min-h-10 self-start items-center justify-center bg-arc-signal px-4 text-xs font-bold uppercase tracking-[0.1em] text-arc-midnight transition hover:bg-white sm:shrink-0"
-            >
-              Browse Products
-            </Link>
-          </div>
-        )}
-      </section>
-      <details className="group mb-6 border border-slate-200 bg-arc-frost">
-        <summary className="flex min-h-16 cursor-pointer list-none items-center justify-between gap-4 p-4 marker:hidden sm:p-5">
-          <span className="min-w-0">
-            <span className="block font-display text-xl font-black text-arc-midnight">
-              Quick RFQ starters
-            </span>
-            <span className="mt-1 block text-xs leading-5 text-slate-600">
-              Optional guidance for common buying scenarios.
-            </span>
-          </span>
-          <span className="shrink-0 text-xs font-bold uppercase tracking-[0.12em] text-arc-blue">
-            <span className="group-open:hidden">Open</span>
-            <span className="hidden group-open:inline">Close</span>
-          </span>
-        </summary>
-        <div className="border-t border-slate-200 p-4 sm:p-5">
-          <p className="text-sm leading-6 text-slate-600">
-            Choose a scenario to prefill product requirements, then edit the details before
-            submitting.
-          </p>
-          <div className="mt-4 grid gap-3 sm:grid-cols-2">
-            {rfqQuickTemplates.map((template) => (
-              <button
-                key={template.title}
-                type="button"
-                onClick={() => applyQuickTemplate(template)}
-                className="min-h-24 border border-slate-200 bg-white p-4 text-left transition hover:border-arc-blue hover:bg-slate-50"
-              >
-                <span className="block text-sm font-black text-arc-midnight">{template.title}</span>
-                <span className="mt-2 block text-xs font-semibold leading-5 text-slate-600">
-                  {template.description}
-                </span>
-              </button>
-            ))}
-          </div>
-        </div>
-      </details>
-      <div className="grid gap-5 sm:grid-cols-2">
-        <FormField
-          id="name"
-          label="Name"
-          value={values.name}
-          error={errors.name}
-          required
-          autoComplete="name"
-          placeholder="Your full name"
-          onChange={(value) => updateValue("name", value)}
-        />
-        <FormField
-          id="company"
-          label="Company"
-          value={values.company}
-          error={errors.company}
-          required
-          autoComplete="organization"
-          placeholder="Company name"
-          onChange={(value) => updateValue("company", value)}
-        />
-        <FormField
-          id="email"
-          label="Email"
-          type="email"
-          value={values.email}
-          error={errors.email}
-          required
-          autoComplete="email"
-          placeholder="name@company.com"
-          onChange={(value) => updateValue("email", value)}
-        />
-        <FormField
-          id="whatsapp"
-          label="WhatsApp"
-          value={values.whatsapp}
-          error={errors.whatsapp}
-          autoComplete="tel"
-          placeholder="+1 000 000 0000"
-          onChange={(value) => updateValue("whatsapp", value)}
-        />
-        <FormField
-          id="country"
-          label="Country"
-          value={values.country}
-          error={errors.country}
-          required
-          autoComplete="country-name"
-          placeholder="Destination country"
-          onChange={(value) => updateValue("country", value)}
-        />
-        <FormField
-          id="quantity"
-          label="Overall Quantity / Order Plan"
-          value={values.quantity}
-          error={errors.quantity}
-          required={!hasCompleteLineItemQuantities}
-          placeholder={
-            hasCompleteLineItemQuantities
-              ? "Optional summary; line quantities are listed above"
-              : "Example: 500 pcs / mixed order"
-          }
-          onChange={(value) => updateValue("quantity", value)}
-        />
+        <p className="font-bold text-arc-midnight">
+          {isInteractive ? "Inquiry form ready." : "Preparing the inquiry form."}
+        </p>
+        <p className="mt-1 leading-6">
+          {isInteractive
+            ? "Enter product details below, or contact us by "
+            : "If the fields do not become available, contact us by "}
+          <a className="font-bold underline underline-offset-2" href={siteConfig.emailHref}>
+            email
+          </a>{" "}
+          or{" "}
+          <a
+            className="font-bold underline underline-offset-2"
+            href={siteConfig.whatsappHref}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            WhatsApp
+          </a>{" "}
+          now.
+        </p>
       </div>
-
-      <label htmlFor="productRequirements" className="mt-5 block">
-        <span className="text-sm font-bold text-arc-midnight">
-          {selectedProducts.length > 0 ? "Additional Product Requirements" : "Product Requirements"}{" "}
-          {selectedProducts.length === 0 ? (
-            <span className="text-arc-copper">*</span>
-          ) : (
-            <span className="font-normal text-slate-500">(optional)</span>
-          )}
-        </span>
-        <textarea
-          id="productRequirements"
-          name="productRequirements"
-          rows={5}
-          maxLength={rfqFieldLimits.productRequirements}
-          value={values.productRequirements}
-          onChange={(event) => updateValue("productRequirements", event.target.value)}
-          placeholder={
-            selectedProducts.length > 0
-              ? "Add size, material, torch model, compatibility, packaging or OEM requirements for the selected products."
-              : "Product names, part numbers, torch models, material, size, thread, compatible brand or OEM number."
-          }
-          className="mt-2 w-full border-slate-300 bg-slate-50 text-slate-900 placeholder:text-slate-400 focus:border-arc-blue focus:ring-arc-blue"
-          required={selectedProducts.length === 0}
-          aria-required={selectedProducts.length === 0}
-          aria-invalid={Boolean(errors.productRequirements)}
-          aria-describedby={errors.productRequirements ? "productRequirements-error" : undefined}
+      <fieldset disabled={!isInteractive} className="m-0 min-w-0 border-0 p-0">
+        <label className="sr-only" htmlFor="website">
+          Website
+        </label>
+        <input
+          id="website"
+          name="website"
+          type="text"
+          value={website}
+          onChange={(event) => setWebsite(event.target.value)}
+          autoComplete="off"
+          tabIndex={-1}
+          className="hidden"
+          aria-hidden="true"
         />
-        {errors.productRequirements ? (
-          <p id="productRequirements-error" className="mt-2 text-sm font-semibold text-red-700">
-            {errors.productRequirements}
+        {errors.submission ? (
+          <div
+            role="alert"
+            aria-live="assertive"
+            className="mb-6 border-l-4 border-red-700 bg-red-50 p-4 text-sm text-red-950"
+          >
+            <p className="font-black">Automated delivery needs your attention.</p>
+            <p className="mt-2 leading-6">{errors.submission}</p>
+            {attemptReference ? (
+              <p className="mt-2 font-bold">
+                RFQ attempt reference: {attemptReference}. Delivery is not confirmed.
+              </p>
+            ) : null}
+            <label htmlFor="rfq-fallback-details" className="mt-3 block font-bold">
+              Copy these details into your email or WhatsApp message. Add attachments again if
+              needed.
+            </label>
+            <textarea
+              id="rfq-fallback-details"
+              readOnly
+              value={fallbackMessage}
+              rows={8}
+              onFocus={(event) => event.currentTarget.select()}
+              className="mt-2 w-full border-red-300 bg-white p-3 text-sm leading-6 text-slate-900"
+            />
+            <div className="mt-3 flex flex-col gap-2 sm:flex-row">
+              <a
+                href={siteConfig.emailHref}
+                className="inline-flex min-h-11 items-center justify-center border border-red-300 bg-white px-4 font-bold transition hover:border-red-700"
+              >
+                Email {siteConfig.email}
+              </a>
+              <a
+                href={siteConfig.whatsappHref}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex min-h-11 items-center justify-center border border-red-300 bg-white px-4 font-bold transition hover:border-red-700"
+              >
+                WhatsApp {siteConfig.whatsapp}
+              </a>
+            </div>
+          </div>
+        ) : null}
+        {attemptReference && !isSubmitting && !errors.submission ? (
+          <p
+            role="status"
+            className="mb-6 border-l-4 border-red-700 bg-red-50 p-4 text-sm text-red-950"
+          >
+            RFQ attempt reference: <strong>{attemptReference}</strong>. Delivery is not confirmed;
+            correct the highlighted fields before any further action.
           </p>
         ) : null}
-      </label>
+        <section
+          id="selected-products"
+          className="mb-6 scroll-mt-32 border-y-4 border-arc-signal bg-arc-midnight p-4 text-white sm:p-5"
+          aria-labelledby="selected-products-title"
+        >
+          <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+            <div>
+              <div className="flex items-center gap-3">
+                <h2
+                  id="selected-products-title"
+                  className="font-display text-2xl font-black text-white"
+                >
+                  Selected Products
+                </h2>
+                <span className="inline-flex h-7 min-w-7 items-center justify-center bg-arc-signal px-2 text-xs font-black text-arc-midnight">
+                  {selectedProducts.length}
+                </span>
+              </div>
+              <p className="mt-2 max-w-2xl text-sm leading-6 text-slate-300">
+                Build one inquiry from several product pages. Add quantity and a model, size or
+                drawing reference for each line when available; SKU and category details are
+                included automatically.
+              </p>
+            </div>
+            {selectedProducts.length > 0 ? (
+              <button
+                type="button"
+                onClick={handleClearSelectedProducts}
+                className="min-h-10 self-start border border-white/30 px-3 text-xs font-bold uppercase tracking-[0.1em] text-white transition hover:border-arc-signal hover:text-arc-signal"
+              >
+                Clear List
+              </button>
+            ) : null}
+          </div>
 
-      <label htmlFor="message" className="mt-5 block">
-        <span className="text-sm font-bold text-arc-midnight">Message</span>
-        <textarea
-          id="message"
-          name="message"
-          rows={4}
-          maxLength={rfqFieldLimits.message}
-          value={values.message}
-          onChange={(event) => updateValue("message", event.target.value)}
-          placeholder="Packaging requirement, target market, delivery schedule, OEM request or additional notes."
-          className="mt-2 w-full border-slate-300 bg-slate-50 text-slate-900 placeholder:text-slate-400 focus:border-arc-blue focus:ring-arc-blue"
-        />
-      </label>
+          {selectedProducts.length > 0 ? (
+            <div className="mt-5 divide-y divide-white/15 border-y border-white/15">
+              {selectedProducts.map((item) => (
+                <div
+                  key={`${item.categorySlug}/${item.slug}`}
+                  className="grid gap-4 py-5 sm:grid-cols-2 lg:grid-cols-[minmax(12rem,0.8fr)_minmax(9rem,0.35fr)_minmax(14rem,0.65fr)_auto] lg:items-end"
+                >
+                  <div className="min-w-0 sm:col-span-2 lg:col-span-1">
+                    <Link
+                      href={`/products/${item.categorySlug}/${item.slug}`}
+                      className="break-words font-bold text-white transition hover:text-arc-signal"
+                    >
+                      {item.name}
+                    </Link>
+                    <p className="mt-1 break-words text-xs leading-5 text-slate-300">
+                      SKU: {item.sku} | {item.category}
+                    </p>
+                  </div>
+                  <label
+                    htmlFor={`line-quantity-${item.categorySlug}-${item.slug}`}
+                    className="block min-w-0"
+                  >
+                    <span className="block text-[11px] font-bold uppercase tracking-[0.12em] text-slate-300">
+                      Quantity / Unit
+                    </span>
+                    <input
+                      id={`line-quantity-${item.categorySlug}-${item.slug}`}
+                      type="text"
+                      value={item.requestedQuantity ?? ""}
+                      maxLength={rfqLineItemFieldLimits.requestedQuantity}
+                      placeholder="500 pcs"
+                      onChange={(event) =>
+                        handleLineItemChange(item, "requestedQuantity", event.target.value)
+                      }
+                      className="mt-2 min-h-11 w-full border-white/20 bg-white/10 text-sm text-white placeholder:text-slate-400 focus:border-arc-signal focus:ring-arc-signal"
+                    />
+                  </label>
+                  <label
+                    htmlFor={`line-reference-${item.categorySlug}-${item.slug}`}
+                    className="block min-w-0"
+                  >
+                    <span className="block text-[11px] font-bold uppercase tracking-[0.12em] text-slate-300">
+                      Variant / Model / Reference
+                    </span>
+                    <input
+                      id={`line-reference-${item.categorySlug}-${item.slug}`}
+                      type="text"
+                      value={item.buyerReference ?? ""}
+                      maxLength={rfqLineItemFieldLimits.buyerReference}
+                      placeholder="M6 1.0 mm / drawing item 2"
+                      onChange={(event) =>
+                        handleLineItemChange(item, "buyerReference", event.target.value)
+                      }
+                      className="mt-2 min-h-11 w-full border-white/20 bg-white/10 text-sm text-white placeholder:text-slate-400 focus:border-arc-signal focus:ring-arc-signal"
+                    />
+                  </label>
+                  <button
+                    type="button"
+                    onClick={() => handleRemoveSelectedProduct(item)}
+                    className="min-h-11 w-full border border-white/25 px-3 text-xs font-bold uppercase tracking-[0.1em] text-slate-200 transition hover:border-arc-signal hover:text-arc-signal sm:w-auto lg:shrink-0"
+                    aria-label={`Remove ${item.name} from RFQ list`}
+                  >
+                    Remove
+                  </button>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <div className="mt-5 flex flex-col gap-3 border-t border-white/15 pt-4 sm:flex-row sm:items-center sm:justify-between">
+              <p className="text-sm leading-6 text-slate-300">
+                No products selected yet. You can still enter your requirements manually below.
+              </p>
+              <Link
+                href="/products"
+                className="inline-flex min-h-10 self-start items-center justify-center bg-arc-signal px-4 text-xs font-bold uppercase tracking-[0.1em] text-arc-midnight transition hover:bg-white sm:shrink-0"
+              >
+                Browse Products
+              </Link>
+            </div>
+          )}
+        </section>
+        <details className="group mb-6 border border-slate-200 bg-arc-frost">
+          <summary className="flex min-h-16 cursor-pointer list-none items-center justify-between gap-4 p-4 marker:hidden sm:p-5">
+            <span className="min-w-0">
+              <span className="block font-display text-xl font-black text-arc-midnight">
+                Quick RFQ starters
+              </span>
+              <span className="mt-1 block text-xs leading-5 text-slate-600">
+                Optional guidance for common buying scenarios.
+              </span>
+            </span>
+            <span className="shrink-0 text-xs font-bold uppercase tracking-[0.12em] text-arc-blue">
+              <span className="group-open:hidden">Open</span>
+              <span className="hidden group-open:inline">Close</span>
+            </span>
+          </summary>
+          <div className="border-t border-slate-200 p-4 sm:p-5">
+            <p className="text-sm leading-6 text-slate-600">
+              Choose a scenario to prefill product requirements, then edit the details before
+              submitting.
+            </p>
+            <div className="mt-4 grid gap-3 sm:grid-cols-2">
+              {rfqQuickTemplates.map((template) => (
+                <button
+                  key={template.title}
+                  type="button"
+                  onClick={() => applyQuickTemplate(template)}
+                  className="min-h-24 border border-slate-200 bg-white p-4 text-left transition hover:border-arc-blue hover:bg-slate-50"
+                >
+                  <span className="block text-sm font-black text-arc-midnight">
+                    {template.title}
+                  </span>
+                  <span className="mt-2 block text-xs font-semibold leading-5 text-slate-600">
+                    {template.description}
+                  </span>
+                </button>
+              ))}
+            </div>
+          </div>
+        </details>
+        <div className="grid gap-5 sm:grid-cols-2">
+          <FormField
+            id="name"
+            label="Name"
+            value={values.name}
+            error={errors.name}
+            required
+            autoComplete="name"
+            placeholder="Your full name"
+            onChange={(value) => updateValue("name", value)}
+          />
+          <FormField
+            id="company"
+            label="Company"
+            value={values.company}
+            error={errors.company}
+            required
+            autoComplete="organization"
+            placeholder="Company name"
+            onChange={(value) => updateValue("company", value)}
+          />
+          <FormField
+            id="email"
+            label="Email"
+            type="email"
+            value={values.email}
+            error={errors.email}
+            required
+            autoComplete="email"
+            placeholder="name@company.com"
+            onChange={(value) => updateValue("email", value)}
+          />
+          <FormField
+            id="whatsapp"
+            label="WhatsApp"
+            value={values.whatsapp}
+            error={errors.whatsapp}
+            autoComplete="tel"
+            placeholder="+1 000 000 0000"
+            onChange={(value) => updateValue("whatsapp", value)}
+          />
+          <FormField
+            id="country"
+            label="Country"
+            value={values.country}
+            error={errors.country}
+            required
+            autoComplete="country-name"
+            placeholder="Destination country"
+            onChange={(value) => updateValue("country", value)}
+          />
+          <FormField
+            id="quantity"
+            label="Overall Quantity / Order Plan"
+            value={values.quantity}
+            error={errors.quantity}
+            required={!hasCompleteLineItemQuantities}
+            placeholder={
+              hasCompleteLineItemQuantities
+                ? "Optional summary; line quantities are listed above"
+                : "Example: 500 pcs / mixed order"
+            }
+            onChange={(value) => updateValue("quantity", value)}
+          />
+        </div>
 
-      <div className="mt-5">
-        <label htmlFor="attachments" className="block">
+        <label htmlFor="productRequirements" className="mt-5 block">
           <span className="text-sm font-bold text-arc-midnight">
-            Drawing / Product List / PDF Upload
+            {selectedProducts.length > 0
+              ? "Additional Product Requirements"
+              : "Product Requirements"}{" "}
+            {selectedProducts.length === 0 ? (
+              <span className="text-arc-copper">*</span>
+            ) : (
+              <span className="font-normal text-slate-500">(optional)</span>
+            )}
           </span>
-          <input
-            id="attachments"
-            name="attachments"
-            type="file"
-            multiple
-            accept={rfqAllowedFileExtensions.join(",")}
-            onChange={handleFiles}
-            className="mt-2 block w-full cursor-pointer border border-dashed border-slate-300 bg-slate-50 p-4 text-sm text-slate-700 file:mb-2 file:block file:border-0 file:bg-arc-blue file:px-3 file:py-2 file:text-xs file:font-bold file:uppercase file:tracking-[0.08em] file:text-white hover:border-arc-blue sm:file:mb-0 sm:file:mr-4 sm:file:inline-block sm:file:px-4 sm:file:text-sm sm:file:tracking-[0.12em]"
-            aria-invalid={Boolean(errors.attachments)}
-            aria-describedby="attachments-help"
+          <textarea
+            id="productRequirements"
+            name="productRequirements"
+            rows={5}
+            maxLength={rfqFieldLimits.productRequirements}
+            value={values.productRequirements}
+            onChange={(event) => updateValue("productRequirements", event.target.value)}
+            placeholder={
+              selectedProducts.length > 0
+                ? "Add size, material, torch model, compatibility, packaging or OEM requirements for the selected products."
+                : "Product names, part numbers, torch models, material, size, thread, compatible brand or OEM number."
+            }
+            className="mt-2 w-full border-slate-300 bg-slate-50 text-slate-900 placeholder:text-slate-400 focus:border-arc-blue focus:ring-arc-blue"
+            required={selectedProducts.length === 0}
+            aria-required={selectedProducts.length === 0}
+            aria-invalid={Boolean(errors.productRequirements)}
+            aria-describedby={errors.productRequirements ? "productRequirements-error" : undefined}
+          />
+          {errors.productRequirements ? (
+            <p id="productRequirements-error" className="mt-2 text-sm font-semibold text-red-700">
+              {errors.productRequirements}
+            </p>
+          ) : null}
+        </label>
+
+        <label htmlFor="message" className="mt-5 block">
+          <span className="text-sm font-bold text-arc-midnight">Message</span>
+          <textarea
+            id="message"
+            name="message"
+            rows={4}
+            maxLength={rfqFieldLimits.message}
+            value={values.message}
+            onChange={(event) => updateValue("message", event.target.value)}
+            placeholder="Packaging requirement, target market, delivery schedule, OEM request or additional notes."
+            className="mt-2 w-full border-slate-300 bg-slate-50 text-slate-900 placeholder:text-slate-400 focus:border-arc-blue focus:ring-arc-blue"
           />
         </label>
-        <p id="attachments-help" className="mt-2 text-xs leading-5 text-slate-500">
-          Accepted: PDF, Excel, CSV, Word, JPG and PNG. Maximum 5 files and 4 MB total. File type,
-          size and content signature are checked before delivery. Send larger files by email or
-          WhatsApp.
-        </p>
-        {errors.attachments ? (
-          <p className="mt-2 text-sm font-semibold text-red-700">{errors.attachments}</p>
-        ) : null}
-        {attachments.length > 0 ? (
-          <div className="mt-3 border border-slate-100 bg-slate-50 p-3 text-sm leading-6 text-slate-700">
-            {fileSummary}
-          </div>
-        ) : null}
-      </div>
 
-      <section
-        aria-labelledby="quotation-readiness-title"
-        className="mt-6 border-y border-slate-200 py-5"
-      >
-        <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
-          <div>
-            <p className="text-xs font-bold uppercase tracking-[0.14em] text-arc-blue">
-              Quotation Preparation
-            </p>
-            <h3
-              id="quotation-readiness-title"
-              className="mt-2 font-display text-xl font-black text-arc-midnight"
-            >
-              {quotationReadiness.label}
-            </h3>
-          </div>
-          <p className="border-l-4 border-arc-signal pl-3 text-sm font-bold text-arc-midnight">
-            {quotationReadiness.confirmedSignals.length} of 4 buyer details detected
+        <div className="mt-5">
+          <label htmlFor="attachments" className="block">
+            <span className="text-sm font-bold text-arc-midnight">
+              Drawing / Product List / PDF Upload
+            </span>
+            <input
+              id="attachments"
+              name="attachments"
+              type="file"
+              multiple
+              accept={rfqAllowedFileExtensions.join(",")}
+              onChange={handleFiles}
+              className="mt-2 block w-full cursor-pointer border border-dashed border-slate-300 bg-slate-50 p-4 text-sm text-slate-700 file:mb-2 file:block file:border-0 file:bg-arc-blue file:px-3 file:py-2 file:text-xs file:font-bold file:uppercase file:tracking-[0.08em] file:text-white hover:border-arc-blue sm:file:mb-0 sm:file:mr-4 sm:file:inline-block sm:file:px-4 sm:file:text-sm sm:file:tracking-[0.12em]"
+              aria-invalid={Boolean(errors.attachments)}
+              aria-describedby="attachments-help"
+            />
+          </label>
+          <p id="attachments-help" className="mt-2 text-xs leading-5 text-slate-500">
+            Accepted: PDF, Excel, CSV, Word, JPG and PNG. Maximum 5 files and 4 MB total. File type,
+            size and content signature are checked before delivery. Send larger files by email or
+            WhatsApp.
           </p>
+          {errors.attachments ? (
+            <p className="mt-2 text-sm font-semibold text-red-700">{errors.attachments}</p>
+          ) : null}
+          {attachments.length > 0 ? (
+            <div className="mt-3 border border-slate-100 bg-slate-50 p-3 text-sm leading-6 text-slate-700">
+              {fileSummary}
+            </div>
+          ) : null}
         </div>
-        <p className="mt-3 max-w-3xl text-sm leading-6 text-slate-600">
-          Complete product references reduce follow-up before quotation. This check does not confirm
-          compatibility, price or final technical specifications.
-        </p>
-        <div className="mt-5 grid gap-5 sm:grid-cols-2">
-          <div>
-            <p className="text-xs font-bold uppercase tracking-[0.12em] text-slate-500">
-              Information Provided
+
+        <section
+          aria-labelledby="quotation-readiness-title"
+          className="mt-6 border-y border-slate-200 py-5"
+        >
+          <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+            <div>
+              <p className="text-xs font-bold uppercase tracking-[0.14em] text-arc-blue">
+                Quotation Preparation
+              </p>
+              <h3
+                id="quotation-readiness-title"
+                className="mt-2 font-display text-xl font-black text-arc-midnight"
+              >
+                {quotationReadiness.label}
+              </h3>
+            </div>
+            <p className="border-l-4 border-arc-signal pl-3 text-sm font-bold text-arc-midnight">
+              {quotationReadiness.confirmedSignals.length} of 4 buyer details detected
             </p>
-            {quotationReadiness.confirmedSignals.length > 0 ? (
+          </div>
+          <p className="mt-3 max-w-3xl text-sm leading-6 text-slate-600">
+            Complete product references reduce follow-up before quotation. This check does not
+            confirm compatibility, price or final technical specifications.
+          </p>
+          <div className="mt-5 grid gap-5 sm:grid-cols-2">
+            <div>
+              <p className="text-xs font-bold uppercase tracking-[0.12em] text-slate-500">
+                Information Provided
+              </p>
+              {quotationReadiness.confirmedSignals.length > 0 ? (
+                <ul className="mt-3 space-y-2 text-sm leading-6 text-slate-700">
+                  {quotationReadiness.confirmedSignals.map((signal) => (
+                    <li key={signal} className="border-l-2 border-arc-blue pl-3">
+                      {signal}
+                    </li>
+                  ))}
+                </ul>
+              ) : (
+                <p className="mt-3 text-sm leading-6 text-slate-600">
+                  Add a product name or reference, quantity and destination country to begin.
+                </p>
+              )}
+            </div>
+            <div>
+              <p className="text-xs font-bold uppercase tracking-[0.12em] text-slate-500">
+                Useful Before Final Quotation
+              </p>
               <ul className="mt-3 space-y-2 text-sm leading-6 text-slate-700">
-                {quotationReadiness.confirmedSignals.map((signal) => (
-                  <li key={signal} className="border-l-2 border-arc-blue pl-3">
-                    {signal}
+                {quotationReadiness.followUpItems.slice(0, 3).map((item) => (
+                  <li key={item} className="border-l-2 border-slate-300 pl-3">
+                    {item}
                   </li>
                 ))}
               </ul>
-            ) : (
-              <p className="mt-3 text-sm leading-6 text-slate-600">
-                Add a product name or reference, quantity and destination country to begin.
-              </p>
-            )}
+            </div>
           </div>
-          <div>
-            <p className="text-xs font-bold uppercase tracking-[0.12em] text-slate-500">
-              Useful Before Final Quotation
-            </p>
-            <ul className="mt-3 space-y-2 text-sm leading-6 text-slate-700">
-              {quotationReadiness.followUpItems.slice(0, 3).map((item) => (
-                <li key={item} className="border-l-2 border-slate-300 pl-3">
-                  {item}
-                </li>
-              ))}
-            </ul>
-          </div>
-        </div>
-      </section>
+        </section>
 
-      <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:items-center">
-        <button
-          type="submit"
-          disabled={isSubmitting}
-          aria-describedby="rfq-submit-status"
-          className="inline-flex min-h-12 w-full items-center justify-center bg-arc-blue px-6 py-3 text-sm font-bold uppercase tracking-[0.12em] text-white transition hover:bg-arc-midnight disabled:cursor-not-allowed disabled:bg-slate-400 sm:w-auto sm:tracking-[0.16em]"
-        >
-          {isSubmitting ? "Submitting..." : "Submit RFQ"}
-        </button>
-        <p
-          id="rfq-submit-status"
-          role="status"
-          aria-live="polite"
-          className="text-xs leading-5 text-slate-500"
-        >
-          {isSubmitting
-            ? `Securely sending your inquiry. This can take up to ${rfqSubmissionTimeoutSeconds} seconds; keep this page open.`
-            : "Your inquiry is validated before submission. Large or sensitive files can also be sent directly by email after initial contact."}
-          {isSubmitting && attemptReference ? (
-            <span className="mt-1 block font-semibold text-arc-midnight">
-              RFQ attempt reference: {attemptReference}. Delivery is not confirmed.
-            </span>
-          ) : null}
-        </p>
-      </div>
+        <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:items-center">
+          <button
+            type="submit"
+            disabled={!isInteractive || isSubmitting}
+            aria-describedby="rfq-submit-status"
+            className="inline-flex min-h-12 w-full items-center justify-center bg-arc-blue px-6 py-3 text-sm font-bold uppercase tracking-[0.12em] text-white transition hover:bg-arc-midnight disabled:cursor-not-allowed disabled:bg-slate-400 sm:w-auto sm:tracking-[0.16em]"
+          >
+            {isSubmitting ? "Submitting..." : "Submit RFQ"}
+          </button>
+          <p
+            id="rfq-submit-status"
+            role="status"
+            aria-live="polite"
+            className="text-xs leading-5 text-slate-500"
+          >
+            {!isInteractive
+              ? "Form fields will be available when the page is ready."
+              : isSubmitting
+                ? `Securely sending your inquiry. This can take up to ${rfqSubmissionTimeoutSeconds} seconds; keep this page open.`
+                : "Your inquiry is validated before submission. Large or sensitive files can also be sent directly by email after initial contact."}
+            {isSubmitting && attemptReference ? (
+              <span className="mt-1 block font-semibold text-arc-midnight">
+                RFQ attempt reference: {attemptReference}. Delivery is not confirmed.
+              </span>
+            ) : null}
+          </p>
+        </div>
+      </fieldset>
     </form>
   );
 }

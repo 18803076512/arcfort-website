@@ -4,6 +4,39 @@ This append-only log records substantial Codex work so future sessions can under
 why it changed and which risks remain. Add the newest entry at the top, below this introduction. Do
 not include secrets, buyer PII, private prospect data or unconfirmed claims.
 
+## 2026-11-05 - Prevent RFQ Input Loss Before Hydration
+
+- **Task:** Fix the confirmed loss of RFQ fields typed immediately after the server-rendered page
+  appears but before the client form is ready.
+- **Files Changed:** Shared RFQ form, RFQ browser regression, public hydration test launcher, RFQ
+  delivery knowledge record and this log.
+- **Components / Data / Visual Changes:** The shared RFQ form on RFQ, Contact and Distributor Supply
+  pages now starts with disabled controls and a visible, accessible preparation notice. Controls
+  become available after hydration; the status panel remains in place to keep the form position
+  stable. It provides base email and WhatsApp fallback links, including when scripts fail to load.
+  No product, commercial or buyer data changed.
+- **SEO Impact:** No route, canonical, sitemap, robots, schema or indexable content change. The
+  readiness notice and disabled fieldset are rendered in initial HTML.
+- **Validation:** The unmodified build lost the first three synthetic fields after delayed module
+  hydration in 6/6 local and 2/2 production read-only trials at 390px; no RFQ POST occurred. The
+  new browser regression failed on the unmodified build, then passed on the repaired build at
+  390px and 1440px with delayed modules, no-script fallback, stable visible form position and zero
+  real POST. Independent six-width browser review measured zero form displacement and CLS at
+  390px and 1440px after scrolling to the form. The existing RFQ
+  UI scenarios, RFQ unit tests, 120-load public hydration stress, production build, lint, typecheck,
+  SEO audit and performance budget passed locally. The secret scanner's Git child process hit a
+  sandbox `EPERM`; the same scanner passed against a shell-provided list of 772 repository text files.
+- **Known Issues:** Production remains on the old form until separately authorized release. The
+  previously stalled inquiry and both mailbox receipts remain unverified. DMARC, GA4, current GSC
+  and exact-product technical/media evidence remain separate open items.
+- **Reusable Knowledge Added:** The RFQ delivery record distinguishes pre-hydration readiness from
+  submission and documents the read-only reproduction and fallback behavior.
+- **Deployment:** Local isolated candidate only. No push, merge, deployment, DNS/provider change,
+  real RFQ or external write was performed.
+- **Next Recommended Action:** Review the exact candidate in CI and obtain batch-specific release
+  authorization before production deployment. Then verify the readiness state and form input
+  retention in a read-only browser without submitting an inquiry.
+
 ## 2026-11-04 - Gate RFQ Inbox Evidence And Repair Delivery Handoff
 
 - **Task:** Continue the verified-source-to-sales operating loop after the prior production release.
