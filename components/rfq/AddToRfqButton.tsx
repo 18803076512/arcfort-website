@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useRfqList } from "@/components/rfq/useRfqList";
 import { trackAnalyticsEvent } from "@/lib/analytics-events";
 import {
@@ -27,14 +27,26 @@ const variantClasses = {
 export function AddToRfqButton({ item, variant = "detail" }: AddToRfqButtonProps) {
   const items = useRfqList();
   const [announcement, setAnnouncement] = useState("");
+  // The server-rendered button has no click handler until this component hydrates.
+  const [ready, setReady] = useState(false);
+
+  useEffect(() => {
+    setReady(true);
+  }, []);
+
   const itemKey = getRfqListItemKey(item);
   const isAdded = useMemo(
     () => items.some((currentItem) => getRfqListItemKey(currentItem) === itemKey),
     [itemKey, items],
   );
   const isFull = !isAdded && items.length >= maxRfqItems;
+  const isUnavailable = !ready || isFull;
 
   function handleClick() {
+    if (!ready) {
+      return;
+    }
+
     if (isFull) {
       setAnnouncement(`Your RFQ list can contain up to ${maxRfqItems} products.`);
       return;
@@ -81,24 +93,28 @@ export function AddToRfqButton({ item, variant = "detail" }: AddToRfqButtonProps
       <button
         type="button"
         onClick={handleClick}
-        disabled={isFull}
+        disabled={isUnavailable}
         aria-pressed={isAdded}
         aria-label={
-          isFull
-            ? `RFQ list is full. Remove a product before adding ${item.name}`
-            : isAdded
-              ? `Remove ${item.name} from RFQ list`
-              : `Add ${item.name} to RFQ list`
+          !ready
+            ? `Preparing RFQ list for ${item.name}`
+            : isFull
+              ? `RFQ list is full. Remove a product before adding ${item.name}`
+              : isAdded
+                ? `Remove ${item.name} from RFQ list`
+                : `Add ${item.name} to RFQ list`
         }
         title={
-          isFull
-            ? "RFQ list is full"
-            : isAdded
-              ? `Remove ${item.name} from RFQ list`
-              : `Add ${item.name} to RFQ list`
+          !ready
+            ? "Preparing RFQ list"
+            : isFull
+              ? "RFQ list is full"
+              : isAdded
+                ? `Remove ${item.name} from RFQ list`
+                : `Add ${item.name} to RFQ list`
         }
         className={`${variantClasses[variant]} ${
-          isFull
+          isUnavailable
             ? "cursor-not-allowed border-slate-300 bg-slate-100 text-slate-500"
             : isAdded
               ? "border-arc-midnight bg-arc-midnight text-white hover:bg-arc-blue"

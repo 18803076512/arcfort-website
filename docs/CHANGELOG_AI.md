@@ -7891,3 +7891,50 @@ retained database and historical report.
 - **Deployment:** None. No real RFQ was sent and no provider, DNS or production setting changed.
 - **Next Recommended Action:** Put the empty template in a controlled private sales location and
   assign the person who will record actual sales inbox checks and first responses.
+
+## 2026-11-05 - Transfer Blank RFQ Ledger To Owner-Only Drive
+
+- **Task:** Place the empty RFQ sales workbook in a private location for the Phase 0 handoff.
+- **Files Changed:** None in the repository. The existing ignored Excel template was imported as a
+  native Google Sheet in an owner-only ArcFort Weld folder under My Drive.
+- **Components Changed:** None. **Data Changed:** No inquiry or buyer data was entered. The native
+  sheet has four tabs and UTC time zone. **Visual Changes:** None. **SEO Impact:** None.
+- **Validation:** Verified the ledger and daily rows remain blank, the summary counts are zero,
+  controls and formulas survived import, and both the folder and sheet have only the owner permission.
+- **Known Issues:** Sales owner assignment and real mailbox observations remain pending. Empty rows
+  cannot establish that no RFQs were received.
+- **Reusable Knowledge Added:** A private ledger is the operational record; the public repository
+  keeps only a blank template and non-personal delivery outcomes.
+- **Deployment:** No public-site release, provider setting or real RFQ submission.
+- **Next Recommended Action:** Assign the sales checker and record actual Outlook observations by
+  reference, without retroactively inventing a reference for the older ambiguous attempt.
+
+## 2026-11-05 - Guard Product RFQ List Actions Before Hydration
+
+- **Task:** Repair a buyer-path click that was accepted visually before product-page JavaScript
+  attached, but did not add the product to the RFQ list.
+- **Files Changed:** `components/rfq/AddToRfqButton.tsx`,
+  `scripts/test-rfq-form-browser.ts` and this log.
+- **Components Changed:** Product detail and card Add to RFQ buttons remain disabled with a
+  preparation label until their click handler and stored list are ready. Direct quote and product
+  navigation links remain usable during that period.
+- **Data Changed:** None. **Visual Changes:** The pending button uses the established disabled style.
+  **SEO Impact:** No route, metadata, structured data or sitemap change.
+- **Validation:** A read-only production browser negative control at 390px observed an enabled
+  pre-hydration button; clicking it left the stored list and count empty after hydration. The local
+  production build, lint, typecheck, RFQ unit tests, performance budget, secret scan and delayed
+  browser tests at 390px and 1440px passed. Browser tests covered both product detail and category
+  card, stored selection on the RFQ page and zero real RFQ POSTs. The full public hydration suite
+  passed 120/120 delayed-module loads with zero page errors. Local product-detail checks at 360px,
+  390px, 768px, 1024px, 1280px and 1440px found no overflow or page errors; mobile and desktop
+  screenshots confirmed the disabled state and usable direct quote link.
+- **Known Issues:** Formal CI, production deployment and live positive control remain pending. This
+  change does not prove provider or mailbox delivery; the old no-reference attempt is still unknown.
+- **Reusable Knowledge Added:** A server-rendered client button must not offer an action before its
+  event handler is attached. Keep a native link available for the buyer while it initializes.
+- **Deployment:** Local candidate only; no public-site mutation yet. The owner's standing
+  `始终授权` instruction is applied to this narrowly scoped branch, PR, `main` merge and
+  `www.arcfortweld.com` deployment after green CI. It does not cover DNS, provider settings,
+  a paid service or a real RFQ submission.
+- **Next Recommended Action:** Complete release QA, pass PR and main CI, then verify the exact
+  production button state with delayed scripts and no RFQ POST.
