@@ -8,14 +8,16 @@ import type {
   Locator,
   Page,
   Request as BrowserRequest,
+  Response as BrowserResponse,
 } from "./browser-runtime/node_modules/playwright/index.js";
 import type { ConsoleClient } from "../../lib/console/client.ts";
 import { executeConsoleCommand } from "../../lib/console/commands.ts";
-import { readDocumentLibrary } from "../../lib/console/documents.ts";
+import { readDocumentLibrary, type DocumentRow } from "../../lib/console/documents.ts";
 import { readDocumentReview, type DocumentCandidate } from "../../lib/console/document-review.ts";
 import { readDocumentReadiness } from "../../lib/console/catalog.ts";
 import { consoleDocumentReviewEnabled } from "../../lib/console/working-config.ts";
 import { documentObservationParts } from "../../lib/domain/catalog/document-review.ts";
+import { documentUuid } from "../../lib/domain/catalog/documents.ts";
 import type { ConsoleCommand, CommandResult } from "../../lib/domain/catalog/commands.ts";
 import { browserOrigin, privateResponse } from "./browser-server.ts";
 import type { openLocalAcceptance } from "./local-acceptance.ts";
@@ -320,6 +322,38 @@ export async function runDocumentWorkingBrowser(input: Input) {
     mimeType: "application/pdf",
     buffer: bytes,
   });
+  // Keep failed refresh diagnostics bounded and free of document IDs, bytes and account details.
+  const refreshTraffic = {
+    requests: 0,
+    responses: 0,
+    failures: 0,
+    responseStatuses: [] as number[],
+  };
+  const isLibraryRefresh = (request: BrowserRequest) => {
+    const url = new URL(request.url());
+    return (
+      request.method() === "GET" &&
+      url.origin === browserOrigin &&
+      url.pathname === libraryPath &&
+      (url.searchParams.has("_rsc") || request.headers().rsc === "1")
+    );
+  };
+  const onRefreshRequest = (request: BrowserRequest) => {
+    if (isLibraryRefresh(request)) refreshTraffic.requests++;
+  };
+  const onRefreshResponse = (response: BrowserResponse) => {
+    if (isLibraryRefresh(response.request())) {
+      refreshTraffic.responses++;
+      if (refreshTraffic.responseStatuses.length < 8)
+        refreshTraffic.responseStatuses.push(response.status());
+    }
+  };
+  const onRefreshFailure = (request: BrowserRequest) => {
+    if (isLibraryRefresh(request)) refreshTraffic.failures++;
+  };
+  owner.page.on("request", onRefreshRequest);
+  owner.page.on("response", onRefreshResponse);
+  owner.page.on("requestfailed", onRefreshFailure);
   const uploading = owner.page.waitForResponse(
     (response) => response.url() === uploadEndpoint && response.request().method() === "POST",
   );
@@ -333,12 +367,95 @@ export async function runDocumentWorkingBrowser(input: Input) {
   const uploadHeader = (await uploaded.request().allHeaders())["x-console-document"];
   assert.ok(uploadHeader);
   assert.deepEqual(uploaded.request().postDataBuffer(), bytes);
-  await owner.page
+  const uploadedRow = owner.page
     .getByRole("row")
-    .filter({ has: owner.page.getByText(documentTestCopy.title, { exact: true }) })
-    .getByRole("cell")
-    .filter({ hasText: /^Upload recorded/ })
-    .waitFor();
+    .filter({ has: owner.page.getByText(documentTestCopy.title, { exact: true }) });
+  try {
+    await uploadedRow
+      .getByRole("cell")
+      .filter({ hasText: /^Upload recorded/ })
+      .waitFor();
+  } catch (failure) {
+    const boundedDiagnostic = async <T>(work: Promise<T>, deadlineValue: T): Promise<T> => {
+      let timer: ReturnType<typeof setTimeout> | undefined;
+      try {
+        return await Promise.race([
+          work,
+          new Promise<T>((resolve) => {
+            timer = setTimeout(() => resolve(deadlineValue), 2500);
+          }),
+        ]);
+      } finally {
+        if (timer) clearTimeout(timer);
+      }
+    };
+    let databaseState: "timeout" | "unavailable" | "not_found" | DocumentRow["upload_state"] =
+      "unavailable";
+    try {
+      databaseState = await boundedDiagnostic(
+        readDocumentLibrary(owner.client, variantId, 1).then(
+          (current) =>
+            current?.items.find((row) => row.document_id === documentId)?.upload_state ??
+            "not_found",
+        ),
+        "timeout",
+      );
+    } catch {
+      // The original browser failure remains authoritative if a diagnostic read is unavailable.
+    }
+    let counts: (number | null)[] = Array(6).fill(null);
+    try {
+      const locators = [
+        owner.page
+          .getByRole("status")
+          .filter({ hasText: "Original received. Document rights and exact-SKU review pending." }),
+        owner.page.getByRole("alert"),
+        uploadedRow,
+        uploadedRow.getByRole("cell").filter({ hasText: /^Original missing/ }),
+        uploadedRow.getByRole("cell").filter({ hasText: /^Upload incomplete/ }),
+        uploadedRow.getByRole("cell").filter({ hasText: /^Upload recorded/ }),
+      ];
+      counts = await Promise.all(
+        locators.map((locator) =>
+          boundedDiagnostic<number | null>(locator.count(), null).catch(() => null),
+        ),
+      );
+    } catch {
+      // Page diagnostics are best effort and must not replace the original timeout.
+    }
+    try {
+      console.error(
+        JSON.stringify({
+          phase: "document upload refresh diagnostic",
+          response: {
+            status: uploaded.status(),
+            ok: uploadReceipt.ok === true,
+            documentMatches: uploadReceipt.document_id === documentId,
+            intentIdValid:
+              typeof uploadReceipt.intent_id === "string" &&
+              documentUuid.test(uploadReceipt.intent_id),
+          },
+          databaseState,
+          ui: {
+            successMessage: counts[0],
+            alerts: counts[1],
+            matchingRows: counts[2],
+            originalMissing: counts[3],
+            uploadIncomplete: counts[4],
+            uploadRecorded: counts[5],
+          },
+          refreshTraffic,
+        }),
+      );
+    } catch {
+      // Diagnostic output cannot replace the original Playwright failure.
+    }
+    throw failure;
+  } finally {
+    owner.page.off("request", onRefreshRequest);
+    owner.page.off("response", onRefreshResponse);
+    owner.page.off("requestfailed", onRefreshFailure);
+  }
   const intent = await owner.client
     .from("document_upload_intents")
     .select("storage_path,manifest")

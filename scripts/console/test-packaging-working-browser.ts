@@ -16,7 +16,7 @@ import {
 } from "../../lib/console/packaging.ts";
 import { consolePackagingEnabled } from "../../lib/console/working-config.ts";
 import type { CommandResult, ConsoleCommand } from "../../lib/domain/catalog/commands.ts";
-import type { PackagingCopy } from "../../lib/domain/catalog/packaging.ts";
+import { samePackaging, type PackagingCopy } from "../../lib/domain/catalog/packaging.ts";
 import { browserOrigin, privateResponse } from "./browser-server.ts";
 import type { openLocalAcceptance } from "./local-acceptance.ts";
 import {
@@ -155,6 +155,121 @@ export async function runPackagingWorkingBrowser(input: Input) {
     await visit(owner, (await data()).scopes[0]?.id);
     return id;
   }
+  async function boundedDiagnostic<T>(run: () => Promise<T>, fallback: T): Promise<T> {
+    let timer: ReturnType<typeof setTimeout> | undefined;
+    try {
+      return await Promise.race([
+        run(),
+        new Promise<T>((resolve) => {
+          timer = setTimeout(() => resolve(fallback), 2000);
+        }),
+      ]);
+    } catch {
+      return fallback;
+    } finally {
+      if (timer) clearTimeout(timer);
+    }
+  }
+  async function diagnoseMissingSource(
+    source: Awaited<ReturnType<typeof data>>["sources"][number],
+    copy: PackagingCopy,
+    head: string | undefined,
+  ) {
+    const checkbox = owner.page.getByRole("checkbox", { name: source.title, exact: true });
+    const snapshot = await boundedDiagnostic(data, null);
+    const scoped = snapshot?.scopes.find((row) => row.id === head);
+    const current = snapshot?.sources.find((row) => row.id === source.id);
+    const ui = await Promise.all([
+      boundedDiagnostic(() => checkbox.count(), null),
+      boundedDiagnostic(() => checkbox.isVisible(), null),
+      boundedDiagnostic(() => checkbox.isEnabled(), null),
+      boundedDiagnostic(
+        () =>
+          owner.page
+            .getByLabel("Package description", { exact: true })
+            .inputValue()
+            .then((value) => value === copy.package_description),
+        null,
+      ),
+      boundedDiagnostic(
+        () =>
+          owner.page
+            .getByLabel("Quantity known", { exact: true })
+            .isChecked()
+            .then((value) => value === (copy.quantity !== null)),
+        null,
+      ),
+      boundedDiagnostic(
+        () =>
+          owner.page
+            .getByLabel("Quantity", { exact: true })
+            .inputValue()
+            .then((value) => value === (copy.quantity?.toString() ?? "")),
+        null,
+      ),
+      boundedDiagnostic(
+        () =>
+          owner.page
+            .getByLabel("Quantity unit", { exact: true })
+            .inputValue()
+            .then((value) => value === (copy.quantity_unit ?? "")),
+        null,
+      ),
+      boundedDiagnostic(
+        () =>
+          owner.page
+            .getByLabel("Original packaging", { exact: true })
+            .inputValue()
+            .then((value) => value === (source.originalId ?? "")),
+        null,
+      ),
+      boundedDiagnostic(
+        () =>
+          owner.page
+            .getByLabel("Package description", { exact: true })
+            .evaluate((element) => Object.hasOwn(element, "_valueTracker")),
+        null,
+      ),
+      boundedDiagnostic(
+        () =>
+          owner.page.evaluate(() => ({
+            readyState: document.readyState,
+            rscResources: performance
+              .getEntriesByType("resource")
+              .filter((entry) => new URL(entry.name).searchParams.has("_rsc")).length,
+          })),
+        null,
+      ),
+    ]);
+    console.error(
+      JSON.stringify({
+        phase: "packaging source checkbox diagnostic",
+        database: {
+          available: snapshot !== null,
+          scopePresent: Boolean(scoped),
+          sourcePresent: Boolean(current),
+          sourceCurrent: current?.current ?? null,
+          sourcePhysicalMatches: current ? samePackaging(current.copy, copy) : null,
+          sourceOriginalMatches:
+            current && scoped ? current.originalId === scoped.originalId : null,
+          exactPhysicalSourceCount:
+            snapshot?.sources.filter((row) => samePackaging(row.copy, copy)).length ?? null,
+        },
+        ui: {
+          checkboxCount: ui[0],
+          checkboxVisible: ui[1],
+          checkboxEnabled: ui[2],
+          descriptionMatches: ui[3],
+          quantityKnownMatches: ui[4],
+          quantityMatches: ui[5],
+          unitMatches: ui[6],
+          selectedOriginalMatchesSource: ui[7],
+          hydratedInputTracker: ui[8],
+          navigation: ui[9],
+        },
+      }),
+    );
+  }
   async function propose(copy: PackagingCopy, head?: string) {
     await visit(owner, head);
     await physical(owner.page, copy);
@@ -166,8 +281,18 @@ export async function runPackagingWorkingBrowser(input: Input) {
         source.assertion !== "contradicts",
     );
     assert.equal(selected.length, copy.quantity === null ? 2 : 1);
-    for (const source of selected)
-      await owner.page.getByRole("checkbox", { name: source.title, exact: true }).check();
+    for (const source of selected) {
+      try {
+        await owner.page.getByRole("checkbox", { name: source.title, exact: true }).check();
+      } catch (failure) {
+        try {
+          await diagnoseMissingSource(source, copy, head);
+        } catch {
+          console.error('{"phase":"packaging source checkbox diagnostic","available":false}');
+        }
+        throw failure;
+      }
+    }
     await reason(owner.page, "TEST-ONLY isolated packaging proposal, never real SKU evidence");
     const proposal = await command(
       owner.page,

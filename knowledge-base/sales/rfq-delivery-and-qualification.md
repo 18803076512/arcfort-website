@@ -37,6 +37,12 @@ technical review.
 - Optional Supabase inquiry storage: not configured; email remains the active delivery path.
 - On a failed website submission, the form preserves the buyer's fields and shows selectable
   fallback details. Email and WhatsApp links use only the base contacts, with no buyer data in URLs.
+- The server-rendered form starts in a disabled, visibly labelled preparation state and becomes
+  editable only after client hydration. This prevents text entered before React is ready from being
+  erased when controlled fields attach. The preparation notice offers direct email and WhatsApp
+  links even if scripts never load; it does not imply an inquiry was submitted. The guard applies to
+  the shared form on RFQ, Contact and Distributor Supply pages. The status panel remains after
+  hydration, so a buyer reading near the form does not lose their place when fields become active.
 - BotID's browser fetch wrapper can wait for its challenge before calling native `fetch`. Its wait
   does not consume the request's `AbortSignal`, so the client needs an independent deadline that
   rejects the waiting promise and aborts the eventual native request. An attempt reference shown
@@ -80,6 +86,11 @@ For a useful quotation, sales should obtain:
 ## Remaining Owner Evidence
 
 - Sales and buyer inbox placement for the same controlled inquiry reference.
+- Production confirmation of the form readiness guard after a separately authorized release. The
+  2026-11-05 diagnosis reproduced pre-hydration field loss in 6/6 local and 2/2 live, read-only
+  browser trials at 390px with delayed app modules; no RFQ POST was sent. Local candidate browser
+  tests establish the guard, including a scripts-disabled fallback, but do not prove production
+  deployment or inbox delivery.
 - Confirmation that the previously exposed email-provider credential was rotated.
 - DMARC policy decision and verification.
 - GA4 RFQ conversion-event evidence without buyer PII.

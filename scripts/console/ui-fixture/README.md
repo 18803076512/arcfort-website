@@ -5,6 +5,17 @@ and sources are synthetic. It contains no database connection, Auth session or w
 Its command endpoint only probes browser headers and always returns `ok: false`. It is not shipped
 as a route in the main application and must never be deployed or exposed through a tunnel.
 
+## Packaging hydration guard
+
+Run `npm run console:packaging:hydration:ui:test` against the local fixture on port 3901. The browser
+holds Console JavaScript requests while checking that the server-rendered packaging editor, record
+selector, reload action and source fields are disabled. Once the scripts are released, it checks that
+these controls become editable and that several controlled values survive later edits. The runner
+also checks native sidebar navigation with JavaScript disabled. It blocks external requests and
+business mutations, uses only synthetic data and does not authenticate or connect to a database.
+The optional `--baseline` argument is for a checkout before the guard; it confirms that the old
+server-rendered fields were editable while the scripts were held.
+
 ## Technical Library Fixture
 
 `http://127.0.0.1:3901/console/documents` opens the synthetic global library. Use the SKU link to

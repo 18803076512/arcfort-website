@@ -50,6 +50,130 @@ async function fillValidForm(page: Page) {
   await page.locator("#productRequirements").fill("Synthetic M6 contact tips");
 }
 
+async function verifyPreHydrationGuard(browser: Browser) {
+  for (const width of [390, 1440]) {
+    const context = await browser.newContext({
+      serviceWorkers: "block",
+      viewport: { width, height: 900 },
+    });
+    let delayedModules = 0;
+    let blockedPosts = 0;
+    await context.route("**/*", async (route) => {
+      const request = route.request();
+      const url = new URL(request.url());
+      if (url.origin !== origin || !["GET", "HEAD"].includes(request.method())) {
+        if (request.method() === "POST") blockedPosts++;
+        return route.abort();
+      }
+      if (decodeURIComponent(url.pathname).startsWith("/_next/static/chunks/app/(public)/")) {
+        delayedModules++;
+        await new Promise((resolve) => setTimeout(resolve, 2500));
+      }
+      return route.continue();
+    });
+    const page = await context.newPage();
+    page.on("pageerror", (error) => pageErrors.push(error.message));
+    assert.equal((await page.goto(`${origin}/rfq`, { waitUntil: "commit" }))?.status(), 200);
+    await page.locator("#name").waitFor({ state: "visible" });
+    assert.equal(
+      await page.locator("#name").isDisabled(),
+      true,
+      `RFQ must not accept input before hydration at ${width}px; pre-hydration input is lost.`,
+    );
+    assert.equal(await page.locator("#email").isDisabled(), true);
+    assert.equal(await page.getByRole("button", { name: "Submit RFQ" }).isDisabled(), true);
+    assert.equal(await page.locator("#rfq-load-status").isVisible(), true);
+    assert.equal(
+      await page.locator('#rfq-load-status a[href="mailto:arcfortweld@outlook.com"]').count(),
+      1,
+    );
+    assert.equal(await page.locator('#rfq-load-status a[href^="https://wa.me/"]').count(), 1);
+    assert.equal(
+      await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth),
+      true,
+      `Pre-hydration RFQ layout overflows at ${width}px.`,
+    );
+    const beforeHydration = await page.evaluate(() => {
+      const name = document.querySelector("#name");
+      if (!name) throw new Error("RFQ name field is missing before hydration.");
+      window.scrollTo({
+        top: window.scrollY + name.getBoundingClientRect().top - 200,
+        behavior: "instant",
+      });
+      return { nameY: name.getBoundingClientRect().top, scrollY: window.scrollY };
+    });
+    await page.waitForLoadState("networkidle");
+    assert.ok(delayedModules > 0, "The browser must exercise delayed public RFQ modules.");
+    assert.equal(await page.locator("#name").isEnabled(), true);
+    assert.equal(await page.getByRole("button", { name: "Submit RFQ" }).isEnabled(), true);
+    assert.ok((await page.locator("#rfq-load-status").innerText()).includes("Inquiry form ready."));
+    const afterHydration = await page.evaluate(() => ({
+      nameY: document.querySelector("#name")?.getBoundingClientRect().top,
+      scrollY: window.scrollY,
+    }));
+    assert.ok(
+      Math.abs((afterHydration.nameY ?? -1) - beforeHydration.nameY) < 1 &&
+        Math.abs(afterHydration.scrollY - beforeHydration.scrollY) < 1,
+      `RFQ hydration must not move the visible form at ${width}px: ${JSON.stringify({ beforeHydration, afterHydration })}`,
+    );
+    await fillValidForm(page);
+    assert.equal(await page.locator("#name").inputValue(), "Synthetic Buyer");
+    assert.equal(await page.locator("#company").inputValue(), "Synthetic Distributor");
+    assert.equal(await page.locator("#email").inputValue(), "buyer@example.com");
+    assert.equal(
+      await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth),
+      true,
+      `Hydrated RFQ layout overflows at ${width}px.`,
+    );
+    assert.equal(blockedPosts, 0, "No RFQ POST may leave the hydration regression.");
+    await context.close();
+  }
+
+  const noScriptContext = await browser.newContext({ javaScriptEnabled: false });
+  await noScriptContext.route("**/*", async (route) => {
+    const request = route.request();
+    const url = new URL(request.url());
+    if (url.origin !== origin || !["GET", "HEAD"].includes(request.method())) {
+      return route.abort();
+    }
+    return route.continue();
+  });
+  for (const path of ["/rfq", "/contact", "/distributor-supply"]) {
+    const noScriptPage = await noScriptContext.newPage();
+    assert.equal(
+      (await noScriptPage.goto(`${origin}${path}`, { waitUntil: "networkidle" }))?.status(),
+      200,
+    );
+    assert.equal(await noScriptPage.locator("#name").isDisabled(), true, path);
+    assert.equal(
+      await noScriptPage.locator("form[data-rfq-form-placement]").getAttribute("aria-busy"),
+      "false",
+      path,
+    );
+    assert.equal(await noScriptPage.locator("#rfq-load-status").isVisible(), true, path);
+    assert.ok(
+      (await noScriptPage.locator("#rfq-load-status").innerText()).includes(
+        "If the fields do not become available",
+      ),
+      path,
+    );
+    assert.equal(
+      await noScriptPage
+        .locator('#rfq-load-status a[href="mailto:arcfortweld@outlook.com"]')
+        .count(),
+      1,
+      path,
+    );
+    assert.equal(
+      await noScriptPage.locator('#rfq-load-status a[href^="https://wa.me/"]').count(),
+      1,
+      path,
+    );
+    await noScriptPage.close();
+  }
+  await noScriptContext.close();
+}
+
 try {
   let ready = false;
   const deadline = Date.now() + 30_000;
@@ -75,6 +199,7 @@ try {
       ? { executablePath: process.env.PLAYWRIGHT_EXECUTABLE_PATH }
       : {}),
   });
+  await verifyPreHydrationGuard(browser);
   const context = await browser.newContext({ serviceWorkers: "block" });
   await context.route("**/*", async (route) => {
     const request = route.request();
