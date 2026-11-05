@@ -36,6 +36,29 @@ not include secrets, buyer PII, private prospect data or unconfirmed claims.
 - **Next Recommended Action:** Review the exact candidate in CI and obtain batch-specific release
   authorization before production deployment. Then verify the readiness state and form input
   retention in a read-only browser without submitting an inquiry.
+## 2026-11-05 - Guard Packaging Editor Until Hydration
+
+- **Task:** Prevent pre-hydration edits in the private PackagingWorkbench while preserving server
+  rendering and native Console navigation.
+- **Files Changed:** `components/console/PackagingWorkbench.tsx`, dedicated hydration browser test,
+  packaging browser fixture readiness wait, fixture README, `package.json`, decision record and this
+  log.
+- **Components Changed:** PackagingWorkbench and SourceEntry readiness behavior. **Data Changed:**
+  None. **Visual Changes:** Brief accessible loading status and disabled editor controls until the
+  component hydrates. **SEO Impact:** None; private Console routes and public metadata are unchanged.
+- **Validation:** Synthetic browser negative control confirmed the old SSR edit window with four
+  Console scripts delayed. The guarded positive control confirmed disabled SSR controls, editable
+  retained values after hydration, native navigation without JavaScript and zero external/business
+  mutation requests. Standard packaging UI suite passed 14 groups across six widths. Lint,
+  typecheck, production build and performance budget passed. The normal secret scanner could not
+  spawn `git` in this sandbox; a shell inventory and the same patterns scanned 774 repository text
+  files with zero findings.
+- **Known Issues:** Native Auth/database acceptance and production behavior were not retested. This
+  change does not resolve the separate post-upload document refresh timeout.
+- **Reusable Knowledge Added:** The dated component-local hydration decision and regression runner.
+- **Deployment:** None; no push, migration, production data or provider change.
+- **Next Recommended Action:** Re-run isolated native packaging acceptance once the concurrent CI
+  diagnostics are integrated, then review the candidate for an authorized release.
 
 ## 2026-11-04 - Gate RFQ Inbox Evidence And Repair Delivery Handoff
 
@@ -7813,27 +7836,3 @@ retained database and historical report.
 - **Deployment:** None. No real RFQ was sent and no provider, DNS or production setting changed.
 - **Next Recommended Action:** Put the empty template in a controlled private sales location and
   assign the person who will record actual sales inbox checks and first responses.
-
-## 2026-11-05 - Guard Packaging Editor Until Hydration
-
-- **Task:** Prevent pre-hydration edits in the private PackagingWorkbench while preserving server
-  rendering and native Console navigation.
-- **Files Changed:** `components/console/PackagingWorkbench.tsx`, dedicated hydration browser test,
-  packaging browser fixture readiness wait, fixture README, `package.json`, decision record and this
-  log.
-- **Components Changed:** PackagingWorkbench and SourceEntry readiness behavior. **Data Changed:**
-  None. **Visual Changes:** Brief accessible loading status and disabled editor controls until the
-  component hydrates. **SEO Impact:** None; private Console routes and public metadata are unchanged.
-- **Validation:** Synthetic browser negative control confirmed the old SSR edit window with four
-  Console scripts delayed. The guarded positive control confirmed disabled SSR controls, editable
-  retained values after hydration, native navigation without JavaScript and zero external/business
-  mutation requests. Standard packaging UI suite passed 14 groups across six widths. Lint,
-  typecheck, production build and performance budget passed. The normal secret scanner could not
-  spawn `git` in this sandbox; a shell inventory and the same patterns scanned 774 repository text
-  files with zero findings.
-- **Known Issues:** Native Auth/database acceptance and production behavior were not retested. This
-  change does not resolve the separate post-upload document refresh timeout.
-- **Reusable Knowledge Added:** The dated component-local hydration decision and regression runner.
-- **Deployment:** None; no push, migration, production data or provider change.
-- **Next Recommended Action:** Re-run isolated native packaging acceptance once the concurrent CI
-  diagnostics are integrated, then review the candidate for an authorized release.
