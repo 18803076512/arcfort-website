@@ -83,14 +83,20 @@ For a useful quotation, sales should obtain:
    that an attachment was included.
 6. Update `docs/operations/acquisition-production-evidence.json` and regenerate reports.
 
+## Production Form Readiness Evidence
+
+The pre-hydration input-loss diagnosis reproduced on 2026-11-05 in 6/6 local and 2/2 earlier live,
+read-only browser trials at 390px. PR #142 deployed the guarded form at main commit `be1be209`;
+Production deployment `7576381248` succeeded. After styles and fonts loaded, the live RFQ, Contact
+and Distributor Supply pages passed 6/6 delayed-script browser checks at 390px and 1440px: fields
+started disabled with direct email and WhatsApp fallback, then enabled with synthetic input retained
+and no form or scroll displacement. No browser error, horizontal overflow or POST occurred. This
+confirms the published form readiness behavior; it does not establish provider acceptance, sales
+inbox placement, buyer confirmation or attachment receipt.
+
 ## Remaining Owner Evidence
 
 - Sales and buyer inbox placement for the same controlled inquiry reference.
-- Production confirmation of the form readiness guard after a separately authorized release. The
-  2026-11-05 diagnosis reproduced pre-hydration field loss in 6/6 local and 2/2 live, read-only
-  browser trials at 390px with delayed app modules; no RFQ POST was sent. Local candidate browser
-  tests establish the guard, including a scripts-disabled fallback, but do not prove production
-  deployment or inbox delivery.
 - Confirmation that the previously exposed email-provider credential was rotated.
 - DMARC policy decision and verification.
 - GA4 RFQ conversion-event evidence without buyer PII.
