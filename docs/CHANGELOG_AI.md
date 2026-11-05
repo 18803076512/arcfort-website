@@ -7728,3 +7728,55 @@ retained database and historical report.
 - **Next Recommended Action:** Obtain read-only Vercel/Resend request evidence for the old attempt
   when available; then authorize one controlled browser RFQ with matching sales/buyer and attachment
   inspection. Do not retry the ambiguous attempt automatically.
+
+## 2026-11-05 - Define Evidence-Gated Website Ecosystem Plan
+
+- **Task:** Review the live website evidence, RFQ and sales handoff, product and company provenance,
+  measurement, market channels and Product Intelligence boundaries as one operating system.
+- **Files Changed:** `docs/operations/website-ecosystem-execution-plan-2026-11-05.md`,
+  `docs/operations/acquisition-production-evidence.json`, the ecosystem operating loop, regenerated
+  acquisition/Goal reports and this log.
+- **Components Changed:** None. **Data Changed:** None. **Visual Changes:** None. **SEO Impact:** No
+  public URL, metadata, sitemap or content change.
+- **Validation:** Reconciled the plan against Goal Mode, current production evidence, acquisition
+  and product reports, RFQ release records, 15AK intake, sales and promotion playbooks, and Console
+  phase decisions. The 2026-11-05 read-only production health check passed RFQ configuration, sender
+  DNS, 88 sitemap URLs, 82/82 reachable HTML pages, 40/40 product paths and security headers; it
+  sent no inquiry. Both generated reports refreshed from the checked evidence. Documentation
+  formatting, relative references, diff whitespace and changed-file secret-pattern checks passed.
+  The standard scanner could not spawn `git` in this sandbox; a shell-generated inventory and the
+  same patterns checked 772 repository text files with zero findings. No executable or public content
+  changed.
+- **Known Issues:** The 2026-11-04 old RFQ remains unreconciled; both mailbox and attachment proof,
+  current GSC, GA4, DMARC, credential-rotation confirmation, exact 15AK media and technical evidence
+  remain open. PR #140 had one database browser timeout before a successful rerun and successful
+  main CI; its intermittent cause is unproven. Plan timing depends on owner-side evidence and exact
+  external-action authorization.
+- **Reusable Knowledge Added:** The dated execution plan distinguishes technical readiness from
+  delivery, measurement and qualified sales outcomes, with conditional phase exits and owners.
+- **Deployment:** None. No RFQ submission, account, DNS, database or public-site mutation.
+- **Next Recommended Action:** Obtain current native GSC evidence and four exact 15AK evidence sets
+  while preserving the old RFQ as unknown until its provider/mailbox records can be reconciled.
+
+## 2026-11-05 - Start Phase 0 Private RFQ Sales Handoff
+
+- **Task:** Implement the first evidence-independent step of the website ecosystem plan: a private
+  sales ledger handoff for future website RFQs.
+- **Files Changed:** Empty `docs/sales/rfq-sales-ledger-template.csv`, the RFQ sales response
+  playbook, the ecosystem execution plan and this log. A blank Excel workbook was created locally at
+  ignored `outputs/ArcFort-RFQ-Sales-Ledger-Template.xlsx` for transfer to an owner-controlled
+  private location.
+- **Components Changed:** None. **Data Changed:** Template fields and controlled status choices only;
+  no real lead, buyer PII, product fact or delivery evidence. **Visual Changes:** None. **SEO Impact:**
+  None; no public route or page changed.
+- **Validation:** The workbook's four sheets, 500 blank ledger rows, status controls, unique-reference
+  rule, source-header parity and absence of email addresses were checked locally. Documentation
+  formatting, link/CSV integrity, diff checks and the 772-file secret-pattern fallback passed.
+- **Known Issues:** No actual sales receipt, owner assignment, response-time or qualified-lead
+  record is established. The earlier no-reference RFQ remains outside the ledger as unknown.
+  GSC/GA4 native access, Vercel/Resend/Outlook logs and 15AK Level A evidence are unavailable.
+- **Reusable Knowledge Added:** The playbook now defines reference-based private tracking and keeps
+  provider, sales inbox, controlled buyer receipt and human qualification as distinct states.
+- **Deployment:** None. No real RFQ was sent and no provider, DNS or production setting changed.
+- **Next Recommended Action:** Put the empty template in a controlled private sales location and
+  assign the person who will record actual sales inbox checks and first responses.
