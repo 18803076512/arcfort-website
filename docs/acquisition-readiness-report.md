@@ -1,18 +1,18 @@
 # Acquisition Readiness Report
 
-Production evidence checked through 2026-11-04. Search Console, provider, mailbox and product evidence retain the separate dates and confirmation states shown below. This internal report separates repository facts, verified production behavior and business evidence that still requires external confirmation.
+Production evidence checked through 2026-11-05. Search Console, provider, mailbox and product evidence retain the separate dates and confirmation states shown below. This internal report separates repository facts, verified production behavior and business evidence that still requires external confirmation.
 
 ## Executive Status
 
 ArcFort Weld is live and indexable. The RFQ path reports configuration readiness in email delivery mode; final inbox placement still requires external confirmation. The next growth constraint is stronger product evidence, verified measurement and disciplined follow-up on the pages already receiving search impressions.
 
-**Search measurement: Historical baseline; current search performance is unknown.** Recorded Search Console data ends 2026-08-09, 87 days before the production evidence date 2026-11-04. The internal review threshold is 35 days (a 28-day comparison window plus seven days for export and review). Do not infer a current trend, indexing status or conversion result from these numbers.
+**Search measurement: Historical baseline; current search performance is unknown.** Recorded Search Console data ends 2026-08-09, 88 days before the production evidence date 2026-11-05. The internal review threshold is 35 days (a 28-day comparison window plus seven days for export and review). Do not infer a current trend, indexing status or conversion result from these numbers.
 
 - Production deployment verified: Yes
 - Canonical production URL: https://www.arcfortweld.com
 - Production sitemap URLs: 88
-- Live SEO audit checked: 2026-11-04
-- Security headers checked: 2026-11-04
+- Live SEO audit checked: 2026-11-05
+- Security headers checked: 2026-11-05
 - Active public products: 40
 - Draft products held from publication: 3
 - Product categories: 6
@@ -40,7 +40,7 @@ ArcFort Weld is live and indexable. The RFQ path reports configuration readiness
 
 ## RFQ And Delivery Evidence
 
-- Production status checked: 2026-11-04
+- Production status checked: 2026-11-05
 - Delivery mode: email
 - Sales email configured: Yes
 - Buyer confirmation configured: Yes
@@ -103,7 +103,7 @@ Draft product pages remain excluded from static generation and sitemap publicati
 
 ## Email Domain Authentication
 
-- Public DNS checked: 2026-11-04
+- Public DNS checked: 2026-11-05
 - DKIM public key: Present
 - SPF for custom MAIL FROM: Present
 - Custom MAIL FROM MX: Present

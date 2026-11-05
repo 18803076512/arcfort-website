@@ -150,3 +150,29 @@ Keep these fields in a private sales system or protected spreadsheet:
 
 Do not store buyer PII in this repository. Aggregated campaign reporting should use counts and
 campaign IDs only.
+
+### Private Website RFQ Ledger
+
+Copy the empty [RFQ sales ledger template](rfq-sales-ledger-template.csv) to an owner-controlled
+private spreadsheet before entering any real inquiry. This workspace's `outputs/` directory can
+hold a blank transfer copy, but Git ignore is not access control; do not enter buyer data here.
+Never commit a populated copy. Use one row per unique website RFQ reference; keep the email thread
+locator only in the private copy, and keep names, email addresses, phone numbers, buyer messages and
+attachments in the controlled mailbox or sales system. Direct email or WhatsApp inquiries need a
+separate private lead identifier; do not invent an `AF-RFQ` reference for them.
+
+- Enter `sales_received_at_utc` only after the sales mailbox actually contains that reference.
+  Provider acceptance and a browser success message are separate evidence.
+- Set `qualification_status` after human review: `unreviewed`, `details_needed`, `qualified`,
+  `outside_scope` or `internal_test`. Product scope, quantity and destination are qualification
+  inputs; the website readiness hint is not an approval to quote.
+- Use `quote_status`: `not_started`, `in_review`, `sent` or `declined`. Use `outcome_status`: `open`,
+  `won`, `lost`, `no_response` or `closed_other`. A quotation or order result must come from the
+  private sales record, not an analytics event.
+- Record the assigned owner, first reply, next action and last review in UTC. The operating target
+  is to inspect the mailbox and provider log twice per business day and give a qualified inquiry a
+  first human response within one business day; measure actual performance before adjusting it.
+- Keep the earlier stuck controlled submission outside the ledger until its reference and sales
+  receipt can be verified. Its provider and delivery outcome remain unknown. Controlled buyer
+  confirmation and attachment proof belong in the separate production evidence record, not this
+  sales tracker.
