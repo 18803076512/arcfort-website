@@ -4,6 +4,33 @@ This append-only log records substantial Codex work so future sessions can under
 why it changed and which risks remain. Add the newest entry at the top, below this introduction. Do
 not include secrets, buyer PII, private prospect data or unconfirmed claims.
 
+## 2026-11-05 - Assemble RFQ And Console Stability Candidate
+
+- **Task:** Respond to the live RFQ input-loss reproduction and the two distinct PR #141 main CI
+  database-browser failures with one reviewable release candidate.
+- **Files Changed:** Combined RFQ and packaging hydration guards, focused browser regressions,
+  bounded document-refresh and packaging-checkbox CI diagnostics, the dated ecosystem execution
+  plan and this log. The exact diff is on `codex/ecosystem-hydration-stability-20261105`.
+- **Components / Data / Visual Changes:** RFQ fields and private packaging editor controls wait for
+  client hydration. The RFQ status panel stays in place to prevent scroll movement and keeps direct
+  contact links available. No product facts, buyer data, external account or database changed.
+- **SEO Impact:** No route, canonical, sitemap, robots, schema or product publication change.
+- **Validation:** Combined production build, lint, typecheck, RFQ unit and browser tests, synthetic
+  packaging command/read tests and two packaging browser suites, document library tests, SEO audit
+  and performance budget passed locally. The RFQ subcandidate also passed 120 public hydration loads
+  with zero page errors. The existing native Auth/database CI has not run on this candidate.
+- **Known Issues:** PR #141 main CI remains failed at different document-refresh and packaging
+  checkpoints. The new diagnostics preserve the failing assertion and can distinguish database,
+  browser refresh and form state on recurrence; they do not fix the document refresh. The earlier
+  real RFQ attempt, both mailbox receipts, DMARC, GA4 and current GSC evidence remain unknown.
+- **Reusable Knowledge Added:** The execution plan records the new operational state without
+  treating a 200 upload response or a green rerun as proof of complete workflow delivery.
+- **Deployment:** Local candidate only. No push, PR, merge, production deployment, real RFQ, DNS
+  or provider write was performed.
+- **Next Recommended Action:** Obtain exact batch and destination authorization, run PR quality and
+  native database CI, resolve any reproduced failure, then merge and perform read-only production
+  RFQ and site health checks. Keep inbox and attachment evidence unconfirmed until inspected.
+
 ## 2026-11-05 - Prevent RFQ Input Loss Before Hydration
 
 - **Task:** Fix the confirmed loss of RFQ fields typed immediately after the server-rendered page
@@ -36,6 +63,7 @@ not include secrets, buyer PII, private prospect data or unconfirmed claims.
 - **Next Recommended Action:** Review the exact candidate in CI and obtain batch-specific release
   authorization before production deployment. Then verify the readiness state and form input
   retention in a read-only browser without submitting an inquiry.
+
 ## 2026-11-05 - Guard Packaging Editor Until Hydration
 
 - **Task:** Prevent pre-hydration edits in the private PackagingWorkbench while preserving server
