@@ -4,6 +4,33 @@ This append-only log records substantial Codex work so future sessions can under
 why it changed and which risks remain. Add the newest entry at the top, below this introduction. Do
 not include secrets, buyer PII, private prospect data or unconfirmed claims.
 
+## 2026-11-05 - Verify PR #142 Production Release
+
+- **Task:** Record the completed RFQ and Console stability release against exact CI, deployment and
+  read-only production evidence.
+- **Files Changed:** This log, the dated ecosystem execution plan and the RFQ delivery knowledge
+  record. This follow-up changes no runtime component, product fact or account setting.
+- **Validation:** PR #142 quality and native Product Intelligence database jobs both passed in run
+  `42044103817` at candidate `6be02268`. Main push run `42045882226` passed both jobs again at
+  merge `be1be209`, including the previously intermittent browser workflow. GitHub Production
+  deployment `7576381248` succeeded for that exact merge. The post-deploy read-only health check
+  passed RFQ configuration, sender DNS, 88 sitemap URLs, 82/82 HTML pages, 40/40 product inquiry
+  paths and security headers. With styles and fonts ready, production RFQ, Contact and Distributor
+  Supply passed 6/6 delayed-script checks at 390px and 1440px: fields disabled until hydration,
+  direct fallback links, retained synthetic input, stable form and scroll positions, no page errors
+  or horizontal overflow, and zero POSTs.
+- **Known Issues:** The earlier no-reference inquiry, same-reference sales and buyer inbox receipts
+  and sales attachment remain unverified. DMARC is missing, GA4 inactive, current native GSC evidence
+  unavailable, and the intermittent document-refresh cause is still unproven; green CI runs do not
+  establish its root cause or inbox delivery.
+- **Reusable Knowledge Added:** The RFQ delivery record separates verified production form readiness
+  from provider acceptance, mailbox placement and attachment receipt.
+- **Deployment:** PR #142 code is live at `www.arcfortweld.com` on merge `be1be209`. This
+  follow-up records evidence only; it sends no inquiry and makes no DNS or provider change.
+- **Next Recommended Action:** Reconcile the old attempt with provider logs when available, then
+  separately verify one controlled RFQ reference in both mailboxes and its sales attachment. Collect
+  current GSC and exact 15AK evidence without inferring missing results.
+
 ## 2026-11-05 - Assemble RFQ And Console Stability Candidate
 
 - **Task:** Respond to the live RFQ input-loss reproduction and the two distinct PR #141 main CI
