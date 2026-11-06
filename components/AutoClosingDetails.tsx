@@ -14,8 +14,11 @@ type AutoClosingDetailsProps = Omit<ComponentPropsWithoutRef<"details">, "onClic
 export function AutoClosingDetails({ children, ...props }: AutoClosingDetailsProps) {
   const pathname = usePathname();
   const detailsRef = useRef<HTMLDetailsElement>(null);
+  const previousPathnameRef = useRef(pathname);
 
   useEffect(() => {
+    if (previousPathnameRef.current === pathname) return;
+    previousPathnameRef.current = pathname;
     if (detailsRef.current?.open) {
       detailsRef.current.open = false;
     }

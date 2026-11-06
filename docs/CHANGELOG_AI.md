@@ -4,6 +4,43 @@ This append-only log records substantial Codex work so future sessions can under
 why it changed and which risks remain. Add the newest entry at the top, below this introduction. Do
 not include secrets, buyer PII, private prospect data or unconfirmed claims.
 
+## 2026-11-06 - Preserve Public Navigation And Gallery Controls Through Hydration
+
+- **Task:** Repair two read-only production reproductions where an opened header menu closed during
+  initial hydration and an early product thumbnail click was silently lost.
+- **Files Changed:** Shared `AutoClosingDetails`, product gallery viewer, public hydration browser
+  regression, a dated decision record and this log.
+- **Components / Data / Visual Changes:** Native Menu/Products details remain open across the first
+  client mount and close on a real pathname change. Gallery thumbnails show a disabled preparation
+  state until their click handler is ready, while the initial product image and direct full-image
+  link remain available. No product data, image identity, rights, RFQ API or account changed.
+- **SEO Impact:** No route, canonical, sitemap, robots, metadata or schema change.
+- **Validation:** The unmodified production site lost the menu state and thumbnail selection at
+  390px and 1440px under delayed first-party scripts, with no POST or page error. The candidate
+  passes production build, lint, typecheck, performance budget and the 776-file secret-pattern scan.
+  The expanded public hydration regression passed 120/120 page loads, 3/3 native navigation checks
+  and 3/3 gallery checks with zero browser errors or refused requests. Local 390px and 1440px visual
+  review found no horizontal overflow; the mobile menu and selected gallery image rendered as
+  intended. Formatting and exact-diff hygiene passed. PR #147's first CI run `42201042447`
+  caught three reference-gallery images whose disclosure had been hidden by the temporary loading
+  label. The candidate now preserves each image's evidence label while disabled; the rebuilt
+  `seo:images` audit passed 43/43 public legacy-reference disclosures. The same CI run's isolated
+  Console media-mapping browser step timed out; its cause remains unproven and requires a new run.
+- **Known Issues:** Final sales/buyer inbox receipts and attachment remain unverified. DMARC is
+  absent; GA4 is inactive; current GSC data and exact-SKU product/image evidence are unavailable.
+  These do not become confirmed through UI testing. The initial Console CI timeout is not evidence
+  of a production Console defect or of a successful database gate.
+- **Reusable Knowledge Added:** The dated native-controls decision explains why native details
+  should survive the first client mount and why JavaScript-only buttons must wait for hydration.
+- **Deployment:** Local candidate only at this entry. No new RFQ, DNS/provider write, push, PR,
+  merge or production deployment was performed. The user's standing authorization in this session
+  covers the same `18803076512/arcfort-website` GitHub PR/main and `www.arcfortweld.com`
+  Production release path for this scoped UI batch. It does not cover DNS/provider/paid-service
+  changes or a real inquiry submission; this is the scoped override to `AGENTS.md` per-batch
+  authorization wording.
+- **Next Recommended Action:** Run the exact-diff release gate, then publish through PR CI and verify
+  the live buyer paths without submitting an inquiry.
+
 ## 2026-11-06 - Verify Buyer Path Releases And Refresh Production Evidence
 
 - **Task:** Close the public RFQ list and six guided-builder release loop against exact deployment,

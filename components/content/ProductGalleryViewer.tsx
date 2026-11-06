@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   getProductImageDisclosureLabel,
   type ProductImageEvidenceState,
@@ -27,7 +27,12 @@ function getImageDisclosure(image: ProductGalleryImage) {
 
 export function ProductGalleryViewer({ images, productTitle }: ProductGalleryViewerProps) {
   const [selectedIndex, setSelectedIndex] = useState(0);
+  const [ready, setReady] = useState(false);
   const selectedImage = images[selectedIndex] ?? images[0];
+
+  useEffect(() => {
+    setReady(true);
+  }, []);
 
   return (
     <div data-nosnippet data-snippet-region="product-visual">
@@ -66,10 +71,12 @@ export function ProductGalleryViewer({ images, productTitle }: ProductGalleryVie
             <button
               key={image.assetId}
               type="button"
+              disabled={!ready}
               onClick={() => setSelectedIndex(index)}
               aria-pressed={selectedIndex === index}
               aria-label={`Show ${productTitle} ${getImageDisclosure(image).toLowerCase()}`}
-              className={`relative aspect-square overflow-hidden border bg-white transition ${
+              title={ready ? undefined : "Preparing image gallery"}
+              className={`relative aspect-square overflow-hidden border bg-white transition disabled:cursor-wait disabled:opacity-60 ${
                 selectedIndex === index
                   ? "border-arc-blue ring-1 ring-arc-blue"
                   : "border-arc-line hover:border-arc-blue"
