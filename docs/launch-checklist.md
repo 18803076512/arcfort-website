@@ -94,8 +94,9 @@ Use this checklist before switching the website to production traffic.
 
 ## Automated Production Monitoring
 
-- `.github/workflows/production-health.yml` checks production every six hours and supports manual
-  runs from GitHub Actions.
+- `.github/workflows/production-health.yml` is scheduled every six hours and supports manual runs
+  from GitHub Actions. GitHub may delay or skip scheduled runs; inspect actual timestamps and run
+  `npm run health:production` after each deployment.
 - `npm run health:production` verifies RFQ readiness and audits all live sitemap URLs without
   sending an inquiry or email.
 - `npm run test:live-audit` verifies bounded retries locally. Transient network and selected

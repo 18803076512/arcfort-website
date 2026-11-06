@@ -4,6 +4,38 @@ This append-only log records substantial Codex work so future sessions can under
 why it changed and which risks remain. Add the newest entry at the top, below this introduction. Do
 not include secrets, buyer PII, private prospect data or unconfirmed claims.
 
+## 2026-11-06 - Verify Public Hydration Release And Correct Current Operating State
+
+- **Task:** Close PR #147's release evidence, correct the Goal document's stale current phase and
+  release status, and distinguish the six-hour health cron setting from actual execution frequency.
+- **Files Changed:** Goal, ecosystem plan and operating loop, launch and search runbooks, the public
+  native-controls decision and this log. No runtime, product data, media, RFQ API or account setting
+  changed in this follow-up.
+- **SEO Impact:** No route, canonical, sitemap, robots, metadata or schema change. Current Google
+  indexing and search performance remain unknown; the latest native GSC export ends 2026-08-09.
+- **Validation:** PR #147 corrected-head CI `42202570362` and main CI `42204003126` passed quality
+  and isolated database jobs. Merge `bd2257fbe0b54cea6e0d58cd960f18f5c1903b66` reached
+  Production deployment `7598068717` successfully on 2026-11-06 10:38:04 UTC. Live 390px and
+  1440px slow-script navigation/gallery cases passed 4/4; no-script link passed, with zero POST and
+  page errors. Post-deployment RFQ, DNS, 88-URL sitemap, 82/82 HTML, 40/40 product inquiry-path
+  and security-header checks passed. Scheduled health run `42279216498` passed on that merge.
+  The first CI run's image-label audit failure was corrected; its separate Console browser timeout
+  did not recur, but its original cause remains unproven.
+- **Known Issues:** Sales/buyer inbox placement and sales attachment remain unverified, as does the
+  earlier no-reference RFQ attempt. DMARC is absent, GA4 inactive, current GSC data unavailable,
+  and zero exact-product main images meet rights and identity gates. The health workflow is set to
+  run every six hours, but actual GitHub scheduled runs may be delayed or skipped.
+- **Reusable Knowledge Added:** The decision now ties the buyer interaction fix to exact CI,
+  deployment and live evidence. The Goal and runbooks point to current gates and preserve dated
+  historical checkpoints without treating them as present release blockers.
+- **Deployment:** This documentation-only follow-up is a local candidate pending its own PR, CI,
+  merge and Production verification. It does not send an inquiry or modify DNS, provider, GA4 or
+  product facts. The user's standing session authorization covers this same scoped GitHub PR/main
+  and `www.arcfortweld.com` Production path; it does not cover external-account changes or a real
+  inquiry submission.
+- **Next Recommended Action:** Complete this documentation release. Then address the next bounded
+  buyer-path issue while owner-side mailbox, GSC and product evidence remain correctly unverified.
+
 ## 2026-11-06 - Preserve Public Navigation And Gallery Controls Through Hydration
 
 - **Task:** Repair two read-only production reproductions where an opened header menu closed during

@@ -110,8 +110,9 @@ must deliberately adopt the reviewed-list workflow; no-argument execution now se
 
 Keep a release record with the commit/deployment, affected canonical URLs, live-check result,
 engine, request date/status (if sent), and subsequent inspection result. Omit buyer data, private
-mail headers and tokens. Public health is checked by the existing six-hour workflow; no new task or
-paid service is required. GSC follow-up is not automatically scheduled or completed by this tool.
+mail headers and tokens. The existing public-health workflow is scheduled every six hours, but
+actual GitHub runs may be delayed or skipped; no new task or paid service is required. GSC follow-up
+is not automatically scheduled or completed by this tool.
 
 For the October 2026 notice, the 48 validated URLs and the separate Redirect error examples remain
 missing. The next highest-value action is to obtain those exact Google report exports and match them
