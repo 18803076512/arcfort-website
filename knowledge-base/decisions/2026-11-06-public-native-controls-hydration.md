@@ -20,8 +20,9 @@ Keep native menu interaction available immediately. Close an open menu only when
 changes; continue to close it on an outside pointer event, Escape, or a clicked link after hydration.
 Keep the first product image, its evidence disclosure and direct full-image link available in server
 HTML. Disable gallery thumbnail buttons until their client click handler is ready, with a preparing
-label and visual disabled state; then restore normal selection. This avoids a silent lost click and
-does not change product media identity, rights or publication state.
+title and visual disabled state; retain each thumbnail's evidence disclosure in its accessible label
+while disabled, then restore normal selection. This avoids a silent lost click and does not change
+product media identity, rights or publication state.
 
 Use the existing production-build public hydration runner for delayed-script, keyboard and no-script
 regressions. It must refuse requests beyond loopback GET/HEAD and send no inquiry. This decision
@@ -35,6 +36,12 @@ passed. The public browser regression passed 120/120 delayed page loads, 3/3 nav
 1440px, Escape focus return, a native no-script RFQ link, thumbnail selection after readiness and
 a direct initial-image link without scripts. Representative 390px and 1440px screenshots showed no
 horizontal overflow. Hosted CI and live post-deployment checks remain separate release gates.
+
+The first PR CI run exposed a useful guardrail: replacing the server-rendered thumbnail label with
+a generic loading label removed the product-family reference disclosure for three gallery assets.
+The loading state now uses a separate title while preserving the disclosure label. The rebuilt
+public-image audit passes all 43 legacy-reference assets. The independent Console browser timeout
+from the same run remains a separate, unproven CI failure until rerun.
 
 ## Reversal
 

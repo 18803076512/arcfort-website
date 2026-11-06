@@ -74,11 +74,7 @@ export function ProductGalleryViewer({ images, productTitle }: ProductGalleryVie
               disabled={!ready}
               onClick={() => setSelectedIndex(index)}
               aria-pressed={selectedIndex === index}
-              aria-label={
-                ready
-                  ? `Show ${productTitle} ${getImageDisclosure(image).toLowerCase()}`
-                  : `Preparing gallery for ${productTitle}`
-              }
+              aria-label={`Show ${productTitle} ${getImageDisclosure(image).toLowerCase()}`}
               title={ready ? undefined : "Preparing image gallery"}
               className={`relative aspect-square overflow-hidden border bg-white transition disabled:cursor-wait disabled:opacity-60 ${
                 selectedIndex === index

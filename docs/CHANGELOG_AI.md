@@ -21,10 +21,15 @@ not include secrets, buyer PII, private prospect data or unconfirmed claims.
   The expanded public hydration regression passed 120/120 page loads, 3/3 native navigation checks
   and 3/3 gallery checks with zero browser errors or refused requests. Local 390px and 1440px visual
   review found no horizontal overflow; the mobile menu and selected gallery image rendered as
-  intended. Formatting and exact-diff hygiene passed.
+  intended. Formatting and exact-diff hygiene passed. PR #147's first CI run `42201042447`
+  caught three reference-gallery images whose disclosure had been hidden by the temporary loading
+  label. The candidate now preserves each image's evidence label while disabled; the rebuilt
+  `seo:images` audit passed 43/43 public legacy-reference disclosures. The same CI run's isolated
+  Console media-mapping browser step timed out; its cause remains unproven and requires a new run.
 - **Known Issues:** Final sales/buyer inbox receipts and attachment remain unverified. DMARC is
   absent; GA4 is inactive; current GSC data and exact-SKU product/image evidence are unavailable.
-  These do not become confirmed through UI testing.
+  These do not become confirmed through UI testing. The initial Console CI timeout is not evidence
+  of a production Console defect or of a successful database gate.
 - **Reusable Knowledge Added:** The dated native-controls decision explains why native details
   should survive the first client mount and why JavaScript-only buttons must wait for hydration.
 - **Deployment:** Local candidate only at this entry. No new RFQ, DNS/provider write, push, PR,
