@@ -248,6 +248,96 @@ async function verifyRfqListHydrationGuard(browser: Browser) {
   }
 }
 
+async function verifyBuilderHydrationGuard(browser: Browser) {
+  const cases = [
+    { path: "/distributor-supply", selector: "#distributor-trial-quantity" },
+    { path: "/oem-service", selector: "#oem-destination", select: true },
+    { path: "/products/mig-mag-torch-parts", selector: "#mig-required-quantity" },
+    { path: "/products/tig-torch-parts", selector: "#tig-required-quantity" },
+    { path: "/products/plasma-cutting-consumables", selector: "#plasma-required-quantity" },
+    { path: "/products/welding-machines", selector: "#machine-quantity" },
+  ] as const;
+
+  for (const { path, selector, ...options } of cases) {
+    const context = await browser.newContext({
+      serviceWorkers: "block",
+      viewport: { width: 390, height: 900 },
+    });
+    let delayedModules = 0;
+    let blockedPosts = 0;
+    await context.route("**/*", async (route) => {
+      const request = route.request();
+      const url = new URL(request.url());
+      if (url.origin !== origin || !["GET", "HEAD"].includes(request.method())) {
+        if (request.method() === "POST") blockedPosts++;
+        return route.abort();
+      }
+      if (url.pathname.startsWith("/_next/static/chunks/")) {
+        delayedModules++;
+        await new Promise((resolve) => setTimeout(resolve, 2500));
+      }
+      return route.continue();
+    });
+    const page = await context.newPage();
+    page.on("pageerror", (error) => pageErrors.push(error.message));
+    assert.equal((await page.goto(`${origin}${path}`, { waitUntil: "commit" }))?.status(), 200);
+    const input = page.locator(selector);
+    const form = input.locator("xpath=ancestor::form[1]");
+    await input.waitFor({ state: "visible" });
+    assert.equal(await input.isDisabled(), true, `${path} pre-hydration input`);
+    assert.equal(await form.locator('button[type="submit"]').isDisabled(), true, path);
+    assert.ok((await form.getByRole("status").innerText()).includes("Preparing RFQ builder."));
+    assert.equal(
+      await form.getByRole("link", { name: "Open direct RFQ form" }).getAttribute("href"),
+      "/rfq",
+    );
+    await page.waitForLoadState("networkidle");
+    assert.ok(delayedModules > 0, `${path} must exercise delayed scripts`);
+    assert.equal(await input.isEnabled(), true, `${path} hydrated input`);
+    assert.equal(await form.locator('button[type="submit"]').isEnabled(), true, path);
+    assert.ok((await form.getByRole("status").innerText()).includes("RFQ builder ready."));
+    const expected =
+      "select" in options
+        ? await input.locator("option").nth(1).getAttribute("value")
+        : "Synthetic 500";
+    assert.ok(expected, `${path} expected synthetic value`);
+    if ("select" in options) {
+      await input.selectOption(expected);
+    } else {
+      await input.fill(expected);
+    }
+    await form.locator('button[type="submit"]').click();
+    await page.waitForURL(/\/rfq\?/);
+    const url = new URL(page.url());
+    assert.ok(
+      url.searchParams.get("quantity") === expected ||
+        url.searchParams.get("product")?.includes(expected),
+      `${path} must hand the buyer's entry to RFQ`,
+    );
+    assert.equal(blockedPosts, 0, `${path} must not submit a real RFQ`);
+    console.log(`RFQ builder hydration and handoff: ${path} passed.`);
+    await context.close();
+  }
+
+  const noScriptContext = await browser.newContext({ javaScriptEnabled: false });
+  await noScriptContext.route("**/*", async (route) => {
+    const request = route.request();
+    const url = new URL(request.url());
+    if (url.origin !== origin || !["GET", "HEAD"].includes(request.method())) {
+      return route.abort();
+    }
+    return route.continue();
+  });
+  const noScriptPage = await noScriptContext.newPage();
+  await noScriptPage.goto(`${origin}/distributor-supply`, { waitUntil: "networkidle" });
+  assert.equal(await noScriptPage.locator("#distributor-trial-quantity").isDisabled(), true);
+  assert.equal(
+    await noScriptPage.getByRole("link", { name: "Open direct RFQ form" }).getAttribute("href"),
+    "/rfq",
+  );
+  await noScriptContext.close();
+}
+
 try {
   let ready = false;
   const deadline = Date.now() + 30_000;
@@ -275,6 +365,7 @@ try {
   });
   await verifyPreHydrationGuard(browser);
   await verifyRfqListHydrationGuard(browser);
+  await verifyBuilderHydrationGuard(browser);
   const context = await browser.newContext({ serviceWorkers: "block" });
   await context.route("**/*", async (route) => {
     const request = route.request();

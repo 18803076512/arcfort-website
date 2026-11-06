@@ -2,6 +2,7 @@
 
 import { type FormEvent, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
+import { RfqBuilderHydrationGuard } from "@/components/rfq/RfqBuilderHydrationGuard";
 import { trackAnalyticsEvent } from "@/lib/analytics-events";
 import {
   buildOemRfqHref,
@@ -133,179 +134,181 @@ export function OemRfqBuilder() {
         </div>
       </div>
 
-      <div className="grid gap-8 p-5 sm:p-6 lg:grid-cols-2">
-        <fieldset>
-          <legend className="text-xs font-bold uppercase tracking-[0.14em] text-arc-blue">
-            1. Product scope
-          </legend>
-          <p className="mt-2 text-xs leading-5 text-slate-600">
-            Select one family or build a mixed distributor range.
-          </p>
-          <div className="mt-4 grid gap-2 sm:grid-cols-2">
-            {oemProductScopeOptions.map((option) => (
-              <label
-                key={option}
-                className="flex min-h-12 cursor-pointer items-center gap-3 border border-slate-200 bg-arc-frost px-3 py-2 text-xs font-semibold leading-5 text-slate-700 transition hover:border-arc-blue"
-              >
-                <input
-                  type="checkbox"
-                  checked={productScopes.includes(option)}
-                  onChange={() => toggleSelection(option, productScopes, setProductScopes)}
-                  className="h-4 w-4 shrink-0 border-slate-300 text-arc-blue focus:ring-arc-blue"
-                />
-                <span>{option}</span>
-              </label>
-            ))}
+      <RfqBuilderHydrationGuard>
+        <div className="grid gap-8 p-5 sm:p-6 lg:grid-cols-2">
+          <fieldset>
+            <legend className="text-xs font-bold uppercase tracking-[0.14em] text-arc-blue">
+              1. Product scope
+            </legend>
+            <p className="mt-2 text-xs leading-5 text-slate-600">
+              Select one family or build a mixed distributor range.
+            </p>
+            <div className="mt-4 grid gap-2 sm:grid-cols-2">
+              {oemProductScopeOptions.map((option) => (
+                <label
+                  key={option}
+                  className="flex min-h-12 cursor-pointer items-center gap-3 border border-slate-200 bg-arc-frost px-3 py-2 text-xs font-semibold leading-5 text-slate-700 transition hover:border-arc-blue"
+                >
+                  <input
+                    type="checkbox"
+                    checked={productScopes.includes(option)}
+                    onChange={() => toggleSelection(option, productScopes, setProductScopes)}
+                    className="h-4 w-4 shrink-0 border-slate-300 text-arc-blue focus:ring-arc-blue"
+                  />
+                  <span>{option}</span>
+                </label>
+              ))}
+            </div>
+          </fieldset>
+
+          <fieldset>
+            <legend className="text-xs font-bold uppercase tracking-[0.14em] text-arc-blue">
+              2. OEM services
+            </legend>
+            <p className="mt-2 text-xs leading-5 text-slate-600">
+              Final feasibility depends on product, artwork and quantity.
+            </p>
+            <div className="mt-4 grid gap-2 sm:grid-cols-2">
+              {oemServiceOptions.map((option) => (
+                <label
+                  key={option}
+                  className="flex min-h-12 cursor-pointer items-center gap-3 border border-slate-200 bg-arc-frost px-3 py-2 text-xs font-semibold leading-5 text-slate-700 transition hover:border-arc-blue"
+                >
+                  <input
+                    type="checkbox"
+                    checked={services.includes(option)}
+                    onChange={() => toggleSelection(option, services, setServices)}
+                    className="h-4 w-4 shrink-0 border-slate-300 text-arc-blue focus:ring-arc-blue"
+                  />
+                  <span>{option}</span>
+                </label>
+              ))}
+            </div>
+          </fieldset>
+
+          <fieldset className="lg:col-span-2">
+            <legend className="text-xs font-bold uppercase tracking-[0.14em] text-arc-blue">
+              3. Evidence available
+            </legend>
+            <p className="mt-2 text-xs leading-5 text-slate-600">
+              Select files or physical references that can support product and artwork review.
+            </p>
+            <div className="mt-4 grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
+              {oemEvidenceOptions.map((option) => (
+                <label
+                  key={option}
+                  className="flex min-h-12 cursor-pointer items-center gap-3 border border-slate-200 bg-arc-frost px-3 py-2 text-xs font-semibold leading-5 text-slate-700 transition hover:border-arc-blue"
+                >
+                  <input
+                    type="checkbox"
+                    checked={evidence.includes(option)}
+                    onChange={() => toggleSelection(option, evidence, setEvidence)}
+                    className="h-4 w-4 shrink-0 border-slate-300 text-arc-blue focus:ring-arc-blue"
+                  />
+                  <span>{option}</span>
+                </label>
+              ))}
+            </div>
+          </fieldset>
+
+          <div>
+            <label
+              htmlFor="oem-project-stage"
+              className="block text-xs font-bold uppercase tracking-[0.14em] text-arc-blue"
+            >
+              4. Project stage
+            </label>
+            <select
+              id="oem-project-stage"
+              value={projectStage}
+              onChange={(event) => setProjectStage(event.target.value)}
+              className="mt-3 block min-h-12 w-full border-slate-300 bg-white text-sm font-semibold text-arc-midnight focus:border-arc-blue focus:ring-arc-blue"
+            >
+              {oemProjectStageOptions.map((option) => (
+                <option key={option} value={option}>
+                  {option}
+                </option>
+              ))}
+            </select>
           </div>
-        </fieldset>
 
-        <fieldset>
-          <legend className="text-xs font-bold uppercase tracking-[0.14em] text-arc-blue">
-            2. OEM services
-          </legend>
-          <p className="mt-2 text-xs leading-5 text-slate-600">
-            Final feasibility depends on product, artwork and quantity.
-          </p>
-          <div className="mt-4 grid gap-2 sm:grid-cols-2">
-            {oemServiceOptions.map((option) => (
-              <label
-                key={option}
-                className="flex min-h-12 cursor-pointer items-center gap-3 border border-slate-200 bg-arc-frost px-3 py-2 text-xs font-semibold leading-5 text-slate-700 transition hover:border-arc-blue"
-              >
-                <input
-                  type="checkbox"
-                  checked={services.includes(option)}
-                  onChange={() => toggleSelection(option, services, setServices)}
-                  className="h-4 w-4 shrink-0 border-slate-300 text-arc-blue focus:ring-arc-blue"
-                />
-                <span>{option}</span>
-              </label>
-            ))}
+          <div>
+            <label
+              htmlFor="oem-packing"
+              className="block text-xs font-bold uppercase tracking-[0.14em] text-arc-blue"
+            >
+              5. Packing approach
+            </label>
+            <select
+              id="oem-packing"
+              value={packing}
+              onChange={(event) => setPacking(event.target.value)}
+              className="mt-3 block min-h-12 w-full border-slate-300 bg-white text-sm font-semibold text-arc-midnight focus:border-arc-blue focus:ring-arc-blue"
+            >
+              {oemPackingOptions.map((option) => (
+                <option key={option} value={option}>
+                  {option}
+                </option>
+              ))}
+            </select>
           </div>
-        </fieldset>
 
-        <fieldset className="lg:col-span-2">
-          <legend className="text-xs font-bold uppercase tracking-[0.14em] text-arc-blue">
-            3. Evidence available
-          </legend>
-          <p className="mt-2 text-xs leading-5 text-slate-600">
-            Select files or physical references that can support product and artwork review.
-          </p>
-          <div className="mt-4 grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
-            {oemEvidenceOptions.map((option) => (
-              <label
-                key={option}
-                className="flex min-h-12 cursor-pointer items-center gap-3 border border-slate-200 bg-arc-frost px-3 py-2 text-xs font-semibold leading-5 text-slate-700 transition hover:border-arc-blue"
-              >
-                <input
-                  type="checkbox"
-                  checked={evidence.includes(option)}
-                  onChange={() => toggleSelection(option, evidence, setEvidence)}
-                  className="h-4 w-4 shrink-0 border-slate-300 text-arc-blue focus:ring-arc-blue"
-                />
-                <span>{option}</span>
-              </label>
-            ))}
+          <div>
+            <label
+              htmlFor="oem-quantity"
+              className="block text-xs font-bold uppercase tracking-[0.14em] text-arc-blue"
+            >
+              6. Quantity or trial-order plan
+            </label>
+            <select
+              id="oem-quantity"
+              value={quantity}
+              onChange={(event) => setQuantity(event.target.value)}
+              className="mt-3 block min-h-12 w-full border-slate-300 bg-white text-sm font-semibold text-arc-midnight focus:border-arc-blue focus:ring-arc-blue"
+            >
+              {oemQuantityPlanOptions.map((option) => (
+                <option key={option} value={option}>
+                  {option}
+                </option>
+              ))}
+            </select>
           </div>
-        </fieldset>
 
-        <div>
-          <label
-            htmlFor="oem-project-stage"
-            className="block text-xs font-bold uppercase tracking-[0.14em] text-arc-blue"
-          >
-            4. Project stage
-          </label>
-          <select
-            id="oem-project-stage"
-            value={projectStage}
-            onChange={(event) => setProjectStage(event.target.value)}
-            className="mt-3 block min-h-12 w-full border-slate-300 bg-white text-sm font-semibold text-arc-midnight focus:border-arc-blue focus:ring-arc-blue"
-          >
-            {oemProjectStageOptions.map((option) => (
-              <option key={option} value={option}>
-                {option}
-              </option>
-            ))}
-          </select>
+          <div>
+            <label
+              htmlFor="oem-destination"
+              className="block text-xs font-bold uppercase tracking-[0.14em] text-arc-blue"
+            >
+              7. Destination region
+            </label>
+            <select
+              id="oem-destination"
+              value={destinationMarket}
+              onChange={(event) => setDestinationMarket(event.target.value)}
+              className="mt-3 block min-h-12 w-full border-slate-300 bg-white text-sm font-semibold text-arc-midnight focus:border-arc-blue focus:ring-arc-blue"
+            >
+              {oemDestinationRegionOptions.map((option) => (
+                <option key={option} value={option}>
+                  {option}
+                </option>
+              ))}
+            </select>
+          </div>
         </div>
 
-        <div>
-          <label
-            htmlFor="oem-packing"
-            className="block text-xs font-bold uppercase tracking-[0.14em] text-arc-blue"
+        <div className="grid gap-4 border-t border-slate-200 bg-arc-frost p-5 sm:p-6 lg:grid-cols-[1fr_auto] lg:items-center">
+          <p className="text-xs leading-6 text-slate-600">
+            This tool prepares the RFQ only. It does not confirm product fit, artwork acceptance,
+            MOQ, price or production feasibility.
+          </p>
+          <button
+            type="submit"
+            className="inline-flex min-h-12 w-full items-center justify-center bg-arc-blue px-6 text-sm font-bold uppercase tracking-[0.14em] text-white transition hover:bg-arc-midnight sm:w-auto"
           >
-            5. Packing approach
-          </label>
-          <select
-            id="oem-packing"
-            value={packing}
-            onChange={(event) => setPacking(event.target.value)}
-            className="mt-3 block min-h-12 w-full border-slate-300 bg-white text-sm font-semibold text-arc-midnight focus:border-arc-blue focus:ring-arc-blue"
-          >
-            {oemPackingOptions.map((option) => (
-              <option key={option} value={option}>
-                {option}
-              </option>
-            ))}
-          </select>
+            Continue to OEM RFQ
+          </button>
         </div>
-
-        <div>
-          <label
-            htmlFor="oem-quantity"
-            className="block text-xs font-bold uppercase tracking-[0.14em] text-arc-blue"
-          >
-            6. Quantity or trial-order plan
-          </label>
-          <select
-            id="oem-quantity"
-            value={quantity}
-            onChange={(event) => setQuantity(event.target.value)}
-            className="mt-3 block min-h-12 w-full border-slate-300 bg-white text-sm font-semibold text-arc-midnight focus:border-arc-blue focus:ring-arc-blue"
-          >
-            {oemQuantityPlanOptions.map((option) => (
-              <option key={option} value={option}>
-                {option}
-              </option>
-            ))}
-          </select>
-        </div>
-
-        <div>
-          <label
-            htmlFor="oem-destination"
-            className="block text-xs font-bold uppercase tracking-[0.14em] text-arc-blue"
-          >
-            7. Destination region
-          </label>
-          <select
-            id="oem-destination"
-            value={destinationMarket}
-            onChange={(event) => setDestinationMarket(event.target.value)}
-            className="mt-3 block min-h-12 w-full border-slate-300 bg-white text-sm font-semibold text-arc-midnight focus:border-arc-blue focus:ring-arc-blue"
-          >
-            {oemDestinationRegionOptions.map((option) => (
-              <option key={option} value={option}>
-                {option}
-              </option>
-            ))}
-          </select>
-        </div>
-      </div>
-
-      <div className="grid gap-4 border-t border-slate-200 bg-arc-frost p-5 sm:p-6 lg:grid-cols-[1fr_auto] lg:items-center">
-        <p className="text-xs leading-6 text-slate-600">
-          This tool prepares the RFQ only. It does not confirm product fit, artwork acceptance, MOQ,
-          price or production feasibility.
-        </p>
-        <button
-          type="submit"
-          className="inline-flex min-h-12 w-full items-center justify-center bg-arc-blue px-6 text-sm font-bold uppercase tracking-[0.14em] text-white transition hover:bg-arc-midnight sm:w-auto"
-        >
-          Continue to OEM RFQ
-        </button>
-      </div>
+      </RfqBuilderHydrationGuard>
     </form>
   );
 }

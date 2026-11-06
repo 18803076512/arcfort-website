@@ -4,6 +4,38 @@ This append-only log records substantial Codex work so future sessions can under
 why it changed and which risks remain. Add the newest entry at the top, below this introduction. Do
 not include secrets, buyer PII, private prospect data or unconfirmed claims.
 
+## 2026-11-06 - Preserve Guided RFQ Inputs Through Hydration
+
+- **Task:** Repair a read-only production reproduction in which early input on all six guided RFQ
+  builders remained visible briefly but did not reach the direct RFQ draft after Continue.
+- **Files Changed:** The shared builder hydration guard; distributor, OEM, MIG/MAG, TIG, plasma and
+  welding-machine builders; focused RFQ browser regression; RFQ delivery knowledge record; this log.
+- **Components / Data / Visual Changes:** Each builder now shows a persistent readiness row and
+  disables its inputs and Continue button until the client is ready. A direct RFQ link remains
+  available during loading and without scripts. No product facts, buyer data, API, DNS or provider
+  settings changed.
+- **SEO Impact:** No route, canonical, sitemap, robots or schema change. The readiness row appears
+  in server-rendered HTML.
+- **Validation:** Before the fix, delayed-script production checks reproduced missing draft values
+  on 6/6 builders without a POST. After the fix, local delayed-script browser regressions passed
+  on all six at 390px, including draft handoff, with a no-script fallback check and zero POSTs.
+  Six builder domain test suites, shared RFQ tests, lint, typecheck, production build and performance
+  budget passed. Visual geometry review at 360, 390, 768, 1024, 1280 and 1440px found no horizontal
+  overflow or page errors on representative distributor and MIG pages. Public hydration stress
+  passed 120/120 loads with zero page errors or refused requests. The 775-file secret scan,
+  formatting and diff hygiene passed. Hosted CI remains to be recorded with the release candidate.
+- **Known Issues:** The prior no-reference inquiry and same-reference sales/buyer mailbox receipts
+  remain unverified. DMARC, GA4, current GSC and exact-product source evidence remain separate gaps.
+  The browser fix does not establish email provider acceptance or inbox delivery.
+- **Reusable Knowledge Added:** The RFQ delivery record now distinguishes guided draft handoff from
+  final inquiry submission and records the direct-form fallback.
+- **Deployment:** Local candidate only at this entry; no new inquiry or provider change was sent.
+  The preceding product-list fix, PR #144 merge `e6d7d3c4`, has successful Production deployment
+  `7588583444` and passed 3/3 read-only live product selection checks with zero POSTs.
+- **Next Recommended Action:** Complete public hydration and secret checks, then release this exact
+  six-builder candidate through PR CI and verify the live readiness and draft handoff without
+  submitting an inquiry.
+
 ## 2026-11-05 - Verify PR #142 Production Release
 
 - **Task:** Record the completed RFQ and Console stability release against exact CI, deployment and
