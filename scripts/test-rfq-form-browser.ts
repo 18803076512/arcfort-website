@@ -174,6 +174,80 @@ async function verifyPreHydrationGuard(browser: Browser) {
   await noScriptContext.close();
 }
 
+async function verifyRfqListHydrationGuard(browser: Browser) {
+  const paths = [
+    {
+      path: "/products/mig-mag-torch-parts/mig-contact-tip-m6-0-8mm",
+      selector: 'button[title="Preparing RFQ list"]',
+      fallback: 'a[href^="/rfq"]',
+    },
+    {
+      path: "/products/mig-mag-torch-parts",
+      selector: 'article button[title="Preparing RFQ list"]',
+      fallback: 'article a[href^="/products/"]',
+    },
+  ] as const;
+
+  for (const width of [390, 1440]) {
+    for (const { path, selector, fallback } of paths) {
+      console.log(`RFQ list hydration: ${path} at ${width}px`);
+      const context = await browser.newContext({
+        serviceWorkers: "block",
+        viewport: { width, height: 900 },
+      });
+      let delayedModules = 0;
+      let blockedPosts = 0;
+      await context.route("**/*", async (route) => {
+        const request = route.request();
+        const url = new URL(request.url());
+        if (url.origin !== origin || !["GET", "HEAD"].includes(request.method())) {
+          if (request.method() === "POST") blockedPosts++;
+          return route.abort();
+        }
+        if (url.pathname.startsWith("/_next/static/chunks/")) {
+          delayedModules++;
+          await new Promise((resolve) => setTimeout(resolve, 2500));
+        }
+        return route.continue();
+      });
+      const page = await context.newPage();
+      page.on("pageerror", (error) => pageErrors.push(error.message));
+      assert.equal((await page.goto(`${origin}${path}`, { waitUntil: "commit" }))?.status(), 200);
+      const button = page.locator(selector).first();
+      await button.waitFor({ state: "visible" });
+      assert.equal(await button.isDisabled(), true, `${path} at ${width}px`);
+      const itemName = (await button.getAttribute("aria-label"))?.replace(
+        /^Preparing RFQ list for /,
+        "",
+      );
+      assert.ok(itemName, `${path} must identify the pending product`);
+      assert.ok((await page.locator(fallback).count()) > 0, `${path} fallback link`);
+      await page.waitForLoadState("networkidle");
+      assert.ok(delayedModules > 0, `${path} must exercise delayed scripts`);
+      const readyButton = page.getByRole("button", { name: `Add ${itemName} to RFQ list` }).first();
+      assert.equal(await readyButton.isEnabled(), true, `${path} ready at ${width}px`);
+      await readyButton.evaluate((element) => element.scrollIntoView({ block: "center" }));
+      if (path === "/products/mig-mag-torch-parts") {
+        await page.locator("article").filter({ has: readyButton }).first().hover();
+      }
+      await readyButton.click();
+      assert.equal(
+        await page
+          .getByRole("button", { name: `Remove ${itemName} from RFQ list` })
+          .first()
+          .getAttribute("aria-pressed"),
+        "true",
+      );
+      assert.ok((await page.locator("[data-rfq-count]").count()) > 0, `${path} list count`);
+      await page.goto(`${origin}/rfq`, { waitUntil: "networkidle" });
+      assert.equal(await page.locator("#selected-products-title + span").innerText(), "1");
+      assert.ok((await page.locator("#selected-products").innerText()).includes(itemName));
+      assert.equal(blockedPosts, 0, "RFQ list regression must not submit an RFQ.");
+      await context.close();
+    }
+  }
+}
+
 try {
   let ready = false;
   const deadline = Date.now() + 30_000;
@@ -200,6 +274,7 @@ try {
       : {}),
   });
   await verifyPreHydrationGuard(browser);
+  await verifyRfqListHydrationGuard(browser);
   const context = await browser.newContext({ serviceWorkers: "block" });
   await context.route("**/*", async (route) => {
     const request = route.request();
