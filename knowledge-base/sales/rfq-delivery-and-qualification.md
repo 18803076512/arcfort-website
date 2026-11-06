@@ -31,7 +31,7 @@ technical review.
   `emailProviderAccepted` and `buyerConfirmationProviderAccepted` state this directly; legacy
   `emailDelivered` and `buyerConfirmationDelivered` are compatible aliases, not mailbox evidence.
 - Provider acceptance was last recorded on 2026-07-26.
-- Production RFQ read-only status was last checked on 2026-11-04.
+- Production RFQ read-only status was last checked on 2026-11-06.
 - Sales-mailbox placement: not externally confirmed.
 - Buyer-mailbox placement: not externally confirmed.
 - Optional Supabase inquiry storage: not configured; email remains the active delivery path.
@@ -103,7 +103,11 @@ pre-hydration entries were omitted from the draft URL in all six builders. The r
 builder's fields and Continue button disabled until hydration, with a persistent readiness status and
 an always available direct RFQ link. Local delayed-script tests confirm each builder's selected
 synthetic detail reaches `/rfq`; a no-script test confirms the direct link remains usable. These
-tests send no RFQ POST. Confirm the same behavior on production after the candidate is released.
+tests send no RFQ POST. PR #145 merged as `eebccd4` and Production deployment `7592824983` succeeded
+on 2026-11-06. A fresh read-only live browser check passed all six builders with delayed scripts at
+390px: disabled controls before hydration, enabled controls and correct synthetic draft handoff after
+hydration, zero page errors and zero refused or mutating requests. The distributor no-script fallback
+also passed. This proves draft handoff on the published pages, not final inquiry delivery.
 
 ## Remaining Owner Evidence
 
