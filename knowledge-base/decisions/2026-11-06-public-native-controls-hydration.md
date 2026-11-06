@@ -43,6 +43,24 @@ The loading state now uses a separate title while preserving the disclosure labe
 public-image audit passes all 43 legacy-reference assets. The independent Console browser timeout
 from the same run remains a separate, unproven CI failure until rerun.
 
+## Hosted And Production Follow-up
+
+PR #147's corrected head `095551935b7bcbd655b01b1982b27522d582f1ea` passed both quality
+and isolated Product Intelligence database jobs in run `42202570362`. It merged to `main` as
+`bd2257fbe0b54cea6e0d58cd960f18f5c1903b66` on 2026-11-06 10:36:44 UTC; main push run
+`42204003126` passed both jobs. Production deployment `7598068717` succeeded for that merge at
+10:38:04 UTC. The first CI run's Console browser timeout was not reproduced in the corrected run;
+its original cause remains unproven, and this CI result does not establish hosted M4 activation.
+
+Read-only live browser checks at 390px and 1440px passed 4/4 delayed-script navigation and gallery
+cases. The no-script direct link remained available; checks sent no POST and observed no page errors.
+Post-deployment health found 88 sitemap URLs, 82/82 reachable HTML pages, 40/40 product inquiry
+paths, configured RFQ status, core sender DNS records and expected security headers. The next
+observed scheduled health run `42279216498` started at 19:23:37 UTC and completed successfully
+at 19:24:11 UTC for that merge. Actual
+scheduled runs may be delayed or skipped; these checks do not establish inbox delivery, current
+Google indexing, GA4 collection or exact-product image rights.
+
 ## Reversal
 
 If the navigation or gallery implementation changes, retain the buyer-behavior assertions: an

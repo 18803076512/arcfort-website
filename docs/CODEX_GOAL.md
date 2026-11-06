@@ -2,8 +2,8 @@
 
 Evidence baseline: 2026-09-03; staging owner/browser acceptance: 2026-09-08;
 M3 local approval: 2026-09-09; command/UI checkpoint: 2026-09-10; local/clean-CI acceptance: 2026-09-18.
-Production observations referenced here were last verified on
-2026-08-29 unless a later date is recorded in the relevant operations evidence.
+Older acceptance and release notes below retain their original observation dates. The current
+operating snapshot below was checked on 2026-11-06; each external fact still has its own source date.
 
 ## Purpose And Authority
 
@@ -23,6 +23,18 @@ Operational rules remain authoritative in this order:
 
 This file records the destination, current baseline, priorities and phase gates. It does not relax
 the evidence, security, SEO, RFQ or approval controls in those files.
+
+**Operating snapshot (2026-11-06):** The public website is deployed and passed its latest read-only
+health checks. It has 43 structured product records, 40 public product records and zero SKUs that
+meet the strict evidence gate. Product Intelligence M4 passed isolated CI; hosted M4, the real 15AK
+pilot and a public-data authority cutover remain incomplete. RFQ configuration passes, but sales
+mailbox placement, buyer mailbox placement and sales attachment delivery are unverified. The last
+native GSC export ends 2026-08-09; current indexing and search performance are unknown. Production
+GA4 is inactive and DMARC is absent. Use the dated
+[ecosystem execution plan](operations/website-ecosystem-execution-plan-2026-11-05.md) for current
+priorities and the [production evidence](operations/acquisition-production-evidence.json) for
+individual verification dates. Older checkpoints below are historical evidence, not current release
+instructions.
 
 ## Confirmed Identity
 
@@ -94,40 +106,40 @@ Important technical fields must support `field_value`, `source`, `source_level`,
 Only Level A evidence with the required review record may be presented as a confirmed ArcFort Weld
 specification. Appearance, similar naming or catalog grouping cannot establish compatibility.
 
-## Current Repository Baseline
+## Current Repository Baseline (2026-11-06)
 
-| Area                   | Current evidence                                                                                                                                                                |
-| ---------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Application            | Next.js 15 App Router, React 19, TypeScript, Tailwind CSS, ESLint and Prettier                                                                                                  |
-| Public routes          | 18 page route files and two API route families, including product, category, series, application, guide and RFQ paths                                                           |
-| Reusable UI            | 59 TypeScript component files using the governed industrial design system                                                                                                       |
-| Product pipeline       | `data/import/products.csv` -> validation/import scripts -> `lib/data/products.ts` -> content adapter -> static App Router pages                                                 |
-| Product records        | 43 total: 40 active and three draft across six categories; all 43 remain `needs_review`                                                                                         |
-| Product series         | 10 catalog evidence records; zero governed public series                                                                                                                        |
-| Series evidence        | 589 component facts and 189 candidates; zero confirmed component facts and 14 blocked data conflicts                                                                            |
-| Compatibility          | Four governed reference-only relationships; zero confirmed relationships                                                                                                        |
-| Technical facts        | 15 governed field-level facts; zero confirmed ArcFort Weld facts                                                                                                                |
-| Product media          | 119 repository product-image files and 46 canonical asset records; zero rights-approved, exact-product, search-eligible assets                                                  |
-| Public product imagery | All 40 active products retain legacy-reference main images; three draft products remain blocked for exact images                                                                |
-| Company claims         | 22 governed claim records: 16 approved Level A statements and six blocked unsupported topics                                                                                    |
-| Company media          | Three files and three governed site-media records; all remain representative legacy references and zero are approved company evidence                                           |
-| Knowledge base         | 25 files, including durable company, SEO, sales and database-validation baselines alongside product, technical, compatibility, asset and decision records                       |
-| SEO                    | Central metadata and JSON-LD builders, canonical handling, sitemap, robots, redirects, static audits and live-readiness checks                                                  |
-| Search baseline        | Site is live and indexable; 88 production sitemap URLs and a recorded baseline of 8 clicks, 422 impressions and 1.90% CTR                                                       |
-| RFQ                    | Email-provider flow, validation, attachments, buyer confirmation, BotID and idempotency are implemented; final sales and buyer inbox placement remains externally unverified    |
-| Delivery operations    | Deployment and live health evidence exist; DMARC, credential-rotation confirmation, GA4 conversion evidence and Search Console submission still require owner-side verification |
-| Product Intelligence   | M1 hosted foundation, M2 local owner/browser and M3 local/CI draft/review gates passed with warnings; hosted remains read-only, with no public-source cutover or publication    |
+| Area                   | Current evidence                                                                                                                                                                                                    |
+| ---------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Application            | Next.js 15 App Router, React 19, TypeScript, Tailwind CSS, ESLint and Prettier                                                                                                                                      |
+| Public routes          | Product, category, series, application, guide and RFQ paths; inspect the current route tree and SEO audit for inventory                                                                                             |
+| Reusable UI            | TypeScript components using the governed industrial design system; inspect the current tree for file inventory                                                                                                      |
+| Product pipeline       | `data/import/products.csv` -> validation/import scripts -> `lib/data/products.ts` -> content adapter -> static App Router pages                                                                                     |
+| Product records        | 43 total: 40 active and three draft across six categories; all 43 remain `needs_review`                                                                                                                             |
+| Product series         | 10 catalog evidence records; zero governed public series                                                                                                                                                            |
+| Series evidence        | 589 component facts and 189 candidates; zero confirmed component facts and 14 blocked data conflicts                                                                                                                |
+| Compatibility          | Four governed reference-only relationships; zero confirmed relationships                                                                                                                                            |
+| Technical facts        | 15 governed field-level facts; zero confirmed ArcFort Weld facts                                                                                                                                                    |
+| Product media          | 119 repository product-image files and 46 canonical asset records; zero rights-approved, exact-product, search-eligible assets                                                                                      |
+| Public product imagery | All 40 active products retain legacy-reference main images; three draft products remain blocked for exact images                                                                                                    |
+| Company claims         | 22 governed claim records: 16 approved Level A statements and six blocked unsupported topics                                                                                                                        |
+| Company media          | Three files and three governed site-media records; all remain representative legacy references and zero are approved company evidence                                                                               |
+| Knowledge base         | Company, SEO, sales and database-validation baselines alongside product, technical, compatibility, asset and decision records; inspect the current tree for file inventory                                          |
+| SEO                    | Central metadata and JSON-LD builders, canonical handling, sitemap, robots, redirects, static audits and live-readiness checks                                                                                      |
+| Search baseline        | Site is live with technically crawlable routes and 88 production sitemap URLs; the historical GSC export recorded 8 clicks, 422 impressions and 1.90% CTR through 2026-08-09; current Google indexing is unverified |
+| RFQ                    | Email-provider flow, validation, attachments, buyer confirmation, BotID and idempotency are implemented; final sales and buyer inbox placement remains externally unverified                                        |
+| Delivery operations    | Deployment and live health evidence exist; DMARC, credential-rotation confirmation, GA4 conversion evidence and Search Console submission still require owner-side verification                                     |
+| Product Intelligence   | M1 hosted foundation, M2 owner/browser acceptance and M4 isolated CI passed; hosted M4, real-product pilot and public-source cutover remain incomplete                                                              |
 
 The technical website foundation is mature. The primary constraint is verified evidence, not another
 general page or a larger unreviewed SKU count.
 
 ## Current System Phase
 
-The owner approved Product Intelligence Console V1 decisions D0-D7 on 2026-08-30. The current
-completed implementation batches are **Milestone 1 - Data Foundation**, the local, staging-backed
-read-only scope of **Milestone 2 - Console Shell And Dashboard**, and the local/disposable-CI scope
-of **Milestone 3 - Draft Editing And Technical Review**. M3 candidate `e5c23e31` passed clean CI on
-2026-09-18 (Shanghai); hosted M3 is unperformed. 15AK remains the first real-data pilot.
+The owner approved Product Intelligence Console V1 decisions D0-D7 on 2026-08-30. **M4 isolated
+native CI passed on 2026-10-16; hosted M4, the real 15AK pilot, M5/M6 and public publication remain
+unfinished.** The detailed M2 and M3 checkpoints below describe their original historical scope.
+M3 candidate `e5c23e31` passed clean CI on 2026-09-18 (Shanghai); hosted M3 was unperformed at
+that checkpoint. 15AK remains the first real-data pilot.
 M2 owner onboarding and authenticated browser acceptance passed with bounded warnings
 on 2026-09-08. Candidate `5021ae265b4c471957650435d011b61508c0274f` has successful quality and isolated
 database CI in run `34083109446`. External HTTPS/mobile deployment and full V1 remain incomplete.
@@ -269,17 +281,25 @@ future CMS or database services. SKU quantity never overrides verification quali
 
 ## Goal Mode Priorities
 
-Unless a critical production issue exists, work in this order:
+Protect the Phase 0 delivery and measurement evidence gates before product expansion. If the
+original account evidence is unavailable, retain unknown status and continue the next independent
+buyer-path repair; do not invent a green state or resend an untraceable inquiry. Within that boundary,
+work in this order:
 
 1. Correct inaccurate public information and protect website stability.
-2. Verify product facts, product identity and legally usable exact imagery.
-3. Complete 15AK evidence and product relationships before expanding overlapping families.
-4. Build compatibility as a source-aware company asset.
-5. Improve product-detail clarity and qualified RFQ conversion.
-6. Add real company evidence, distributor support and OEM / ODM workflows.
-7. Improve premium industrial presentation without weakening indexed content.
-8. Prepare a controlled China and international architecture.
-9. Expand SEO only after the corresponding product foundation is strong.
+2. Prove RFQ delivery against the same reference in the sales and buyer inboxes, including the sales
+   attachment, and establish private human follow-up. Keep the older no-reference attempt unknown
+   until original logs or a matching reference can resolve it.
+3. Verify sender credentials and identity, obtain current native GSC evidence, and measure only with
+   a verified production analytics stream. DNS, provider and analytics changes keep their own gates.
+4. Verify product facts, product identity and legally usable exact imagery.
+5. Complete 15AK evidence and product relationships before expanding overlapping families.
+6. Build compatibility as a source-aware company asset.
+7. Improve product-detail clarity and qualified RFQ conversion.
+8. Add real company evidence, distributor support and OEM / ODM workflows.
+9. Improve premium industrial presentation without weakening indexed content.
+10. Prepare a controlled China and international architecture.
+11. Expand SEO only after the corresponding product foundation is strong.
 
 ## Missing Long-Term Infrastructure
 
@@ -336,7 +356,11 @@ Useful measures include:
 No task is complete merely because code builds. Claims, data, routes, media rights, SEO projection,
 mobile behavior and conversion paths must satisfy the applicable repository gates.
 
-## Recommended Next Setup Phase
+## Historical Release Follow-up (2026-10-17 and Earlier)
+
+This section preserves the release investigation as it stood on its recorded dates. Its blocked
+PR #130 deployment and pending actions were superseded by later successful public deployments;
+follow the current operating snapshot and ecosystem execution plan above for today's gates.
 
 Release follow-up (verified 2026-10-17): PR 130 merged on 2026-10-16 as
 `4ea67a0c2c10277d6a6c4defbb6a41afe1495921`, after documentation head `98875f1f` passed both
@@ -1082,7 +1106,7 @@ same restart again. Full V1 and real 15AK evidence remain open.
 6. Continue collecting Level A 15AK facts and exact-product images for the later verification pilot;
    do not convert reference values into confirmed data to fill the future dashboard.
 
-## Goal Evidence Infrastructure
+## Historical Goal Evidence Infrastructure
 
 The controlled evidence-infrastructure batch is implemented:
 
@@ -1092,6 +1116,7 @@ The controlled evidence-infrastructure batch is implemented:
 - `scripts/report-goal-progress.ts` generates `docs/goal-progress-report.md` from canonical data.
 - `npm run company:evidence:validate` and `npm run goal:report` are CI-gated.
 
-The report deliberately separates 43 structured records from zero strict verified SKUs. The next
-evidence action is not more page volume; it is Level A 15AK and company media evidence alongside the
-controlled draft-editing/evidence-intake plan.
+The report deliberately separates 43 structured records from zero strict verified SKUs. For this
+earlier infrastructure batch, the next product-evidence action was Level A 15AK and company media
+evidence alongside the controlled draft-editing/evidence-intake plan. Current cross-system work
+follows the operating snapshot and Phase 0 ecosystem execution plan above.
