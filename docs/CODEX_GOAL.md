@@ -281,17 +281,25 @@ future CMS or database services. SKU quantity never overrides verification quali
 
 ## Goal Mode Priorities
 
-Unless a critical production issue exists, work in this order:
+Protect the Phase 0 delivery and measurement evidence gates before product expansion. If the
+original account evidence is unavailable, retain unknown status and continue the next independent
+buyer-path repair; do not invent a green state or resend an untraceable inquiry. Within that boundary,
+work in this order:
 
 1. Correct inaccurate public information and protect website stability.
-2. Verify product facts, product identity and legally usable exact imagery.
-3. Complete 15AK evidence and product relationships before expanding overlapping families.
-4. Build compatibility as a source-aware company asset.
-5. Improve product-detail clarity and qualified RFQ conversion.
-6. Add real company evidence, distributor support and OEM / ODM workflows.
-7. Improve premium industrial presentation without weakening indexed content.
-8. Prepare a controlled China and international architecture.
-9. Expand SEO only after the corresponding product foundation is strong.
+2. Prove RFQ delivery against the same reference in the sales and buyer inboxes, including the sales
+   attachment, and establish private human follow-up. Keep the older no-reference attempt unknown
+   until original logs or a matching reference can resolve it.
+3. Verify sender credentials and identity, obtain current native GSC evidence, and measure only with
+   a verified production analytics stream. DNS, provider and analytics changes keep their own gates.
+4. Verify product facts, product identity and legally usable exact imagery.
+5. Complete 15AK evidence and product relationships before expanding overlapping families.
+6. Build compatibility as a source-aware company asset.
+7. Improve product-detail clarity and qualified RFQ conversion.
+8. Add real company evidence, distributor support and OEM / ODM workflows.
+9. Improve premium industrial presentation without weakening indexed content.
+10. Prepare a controlled China and international architecture.
+11. Expand SEO only after the corresponding product foundation is strong.
 
 ## Missing Long-Term Infrastructure
 
@@ -1098,7 +1106,7 @@ same restart again. Full V1 and real 15AK evidence remain open.
 6. Continue collecting Level A 15AK facts and exact-product images for the later verification pilot;
    do not convert reference values into confirmed data to fill the future dashboard.
 
-## Goal Evidence Infrastructure
+## Historical Goal Evidence Infrastructure
 
 The controlled evidence-infrastructure batch is implemented:
 
@@ -1108,6 +1116,7 @@ The controlled evidence-infrastructure batch is implemented:
 - `scripts/report-goal-progress.ts` generates `docs/goal-progress-report.md` from canonical data.
 - `npm run company:evidence:validate` and `npm run goal:report` are CI-gated.
 
-The report deliberately separates 43 structured records from zero strict verified SKUs. The next
-evidence action is not more page volume; it is Level A 15AK and company media evidence alongside the
-controlled draft-editing/evidence-intake plan.
+The report deliberately separates 43 structured records from zero strict verified SKUs. For this
+earlier infrastructure batch, the next product-evidence action was Level A 15AK and company media
+evidence alongside the controlled draft-editing/evidence-intake plan. Current cross-system work
+follows the operating snapshot and Phase 0 ecosystem execution plan above.
