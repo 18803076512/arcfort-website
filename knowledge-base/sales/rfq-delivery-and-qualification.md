@@ -94,6 +94,17 @@ and no form or scroll displacement. No browser error, horizontal overflow or POS
 confirms the published form readiness behavior; it does not establish provider acceptance, sales
 inbox placement, buyer confirmation or attachment receipt.
 
+## Guided Draft Handoff
+
+The distributor, OEM, MIG/MAG, TIG, plasma and welding-machine guided builders collect a draft and
+carry it to `/rfq` for the buyer to review. Continue is a navigation action; it does not submit an
+inquiry or prove delivery. A 2026-11-06 read-only production test delayed page scripts and found that
+pre-hydration entries were omitted from the draft URL in all six builders. The repair starts each
+builder's fields and Continue button disabled until hydration, with a persistent readiness status and
+an always available direct RFQ link. Local delayed-script tests confirm each builder's selected
+synthetic detail reaches `/rfq`; a no-script test confirms the direct link remains usable. These
+tests send no RFQ POST. Confirm the same behavior on production after the candidate is released.
+
 ## Remaining Owner Evidence
 
 - Sales and buyer inbox placement for the same controlled inquiry reference.
