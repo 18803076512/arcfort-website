@@ -4,6 +4,38 @@ This append-only log records substantial Codex work so future sessions can under
 why it changed and which risks remain. Add the newest entry at the top, below this introduction. Do
 not include secrets, buyer PII, private prospect data or unconfirmed claims.
 
+## 2026-11-06 - Verify Buyer Path Releases And Refresh Production Evidence
+
+- **Task:** Close the public RFQ list and six guided-builder release loop against exact deployment,
+  read-only browser behavior and dated production evidence.
+- **Files Changed:** Production acquisition evidence, regenerated acquisition and Goal reports,
+  ecosystem execution plan, RFQ delivery knowledge record and this log. This follow-up changes no
+  runtime component, product fact or external account setting.
+- **Data Changed:** Advanced only the checked production review dates to 2026-11-06. Existing RFQ
+  inbox/reference/attachment states, provider acceptance date, GSC export, GA4, credential rotation
+  and image-rights states remain unchanged.
+- **SEO Impact:** No published route, canonical, sitemap or robots change. The read-only audit still
+  found 88 sitemap URLs, 82/82 reachable HTML pages and 40/40 product inquiry paths.
+- **Validation:** PR #144 main push quality run `42133732590` and Production deployment `7588583444`
+  succeeded at merge `e6d7d3c4`; 3/3 read-only live product-list checks passed with zero POSTs.
+  PR #145 quality and database jobs passed in `42164962572`; Production deployment `7592824983`
+  succeeded at merge `eebccd4`; main push quality and database jobs both passed in `42166058008`.
+  Six guided builders passed 6/6 delayed-script live checks at 390px,
+  including draft handoff; a no-script direct-form fallback passed. The post-deploy RFQ status,
+  sender DNS, SEO and security-header audits passed. RFQ inbox and GSC freshness validators and both
+  report generators passed.
+- **Known Issues:** The earlier no-reference RFQ attempt, both mailbox receipts and sales attachment
+  are unverified. DMARC is absent; GA4 remains inactive; native current GSC data, Resend credential
+  rotation and exact-product source and image-rights evidence are pending.
+- **Reusable Knowledge Added:** The RFQ record distinguishes confirmed live draft handoff from
+  provider acceptance and mailbox delivery. The plan records exact release evidence and remaining
+  owner-supplied gates.
+- **Deployment:** This evidence follow-up is a local documentation candidate. The runtime repairs
+  are already live at `www.arcfortweld.com` on the exact merges above. No inquiry was sent.
+- **Next Recommended Action:** Complete main CI and this evidence PR, then obtain one same-reference
+  sales/buyer inbox plus attachment check with controlled account access; retain the old attempt as
+  unknown until a provider log or matching reference becomes available.
+
 ## 2026-11-06 - Preserve Guided RFQ Inputs Through Hydration
 
 - **Task:** Repair a read-only production reproduction in which early input on all six guided RFQ
