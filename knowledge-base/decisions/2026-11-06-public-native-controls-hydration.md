@@ -56,7 +56,8 @@ Read-only live browser checks at 390px and 1440px passed 4/4 delayed-script navi
 cases. The no-script direct link remained available; checks sent no POST and observed no page errors.
 Post-deployment health found 88 sitemap URLs, 82/82 reachable HTML pages, 40/40 product inquiry
 paths, configured RFQ status, core sender DNS records and expected security headers. The next
-observed scheduled health run `42279216498` also passed at 19:23:37 UTC for that merge. Actual
+observed scheduled health run `42279216498` started at 19:23:37 UTC and completed successfully
+at 19:24:11 UTC for that merge. Actual
 scheduled runs may be delayed or skipped; these checks do not establish inbox delivery, current
 Google indexing, GA4 collection or exact-product image rights.
 
