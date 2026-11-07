@@ -232,7 +232,7 @@ const rfqFollowup = bothInboxesConfirmed
       : "Verify the controlled test attachment in the sales mailbox"
   : missingMailbox
     ? "Investigate the missing controlled RFQ before another authorized test"
-    : "Verify one controlled production RFQ reaches both mailboxes with the same reference and its selected attachment reaches sales";
+    : "For the next controlled test, verify both mailboxes receive the same reference and the selected attachment reaches sales";
 const reportSource = [
   "# ArcFort Weld Goal Progress Report",
   "",
@@ -307,13 +307,16 @@ const reportSource = [
   "",
   "## Highest-Value Next Actions",
   "",
-  "1. Follow the current approved Console phase and pending acceptance gate in [CODEX_GOAL.md](CODEX_GOAL.md). Preserve failed fixtures, adopted working data and audit history; do not replay legacy imports over adopted records.",
-  "2. Revalidate candidate-specific SQL, type, import and real-service/browser evidence when contracts change. Any hosted migration or adoption needs approval for its exact destination/action plus a reviewed baseline and rollback plan; this report grants no external-write authorization.",
-  "3. Return Level A 15AK measurements, drawings or approved sample records for the four pilot products and reconcile each fact by stable ID.",
-  "4. Capture rights-approved exact 15AK main, connection-detail, dimensional and packaging images, then complete the product media review gate.",
-  "5. Collect company-owned factory, production, inspection, packing, warehouse and shipment images with source owner, rights, reviewer and date.",
-  `6. ${rfqFollowup}; confirm credential rotation, DMARC and GA4 conversion evidence.`,
-  `7. ${searchReview} Update the governed SEO baseline only after reviewing the native export.`,
+  "Follow the [ecosystem execution plan](operations/website-ecosystem-execution-plan-2026-11-05.md) and keep missing source evidence explicitly unverified. Account-dependent handoffs do not block independent repository fixes.",
+  "",
+  `1. Phase 0 — For any earlier RFQ attempt without a traceable reference, record a handling decision; keep its outcome explicitly unknown when source logs are unavailable and never blindly resend it. Complete that decision before any new controlled submission. A new send also needs separate authorization, safe sample details and access to both inboxes. ${rfqFollowup}.`,
+  "2. Phase 0 — Check the email-provider account for credential rotation after exposure and assess DMARC with the domain owner. Any provider or DNS write needs exact-action authorization and verification.",
+  `3. Phase 0 — ${searchReview} Obtain native property totals, queries and pages for comparable 28-day periods plus sitemap status and exact redirect-error examples before changing indexing rules.`,
+  "4. Phase 0 — Assign a sales owner and keep a private RFQ ledger keyed by reference for receipt, qualification, first response, quote and outcome. Keep buyer identity and attachments out of Git and analytics.",
+  "5. Phase 1 — Return Level A 15AK measurements, drawings or approved samples for the four pilot records and reconcile technical and fitment evidence by stable ID.",
+  "6. Phase 1 — Review exact 15AK main, connection-detail, dimensional and packaging images, then collect real company media with source owner, rights, reviewer and date. Do not promote reference imagery without exact-match and rights evidence.",
+  "7. Phase 1 — Verify consent-based production GA4 only after its account and privacy configuration are reviewed; distinguish browser events from email delivery and qualified sales inquiries.",
+  "8. Later gated Console work — Follow the approved phase and acceptance gates in [CODEX_GOAL.md](CODEX_GOAL.md). Preserve failed fixtures, adopted working data and audit history; never replay legacy imports over adopted records. Revalidate candidate-specific SQL, types, imports and real-service/browser evidence when contracts change. Hosted migration or adoption needs exact-destination approval, a reviewed baseline and rollback plan; this report grants no external-write authorization.",
   "",
   "## Known Data Boundary",
   "",
