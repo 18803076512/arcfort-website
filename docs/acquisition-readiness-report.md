@@ -1,18 +1,18 @@
 # Acquisition Readiness Report
 
-Production evidence checked through 2026-11-06. Search Console, provider, mailbox and product evidence retain the separate dates and confirmation states shown below. This internal report separates repository facts, verified production behavior and business evidence that still requires external confirmation.
+Production evidence checked through 2026-11-07. Search Console, provider, mailbox and product evidence retain the separate dates and confirmation states shown below. This internal report separates repository facts, verified production behavior and business evidence that still requires external confirmation.
 
 ## Executive Status
 
-ArcFort Weld is live and indexable. The RFQ path reports configuration readiness in email delivery mode; final inbox placement still requires external confirmation. The next growth constraint is stronger product evidence, verified measurement and disciplined follow-up on the pages already receiving search impressions.
+ArcFort Weld is live; its public routes passed the latest technical crawl audit, while current Google indexing remains unverified. The RFQ path reports configuration readiness in email delivery mode; final inbox placement still requires external confirmation. The immediate evidence gates are to verify RFQ receipt and sales follow-up, sender identity and current native Search Console data; exact-product evidence remains required before product expansion.
 
-**Search measurement: Historical baseline; current search performance is unknown.** Recorded Search Console data ends 2026-08-09, 89 days before the production evidence date 2026-11-06. The internal review threshold is 35 days (a 28-day comparison window plus seven days for export and review). Do not infer a current trend, indexing status or conversion result from these numbers.
+**Search measurement: Historical baseline; current search performance is unknown.** Recorded Search Console data ends 2026-08-09, 90 days before the production evidence date 2026-11-07. The internal review threshold is 35 days (a 28-day comparison window plus seven days for export and review). Do not infer a current trend, indexing status or conversion result from these numbers.
 
 - Production deployment verified: Yes
 - Canonical production URL: https://www.arcfortweld.com
 - Production sitemap URLs: 88
-- Live SEO audit checked: 2026-11-06
-- Security headers checked: 2026-11-06
+- Live SEO audit checked: 2026-11-07
+- Security headers checked: 2026-11-07
 - Active public products: 40
 - Draft products held from publication: 3
 - Product categories: 6
@@ -40,7 +40,7 @@ ArcFort Weld is live and indexable. The RFQ path reports configuration readiness
 
 ## RFQ And Delivery Evidence
 
-- Production status checked: 2026-11-06
+- Production status checked: 2026-11-07
 - Delivery mode: email
 - Sales email configured: Yes
 - Buyer confirmation configured: Yes
@@ -103,7 +103,7 @@ Draft product pages remain excluded from static generation and sitemap publicati
 
 ## Email Domain Authentication
 
-- Public DNS checked: 2026-11-06
+- Public DNS checked: 2026-11-07
 - DKIM public key: Present
 - SPF for custom MAIL FROM: Present
 - Custom MAIL FROM MX: Present
@@ -123,16 +123,17 @@ These items cannot be proven from public page content or repository files. Updat
 
 ## Highest-Impact Next Actions
 
-1. Confirm that the exposed Resend credential has been rotated, then record only the confirmation state, never the key.
-2. Add a first-phase DMARC `p=none` TXT record only after DNS-change approval, then rerun the email-domain audit. Aggregate reporting requires an approved controlled `rua` address.
-3. Confirm matching references in both inboxes and the sales test attachment.
-4. Work through `docs/product-image-asset-report.md`: confirm source and usage rights, then replace migration-period references with exact-product images.
-5. Supply exact, legally usable product photos for the three blocked draft SKUs; do not publish their current placeholders as product evidence.
-6. Complete the 15AK evidence intake, resolve the 602 page-identity conflict and work through the detailed 24KD/25AK/36KD/40KD/501D/602 component confirmation and image queues in `docs/product-series-component-evidence-report.md` before publishing another series.
-7. Confirm material, dimensions, interfaces and fitment for active products from drawings, samples or approved supplier/company records.
-8. Confirm GA4 Realtime and `rfq_submit_success` / lead events without recording buyer PII.
-9. Review overdue since 2026-09-12; obtain a new native Search Console export and compare equivalent periods. Prioritize high-impression low-click existing URLs only after the current export is reviewed.
-10. Configure Supabase only if searchable inquiry history, attachment retention or multi-user sales operations are needed.
+Follow the [ecosystem execution plan](operations/website-ecosystem-execution-plan-2026-11-05.md). Account-dependent handoffs do not block independent repository fixes; an unchecked state is not a passed gate.
+
+1. Phase 0 — For any earlier RFQ attempt without a traceable reference, record a handling decision and keep its result unknown when original evidence is unavailable; never blindly resend. Complete that decision before a new controlled submission, which also needs separate authorization, safe sample details and access to both inboxes. Confirm matching references in both inboxes and the sales test attachment.
+2. Phase 0 — Confirm the exposed Resend credential's rotation in the provider account, recording only its state, never the key. Assess first-phase DMARC `p=none` with the domain owner; add DNS only after exact-action approval and rerun the email-domain audit. Aggregate reporting requires an approved controlled `rua` address.
+3. Phase 0 — Review overdue since 2026-09-12; obtain a new native Search Console export and compare equivalent periods. Obtain native property totals, queries and pages for comparable 28-day periods, sitemap status and exact redirect-error examples. Prioritize high-impression low-click existing URLs only after reviewing the current export.
+4. Phase 0 — Assign a sales owner and maintain a private RFQ ledger keyed by reference for receipt, qualification, first response, quote and outcome. Keep buyer identity and attachments out of Git and analytics.
+5. Phase 1 — Complete the 15AK intake and confirm material, dimensions, interfaces and fitment from drawings, samples or approved supplier/company records before upgrading product claims.
+6. Phase 1 — Work through `docs/product-image-asset-report.md`: confirm source and usage rights, replace migration-period references with exact-product images, and supply legally usable photos for three blocked draft SKUs. Do not publish their placeholders as product evidence.
+7. Phase 1 — Confirm consent-based GA4 Realtime and `rfq_submit_success` / lead events without buyer PII; browser events do not prove email delivery or qualified sales inquiries.
+8. Later gated expansion — Resolve the 602 page-identity conflict and the detailed 24KD/25AK/36KD/40KD/501D/602 component and image queues in `docs/product-series-component-evidence-report.md` before publishing another series.
+9. Later gated operations — Configure Supabase only if searchable inquiry history, attachment retention or multi-user sales operations are needed, after a separate deployment and access decision.
 
 ## Update Workflow
 
