@@ -1114,7 +1114,9 @@ export function RfqForm({
               onChange={handleFiles}
               className="mt-2 block w-full cursor-pointer border border-dashed border-slate-300 bg-slate-50 p-4 text-sm text-slate-700 file:mb-2 file:block file:border-0 file:bg-arc-blue file:px-3 file:py-2 file:text-xs file:font-bold file:uppercase file:tracking-[0.08em] file:text-white hover:border-arc-blue sm:file:mb-0 sm:file:mr-4 sm:file:inline-block sm:file:px-4 sm:file:text-sm sm:file:tracking-[0.12em]"
               aria-invalid={Boolean(errors.attachments)}
-              aria-describedby="attachments-help"
+              aria-describedby={
+                errors.attachments ? "attachments-help attachments-error" : "attachments-help"
+              }
             />
           </label>
           <p id="attachments-help" className="mt-2 text-xs leading-5 text-slate-500">
@@ -1123,7 +1125,9 @@ export function RfqForm({
             WhatsApp.
           </p>
           {errors.attachments ? (
-            <p className="mt-2 text-sm font-semibold text-red-700">{errors.attachments}</p>
+            <p id="attachments-error" className="mt-2 text-sm font-semibold text-red-700">
+              {errors.attachments}
+            </p>
           ) : null}
           {attachments.length > 0 ? (
             <div className="mt-3 border border-slate-100 bg-slate-50 p-3 text-sm leading-6 text-slate-700">

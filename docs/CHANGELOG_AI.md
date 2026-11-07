@@ -4,6 +4,33 @@ This append-only log records substantial Codex work so future sessions can under
 why it changed and which risks remain. Add the newest entry at the top, below this introduction. Do
 not include secrets, buyer PII, private prospect data or unconfirmed claims.
 
+## 2026-11-07 - Associate RFQ Attachment Errors With The File Input
+
+- **Task:** Make an invalid RFQ attachment's error available to screen readers at the focused file
+  input, while preserving the existing visible error and buyer correction path.
+- **Files Changed:** Public RFQ form, its browser regression and this log.
+- **Components / Data / Visual Changes:** The file input includes the attachment error ID in
+  `aria-describedby` only while that error exists; the error message has a stable matching ID.
+  Correcting the selection removes the error association. No layout, product data, RFQ API,
+  attachment limits or delivery behavior changed.
+- **SEO Impact:** No route, canonical, sitemap, robots, metadata or schema change.
+- **Validation:** The new 390px browser assertion failed against the old component because the
+  visible error had no ID. After the fix, the full local RFQ browser suite passed, including an
+  invalid synthetic file, correction, a synthetic server attachment error, existing hydration and
+  failure states, and zero real RFQ POSTs. `npm run test:rfq`, production build, lint, typecheck,
+  performance budget, Prettier, exact-diff check and the 776-file secret-pattern scan passed.
+- **Known Issues:** Hosted CI and Production behavior for this candidate remain unverified. Sales
+  and buyer inbox placement and sales attachment are still unverified; the old no-reference RFQ
+  attempt remains unknown. DMARC, GA4, current GSC and exact-product evidence gaps are unchanged.
+- **Reusable Knowledge Added:** The focused browser regression preserves client and server error
+  association, and verifies that clearing the error restores the help-only description.
+- **Deployment:** Local candidate at this entry. No push, PR, merge, deployment, account write or
+  real inquiry submission had yet occurred. The user's standing session authorization covers this
+  scoped `18803076512/arcfort-website` PR/main and `www.arcfortweld.com` Production path; it does
+  not authorize a real RFQ, account, DNS or paid service change.
+- **Next Recommended Action:** Review the exact diff, then run PR CI and read-only Production RFQ
+  accessibility checks after the applicable release decision.
+
 ## 2026-11-06 - Align Generated Goal Actions With Ecosystem Phase Gates
 
 - **Task:** Correct the generated Goal report's highest-value action order, which had put hosted
