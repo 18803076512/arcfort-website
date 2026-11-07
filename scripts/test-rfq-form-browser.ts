@@ -338,6 +338,52 @@ async function verifyBuilderHydrationGuard(browser: Browser) {
   await noScriptContext.close();
 }
 
+async function verifyAttachmentErrorDescription(browser: Browser) {
+  const context = await browser.newContext({
+    serviceWorkers: "block",
+    viewport: { width: 390, height: 900 },
+  });
+  let blockedPosts = 0;
+  await context.route("**/*", async (route) => {
+    const request = route.request();
+    if (new URL(request.url()).origin !== origin || !["GET", "HEAD"].includes(request.method())) {
+      if (request.method() === "POST") blockedPosts++;
+      return route.abort();
+    }
+    return route.continue();
+  });
+  const page = await context.newPage();
+  page.on("pageerror", (error) => pageErrors.push(error.message));
+  assert.equal((await page.goto(`${origin}/rfq`, { waitUntil: "networkidle" }))?.status(), 200);
+  await fillValidForm(page);
+  const input = page.locator("#attachments");
+  assert.equal(await input.getAttribute("aria-describedby"), "attachments-help");
+  await input.setInputFiles({
+    name: "invalid.exe",
+    mimeType: "application/octet-stream",
+    buffer: Buffer.from("Synthetic invalid attachment"),
+  });
+  await page.getByRole("button", { name: "Submit RFQ" }).click();
+  const error = page.getByText("Allowed files: PDF, Excel, CSV, Word, JPG and PNG.");
+  await error.waitFor();
+  assert.equal(await input.getAttribute("aria-invalid"), "true");
+  assert.equal(await error.getAttribute("id"), "attachments-error");
+  assert.equal(await input.getAttribute("aria-describedby"), "attachments-help attachments-error");
+  assert.equal(await page.evaluate(() => document.activeElement?.id), "attachments");
+  assert.equal(blockedPosts, 0, "Client-side file validation must not send an RFQ POST.");
+
+  await input.setInputFiles({
+    name: "drawing.pdf",
+    mimeType: "application/pdf",
+    buffer: Buffer.from("%PDF-1.4\nSynthetic drawing"),
+  });
+  await page.waitForFunction(() => document.getElementById("attachments-error") === null);
+  assert.equal(await input.getAttribute("aria-invalid"), "false");
+  assert.equal(await input.getAttribute("aria-describedby"), "attachments-help");
+  assert.equal(blockedPosts, 0, "Correcting the file must not send an RFQ POST.");
+  await context.close();
+}
+
 try {
   let ready = false;
   const deadline = Date.now() + 30_000;
@@ -366,6 +412,7 @@ try {
   await verifyPreHydrationGuard(browser);
   await verifyRfqListHydrationGuard(browser);
   await verifyBuilderHydrationGuard(browser);
+  await verifyAttachmentErrorDescription(browser);
   const context = await browser.newContext({ serviceWorkers: "block" });
   await context.route("**/*", async (route) => {
     const request = route.request();
@@ -458,7 +505,10 @@ try {
         JSON.stringify({
           ok: false,
           reference,
-          errors: { quantity: "Synthetic correction only." },
+          errors: {
+            quantity: "Synthetic correction only.",
+            attachments: "Synthetic attachment correction only.",
+          },
         }),
         {
           status: 400,
@@ -468,6 +518,12 @@ try {
     );
   }, serverReference);
   await responsePage.getByText("Synthetic correction only.").waitFor();
+  await responsePage.getByText("Synthetic attachment correction only.").waitFor();
+  assert.equal(
+    await responsePage.locator("#attachments").getAttribute("aria-describedby"),
+    "attachments-help attachments-error",
+    "A server attachment correction must be associated with the file input.",
+  );
   await responsePage.locator('p[role="status"]').filter({ hasText: serverReference }).waitFor();
   assert.equal(postCount, 0, "The browser test must not send a real RFQ POST.");
   assert.equal(await responsePage.getByRole("button", { name: "Submit RFQ" }).isEnabled(), true);
