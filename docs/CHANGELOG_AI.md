@@ -4,6 +4,40 @@ This append-only log records substantial Codex work so future sessions can under
 why it changed and which risks remain. Add the newest entry at the top, below this introduction. Do
 not include secrets, buyer PII, private prospect data or unconfirmed claims.
 
+## 2026-11-06 - Align Generated Goal Actions With Ecosystem Phase Gates
+
+- **Task:** Correct the generated Goal report's highest-value action order, which had put hosted
+  Console preparation ahead of RFQ delivery evidence, sender identity, current native search data
+  and a private sales handoff.
+- **Files Changed:** `scripts/report-goal-progress.ts`, regenerated `docs/goal-progress-report.md`
+  and this log. No application component, public route, product record or external account changed.
+- **Data Changed:** None. The report still records 43 structured products, zero strict verified SKUs,
+  unverified sales and buyer inbox placement and attachment, and the historical GSC export ending
+  2026-08-09. The earlier RFQ attempt without a reference remains unresolved.
+- **SEO Impact:** No route, canonical, sitemap, robots, metadata or schema change. Native current
+  GSC export and exact redirect-error examples remain needed before an indexing decision.
+- **Validation:** Regenerated the Goal report from the governed inputs; RFQ inbox and GSC freshness
+  tests, lint and full TypeScript checking passed. Formatting, relative links, generated-output
+  repeatability, exact-diff hygiene and a 776-file secret-pattern scan passed. The generator retained
+  its five existing non-blocking product/company-media evidence warnings.
+- **Known Issues:** Before any new real RFQ test, the earlier no-reference attempt needs a recorded
+  handling decision even if its outcome remains unknown; new sending then requires separate
+  authorization and both-inbox review access. Provider credential rotation, DMARC, GA4, 15AK facts
+  and exact-product media remain external evidence or account gates. The report's action list is a
+  plan, not a claim that any pending handoff has occurred.
+- **Reusable Knowledge Added:** The generated action order now follows the dated ecosystem plan:
+  Phase 0 source evidence and sales ownership, Phase 1 real-product and measurement proof, then
+  separately gated hosted Console adoption, preserving failed fixtures, adopted records and audit
+  history during any future migration. No new knowledge-base decision was needed.
+- **Deployment:** Local candidate at this entry. No push, PR, merge, Production deployment,
+  DNS/provider write or inquiry submission had yet occurred. The user's standing session
+  authorization covers this scoped `18803076512/arcfort-website` PR/main and
+  `www.arcfortweld.com` Production path; it does not authorize a real RFQ, account, DNS or paid
+  service change.
+- **Next Recommended Action:** Finish local release QA and carry this exact generated report through
+  a separate PR after the current documentation release, then pursue available source-evidence
+  handoffs without manufacturing a green state.
+
 ## 2026-11-06 - Find Exact Product SKUs Without Separators
 
 - **Task:** Restore catalog lookup when a buyer enters an exact ArcFort SKU without its separators,
