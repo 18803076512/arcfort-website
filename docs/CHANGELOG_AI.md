@@ -4,6 +4,30 @@ This append-only log records substantial Codex work so future sessions can under
 why it changed and which risks remain. Add the newest entry at the top, below this introduction. Do
 not include secrets, buyer PII, private prospect data or unconfirmed claims.
 
+## 2026-11-06 - Find Exact Product SKUs Without Separators
+
+- **Task:** Restore catalog lookup when a buyer enters an exact ArcFort SKU without its separators,
+  such as `AFMIGCT0005` for `AF-MIG-CT-0005`.
+- **Files Changed:** Product catalog search scoring, its focused regression and this log.
+- **Components / Data / Visual Changes:** An exact normalized SKU can pass the initial term filter
+  and receive the existing exact-SKU score. Other searches retain their term filter and ordering.
+  No product record, technical fact, fitment, media, visible layout or visual style changed.
+- **SEO Impact:** No route, canonical, sitemap, robots, metadata or schema change. The dynamic
+  `/products?q=...` results now return the existing product for an exact compact SKU.
+- **Validation:** The new compact-SKU assertion failed on the old implementation and passed after
+  the scoped fix. The focused test covers hyphenated, compact and spaced exact SKU forms plus a
+  near miss. Production build, lint, typecheck, performance budget, Prettier, diff hygiene and a
+  776-file secret-pattern scan passed. Read-only local built-page GETs returned the expected
+  product for both exact SKU forms and no match for the near miss, without sending an inquiry.
+- **Known Issues:** Hosted CI and Production behavior for this candidate are pending. Existing
+  sales/buyer inbox and attachment, DMARC, GA4, current GSC and exact-product evidence gaps remain
+  unchanged.
+- **Reusable Knowledge Added:** None; the exact SKU behavior is covered by the focused regression.
+- **Deployment:** Local candidate only. No push, PR, merge, Production deployment or RFQ submission
+  was performed in this batch.
+- **Next Recommended Action:** Publish the scoped candidate through PR CI after the independent
+  release-evidence PR, then verify the live catalog's exact and near-miss queries read-only.
+
 ## 2026-11-06 - Verify Public Hydration Release And Correct Current Operating State
 
 - **Task:** Close PR #147's release evidence, correct the Goal document's stale current phase and

@@ -102,15 +102,21 @@ function scoreProduct(
     ].join(" "),
   );
 
-  if (!termGroups.every((terms) => terms.some((term) => searchableText.includes(term)))) {
+  const normalizedQuery = normalizeSearchText(query);
+  const compactQuery = normalizeCompactText(query);
+  const matchesExactSku =
+    compactQuery.length > 0 && compactQuery === normalizeCompactText(product.sku);
+
+  if (
+    !matchesExactSku &&
+    !termGroups.every((terms) => terms.some((term) => searchableText.includes(term)))
+  ) {
     return null;
   }
 
-  const normalizedQuery = normalizeSearchText(query);
-  const compactQuery = normalizeCompactText(query);
   let score = 100;
 
-  if (compactQuery === normalizeCompactText(product.sku)) {
+  if (matchesExactSku) {
     score += 1000;
   }
 

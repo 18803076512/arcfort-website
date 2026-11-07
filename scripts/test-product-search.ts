@@ -16,7 +16,7 @@ const products = [
   {
     slug: "mig-contact-tip",
     title: "MIG Contact Tip",
-    sku: "AF-MIG-CT-0001",
+    sku: "AF-MIG-CT-0005",
     categorySlug: "mig-mag-torch-parts",
     shortDescription: "Contact tip for MIG/MAG welding torch front-end supply.",
     description: "MIG/MAG torch consumable for distributor and repair requirements.",
@@ -63,7 +63,10 @@ assert.deepEqual(search("plasma cutter consumables"), ["plasma-electrode"]);
 assert.deepEqual(search("TIG gun parts"), ["tig-ceramic-cup"]);
 assert.deepEqual(search("GTAW torch components"), ["tig-ceramic-cup"]);
 assert.deepEqual(search("parts of a TIG welding torch"), ["tig-ceramic-cup"]);
-assert.equal(search("AF-MIG-CT-0001")[0], "mig-contact-tip");
+assert.deepEqual(search("AF-MIG-CT-0005"), ["mig-contact-tip"]);
+assert.deepEqual(search("AFMIGCT0005"), ["mig-contact-tip"]);
+assert.deepEqual(search("af mig ct 0005"), ["mig-contact-tip"]);
+assert.deepEqual(search("AFMIGCT0005X"), []);
 assert.equal(search("welding accessories")[0], "welding-cable-connector");
 assert.deepEqual(search("plasma electrodes"), ["plasma-electrode"]);
 assert.deepEqual(search("plasma electrode suppliers"), ["plasma-electrode"]);
