@@ -4,6 +4,42 @@ This append-only log records substantial Codex work so future sessions can under
 why it changed and which risks remain. Add the newest entry at the top, below this introduction. Do
 not include secrets, buyer PII, private prospect data or unconfirmed claims.
 
+## 2026-11-07 - Refresh Production Evidence And Close Buyer-Path Release Records
+
+- **Task:** Record the PR #148–#151 release chain and the 2026-11-07 read-only production checks;
+  correct the acquisition report's indexing claim and align its action order with Phase 0 gates.
+- **Files Changed:** Production acquisition evidence, regenerated acquisition and Goal reports,
+  acquisition report generator, ecosystem execution plan and operating loop, RFQ delivery
+  knowledge record and this log. No public runtime, product record, route, DNS, provider or account
+  changed in this batch.
+- **Data Changed:** Advanced only the checked production review dates to 2026-11-07. Historical GSC,
+  provider acceptance and IndexNow dates, null inbox/reference/attachment outcomes, credential
+  rotation, GA4 and image-rights states were preserved. The generated GSC-age warning is 90 days.
+- **SEO Impact:** No route, canonical, sitemap, robots, metadata or schema change. The acquisition
+  report now distinguishes a successful technical crawl audit from unverified Google indexing and
+  requires current native GSC evidence before choosing search opportunities.
+- **Validation:** PR #148–#150 exact merges, Production deployments and main CI passed. PR #149's
+  first isolated Console database job timed out at a known media-mapping checkpoint; one failed-job
+  rerun passed without code changes, with root cause unproven. PR #151 merged and deployed; its
+  390px live synthetic attachment-error check passed with zero real POST/page errors. Its main CI
+  run `42361953092` passed quality and isolated database jobs. The 2026-11-07
+  RFQ status, sender DNS, 88-URL sitemap, 82/82 HTML, 40/40 inquiry-path and security-header
+  checks passed. Both generated reports were regenerated from the dated evidence.
+- **Known Issues:** Sales and buyer inbox placement, the sales attachment and old no-reference RFQ
+  outcome remain unverified; no new inquiry was sent. DMARC is absent, GA4 inactive, current GSC
+  data unavailable and strict verified SKU/exact-product main-image counts remain zero. Live
+  browser assertions did not include actual screen-reader speech testing.
+- **Reusable Knowledge Added:** The ecosystem plan ties releases to exact CI/deploy/live evidence;
+  both generated reports now put RFQ, sender, GSC and private sales evidence before product
+  expansion. The operating loop uses a stable GSC freshness threshold rather than a stale day
+  count, and the RFQ record retains the attachment-error accessibility verification limit.
+- **Deployment:** Local documentation/report candidate at this entry. No push, PR, merge, deploy,
+  DNS/provider write or inquiry submission was performed by this follow-up. The user's standing
+  authorization in this session covers the same `18803076512/arcfort-website` PR/main and
+  `www.arcfortweld.com` Production path; it does not cover a real RFQ or external-account change.
+- **Next Recommended Action:** Validate this exact evidence diff and publish it through its own PR.
+  Obtain original mailbox, GSC and product evidence before upgrading their respective states.
+
 ## 2026-11-07 - Associate RFQ Attachment Errors With The File Input
 
 - **Task:** Make an invalid RFQ attachment's error available to screen readers at the focused file

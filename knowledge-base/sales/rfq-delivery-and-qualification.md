@@ -31,7 +31,7 @@ technical review.
   `emailProviderAccepted` and `buyerConfirmationProviderAccepted` state this directly; legacy
   `emailDelivered` and `buyerConfirmationDelivered` are compatible aliases, not mailbox evidence.
 - Provider acceptance was last recorded on 2026-07-26.
-- Production RFQ read-only status was last checked on 2026-11-06.
+- Production RFQ read-only status was last checked on 2026-11-07.
 - Sales-mailbox placement: not externally confirmed.
 - Buyer-mailbox placement: not externally confirmed.
 - Optional Supabase inquiry storage: not configured; email remains the active delivery path.
@@ -93,6 +93,18 @@ started disabled with direct email and WhatsApp fallback, then enabled with synt
 and no form or scroll displacement. No browser error, horizontal overflow or POST occurred. This
 confirms the published form readiness behavior; it does not establish provider acceptance, sales
 inbox placement, buyer confirmation or attachment receipt.
+
+## Attachment Error Accessibility
+
+PR #151 merged as `f2af0c3` and Production deployment `7619648710` succeeded on 2026-11-07.
+The file input now includes a visible attachment error's ID in `aria-describedby` while the error
+exists, including a server-returned attachment error; choosing a valid file restores the help-only
+description. A 390px live browser check used synthetic invalid and corrected files with a
+same-origin GET/HEAD-only network allowlist: the invalid input had `aria-invalid=true`, the error
+ID was `attachments-error`, and its description referenced both help and error. After correction,
+the error disappeared and the description referenced only help. The check observed zero real POSTs,
+zero page errors and zero fetch errors. It did not perform actual screen-reader speech testing,
+submit an inquiry or establish mailbox/attachment delivery.
 
 ## Guided Draft Handoff
 
