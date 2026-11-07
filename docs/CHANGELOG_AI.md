@@ -29,8 +29,11 @@ not include secrets, buyer PII, private prospect data or unconfirmed claims.
   Phase 0 source evidence and sales ownership, Phase 1 real-product and measurement proof, then
   separately gated hosted Console adoption, preserving failed fixtures, adopted records and audit
   history during any future migration. No new knowledge-base decision was needed.
-- **Deployment:** Local candidate only. No push, PR, merge, Production deployment, DNS/provider
-  write or inquiry submission was performed in this batch.
+- **Deployment:** Local candidate at this entry. No push, PR, merge, Production deployment,
+  DNS/provider write or inquiry submission had yet occurred. The user's standing session
+  authorization covers this scoped `18803076512/arcfort-website` PR/main and
+  `www.arcfortweld.com` Production path; it does not authorize a real RFQ, account, DNS or paid
+  service change.
 - **Next Recommended Action:** Finish local release QA and carry this exact generated report through
   a separate PR after the current documentation release, then pursue available source-evidence
   handoffs without manufacturing a green state.
@@ -58,6 +61,7 @@ not include secrets, buyer PII, private prospect data or unconfirmed claims.
   was performed in this batch.
 - **Next Recommended Action:** Publish the scoped candidate through PR CI after the independent
   release-evidence PR, then verify the live catalog's exact and near-miss queries read-only.
+
 ## 2026-11-06 - Verify Public Hydration Release And Correct Current Operating State
 
 - **Task:** Close PR #147's release evidence, correct the Goal document's stale current phase and
