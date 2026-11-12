@@ -1108,7 +1108,7 @@ npm run seo:snippets
   checklist
 - `docs/acquisition-readiness-report.md` - generated acquisition-channel, RFQ, product-evidence, content-coverage and external-confirmation report
 - `docs/operations/acquisition-production-evidence.json` - non-sensitive production, mailbox, Search Console, analytics and security evidence states used by the acquisition report
-- `docs/site-wide-upgrade-roadmap.md` - phased roadmap for improving page quality, SEO and RFQ conversion
+- `docs/site-wide-upgrade-roadmap.md` - historical August 2026 site-improvement roadmap; current priorities are in `docs/CODEX_GOAL.md` and `docs/operations/website-ecosystem-execution-plan-2026-11-05.md`
 - `docs/product-image-shooting-guide.md` - product photo shooting and editing guide
 - `docs/catalog-product-data-audit.md` - Renqiu Ailesen PDF catalog review notes and imported product-family evidence
 - `docs/product-image-source-audit.md` - temporary product image source notes for catalog-derived SKU pages

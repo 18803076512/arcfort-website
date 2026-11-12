@@ -4,6 +4,29 @@ This append-only log records substantial Codex work so future sessions can under
 why it changed and which risks remain. Add the newest entry at the top, below this introduction. Do
 not include secrets, buyer PII, private prospect data or unconfirmed claims.
 
+## 2026-11-12 - Mark The August Site Roadmap As Historical
+
+- **Task:** Correct a navigation and planning conflict: the August 2026 site roadmap still called
+  itself the next improvement sequence even though Goal Mode and the current ecosystem plan place
+  Phase 0 RFQ, sender, GSC and sales evidence first.
+- **Files Changed:** Historical site-wide roadmap, README document index and this log.
+- **Data / Visual / SEO Impact:** None. Product facts, public pages, routes, metadata, RFQ behavior
+  and account settings are unchanged.
+- **Validation:** Reviewed the dated roadmap against current Goal priorities and the ecosystem
+  execution plan. Documentation formatting, links, hierarchy, diff hygiene and equivalent repository
+  secret scanning passed; executable checks are not applicable to this documentation-only change.
+- **Known Issues:** The original mailbox delivery, old no-reference RFQ attempt, current GSC, GA4,
+  DMARC and exact-product evidence remain separate unresolved gates. Historical roadmap figures
+  retain their original August dates and do not become current production measurements.
+- **Reusable Knowledge Added:** The roadmap now explicitly directs readers to the current Goal,
+  execution plan and dated production evidence before choosing new work.
+- **Deployment:** Local documentation candidate at this entry. The user's standing session
+  authorization covers the scoped `18803076512/arcfort-website` PR/main and
+  `www.arcfortweld.com` Production path; it does not authorize a real RFQ or external-account
+  change.
+- **Next Recommended Action:** Validate and publish this documentation correction, then improve
+  the recurring Console CI timeout diagnostics without weakening the test gate.
+
 ## 2026-11-07 - Refresh Production Evidence And Close Buyer-Path Release Records
 
 - **Task:** Record the PR #148–#151 release chain and the 2026-11-07 read-only production checks;

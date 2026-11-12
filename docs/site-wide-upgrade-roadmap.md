@@ -1,7 +1,9 @@
-# Site-Wide Upgrade Roadmap
+# Historical Site-Wide Upgrade Roadmap (August 2026)
 
-This roadmap defines the next improvement sequence for ArcFort Weld. The goal is to make the
-website more professional, easier to index, and stronger for overseas B2B RFQ conversion.
+This roadmap preserves the site-improvement plan and checkpoints recorded in August 2026. Its
+"current" states and next steps describe those dates. For today's priorities and evidence gates,
+use [Goal Mode](CODEX_GOAL.md), the [ecosystem execution plan](operations/website-ecosystem-execution-plan-2026-11-05.md)
+and the [dated production evidence](operations/acquisition-production-evidence.json).
 
 ## Recorded Production Baseline - 2026-08-13
 
@@ -10,13 +12,14 @@ product categories, one 15AK product-series page, six application pages and 17 b
 Product search, category-specific RFQ builders, the OEM project builder, canonical metadata,
 sitemap, robots, structured data and the validated RFQ form are in place. The Search Console export
 dated 2026-08-12 is recorded in
-`docs/seo/search-console-baseline-2026-08-12.md` and should be used as the measurement baseline.
+`docs/seo/search-console-baseline-2026-08-12.md` and served as the measurement baseline at that
+checkpoint.
 
-## Current V2 Branch - 2026-08-28
+## V2 Branch Checkpoint - 2026-08-28
 
-The current validated branch generates 90 pages with 40 indexable products, six categories, six
-applications and 17 buyer guides. No product-series page is currently indexable. The prepared 15AK
-candidate is held in `evidence_review` because its linked images remain family-level legacy
+The branch validated on 2026-08-28 generated 90 pages with 40 indexable products, six categories,
+six applications and 17 buyer guides. No product-series page was indexable at that checkpoint. The
+prepared 15AK candidate is held in `evidence_review` because its linked images remain family-level legacy
 references without approved rights and exact-product evidence. Its former URL temporarily redirects
 to the MIG/MAG category until the automated series publication gate passes.
 
@@ -25,8 +28,8 @@ the technical and complete-torch table identifies ORK 602. Its 72 governed facts
 37 image requests remain internal until factory evidence resolves the page identity and exact
 water-cooled interfaces. It is excluded from public category and RFQ choices.
 
-The site is technically ready to acquire inquiries, but four evidence and operational tasks now
-matter more than adding another general page:
+At that checkpoint, this roadmap identified four evidence and operational tasks before adding
+another general page:
 
 1. Confirm matching controlled-test references in the sales and buyer-confirmation mailboxes.
    Confirm that the Resend credential previously shared outside the deployment environment has been
@@ -39,10 +42,10 @@ matter more than adding another general page:
 4. Measure qualified RFQs, form completion, email clicks and WhatsApp clicks without collecting
    buyer messages, contact details or file names in analytics.
 
-The distributor and importer path now includes a guided mixed-product sourcing brief plus a
-four-tab RFQ workbook for buyer profile, SKU lines, trial and repeat quantities, packing and
-evidence review. Future changes should be driven by real builder, download and qualified-inquiry
-activity rather than adding another overlapping distributor page.
+At that checkpoint, the distributor and importer path included a guided mixed-product sourcing
+brief plus a four-tab RFQ workbook for buyer profile, SKU lines, trial and repeat quantities,
+packing and evidence review. Future changes should be driven by real builder, download and
+qualified-inquiry activity rather than adding another overlapping distributor page.
 
 ## Phase 1 - Global Conversion Foundation
 
@@ -103,7 +106,8 @@ Scale organic search content without low-quality pages:
 
 ## Phase 6 - Real Data and Media
 
-Status: in progress and now the highest-impact content task.
+Status at the August 2026 checkpoint: in progress; product media evidence was the leading content
+task.
 
 Replace placeholders with confirmed assets:
 
