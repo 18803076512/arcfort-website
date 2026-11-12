@@ -101,6 +101,12 @@ export async function runWorkingBrowser(input: BrowserInput) {
   let originalRequests = 0;
   let originalResponses = 0;
   let originalRequestFailures = 0;
+  let commandRequests = 0;
+  let commandResponses = 0;
+  let commandRequestFailures = 0;
+  let commandCountsAtCheckpoint:
+    | { requests: number; responses: number; requestFailures: number }
+    | undefined;
   const commandBodies = new WeakMap<BrowserRequest, Buffer>();
   const inspectionBodies = new WeakMap<BrowserRequest, Buffer>();
   function inspectionBody(request: BrowserRequest) {
@@ -126,6 +132,8 @@ export async function runWorkingBrowser(input: BrowserInput) {
       value.on("request", (request) => {
         if (request.url() === `${browserOrigin}/console/originals` && request.method() === "POST")
           originalRequests++;
+        if (request.url() === `${browserOrigin}/console/commands` && request.method() === "POST")
+          commandRequests++;
       });
       value.on("response", (response) => {
         if (
@@ -133,10 +141,17 @@ export async function runWorkingBrowser(input: BrowserInput) {
           response.request().method() === "POST"
         )
           originalResponses++;
+        if (
+          response.url() === `${browserOrigin}/console/commands` &&
+          response.request().method() === "POST"
+        )
+          commandResponses++;
       });
       value.on("requestfailed", (request) => {
         if (request.url() === `${browserOrigin}/console/originals` && request.method() === "POST")
           originalRequestFailures++;
+        if (request.url() === `${browserOrigin}/console/commands` && request.method() === "POST")
+          commandRequestFailures++;
       });
       await value.route("**/*", async (route) => {
         const request = route.request();
@@ -651,6 +666,11 @@ export async function runWorkingBrowser(input: BrowserInput) {
             command,
             checkpoint: (value) => {
               checkpoint = value;
+              commandCountsAtCheckpoint = {
+                requests: commandRequests,
+                responses: commandResponses,
+                requestFailures: commandRequestFailures,
+              };
             },
           })
         : undefined;
@@ -847,6 +867,12 @@ export async function runWorkingBrowser(input: BrowserInput) {
         originalRequests,
         originalResponses,
         originalRequestFailures,
+        commandRequests,
+        commandResponses,
+        commandRequestFailures,
+        commandCountsAtCheckpoint: checkpoint?.startsWith("media mappings:")
+          ? commandCountsAtCheckpoint
+          : undefined,
         pageErrors,
         pageErrorDetails,
         delayedHistoryModules,

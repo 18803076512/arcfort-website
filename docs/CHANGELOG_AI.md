@@ -4,6 +4,71 @@ This append-only log records substantial Codex work so future sessions can under
 why it changed and which risks remain. Add the newest entry at the top, below this introduction. Do
 not include secrets, buyer PII, private prospect data or unconfirmed claims.
 
+## 2026-11-12 - Wait For RFQ Attachment Error Focus In Browser Acceptance
+
+- **Task:** PR #153's quality CI rendered the invalid-attachment error and its input association,
+  then read the active element before the form's scheduled animation-frame focus could settle.
+- **Files Changed:** RFQ browser acceptance test and this log. The live form, validation rules,
+  attachment handling, routes and analytics are unchanged.
+- **Validation:** The original CI failure showed an empty active-element ID after the error and
+  accessibility assertions passed. The test now waits up to five seconds for the existing form to
+  focus the attachment input, then retains the explicit focus and zero-real-POST assertions. Local
+  production build and full RFQ browser acceptance passed with pinned Chromium; format, lint,
+  TypeScript, diff and equivalent secret checks passed. Full PR CI remains required.
+- **Known Issues:** One CI observation supports a timing race but does not prove its complete cause.
+  The wait will still fail if the form never moves focus; it does not set focus from the test.
+- **Reusable Knowledge Added:** A rendered validation message can precede focus scheduled in a
+  later animation frame. Browser acceptance should observe both states before asserting focus.
+- **Deployment:** Local test-only candidate at this entry. The user's standing session
+  authorization covers the same `18803076512/arcfort-website` PR/main and
+  `www.arcfortweld.com` Production path; no real RFQ or external-account change is authorized.
+- **Next Recommended Action:** Run clean PR CI with the timing wait and compare the prior RFQ focus
+  failure separately from the Console media timeout diagnostics.
+
+## 2026-11-12 - Bound Console Media Timeout Diagnostics
+
+- **Task:** Narrow the existing database-backed Console browser failure checkpoint after two
+  unchanged CI reruns cleared intermittent media-mapping timeouts. The timeout's cause is unknown.
+- **Files Changed:** Working-browser and media-mapping acceptance harnesses and this log. Public
+  routes, product data, RFQ, private Console application behavior and provider settings are unchanged.
+- **Validation:** Prettier on changed files, full TypeScript typecheck, focused ESLint,
+  `git diff --check` and equivalent repository secret scanning passed. The database-backed browser
+  acceptance still requires clean isolated CI to exercise these new diagnostics; no local native
+  acceptance result is claimed here.
+- **Known Issues:** A future timeout may arise at another step. These counters identify whether a
+  browser command was sent, answered or failed around the last static checkpoint; they do not prove
+  a backend root cause or replace a passing native acceptance run.
+- **Reusable Knowledge Added:** The omitted-contradiction, edited-replacement and explicit-reject
+  sequence now reports its exact static step. Failed runs report bounded aggregate POST request,
+  response and failure counts plus the checkpoint baseline, without command bodies or buyer data.
+- **Deployment:** Local test-only candidate at this entry. The user's standing session
+  authorization covers the same `18803076512/arcfort-website` PR/main and
+  `www.arcfortweld.com` Production path; no real RFQ or external-account change is authorized.
+- **Next Recommended Action:** Run clean PR quality and isolated database CI, then compare any new failing checkpoint and command-count delta.
+
+## 2026-11-12 - Mark The August Site Roadmap As Historical
+
+- **Task:** Correct a navigation and planning conflict: the August 2026 site roadmap still called
+  itself the next improvement sequence even though Goal Mode and the current ecosystem plan place
+  Phase 0 RFQ, sender, GSC and sales evidence first.
+- **Files Changed:** Historical site-wide roadmap, README document index and this log.
+- **Data / Visual / SEO Impact:** None. Product facts, public pages, routes, metadata, RFQ behavior
+  and account settings are unchanged.
+- **Validation:** Reviewed the dated roadmap against current Goal priorities and the ecosystem
+  execution plan. Documentation formatting, links, hierarchy, diff hygiene and equivalent repository
+  secret scanning passed; executable checks are not applicable to this documentation-only change.
+- **Known Issues:** The original mailbox delivery, old no-reference RFQ attempt, current GSC, GA4,
+  DMARC and exact-product evidence remain separate unresolved gates. Historical roadmap figures
+  retain their original August dates and do not become current production measurements.
+- **Reusable Knowledge Added:** The roadmap now explicitly directs readers to the current Goal,
+  execution plan and dated production evidence before choosing new work.
+- **Deployment:** Local documentation candidate at this entry. The user's standing session
+  authorization covers the scoped `18803076512/arcfort-website` PR/main and
+  `www.arcfortweld.com` Production path; it does not authorize a real RFQ or external-account
+  change.
+- **Next Recommended Action:** Validate and publish this documentation correction, then improve
+  the recurring Console CI timeout diagnostics without weakening the test gate.
+
 ## 2026-11-07 - Refresh Production Evidence And Close Buyer-Path Release Records
 
 - **Task:** Record the PR #148–#151 release chain and the 2026-11-07 read-only production checks;

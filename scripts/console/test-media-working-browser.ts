@@ -347,24 +347,28 @@ export async function runMediaWorkingBrowser(input: Input) {
       "media real Storage inspector, human controls, approval ledger and contended exact receipt retry",
     );
 
-    checkpoint(
-      "media mappings: unselected contradiction invalidates current without legacy fallback",
-    );
+    checkpoint("media mappings: open owner view for omitted contradiction");
     await visit(owner, headId);
+    checkpoint("media mappings: record omitted contradiction");
     await record("product_match", "Synthetic omitted contradiction", true);
     assert.equal((await scope()).current?.valid, false);
     assert.equal((await scope()).current?.observed, true);
     assert.equal((await scope()).current?.status, "DATA_CONFLICT");
+    checkpoint("media mappings: propose conflicted replacement");
     await propose(headId);
+    checkpoint("media mappings: submit conflicted replacement");
     await submit();
     assert.equal((await scope()).candidate?.status, "DATA_CONFLICT");
     assert.equal((await scope()).candidate?.sourceIds.length, 2);
+    checkpoint("media mappings: open reviewer edit view");
     await visit(reviewer, headId);
+    checkpoint("media mappings: fill reviewer edit controls");
     await reviewer.page.getByRole("button", { name: "Edit mapping", exact: true }).click();
     await reviewer.page
       .getByLabel("Image alt text", { exact: true })
       .fill("Synthetic corrected private raster");
     await reason(reviewer.page, "Synthetic correction keeps unresolved conflict");
+    checkpoint("media mappings: save edited replacement");
     const edited = await command(
       reviewer.page,
       reviewer.page.getByRole("button", { name: "Save replacement", exact: true }),
@@ -378,10 +382,14 @@ export async function runMediaWorkingBrowser(input: Input) {
     assert.equal(edited.request.confirmation, null);
     assert.equal((await scope()).candidate?.revision, 3);
     assert.equal((await scope()).candidate?.status, "DATA_CONFLICT");
+    checkpoint("media mappings: open owner view for edited replacement");
     await visit(owner, headId);
+    checkpoint("media mappings: resubmit edited replacement");
     await submit();
+    checkpoint("media mappings: open reviewer rejection view");
     await visit(reviewer, headId);
     await reason(reviewer.page, "Synthetic explicit rejection preserves preceding approval");
+    checkpoint("media mappings: reject edited replacement");
     const rejected = await command(
       reviewer.page,
       reviewer.page.getByRole("button", { name: "Reject mapping", exact: true }),
