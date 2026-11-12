@@ -4,6 +4,27 @@ This append-only log records substantial Codex work so future sessions can under
 why it changed and which risks remain. Add the newest entry at the top, below this introduction. Do
 not include secrets, buyer PII, private prospect data or unconfirmed claims.
 
+## 2026-11-12 - Wait For RFQ Attachment Error Focus In Browser Acceptance
+
+- **Task:** PR #153's quality CI rendered the invalid-attachment error and its input association,
+  then read the active element before the form's scheduled animation-frame focus could settle.
+- **Files Changed:** RFQ browser acceptance test and this log. The live form, validation rules,
+  attachment handling, routes and analytics are unchanged.
+- **Validation:** The original CI failure showed an empty active-element ID after the error and
+  accessibility assertions passed. The test now waits up to five seconds for the existing form to
+  focus the attachment input, then retains the explicit focus and zero-real-POST assertions. Local
+  production build and full RFQ browser acceptance passed with pinned Chromium; format, lint,
+  TypeScript, diff and equivalent secret checks passed. Full PR CI remains required.
+- **Known Issues:** One CI observation supports a timing race but does not prove its complete cause.
+  The wait will still fail if the form never moves focus; it does not set focus from the test.
+- **Reusable Knowledge Added:** A rendered validation message can precede focus scheduled in a
+  later animation frame. Browser acceptance should observe both states before asserting focus.
+- **Deployment:** Local test-only candidate at this entry. The user's standing session
+  authorization covers the same `18803076512/arcfort-website` PR/main and
+  `www.arcfortweld.com` Production path; no real RFQ or external-account change is authorized.
+- **Next Recommended Action:** Run clean PR CI with the timing wait and compare the prior RFQ focus
+  failure separately from the Console media timeout diagnostics.
+
 ## 2026-11-12 - Bound Console Media Timeout Diagnostics
 
 - **Task:** Narrow the existing database-backed Console browser failure checkpoint after two

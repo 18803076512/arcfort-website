@@ -369,6 +369,10 @@ async function verifyAttachmentErrorDescription(browser: Browser) {
   assert.equal(await input.getAttribute("aria-invalid"), "true");
   assert.equal(await error.getAttribute("id"), "attachments-error");
   assert.equal(await input.getAttribute("aria-describedby"), "attachments-help attachments-error");
+  await page.waitForFunction(() => document.activeElement?.id === "attachments", null, {
+    polling: 100,
+    timeout: 5000,
+  });
   assert.equal(await page.evaluate(() => document.activeElement?.id), "attachments");
   assert.equal(blockedPosts, 0, "Client-side file validation must not send an RFQ POST.");
 
