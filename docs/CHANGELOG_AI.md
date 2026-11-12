@@ -4,6 +4,27 @@ This append-only log records substantial Codex work so future sessions can under
 why it changed and which risks remain. Add the newest entry at the top, below this introduction. Do
 not include secrets, buyer PII, private prospect data or unconfirmed claims.
 
+## 2026-11-12 - Bound Console Media Timeout Diagnostics
+
+- **Task:** Narrow the existing database-backed Console browser failure checkpoint after two
+  unchanged CI reruns cleared intermittent media-mapping timeouts. The timeout's cause is unknown.
+- **Files Changed:** Working-browser and media-mapping acceptance harnesses and this log. Public
+  routes, product data, RFQ, private Console application behavior and provider settings are unchanged.
+- **Validation:** Prettier on changed files, full TypeScript typecheck, focused ESLint,
+  `git diff --check` and equivalent repository secret scanning passed. The database-backed browser
+  acceptance still requires clean isolated CI to exercise these new diagnostics; no local native
+  acceptance result is claimed here.
+- **Known Issues:** A future timeout may arise at another step. These counters identify whether a
+  browser command was sent, answered or failed around the last static checkpoint; they do not prove
+  a backend root cause or replace a passing native acceptance run.
+- **Reusable Knowledge Added:** The omitted-contradiction, edited-replacement and explicit-reject
+  sequence now reports its exact static step. Failed runs report bounded aggregate POST request,
+  response and failure counts plus the checkpoint baseline, without command bodies or buyer data.
+- **Deployment:** Local test-only candidate at this entry. The user's standing session
+  authorization covers the same `18803076512/arcfort-website` PR/main and
+  `www.arcfortweld.com` Production path; no real RFQ or external-account change is authorized.
+- **Next Recommended Action:** Run clean PR quality and isolated database CI, then compare any new failing checkpoint and command-count delta.
+
 ## 2026-11-12 - Mark The August Site Roadmap As Historical
 
 - **Task:** Correct a navigation and planning conflict: the August 2026 site roadmap still called
