@@ -59,8 +59,10 @@ RFQ 的邮件服务商接受状态只证明提交被服务商受理；销售邮�
    `data/intake/general-m6-27-contact-tip-technical-confirmation.csv` 单独收集该 SKU 的
    实物、尺寸和适配依据。原图权益沿用既有图片资产任务。证据边界见
    `knowledge-base/products/general-m6-27-contact-tip-ct0006.md`。
-4. **索引异常：** 当前生产 88 条 sitemap 地址和 40 条产品路径检查通过；Google 的
-   “重定向错误”原始 URL 与最后抓取时间仍待取得，不能据 HTTP 成功宣布索引问题关闭。
+4. **索引异常：** 当前生产 88 条 sitemap 地址和 40 条产品路径检查通过；Google 11 月 9 日
+   通知了 noindex 排除和 404，10 月 22 日另有“重定向错误”。这些通知未给出原始 URL、
+   数量或最后抓取时间，需从原生报告取得后逐条对照预期行为；不能据 HTTP 成功关闭问题。
+   最新分诊见 `knowledge-base/seo/indexing-alert-triage-2026-11-13.md`。
 
 这里的顺序以买家风险和可取得的证据为准。每个未证实环节都应保持未证实，直到
 权威系统返回该环节自己的验收证据。

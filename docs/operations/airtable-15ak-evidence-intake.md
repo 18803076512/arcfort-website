@@ -44,6 +44,31 @@ files. These search results do not establish that no offline original exists; no
 until its actual source is supplied and reviewed. The general M6 x 27 mm CT0006 catalog reference
 belongs to its separate exact-SKU queue, not the four-product 15AK intake.
 
+### 2026-11-13 Review And Lineage Reconciliation
+
+The connected base still has no completed factory/product evidence: all 15 technical reviews and
+20 image requests match the canonical intake without confirmed values, originals, rights evidence
+or reviewer completion. The four P0 image decisions remain `Needs review`; all 73 local asset
+triage candidates remain unverified. The inspected technical/image/P0 records and nine P0 local
+triage records had no comments or attachments. Connected Drive searches returned no new 15AK
+original photos, drawings, measurements, rights evidence or completed workbook.
+
+Under the owner's explicit authorization, six stale historical-lineage fields were reconciled from
+`data/evidence/local-product-image-triage.csv` into `Local Asset Triage`:
+
+- `local-img-005`: Evidence Reference, Reviewed By, Reviewed Date and Reviewer Notes.
+- `local-img-006`: Evidence Reference and Reviewer Notes.
+
+Before the write, both Candidate IDs uniquely matched and their old values matched the reviewed
+patch. Independent read-back at 2026-11-13 07:57:52 UTC verified all six values and the other 22
+fields unchanged. `Source Owner` stayed blank; `Usage Rights`, `Exact Match` and `Review State`
+remain `needs_confirmation`, `unverified` and `needs_review`.
+
+The restored reviewer/date for `local-img-005` describe the 2026-08-29 local-file lineage audit only.
+They do not establish factory review, exact-SKU identity, technical accuracy or usage rights. See
+`knowledge-base/assets/p0-repository-image-lineage.md` for the scoped source evidence. No product
+or image approval was promoted by this synchronization.
+
 ## Authority Boundary
 
 - Airtable values are proposed reviewer input, not public product data.
