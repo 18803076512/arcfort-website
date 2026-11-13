@@ -113,6 +113,41 @@ export async function runDocumentWorkingBrowser(input: Input) {
       if (timer) clearTimeout(timer);
     }
   };
+  const observeRefresh = (page: Page, pathname: string) => {
+    const traffic = { requests: 0, responses: 0, failures: 0, responseStatuses: [] as number[] };
+    const matches = (request: BrowserRequest) => {
+      const url = new URL(request.url());
+      return (
+        request.method() === "GET" &&
+        url.origin === browserOrigin &&
+        url.pathname === pathname &&
+        (url.searchParams.has("_rsc") || request.headers().rsc === "1")
+      );
+    };
+    const onRequest = (request: BrowserRequest) => {
+      if (matches(request)) traffic.requests++;
+    };
+    const onResponse = (response: BrowserResponse) => {
+      if (matches(response.request())) {
+        traffic.responses++;
+        if (traffic.responseStatuses.length < 8) traffic.responseStatuses.push(response.status());
+      }
+    };
+    const onFailure = (request: BrowserRequest) => {
+      if (matches(request)) traffic.failures++;
+    };
+    page.on("request", onRequest);
+    page.on("response", onResponse);
+    page.on("requestfailed", onFailure);
+    return {
+      traffic,
+      stop() {
+        page.off("request", onRequest);
+        page.off("response", onResponse);
+        page.off("requestfailed", onFailure);
+      },
+    };
+  };
   const data = async () => {
     const value = await readDocumentReview(owner.client, variantId, documentId, 1, 1);
     assert.ok(value);
@@ -182,37 +217,7 @@ export async function runDocumentWorkingBrowser(input: Input) {
     const row = owner.page
       .getByRole("table", { name: "Document references" })
       .getByText(documentTestCopy.title + (next ? " version 2" : ""), { exact: true });
-    const refreshTraffic = {
-      requests: 0,
-      responses: 0,
-      failures: 0,
-      responseStatuses: [] as number[],
-    };
-    const isLibraryRefresh = (request: BrowserRequest) => {
-      const url = new URL(request.url());
-      return (
-        request.method() === "GET" &&
-        url.origin === browserOrigin &&
-        url.pathname === libraryPath &&
-        (url.searchParams.has("_rsc") || request.headers().rsc === "1")
-      );
-    };
-    const onRefreshRequest = (request: BrowserRequest) => {
-      if (isLibraryRefresh(request)) refreshTraffic.requests++;
-    };
-    const onRefreshResponse = (response: BrowserResponse) => {
-      if (isLibraryRefresh(response.request())) {
-        refreshTraffic.responses++;
-        if (refreshTraffic.responseStatuses.length < 8)
-          refreshTraffic.responseStatuses.push(response.status());
-      }
-    };
-    const onRefreshFailure = (request: BrowserRequest) => {
-      if (isLibraryRefresh(request)) refreshTraffic.failures++;
-    };
-    owner.page.on("request", onRefreshRequest);
-    owner.page.on("response", onRefreshResponse);
-    owner.page.on("requestfailed", onRefreshFailure);
+    const { traffic: refreshTraffic, stop: stopRefresh } = observeRefresh(owner.page, libraryPath);
     let receiptId: string | null = null;
     try {
       checkpoint(
@@ -279,12 +284,28 @@ export async function runDocumentWorkingBrowser(input: Input) {
       }
       throw failure;
     } finally {
-      owner.page.off("request", onRefreshRequest);
-      owner.page.off("response", onRefreshResponse);
-      owner.page.off("requestfailed", onRefreshFailure);
+      stopRefresh();
     }
   }
   async function record(kind: "rights" | "scope" | "contradiction") {
+    const steps = {
+      rights: [
+        "documents: rights evidence form",
+        "documents: rights evidence command",
+        "documents: rights evidence review refresh",
+      ],
+      scope: [
+        "documents: scope evidence form",
+        "documents: scope evidence command",
+        "documents: scope evidence review refresh",
+      ],
+      contradiction: [
+        "documents: contradiction evidence form",
+        "documents: contradiction evidence command",
+        "documents: contradiction evidence review refresh",
+      ],
+    } as const;
+    checkpoint(steps[kind][0]);
     const copy = documentTestSource(kind);
     await button(owner.page, "Add evidence").click();
     await owner.page
@@ -306,15 +327,68 @@ export async function runDocumentWorkingBrowser(input: Input) {
       ["Evidence date (unknown allowed)", copy.evidence_date!],
     ])
       await field(owner.page, name).fill(value);
-    const sent = await command(owner.page, button(owner.page, "Register evidence"));
-    const id = success(sent.result).source_id;
-    assert.ok(id);
-    await owner.page
+    const checkbox = owner.page
       .getByRole("table", { name: "Document evidence" })
-      .getByRole("checkbox", { name: `Select ${copy.title}`, exact: true })
-      .waitFor();
-    assert.ok((await data()).sources.items.some((source) => source.source_id === id));
-    return id;
+      .getByRole("checkbox", { name: `Select ${copy.title}`, exact: true });
+    const { traffic: refreshTraffic, stop: stopRefresh } = observeRefresh(owner.page, reviewPath());
+    let receiptId: string | null = null;
+    try {
+      checkpoint(steps[kind][1]);
+      const sent = await command(owner.page, button(owner.page, "Register evidence"));
+      const id = success(sent.result).source_id;
+      assert.ok(id);
+      receiptId = id;
+      checkpoint(steps[kind][2]);
+      await checkbox.waitFor();
+      assert.ok((await data()).sources.items.some((source) => source.source_id === id));
+      return id;
+    } catch (failure) {
+      let databaseState: {
+        state: "ok" | "missing" | "timeout" | "unavailable";
+        sourcePresent: boolean | null;
+      } = { state: "unavailable", sourcePresent: null };
+      try {
+        databaseState = await boundedDiagnostic(
+          readDocumentReview(owner.client, variantId, documentId, 1, 1).then((current) => ({
+            state: current ? ("ok" as const) : ("missing" as const),
+            sourcePresent: receiptId
+              ? (current?.sources.items.some((source) => source.source_id === receiptId) ?? false)
+              : null,
+          })),
+          { state: "timeout", sourcePresent: null },
+        );
+      } catch {
+        // A diagnostic read must not replace the original browser failure.
+      }
+      const visible = async (locator: Locator) =>
+        boundedDiagnostic<boolean | null>(locator.isVisible(), null).catch(() => null);
+      const [successMessage, checkboxPresent, alertPresent] = await Promise.all([
+        visible(
+          owner.page.getByRole("status").filter({
+            hasText: "Evidence registered. Review snapshots require revalidation.",
+          }),
+        ),
+        visible(checkbox),
+        visible(owner.page.getByRole("alert")),
+      ]);
+      try {
+        console.error(
+          JSON.stringify({
+            phase: "document evidence refresh diagnostic",
+            kind,
+            receiptKnown: receiptId !== null,
+            databaseState,
+            ui: { successMessage, checkboxPresent, alertPresent },
+            refreshTraffic,
+          }),
+        );
+      } catch {
+        // Diagnostic output cannot replace the original browser failure.
+      }
+      throw failure;
+    } finally {
+      stopRefresh();
+    }
   }
   async function propose() {
     await goto(owner.page, reviewPath());
@@ -431,37 +505,7 @@ export async function runDocumentWorkingBrowser(input: Input) {
     buffer: bytes,
   });
   // Keep failed refresh diagnostics bounded and free of document IDs, bytes and account details.
-  const refreshTraffic = {
-    requests: 0,
-    responses: 0,
-    failures: 0,
-    responseStatuses: [] as number[],
-  };
-  const isLibraryRefresh = (request: BrowserRequest) => {
-    const url = new URL(request.url());
-    return (
-      request.method() === "GET" &&
-      url.origin === browserOrigin &&
-      url.pathname === libraryPath &&
-      (url.searchParams.has("_rsc") || request.headers().rsc === "1")
-    );
-  };
-  const onRefreshRequest = (request: BrowserRequest) => {
-    if (isLibraryRefresh(request)) refreshTraffic.requests++;
-  };
-  const onRefreshResponse = (response: BrowserResponse) => {
-    if (isLibraryRefresh(response.request())) {
-      refreshTraffic.responses++;
-      if (refreshTraffic.responseStatuses.length < 8)
-        refreshTraffic.responseStatuses.push(response.status());
-    }
-  };
-  const onRefreshFailure = (request: BrowserRequest) => {
-    if (isLibraryRefresh(request)) refreshTraffic.failures++;
-  };
-  owner.page.on("request", onRefreshRequest);
-  owner.page.on("response", onRefreshResponse);
-  owner.page.on("requestfailed", onRefreshFailure);
+  const { traffic: refreshTraffic, stop: stopRefresh } = observeRefresh(owner.page, libraryPath);
   const uploading = owner.page.waitForResponse(
     (response) => response.url() === uploadEndpoint && response.request().method() === "POST",
   );
@@ -547,9 +591,7 @@ export async function runDocumentWorkingBrowser(input: Input) {
     }
     throw failure;
   } finally {
-    owner.page.off("request", onRefreshRequest);
-    owner.page.off("response", onRefreshResponse);
-    owner.page.off("requestfailed", onRefreshFailure);
+    stopRefresh();
   }
   const intent = await owner.client
     .from("document_upload_intents")
