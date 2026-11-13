@@ -1,5 +1,6 @@
 import assert from "node:assert/strict";
 import { spawn } from "node:child_process";
+import { mkdir } from "node:fs/promises";
 import { createRequire } from "node:module";
 import type { Browser, Page } from "./console/browser-runtime/node_modules/playwright/index.js";
 import { assertNoRuntimeEnvFiles, assertPortAvailable } from "./console/browser-server.ts";
@@ -388,6 +389,209 @@ async function verifyAttachmentErrorDescription(browser: Browser) {
   await context.close();
 }
 
+type IntegrityMock = {
+  count: number;
+  payload?: {
+    email: string;
+    company: string;
+    requirements: string;
+    attachmentNames: string[];
+  };
+  resolve?: (response: Response) => void;
+};
+type IntegrityWindow = Window & { __rfqIntegrity?: IntegrityMock };
+
+async function installIntegrityMock(page: Page) {
+  await page.evaluate(() => {
+    const target = window as IntegrityWindow;
+    const mock: IntegrityMock = { count: 0 };
+    target.__rfqIntegrity = mock;
+    const originalFetch = window.fetch.bind(window);
+    window.fetch = (input, init) => {
+      if (input === "/api/rfq" && init?.method === "POST") {
+        if (!(init.body instanceof FormData)) throw new Error("Synthetic RFQ body missing.");
+        mock.count++;
+        mock.payload = {
+          email: String(init.body.get("email")),
+          company: String(init.body.get("company")),
+          requirements: String(init.body.get("productRequirements")),
+          attachmentNames: init.body
+            .getAll("attachments")
+            .map((file) => (file instanceof File ? file.name : "unexpected")),
+        };
+        return new Promise<Response>((resolve) => {
+          mock.resolve = resolve;
+        });
+      }
+      return originalFetch(input, init);
+    };
+  });
+}
+
+async function verifyPendingSubmissionIntegrity(browser: Browser) {
+  const storageKey = "arcfort-rfq-products-v1";
+  const originalItem = {
+    sku: "AF-MIG-CT-0005",
+    name: "Synthetic original contact tip",
+    category: "MIG/MAG Torch Parts",
+    categorySlug: "mig-mag-torch-parts",
+    slug: "mig-contact-tip-m6-1-0mm",
+    requestedQuantity: "125 pcs",
+    buyerReference: "Synthetic original drawing",
+  };
+  const laterItem = {
+    ...originalItem,
+    sku: "AF-MIG-GN-0008",
+    name: "Synthetic later nozzle",
+    slug: "mig-gas-nozzle-for-mb15",
+    requestedQuantity: "300 pcs",
+  };
+  const context = await browser.newContext({
+    serviceWorkers: "block",
+    viewport: { width: 390, height: 900 },
+  });
+  let blockedPosts = 0;
+  await context.route("**/*", (route) => {
+    const request = route.request();
+    if (new URL(request.url()).origin !== origin || !["GET", "HEAD"].includes(request.method())) {
+      if (request.method() === "POST") blockedPosts++;
+      return route.abort();
+    }
+    return route.continue();
+  });
+  const page = await context.newPage();
+  page.on("pageerror", (error) => pageErrors.push(error.message));
+  await page.goto(`${origin}/rfq`, { waitUntil: "networkidle" });
+  await page.evaluate(
+    ({ key, item }) => {
+      localStorage.setItem(key, JSON.stringify([item]));
+      window.dispatchEvent(new Event("arcfort:rfq-list-changed"));
+    },
+    { key: storageKey, item: originalItem },
+  );
+  await page.getByText(originalItem.name, { exact: true }).waitFor();
+  await fillValidForm(page);
+  await page.locator("#attachments").setInputFiles({
+    name: "submitted.pdf",
+    mimeType: "application/pdf",
+    buffer: Buffer.from("%PDF-1.4\nSynthetic submitted drawing"),
+  });
+  await installIntegrityMock(page);
+  await page.getByRole("button", { name: "Submit RFQ", exact: true }).click();
+  await page.waitForFunction(() => (window as IntegrityWindow).__rfqIntegrity?.count === 1);
+  await page
+    .locator("#rfq-submit-status")
+    .getByText(/RFQ attempt reference:/)
+    .waitFor();
+  const pendingReference = await page.locator("#rfq-submit-status").innerText();
+  const sentRequest = await page.evaluate(
+    () => (window as IntegrityWindow).__rfqIntegrity?.payload,
+  );
+  assert.ok(sentRequest);
+  assert.equal(sentRequest.email, "buyer@example.com");
+  assert.equal(sentRequest.company, "Synthetic Distributor");
+  assert.deepEqual(sentRequest.attachmentNames, ["submitted.pdf"]);
+  assert.ok(sentRequest.requirements.includes("Requested quantity: 125 pcs"));
+  assert.equal(
+    await page
+      .locator("fieldset input, fieldset textarea, fieldset select, fieldset button")
+      .evaluateAll((controls) => controls.every((control) => control.matches(":disabled"))),
+    true,
+    "Mutable RFQ and shortlist controls must stay disabled while the request is pending.",
+  );
+  const otherPage = await context.newPage();
+  await otherPage.goto(`${origin}/products`, { waitUntil: "networkidle" });
+  const changedList = [{ ...originalItem, requestedQuantity: "999 pcs" }, laterItem];
+  await otherPage.evaluate(({ key, items }) => localStorage.setItem(key, JSON.stringify(items)), {
+    key: storageKey,
+    items: changedList,
+  });
+  await page.getByText(laterItem.name, { exact: true }).waitFor();
+  assert.equal(await page.locator("#rfq-submit-status").innerText(), pendingReference);
+  await mkdir(".tmp/rfq-response-integrity", { recursive: true });
+  await page.screenshot({ path: ".tmp/rfq-response-integrity/pending.png", fullPage: true });
+  await page.evaluate((reference) => {
+    (window as IntegrityWindow).__rfqIntegrity?.resolve?.(
+      new Response(
+        JSON.stringify({
+          ok: true,
+          reference,
+          emailProviderAccepted: true,
+          buyerConfirmationProviderAccepted: true,
+          emailAttachmentCount: 1,
+        }),
+        {
+          status: 200,
+          headers: { "Content-Type": "application/json", "X-RFQ-Reference": reference },
+        },
+      ),
+    );
+  }, serverReference);
+  await page.getByText("Inquiry Submitted", { exact: true }).waitFor();
+  const submittedText = await page.locator("body").innerText();
+  assert.ok(submittedText.includes("Synthetic Distributor"));
+  assert.ok(submittedText.includes("buyer@example.com"));
+  assert.ok(submittedText.includes("submitted.pdf"));
+  assert.ok(submittedText.includes("Requested quantity: 125 pcs"));
+  assert.ok(!submittedText.includes(laterItem.name));
+  assert.ok(!submittedText.includes("999 pcs"));
+  const retainedList = await page.evaluate(
+    (key) => JSON.parse(localStorage.getItem(key) ?? "[]"),
+    storageKey,
+  );
+  assert.deepEqual(
+    retainedList.map((item: typeof originalItem) => item.sku),
+    changedList.map((item) => item.sku),
+  );
+  assert.equal(retainedList[0].requestedQuantity, "999 pcs");
+  await page.screenshot({ path: ".tmp/rfq-response-integrity/success.png", fullPage: true });
+
+  const failurePage = await context.newPage();
+  failurePage.on("pageerror", (error) => pageErrors.push(error.message));
+  await failurePage.goto(`${origin}/rfq`, { waitUntil: "networkidle" });
+  await fillValidForm(failurePage);
+  await installIntegrityMock(failurePage);
+  await failurePage.getByRole("button", { name: "Submit RFQ", exact: true }).click();
+  await failurePage.waitForFunction(() => (window as IntegrityWindow).__rfqIntegrity?.count === 1);
+  await failurePage
+    .locator("#rfq-submit-status")
+    .getByText(/RFQ attempt reference:/)
+    .waitFor();
+  const failedRequest = await failurePage.evaluate(
+    () => (window as IntegrityWindow).__rfqIntegrity?.payload,
+  );
+  assert.ok(failedRequest);
+  await otherPage.evaluate((key) => localStorage.setItem(key, "[]"), storageKey);
+  await failurePage.getByText("No products selected yet.", { exact: false }).waitFor();
+  await failurePage.evaluate((reference) => {
+    (window as IntegrityWindow).__rfqIntegrity?.resolve?.(
+      new Response(
+        JSON.stringify({ ok: false, reference, message: "Synthetic delivery failure." }),
+        {
+          status: 502,
+          headers: { "Content-Type": "application/json", "X-RFQ-Reference": reference },
+        },
+      ),
+    );
+  }, serverReference);
+  await failurePage.getByRole("alert").getByText("Synthetic delivery failure.").waitFor();
+  const fallback = await failurePage.locator("#rfq-fallback-details").inputValue();
+  assert.ok(fallback.includes(serverReference));
+  assert.ok(fallback.includes(failedRequest.requirements));
+  assert.equal(await failurePage.locator("#email").isEnabled(), true);
+  await failurePage.locator("#company").fill("Corrected Synthetic Distributor");
+  assert.equal(await failurePage.getByText(/RFQ attempt reference:/).count(), 0);
+  assert.equal(blockedPosts, 0, "Integrity scenarios must not send any real RFQ POST.");
+  assert.equal(
+    await failurePage.evaluate(() => (window as IntegrityWindow).__rfqIntegrity?.count),
+    1,
+  );
+  await context.close();
+  console.log(
+    "RFQ pending integrity: disabled controls, immutable summary, cross-tab list and failure snapshot passed.",
+  );
+}
+
 try {
   let ready = false;
   const deadline = Date.now() + 30_000;
@@ -417,6 +621,7 @@ try {
   await verifyRfqListHydrationGuard(browser);
   await verifyBuilderHydrationGuard(browser);
   await verifyAttachmentErrorDescription(browser);
+  await verifyPendingSubmissionIntegrity(browser);
   const context = await browser.newContext({ serviceWorkers: "block" });
   await context.route("**/*", async (route) => {
     const request = route.request();
@@ -470,16 +675,18 @@ try {
   await responsePage.evaluate(() => {
     type RfqMock = {
       count: number;
+      tokens: string[];
       mode: "pending" | "network" | "stall";
       resolve?: (response: Response) => void;
     };
     const testWindow = window as Window & { __rfqMock?: RfqMock };
-    const mock: RfqMock = { count: 0, mode: "pending" };
+    const mock: RfqMock = { count: 0, tokens: [], mode: "pending" };
     testWindow.__rfqMock = mock;
     const originalFetch = window.fetch.bind(window);
     window.fetch = (input, init) => {
       if (input === "/api/rfq" && init?.method === "POST") {
         mock.count++;
+        mock.tokens.push(String((init.body as FormData).get("submissionToken")));
         return mock.mode === "network"
           ? Promise.reject(new TypeError("Synthetic network failure"))
           : new Promise<Response>((resolve) => {
@@ -583,6 +790,16 @@ try {
     "A stalled protected fetch must not auto-resubmit.",
   );
   assert.equal(postCount, 0, "A stalled protected fetch must not reach a real RFQ POST.");
+  assert.equal(
+    await responsePage.evaluate(
+      () =>
+        new Set(
+          (window as unknown as Window & { __rfqMock: { tokens: string[] } }).__rfqMock.tokens,
+        ).size,
+    ),
+    1,
+    "Deliberate retries of the same unchanged payload must retain one idempotency token.",
+  );
   await responsePage.evaluate((reference) => {
     const mock = (
       window as unknown as Window & {

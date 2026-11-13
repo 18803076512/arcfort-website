@@ -136,15 +136,6 @@ function isConfigured(value: string | undefined) {
   return Boolean(value?.trim());
 }
 
-async function getResendMessageId(response: Response) {
-  try {
-    const body = (await response.json()) as { id?: unknown };
-    return typeof body.id === "string" ? body.id : null;
-  } catch {
-    return null;
-  }
-}
-
 function rfqResponse(
   reference: string,
   body: Record<string, unknown>,
@@ -327,7 +318,7 @@ async function sendEmailNotification(
     throw new Error("RFQ email notification failed.");
   }
 
-  const notificationId = await getResendMessageId(response);
+  const notificationId = response.messageId;
   let buyerConfirmationProviderAccepted = false;
   let buyerConfirmationId: string | null = null;
 
@@ -352,7 +343,7 @@ async function sendEmailNotification(
     buyerConfirmationProviderAccepted = buyerResponse.ok;
 
     if (buyerResponse.ok) {
-      buyerConfirmationId = await getResendMessageId(buyerResponse);
+      buyerConfirmationId = buyerResponse.messageId;
     }
   } catch (error) {
     console.error(

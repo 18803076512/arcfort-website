@@ -4,6 +4,38 @@ This append-only log records substantial Codex work so future sessions can under
 why it changed and which risks remain. Add the newest entry at the top, below this introduction. Do
 not include secrets, buyer PII, private prospect data or unconfirmed claims.
 
+## 2026-11-13 - Bound Provider Bodies And Preserve Submitted RFQ Summaries
+
+- **Task:** Repair two independently reproduced RFQ defects: the email-provider timer stopped at
+  response headers before an unbounded optional-ID body read; pending forms remained editable and
+  their success summary could display different contact, product or attachment data from the request.
+- **Files Changed:** Provider helper, RFQ route, shared RFQ form, provider/browser regressions,
+  delivery knowledge record and this log. Public URLs, product facts and commercial rules are unchanged.
+- **Implementation:** One 12-second provider deadline covers headers and optional message-ID reads.
+  Observed 2xx acceptance survives malformed/stalled optional bodies with a null ID; pre-header
+  timeout remains unconfirmed. The form locks mutable controls during submission and keeps success
+  and reference-bearing failure details tied to an in-memory attempt snapshot. Automatic shortlist
+  updates retain the attempt reference/warning, and success preserves newer cross-tab shortlist work.
+- **Validation:** Independent code/semantics reviews, RFQ constraints/email/provider tests, full
+  mocked browser acceptance, production build, full lint/typecheck and performance budgets passed.
+  Browser controls cover delayed hydration at mobile/desktop sizes and the new 390px pending,
+  cross-tab, success/failure snapshot and same-payload retry cases with zero real RFQ POSTs. Synthetic
+  pending/success screenshots under `.tmp/rfq-response-integrity/` were visually reviewed. Final
+  formatting, diff and equivalent repository secret checks also passed.
+- **Known Issues:** These reproductions do not establish the old no-reference RFQ's cause or prove
+  sales/buyer inbox placement or sales attachment receipt. Native GSC, GA4, DMARC, credential
+  rotation and exact-product evidence remain separate gates. Intermittent private Console refresh
+  timeouts remain unproven and are not repaired by this RFQ batch.
+- **Reusable Knowledge Added:** Provider status and optional receipt parsing have distinct meanings;
+  a bounded body read must not erase known acceptance. Summary and reconciliation details must
+  reflect the submitted snapshot even when a global draft changes elsewhere. Snapshots stay in
+  component memory, outside analytics, URLs, logs and persistent storage.
+- **Deployment:** Local RFQ candidate at this entry. The user's standing session authorization
+  covers this scoped `18803076512/arcfort-website` PR/main and `www.arcfortweld.com` Production path;
+  it does not cover a real RFQ send, DNS/provider/account changes or a new paid service.
+- **Next Recommended Action:** Run clean PR CI, verify the exact Production deployment and exercise
+  the published pending/snapshot flow with synthetic fetch interception and a GET/HEAD-only guard.
+
 ## 2026-11-13 - Observe Document Evidence Refresh Failures
 
 - **Task:** Close the missing observation at evidence registration after main CI `43391855523`

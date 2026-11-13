@@ -16,6 +16,7 @@ import { siteConfig } from "@/lib/content/site";
 import {
   buildRfqProductRequirements,
   clearRfqList,
+  readRfqList,
   removeRfqListItem,
   rfqLineItemFieldLimits,
   type RfqListItem,
@@ -71,6 +72,13 @@ type RfqResponse = {
   reference?: string;
   message?: string;
   errors?: FormErrors;
+};
+
+type RfqSubmissionSnapshot = {
+  values: RfqFormValues;
+  productRequirements: string;
+  quantity: string;
+  attachmentSummary: string;
 };
 
 const initialValues: RfqFormValues = {
@@ -196,7 +204,8 @@ export function RfqForm({
     submissionResult?.buyerConfirmationDelivered ??
     false;
   const [attemptReference, setAttemptReference] = useState("");
-  const [submittedRequirements, setSubmittedRequirements] = useState("");
+  const [submittedSummary, setSubmittedSummary] = useState<RfqSubmissionSnapshot | null>(null);
+  const [attemptSnapshot, setAttemptSnapshot] = useState<RfqSubmissionSnapshot | null>(null);
   const submissionAttemptRef = useRef<RfqSubmissionAttempt | null>(null);
   const formStartTrackedRef = useRef(false);
   const selectedProducts = useRfqList();
@@ -242,17 +251,15 @@ export function RfqForm({
     }
 
     setErrors((currentErrors) => {
-      if (!currentErrors.productRequirements && !currentErrors.submission) {
+      if (!currentErrors.productRequirements) {
         return currentErrors;
       }
 
       return {
         ...currentErrors,
         productRequirements: undefined,
-        submission: undefined,
       };
     });
-    setAttemptReference("");
   }, [selectedProducts.length]);
 
   function trackRfqFormStart(
@@ -447,6 +454,13 @@ export function RfqForm({
     }
 
     const productRequirements = productRequirementsForSubmission;
+    const submittedProducts = selectedProducts.map((item) => ({ ...item }));
+    const submissionSnapshot: RfqSubmissionSnapshot = {
+      values: { ...values },
+      productRequirements,
+      quantity: quantityForSubmission,
+      attachmentSummary: fileSummary,
+    };
 
     setIsSubmitting(true);
     let requestStarted = false;
@@ -492,6 +506,7 @@ export function RfqForm({
       );
       submissionAttemptRef.current = submissionAttempt;
       preparedReference = createRfqReferenceFromSubmissionToken(submissionAttempt.token) ?? "";
+      setAttemptSnapshot(submissionSnapshot);
       setAttemptReference(preparedReference);
 
       formData.append("submissionToken", submissionAttempt.token);
@@ -550,17 +565,20 @@ export function RfqForm({
         return;
       }
 
-      const analyticsItems = selectedProducts.map((item) => ({
+      const analyticsItems = submittedProducts.map((item) => ({
         item_id: item.sku,
         item_name: item.name,
         item_brand: "ArcFort Weld",
         item_category: item.category,
       }));
 
-      setSubmittedRequirements(productRequirements);
+      setSubmittedSummary(submissionSnapshot);
       setSubmissionResult(result);
       setIsSubmitted(true);
-      clearRfqList();
+      // Preserve newer shortlist work from another page or tab while this request was pending.
+      if (JSON.stringify(readRfqList()) === JSON.stringify(submittedProducts)) {
+        clearRfqList();
+      }
       const emailProviderAccepted = Boolean(result.emailProviderAccepted ?? result.emailDelivered);
       const buyerConfirmationProviderAccepted = Boolean(
         result.buyerConfirmationProviderAccepted ?? result.buyerConfirmationDelivered,
@@ -613,28 +631,32 @@ export function RfqForm({
     }
   }
 
+  const fallbackValues = attemptReference && attemptSnapshot ? attemptSnapshot.values : values;
+  const fallbackQuantity =
+    attemptReference && attemptSnapshot ? attemptSnapshot.quantity : quantityForSubmission;
+  const fallbackRequirements =
+    attemptReference && attemptSnapshot
+      ? attemptSnapshot.productRequirements
+      : productRequirementsForSubmission;
   const fallbackMessage = [
     ...(attemptReference
       ? [`RFQ attempt reference (delivery unconfirmed): ${attemptReference}`, ""]
       : []),
-    `Name: ${values.name || "Not provided"}`,
-    `Company: ${values.company || "Not provided"}`,
-    `Email: ${values.email || "Not provided"}`,
-    `WhatsApp: ${values.whatsapp || "Not provided"}`,
-    `Country: ${values.country || "Not provided"}`,
-    `Quantity: ${quantityForSubmission || "Not provided"}`,
+    `Name: ${fallbackValues.name || "Not provided"}`,
+    `Company: ${fallbackValues.company || "Not provided"}`,
+    `Email: ${fallbackValues.email || "Not provided"}`,
+    `WhatsApp: ${fallbackValues.whatsapp || "Not provided"}`,
+    `Country: ${fallbackValues.country || "Not provided"}`,
+    `Quantity: ${fallbackQuantity || "Not provided"}`,
     "",
     "Product Requirements:",
-    productRequirementsForSubmission || "Not provided",
+    fallbackRequirements || "Not provided",
     "",
     "Message:",
-    values.message.trim() || "No additional message.",
+    fallbackValues.message.trim() || "No additional message.",
   ].join("\n");
 
-  if (isSubmitted) {
-    const submittedProductRequirements =
-      submittedRequirements || values.productRequirements || "Product details sent with RFQ.";
-
+  if (isSubmitted && submittedSummary) {
     return (
       <div className="border border-slate-200 bg-white p-6 shadow-sm sm:p-8">
         <div className="border-l-4 border-arc-signal bg-arc-frost p-5">
@@ -683,24 +705,29 @@ export function RfqForm({
           ) : null}
           {submittedBuyerConfirmationProviderAccepted ? (
             <p className="mt-2 text-sm leading-6 text-slate-700">
-              A confirmation email was requested for {values.email}. If it does not arrive, use your
-              RFQ reference when contacting us.
+              A confirmation email was requested for {submittedSummary.values.email}. If it does not
+              arrive, use your RFQ reference when contacting us.
             </p>
           ) : null}
         </div>
         <div className="mt-6 grid gap-4 text-sm text-slate-700">
           <p>
-            <span className="font-bold text-arc-midnight">Company:</span> {values.company}
+            <span className="font-bold text-arc-midnight">Company:</span>{" "}
+            {submittedSummary.values.company}
           </p>
           <p>
-            <span className="font-bold text-arc-midnight">Email:</span> {values.email}
+            <span className="font-bold text-arc-midnight">Email:</span>{" "}
+            {submittedSummary.values.email}
           </p>
           <div>
             <span className="font-bold text-arc-midnight">Products:</span>
-            <p className="mt-1 whitespace-pre-line leading-6">{submittedProductRequirements}</p>
+            <p className="mt-1 whitespace-pre-line leading-6">
+              {submittedSummary.productRequirements}
+            </p>
           </div>
           <p>
-            <span className="font-bold text-arc-midnight">Attachments:</span> {fileSummary}
+            <span className="font-bold text-arc-midnight">Attachments:</span>{" "}
+            {submittedSummary.attachmentSummary}
           </p>
         </div>
         <button
@@ -714,7 +741,8 @@ export function RfqForm({
             setErrors({});
             setSubmissionResult(null);
             setAttemptReference("");
-            setSubmittedRequirements("");
+            setAttemptSnapshot(null);
+            setSubmittedSummary(null);
             submissionAttemptRef.current = null;
             setIsSubmitted(false);
           }}
@@ -762,7 +790,7 @@ export function RfqForm({
           now.
         </p>
       </div>
-      <fieldset disabled={!isInteractive} className="m-0 min-w-0 border-0 p-0">
+      <fieldset disabled={!isInteractive || isSubmitting} className="m-0 min-w-0 border-0 p-0">
         <label className="sr-only" htmlFor="website">
           Website
         </label>
