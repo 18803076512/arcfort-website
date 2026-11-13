@@ -1,6 +1,6 @@
 # RFQ Delivery And Qualification Baseline
 
-Evidence baseline: 2026-08-29; repository workflow review 2026-10-29
+Evidence baseline: 2026-08-29; repository workflow review 2026-11-13
 
 ## Purpose
 
@@ -31,7 +31,8 @@ technical review.
   `emailProviderAccepted` and `buyerConfirmationProviderAccepted` state this directly; legacy
   `emailDelivered` and `buyerConfirmationDelivered` are compatible aliases, not mailbox evidence.
 - Provider acceptance was last recorded on 2026-07-26.
-- Production RFQ read-only status was last checked on 2026-11-07.
+- The production RFQ read-only check date is maintained in
+  `docs/operations/acquisition-production-evidence.json`; it does not refresh mailbox evidence.
 - Sales-mailbox placement: not externally confirmed.
 - Buyer-mailbox placement: not externally confirmed.
 - Optional Supabase inquiry storage: not configured; email remains the active delivery path.
@@ -54,6 +55,32 @@ Provider acceptance is not proof of inbox placement. The website must not claim 
 delivery until one controlled browser submission produces the same inquiry reference in the sales
 mailbox and buyer confirmation mailbox, and its selected test attachment is present in the sales
 message. These are separately recorded outcomes.
+
+## Provider Response Deadline
+
+The email helper keeps one 12-second deadline across response headers and the optional provider
+message-ID body. Previously the timer ended at headers, leaving `response.json()` able to wait
+without a deadline. A synthetic stalled 2xx body reproduced that gap; it is not evidence of what
+happened to the old production RFQ.
+
+Once a 2xx response has been observed within the deadline, malformed or stalled optional ID data
+cannot undo that provider acceptance. The helper returns acceptance with a null message ID when
+necessary, allowing the route to continue. A timeout before response headers remains an unconfirmed
+outcome. Sales and buyer requests retain separate idempotency keys; none of these states proves
+mailbox placement or attachment receipt.
+
+## Pending Submission And Summary Integrity
+
+The form captures the submitted contact, product, quantity and attachment summary in component
+memory. Mutable form and shortlist controls stay disabled while the request is pending. The success
+summary and any reference-bearing failure details use that attempt's snapshot, so later draft
+changes cannot appear to have been sent with the earlier request.
+
+Automatic shortlist synchronization preserves the attempt reference and a submission failure
+warning. Deliberate local edits retain the existing draft-edit behavior that clears those states.
+On success, the form clears the global shortlist only if it still matches the submitted list; work
+added or edited on another page or tab remains available. Snapshots are not added to analytics,
+URLs, logs or persistent storage.
 
 ## Qualified Inquiry Minimum
 
