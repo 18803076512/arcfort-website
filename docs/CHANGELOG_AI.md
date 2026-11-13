@@ -4,6 +4,31 @@ This append-only log records substantial Codex work so future sessions can under
 why it changed and which risks remain. Add the newest entry at the top, below this introduction. Do
 not include secrets, buyer PII, private prospect data or unconfirmed claims.
 
+## 2026-11-13 - Observe Document Reference Refresh Failures
+
+- **Task:** Close a diagnostic gap after PR #154's first main database browser job timed out while
+  waiting for a registered document reference to appear. Its command POST had succeeded; the cause
+  of the subsequent refresh timeout remains unknown.
+- **Files Changed:** Document browser acceptance harness and this log. The harness now distinguishes
+  first/version registration and reports bounded refresh GET traffic, database row presence and UI
+  state only on failure. It preserves the original wait, assertions and acting-browser refresh.
+- **Validation:** Independent review, TypeScript, focused ESLint, Prettier, diff hygiene and
+  equivalent repository secret scanning passed. The new candidate still requires clean PR quality
+  and isolated database CI; no local native database acceptance result is claimed.
+- **Known Issues:** PR #154's PR CI `43333616235` passed both jobs; merge `c29108d` deployed as
+  Production `7753263193` and passed the read-only production checks. Main CI `43335017225` passed
+  quality, then its database job failed at the document list refresh with 78/78 command
+  requests/responses, zero request failures and zero page errors. One unchanged database-job rerun
+  passed. This does not prove the refresh cause is fixed or shared with earlier media timeouts.
+- **Reusable Knowledge Added:** A successful command response does not establish that the acting
+  browser applied fresh server data. Capture refresh traffic and database/UI states without logging
+  document identifiers, source text, bytes, URLs, account details or credentials.
+- **Deployment:** Local test-only candidate at this entry. The user's standing session authorization
+  covers this scoped `18803076512/arcfort-website` PR/main and `www.arcfortweld.com` Production path;
+  it does not cover real RFQ sends, paid services or external-account changes.
+- **Next Recommended Action:** Run clean PR CI, verify the merged deployment and use any future
+  bounded failure evidence to choose a reproducible application fix.
+
 ## 2026-11-12 - Refresh Post-Release Production Evidence
 
 - **Task:** Record PR #153's verified Production deployment and November 12 read-only health check;
