@@ -4,6 +4,35 @@ This append-only log records substantial Codex work so future sessions can under
 why it changed and which risks remain. Add the newest entry at the top, below this introduction. Do
 not include secrets, buyer PII, private prospect data or unconfirmed claims.
 
+## 2026-11-12 - Refresh Post-Release Production Evidence
+
+- **Task:** Record PR #153's verified Production deployment and November 12 read-only health check;
+  bring the acquisition and Goal reports forward without refreshing unrelated external evidence.
+- **Files Changed:** Dated acquisition production evidence, generated acquisition and Goal reports,
+  ecosystem execution plan and this log. Public routes, product data, RFQ behavior, DNS, provider
+  and account settings are unchanged.
+- **Data / Visual / SEO Impact:** Advanced only the production, RFQ status, public DNS and security
+  header check dates to 2026-11-12. The 88-URL sitemap and 82/82 HTML, 40/40 inquiry-path audits
+  passed. Historical GSC, IndexNow and provider dates, inbox/attachment states, credential rotation,
+  GA4 and product-rights evidence remain unchanged. No visual or public SEO change.
+- **Validation:** PR #153 CI `43330481598` passed quality and isolated database jobs. Production
+  deployment `7752864129` for `f1165ba` succeeded at 23:48:06 UTC; the post-deployment read-only
+  RFQ, sender-domain, SEO and security-header checks passed without an RFQ POST. The main CI run
+  `43331737236` passed both quality and isolated database jobs. Acquisition and Goal reports
+  regenerated; local build, lint, typecheck, GSC freshness, RFQ inbox evidence, formatting,
+  cross-reference, diff and equivalent secret checks passed.
+- **Known Issues:** GSC Wizard returned `payment_required` / `subscription_required` and Drive held
+  no newer native export. This is an access limitation, not a search or indexing result. Native GSC
+  data still ends 2026-08-09; sales/buyer inbox and sales attachment delivery, the old no-reference
+  RFQ, DMARC, GA4 and exact-product evidence remain unresolved.
+- **Reusable Knowledge Added:** Public crawl and configuration checks have their own review date;
+  source systems and human receipt evidence keep their original dates and null states.
+- **Deployment:** Local evidence candidate at this entry. The user's standing session authorization
+  covers the same `18803076512/arcfort-website` PR/main and `www.arcfortweld.com` Production path;
+  no real RFQ, paid subscription or external-account change is authorized.
+- **Next Recommended Action:** Validate and publish this dated record, then obtain native GSC,
+  mailbox, sender-credential and exact-SKU evidence from their owners.
+
 ## 2026-11-12 - Wait For RFQ Attachment Error Focus In Browser Acceptance
 
 - **Task:** PR #153's quality CI rendered the invalid-attachment error and its input association,
