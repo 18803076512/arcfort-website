@@ -4,6 +4,35 @@ This append-only log records substantial Codex work so future sessions can under
 why it changed and which risks remain. Add the newest entry at the top, below this introduction. Do
 not include secrets, buyer PII, private prospect data or unconfirmed claims.
 
+## 2026-11-13 - Observe Document Evidence Refresh Failures
+
+- **Task:** Close the missing observation at evidence registration after main CI `43391855523`
+  timed out waiting for a new document-evidence checkbox. Its command response succeeded; the
+  first job reported 84/84 command requests/responses and zero page errors. An unchanged database
+  job rerun passed, so the cause remains unknown.
+- **Files Changed:** Document browser acceptance harness and this log. Static rights, scope and
+  contradiction checkpoints distinguish form input, command response and review refresh. A small
+  shared observer records refresh GET counts and at most eight status codes for reference,
+  original-upload and evidence-registration checks.
+- **Validation:** Independent review, local formatting, focused ESLint, full TypeScript, diff
+  hygiene and equivalent secret checks passed. Clean PR quality and isolated database CI must
+  still exercise the real browser and database flow; no local native acceptance result is claimed.
+- **Known Issues:** Command acceptance does not prove that the browser parsed the response or
+  applied new server data. The new failure-only snapshot reports the fixed success-message and
+  checkbox presence, plus bounded database source presence. No application cause or cache defect
+  is established by the earlier timeout or passing rerun.
+- **Reusable Knowledge Added:** Refresh observations cover the review path as well as the library
+  path. Logs retain only an allowlisted evidence kind, booleans, counts and status codes; they omit
+  document/source IDs, content, URLs, bytes and account details. Diagnostic errors preserve the
+  original failure, and scoped listeners are removed in `finally`.
+- **Deployment:** Local test-only candidate at this entry. The user's standing session
+  authorization covers the scoped `18803076512/arcfort-website` PR/main and
+  `www.arcfortweld.com` Production path. This batch excludes real RFQ sends, another Airtable
+  data batch, Search Console requests and DNS/provider changes.
+- **Next Recommended Action:** Validate and release the candidate through PR/CI, then use any
+  future failure snapshot to choose a reproducible application repair without forced reloads or
+  weaker browser assertions.
+
 ## 2026-11-13 - Retain Native Indexing Alerts And Airtable Lineage Reconciliation
 
 - **Task:** Preserve the newly reviewed November 9 noindex/404 notification, its missing Google URL
