@@ -3,6 +3,9 @@
 Reviewed: 2026-10-28. This workflow separates technical crawl readiness, search-engine notification,
 and Google-reported indexing. Passing one stage does not prove the next.
 
+Latest notification triage: [2026-11-13](../knowledge-base/seo/indexing-alert-triage-2026-11-13.md).
+The November 9 noindex/404 notice and October redirect-error notice still lack affected-URL examples.
+
 ## Canonical Signals And Release Gate
 
 - Site: `https://www.arcfortweld.com`
@@ -35,8 +38,10 @@ merely because the HTML verification tag is absent. Never commit credentials or 
 1. Read the current Page indexing report and the existing sitemap's fetch/error status. Submit the
    canonical sitemap only if missing or an actual sitemap problem requires it and authorization
    covers that Search Console write.
-2. Export exact URLs from **Redirect error**, **Discovered - currently not indexed**, and
-   **Crawled - currently not indexed** separately. Keep report date, count and validation status.
+2. Export exact URLs from **Excluded by noindex**, **Not found (404)**, **Redirect error**,
+   **Discovered - currently not indexed**, and **Crawled - currently not indexed** separately.
+   Keep report date, count and validation status. Match each URL to its intended role before
+   treating an exclusion or missing page as a defect.
    A normal old URL that redirects is not automatically an error.
 3. Inspect the affected URLs and a small commercial-priority sample. The existing eight-URL queue
    is in `knowledge-base/seo/indexing-follow-up-2026-10-25.md`; it is not the missing list of 48 URLs.
@@ -115,8 +120,9 @@ actual GitHub runs may be delayed or skipped; no new task or paid service is req
 is not automatically scheduled or completed by this tool.
 
 For the October 2026 notice, the 48 validated URLs and the separate Redirect error examples remain
-missing. The next highest-value action is to obtain those exact Google report exports and match them
-to the deployed fixes. Product content improvements remain gated by the five-SKU evidence plan in
+missing. The November 9 noindex/404 notice likewise contains no example URLs. The next highest-value
+action is to obtain those exact Google report exports and match them to the intended URL behavior
+and deployed fixes. Product content improvements remain gated by the five-SKU evidence plan in
 `knowledge-base/seo/website-ecosystem-2026-10-25.md`.
 
 ## References

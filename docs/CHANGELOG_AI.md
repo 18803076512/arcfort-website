@@ -4,6 +4,38 @@ This append-only log records substantial Codex work so future sessions can under
 why it changed and which risks remain. Add the newest entry at the top, below this introduction. Do
 not include secrets, buyer PII, private prospect data or unconfirmed claims.
 
+## 2026-11-13 - Retain Native Indexing Alerts And Airtable Lineage Reconciliation
+
+- **Task:** Preserve the newly reviewed November 9 noindex/404 notification, its missing Google URL
+  evidence and the completed six-field private intake reconciliation in the authoritative handoff.
+- **Files Changed:** New SEO alert triage record, indexing workflow, ecosystem operating loop,
+  Airtable intake documentation and this log. No public runtime, routes, metadata, product facts,
+  publication states or generated production-evidence dates changed.
+- **Validation:** The current checkpoint is PR #155 merge `9665fa5`; main CI `43383773597` passed
+  both jobs and Production `7759491917` succeeded. The read-only website audit passed 88 sitemap
+  URLs, 82/82 HTML and 40/40 inquiry paths. An additional four-origin/eight-path check passed 32/32
+  redirect chains with expected targets and final 200 responses. Independent document review,
+  formatting, cross-references, diff hygiene and equivalent secret scanning passed. This handoff
+  does not change executable code or generated reports.
+- **Known Issues:** Native notifications contain no affected URLs or crawl dates. Healthy current
+  HTTP checks do not close Google's noindex, 404 or redirect-error issues. Native Performance data
+  still ends 2026-08-09; mailbox delivery, sender-credential rotation, DMARC, GA4 and strict product
+  evidence remain separate unresolved gates.
+- **Reusable Knowledge Added:** Exact URL, issue reason, last crawl, validation and canonical data
+  must be matched to public, filtered, private, draft or historical intent before a repair decision.
+  The host/path sample documents observed redirect behavior without claiming a Google result.
+- **External Write:** The user explicitly approved only the two-record/six-field Airtable patch.
+  The pre-write values matched and independent read-back at 07:57:52 UTC verified all six new values
+  and the other 22 fields unchanged. The restored reviewer/date describe historical local-file
+  lineage; rights, exact match and review states remain unconfirmed. Private base/account IDs and
+  mail headers, recipients and tracking links are omitted from the repository.
+- **Deployment:** Local documentation candidate at this entry. The user's standing session
+  authorization covers this same `18803076512/arcfort-website` PR/main and
+  `www.arcfortweld.com` Production path. This batch does not include Search Console requests,
+  another Airtable data batch, DNS/provider changes or real RFQ sends.
+- **Next Recommended Action:** Publish the reviewed handoff, obtain native affected-URL examples
+  and repair a reproduced mismatch while retaining deliberate exclusions and evidence gates.
+
 ## 2026-11-13 - Observe Document Reference Refresh Failures
 
 - **Task:** Close a diagnostic gap after PR #154's first main database browser job timed out while
