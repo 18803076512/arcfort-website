@@ -100,6 +100,19 @@ export async function runDocumentWorkingBrowser(input: Input) {
   const dialog = (event: Dialog) =>
     event.type() === "beforeunload" ? void event.accept() : void event.dismiss();
   for (const participant of [owner, reviewer, viewer]) participant.page.on("dialog", dialog);
+  const boundedDiagnostic = async <T>(work: Promise<T>, deadlineValue: T): Promise<T> => {
+    let timer: ReturnType<typeof setTimeout> | undefined;
+    try {
+      return await Promise.race([
+        work,
+        new Promise<T>((resolve) => {
+          timer = setTimeout(() => resolve(deadlineValue), 2500);
+        }),
+      ]);
+    } finally {
+      if (timer) clearTimeout(timer);
+    }
+  };
   const data = async () => {
     const value = await readDocumentReview(owner.client, variantId, documentId, 1, 1);
     assert.ok(value);
@@ -155,6 +168,8 @@ export async function runDocumentWorkingBrowser(input: Input) {
     return response;
   }
   async function register(next = false) {
+    const step = next ? "version" : "first";
+    checkpoint(next ? "documents: version reference form" : "documents: first reference form");
     if (next) await button(owner.page, `New version of ${documentTestCopy.title}`).click();
     for (const [name, value] of [
       ["Document title", documentTestCopy.title + (next ? " version 2" : "")],
@@ -164,17 +179,110 @@ export async function runDocumentWorkingBrowser(input: Input) {
       ["Exact-SKU scope", documentTestCopy.scope_note],
     ])
       await field(owner.page, name).fill(value);
-    const sent = await command(owner.page, button(owner.page, "Register reference"));
-    const receipt = success(sent.result);
-    assert.ok(receipt.document_id);
-    await owner.page
+    const row = owner.page
       .getByRole("table", { name: "Document references" })
-      .getByText(documentTestCopy.title + (next ? " version 2" : ""), { exact: true })
-      .waitFor();
-    assert.equal(sent.request.action, "document_reference");
-    if (sent.request.action === "document_reference")
-      assert.equal(sent.request.prior_document_id, next ? documentId : null);
-    return { id: receipt.document_id, request: sent.request, result: sent.result };
+      .getByText(documentTestCopy.title + (next ? " version 2" : ""), { exact: true });
+    const refreshTraffic = {
+      requests: 0,
+      responses: 0,
+      failures: 0,
+      responseStatuses: [] as number[],
+    };
+    const isLibraryRefresh = (request: BrowserRequest) => {
+      const url = new URL(request.url());
+      return (
+        request.method() === "GET" &&
+        url.origin === browserOrigin &&
+        url.pathname === libraryPath &&
+        (url.searchParams.has("_rsc") || request.headers().rsc === "1")
+      );
+    };
+    const onRefreshRequest = (request: BrowserRequest) => {
+      if (isLibraryRefresh(request)) refreshTraffic.requests++;
+    };
+    const onRefreshResponse = (response: BrowserResponse) => {
+      if (isLibraryRefresh(response.request())) {
+        refreshTraffic.responses++;
+        if (refreshTraffic.responseStatuses.length < 8)
+          refreshTraffic.responseStatuses.push(response.status());
+      }
+    };
+    const onRefreshFailure = (request: BrowserRequest) => {
+      if (isLibraryRefresh(request)) refreshTraffic.failures++;
+    };
+    owner.page.on("request", onRefreshRequest);
+    owner.page.on("response", onRefreshResponse);
+    owner.page.on("requestfailed", onRefreshFailure);
+    let receiptId: string | null = null;
+    try {
+      checkpoint(
+        next ? "documents: version reference command" : "documents: first reference command",
+      );
+      const sent = await command(owner.page, button(owner.page, "Register reference"));
+      const receipt = success(sent.result);
+      assert.ok(receipt.document_id);
+      receiptId = receipt.document_id;
+      checkpoint(
+        next
+          ? "documents: version reference library refresh"
+          : "documents: first reference library refresh",
+      );
+      await row.waitFor();
+      assert.equal(sent.request.action, "document_reference");
+      if (sent.request.action === "document_reference")
+        assert.equal(sent.request.prior_document_id, next ? documentId : null);
+      return { id: receipt.document_id, request: sent.request, result: sent.result };
+    } catch (failure) {
+      let databaseState: {
+        state: "ok" | "missing" | "timeout" | "unavailable";
+        total: number | null;
+        rowPresent: boolean | null;
+      } = { state: "unavailable", total: null, rowPresent: null };
+      try {
+        databaseState = await boundedDiagnostic(
+          readDocumentLibrary(owner.client, variantId, 1).then((current) => ({
+            state: current ? ("ok" as const) : ("missing" as const),
+            total: current ? Math.min(current.total, 25) : null,
+            rowPresent: receiptId
+              ? (current?.items.some((item) => item.document_id === receiptId) ?? false)
+              : null,
+          })),
+          { state: "timeout", total: null, rowPresent: null },
+        );
+      } catch {
+        // A diagnostic read must not replace the original browser failure.
+      }
+      const visible = async (locator: Locator) =>
+        boundedDiagnostic<boolean | null>(locator.isVisible(), null).catch(() => null);
+      const [successMessage, rowPresent, alertPresent] = await Promise.all([
+        visible(
+          owner.page.getByRole("status").filter({
+            hasText: "Reference registered. Original file and review pending.",
+          }),
+        ),
+        visible(row),
+        visible(owner.page.getByRole("alert")),
+      ]);
+      try {
+        console.error(
+          JSON.stringify({
+            phase: "document reference refresh diagnostic",
+            step,
+            receiptKnown: receiptId !== null,
+            databaseState,
+            ui: { successMessage, rowPresent, alertPresent },
+            refreshTraffic,
+          }),
+        );
+      } catch {
+        // Diagnostic output cannot replace the original browser failure.
+      }
+      throw failure;
+    } finally {
+      owner.page.off("request", onRefreshRequest);
+      owner.page.off("response", onRefreshResponse);
+      owner.page.off("requestfailed", onRefreshFailure);
+    }
   }
   async function record(kind: "rights" | "scope" | "contradiction") {
     const copy = documentTestSource(kind);
@@ -376,19 +484,6 @@ export async function runDocumentWorkingBrowser(input: Input) {
       .filter({ hasText: /^Upload recorded/ })
       .waitFor();
   } catch (failure) {
-    const boundedDiagnostic = async <T>(work: Promise<T>, deadlineValue: T): Promise<T> => {
-      let timer: ReturnType<typeof setTimeout> | undefined;
-      try {
-        return await Promise.race([
-          work,
-          new Promise<T>((resolve) => {
-            timer = setTimeout(() => resolve(deadlineValue), 2500);
-          }),
-        ]);
-      } finally {
-        if (timer) clearTimeout(timer);
-      }
-    };
     let databaseState: "timeout" | "unavailable" | "not_found" | DocumentRow["upload_state"] =
       "unavailable";
     try {
