@@ -1,5 +1,5 @@
 {
-  "asOf": "2026-11-12",
+  "asOf": "2026-11-14",
   "production": {
     "url": "https://www.arcfortweld.com",
     "deploymentVerified": true,
@@ -20,8 +20,8 @@
     "buyerMailboxPlacementConfirmed": null,
     "salesAttachmentPresentConfirmed": null,
     "inboxVerification": {
-      "submittedReference": null,
-      "submittedAt": null,
+      "submittedReference": "AF-RFQ-20261114-61AA6680",
+      "submittedAt": "2026-11-14T12:48:50.047Z",
       "sales": {
         "observedReference": null,
         "receivedAt": null,
