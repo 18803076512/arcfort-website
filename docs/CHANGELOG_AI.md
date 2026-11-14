@@ -4,6 +4,34 @@ This append-only log records substantial Codex work so future sessions can under
 why it changed and which risks remain. Add the newest entry at the top, below this introduction. Do
 not include secrets, buyer PII, private prospect data or unconfirmed claims.
 
+## 2026-11-14 - Correlate Document Refresh Diagnostics By Request
+
+- **Task:** Correct the observer ambiguity exposed by PR #159 main CI's document-upload timeout.
+  Upload HTTP 200 and database state `recorded` were observed, but the table stayed stale; the
+  unchanged failed-job rerun passed and the application cause remains unknown.
+- **Files Changed:** Test-only refresh observer, no-network regression, document browser harness,
+  npm/CI wiring, reusable validation knowledge and this log. Application and public website behavior
+  are outside this patch; no production RFQ is sent by these changes.
+- **Implementation:** Only request instances started inside the observation window enter active
+  counters/samples; earlier matching late events are separate. Header status, completion and failure
+  remain distinct. Eight bounded samples contain ordinals, statuses and allowlisted failure
+  categories. Component-scoped alerts exclude Next's route announcer, and stop removes all listeners.
+- **Validation:** The focused regression reproduces the old mixed-request inference and covers
+  same-request 200/failure, completion, unrelated traffic, privacy bounds and cleanup. It passed,
+  together with focused ESLint, full type checking, formatting, diff hygiene and independent review.
+  Clean PR/main CI must still exercise the native browser/database integration.
+- **Known Issues:** This repairs diagnostic attribution only. Neither a finished network request nor
+  an unchanged successful rerun proves that React applied fresh data or that the intermittent refresh
+  cause is fixed. RFQ dual-mailbox/attachment verification, DMARC, credential rotation, current GSC,
+  GA4 and exact-product evidence remain separate gates.
+- **Deployment:** Local candidate at this entry. Standing session authorization covers this scoped
+  `18803076512/arcfort-website` PR/main and `www.arcfortweld.com` deployment path. It does not cover
+  another real RFQ send or provider/account change. The separate owner-mobile RFQ fixture remains
+  private, prepared and unsubmitted pending confirmation of that new case.
+- **Next Recommended Action:** Complete exact-candidate CI and deployment verification, then use
+  any future correlated failure snapshot to select a reproducible repair without test-side reloads
+  or a longer timeout. Continue the ordinary-mobile-browser RFQ handoff separately.
+
 ## 2026-11-14 - Retain The Controlled RFQ Browser Rejection
 
 - **Task:** Execute the owner's separately approved one-submit internal delivery test and preserve

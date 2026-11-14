@@ -65,6 +65,7 @@
     "console:documents:readiness:test": "node --experimental-strip-types scripts/console/test-document-readiness.ts",
     "console:documents:readiness:ui:test": "node scripts/console/test-document-readiness-browser.mjs",
     "console:documents:acceptance:guards": "node --experimental-strip-types scripts/console/test-document-acceptance.ts",
+    "console:documents:refresh:test": "node --experimental-strip-types scripts/console/test-document-refresh-observer.ts",
     "console:originals:upload:test": "node --conditions=react-server --experimental-strip-types scripts/console/test-original-upload.ts",
     "console:originals:inspect:test": "node --conditions=react-server --experimental-strip-types scripts/console/test-original-inspection.ts",
     "console:originals:ui:test": "node scripts/console/test-original-browser.mjs",
