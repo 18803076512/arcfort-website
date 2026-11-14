@@ -8,8 +8,8 @@ import type {
   Locator,
   Page,
   Request as BrowserRequest,
-  Response as BrowserResponse,
 } from "./browser-runtime/node_modules/playwright/index.js";
+import { observeDocumentRefresh } from "./document-refresh-observer.ts";
 import type { ConsoleClient } from "../../lib/console/client.ts";
 import { executeConsoleCommand } from "../../lib/console/commands.ts";
 import { readDocumentLibrary, type DocumentRow } from "../../lib/console/documents.ts";
@@ -113,41 +113,8 @@ export async function runDocumentWorkingBrowser(input: Input) {
       if (timer) clearTimeout(timer);
     }
   };
-  const observeRefresh = (page: Page, pathname: string) => {
-    const traffic = { requests: 0, responses: 0, failures: 0, responseStatuses: [] as number[] };
-    const matches = (request: BrowserRequest) => {
-      const url = new URL(request.url());
-      return (
-        request.method() === "GET" &&
-        url.origin === browserOrigin &&
-        url.pathname === pathname &&
-        (url.searchParams.has("_rsc") || request.headers().rsc === "1")
-      );
-    };
-    const onRequest = (request: BrowserRequest) => {
-      if (matches(request)) traffic.requests++;
-    };
-    const onResponse = (response: BrowserResponse) => {
-      if (matches(response.request())) {
-        traffic.responses++;
-        if (traffic.responseStatuses.length < 8) traffic.responseStatuses.push(response.status());
-      }
-    };
-    const onFailure = (request: BrowserRequest) => {
-      if (matches(request)) traffic.failures++;
-    };
-    page.on("request", onRequest);
-    page.on("response", onResponse);
-    page.on("requestfailed", onFailure);
-    return {
-      traffic,
-      stop() {
-        page.off("request", onRequest);
-        page.off("response", onResponse);
-        page.off("requestfailed", onFailure);
-      },
-    };
-  };
+  const observeRefresh = (page: Page, pathname: string) =>
+    observeDocumentRefresh(page, browserOrigin, pathname);
   const data = async () => {
     const value = await readDocumentReview(owner.client, variantId, documentId, 1, 1);
     assert.ok(value);
@@ -266,7 +233,11 @@ export async function runDocumentWorkingBrowser(input: Input) {
           }),
         ),
         visible(row),
-        visible(owner.page.getByRole("alert")),
+        visible(
+          owner.page
+            .locator('.console-document-library .console-command-error[role="alert"]')
+            .first(),
+        ),
       ]);
       try {
         console.error(
@@ -369,7 +340,11 @@ export async function runDocumentWorkingBrowser(input: Input) {
           }),
         ),
         visible(checkbox),
-        visible(owner.page.getByRole("alert")),
+        visible(
+          owner.page
+            .locator('.console-document-review .console-command-error[role="alert"]')
+            .first(),
+        ),
       ]);
       try {
         console.error(
@@ -548,7 +523,7 @@ export async function runDocumentWorkingBrowser(input: Input) {
         owner.page
           .getByRole("status")
           .filter({ hasText: "Original received. Document rights and exact-SKU review pending." }),
-        owner.page.getByRole("alert"),
+        owner.page.locator('.console-document-library .console-command-error[role="alert"]'),
         uploadedRow,
         uploadedRow.getByRole("cell").filter({ hasText: /^Original missing/ }),
         uploadedRow.getByRole("cell").filter({ hasText: /^Upload incomplete/ }),
