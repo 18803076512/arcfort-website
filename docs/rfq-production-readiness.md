@@ -191,6 +191,17 @@ repository and should be confirmed in the Vercel project dashboard.
 
 ## Production Verification Record
 
+The owner subsequently completed the prepared ordinary-mobile-browser case and confirmed both
+controlled mailboxes received reference `AF-RFQ-20261114-97A2A081`. The sales CSV was present,
+opened and contained `AF-INTERNAL-MOBILE-20261114-01`. These three direct mailbox and attachment checks are
+owner-confirmed. The buyer message displayed November 14 at 6:21 PM, but the owner could not supply
+timezone or click time; exact normalized receipt/check times and the page result are unavailable.
+The [dated owner read-back](../knowledge-base/sales/rfq-mobile-owner-receipt-2026-11-14.md) preserves
+the positive observations and their limits. Strict timestamped canonical fields remain unchanged;
+the original records may be reconciled if available, without inventing times or resending the case.
+No provider trace, authentication alignment, ongoing delivery rate or genuine lead is established
+by this internal test.
+
 On 2026-11-14 the owner separately authorized one new internal browser test with a synthetic CSV.
 It made one click and one production POST at `2026-11-14T12:48:50.047Z` (click time); BotID rejected
 the automated session with HTTP 403 before email processing. The returned and final page reference

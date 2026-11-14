@@ -4,7 +4,7 @@ Production evidence checked through 2026-11-14. Search Console, provider, mailbo
 
 ## Executive Status
 
-ArcFort Weld is live; its public routes passed the latest technical crawl audit, while current Google indexing remains unverified. The RFQ path reports configuration readiness in email delivery mode; final inbox placement still requires external confirmation. The immediate evidence gates are to verify RFQ receipt and sales follow-up, sender identity and current native Search Console data; exact-product evidence remains required before product expansion.
+ArcFort Weld is live; its public routes passed the latest technical crawl audit, while current Google indexing remains unverified. The RFQ path reports configuration readiness in email delivery mode; the strict timestamped inbox-verification record is incomplete. The immediate evidence gates are to verify RFQ receipt and sales follow-up, sender identity and current native Search Console data; exact-product evidence remains required before product expansion.
 
 **Search measurement: Historical baseline; current search performance is unknown.** Recorded Search Console data ends 2026-08-09, 97 days before the production evidence date 2026-11-14. The internal review threshold is 35 days (a 28-day comparison window plus seven days for export and review). Do not infer a current trend, indexing status or conversion result from these numbers.
 
@@ -30,15 +30,17 @@ ArcFort Weld is live; its public routes passed the latest technical crawl audit,
 
 ## Acquisition Channels
 
-| Channel           | Evidence                                                                                             | Current status                                                                                          | Next control                                                                                                     |
-| ----------------- | ---------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------- |
-| Organic search    | Search Console export for 2026-06-26 through 2026-08-09                                              | Historical: 8 clicks and 422 impressions recorded                                                       | Review overdue since 2026-09-12; obtain a new native Search Console export and compare equivalent periods.       |
-| Website RFQ       | Production status and governed delivery checks                                                       | Delivery mode: email; sales email configured, buyer confirmation configured, attachment path configured | Confirm matching references in both inboxes and the sales test attachment                                        |
-| Email / WhatsApp  | arcfortweld@outlook.com and +86-18803076512 are visible across major buyer paths                     | Direct fallback contacts available                                                                      | Track non-PII click and qualified-inquiry outcomes                                                               |
-| Product catalog   | 40 active pages across 6 categories, 0 governed public series and 10 catalog-series evidence records | 40 active products retain legacy-reference main images; 0 have search-eligible exact main images        | Replace legacy references with rights-approved exact-product views, then verify product and series relationships |
-| Distributor / OEM | Dedicated service pages, builders and buyer workbooks                                                | Operational buyer preparation paths are published                                                       | Review completed workbooks and qualified RFQs, not page count                                                    |
+| Channel           | Evidence                                                                                             | Current status                                                                                          | Next control                                                                                                                                     |
+| ----------------- | ---------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Organic search    | Search Console export for 2026-06-26 through 2026-08-09                                              | Historical: 8 clicks and 422 impressions recorded                                                       | Review overdue since 2026-09-12; obtain a new native Search Console export and compare equivalent periods.                                       |
+| Website RFQ       | Production status and governed delivery checks                                                       | Delivery mode: email; sales email configured, buyer confirmation configured, attachment path configured | Preserve recorded owner receipt and attachment observations; recover missing original timestamps, timezones and provider records where available |
+| Email / WhatsApp  | arcfortweld@outlook.com and +86-18803076512 are visible across major buyer paths                     | Direct fallback contacts available                                                                      | Track non-PII click and qualified-inquiry outcomes                                                                                               |
+| Product catalog   | 40 active pages across 6 categories, 0 governed public series and 10 catalog-series evidence records | 40 active products retain legacy-reference main images; 0 have search-eligible exact main images        | Replace legacy references with rights-approved exact-product views, then verify product and series relationships                                 |
+| Distributor / OEM | Dedicated service pages, builders and buyer workbooks                                                | Operational buyer preparation paths are published                                                       | Review completed workbooks and qualified RFQs, not page count                                                                                    |
 
 ## RFQ And Delivery Evidence
+
+RFQ strict records require the reference, applicable UTC times and reviewer attribution. Separate owner-reported receipt and attachment observations are retained in the [RFQ delivery knowledge record](../knowledge-base/sales/rfq-delivery-and-qualification.md).
 
 - Production status checked: 2026-11-12
 - Delivery mode: email
@@ -46,9 +48,9 @@ ArcFort Weld is live; its public routes passed the latest technical crawl audit,
 - Buyer confirmation configured: Yes
 - Attachment delivery configured: Yes
 - Provider acceptance last verified: 2026-07-26
-- Sales inbox placement: Needs external confirmation
-- Buyer inbox placement: Needs external confirmation
-- Test attachment in sales mailbox: Needs external confirmation
+- Sales-mailbox strict timestamped record: Incomplete timestamped record
+- Buyer-mailbox strict timestamped record: Incomplete timestamped record
+- Sales-attachment strict timestamped record: Incomplete timestamped record
 - Optional Supabase inquiry storage: Not configured
 
 ## Product Evidence
@@ -125,7 +127,7 @@ These items cannot be proven from public page content or repository files. Updat
 
 Follow the [ecosystem execution plan](operations/website-ecosystem-execution-plan-2026-11-05.md). Account-dependent handoffs do not block independent repository fixes; an unchecked state is not a passed gate.
 
-1. Phase 0 — For any earlier RFQ attempt without a traceable reference, record a handling decision and keep its result unknown when original evidence is unavailable; never blindly resend. Complete that decision before a new controlled submission, which also needs separate authorization, safe sample details and access to both inboxes. Confirm matching references in both inboxes and the sales test attachment.
+1. Phase 0 — Keep an earlier unreferenced RFQ outcome unknown when its original evidence is unavailable and retain its handling decision. Preserve recorded owner receipt and attachment observations; recover missing original timestamps, timezones and provider records where available. Do not resend a received test merely to fill missing timing metadata.
 2. Phase 0 — Confirm the exposed Resend credential's rotation in the provider account, recording only its state, never the key. Assess first-phase DMARC `p=none` with the domain owner; add DNS only after exact-action approval and rerun the email-domain audit. Aggregate reporting requires an approved controlled `rua` address.
 3. Phase 0 — Review overdue since 2026-09-12; obtain a new native Search Console export and compare equivalent periods. Obtain native property totals, queries and pages for comparable 28-day periods, sitemap status and exact redirect-error examples. Prioritize high-impression low-click existing URLs only after reviewing the current export.
 4. Phase 0 — Assign a sales owner and maintain a private RFQ ledger keyed by reference for receipt, qualification, first response, quote and outcome. Keep buyer identity and attachments out of Git and analytics.

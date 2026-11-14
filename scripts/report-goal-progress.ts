@@ -197,6 +197,16 @@ function externalState(value: boolean | null) {
   return "External confirmation required";
 }
 
+function formatRfqReportOutcome(
+  value: boolean | null,
+  checkedAt: string | null,
+  subject: "mailbox" | "attachment" = "mailbox",
+) {
+  return value === null
+    ? "Incomplete timestamped record"
+    : formatRfqCheckedOutcome(value, checkedAt, subject);
+}
+
 function formatProductNames(rows: ProductImportRow[]) {
   return rows.length === 0 ? "None" : rows.map((row) => `${row.sku} ${row.name}`).join("; ");
 }
@@ -232,7 +242,7 @@ const rfqFollowup = bothInboxesConfirmed
       : "Verify the controlled test attachment in the sales mailbox"
   : missingMailbox
     ? "Investigate the missing controlled RFQ before another authorized test"
-    : "For the next controlled test, verify both mailboxes receive the same reference and the selected attachment reaches sales";
+    : "Preserve recorded owner receipt and attachment observations; recover missing original timestamps, timezones and provider records where available";
 const reportSource = [
   "# ArcFort Weld Goal Progress Report",
   "",
@@ -291,6 +301,8 @@ const reportSource = [
   "",
   "## Acquisition And RFQ Evidence",
   "",
+  "RFQ strict records require the reference, applicable UTC times and reviewer attribution. Separate owner-reported receipt and attachment observations are retained in the [RFQ delivery knowledge record](../knowledge-base/sales/rfq-delivery-and-qualification.md).",
+  "",
   `- Production deployment recorded: ${acquisitionEvidence.production.deploymentVerified ? "Yes" : "No"}`,
   `- Production sitemap URLs at evidence date: ${acquisitionEvidence.production.sitemapUrlCount}`,
   `- Historical Search Console baseline (${acquisitionEvidence.searchConsole.dataStart} to ${acquisitionEvidence.searchConsole.dataEnd}): ${acquisitionEvidence.searchConsole.clicks} clicks, ${acquisitionEvidence.searchConsole.impressions} impressions, ${ctrPercent} CTR`,
@@ -298,9 +310,9 @@ const reportSource = [
   `- Search Console sitemap submission: ${externalState(acquisitionEvidence.searchConsole.sitemapSubmissionConfirmed)}`,
   `- RFQ delivery mode: ${acquisitionEvidence.rfq.deliveryMode}`,
   `- RFQ configuration-ready state: ${acquisitionEvidence.rfq.productionReady ? "Yes" : "No"}`,
-  `- Sales-mailbox placement: ${formatRfqCheckedOutcome(acquisitionEvidence.rfq.salesMailboxPlacementConfirmed, acquisitionEvidence.rfq.inboxVerification.sales.checkedAt)}`,
-  `- Buyer-mailbox placement: ${formatRfqCheckedOutcome(acquisitionEvidence.rfq.buyerMailboxPlacementConfirmed, acquisitionEvidence.rfq.inboxVerification.buyer.checkedAt)}`,
-  `- Test attachment in sales mailbox: ${formatRfqCheckedOutcome(acquisitionEvidence.rfq.salesAttachmentPresentConfirmed, acquisitionEvidence.rfq.inboxVerification.sales.checkedAt, "attachment")}`,
+  `- Sales-mailbox strict timestamped record: ${formatRfqReportOutcome(acquisitionEvidence.rfq.salesMailboxPlacementConfirmed, acquisitionEvidence.rfq.inboxVerification.sales.checkedAt)}`,
+  `- Buyer-mailbox strict timestamped record: ${formatRfqReportOutcome(acquisitionEvidence.rfq.buyerMailboxPlacementConfirmed, acquisitionEvidence.rfq.inboxVerification.buyer.checkedAt)}`,
+  `- Sales-attachment strict timestamped record: ${formatRfqReportOutcome(acquisitionEvidence.rfq.salesAttachmentPresentConfirmed, acquisitionEvidence.rfq.inboxVerification.sales.checkedAt, "attachment")}`,
   `- GA4 RFQ conversion event: ${externalState(acquisitionEvidence.analytics.rfqConversionEventConfirmed)}`,
   `- Email-provider credential rotation after exposure: ${externalState(acquisitionEvidence.securityOperations.resendCredentialRotatedAfterExternalExposure)}`,
   `- DMARC status: ${externalState(acquisitionEvidence.securityOperations.dmarcStatusConfirmed)}`,
@@ -309,7 +321,7 @@ const reportSource = [
   "",
   "Follow the [ecosystem execution plan](operations/website-ecosystem-execution-plan-2026-11-05.md) and keep missing source evidence explicitly unverified. Account-dependent handoffs do not block independent repository fixes.",
   "",
-  `1. Phase 0 — For any earlier RFQ attempt without a traceable reference, record a handling decision; keep its outcome explicitly unknown when source logs are unavailable and never blindly resend it. Complete that decision before any new controlled submission. A new send also needs separate authorization, safe sample details and access to both inboxes. ${rfqFollowup}.`,
+  `1. Phase 0 — Keep an earlier unreferenced RFQ outcome unknown when its original evidence is unavailable and retain its handling decision. ${rfqFollowup}. Do not resend a received test merely to fill missing timing metadata.`,
   "2. Phase 0 — Check the email-provider account for credential rotation after exposure and assess DMARC with the domain owner. Any provider or DNS write needs exact-action authorization and verification.",
   `3. Phase 0 — ${searchReview} Obtain native property totals, queries and pages for comparable 28-day periods plus sitemap status and exact redirect-error examples before changing indexing rules.`,
   "4. Phase 0 — Assign a sales owner and keep a private RFQ ledger keyed by reference for receipt, qualification, first response, quote and outcome. Keep buyer identity and attachments out of Git and analytics.",

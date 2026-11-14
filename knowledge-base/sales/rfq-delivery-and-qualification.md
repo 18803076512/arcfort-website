@@ -1,6 +1,6 @@
 # RFQ Delivery And Qualification Baseline
 
-Evidence baseline: 2026-08-29; repository workflow review 2026-11-13
+Evidence baseline: 2026-08-29; repository workflow and owner read-back review 2026-11-14
 
 ## Purpose
 
@@ -30,11 +30,16 @@ technical review.
 - A successful Resend response establishes provider acceptance only. The API fields
   `emailProviderAccepted` and `buyerConfirmationProviderAccepted` state this directly; legacy
   `emailDelivered` and `buyerConfirmationDelivered` are compatible aliases, not mailbox evidence.
-- Provider acceptance was last recorded on 2026-07-26.
+- Direct provider acceptance was last recorded on 2026-07-26; later owner mailbox read-back is
+  retained separately below.
 - The production RFQ read-only check date is maintained in
   `docs/operations/acquisition-production-evidence.json`; it does not refresh mailbox evidence.
-- Sales-mailbox placement: not externally confirmed.
-- Buyer-mailbox placement: not externally confirmed.
+- Sales-mailbox receipt: owner confirmed reference `AF-RFQ-20261114-97A2A081`; its complete
+  timestamped record is still incomplete.
+- Buyer-mailbox receipt: owner confirmed the same reference; the displayed local receipt time has
+  no known timezone.
+- Sales test attachment: owner confirmed the CSV exists, opens and contains the expected mobile
+  test marker. See the dated read-back below for scope and missing metadata.
 - Optional Supabase inquiry storage: not configured; email remains the active delivery path.
 - On a failed website submission, the form preserves the buyer's fields and shows selectable
   fallback details. Email and WhatsApp links use only the base contacts, with no buyer data in URLs.
@@ -55,6 +60,18 @@ Provider acceptance is not proof of inbox placement. The website must not claim 
 delivery until one controlled browser submission produces the same inquiry reference in the sales
 mailbox and buyer confirmation mailbox, and its selected test attachment is present in the sales
 message. These are separately recorded outcomes.
+
+## Owner Mobile Receipt Read-Back
+
+The owner confirmed matching-reference sales and buyer receipt, plus the readable matching-case
+CSV for `AF-RFQ-20261114-97A2A081`. The buyer message displayed November 14 at 6:21 PM; timezone,
+click time and exact inspection timestamps are unavailable. Preserve the positive receipt facts in
+[the dated read-back](rfq-mobile-owner-receipt-2026-11-14.md), while leaving the strict canonical
+timestamped fields unchanged. A null structured flag does not mean the owner found no message.
+Recover original records if available; do not guess times or repeat this test to fill the gap.
+
+The earlier automated rejection and November 4 unknown attempt remain separate. The test is
+`internal_test` and contributes no genuine sales lead, quotation or order count.
 
 ## Provider Response Deadline
 
@@ -150,7 +167,8 @@ also passed. This proves draft handoff on the published pages, not final inquiry
 
 ## Remaining Owner Evidence
 
-- Sales and buyer inbox placement for the same controlled inquiry reference.
+- Original timestamp/timezone records for the owner-confirmed mobile receipt, if recoverable;
+  preserve unknown fields if unavailable.
 - Confirmation that the previously exposed email-provider credential was rotated.
 - DMARC policy decision and verification.
 - GA4 RFQ conversion-event evidence without buyer PII.
