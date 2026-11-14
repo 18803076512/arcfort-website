@@ -155,6 +155,7 @@ jobs:
           npm run console:documents:review:test
           npm run console:documents:readiness:test
           npm run console:documents:acceptance:guards
+          npm run console:documents:refresh:test
           npm run console:originals:upload:test
           npm run console:originals:inspect:test
           npm run console:media:commands:test

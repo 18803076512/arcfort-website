@@ -285,3 +285,31 @@ repeat remaining read-only original-row/publication assertions and verify retain
 normal runtime startup. Do not reset an adopted database or repeat the whole mutable test merely
 because its terminal handle disappeared. Preserve this limitation until a clean isolated run records
 its final result. A browser PASS report is not itself proof of subsequent cleanup or final assertions.
+
+## November 14 Document Refresh Observation
+
+PR #159 main CI `43598028983` first timed out after a document upload returned HTTP 200 and its
+database row reported `recorded`, while the browser table still showed `Original missing`.
+An unchanged rerun of only the failed database job passed. This does not establish the refresh
+failure's cause or a repair; the RFQ browser rejection recorded that day is a separate event.
+
+The old path-only observer could combine a newly started request, an older request's late 200
+response and a failure into `1 request / 1 response / 1 failure`. That aggregate does not prove
+that one response stream returned headers and then failed. The global `role=alert` count also
+included Next's route announcer and did not prove a Console error. A zero `pageerror` count does
+not exclude errors handled internally by the router.
+
+The test-only document refresh observer now correlates events to request objects first seen during
+its observation window. Matching late events from older requests are counted separately. Response
+headers, `requestfinished` and `requestfailed` remain different observations; at most eight samples
+retain local ordinals, status codes, lifecycle booleans and an allowlisted failure category.
+Raw URLs, headers, error strings, identifiers, response bodies and account data are not reported.
+All four listeners are removed when the observation stops, and application alerts are scoped to
+the document component. No reload, longer timeout or weaker application assertion is introduced.
+
+The no-network regression reproduces the old mixed-request counterexample and independently
+checks actual same-request header/failure, completion, unrelated traffic, bounded private-value
+suppression and listener cleanup. These checks establish diagnostic correctness, not successful
+refresh application or native service parity. The existing isolated browser/database acceptance
+must still check persisted rows against the rendered table. If it fails again, use the correlated
+sample and database/UI state before selecting an application change.
