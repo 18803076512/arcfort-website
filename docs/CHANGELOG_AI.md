@@ -4,6 +4,36 @@ This append-only log records substantial Codex work so future sessions can under
 why it changed and which risks remain. Add the newest entry at the top, below this introduction. Do
 not include secrets, buyer PII, private prospect data or unconfirmed claims.
 
+## 2026-11-14 - Retain Owner-Confirmed Mobile RFQ Receipt
+
+- **Task:** Preserve the owner's completed mobile delivery check for
+  `AF-RFQ-20261114-97A2A081`: matching-reference buyer and sales emails, and a sales CSV that
+  exists, opens and contains the prepared internal case marker.
+- **Files Changed:** New dated owner read-back, sales delivery knowledge, RFQ readiness and
+  ecosystem handoff, two report generators and their generated reports, plus this log. No public
+  runtime, provider configuration, product data, evidence validator or canonical timing field changes.
+- **Evidence Boundary:** These three direct mailbox and attachment checks are owner-confirmed. The buyer mail
+  displayed November 14 at 6:21 PM; timezone and click time were explicitly unavailable, and exact
+  inspection times were not provided. Raw local time is retained without inventing UTC values.
+  Canonical timestamped flags and the previous rejected-attempt record remain unchanged; old cases
+  are not resolved by this receipt. No additional submission or fallback email was sent by Codex.
+- **Reporting:** Null RFQ flags now describe an incomplete timestamped record and link to the dated
+  owner observations through the stable delivery knowledge record. True/false formatting and all
+  validation branches remain unchanged. The default action is to recover existing original records
+  if available, preserving unknowns and avoiding another send merely to fill timing metadata.
+- **Validation:** Owner read-back was checked separately for the two mailboxes and CSV marker.
+  Existing RFQ evidence tests, both report generators, focused ESLint, full types, formatting and
+  diff checks passed. Clean PR/main CI and exact deployment verification remain release checks.
+- **Known Issues:** The complete UTC timeline, direct provider trace, email authentication alignment,
+  credential rotation, DMARC, current GSC, GA4 and product evidence remain incomplete. This internal
+  test is not a qualified lead, order, sales-response-time measure or continuing delivery guarantee.
+- **Deployment:** Local evidence/report candidate at this entry. Standing session authorization
+  covers the scoped `18803076512/arcfort-website` PR/main and `www.arcfortweld.com` deployment path.
+  No new send, DNS/provider write or weakened evidence gate is part of this batch.
+- **Next Recommended Action:** Retain the received test privately and reconcile original timing
+  records if available. Use the stable reference, an assigned owner and a recorded next action for
+  genuine inquiries; continue sender identity and current measurement work under their own gates.
+
 ## 2026-11-14 - Correlate Document Refresh Diagnostics By Request
 
 - **Task:** Correct the observer ambiguity exposed by PR #159 main CI's document-upload timeout.

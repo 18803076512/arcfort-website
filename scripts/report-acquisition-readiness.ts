@@ -98,6 +98,16 @@ function evidenceLabel(value: EvidenceState, trueLabel: string, falseLabel: stri
   return "Needs external confirmation";
 }
 
+function formatRfqReportOutcome(
+  value: EvidenceState,
+  checkedAt: string | null,
+  subject: "mailbox" | "attachment" = "mailbox",
+) {
+  return value === null
+    ? "Incomplete timestamped record"
+    : formatRfqCheckedOutcome(value, checkedAt, subject);
+}
+
 function validateEvidence(evidence: AcquisitionEvidence) {
   errors.push(...validateRfqInboxEvidence(evidence.rfq, evidence.asOf));
   const dates = [
@@ -282,7 +292,7 @@ function buildReport(
       : "a controlled RFQ was observed in both mailboxes, while sales-attachment receipt still needs resolution"
     : missingMailbox
       ? "at least one checked mailbox did not contain the controlled RFQ"
-      : "final inbox placement still requires external confirmation";
+      : "the strict timestamped inbox-verification record is incomplete";
   const rfqNextControl = bothInboxesConfirmed
     ? attachmentConfirmed
       ? "Review qualified inquiry follow-up and future delivery health"
@@ -291,7 +301,7 @@ function buildReport(
         : "Verify the controlled test attachment in the sales mailbox"
     : missingMailbox
       ? "Investigate the missing controlled message before another authorized test"
-      : "Confirm matching references in both inboxes and the sales test attachment";
+      : "Preserve recorded owner receipt and attachment observations; recover missing original timestamps, timezones and provider records where available";
   const rfqConfiguration = evidence.rfq.productionReady
     ? `The RFQ path reports configuration readiness in ${evidence.rfq.deliveryMode} delivery mode`
     : "The RFQ path is not configuration ready";
@@ -350,15 +360,17 @@ function buildReport(
     "",
     "## RFQ And Delivery Evidence",
     "",
+    "RFQ strict records require the reference, applicable UTC times and reviewer attribution. Separate owner-reported receipt and attachment observations are retained in the [RFQ delivery knowledge record](../knowledge-base/sales/rfq-delivery-and-qualification.md).",
+    "",
     `- Production status checked: ${evidence.rfq.statusChecked}`,
     `- Delivery mode: ${evidence.rfq.deliveryMode}`,
     `- Sales email configured: ${evidence.rfq.salesEmailReady ? "Yes" : "No"}`,
     `- Buyer confirmation configured: ${evidence.rfq.buyerConfirmationReady ? "Yes" : "No"}`,
     `- Attachment delivery configured: ${evidence.rfq.attachmentDeliveryReady ? "Yes" : "No"}`,
     `- Provider acceptance last verified: ${evidence.rfq.providerAcceptanceVerified}`,
-    `- Sales inbox placement: ${formatRfqCheckedOutcome(evidence.rfq.salesMailboxPlacementConfirmed, evidence.rfq.inboxVerification?.sales?.checkedAt ?? null)}`,
-    `- Buyer inbox placement: ${formatRfqCheckedOutcome(evidence.rfq.buyerMailboxPlacementConfirmed, evidence.rfq.inboxVerification?.buyer?.checkedAt ?? null)}`,
-    `- Test attachment in sales mailbox: ${formatRfqCheckedOutcome(evidence.rfq.salesAttachmentPresentConfirmed, evidence.rfq.inboxVerification?.sales?.checkedAt ?? null, "attachment")}`,
+    `- Sales-mailbox strict timestamped record: ${formatRfqReportOutcome(evidence.rfq.salesMailboxPlacementConfirmed, evidence.rfq.inboxVerification?.sales?.checkedAt ?? null)}`,
+    `- Buyer-mailbox strict timestamped record: ${formatRfqReportOutcome(evidence.rfq.buyerMailboxPlacementConfirmed, evidence.rfq.inboxVerification?.buyer?.checkedAt ?? null)}`,
+    `- Sales-attachment strict timestamped record: ${formatRfqReportOutcome(evidence.rfq.salesAttachmentPresentConfirmed, evidence.rfq.inboxVerification?.sales?.checkedAt ?? null, "attachment")}`,
     `- Optional Supabase inquiry storage: ${evidence.rfq.supabaseStorageReady ? "Configured" : "Not configured"}`,
     "",
     "## Product Evidence",
@@ -424,7 +436,7 @@ function buildReport(
     "",
     "Follow the [ecosystem execution plan](operations/website-ecosystem-execution-plan-2026-11-05.md). Account-dependent handoffs do not block independent repository fixes; an unchecked state is not a passed gate.",
     "",
-    `1. Phase 0 — For any earlier RFQ attempt without a traceable reference, record a handling decision and keep its result unknown when original evidence is unavailable; never blindly resend. Complete that decision before a new controlled submission, which also needs separate authorization, safe sample details and access to both inboxes. ${rfqNextControl}.`,
+    `1. Phase 0 — Keep an earlier unreferenced RFQ outcome unknown when its original evidence is unavailable and retain its handling decision. ${rfqNextControl}. Do not resend a received test merely to fill missing timing metadata.`,
     "2. Phase 0 — Confirm the exposed Resend credential's rotation in the provider account, recording only its state, never the key. Assess first-phase DMARC `p=none` with the domain owner; add DNS only after exact-action approval and rerun the email-domain audit. Aggregate reporting requires an approved controlled `rua` address.",
     `3. Phase 0 — ${searchReview} Obtain native property totals, queries and pages for comparable 28-day periods, sitemap status and exact redirect-error examples. Prioritize high-impression low-click existing URLs only after reviewing the current export.`,
     "4. Phase 0 — Assign a sales owner and maintain a private RFQ ledger keyed by reference for receipt, qualification, first response, quote and outcome. Keep buyer identity and attachments out of Git and analytics.",

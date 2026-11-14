@@ -58,6 +58,8 @@ Factory ownership, certifications, capacity, customer cases, distributor coverag
 
 ## Acquisition And RFQ Evidence
 
+RFQ strict records require the reference, applicable UTC times and reviewer attribution. Separate owner-reported receipt and attachment observations are retained in the [RFQ delivery knowledge record](../knowledge-base/sales/rfq-delivery-and-qualification.md).
+
 - Production deployment recorded: Yes
 - Production sitemap URLs at evidence date: 88
 - Historical Search Console baseline (2026-06-26 to 2026-08-09): 8 clicks, 422 impressions, 1.90% CTR
@@ -65,9 +67,9 @@ Factory ownership, certifications, capacity, customer cases, distributor coverag
 - Search Console sitemap submission: External confirmation required
 - RFQ delivery mode: email
 - RFQ configuration-ready state: Yes
-- Sales-mailbox placement: Needs external confirmation
-- Buyer-mailbox placement: Needs external confirmation
-- Test attachment in sales mailbox: Needs external confirmation
+- Sales-mailbox strict timestamped record: Incomplete timestamped record
+- Buyer-mailbox strict timestamped record: Incomplete timestamped record
+- Sales-attachment strict timestamped record: Incomplete timestamped record
 - GA4 RFQ conversion event: External confirmation required
 - Email-provider credential rotation after exposure: External confirmation required
 - DMARC status: Not ready
@@ -76,7 +78,7 @@ Factory ownership, certifications, capacity, customer cases, distributor coverag
 
 Follow the [ecosystem execution plan](operations/website-ecosystem-execution-plan-2026-11-05.md) and keep missing source evidence explicitly unverified. Account-dependent handoffs do not block independent repository fixes.
 
-1. Phase 0 — For any earlier RFQ attempt without a traceable reference, record a handling decision; keep its outcome explicitly unknown when source logs are unavailable and never blindly resend it. Complete that decision before any new controlled submission. A new send also needs separate authorization, safe sample details and access to both inboxes. For the next controlled test, verify both mailboxes receive the same reference and the selected attachment reaches sales.
+1. Phase 0 — Keep an earlier unreferenced RFQ outcome unknown when its original evidence is unavailable and retain its handling decision. Preserve recorded owner receipt and attachment observations; recover missing original timestamps, timezones and provider records where available. Do not resend a received test merely to fill missing timing metadata.
 2. Phase 0 — Check the email-provider account for credential rotation after exposure and assess DMARC with the domain owner. Any provider or DNS write needs exact-action authorization and verification.
 3. Phase 0 — Review overdue since 2026-09-12; obtain a new native Search Console export and compare equivalent periods. Obtain native property totals, queries and pages for comparable 28-day periods plus sitemap status and exact redirect-error examples before changing indexing rules.
 4. Phase 0 — Assign a sales owner and keep a private RFQ ledger keyed by reference for receipt, qualification, first response, quote and outcome. Keep buyer identity and attachments out of Git and analytics.
