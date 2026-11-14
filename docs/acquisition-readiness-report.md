@@ -1,12 +1,12 @@
 # Acquisition Readiness Report
 
-Production evidence checked through 2026-11-12. Search Console, provider, mailbox and product evidence retain the separate dates and confirmation states shown below. This internal report separates repository facts, verified production behavior and business evidence that still requires external confirmation.
+Production evidence checked through 2026-11-14. Search Console, provider, mailbox and product evidence retain the separate dates and confirmation states shown below. This internal report separates repository facts, verified production behavior and business evidence that still requires external confirmation.
 
 ## Executive Status
 
 ArcFort Weld is live; its public routes passed the latest technical crawl audit, while current Google indexing remains unverified. The RFQ path reports configuration readiness in email delivery mode; final inbox placement still requires external confirmation. The immediate evidence gates are to verify RFQ receipt and sales follow-up, sender identity and current native Search Console data; exact-product evidence remains required before product expansion.
 
-**Search measurement: Historical baseline; current search performance is unknown.** Recorded Search Console data ends 2026-08-09, 95 days before the production evidence date 2026-11-12. The internal review threshold is 35 days (a 28-day comparison window plus seven days for export and review). Do not infer a current trend, indexing status or conversion result from these numbers.
+**Search measurement: Historical baseline; current search performance is unknown.** Recorded Search Console data ends 2026-08-09, 97 days before the production evidence date 2026-11-14. The internal review threshold is 35 days (a 28-day comparison window plus seven days for export and review). Do not infer a current trend, indexing status or conversion result from these numbers.
 
 - Production deployment verified: Yes
 - Canonical production URL: https://www.arcfortweld.com

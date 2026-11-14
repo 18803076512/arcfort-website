@@ -191,6 +191,18 @@ repository and should be confirmed in the Vercel project dashboard.
 
 ## Production Verification Record
 
+On 2026-11-14 the owner separately authorized one new internal browser test with a synthetic CSV.
+It made one click and one production POST at `2026-11-14T12:48:50.047Z` (click time); BotID rejected
+the automated session with HTTP 403 before email processing. The returned and final page reference
+was `AF-RFQ-20261114-61AA6680`. The page showed the verification error and retained the submitted
+details and fallback contacts. No retry or substitute email was sent. This records an attempted
+submission only: provider acceptance dates and all mailbox/attachment confirmation states remain
+unchanged. The [dated record](../knowledge-base/sales/rfq-controlled-browser-verification-2026-11-14.md)
+preserves the client/server reference mapping and limits. This does not show that ordinary human
+buyers are blocked. The next separately approved new delivery test should be performed by the owner
+in an ordinary browser with BotID intact; a repeated human-session 403 needs read-only provider
+review using its exact time and server reference.
+
 On 2026-11-04 the owner reported a controlled browser submission that remained at `Submitting...`
 without a displayed reference, and no new matching email in either controlled Outlook inbox or
 junk folder. The exact click time and the Vercel/Resend request result were unavailable. This is an

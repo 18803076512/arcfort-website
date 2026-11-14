@@ -4,6 +4,35 @@ This append-only log records substantial Codex work so future sessions can under
 why it changed and which risks remain. Add the newest entry at the top, below this introduction. Do
 not include secrets, buyer PII, private prospect data or unconfirmed claims.
 
+## 2026-11-14 - Retain The Controlled RFQ Browser Rejection
+
+- **Task:** Execute the owner's separately approved one-submit internal delivery test and preserve
+  its actual result without promoting configuration or a rejected request into delivery evidence.
+- **Files Changed:** Dated sales verification record, RFQ readiness and ecosystem handoff,
+  canonical acquisition evidence, regenerated acquisition/Goal reports and this log. No runtime,
+  protection, provider, DNS, public product or commercial configuration changes are included.
+- **Observation:** One browser click and one production POST returned HTTP 403 for a BotID bot
+  classification before form parsing or email processing. The final page/server reference is
+  `AF-RFQ-20261114-61AA6680`; the dated record retains its different prepared-client reference.
+  No retry, fallback send, protection bypass or second live test occurred.
+- **Evidence Boundary:** Canonical submission reference/time record the attempt only. Both inbox
+  observations, reviewer fields and all three inbox/attachment flags remain null. The existing
+  provider-acceptance date and unrelated per-system check dates are not advanced. The November 4
+  attempt remains unknown and must not be resent. This automated-session rejection does not prove
+  ordinary human buyers are blocked.
+- **Validation:** The synthetic fields and CSV passed the existing local validators; direct
+  browser/HTTP observations and the early BotID-return/reference sequence were independently
+  reviewed. TLS validation stayed enabled and temporary browser CA trust was verified restored.
+  Documentation formatting, evidence/report validation, cross-reference and secret checks apply
+  to this documentation-only candidate; release results are recorded with its PR.
+- **Deployment:** The tested production revision is PR #158 main `2ac7810`. Standing session
+  authorization covers this scoped evidence PR/main and `www.arcfortweld.com` deployment path;
+  the single real-submit authorization is consumed and does not cover another test or account change.
+- **Next Recommended Action:** Arrange a separately approved new test in the owner's ordinary
+  browser, keeping BotID intact, then inspect both controlled mailboxes/junk and the sales attachment.
+  If the human session is rejected, obtain its exact server reference/time for read-only provider
+  review before proposing any protection change.
+
 ## 2026-11-13 - Bound Provider Bodies And Preserve Submitted RFQ Summaries
 
 - **Task:** Repair two independently reproduced RFQ defects: the email-provider timer stopped at
