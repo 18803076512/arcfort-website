@@ -8491,3 +8491,69 @@ retained database and historical report.
   a paid service or a real RFQ submission.
 - **Next Recommended Action:** Complete release QA, pass PR and main CI, then verify the exact
   production button state with delayed scripts and no RFQ POST.
+
+## 2026-11-15 - Activate The Existing Private Sales Action Ledger
+
+- **Task:** Apply the owner's explicit authorization to upgrade the existing private sales ledger
+  after owner-confirmed mobile buyer/sales receipt and matching attachment evidence.
+- **Files Changed:** This local log; the existing private Google Sheet's Read Me, RFQ Ledger,
+  Summary and new Action Queue. Ignored execution receipts and blank-state snapshots remain local.
+  The private file identifier and populated buyer records are not published in this log.
+- **Components Changed:** No website component. **Data Changed:** Four action fields, 500-row
+  derived UTC/action-state formulas and planned Beijing-time validation, non-test summary counts
+  and duplicate-reference check. The owner is responsible; future operations use Beijing time,
+  Monday-Saturday. No inquiry rows or actual-event timestamps were inserted.
+- **Visual Changes:** Reused existing header styles, set the new column widths and warning-only
+  formula protections, and fitted only the added instruction rows. **SEO Impact:** None.
+- **Validation:** The reviewed 44-request batch applied once. Independent native readback verified
+  1,000 relative-row formulas, 58 final content/anchor cells, 4,500 preserved constraints, 500 new
+  date validators, eight zero metrics, empty queue, original headers, date formats, widths, UTC
+  storage, MINUTE recalculation setting and owner-only access. Four instruction literals were
+  subsequently clarified after a fresh read exposed cached reference clocks; exact readback passed.
+- **Known Issues:** API reference clocks remained cached for more than eight minutes despite the
+  MINUTE setting; they are not verified background reminders or actual event timestamps. Read Me
+  now requires reliable event clocks and manual deadline review. Populated-lead behavior is tested
+  only with local synthetic cases; no fake sales rows were added. Export-renderer formula results
+  differ from native Google calculation and are not calculation evidence. Unknown historical RFQ
+  times remain unknown; zero entered rows do not prove zero inquiries.
+- **Reusable Knowledge Added:** The private Read Me now defines actual ownership, future operating
+  calendar, action/deadline entry, internal-test exclusion and cached-clock handling.
+- **Deployment:** Existing private Sheet updated in place; no website deployment, repository push,
+  email send, DNS/provider or sharing change. This repository entry is a local execution record.
+- **Next Recommended Action:** Use the real sales inbox at least twice each operating day; register
+  actual inquiries with an owner, specific next action and Beijing-time plan, and record only
+  observed first replies, quotations and outcomes.
+
+## 2026-11-15 - Restore Reproducible Factory Evidence Handoff
+
+- **Task:** Restore the missing reviewer-workbook delivery path from the existing governed intake
+  CSVs and align repository sales instructions with the activated private ledger.
+- **Files Changed:** New isolated `scripts/evidence-workbooks/` generator, independent verifier and
+  pinned requirements; the quality workflow and Python-cache ignore rules; factory/Airtable
+  handoffs, sales playbook and empty ledger header, targeted Goal/execution-plan updates, dated
+  sales/product knowledge and this log. This batch also retains the preceding local-only sales
+  activation entry as a dated record of that completed private-tool task.
+- **Components Changed:** No public website component. **Data Changed:** No canonical product,
+  technical, media or compatibility value. Generated private files contain 139 preserved 15AK
+  request rows and four separate CT0006 rows, with stable IDs and original pending evidence states.
+  Internal notes are omitted. The empty sales CSV now has the same 18 headers as the private ledger.
+- **Visual Changes:** Chinese-first reviewer instructions, source/input colors, freeze panes,
+  filters, date/status controls and wrapped source guidance in the generated workbooks only.
+  **SEO Impact:** No public URL, metadata, page, sitemap or indexing change.
+- **Validation:** Independent XLSX readback checks every exported source cell, state, row ID,
+  manifest/source hash, source/input edit guard and native validation; repeat generation with the
+  same source/date is byte-identical. Separate read-only connected checks found no newly approved
+  product evidence; GSC Wizard access returned subscription-required without a current baseline.
+- **Known Issues:** No factory response, exact original photo or rights approval was supplied.
+  Filling reviewer fields does not confirm facts or authorize publication/quotation. CT0006 and
+  the P0 image-priority queue do not redefine four-product 15AK membership. The sales reference
+  clock may cache; deadline review remains manual. Current GSC data is unavailable through the
+  blocked connector, and historical data was not relabelled as current.
+- **Reusable Knowledge Added:** The dated handoff records owner/calendar, cached-clock handling,
+  separate product queues and current search-access scope. The generator and independent verifier
+  make the private review package reproducible without a database or external write.
+- **Deployment:** Repository tooling/documentation batch only. Private XLSX files stay in ignored
+  `outputs/`; no public product approval, buyer data, email send, DNS, provider or sharing change.
+- **Next Recommended Action:** Give the private files to the actual factory/product reviewer and
+  obtain exact-SKU source evidence, original images, rights basis and reviewer/date; reconcile
+  returned rows by stable ID before any canonical promotion.

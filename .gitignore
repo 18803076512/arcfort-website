@@ -13,6 +13,8 @@ tmp/
 .tmp/
 output/
 outputs/
+__pycache__/
+*.pyc
 
 # local env files
 .env

@@ -18,15 +18,51 @@ catalog or indexed resource. The workbook deliberately omits every `notes_intern
 The workbook is not a product database and must not publish or confirm data automatically. The CSV
 files in `data/intake/` and the governed registries remain the repository source of truth.
 
+## Rebuild And Verify The Private Files
+
+The previous handoff referred to a local artifact without retaining a generator. The reproducible
+generator now reads all four canonical 15AK intake CSVs and creates the separate CT0006 file from
+its independent CSV. From the repository root:
+
+```bash
+python -m venv /tmp/arcfort-evidence-review-venv
+/tmp/arcfort-evidence-review-venv/bin/python -m pip install -r scripts/evidence-workbooks/requirements.txt
+/tmp/arcfort-evidence-review-venv/bin/python scripts/evidence-workbooks/generate.py --as-of 2026-11-15
+/tmp/arcfort-evidence-review-venv/bin/python scripts/evidence-workbooks/verify.py
+```
+
+Choose the actual preparation date for `--as-of`; it labels preparation only, not verification of a
+product. The same source bytes and preparation date must produce byte-identical output. The verifier
+independently opens the XLSX files, compares all non-internal source cells and stable IDs, checks the
+two scopes remain separate, and repeats generation to a temporary location. It never imports
+reviewer answers or updates canonical facts.
+
+Outputs are `outputs/ArcFort-Weld-15AK-Evidence-Intake.xlsx`,
+`outputs/ArcFort-Weld-CT0006-Evidence-Intake.xlsx` and
+`outputs/evidence-workbooks-manifest.json`. The manifest retains source hashes and stable-ID to
+worksheet-row mappings. Keep these reviewer files private; returned evidence is reconciled manually.
+
+On a phone or in WPS/Excel, start with **Start Here**, then the four exact products in
+**Product Technical** / **Product Images**. Orange columns accept reviewer input; grey columns retain
+reference context and IDs. The sheets have an accidental-edit guard, not a confidentiality control.
+Use separate originals or controlled evidence references, leave unknowns blank and return actual
+reviewer/date information. Worksheet dates use native dates displayed as `yyyy-mm-dd`; normalize
+them to ISO dates during the reviewed CSV transfer.
+
+The 46 assembly candidates are a separate queue from the four existing product SKUs. Do not merge
+similarly named components or move a candidate to a public SKU merely to complete a row. “Response
+fields complete” is a collection checklist, not proof of source quality, rights, fit or approval.
+
 `AF-MIG-CT-0006` is outside this four-product 15AK workbook. Its general M6 x 27 mm catalog
 reference uses `data/intake/general-m6-27-contact-tip-technical-confirmation.csv` and the existing
 product image asset task; do not replace it with the 15AK 25 mm reference. After exact-SKU evidence
 is reviewed, a separate PR must map any CT0006 canonical technical facts to this independent queue
 and update the technical validator before a public value is promoted.
 
-The older local `arcfort-15ak-factory-evidence-intake.xlsx` remains a historical four-product helper.
-Do not use it for the 46-candidate component matrix or delete it without an explicit archive
-decision. The current combined workbook supersedes it for new 15AK evidence collection.
+Earlier handoffs named `arcfort-15ak-factory-evidence-intake.xlsx` as a four-product helper. Treat
+any retained copy as historical; it is not required to regenerate the current package. Do not use
+it for the 46-candidate component matrix or delete a retained copy without an archive decision.
+The generated combined workbook is the current 15AK collection artifact.
 
 ## Workbook Sections
 
