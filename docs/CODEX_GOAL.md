@@ -36,6 +36,22 @@ priorities and the [production evidence](operations/acquisition-production-evide
 individual verification dates. Older checkpoints below are historical evidence, not current release
 instructions.
 
+## Targeted Operating Update — 2026-11-15
+
+The older 2026-11-06 snapshot above retains its original observation date. Subsequent owner
+read-back confirmed matching sales/buyer receipt and the readable matching-case mobile-test CSV;
+exact timing metadata remains incomplete in the strict evidence record. The existing owner-only
+sales ledger is now activated with a named responsibility (the owner), future Beijing-time
+Monday-Saturday calendar, specific action/deadline fields and a derived queue. No inquiry rows or
+sales results were created. Cached reference clocks require manual deadline review.
+
+Fresh product-intake reads found no completed exact-SKU technical/original-image evidence. GSC
+Wizard now rejects reads for lack of an active subscription; current search performance remains
+unknown and the old export is not refreshed. See the dated
+[sales/product handoff](../knowledge-base/sales/sales-action-and-product-evidence-handoff-2026-11-15.md)
+for the precise scope. Neither private-tool readiness nor workbook completion relaxes product,
+media or compatibility gates. Production DNS and analytics were not rechecked by this update.
+
 ## Confirmed Identity
 
 - Legal company: Renqiu Ailesen Welding Technology Co., Ltd.

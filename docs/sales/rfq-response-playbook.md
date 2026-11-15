@@ -5,7 +5,11 @@ technical facts, compatibility, prices, certifications or delivery promises.
 
 ## Operating Routine
 
+- The website owner is responsible for assignment, first human response and follow-up. The future
+  operating calendar is Beijing time (`Asia/Shanghai`, UTC+8), Monday-Saturday. This does not
+  establish the timezone of any historical message. Adjust holiday plans deliberately.
 - Review the sales inbox and Resend delivery log at least twice each business day.
+- Record only completed checks; use `no_access` for a log or mailbox that could not be inspected.
 - Keep the website RFQ reference in every reply and internal record.
 - Reply from the business mailbox. Do not move buyer contact details, messages or attachments into
   Git, public documents or analytics URLs.
@@ -151,11 +155,34 @@ Keep these fields in a private sales system or protected spreadsheet:
 Do not store buyer PII in this repository. Aggregated campaign reporting should use counts and
 campaign IDs only.
 
+### Product Evidence Handoff Before Quotation
+
+Use `missing_information` to name the missing evidence category and `next_action` to record a
+specific action, such as requesting an exact-SKU drawing or original product photographs. Keep
+buyer drawings, message content and identity in the controlled mailbox; do not copy them into a
+repository intake or reviewer workbook.
+
+For the four governed 15AK products, use the
+[factory evidence handoff](../operations/15ak-factory-evidence-handoff.md). Match returned evidence
+by stable Record ID, Request ID, Candidate ID and exact SKU or variant. The assembly-candidate
+queues and the existing public-SKU queues have different identities; similar names do not merge
+them. CT0006 uses its separate general M6 contact-tip workbook and independent intake, as defined
+in the [CT0006 boundary](../../knowledge-base/products/general-m6-27-contact-tip-ct0006.md).
+
+A completed response row is ready for human review, not an approved fact or quotation. Review
+technical evidence, compatibility, exact image identity and website-use rights separately. Only a
+person sets qualification, quotation and outcome status; an uploaded file, available catalog value
+or filled checklist does not confirm them.
+
 ### Private Website RFQ Ledger
 
-Copy the empty [RFQ sales ledger template](rfq-sales-ledger-template.csv) to an owner-controlled
-private spreadsheet before entering any real inquiry. This workspace's `outputs/` directory can
-hold a blank transfer copy, but Git ignore is not access control; do not enter buyer data here.
+The existing owner-only private sales ledger was upgraded on 2026-11-15; use that workbook rather
+than creating another operational copy. The empty
+[RFQ sales ledger template](rfq-sales-ledger-template.csv) is an 18-column schema reference for an
+explicitly reviewed backup or transfer. CSV does not carry the workbook's formulas, validations,
+permissions or Action Queue; it is not a working replacement for the private workbook. This
+workspace's `outputs/` directory can hold a blank transfer copy, but Git ignore is not access
+control; do not enter buyer data here.
 Never commit a populated copy. Use one row per unique website RFQ reference; keep the email thread
 locator only in the private copy, and keep names, email addresses, phone numbers, buyer messages and
 attachments in the controlled mailbox or sales system. Direct email or WhatsApp inquiries need a
@@ -169,9 +196,25 @@ separate private lead identifier; do not invent an `AF-RFQ` reference for them.
 - Use `quote_status`: `not_started`, `in_review`, `sent` or `declined`. Use `outcome_status`: `open`,
   `won`, `lost`, `no_response` or `closed_other`. A quotation or order result must come from the
   private sales record, not an analytics event.
-- Record the assigned owner, first reply, next action and last review in UTC. The operating target
-  is to inspect the mailbox and provider log twice per business day and give a qualified inquiry a
-  first human response within one business day; measure actual performance before adjusting it.
+- Every real open inquiry should have `assigned_owner`, a concrete `next_action` and a planned
+  date/time. Record only categories in `missing_information`; retain original evidence privately.
+- Actual receipt, first human reply, quotation and review times are UTC facts. Unknown times remain
+  blank; registration time, provider acceptance and automatic buyer confirmation cannot replace
+  them. An empty reply-time field does not prove that no reply was sent.
+- Enter future planned Beijing time in `next_action_due_beijing` (Q, Monday-Saturday). The private
+  workbook derives `next_action_at_utc` (J) by subtracting eight hours and derives `action_state`
+  (R). Edit source inputs, not those results. Q is a plan, not a historical event timestamp.
+- Use Action Queue for open non-test records. Only manually recorded outcomes `won`, `lost`,
+  `no_response` and `closed_other` close a row; `sent`, `declined` and `outside_scope` do not.
+  `internal_test` is excluded from genuine lead, reply, quotation and order counts.
+- The workbook retains `Etc/UTC` storage and `MINUTE` recalculation configuration. A 2026-11-15 API
+  check nevertheless observed a cached reference clock. It is not a verified background reminder:
+  compare the reference with a reliable current clock and manually review Q deadlines when stale.
+  Never copy a cached `NOW()` result as an actual receipt, response or check time.
+- The internal target is to inspect the mailbox and available provider log twice per operating
+  day and give a qualified inquiry a first human response within one business day. This is not a
+  public promise. Measure timing only when reliable actual timestamps and the work calendar are
+  available; no sales performance is established by the empty ledger.
 - Keep the earlier stuck controlled submission outside the ledger until its reference and sales
   receipt can be verified. Its provider and delivery outcome remain unknown. Controlled buyer
   confirmation and attachment proof belong in the separate production evidence record, not this

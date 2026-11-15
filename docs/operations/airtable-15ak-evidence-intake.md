@@ -9,9 +9,22 @@ source of truth.
 
 No Airtable record may confirm a specification, approve an image or publish a product automatically.
 
-The current base covers the four governed public-product records. The broader 46-candidate 15AK
-component matrix remains repository-only until an external schema and transfer review are explicitly
-approved; do not force those candidate rows into the existing 15 technical or 20 image records.
+Technical Reviews and Image Requests cover the four governed 15AK public-product records. P0 Image
+Decisions is a different priority queue: its four rows are CT0004, CT0005, CT0006 and GN0008; TH0007
+is a P1 image task. The P0 CT0006 provenance decision does not put CT0006 into the 15AK technical
+scope. The broader 46-candidate 15AK component matrix remains repository-only until an external
+schema and transfer review are explicitly approved; do not force those candidate rows into the
+existing 15 technical or 20 image records.
+
+### 2026-11-15 Read-Only Review
+
+Fresh connected reads still found no completed exact-product evidence: all 15 technical requests
+remain `NEEDS_FACTORY_CONFIRMATION`, the 20 image requests have no original upload, the four P0
+decisions remain pending, and none of the 73 local candidates has completed rights and exact-match
+approval. Prior local-file lineage audit entries remain historical lineage, not product evidence.
+Searches in the connected Drive/Dropbox scopes found no matching 15AK or general M6 original; this
+does not prove that an offline or otherwise inaccessible original does not exist. No external
+record or canonical evidence state was changed by this review.
 
 ## Current Base Structure
 

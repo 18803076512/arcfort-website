@@ -134,6 +134,13 @@ jobs:
       - name: Validate product data
         run: npm run products:validate
 
+      - name: Verify private evidence workbook regeneration
+        run: |
+          python3 -m venv /tmp/arcfort-evidence-workbook-qa
+          /tmp/arcfort-evidence-workbook-qa/bin/python -m pip install --disable-pip-version-check -r scripts/evidence-workbooks/requirements.txt
+          /tmp/arcfort-evidence-workbook-qa/bin/python scripts/evidence-workbooks/generate.py --as-of "$(date -u +%F)" --output-dir outputs/evidence-workbook-ci
+          /tmp/arcfort-evidence-workbook-qa/bin/python scripts/evidence-workbooks/verify.py --output-dir outputs/evidence-workbook-ci
+
       - name: Validate company claims and media evidence
         run: |
           npm run company:evidence:validate
