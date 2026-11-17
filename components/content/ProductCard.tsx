@@ -47,15 +47,17 @@ export function ProductCard({ product, category, denseMobile = false }: ProductC
           </Link>
         </h3>
 
-        <dl
-          className={`mt-3 border-t border-arc-line pt-3 ${denseMobile ? "hidden sm:block" : ""}`}
-        >
-          <div className="flex min-w-0 items-center justify-between gap-3 text-xs">
+        <dl className="mt-3 border-t border-arc-line pt-3">
+          <div
+            className={`flex min-w-0 text-xs ${denseMobile ? "flex-col items-start gap-1 sm:flex-row sm:items-center sm:justify-between sm:gap-3" : "items-center justify-between gap-3"}`}
+          >
             <dt className="shrink-0 font-semibold text-slate-500">SKU</dt>
-            <dd className="truncate font-bold text-arc-midnight">{product.sku}</dd>
+            <dd className="break-words font-bold leading-5 text-arc-midnight">{product.sku}</dd>
           </div>
           {selectionCue ? (
-            <div className="mt-2 flex min-w-0 items-center justify-between gap-3 text-xs">
+            <div
+              className={`mt-2 min-w-0 items-center justify-between gap-3 text-xs ${denseMobile ? "hidden sm:flex" : "flex"}`}
+            >
               <dt className="shrink-0 font-semibold text-slate-500">{selectionCue.label}</dt>
               <dd className="truncate font-bold text-arc-midnight">{selectionCue.value}</dd>
             </div>
@@ -69,7 +71,8 @@ export function ProductCard({ product, category, denseMobile = false }: ProductC
         >
           <Link
             href={href}
-            className="inline-flex min-h-11 items-center text-sm font-bold text-arc-blue transition hover:text-arc-copper"
+            aria-label={`View Product: ${product.title}`}
+            className="inline-flex min-h-11 min-w-11 items-center text-sm font-bold text-arc-blue transition hover:text-arc-copper"
           >
             <span className={denseMobile ? "sm:hidden" : "hidden"}>View</span>
             <span className={denseMobile ? "hidden sm:inline" : "inline"}>View Product</span>
@@ -77,7 +80,7 @@ export function ProductCard({ product, category, denseMobile = false }: ProductC
               &rarr;
             </span>
           </Link>
-          <div className="transition lg:pointer-events-none lg:opacity-0 lg:group-hover:pointer-events-auto lg:group-hover:opacity-100 lg:group-focus-within:pointer-events-auto lg:group-focus-within:opacity-100">
+          <div className="transition [&_button]:min-h-11 [&_button]:min-w-11 lg:pointer-events-none lg:opacity-0 lg:group-hover:pointer-events-auto lg:group-hover:opacity-100 lg:group-focus-within:pointer-events-auto lg:group-focus-within:opacity-100">
             <AddToRfqButton
               variant="card"
               item={{

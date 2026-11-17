@@ -18,18 +18,21 @@ export function HomeHero() {
       />
       <div className="absolute inset-0 -z-10 bg-arc-midnight/75" aria-hidden="true" />
 
-      <Container className="home-hero-layout flex items-center py-16 sm:py-20">
+      <Container className="flex min-h-[34rem] items-center py-12 sm:min-h-[36rem] sm:py-16 lg:min-h-[38rem]">
         <div className="max-w-3xl">
           <p className="text-sm font-bold uppercase text-slate-200">
-            ArcFort Weld | Welding & Cutting Technology
+            ArcFort Weld | Welding & Cutting
           </p>
-          <h1 id="home-hero-title" className="display-title mt-5 text-white">
+          <h1
+            id="home-hero-title"
+            className="mt-5 text-balance font-display text-[2.5rem] font-extrabold leading-[1.06] text-white sm:text-5xl lg:text-[4rem]"
+          >
             Engineered for Welding.
             <span className="mt-2 block">Built for Industry.</span>
           </h1>
           <p className="mt-6 max-w-2xl text-base leading-7 text-slate-200 sm:text-xl sm:leading-8">
-            Professional welding machines, cutting equipment, torch parts and consumables for
-            industrial users, distributors and OEM partners.
+            Welding equipment, torch parts and consumables for industrial buyers, distributors and
+            OEM partners.
           </p>
           <div className="mt-8 flex flex-col gap-3 sm:flex-row">
             <ButtonLink href="/products" className="w-full sm:w-auto">

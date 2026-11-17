@@ -37,7 +37,7 @@ export function ProductGalleryViewer({ images, productTitle }: ProductGalleryVie
   return (
     <div data-nosnippet data-snippet-region="product-visual">
       <figure className="border border-arc-line bg-white">
-        <div className="relative aspect-square bg-white sm:aspect-[5/4] lg:aspect-square">
+        <div className="relative aspect-[5/4] bg-white lg:aspect-square">
           <Image
             key={selectedImage.assetId}
             src={selectedImage.publicPath}
@@ -45,17 +45,17 @@ export function ProductGalleryViewer({ images, productTitle }: ProductGalleryVie
             fill
             priority={selectedIndex === 0}
             sizes="(min-width: 1024px) 48vw, 100vw"
-            className="object-contain p-6 sm:p-9"
+            className="object-contain p-4 sm:p-6"
             quality={90}
           />
         </div>
-        <figcaption className="flex flex-col gap-2 border-t border-arc-line px-4 py-3 text-sm text-slate-500 sm:flex-row sm:items-center sm:justify-between">
+        <figcaption className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-x-3 border-t border-arc-line px-3 py-2 text-sm leading-5 text-slate-500 sm:px-4">
           <span>{getImageDisclosure(selectedImage)}</span>
           <a
             href={selectedImage.publicPath}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex min-h-10 items-center font-bold text-arc-blue transition hover:text-arc-copper"
+            className="inline-flex min-h-11 items-center font-bold text-arc-blue transition hover:text-arc-copper"
           >
             View full image{" "}
             <span className="ml-2" aria-hidden="true">

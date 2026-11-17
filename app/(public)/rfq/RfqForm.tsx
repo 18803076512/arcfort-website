@@ -746,7 +746,7 @@ export function RfqForm({
             submissionAttemptRef.current = null;
             setIsSubmitted(false);
           }}
-          className="mt-6 bg-arc-blue px-5 py-3 text-sm font-bold uppercase tracking-[0.14em] text-white transition hover:bg-arc-midnight"
+          className="button-base button-primary mt-6"
         >
           Submit Another RFQ
         </button>
@@ -761,20 +761,20 @@ export function RfqForm({
       noValidate
       aria-busy={isSubmitting}
       data-rfq-form-placement={formPlacement}
-      className="border border-slate-200 bg-white p-6 shadow-sm sm:p-8"
+      className="border border-slate-200 bg-white p-4 sm:p-6 lg:p-8"
     >
       <div
         id="rfq-load-status"
         role="status"
-        className="mb-6 min-h-36 border-l-4 border-arc-blue bg-slate-50 p-4 text-sm text-slate-700 sm:min-h-28"
+        className="mb-4 min-h-24 border-l-4 border-arc-blue bg-slate-50 p-3 text-sm text-slate-700"
       >
         <p className="font-bold text-arc-midnight">
           {isInteractive ? "Inquiry form ready." : "Preparing the inquiry form."}
         </p>
         <p className="mt-1 leading-6">
           {isInteractive
-            ? "Enter product details below, or contact us by "
-            : "If the fields do not become available, contact us by "}
+            ? "Questions or large files? Contact us by "
+            : "If the fields do not become available, use "}
           <a className="font-bold underline underline-offset-2" href={siteConfig.emailHref}>
             email
           </a>{" "}
@@ -786,8 +786,8 @@ export function RfqForm({
             rel="noopener noreferrer"
           >
             WhatsApp
-          </a>{" "}
-          now.
+          </a>
+          .
         </p>
       </div>
       <fieldset disabled={!isInteractive || isSubmitting} className="m-0 min-w-0 border-0 p-0">
@@ -859,7 +859,7 @@ export function RfqForm({
         ) : null}
         <section
           id="selected-products"
-          className="mb-6 scroll-mt-32 border-y-4 border-arc-signal bg-arc-midnight p-4 text-white sm:p-5"
+          className={`mb-4 scroll-mt-32 border p-3 sm:p-4 ${selectedProducts.length > 0 ? "border-arc-midnight bg-arc-midnight text-white" : "border-arc-line bg-arc-frost text-arc-midnight"}`}
           aria-labelledby="selected-products-title"
         >
           <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
@@ -867,19 +867,21 @@ export function RfqForm({
               <div className="flex items-center gap-3">
                 <h2
                   id="selected-products-title"
-                  className="font-display text-2xl font-black text-white"
+                  className="font-display text-lg font-black text-inherit sm:text-xl"
                 >
                   Selected Products
                 </h2>
-                <span className="inline-flex h-7 min-w-7 items-center justify-center bg-arc-signal px-2 text-xs font-black text-arc-midnight">
+                <span className="inline-flex h-6 min-w-6 items-center justify-center rounded-sm bg-arc-midnight px-2 text-xs font-bold text-white">
                   {selectedProducts.length}
                 </span>
               </div>
-              <p className="mt-2 max-w-2xl text-sm leading-6 text-slate-300">
-                Build one inquiry from several product pages. Add quantity and a model, size or
-                drawing reference for each line when available; SKU and category details are
-                included automatically.
-              </p>
+              {selectedProducts.length > 0 ? (
+                <p className="mt-2 max-w-2xl text-sm leading-6 text-slate-300">
+                  Build one inquiry from several product pages. Add quantity and a model, size or
+                  drawing reference for each line when available; SKU and category details are
+                  included automatically.
+                </p>
+              ) : null}
             </div>
             {selectedProducts.length > 0 ? (
               <button
@@ -960,27 +962,22 @@ export function RfqForm({
               ))}
             </div>
           ) : (
-            <div className="mt-5 flex flex-col gap-3 border-t border-white/15 pt-4 sm:flex-row sm:items-center sm:justify-between">
-              <p className="text-sm leading-6 text-slate-300">
-                No products selected yet. You can still enter your requirements manually below.
-              </p>
+            <div className="mt-2 flex flex-wrap items-center justify-between gap-x-3 gap-y-1">
+              <p className="text-sm leading-6 text-slate-600">No products selected yet.</p>
               <Link
                 href="/products"
-                className="inline-flex min-h-10 self-start items-center justify-center bg-arc-signal px-4 text-xs font-bold uppercase tracking-[0.1em] text-arc-midnight transition hover:bg-white sm:shrink-0"
+                className="inline-flex min-h-11 items-center text-sm font-bold text-arc-blue underline-offset-4 hover:underline"
               >
                 Browse Products
               </Link>
             </div>
           )}
         </section>
-        <details className="group mb-6 border border-slate-200 bg-arc-frost">
-          <summary className="flex min-h-16 cursor-pointer list-none items-center justify-between gap-4 p-4 marker:hidden sm:p-5">
+        <details className="group mb-5 border border-slate-200 bg-arc-frost">
+          <summary className="flex min-h-12 cursor-pointer list-none items-center justify-between gap-4 p-3 marker:hidden sm:p-4">
             <span className="min-w-0">
-              <span className="block font-display text-xl font-black text-arc-midnight">
+              <span className="block font-display text-base font-bold text-arc-midnight">
                 Quick RFQ starters
-              </span>
-              <span className="mt-1 block text-xs leading-5 text-slate-600">
-                Optional guidance for common buying scenarios.
               </span>
             </span>
             <span className="shrink-0 text-xs font-bold uppercase tracking-[0.12em] text-arc-blue">
@@ -1227,7 +1224,7 @@ export function RfqForm({
             type="submit"
             disabled={!isInteractive || isSubmitting}
             aria-describedby="rfq-submit-status"
-            className="inline-flex min-h-12 w-full items-center justify-center bg-arc-blue px-6 py-3 text-sm font-bold uppercase tracking-[0.12em] text-white transition hover:bg-arc-midnight disabled:cursor-not-allowed disabled:bg-slate-400 sm:w-auto sm:tracking-[0.16em]"
+            className="button-base button-primary min-h-12 w-full shrink-0 disabled:cursor-not-allowed disabled:bg-slate-500 sm:w-auto"
           >
             {isSubmitting ? "Submitting..." : "Submit RFQ"}
           </button>

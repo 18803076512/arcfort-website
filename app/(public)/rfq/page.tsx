@@ -111,70 +111,68 @@ export default async function RfqPage({ searchParams }: RfqPageProps) {
         ]}
       />
 
-      <div className="bg-white py-5 sm:py-6">
+      <div className="bg-white py-3 sm:py-4">
         <Container>
           <Breadcrumbs items={[{ label: "Home", href: "/" }, { label: "Request a Quote" }]} />
         </Container>
       </div>
 
       <section className="bg-arc-midnight text-white">
-        <Container className="grid gap-10 py-14 sm:py-16 lg:grid-cols-[1fr_0.7fr] lg:items-end lg:gap-16 lg:py-20">
+        <Container className="grid gap-5 py-6 sm:py-8 lg:grid-cols-[1fr_0.7fr] lg:items-center lg:gap-12">
           <div>
-            <p className="section-eyebrow !text-arc-signal">RFQ Center</p>
-            <h1 className="mt-4 max-w-4xl font-display text-4xl font-black leading-tight sm:text-5xl lg:text-6xl">
-              Request a welding and cutting product quotation.
+            <h1 className="font-display text-3xl font-black leading-tight sm:text-4xl">
+              Request a Quote
             </h1>
-            <p className="mt-6 max-w-3xl text-lg leading-8 text-slate-300">
-              Send your product list, model or reference, quantity, destination and available
-              drawing, photo or sample evidence. ArcFort Weld will review the technical and
-              commercial basis before quotation.
+            <p className="mt-3 max-w-2xl text-base leading-7 text-slate-300">
+              Send your product reference, quantity and destination. Add a drawing or photo when
+              available.
             </p>
           </div>
-          <div className="border-l-4 border-arc-signal pl-6">
-            <p className="text-xs font-bold uppercase text-slate-400">Direct Alternatives</p>
+          <div className="hidden flex-wrap items-center gap-x-5 gap-y-1 border-l border-white/20 pl-6 lg:flex">
             <a
               href={emailHref}
-              className="mt-4 block break-all text-base font-bold text-white transition hover:text-arc-signal"
+              className="inline-flex min-h-11 items-center break-all text-sm font-bold text-white underline-offset-4 hover:underline"
             >
               {siteConfig.email}
             </a>
             <a
               href={whatsappHref}
-              className="mt-3 block text-base font-bold text-white transition hover:text-arc-signal"
+              className="inline-flex min-h-11 items-center text-sm font-bold text-white underline-offset-4 hover:underline"
             >
               WhatsApp {siteConfig.whatsapp}
             </a>
-            <p className="mt-4 text-sm leading-6 text-slate-400">
-              Use email or WhatsApp for files above the website upload limit or for follow-up on an
-              existing RFQ reference.
-            </p>
           </div>
         </Container>
       </section>
 
       <section
         data-disable-sticky-contact-bar
-        className="section-space bg-arc-frost"
+        className="bg-arc-frost py-6 sm:py-8 lg:py-10"
         aria-labelledby="rfq-form-title"
       >
         <Container className="grid gap-10 lg:grid-cols-[minmax(0,1.32fr)_minmax(19rem,0.68fr)] lg:items-start lg:gap-12">
           <div className="min-w-0">
-            <div className="mb-7">
-              <p className="section-eyebrow">Submit Your Requirements</p>
-              <h2 id="rfq-form-title" className="section-title mt-3">
-                One form for product, quantity and evidence.
+            <div className="mb-4">
+              <h2
+                id="rfq-form-title"
+                className="font-display text-xl font-black text-arc-midnight sm:text-2xl"
+              >
+                Your requirements
               </h2>
-              <p className="body-large mt-4 max-w-3xl">
-                Selected product pages are carried into the form automatically. You can also enter a
-                general requirement or upload a completed product list.
+              <p className="mt-2 max-w-3xl text-sm leading-6 text-slate-600">
+                Use selected products, enter a requirement or upload your product list.
               </p>
             </div>
             <RfqForm initialProduct={initialProduct} initialQuantity={initialQuantity} />
           </div>
 
           <aside className="lg:sticky lg:top-28">
+            <p className="mb-5 text-sm leading-6 text-slate-600">
+              ArcFort Weld reviews the technical and commercial details before quotation. Use email
+              or WhatsApp for larger files or follow-up on an existing RFQ reference.
+            </p>
             <h2 className="font-display text-2xl font-black text-arc-midnight">
-              What makes an RFQ reviewable
+              Details that help us quote
             </h2>
             <ul className="mt-5 divide-y divide-arc-line border-y border-arc-line">
               {inquiryChecklist.map((item) => (
@@ -191,7 +189,7 @@ export default async function RfqPage({ searchParams }: RfqPageProps) {
             </ul>
             <div className="mt-7 border-l-4 border-arc-signal bg-white p-5">
               <h3 className="font-display text-xl font-black text-arc-midnight">
-                Compatibility needs evidence
+                Check fit before ordering
               </h3>
               <p className="mt-3 text-sm leading-6 text-slate-600">
                 A family name or visual similarity does not confirm fit. Send the torch or machine
@@ -207,8 +205,8 @@ export default async function RfqPage({ searchParams }: RfqPageProps) {
           <SectionHeading
             id="rfq-process-title"
             eyebrow="After Submission"
-            title="A clear path from inquiry to approved order basis."
-            description="The workflow keeps buyer-supplied evidence, open questions and supplier-confirmed terms separate."
+            title="What happens next."
+            description="Review the product reference, clarify the details and agree on the order requirements."
           />
           <ProcessSteps items={processSteps} />
         </Container>
@@ -218,8 +216,8 @@ export default async function RfqPage({ searchParams }: RfqPageProps) {
         <Container className="grid gap-10 lg:grid-cols-[0.72fr_1.28fr] lg:gap-16">
           <SectionHeading
             eyebrow="Supporting Information"
-            title="Prepare the evidence behind the RFQ."
-            description="Use the available working files and company pages when the inquiry needs more structure or supplier review."
+            title="Useful before quotation."
+            description="Find product-list templates, company information and order guidance."
           />
           <BuyerPathList items={relatedResources} ariaLabel="RFQ supporting resources" />
         </Container>
