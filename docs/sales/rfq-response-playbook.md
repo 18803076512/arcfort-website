@@ -38,6 +38,13 @@ Confirm what the buyer supplied:
 Never infer compatibility from a similar appearance. Use "Compatibility can be confirmed by sample
 or drawing" until the technical reference has been checked.
 
+The direct product RFQ/email/WhatsApp drafts for CT0004, CT0005, TH0007, GN0008 and independent
+CT0006 carry [part-specific identification questions](../../knowledge-base/sales/product-identification-rfq-2026-11-17.md).
+Treat these as unanswered prompts until the buyer supplies the information. An existing site SKU
+can identify the requested line for sales review; it does not establish the supplied variant's
+dimensions, material or fit. Keep the independent CT0006 and four-product 15AK evidence queues
+separate when following up.
+
 ## Response Path
 
 ### Sufficient Product Detail

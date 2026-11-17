@@ -18,6 +18,7 @@ import { Section } from "@/components/ui/Section";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { displayConfirmedValue, isLowSignalSpecificationValue } from "@/lib/content/display";
 import { getProductBuyingProfile } from "@/lib/content/product-buying-profiles";
+import { getProductIdentificationRfqFields } from "@/lib/content/product-identification-rfq";
 import { getProductOverviewSpecificationRows } from "@/lib/content/product-presentation";
 import { siteConfig } from "@/lib/content/site";
 import { getBuyerGuideForProduct } from "@/lib/content/topic-links";
@@ -80,11 +81,14 @@ export function ProductDetailTemplate({
 }: ProductDetailTemplateProps) {
   const buyerGuideLink = getBuyerGuideForProduct(product.slug, category.slug);
   const buyingProfile = getProductBuyingProfile(product.slug);
+  const productRfqFields =
+    buyingProfile?.rfqFields ?? getProductIdentificationRfqFields(product.sku);
+  const whatsappRfqFields = buyingProfile ? productRfqFields?.slice(0, 4) : productRfqFields;
   const productRfqPrompt = [
     `Product: ${product.title}`,
     `SKU: ${product.sku}`,
     `Category: ${category.title}`,
-    ...(buyingProfile?.rfqFields ?? [
+    ...(productRfqFields ?? [
       "Required model / size / material:",
       "Drawing, sample photo or reference part:",
       "Quantity, packaging and destination country:",
@@ -107,7 +111,7 @@ export function ProductDetailTemplate({
       `SKU: ${product.sku}`,
       `Category: ${category.title}`,
       "",
-      ...(buyingProfile?.rfqFields ?? [
+      ...(productRfqFields ?? [
         "Quantity:",
         "Destination country:",
         "Required model / size / material:",
@@ -125,11 +129,7 @@ export function ProductDetailTemplate({
       `Product: ${product.title}`,
       `SKU: ${product.sku}`,
       `Category: ${category.title}`,
-      ...(buyingProfile?.rfqFields.slice(0, 4) ?? [
-        "Quantity:",
-        "Destination country:",
-        "Packaging or OEM request:",
-      ]),
+      ...(whatsappRfqFields ?? ["Quantity:", "Destination country:", "Packaging or OEM request:"]),
     ].join("\n"),
   )}`;
   const publicSpecifications = product.specifications.filter(isPublicDetailRow);
