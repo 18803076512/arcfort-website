@@ -4,6 +4,9 @@ import { mkdir } from "node:fs/promises";
 import { createRequire } from "node:module";
 import type { Browser, Page } from "./console/browser-runtime/node_modules/playwright/index.js";
 import { assertNoRuntimeEnvFiles, assertPortAvailable } from "./console/browser-server.ts";
+import { getProductBuyingProfile } from "../lib/content/product-buying-profiles.ts";
+import { getProductIdentificationRfqFields } from "../lib/content/product-identification-rfq.ts";
+import { arcfortProducts } from "../lib/data/products.ts";
 
 const { chromium } = createRequire(import.meta.url)(
   "./console/browser-runtime/node_modules/playwright",
@@ -41,6 +44,125 @@ const closed = new Promise<void>((resolve) => {
   server.once("error", finish);
   server.once("close", finish);
 });
+
+async function verifyProductIdentificationDrafts(browser: Browser) {
+  const skus = [
+    "AF-MIG-CT-0004",
+    "AF-MIG-CT-0005",
+    "AF-MIG-CT-0006",
+    "AF-MIG-TH-0007",
+    "AF-MIG-GN-0008",
+  ];
+  const controls = ["robot-welding-torch", "wire-feeder"];
+  const products = arcfortProducts.filter(
+    (product) => skus.includes(product.sku) || controls.includes(product.slug),
+  );
+  assert.equal(products.length, 7);
+  for (const width of [390, 1440]) {
+    const context = await browser.newContext({
+      serviceWorkers: "block",
+      viewport: { width, height: 900 },
+    });
+    let blockedPosts = 0;
+    await context.route("**/*", async (route) => {
+      const request = route.request();
+      if (new URL(request.url()).origin !== origin || !["GET", "HEAD"].includes(request.method())) {
+        if (request.method() === "POST") blockedPosts++;
+        return route.abort();
+      }
+      return route.continue();
+    });
+    const page = await context.newPage();
+    page.on("pageerror", (error) => pageErrors.push(error.message));
+    for (const product of products) {
+      const fields =
+        getProductBuyingProfile(product.slug)?.rfqFields ??
+        getProductIdentificationRfqFields(product.sku);
+      assert.ok(fields);
+      const response = await page.goto(
+        `${origin}/products/${product.categorySlug}/${product.slug}`,
+        { waitUntil: "networkidle" },
+      );
+      assert.equal(response?.status(), 200);
+      const quoteLink = page.getByRole("link", { name: "Request a Quote", exact: true }).first();
+      const href = await quoteLink.getAttribute("href");
+      assert.ok(href);
+      const draft = new URL(href, origin).searchParams.get("product");
+      assert.ok(draft);
+      assert.ok(draft.includes(`SKU: ${product.sku}`));
+      const productReference = `SKU: ${product.sku}`;
+      const webDrafts = (
+        await page
+          .locator('a[href^="/rfq?product="]')
+          .evaluateAll((links) => links.map((link) => link.getAttribute("href") || ""))
+      )
+        .map((link) => new URL(link, origin).searchParams.get("product") ?? "")
+        .filter((text) => text.includes(productReference));
+      const emailDrafts = (
+        await page
+          .locator('a[href^="mailto:"][href*="body="]')
+          .evaluateAll((links) => links.map((link) => link.getAttribute("href") || ""))
+      )
+        .map((link) => new URL(link).searchParams.get("body") ?? "")
+        .filter((text) => text.includes(productReference));
+      const chatDrafts = (
+        await page
+          .locator('a[href*="wa.me/"][href*="text="]')
+          .evaluateAll((links) => links.map((link) => link.getAttribute("href") || ""))
+      )
+        .map((link) => new URL(link).searchParams.get("text") ?? "")
+        .filter((text) => text.includes(productReference));
+      assert.ok(
+        webDrafts.length >= 2 && emailDrafts.length >= 2 && chatDrafts.length >= 2,
+        "Cover the overview and lower product CTA.",
+      );
+      for (const text of webDrafts) assert.equal(text, draft);
+      for (const text of [...webDrafts, ...emailDrafts]) {
+        for (const field of fields)
+          assert.ok(text.includes(field), `${product.sku} full draft missing ${field}`);
+      }
+      const chatFields = getProductBuyingProfile(product.slug) ? fields.slice(0, 4) : fields;
+      for (const text of chatDrafts) {
+        for (const field of chatFields)
+          assert.ok(text.includes(field), `${product.sku} WhatsApp draft missing ${field}`);
+      }
+      const lowerChatHref = await page
+        .locator('[data-snippet-region="rfq-cta"] a[href*="wa.me/"]')
+        .getAttribute("href");
+      assert.ok(lowerChatHref);
+      const lowerChatDraft = new URL(lowerChatHref).searchParams.get("text") ?? "";
+      for (const field of fields)
+        assert.ok(
+          lowerChatDraft.includes(field),
+          `${product.sku} lower CTA must retain its full profile`,
+        );
+      if (product.sku === "AF-MIG-CT-0006") {
+        assert.doesNotMatch(draft.split("\n").slice(3).join("\n"), /15AK|25\s*mm|27\s*mm/i);
+      }
+      await quoteLink.click();
+      await page.waitForURL(/\/rfq\?product=/);
+      await page.waitForLoadState("networkidle");
+      assert.equal(await page.locator("#productRequirements").inputValue(), draft);
+      assert.equal(await page.locator("#quantity").inputValue(), "");
+      assert.equal(await page.locator("#country").inputValue(), "");
+      assert.equal(await page.locator("#productRequirements").isEnabled(), true);
+      assert.equal(
+        await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1),
+        true,
+      );
+      if (product.sku === "AF-MIG-CT-0006" || product.sku === "AF-MIG-TH-0007") {
+        await mkdir("outputs/product-identification-rfq-browser", { recursive: true });
+        await page.screenshot({
+          path: `outputs/product-identification-rfq-browser/${product.sku}-${width}.png`,
+          fullPage: true,
+        });
+      }
+      console.log(`Product RFQ identification: ${product.sku} at ${width}px passed`);
+    }
+    assert.equal(blockedPosts, 0, "Reading draft/contact links must not initiate a POST.");
+    await context.close();
+  }
+}
 
 async function fillValidForm(page: Page) {
   await page.locator("#name").fill("Synthetic Buyer");
@@ -617,6 +739,7 @@ try {
       ? { executablePath: process.env.PLAYWRIGHT_EXECUTABLE_PATH }
       : {}),
   });
+  await verifyProductIdentificationDrafts(browser);
   await verifyPreHydrationGuard(browser);
   await verifyRfqListHydrationGuard(browser);
   await verifyBuilderHydrationGuard(browser);

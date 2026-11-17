@@ -4,6 +4,36 @@ This append-only log records substantial Codex work so future sessions can under
 why it changed and which risks remain. Add the newest entry at the top, below this introduction. Do
 not include secrets, buyer PII, private prospect data or unconfirmed claims.
 
+## 2026-11-17 - Carry Product Identification Questions Into RFQ Drafts
+
+- **Task:** Preserve the identification questions needed for five existing MIG parts when a buyer
+  moves from a product page to the website RFQ or a direct contact draft.
+- **Files Changed:** `lib/content/product-identification-rfq.ts`, the shared product detail
+  template, focused unit/browser tests and package test command, the sales playbook, dated
+  identification knowledge and this log.
+- **Components Changed:** Existing product CTA draft assembly uses one exact-SKU question source;
+  robot-torch/wire-feeder buying profiles and generic fallback remain in place.
+- **Data Changed:** No canonical product, technical, compatibility or media record. No catalog
+  answer is prefilled and no buyer record is created. **Visual Changes:** The existing RFQ textarea
+  receives the relevant questions; page layout, controls and labels are retained.
+- **SEO Impact:** No public URL, canonical, metadata, structured-data or sitemap change. Existing
+  product-context query strings carry the new unanswered questions.
+- **Validation:** A read-only production negative control found generic drafts for all five SKUs.
+  Focused tests preserve empty quantity/country behavior, CT0006 separation and existing profile
+  priority. Local build, typecheck and performance checks passed. Browser and release evidence are
+  retained with the exact candidate; external verification sends no real inquiry.
+- **Known Issues:** Factory/original-image evidence remains pending. An intake hint or source SKU
+  does not approve technical facts or fit. Zero entered sales rows do not prove zero demand.
+  DMARC, analytics and native search evidence retain their own unresolved states. Local lint must
+  exclude old ignored `.tmp/` helper artifacts; clean CI still runs the unchanged standard lint gate.
+- **Reusable Knowledge Added:** The dated record defines part-specific questions, channel limits,
+  blank-input behavior and independent product evidence boundaries.
+- **Deployment:** Routine existing-site maintenance under the owner's standing repository/main
+  and production authorization; actual CI/deployment results will be recorded after verification.
+  No provider/DNS/sharing change or real email/RFQ send is part of this batch.
+- **Next Recommended Action:** Collect actual CT0004 drawing/measurement and exact-product original
+  images with rights and reviewer/date; reconcile them through the existing governed intake.
+
 ## 2026-11-14 - Retain Owner-Confirmed Mobile RFQ Receipt
 
 - **Task:** Preserve the owner's completed mobile delivery check for
