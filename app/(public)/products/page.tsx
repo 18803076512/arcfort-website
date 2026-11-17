@@ -196,45 +196,51 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
       />
       <StructuredData data={faqJsonLd([...productCenterFaq])} />
 
-      <div className="border-b border-arc-line bg-white py-5">
+      <div className="border-b border-arc-line bg-white py-3 sm:py-4">
         <Container>
           <Breadcrumbs items={[{ label: "Home", href: "/" }, { label: "Products" }]} />
         </Container>
       </div>
 
       <section className="bg-arc-midnight text-white">
-        <Container className="py-12 sm:py-16 lg:py-20">
-          <p className="section-eyebrow !text-slate-300">Industrial Product Supply</p>
-          <h1 className="mt-4 max-w-5xl font-display text-4xl font-black leading-[1.06] sm:text-5xl lg:text-6xl">
+        <Container className="py-6 sm:py-8 lg:py-10">
+          <h1 className="max-w-5xl font-display text-3xl font-black leading-tight sm:text-4xl lg:text-5xl">
             Welding Torch Parts, Cutting Consumables & Equipment
           </h1>
-          <p className="body-large mt-6 max-w-3xl !text-slate-300">
-            Source MIG/MAG and TIG torch parts, plasma cutting consumables, welding machines,
-            consumables and workshop accessories for distribution, repair, industrial use and OEM
-            purchasing.
+          <p className="mt-3 max-w-3xl text-base leading-7 text-slate-300">
+            MIG/MAG and TIG torch parts, plasma consumables and welding equipment for industrial,
+            distributor and OEM sourcing.
           </p>
-          <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-            <ButtonLink href="#product-finder" className="w-full sm:w-auto">
-              Find Products
-            </ButtonLink>
-            <ButtonLink href="/rfq" variant="onDark" className="w-full sm:w-auto">
-              Request a Quote
-            </ButtonLink>
+          <div className="mt-5 flex flex-wrap items-center gap-x-5 gap-y-2">
+            <ButtonLink href="#product-finder">Find Products</ButtonLink>
+            <a
+              href="#product-catalog"
+              className="inline-flex min-h-11 items-center text-sm font-bold text-white underline-offset-4 hover:underline"
+            >
+              View product catalog &rarr;
+            </a>
           </div>
         </Container>
       </section>
 
-      <Section id="product-finder" labelledBy="product-finder-title" className="bg-white">
+      <Section
+        id="product-finder"
+        labelledBy="product-finder-title"
+        className="bg-white !py-8 lg:!py-12"
+      >
         <Container>
-          <div className="grid gap-8 lg:grid-cols-[0.82fr_1.18fr] lg:items-start">
+          <div className="grid gap-5 lg:grid-cols-[0.82fr_1.18fr] lg:items-start">
             <div>
-              <SectionHeading
+              <h2
                 id="product-finder-title"
-                eyebrow="Product Finder"
-                title="Search by product, component or SKU."
-                description="Use the closest known reference. A torch label, drawing, sample photo or existing part helps confirm products that use different market names."
-              />
-              <div className="mt-6 flex flex-wrap gap-x-5 gap-y-2 text-sm font-bold">
+                className="font-display text-2xl font-black text-arc-midnight lg:text-3xl"
+              >
+                Search by product, component or SKU.
+              </h2>
+              <p className="mt-3 text-base leading-7 text-slate-600">
+                Search a name or SKU; use a drawing or photo to confirm the part.
+              </p>
+              <div className="mt-3 flex flex-wrap gap-x-5 gap-y-2 text-sm font-bold">
                 <a href={productListEmailHref} className="text-arc-blue hover:text-arc-copper">
                   Email a product list
                 </a>
@@ -261,16 +267,19 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
       <Section
         id="product-categories"
         labelledBy="product-categories-title"
-        className="bg-arc-frost"
+        className="bg-arc-frost !py-8 lg:!py-10"
       >
         <Container>
-          <SectionHeading
+          <h2
             id="product-categories-title"
-            eyebrow="Product Systems"
-            title="Browse by welding and cutting process."
-            description="Move from equipment and torch assemblies to front-end parts, replacement consumables and workshop accessories."
-          />
-          <div className="mt-10 grid gap-6 md:grid-cols-2 xl:grid-cols-3">
+            className="font-display text-2xl font-black text-arc-midnight lg:text-3xl"
+          >
+            Browse by welding and cutting process.
+          </h2>
+          <p className="mt-2 text-base leading-7 text-slate-600">
+            Equipment, torch parts, replacement consumables and workshop accessories.
+          </p>
+          <div className="mt-5 grid grid-cols-2 gap-3 xl:grid-cols-3">
             {homepageProductSystems.map((system) => {
               const category = categoryMap.get(system.categorySlug);
               if (!category) return null;
@@ -283,6 +292,7 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
                   range={system.range}
                   image={system.image}
                   alt={`${system.systemName} product range from ArcFort Weld`}
+                  compact
                 />
               );
             })}
@@ -290,7 +300,11 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
         </Container>
       </Section>
 
-      <Section id="product-catalog" labelledBy="product-catalog-title" className="bg-white">
+      <Section
+        id="product-catalog"
+        labelledBy="product-catalog-title"
+        className="bg-white !py-8 lg:!py-12"
+      >
         <Container>
           <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
             <SectionHeading

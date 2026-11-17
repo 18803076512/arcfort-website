@@ -255,6 +255,9 @@ Do not place category shortcuts, duplicate category cards, trade-policy cards an
 between the finder and the actual product catalog. Link to supporting buyer pages from one quiet
 resource row.
 
+On small screens, keep product-system navigation compact so it does not become a long image-card
+wall before the catalog. Preserve all category destinations and provide a clear catalog jump.
+
 ### Category Page
 
 Use five primary page paths: Products, Parts & Selection, Buyer Guide, Applications and FAQ &
@@ -282,6 +285,10 @@ Above the fold:
 - Left: product gallery
 - Right: product name, series, model/SKU, short technical summary, key specifications, Request Quote
   and Contact Sales
+
+On small screens, show the product name and SKU before the gallery. Keep one H1 and a single
+identity source in the document; use responsive layout rather than duplicate mobile headings.
+Gallery captions must stay visible without pushing the product identity below the first screen.
 
 Below the fold:
 
@@ -416,6 +423,11 @@ the dominant task, with a concise evidence checklist and direct email/WhatsApp f
 repeat full payment, MOQ, shipping and quality sections on either page; link to the dedicated
 commercial pages instead. Preserve form prefill, selected-product context, attachment validation,
 delivery status, timeout behavior and failure fallbacks.
+
+Use a compact introduction on the dedicated RFQ page and bring the first editable fields forward.
+Keep the empty selected-product summary and optional starters concise; populated product lines,
+loading/error status and fallback channels remain readable. Use the shared primary-action button
+for submission and preserve disabled, pending and success states.
 
 ## Images
 

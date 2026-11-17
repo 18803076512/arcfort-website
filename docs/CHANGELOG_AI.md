@@ -4,6 +4,43 @@ This append-only log records substantial Codex work so future sessions can under
 why it changed and which risks remain. Add the newest entry at the top, below this introduction. Do
 not include secrets, buyer PII, private prospect data or unconfirmed claims.
 
+## 2026-11-17 - Refine Mobile Product Discovery And RFQ Presentation
+
+- **Task:** Resolve the same-day visual review's layout, image-presentation, page-rhythm and
+  primary-action inconsistencies across the homepage, product center, product detail and RFQ.
+- **Files Changed:** Public home/product-center/RFQ pages; the home hero and product-system card;
+  shared product overview, gallery, visual and product-card components; RFQ form presentation;
+  the design system, dated mobile-hierarchy decision and this log.
+- **Components Changed:** Responsive product identity/gallery arrangement, compact product-system
+  navigation, mobile product-card identity, concise home/RFQ introductions and the shared primary
+  RFQ submit/success action styling. No new client dependency or service integration.
+- **Data Changed:** No canonical product, technical, compatibility, image, company or sales record;
+  no image source pixels, paths, rights or publication states changed.
+- **Visual Changes:** Product identity appears before the mobile gallery; category navigation is
+  compact before the catalog; consistent contained image frames, shorter introductions and the
+  RFQ's earlier form reduce unnecessary scrolling. The industrial palette and existing brand
+  identity remain in place.
+- **SEO Impact:** Preserve public URLs, metadata, canonicals, sitemap, structured-data contracts,
+  useful buyer links and visible evidence boundaries. Homepage copy is consolidated rather than
+  replaced by unsupported claims.
+- **Validation:** Compare dated production before captures with the built candidate at 360, 390,
+  768, 1024, 1280 and 1440 pixels; exercise the existing RFQ unit/browser regressions, build,
+  lint/types, SEO, image-evidence, performance and secret checks. Exact command, candidate and
+  release results are retained with the PR and non-public release receipts.
+- **Known Issues:** Fresh targeted intake/storage reads still found no approved exact-SKU original
+  product or real-company replacement photos. Shared framing cannot repair source-image resolution,
+  establish identity/rights or turn representative scenes into company evidence. Original-image
+  collection remains open under the existing media workflow. DMARC, credential-rotation, GA4 and
+  current native search evidence retain their separately documented states. Old ignored local
+  `.tmp/` helpers remain outside the source change; clean CI retains standard lint.
+- **Reusable Knowledge Added:** The dated mobile product/RFQ hierarchy decision supplements the
+  existing product-presentation decision without changing evidence or publication gates.
+- **Deployment:** Existing repository/main and `www.arcfortweld.com` maintenance under the owner's
+  standing authorization. Verify exact CI, merge and production state before reporting release;
+  this batch includes no DNS/provider write or real inquiry/email send.
+- **Next Recommended Action:** Collect the original product and real-company photographs with
+  source, website-use rights and reviewer/date, then replace them through the governed media intake.
+
 ## 2026-11-17 - Carry Product Identification Questions Into RFQ Drafts
 
 - **Task:** Preserve the identification questions needed for five existing MIG parts when a buyer

@@ -68,20 +68,24 @@ export default function Home() {
 
       <HomeHero />
 
-      <Section id="product-systems" labelledBy="product-systems-title" className="bg-white">
+      <Section
+        id="product-systems"
+        labelledBy="product-systems-title"
+        className="bg-white !py-12 lg:!py-20"
+      >
         <Container>
           <div className="flex flex-col gap-7 lg:flex-row lg:items-end lg:justify-between">
             <SectionHeading
               id="product-systems-title"
               eyebrow="Product Systems"
-              title="A connected range for welding and cutting supply."
+              title="Welding & cutting product systems."
               description="Browse equipment, torch assemblies, front-end parts, cutting consumables and workshop accessories by process."
             />
             <ButtonLink href="/products" variant="secondary" className="w-full lg:w-auto">
               View Product Center
             </ButtonLink>
           </div>
-          <div className="mt-10 grid gap-6 md:grid-cols-2 xl:grid-cols-3">
+          <div className="mt-7 grid gap-3 md:grid-cols-2 md:gap-6 xl:grid-cols-3">
             {homepageProductSystems.map((system) => {
               const category = categoryMap.get(system.categorySlug);
 
@@ -104,14 +108,14 @@ export default function Home() {
         </Container>
       </Section>
 
-      <Section labelledBy="featured-products-title" className="bg-arc-frost">
+      <Section labelledBy="featured-products-title" className="bg-arc-frost !py-12 lg:!py-20">
         <Container>
           <div className="flex flex-col gap-7 lg:flex-row lg:items-end lg:justify-between">
             <SectionHeading
               id="featured-products-title"
               eyebrow="Featured Products"
-              title="Selected welding and cutting products."
-              description="Review active product pages with SKU references, buyer guidance and direct RFQ context."
+              title="Products for your next RFQ."
+              description="Compare products and send the references you need to source."
             />
             <ButtonLink href="/products" variant="secondary" className="w-full lg:w-auto">
               Browse All Products
@@ -121,14 +125,17 @@ export default function Home() {
         </Container>
       </Section>
 
-      <Section labelledBy="industry-solutions-title" className="bg-arc-midnight text-white">
+      <Section
+        labelledBy="industry-solutions-title"
+        className="bg-arc-midnight !py-12 text-white lg:!py-20"
+      >
         <Container className="grid gap-12 lg:grid-cols-[0.72fr_1.28fr] lg:gap-16">
           <div>
             <SectionHeading
               id="industry-solutions-title"
               eyebrow="Industries & Applications"
-              title="Product pathways shaped around industrial work."
-              description="Start with the application, then review the relevant product families, selection risks and RFQ information."
+              title="Find products by application."
+              description="Explore product families and selection guidance for your work."
               inverse
             />
             <ButtonLink href="/applications" variant="onDark" className="mt-8 w-full sm:w-auto">
@@ -140,7 +147,7 @@ export default function Home() {
               <Link
                 key={solution.slug}
                 href={`/applications/${solution.slug}`}
-                className="group grid grid-cols-[2.5rem_1fr] gap-4 border-t border-white/20 py-6 transition hover:border-white/60"
+                className="group grid grid-cols-[2.5rem_1fr] gap-4 border-t border-white/20 py-4 transition hover:border-white/60"
               >
                 <span className="text-xs font-bold text-slate-400">{solution.number}</span>
                 <span>
@@ -157,15 +164,14 @@ export default function Home() {
         </Container>
       </Section>
 
-      <Section labelledBy="why-arcfort-title" className="bg-white">
+      <Section labelledBy="why-arcfort-title" className="bg-white !py-12 lg:!py-20">
         <Container>
           <SectionHeading
             id="why-arcfort-title"
             eyebrow="Why ArcFort Weld"
-            title="Technical clarity before commercial commitment."
-            description="ArcFort Weld organizes product, compatibility, customization and order information so buyers can compare requirements and prepare a more useful inquiry."
+            title="Source with the right details."
           />
-          <div className="mt-12 grid gap-x-10 gap-y-8 md:grid-cols-2 xl:grid-cols-4">
+          <div className="mt-8 grid gap-x-8 gap-y-6 md:grid-cols-2 xl:grid-cols-4">
             {homepageAdvantages.map((advantage, index) => (
               <article key={advantage.title} className="border-t-2 border-arc-midnight pt-5">
                 <p className="text-xs font-bold text-arc-blue">0{index + 1}</p>
@@ -188,7 +194,7 @@ export default function Home() {
         </Container>
       </Section>
 
-      <Section labelledBy="quality-title" className="bg-arc-mist">
+      <Section labelledBy="quality-title" className="bg-arc-mist !py-12 lg:!py-20">
         <Container className="grid gap-10 lg:grid-cols-[1.08fr_0.92fr] lg:items-center lg:gap-16">
           <figure>
             <div className="relative aspect-[16/10] overflow-hidden rounded-md bg-white shadow-industrial">
@@ -210,9 +216,9 @@ export default function Home() {
           <div>
             <SectionHeading
               id="quality-title"
-              eyebrow="Manufacturing & Quality"
-              title="Order-specific confirmation, not generic promises."
-              description="Product references, fit evidence, packing requirements and shipment details are reviewed against the quotation and order scope."
+              eyebrow="Product & Order Review"
+              title="Confirm the details before ordering."
+              description="Review product references, fit, packing and shipment requirements against the quotation and order scope."
             />
             <ol className="mt-8 grid gap-0 border-t border-slate-300">
               {homepageQualitySteps.map((step, index) => (
@@ -236,19 +242,19 @@ export default function Home() {
         </Container>
       </Section>
 
-      <Section labelledBy="cooperation-title" className="bg-white">
+      <Section labelledBy="cooperation-title" className="bg-white !py-12 lg:!py-20">
         <Container>
           <SectionHeading
             id="cooperation-title"
             eyebrow="Cooperation"
-            title="Built for product programs, not one-off listings."
-            description="Prepare private-label requirements or a mixed distributor product list through dedicated buyer workflows."
+            title="OEM & distributor supply."
+            description="Prepare a private-label project or a mixed product list for your business."
           />
-          <div className="mt-12 grid gap-10 border-y border-arc-line py-10 lg:grid-cols-2 lg:divide-x lg:divide-arc-line">
+          <div className="mt-8 grid gap-8 border-y border-arc-line py-8 lg:grid-cols-2 lg:divide-x lg:divide-arc-line">
             <div className="lg:pr-12">
               <p className="section-eyebrow">OEM / ODM</p>
               <h3 className="mt-3 font-display text-2xl font-black text-arc-midnight sm:text-3xl">
-                Product and packaging projects with clear approval inputs.
+                Product & packaging customization.
               </h3>
               <p className="mt-4 text-base leading-7 text-slate-600">
                 Discuss logo printing, private label packaging, carton design and model
@@ -261,7 +267,7 @@ export default function Home() {
             <div className="border-t border-arc-line pt-10 lg:border-t-0 lg:pl-12 lg:pt-0">
               <p className="section-eyebrow">Distributor Cooperation</p>
               <h3 className="mt-3 font-display text-2xl font-black text-arc-midnight sm:text-3xl">
-                Structured support for qualified supply partners.
+                Distributor purchasing support.
               </h3>
               <p className="mt-4 text-base leading-7 text-slate-600">
                 We welcome qualified welding equipment, industrial supply and hardware partners who
@@ -279,14 +285,13 @@ export default function Home() {
         </Container>
       </Section>
 
-      <Section labelledBy="resources-title" className="bg-arc-frost">
+      <Section labelledBy="resources-title" className="bg-arc-frost !py-12 lg:!py-20">
         <Container className="grid gap-14 lg:grid-cols-[1.05fr_0.95fr] lg:gap-20">
           <div>
             <SectionHeading
               id="resources-title"
               eyebrow="Technical Support & Resources"
-              title="Prepare the right evidence before inquiry."
-              description="Use practical guides, catalogs and RFQ tools to organize product references and reduce avoidable follow-up."
+              title="Guides, catalogs & order support."
             />
             <div className="mt-8 border-t border-slate-300">
               {homepageResources.map((resource) => (
@@ -306,14 +311,14 @@ export default function Home() {
           <div className="border-t-2 border-arc-midnight pt-6 lg:mt-0">
             <p className="section-eyebrow">Global Supply</p>
             <h2 className="mt-3 font-display text-3xl font-black leading-tight text-arc-midnight">
-              One product system, two market pathways.
+              China & international sourcing.
             </h2>
             <div className="mt-8 grid gap-8 sm:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2">
               <div>
                 <h3 className="font-display text-xl font-black text-arc-midnight">China Market</h3>
                 <p className="mt-3 text-sm leading-6 text-slate-600">
                   Nationwide supply, distributor cooperation, technical support and OEM / ODM
-                  inquiry coordination without unsupported dealer-network claims.
+                  inquiry coordination.
                 </p>
               </div>
               <div>

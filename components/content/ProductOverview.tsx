@@ -51,26 +51,33 @@ export function ProductOverview({
           ]}
         />
 
-        <div className="mt-7 grid gap-9 lg:grid-cols-[1.02fr_0.98fr] lg:items-start lg:gap-14">
-          <ProductGallery product={product} />
-
-          <div className="min-w-0">
+        <div className="mt-6 grid gap-6 lg:mt-7 lg:grid-cols-[1.02fr_0.98fr] lg:grid-rows-[auto_1fr] lg:items-start lg:gap-x-14 lg:gap-y-0">
+          <div className="min-w-0 lg:col-start-2 lg:row-start-1">
             <p className="section-eyebrow">{category.title}</p>
             <h1 className="mt-3 break-words font-display text-4xl font-black leading-[1.1] text-arc-midnight sm:text-5xl">
               {product.title}
             </h1>
-            <p className="mt-5 max-w-2xl text-lg leading-8 text-slate-600">
+            <dl className="mt-3 text-sm">
+              <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
+                <dt className="font-semibold text-slate-500">Model / SKU</dt>
+                <dd className="break-words font-bold text-arc-midnight">{product.sku}</dd>
+              </div>
+            </dl>
+          </div>
+
+          <div className="min-w-0 lg:col-start-1 lg:row-start-1 lg:row-span-2">
+            <ProductGallery product={product} />
+          </div>
+
+          <div className="min-w-0 lg:col-start-2 lg:row-start-2">
+            <p className="max-w-2xl text-lg leading-8 text-slate-600 lg:mt-5">
               {product.shortDescription}
             </p>
 
-            <dl className="mt-7 grid border-y border-arc-line sm:grid-cols-3 sm:divide-x sm:divide-arc-line">
+            <dl className="mt-6 grid border-y border-arc-line sm:grid-cols-2 sm:divide-x sm:divide-arc-line">
               <div className="py-4 sm:pr-5">
                 <dt className="text-sm font-semibold text-slate-500">Series / Family</dt>
                 <dd className="mt-1 font-bold text-arc-midnight">{productIdentity.join(" / ")}</dd>
-              </div>
-              <div className="border-t border-arc-line py-4 sm:border-t-0 sm:px-5">
-                <dt className="text-sm font-semibold text-slate-500">Model / SKU</dt>
-                <dd className="mt-1 break-words font-bold text-arc-midnight">{product.sku}</dd>
               </div>
               <div className="border-t border-arc-line py-4 sm:border-t-0 sm:pl-5">
                 <dt className="text-sm font-semibold text-slate-500">Supply</dt>

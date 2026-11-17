@@ -36,7 +36,7 @@ export function ProductVisual({
       })
     : [];
   const shouldRenderImage = Boolean(mainAsset);
-  const visualClass = compact ? "aspect-[8/9]" : "aspect-[5/4]";
+  const visualClass = compact ? "aspect-square" : "aspect-[5/4]";
 
   if (shouldRenderImage && mainAsset) {
     const imageDisclosure = getProductImageDisclosureLabel(getProductImageEvidenceState(mainAsset));
@@ -57,7 +57,7 @@ export function ProductVisual({
                     : "(min-width: 1024px) 45vw, 100vw"
               }
               className={`object-contain transition duration-300 group-hover:scale-[1.02] ${
-                denseMobile ? "p-3 sm:p-7" : "p-6 sm:p-8"
+                denseMobile ? "p-3 sm:p-5" : "p-4 sm:p-6"
               }`}
               quality={88}
             />
