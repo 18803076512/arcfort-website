@@ -31,8 +31,169 @@ let activePath = "",
   completed = 0,
   navigationChecks = 0,
   galleryChecks = 0,
+  finderChecks = 0,
   status = "FAIL";
 let browser: Browser | undefined;
+
+async function verifyProductFinderNavigation(browser: Browser) {
+  for (const width of [390, 1440]) {
+    const context = await browser.newContext({
+      serviceWorkers: "block",
+      viewport: { width, height: 900 },
+    });
+    let releaseScripts = () => {};
+    const scriptsReleased = new Promise<void>((resolve) => {
+      releaseScripts = resolve;
+    });
+    let holdScripts = true;
+    let delayedModules = 0;
+    const pageErrors: string[] = [];
+    try {
+      await context.route("**/*", async (route) => {
+        const request = route.request();
+        const url = new URL(request.url());
+        if (url.origin !== origin || !["GET", "HEAD"].includes(request.method())) {
+          refused.push(`${request.method()} ${url.origin}`);
+          return route.abort();
+        }
+        if (holdScripts && url.pathname.startsWith("/_next/static/chunks/")) {
+          delayedModules++;
+          await scriptsReleased;
+        }
+        return route.continue();
+      });
+      const page = await context.newPage();
+      page.on("pageerror", (error) => pageErrors.push(error.message));
+      assert.equal((await page.goto(`${origin}/products`, { waitUntil: "commit" }))?.status(), 200);
+      const queryInput = page.getByRole("searchbox", { name: "Product name, component or SKU" });
+      const categoryInput = page.getByLabel("Product category", { exact: true });
+      const catalog = page.locator("#product-catalog");
+      const searchButton = page.getByRole("button", { name: "Search Products", exact: true });
+      const clearFilters = page.getByRole("link", { name: "Clear Filters", exact: true });
+      const initialDraft = `Native draft before hydration ${width}`;
+      await queryInput.fill(initialDraft);
+      await categoryInput.selectOption("plasma-cutting-consumables");
+      const baselineSummary = (
+        await catalog.getByText(/^Showing \d+-\d+ of \d+ products$/).textContent()
+      )?.trim();
+      assert.ok(baselineSummary, "Unfiltered catalog must provide a result summary.");
+      holdScripts = false;
+      releaseScripts();
+      await page.waitForLoadState("networkidle");
+      await page
+        .getByRole("button", { name: /^Add .+ to RFQ list$/ })
+        .first()
+        .waitFor({ state: "attached" });
+      assert.ok(
+        delayedModules > 0,
+        `${width}px finder must exercise native input before hydration`,
+      );
+      assert.equal(
+        await queryInput.inputValue(),
+        initialDraft,
+        `${width}px hydration preserves native query draft`,
+      );
+      assert.equal(
+        await categoryInput.inputValue(),
+        "plasma-cutting-consumables",
+        `${width}px hydration preserves native category draft`,
+      );
+
+      // A hard navigation would also reset defaultValues and could hide the original regression.
+      const documentMarker = `finder-navigation-${width}`;
+      await page.evaluate(
+        (marker) => Reflect.set(window, "__arcfortFinderNavigationMarker", marker),
+        documentMarker,
+      );
+      async function assertClientNavigation(label: string) {
+        assert.equal(
+          await page.evaluate(() => Reflect.get(window, "__arcfortFinderNavigationMarker")),
+          documentMarker,
+          `${width}px ${label} must retain the current document through Next.js navigation`,
+        );
+      }
+      async function waitForCatalogUrl(
+        query: string,
+        category: string,
+        pageNumber = "",
+        hash = "#product-catalog",
+      ) {
+        await page.waitForURL(
+          (url) =>
+            url.pathname === "/products" &&
+            (url.searchParams.get("q") ?? "") === query &&
+            (url.searchParams.get("category") ?? "") === category &&
+            (url.searchParams.get("page") ?? "") === pageNumber &&
+            url.hash === hash,
+        );
+      }
+      async function assertNativeFilters(query: string, category: string, label: string) {
+        assert.equal(await queryInput.inputValue(), query, `${width}px ${label} query`);
+        assert.equal(await categoryInput.inputValue(), category, `${width}px ${label} category`);
+        await assertClientNavigation(label);
+      }
+
+      await queryInput.fill("AF-MIG-CT-0005");
+      await categoryInput.selectOption("mig-mag-torch-parts");
+      await searchButton.click();
+      await waitForCatalogUrl("AF-MIG-CT-0005", "mig-mag-torch-parts");
+      await catalog.getByText("Showing 1-1 of 1 products", { exact: true }).waitFor();
+      assert.equal(await catalog.getByText("AF-MIG-CT-0005", { exact: true }).count(), 1);
+      await assertNativeFilters("AF-MIG-CT-0005", "mig-mag-torch-parts", "SKU search");
+
+      await clearFilters.click();
+      await waitForCatalogUrl("", "", "", "#product-finder");
+      await catalog.getByText(baselineSummary, { exact: true }).waitFor();
+      await assertNativeFilters("", "", "clear filters");
+
+      await queryInput.fill("ceramic");
+      await categoryInput.selectOption("tig-torch-parts");
+      await searchButton.click();
+      await waitForCatalogUrl("ceramic", "tig-torch-parts");
+      const secondSearchSummary = "Search: “ceramic” | Category: TIG Torch Parts";
+      await catalog.getByText(secondSearchSummary, { exact: true }).waitFor();
+      assert.equal(await catalog.getByText("AF-TIG-CC-0007", { exact: true }).count(), 1);
+      await assertNativeFilters("ceramic", "tig-torch-parts", "keyword search");
+
+      await page.goBack();
+      await waitForCatalogUrl("", "", "", "#product-finder");
+      await catalog.getByText(baselineSummary, { exact: true }).waitFor();
+      await assertNativeFilters("", "", "history back");
+      await page.goForward();
+      await waitForCatalogUrl("ceramic", "tig-torch-parts");
+      await catalog.getByText(secondSearchSummary, { exact: true }).waitFor();
+      await assertNativeFilters("ceramic", "tig-torch-parts", "history forward");
+
+      await clearFilters.click();
+      await waitForCatalogUrl("", "", "", "#product-finder");
+      await catalog.getByText(baselineSummary, { exact: true }).waitFor();
+      const unsentDraft = `Unsubmitted finder draft ${width}`;
+      await queryInput.fill(unsentDraft);
+      await categoryInput.selectOption("welding-accessories");
+      await page.getByRole("link", { name: "View product catalog", exact: false }).click();
+      await waitForCatalogUrl("", "");
+      await assertNativeFilters(unsentDraft, "welding-accessories", "catalog hash navigation");
+      await catalog.getByRole("link", { name: "Change Search", exact: true }).click();
+      await waitForCatalogUrl("", "", "", "#product-finder");
+      await assertNativeFilters(unsentDraft, "welding-accessories", "same-filter hash navigation");
+      await catalog
+        .getByRole("navigation", { name: "Product catalog pagination" })
+        .getByRole("link", { name: "Next", exact: true })
+        .click();
+      await waitForCatalogUrl("", "", "2");
+      await catalog.getByText(/^Showing 13-\d+ of \d+ products$/).waitFor();
+      await assertNativeFilters(unsentDraft, "welding-accessories", "same-filter pagination");
+      assert.deepEqual(pageErrors, [], `${width}px product finder page errors`);
+      finderChecks++;
+      console.log(
+        `Product finder filters, history and native drafts stay consistent at ${width}px.`,
+      );
+    } finally {
+      releaseScripts();
+      await context.close();
+    }
+  }
+}
 
 async function verifyProductGalleryHydration(browser: Browser) {
   const path = "/products/mig-mag-torch-parts/mig-gas-nozzle-for-mb15";
@@ -303,6 +464,7 @@ try {
   assert.equal(completed, 120);
   await verifyNativeNavigationHydration(browser);
   await verifyProductGalleryHydration(browser);
+  await verifyProductFinderNavigation(browser);
   assert.deepEqual(refused, [], "Unexpected external or mutating request.");
   assert.deepEqual(errors, [], "Public hydration regression; see bounded local report.");
   status = "PASS";
@@ -318,7 +480,16 @@ try {
   await writeFile(
     `${output}/report.json`,
     JSON.stringify(
-      { status, completed, delayed, navigationChecks, galleryChecks, errors, refused },
+      {
+        status,
+        completed,
+        delayed,
+        navigationChecks,
+        galleryChecks,
+        finderChecks,
+        errors,
+        refused,
+      },
       null,
       2,
     ),

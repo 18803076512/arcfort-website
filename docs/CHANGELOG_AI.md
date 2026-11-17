@@ -4,6 +4,33 @@ This append-only log records substantial Codex work so future sessions can under
 why it changed and which risks remain. Add the newest entry at the top, below this introduction. Do
 not include secrets, buyer PII, private prospect data or unconfirmed claims.
 
+## 2026-11-17 - Synchronize Product Finder With Applied Filters
+
+- **Task:** Fix a production-reproduced product-search mismatch: clearing filters or using browser
+  history changed the catalog/URL but retained the old native search and category values.
+- **Files Changed:** The product-center finder instance, existing public-hydration browser
+  regression, dated finder-navigation decision and this log.
+- **Components Changed:** The native finder resets only when its normalized applied query/category
+  pair changes. Same-filter page/fragment changes preserve an unsubmitted draft.
+- **Data Changed:** No product, media, company, compatibility or sales record; no search algorithm,
+  provider configuration or dependency change.
+- **Visual Changes:** Controls display the applied filters after clear/history navigation. No
+  layout, image, button or typography redesign.
+- **SEO Impact:** Existing URLs, metadata, canonical, JSON-LD and filtered-page noindex rules are
+  retained; search and pagination keep their current query/fragment contracts.
+- **Validation:** Production before evidence reproduces the mismatch at 390px and 1440px without
+  any mutating request. Focused navigation cases check real client transitions, control values,
+  result state, browser history and draft preservation; build, types, lint, hydration, search,
+  SEO, performance and secret checks are tied to the final candidate and release receipts.
+- **Known Issues:** Original product/company media and operational evidence gaps remain outside
+  this search-state repair. No real inquiry, email, DNS or provider write is part of the batch.
+- **Reusable Knowledge Added:** The dated decision distinguishes applied filters from an
+  unsubmitted native draft and preserves the earlier pre-hydration control requirements.
+- **Deployment:** Existing repository/main and `www.arcfortweld.com` maintenance under the owner's
+  standing authorization; verify exact CI and deployed state before reporting release.
+- **Next Recommended Action:** Confirm the same clear/history behavior on the deployed product
+  center, then continue the governed original-photo collection already prepared.
+
 ## 2026-11-17 - Refine Mobile Product Discovery And RFQ Presentation
 
 - **Task:** Resolve the same-day visual review's layout, image-presentation, page-rhythm and

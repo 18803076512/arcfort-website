@@ -250,6 +250,7 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
               </div>
             </div>
             <ProductFinderForm
+              key={JSON.stringify([catalog.query, catalog.categorySlug])}
               categories={categories.map((category) => ({
                 slug: category.slug,
                 title: category.title,
