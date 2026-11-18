@@ -5,6 +5,10 @@ technical facts, compatibility, prices, certifications or delivery promises.
 
 ## Operating Routine
 
+- Use the existing private workbook's `30-Day Review` for an explicit UTC observation window and
+  its missing-time/action checks. Follow the
+  [period and cohort definitions](../../knowledge-base/sales/thirty-day-review-2026-11-18.md);
+  current `won` labels are not orders won during that window, and blank rates are not zero demand.
 - The website owner is responsible for assignment, first human response and follow-up. The future
   operating calendar is Beijing time (`Asia/Shanghai`, UTC+8), Monday-Saturday. This does not
   establish the timezone of any historical message. Adjust holiday plans deliberately.

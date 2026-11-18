@@ -16,7 +16,9 @@ import { siteConfig } from "@/lib/content/site";
 import {
   buildRfqProductRequirements,
   clearRfqList,
+  getRfqListItemKey,
   readRfqList,
+  readRfqListSnapshot,
   removeRfqListItem,
   rfqLineItemFieldLimits,
   type RfqListItem,
@@ -194,6 +196,7 @@ export function RfqForm({
   const [isInteractive, setIsInteractive] = useState(false);
   const [attachments, setAttachments] = useState<File[]>([]);
   const [errors, setErrors] = useState<FormErrors>({});
+  const [listMutationError, setListMutationError] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [submissionResult, setSubmissionResult] = useState<RfqResponse | null>(null);
@@ -390,6 +393,17 @@ export function RfqForm({
 
   function handleRemoveSelectedProduct(item: RfqListItem) {
     removeRfqListItem(item);
+    const saved = readRfqListSnapshot();
+    if (
+      !saved.readable ||
+      saved.items.some((currentItem) => getRfqListItemKey(currentItem) === getRfqListItemKey(item))
+    ) {
+      setListMutationError(
+        `Could not remove ${item.name} from your RFQ list. Contact sales by email or WhatsApp for help.`,
+      );
+      return;
+    }
+    setListMutationError("");
     setErrors((currentErrors) => ({
       ...currentErrors,
       productRequirements: undefined,
@@ -420,6 +434,14 @@ export function RfqForm({
 
   function handleClearSelectedProducts() {
     clearRfqList();
+    const saved = readRfqListSnapshot();
+    if (!saved.readable || saved.items.length > 0) {
+      setListMutationError(
+        "Could not clear your RFQ list. Contact sales by email or WhatsApp for help.",
+      );
+      return;
+    }
+    setListMutationError("");
     setErrors((currentErrors) => ({
       ...currentErrors,
       productRequirements: undefined,
@@ -894,6 +916,11 @@ export function RfqForm({
             ) : null}
           </div>
 
+          {listMutationError ? (
+            <p role="status" className="mt-3 text-sm font-semibold text-amber-200">
+              {listMutationError}
+            </p>
+          ) : null}
           {selectedProducts.length > 0 ? (
             <div className="mt-5 divide-y divide-white/15 border-y border-white/15">
               {selectedProducts.map((item) => (

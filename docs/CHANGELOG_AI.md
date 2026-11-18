@@ -4,6 +4,42 @@ This append-only log records substantial Codex work so future sessions can under
 why it changed and which risks remain. Add the newest entry at the top, below this introduction. Do
 not include secrets, buyer PII, private prospect data or unconfirmed claims.
 
+## 2026-11-18 - Verify RFQ List Outcomes And Add A Sales Review Window
+
+- **Task:** Make inquiry-list announcements and analytics reflect the persisted selection result,
+  and add a bounded 30-day review to the existing private sales workbook.
+- **Files Changed:** RFQ selection button and form, existing public-hydration browser regression,
+  dated RFQ-list decision, sales review knowledge record, sales playbook and this log.
+- **Components Changed:** Confirm readable saved state before reporting add/remove/clear success;
+  avoid overwriting an unreadable selection or synchronizing an unverified post-write snapshot.
+  Storage failures preserve existing inquiry alternatives.
+- **Data Changed:** No product, technical, compatibility, image, company or buyer record. The
+  private review derives aggregates from existing ledger/check records; no real source inquiry or
+  check row is added. Synthetic verification rows lived only in disposable scratch sheets, now
+  removed. Public analytics remain inactive; the owner confirmed its web stream is not yet created.
+- **Visual Changes:** Accurate failure guidance in existing status regions; preserve normal
+  selection controls and direct RFQ entry. The private review has explicit UTC period inputs,
+  current-cohort states and missing-time/action checks.
+- **SEO Impact:** No public URL, metadata, canonical, indexability, structured-data or product
+  fact change.
+- **Validation:** Bind local blocked-storage before/after evidence, normal/denied analytics and
+  responsive regression to the exact candidate. Require build, lint/types, applicable RFQ/SEO,
+  performance and secret checks; native sales formulas require synthetic scratch-sheet evaluation
+  and readback, with original tabs/access preserved. Exact run results remain in private release
+  artifacts and the PR.
+- **Known Issues:** Missing product/company originals and rights, DMARC, provider-account evidence,
+  current native GSC and the actual GA4 stream still need their original sources. Empty sales
+  records do not establish zero demand; current won status is not an interval-dated order count.
+  Storage failure guidance is not a new persistence or delivery guarantee.
+- **Reusable Knowledge Added:** The dated RFQ-list decision binds success to persisted outcomes;
+  the sales review record defines interval, duplicate/test exclusion and current-state limits.
+- **Deployment:** Use the owner's standing existing repository/main and official-site maintenance
+  authorization. Verify exact CI, production commit and live GET-only selection checks before
+  reporting publication; no real RFQ, email, DNS, provider or analytics-setting write is included.
+- **Next Recommended Action:** Collect the CT0004 technical/original-photo package by stable intake
+  ID while the owner records actual inquiry actions and restores the original measurement/account
+  evidence.
+
 ## 2026-11-17 - Keep Product Center Anchor Headings Below The Header
 
 - **Task:** Repair the production-reproduced clipping of product finder, category and catalog

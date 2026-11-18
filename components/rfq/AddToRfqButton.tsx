@@ -7,6 +7,7 @@ import {
   addRfqListItem,
   getRfqListItemKey,
   maxRfqItems,
+  readRfqListSnapshot,
   removeRfqListItem,
   type RfqListItem,
 } from "@/lib/rfq-list";
@@ -54,6 +55,16 @@ export function AddToRfqButton({ item, variant = "detail" }: AddToRfqButtonProps
 
     if (isAdded) {
       removeRfqListItem(item);
+      const saved = readRfqListSnapshot();
+      if (
+        !saved.readable ||
+        saved.items.some((currentItem) => getRfqListItemKey(currentItem) === itemKey)
+      ) {
+        setAnnouncement(
+          `Could not remove ${item.name} from your RFQ list. Use Request a Quote to include this product directly.`,
+        );
+        return;
+      }
       setAnnouncement(`${item.name} removed from your RFQ list.`);
       trackAnalyticsEvent("rfq_list_remove", {
         item_name: item.name,
@@ -62,12 +73,22 @@ export function AddToRfqButton({ item, variant = "detail" }: AddToRfqButtonProps
       return;
     }
 
-    const nextItems = addRfqListItem(item);
+    addRfqListItem(item);
+    const saved = readRfqListSnapshot();
+    if (
+      !saved.readable ||
+      !saved.items.some((currentItem) => getRfqListItemKey(currentItem) === itemKey)
+    ) {
+      setAnnouncement(
+        `Could not add ${item.name} to your RFQ list. Use Request a Quote to include this product directly.`,
+      );
+      return;
+    }
     setAnnouncement(`${item.name} added to your RFQ list.`);
     trackAnalyticsEvent("rfq_list_add", {
       item_name: item.name,
       item_sku: item.sku,
-      item_count: nextItems.length,
+      item_count: saved.items.length,
     });
   }
 
