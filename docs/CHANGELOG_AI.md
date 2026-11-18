@@ -4,6 +4,35 @@ This append-only log records substantial Codex work so future sessions can under
 why it changed and which risks remain. Add the newest entry at the top, below this introduction. Do
 not include secrets, buyer PII, private prospect data or unconfirmed claims.
 
+## 2026-11-17 - Keep Product Center Anchor Headings Below The Header
+
+- **Task:** Repair the production-reproduced clipping of product finder, category and catalog
+  headings after buyers follow the existing section links.
+- **Files Changed:** `app/(public)/products/page.tsx`, the dated catalog-anchor-offset decision and
+  this log.
+- **Components Changed:** The three existing product-center sections share the established
+  `scroll-mt-24` token; no component or client behavior was added.
+- **Data Changed:** None. Product, media, compatibility, company and sales records are unchanged.
+- **Visual Changes:** Native anchor destinations leave clearance below the sticky header so their
+  complete headings remain readable.
+- **SEO Impact:** Preserve URLs, fragments, search parameters, finder identity, metadata,
+  canonicals, structured data, internal links and filtered-page noindex rules.
+- **Validation:** Retain actual-click production before evidence at 390/1440px and local
+  production-build evidence at 360, 390, 768, 1024, 1280 and 1440px for all three links. Check
+  settled heading/header geometry, screenshots, overflow and runtime errors, plus build, types,
+  lint, SEO/link/image/snippet audits, performance, secrets and scoped formatting. Exact results
+  and candidate/release receipts remain in non-public operational artifacts and the PR.
+- **Known Issues:** Product/company original-media and operational evidence gaps remain outside
+  this layout repair. Local lint excludes old ignored `.tmp/` helpers; clean CI retains the
+  standard unchanged lint command. No inquiry, email or provider/DNS write is part of this batch.
+- **Reusable Knowledge Added:** The dated decision records the local three-anchor clearance and
+  requires measured actual-click verification when the sticky header changes.
+- **Deployment:** Prepared for the existing repository/main and `www.arcfortweld.com` maintenance
+  workflow under the owner's standing authorization; exact CI and live verification are required
+  before reporting production release.
+- **Next Recommended Action:** Verify these three buyer jumps on the deployed product center,
+  then continue the governed original-product-photo collection.
+
 ## 2026-11-17 - Synchronize Product Finder With Applied Filters
 
 - **Task:** Fix a production-reproduced product-search mismatch: clearing filters or using browser

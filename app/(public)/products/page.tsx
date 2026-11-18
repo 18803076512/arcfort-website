@@ -226,7 +226,7 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
       <Section
         id="product-finder"
         labelledBy="product-finder-title"
-        className="bg-white !py-8 lg:!py-12"
+        className="scroll-mt-24 bg-white !py-8 lg:!py-12"
       >
         <Container>
           <div className="grid gap-5 lg:grid-cols-[0.82fr_1.18fr] lg:items-start">
@@ -268,7 +268,7 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
       <Section
         id="product-categories"
         labelledBy="product-categories-title"
-        className="bg-arc-frost !py-8 lg:!py-10"
+        className="scroll-mt-24 bg-arc-frost !py-8 lg:!py-10"
       >
         <Container>
           <h2
@@ -304,7 +304,7 @@ export default async function ProductsPage({ searchParams }: ProductsPageProps) 
       <Section
         id="product-catalog"
         labelledBy="product-catalog-title"
-        className="bg-white !py-8 lg:!py-12"
+        className="scroll-mt-24 bg-white !py-8 lg:!py-12"
       >
         <Container>
           <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
