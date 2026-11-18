@@ -75,19 +75,26 @@ function normalizeRfqList(values: unknown[]) {
   return Array.from(uniqueItems.values()).slice(0, maxRfqItems);
 }
 
-export function readRfqList() {
+export function readRfqListSnapshot(): { readable: boolean; items: RfqListItem[] } {
   if (typeof window === "undefined") {
-    return [] as RfqListItem[];
+    return { readable: false, items: [] };
   }
 
   try {
     const rawValue = window.localStorage.getItem(rfqListStorageKey);
     const parsedValue = rawValue ? (JSON.parse(rawValue) as unknown) : [];
 
-    return Array.isArray(parsedValue) ? normalizeRfqList(parsedValue) : [];
+    return {
+      readable: Array.isArray(parsedValue),
+      items: Array.isArray(parsedValue) ? normalizeRfqList(parsedValue) : [],
+    };
   } catch {
-    return [];
+    return { readable: false, items: [] };
   }
+}
+
+export function readRfqList() {
+  return readRfqListSnapshot().items;
 }
 
 function writeRfqList(items: RfqListItem[]) {
@@ -103,8 +110,13 @@ function writeRfqList(items: RfqListItem[]) {
     return readRfqList();
   }
 
+  const saved = readRfqListSnapshot();
+  if (!saved.readable) {
+    return saved.items;
+  }
+
   window.dispatchEvent(new Event(rfqListChangedEvent));
-  return normalizedItems;
+  return saved.items;
 }
 
 export function addRfqListItem(item: RfqListItem) {
@@ -114,10 +126,14 @@ export function addRfqListItem(item: RfqListItem) {
     return readRfqList();
   }
 
-  const currentItems = readRfqList();
+  const current = readRfqListSnapshot();
+  const currentItems = current.items;
   const itemKey = getRfqListItemKey(normalizedItem);
 
-  if (currentItems.some((currentItem) => getRfqListItemKey(currentItem) === itemKey)) {
+  if (
+    !current.readable ||
+    currentItems.some((currentItem) => getRfqListItemKey(currentItem) === itemKey)
+  ) {
     return currentItems;
   }
 
@@ -125,10 +141,14 @@ export function addRfqListItem(item: RfqListItem) {
 }
 
 export function removeRfqListItem(item: Pick<RfqListItem, "categorySlug" | "slug">) {
+  const current = readRfqListSnapshot();
+  if (!current.readable) {
+    return current.items;
+  }
   const itemKey = getRfqListItemKey(item);
 
   return writeRfqList(
-    readRfqList().filter((currentItem) => getRfqListItemKey(currentItem) !== itemKey),
+    current.items.filter((currentItem) => getRfqListItemKey(currentItem) !== itemKey),
   );
 }
 
@@ -136,10 +156,14 @@ export function updateRfqListItem(
   item: Pick<RfqListItem, "categorySlug" | "slug">,
   updates: Pick<RfqListItem, "requestedQuantity" | "buyerReference">,
 ) {
+  const current = readRfqListSnapshot();
+  if (!current.readable) {
+    return current.items;
+  }
   const itemKey = getRfqListItemKey(item);
 
   return writeRfqList(
-    readRfqList().map((currentItem) =>
+    current.items.map((currentItem) =>
       getRfqListItemKey(currentItem) === itemKey
         ? {
             ...currentItem,
@@ -164,6 +188,10 @@ export function updateRfqListItem(
 }
 
 export function clearRfqList() {
+  const current = readRfqListSnapshot();
+  if (!current.readable) {
+    return current.items;
+  }
   return writeRfqList([]);
 }
 
