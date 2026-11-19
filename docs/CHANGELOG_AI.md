@@ -4,6 +4,35 @@ This append-only log records substantial Codex work so future sessions can under
 why it changed and which risks remain. Add the newest entry at the top, below this introduction. Do
 not include secrets, buyer PII, private prospect data or unconfirmed claims.
 
+## 2026-11-19 - Preserve Document Refresh Timing At Locator Rejection
+
+- **Task:** Close the diagnostic ordering gap in the intermittent private document-upload refresh
+  observation before selecting an application repair.
+- **Files Changed:** Test-only refresh observer, its focused regression, isolated document-browser
+  harness, Console reproducibility knowledge record and this log.
+- **Components Changed:** No application component. Retain request-correlated relative callback
+  times, locator-wait start, an immutable rejection snapshot and a later diagnostic-end snapshot.
+- **Data Changed:** No product, technical, media, company, buyer or hosted Console data. Native
+  verification is restricted to fresh disposable local fixtures with mail isolation.
+- **Visual Changes:** None. Upload count, application navigation, existing row assertion and
+  locator timeout remain unchanged; there is no automatic upload replay or reload.
+- **SEO Impact:** No public URL, metadata, canonical, sitemap, structured data or product change.
+- **Validation:** Focused deterministic timing/correlation/privacy/cleanup regressions and synthetic
+  local HTTP/browser 200-header/abort probes. Bind build, lint/types, performance, secret checks and
+  any fresh isolated application acceptance to the exact candidate and recorded process exits.
+- **Known Issues:** The underlying refresh cause remains unknown. A passing run does not prove a
+  repair; rounded callback times and later database reads cannot establish causation. Account,
+  current-search and real-product/source-media gaps remain outside this diagnostic batch.
+  Local native setup was blocked by PostgreSQL image extraction exhausting Docker `vfs` disk
+  space before database creation; the existing isolated native CI remains the integration gate.
+- **Reusable Knowledge Added:** Document observed rejection boundaries separately from subsequent
+  asynchronous diagnostics and interpret immutable membership before rounded time comparisons.
+- **Deployment:** Existing repository/main and official-site maintenance workflow under standing
+  owner authorization; exact CI, deployment and applicable read-only production checks are required.
+- **Next Recommended Action:** On a recurrence, compare the rejection and diagnostic-end snapshots
+  before investigating response streaming or render application; continue the real CT0004 evidence
+  package through its existing stable intake IDs.
+
 ## 2026-11-18 - Verify RFQ List Outcomes And Add A Sales Review Window
 
 - **Task:** Make inquiry-list announcements and analytics reflect the persisted selection result,

@@ -35,6 +35,10 @@ type RefreshSample = {
   finished: boolean;
   failed: boolean;
   failureCategory: FailureCategory | null;
+  requestElapsedMs: number;
+  responseElapsedMs: number | null;
+  finishedElapsedMs: number | null;
+  failedElapsedMs: number | null;
 };
 type TrackedRequest = { sample: RefreshSample | null };
 
@@ -42,7 +46,11 @@ export function observeDocumentRefresh(
   source: RefreshEventSource,
   origin: string,
   pathname: string,
+  monotonicNow: () => number = () => performance.now(),
 ) {
+  const startedAt = monotonicNow();
+  // Relative callback times only. Equal rounded values do not establish event ordering.
+  const elapsedMs = () => Math.round(monotonicNow() - startedAt);
   const traffic = {
     requests: 0,
     responses: 0,
@@ -78,6 +86,10 @@ export function observeDocumentRefresh(
             finished: false,
             failed: false,
             failureCategory: null,
+            requestElapsedMs: elapsedMs(),
+            responseElapsedMs: null,
+            finishedElapsedMs: null,
+            failedElapsedMs: null,
           }
         : null;
     if (sample) traffic.samples.push(sample);
@@ -92,10 +104,13 @@ export function observeDocumentRefresh(
       return;
     }
     traffic.responses++;
+    if (current.sample) current.sample.responseElapsedMs = elapsedMs();
     const status = response.status();
     if (Number.isInteger(status) && status >= 100 && status <= 599) {
       if (traffic.responseStatuses.length < 8) traffic.responseStatuses.push(status);
-      if (current.sample) current.sample.status = status;
+      if (current.sample) {
+        current.sample.status = status;
+      }
     }
   };
   const onFinished = (request: RefreshRequest) => {
@@ -105,7 +120,10 @@ export function observeDocumentRefresh(
       return;
     }
     traffic.finished++;
-    if (current.sample) current.sample.finished = true;
+    if (current.sample) {
+      current.sample.finished = true;
+      current.sample.finishedElapsedMs = elapsedMs();
+    }
   };
   const onFailure = (request: RefreshRequest) => {
     const current = tracked.get(request);
@@ -115,6 +133,7 @@ export function observeDocumentRefresh(
     }
     traffic.failures++;
     if (current.sample) {
+      current.sample.failedElapsedMs = elapsedMs();
       let category: FailureCategory = "other";
       try {
         const error = request.failure()?.errorText;
@@ -133,6 +152,17 @@ export function observeDocumentRefresh(
   source.on("requestfailed", onFailure);
   return {
     traffic,
+    elapsedMs,
+    snapshot() {
+      // Capture before awaiting any diagnostic work; later callbacks must not alter this view.
+      return Object.freeze({
+        capturedElapsedMs: elapsedMs(),
+        ...traffic,
+        responseStatuses: Object.freeze([...traffic.responseStatuses]),
+        preexistingEvents: Object.freeze({ ...traffic.preexistingEvents }),
+        samples: Object.freeze(traffic.samples.map((sample) => Object.freeze({ ...sample }))),
+      });
+    },
     stop() {
       source.off("request", onRequest);
       source.off("response", onResponse);

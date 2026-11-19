@@ -313,3 +313,36 @@ suppression and listener cleanup. These checks establish diagnostic correctness,
 refresh application or native service parity. The existing isolated browser/database acceptance
 must still check persisted rows against the rendered table. If it fails again, use the correlated
 sample and database/UI state before selecting an application change.
+
+## November 19 Refresh Timeline And Rejection Boundary
+
+The same upload-accepted/database-recorded/stale-row pattern recurred in PR #167's first database
+job on November 18. Its unchanged failed-job rerun and subsequent main acceptance passed; neither
+result establishes the refresh failure's cause. The captured abort precedes ordinary teardown,
+but the old diagnostic performed asynchronous database/UI reads before serializing traffic and
+cannot establish the abort's ordering relative to the locator rejection.
+
+The test-only observer now retains relative monotonic elapsed milliseconds for request, response,
+finish and failure callbacks in its existing eight request-correlated samples. Missing callbacks
+remain null. The origin of this clock is observer creation, not upload completion or locator-wait
+start; absolute clock values, URLs, headers, identifiers, bodies and raw error strings stay absent.
+When `samplesOmitted` is nonzero, only the retained samples support request-correlated timing;
+aggregate counts do not establish the omitted requests' individual lifecycle or status pairing.
+
+The upload harness records the locator-wait start on the same clock and takes a detached, deeply
+frozen traffic snapshot as the first synchronous statement when the wait rejects, before any
+diagnostic awaits. Its second snapshot records the end of diagnostic reads. The initial snapshot's
+membership distinguishes a failure already observed at rejection from one first observed later.
+Equal rounded millisecond values cannot establish ordering. The rejection marker is an observed
+catch boundary, not the precise browser timer deadline, and the catch can receive non-timeout
+failures too. Observed callback timing does not establish wire timing or causal responsibility.
+
+The live traffic API and listener cleanup remain available to the existing reference/review
+diagnostics. Upload count, row assertion, locator timeout and application navigation remain
+unchanged. A successful HTTP header response still does not prove complete response bytes or a
+React commit; the diagnostic's later database read does not reveal the failed refresh's own read.
+
+Deterministic no-network regressions cover before/after rejection, equal-time events, nested
+snapshot detachment, lifecycle/correlation, privacy bounds and cleanup. A separate synthetic local
+HTTP/browser probe can validate real 200-header/abort callbacks; it is not an application failure
+reproduction. Record any fresh isolated application acceptance and its actual exit separately.
