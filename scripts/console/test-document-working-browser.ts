@@ -480,7 +480,11 @@ export async function runDocumentWorkingBrowser(input: Input) {
     buffer: bytes,
   });
   // Keep failed refresh diagnostics bounded and free of document IDs, bytes and account details.
-  const { traffic: refreshTraffic, stop: stopRefresh } = observeRefresh(owner.page, libraryPath);
+  const {
+    elapsedMs: refreshElapsedMs,
+    snapshot: snapshotRefresh,
+    stop: stopRefresh,
+  } = observeRefresh(owner.page, libraryPath);
   const uploading = owner.page.waitForResponse(
     (response) => response.url() === uploadEndpoint && response.request().method() === "POST",
   );
@@ -497,12 +501,14 @@ export async function runDocumentWorkingBrowser(input: Input) {
   const uploadedRow = owner.page
     .getByRole("row")
     .filter({ has: owner.page.getByText(documentTestCopy.title, { exact: true }) });
+  const refreshWaitStartedAtMs = refreshElapsedMs();
   try {
     await uploadedRow
       .getByRole("cell")
       .filter({ hasText: /^Upload recorded/ })
       .waitFor();
   } catch (failure) {
+    const refreshTrafficAtWaitRejection = snapshotRefresh();
     let databaseState: "timeout" | "unavailable" | "not_found" | DocumentRow["upload_state"] =
       "unavailable";
     try {
@@ -558,7 +564,12 @@ export async function runDocumentWorkingBrowser(input: Input) {
             uploadIncomplete: counts[4],
             uploadRecorded: counts[5],
           },
-          refreshTraffic,
+          refreshWait: {
+            startedAtMs: refreshWaitStartedAtMs,
+            rejectionObservedAtMs: refreshTrafficAtWaitRejection.capturedElapsedMs,
+          },
+          refreshTrafficAtWaitRejection,
+          refreshTraffic: snapshotRefresh(),
         }),
       );
     } catch {
