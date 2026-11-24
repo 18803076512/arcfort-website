@@ -43,6 +43,23 @@ assert.equal(
   sanitizeReferrerOrigin("https://directory.example/private/path?buyer=reference"),
   "https://directory.example",
 );
+for (const referrer of [
+  "",
+  "not a URL",
+  "//directory.example/private",
+  "javascript:void(0)",
+  "data:,fixture",
+]) {
+  assert.equal(sanitizeReferrerOrigin(referrer), "");
+}
+assert.equal(
+  sanitizeReferrerOrigin("https://www.arcfortweld.com/products?q=synthetic-marker#fixture"),
+  "https://www.arcfortweld.com",
+);
+assert.equal(
+  sanitizeReferrerOrigin("http://127.0.0.1:3986/source?fixture=synthetic-marker"),
+  "http://127.0.0.1:3986",
+);
 assert.deepEqual(
   sanitizeSourceAttribution({
     landingPage: "/products/mig-mag-torch-parts?product=private-reference",
@@ -63,7 +80,10 @@ assert.deepEqual(
   },
 );
 
-const rfqFormSource = readFileSync(new URL("../app/(public)/rfq/RfqForm.tsx", import.meta.url), "utf8");
+const rfqFormSource = readFileSync(
+  new URL("../app/(public)/rfq/RfqForm.tsx", import.meta.url),
+  "utf8",
+);
 const analyticsTrackerSource = readFileSync(
   new URL("../components/AnalyticsTracker.tsx", import.meta.url),
   "utf8",
@@ -97,7 +117,10 @@ const distributorPageSource = readFileSync(
   new URL("../app/(public)/distributor-supply/page.tsx", import.meta.url),
   "utf8",
 );
-const contactPageSource = readFileSync(new URL("../app/(public)/contact/page.tsx", import.meta.url), "utf8");
+const contactPageSource = readFileSync(
+  new URL("../app/(public)/contact/page.tsx", import.meta.url),
+  "utf8",
+);
 
 assert.match(distributorPageSource, /href="#distributor-rfq-builder"/);
 assert.match(distributorPageSource, /id="distributor-rfq-builder"/);

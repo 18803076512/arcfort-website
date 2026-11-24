@@ -4,6 +4,31 @@ This append-only log records substantial Codex work so future sessions can under
 why it changed and which risks remain. Add the newest entry at the top, below this introduction. Do
 not include secrets, buyer PII, private prospect data or unconfirmed claims.
 
+## 2026-11-24 - Bound Analytics Referrers Before Stream Activation
+
+- **Task:** Close the source-URL privacy gap before activating an actual GA4 web stream.
+- **Files Changed:** Public analytics tracker, shared analytics events, focused attribution
+  regression, README activation guidance, the dated SEO knowledge record and this log.
+- **Components Changed:** The existing stream configuration and manual page views explicitly use
+  the existing HTTP(S)-origin-only referrer sanitizer, including an empty value when unavailable.
+- **Data Changed:** No product, company, technical, compatibility, media, buyer or hosted records.
+  No GA4 property, measurement ID or production analytics configuration is created or changed.
+- **Visual Changes:** None; preserve optional consent, advertising-denied settings and normal
+  navigation. Production analytics remain inactive until separately configured and accepted.
+- **SEO Impact:** No public URL, canonical, sitemap, structured-data or indexability change.
+- **Validation:** Bind synthetic native-browser before/after tag-command evidence and consent
+  checks to the exact source, with external traffic blocked; require applicable promotion, build,
+  lint/type, performance, secret and SEO checks plus exact CI and production readback.
+- **Known Issues:** A local tag stub does not prove Google collection. The actual GA4 stream,
+  current GSC, DMARC and real product/media evidence remain independent dependencies. This is
+  pre-activation prevention, not an observed production disclosure or a lead-volume claim.
+- **Reusable Knowledge Added:** Explicitly bound the referrer separately from the current page
+  location, retaining coarse origin attribution and documenting the provider-default boundary.
+- **Deployment:** Existing repository/main and official-site maintenance under standing owner
+  authorization; no analytics-account, DNS/provider, real RFQ or email action is included.
+- **Next Recommended Action:** Verify catalog searches against existing public model-reference
+  rows while the owner creates the real analytics stream and supplies exact-product evidence.
+
 ## 2026-11-19 - Preserve Document Refresh Timing At Locator Rejection
 
 - **Task:** Close the diagnostic ordering gap in the intermittent private document-upload refresh

@@ -14,6 +14,7 @@ import {
   trackAnalyticsPageView,
 } from "@/lib/analytics-events";
 import { writeAnalyticsConsent } from "@/lib/analytics-consent";
+import { sanitizeReferrerOrigin } from "@/lib/source-attribution";
 
 const gaId = process.env.NEXT_PUBLIC_GA_ID?.trim();
 const analyticsConfigured = Boolean(gaId && /^G-[A-Z0-9]+$/i.test(gaId));
@@ -239,6 +240,7 @@ export function AnalyticsTracker() {
         pathname: pagePath,
       }),
       page_path: pagePath,
+      page_referrer: sanitizeReferrerOrigin(document.referrer),
       page_title: document.title,
       send_page_view: false,
     });
