@@ -1,5 +1,6 @@
 import { isAnalyticsConsentGranted } from "@/lib/analytics-consent";
 import { buildAnalyticsPageLocation } from "@/lib/analytics-campaign";
+import { sanitizeReferrerOrigin } from "@/lib/source-attribution";
 
 type AnalyticsPrimitive = boolean | number | string;
 
@@ -101,6 +102,7 @@ export function trackAnalyticsPageView(pathname: string) {
       origin: window.location.origin,
       pathname: pagePath,
     }),
+    page_referrer: sanitizeReferrerOrigin(document.referrer),
     page_title: document.title,
   });
 }

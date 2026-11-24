@@ -848,7 +848,8 @@ When `NEXT_PUBLIC_GA_ID` is configured, the Google tag is not loaded until the v
 allows optional analytics. Analytics consent is stored locally and can be changed on `/privacy`.
 Advertising storage, ad user data and ad personalization remain denied.
 
-- Sanitized SPA page views without URL query strings.
+- Sanitized SPA page views with only validated campaign labels in page locations and referrer
+  origins without paths or query strings.
 - Product views: `view_item`.
 - Product search result summaries: `product_catalog_search`.
 - RFQ validation, start, error and success events: `rfq_validation_error`, `rfq_submit_start`,
@@ -872,6 +873,9 @@ the GA4 data stream:
 3. In Enhanced Measurement, avoid browser-history page-view tracking because the application sends
    sanitized SPA page views itself.
 4. Verify one `page_view` per navigation and one `generate_lead` per successful RFQ in DebugView.
+5. Verify `page_referrer` contains only an HTTP(S) origin, or an explicit empty string for a direct
+   or invalid referrer. The tag configuration and manual page views both override Google's default
+   full `document.referrer`; local tag-stub tests do not prove actual GA4 collection.
 
 Submit `https://www.arcfortweld.com/sitemap.xml` in Google Search Console after domain verification.
 The sitemap includes stable `lastmod` values for every indexable URL and includes only reviewed
