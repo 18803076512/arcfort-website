@@ -4,6 +4,34 @@ This append-only log records substantial Codex work so future sessions can under
 why it changed and which risks remain. Add the newest entry at the top, below this introduction. Do
 not include secrets, buyer PII, private prospect data or unconfirmed claims.
 
+## 2026-11-25 - Match Existing Public Model References In Product Search
+
+- **Task:** Restore catalog matches for existing public 15AK/MB15 references that title and
+  description-only matching omitted.
+- **Files Changed:** Catalog matcher, shared presentation/display import chain, focused search
+  regression, dated SEO knowledge record and this log.
+- **Components Changed:** The existing Product Center matcher also consumes eligible public
+  specification values; no component, control or style is added or removed.
+- **Data Changed:** No canonical product, technical, compatibility, image, company or buyer data.
+  Existing reference qualifications and CT0006's independent identity remain unchanged.
+- **Visual Changes:** Relevant existing products can appear in model-search results. Retain the
+  current card, finder, category, clear/history and inquiry-link presentation.
+- **SEO Impact:** No public URL, canonical, sitemap, structured-data or indexing-rule change.
+  Parameterized search results remain noindex.
+- **Validation:** Bind focused failing-before/passing-after reference and exclusion cases, actual
+  public-projection counts and 390/1440 native-browser checks to the candidate. Require build,
+  lint/types, SEO/internal links, applicable product/technical checks, performance and secret scan;
+  verify exact PR/main CI, Production and live search before closure.
+- **Known Issues:** Search matches do not confirm compatibility, technical facts, image rights or
+  lead delivery. DMARC, actual analytics collection, current native GSC and real product evidence
+  remain separate; the unrelated private document-refresh cause remains unknown.
+- **Reusable Knowledge Added:** Reuse the public-row visibility boundary for internal search,
+  preserve reference wording and keep the plain Node import chain executable.
+- **Deployment:** Standing owner authorization covers existing repository/main and official-site
+  maintenance. No DNS/provider, analytics-account, hosted-data, real RFQ or email write is included.
+- **Next Recommended Action:** Reproduce fresh-campaign attribution with synthetic partial UTM
+  arrivals before deciding whether stored campaign fields require an atomic replacement.
+
 ## 2026-11-24 - Bound Analytics Referrers Before Stream Activation
 
 - **Task:** Close the source-URL privacy gap before activating an actual GA4 web stream.

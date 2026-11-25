@@ -1,4 +1,4 @@
-import { TO_BE_CONFIRMED } from "@/lib/content/schemas";
+import { TO_BE_CONFIRMED } from "./schemas.ts";
 
 export function isUnconfirmedValue(value: string) {
   const normalizedValue = value.trim().toLowerCase();

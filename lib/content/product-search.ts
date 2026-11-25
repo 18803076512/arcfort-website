@@ -1,4 +1,5 @@
 import type { Product, ProductCategory } from "@/lib/content/schemas";
+import { getPublicSpecificationRows } from "./product-presentation.ts";
 
 export type ProductCatalogSearchParams = Record<string, string | string[] | undefined>;
 
@@ -99,6 +100,9 @@ function scoreProduct(
       product.shortDescription,
       product.description,
       product.applications.join(" "),
+      getPublicSpecificationRows(product)
+        .map((row) => row.value)
+        .join(" "),
     ].join(" "),
   );
 
