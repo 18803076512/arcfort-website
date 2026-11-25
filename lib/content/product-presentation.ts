@@ -1,4 +1,4 @@
-import { isLowSignalSpecificationValue } from "@/lib/content/display";
+import { isLowSignalSpecificationValue } from "./display.ts";
 import type { Product, SpecRow } from "@/lib/content/schemas";
 
 const identitySpecificationLabels = new Set(["product name", "sku", "category", "image name"]);
