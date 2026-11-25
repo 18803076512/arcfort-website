@@ -3,11 +3,14 @@
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import { buildAnalyticsPageLocation } from "../lib/analytics-campaign.ts";
+import { buildRfqLeadSourceSummary } from "../lib/rfq-lead-source.ts";
 import {
+  resolveSourceAttributionArrival,
   sanitizeCampaignValue,
   sanitizeReferrerOrigin,
   sanitizeSourceAttribution,
   sanitizeSourcePath,
+  type SourceAttribution,
 } from "../lib/source-attribution.ts";
 
 const trackedLocation = buildAnalyticsPageLocation({
@@ -78,6 +81,249 @@ assert.deepEqual(
     utmTerm: "",
     utmContent: "introduction",
   },
+);
+
+const campaignA: SourceAttribution = Object.freeze({
+  landingPage: "/privacy",
+  referrer: "https://directory-a.example",
+  utmSource: "linkedin",
+  utmMedium: "organic_social",
+  utmCampaign: "synthetic_public_social_a",
+  utmTerm: "synthetic_term_a",
+  utmContent: "synthetic_creative_a",
+});
+
+assert.deepEqual(
+  resolveSourceAttributionArrival({
+    search:
+      "?utm_source=linkedin&utm_medium=organic_social&utm_campaign=synthetic_public_social_a&utm_term=synthetic_term_a&utm_content=synthetic_creative_a",
+    pathname: "/privacy?fixture=synthetic-marker#details",
+    referrer: "https://directory-a.example/listing?fixture=synthetic-marker#details",
+  }),
+  { attribution: campaignA, shouldPersist: true },
+  "The first tracked arrival captures one complete sanitized snapshot.",
+);
+
+const campaignB: SourceAttribution = {
+  landingPage: "/about",
+  referrer: "",
+  utmSource: "outreach_email",
+  utmMedium: "email",
+  utmCampaign: "synthetic_public_email_b",
+  utmTerm: "",
+  utmContent: "",
+};
+const partialArrivalInput = Object.freeze({
+  search: "?utm_source=outreach_email&utm_medium=email&utm_campaign=synthetic_public_email_b",
+  pathname: "/about?fixture=synthetic-marker#details",
+  referrer: "",
+  storedAttribution: campaignA,
+});
+const originalArrivalInput = {
+  ...partialArrivalInput,
+  storedAttribution: { ...campaignA },
+};
+const partialArrival = resolveSourceAttributionArrival(partialArrivalInput);
+
+assert.deepEqual(
+  partialArrival,
+  { attribution: campaignB, shouldPersist: true },
+  "A partial new campaign replaces all seven fields, including omitted values and an empty referrer.",
+);
+assert.deepEqual(
+  buildRfqLeadSourceSummary(partialArrival.attribution, "/rfq"),
+  {
+    label: "Distributor outreach email",
+    details: ["Medium: email", "Campaign: synthetic_public_email_b", "Entry: /about"],
+  },
+  "The RFQ summary must contain only the accepted campaign's details.",
+);
+assert.deepEqual(
+  partialArrivalInput,
+  originalArrivalInput,
+  "Resolving an arrival must not mutate its input or the stored snapshot.",
+);
+assert.deepEqual(
+  resolveSourceAttributionArrival({
+    ...partialArrivalInput,
+    storedAttribution: partialArrival.attribution,
+  }),
+  partialArrival,
+  "Repeating the same accepted arrival produces the same snapshot and persistence decision.",
+);
+
+assert.deepEqual(
+  resolveSourceAttributionArrival({
+    ...partialArrivalInput,
+    search: `${partialArrivalInput.search}&utm_term=invalid%20term&utm_content=%2Finvalid-content`,
+  }),
+  { attribution: campaignB, shouldPersist: true },
+  "Invalid optional values clear the old campaign's values when another UTM is valid.",
+);
+
+assert.deepEqual(
+  resolveSourceAttributionArrival({
+    ...partialArrivalInput,
+    pathname: "//untrusted.example/private",
+    referrer: "not a URL",
+  }),
+  { attribution: { ...campaignB, landingPage: "/" }, shouldPersist: true },
+  "An accepted arrival uses the safe path fallback and empty referrer instead of old provenance.",
+);
+
+assert.deepEqual(
+  resolveSourceAttributionArrival({
+    search: "?utm_source=linkedin&utm_medium=organic_social&utm_campaign=synthetic_public_social_a",
+    pathname: "/downloads",
+    referrer: "https://directory-b.example/listing?fixture=synthetic-marker",
+    storedAttribution: campaignA,
+  }),
+  {
+    attribution: {
+      ...campaignA,
+      landingPage: "/downloads",
+      referrer: "https://directory-b.example",
+      utmTerm: "",
+      utmContent: "",
+    },
+    shouldPersist: true,
+  },
+  "A partial arrival for the same campaign also clears omitted fields and replaces provenance.",
+);
+
+const allInvalidSearch =
+  `?utm_source=invalid!&utm_medium=invalid%20medium&utm_campaign=%2Finvalid-campaign` +
+  `&utm_term=${"x".repeat(81)}&utm_content=%09%20`;
+const storedSnapshot = Object.freeze({
+  ...campaignA,
+  landingPage: "/privacy?fixture=synthetic-marker#details",
+  referrer: "https://directory-a.example/listing?fixture=synthetic-marker#details",
+  utmTerm: " synthetic_term_a ",
+  utmContent: "invalid!",
+});
+const sanitizedStoredSnapshot = { ...campaignA, utmContent: "" };
+
+for (const search of ["", "?fixture=synthetic-marker", allInvalidSearch]) {
+  const input = Object.freeze({
+    search,
+    pathname: "/about",
+    referrer: "https://directory-b.example/listing",
+    storedAttribution: storedSnapshot,
+  });
+  const originalInput = { ...input, storedAttribution: { ...storedSnapshot } };
+
+  assert.deepEqual(
+    resolveSourceAttributionArrival(input),
+    { attribution: sanitizedStoredSnapshot, shouldPersist: false },
+    "An arrival without valid UTMs preserves the sanitized stored path, referrer and campaign without a write.",
+  );
+  assert.deepEqual(input, originalInput, "Preserving an arrival must not mutate its inputs.");
+}
+
+for (const storedAttribution of [undefined, null]) {
+  assert.deepEqual(
+    resolveSourceAttributionArrival({
+      search: allInvalidSearch,
+      pathname: "/about?fixture=synthetic-marker#details",
+      referrer: "https://directory-b.example/listing?fixture=synthetic-marker#details",
+      storedAttribution,
+    }),
+    {
+      attribution: {
+        landingPage: "/about",
+        referrer: "https://directory-b.example",
+        utmSource: "",
+        utmMedium: "",
+        utmCampaign: "",
+        utmTerm: "",
+        utmContent: "",
+      },
+      shouldPersist: true,
+    },
+    "A clean session captures sanitized initial provenance even when every incoming UTM is invalid.",
+  );
+}
+
+for (const field of ["content", "term"] as const) {
+  for (const { referrer, expectedOrigin, expectedLabel } of [
+    { referrer: "", expectedOrigin: "", expectedLabel: "Direct or unattributed inquiry" },
+    {
+      referrer: "https://directory-b.example/listing?fixture=synthetic-marker",
+      expectedOrigin: "https://directory-b.example",
+      expectedLabel: "Referral: directory-b.example",
+    },
+    {
+      referrer: "https://www.arcfortweld.com/products?fixture=synthetic-marker",
+      expectedOrigin: "https://www.arcfortweld.com",
+      expectedLabel: "Direct or unattributed inquiry",
+    },
+    {
+      referrer: "https://catalog.arcfortweld.com/products",
+      expectedOrigin: "https://catalog.arcfortweld.com",
+      expectedLabel: "Direct or unattributed inquiry",
+    },
+  ]) {
+    for (const storedAttribution of [undefined, campaignA]) {
+      const arrival = resolveSourceAttributionArrival({
+        search: `?utm_${field}=synthetic_${field}_c`,
+        pathname: "/downloads",
+        referrer,
+        storedAttribution,
+      });
+
+      assert.deepEqual(
+        arrival,
+        {
+          attribution: {
+            landingPage: "/downloads",
+            referrer: expectedOrigin,
+            utmSource: "",
+            utmMedium: "",
+            utmCampaign: "",
+            utmTerm: field === "term" ? "synthetic_term_c" : "",
+            utmContent: field === "content" ? "synthetic_content_c" : "",
+          },
+          shouldPersist: true,
+        },
+        `A ${field}-only arrival is accepted without borrowing any saved campaign fields.`,
+      );
+      assert.deepEqual(
+        buildRfqLeadSourceSummary(arrival.attribution, "/rfq"),
+        {
+          label: expectedLabel,
+          details:
+            field === "content"
+              ? ["Content: synthetic_content_c", "Entry: /downloads"]
+              : ["Entry: /downloads"],
+        },
+        "Without a current source, the summary uses the current external referral or stays unattributed.",
+      );
+    }
+  }
+}
+
+assert.deepEqual(
+  resolveSourceAttributionArrival({
+    search: "?utm_source=outreach_email&utm_source=linkedin&utm_content=first&utm_content=second",
+    pathname: "/about",
+    referrer: "",
+    storedAttribution: campaignA,
+  }),
+  {
+    attribution: { ...campaignB, utmMedium: "", utmCampaign: "", utmContent: "first" },
+    shouldPersist: true,
+  },
+  "Duplicate UTM parameters retain the existing first-value behavior.",
+);
+assert.deepEqual(
+  resolveSourceAttributionArrival({
+    search: "?utm_source=invalid!&utm_source=outreach_email",
+    pathname: "/about",
+    referrer: "",
+    storedAttribution: campaignA,
+  }),
+  { attribution: campaignA, shouldPersist: false },
+  "An invalid first duplicate is not replaced by a later valid value.",
 );
 
 const rfqFormSource = readFileSync(
