@@ -4,6 +4,31 @@ This append-only log records substantial Codex work so future sessions can under
 why it changed and which risks remain. Add the newest entry at the top, below this introduction. Do
 not include secrets, buyer PII, private prospect data or unconfirmed claims.
 
+## 2026-11-25 - Align Generated Sales Actions With The Existing Operating Arrangement
+
+- **Task:** Replace obsolete sales-owner/ledger setup instructions in both generated operating
+  reports with use of the existing owner-only ledger and Action Queue.
+- **Files Changed:** Goal and acquisition report generators, their generated Markdown reports and
+  this log.
+- **Components Changed:** No website component; only one action item in each internal report.
+- **Data Changed:** No product, media, company, account, inbox, buyer or sales-ledger record. Preserve
+  acquisition evidence dates, strict timestamped receipt fields and all readiness counts.
+- **Visual Changes:** None to the public website.
+- **SEO Impact:** No public route, metadata, canonical, sitemap or indexing-policy change.
+- **Validation:** Regenerate both reports and verify deterministic output, matching action wording,
+  existing source links, unchanged evidence and unchanged report sections outside the corrected
+  action. Run applicable company/report, receipt/freshness, format, lint/type, build, performance and
+  secret checks; require exact PR/main CI and deployment readback before release closure.
+- **Known Issues:** A ready ledger does not prove actual inbox checks, responses, sales results or
+  reliable unattended reminders. Historical receipt times, GA4/GSC account inputs, DMARC and exact
+  product/original-image evidence retain their existing states.
+- **Reusable Knowledge Added:** No new operating fact or workflow. Both reports now link the
+  November 15 sales handoff and retain its UTC-event, Beijing-plan and stale-clock distinctions.
+- **Deployment:** Existing repository/main and official-site maintenance remain covered by standing
+  authorization; this batch makes no account, provider, hosted-data or messaging change.
+- **Next Recommended Action:** Return the first exact CT0004 technical/original-image package
+  through the existing intake and use the private ledger for real inquiries and follow-up.
+
 ## 2026-11-25 - Replace Inquiry Campaign Metadata As One Arrival Snapshot
 
 - **Task:** Prevent new RFQ campaign context from retaining another arrival's optional labels or
