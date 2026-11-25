@@ -585,7 +585,7 @@ The `/rfq` page includes a responsive inquiry form with:
   missing-information prompts; it does not score or reject buyers
 - A human-readable lead-source summary and one-click buyer email action in the sales notification;
   the WhatsApp action appears only for an international-format number supplied by the buyer
-- Privacy-bounded RFQ attribution that retains only the entry page path, external referrer origin
+- Privacy-bounded RFQ attribution that retains only the entry page path, referring website origin
   and validated UTM labels; unrelated query parameters and full referrer paths are discarded
 - Buyer confirmation guidance covering product references, drawings, sample photos, packaging and
   destination details that can accelerate manual review
@@ -1004,7 +1004,16 @@ The English campaign assets are:
 
 Only allowlisted UTM fields are retained in GA4 page locations; unrelated query parameters are
 discarded. RFQ lead attribution applies the same campaign-value rules and stores only the entry path
-and external referrer origin. Do not put buyer personal data in UTM parameters or analytics events.
+and referring website origin. On a tracked arrival with any valid UTM label, the complete inquiry
+source snapshot is replaced: current entry path, current referrer origin and all five campaign
+fields. Missing or invalid fields stay empty instead of borrowing another campaign's values.
+Without a valid new label, the saved snapshot is retained; an initial arrival captures its own path
+and referrer. Content-only and term-only arrivals are accepted by the same rule, so absent source
+information remains unattributed unless the current referrer identifies it. This per-tab inquiry
+context is not a GA4 or multi-touch attribution model, and ordinary client navigation does not
+change the tracker's existing mount-only trigger. See the
+[dated snapshot decision](knowledge-base/decisions/2026-11-25-campaign-attribution-snapshot.md).
+Do not put buyer personal data in UTM parameters or analytics events.
 Outreach must be relevant, identified and manually reviewed; the repository does not automate unsolicited messages.
 `npm run promotion:test` also verifies that the RFQ conversion funnel keeps its form-start,
 submission, lead, contact and buyer-download events, and that the form-start event contains no buyer

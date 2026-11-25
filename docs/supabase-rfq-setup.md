@@ -88,30 +88,40 @@ Supabase as the only delivery channel.
 
 ## Expected Table Columns
 
-| Column                 | Purpose                                                       |
-| ---------------------- | ------------------------------------------------------------- |
-| `id`                   | Internal inquiry ID                                           |
-| `reference`            | Buyer-facing RFQ reference used in page and email follow-up   |
-| `name`                 | Buyer contact name                                            |
-| `company`              | Buyer company                                                 |
-| `email`                | Buyer business email                                          |
-| `whatsapp`             | Optional WhatsApp contact                                     |
-| `country`              | Destination or buyer country                                  |
-| `product_requirements` | Product list, models, drawings or sample notes                |
-| `quantity`             | Required quantity or estimated order volume                   |
-| `message`              | Additional packaging, OEM, delivery or sourcing notes         |
-| `attachments`          | JSON list of uploaded file metadata and storage paths         |
-| `source_path`          | Source page path, such as `/rfq` or `/rfq?product=...`        |
-| `landing_page`         | First page captured in the buyer browser session              |
-| `referrer`             | Browser referrer captured before RFQ submission               |
-| `utm_source`           | Campaign source, such as Google or newsletter, when provided  |
-| `utm_medium`           | Campaign medium, such as organic, cpc or email, when provided |
-| `utm_campaign`         | Campaign name when provided                                   |
-| `utm_term`             | Campaign keyword or term when provided                        |
-| `utm_content`          | Campaign content or variation when provided                   |
-| `status`               | Inquiry workflow status                                       |
-| `created_at`           | Inquiry creation time                                         |
-| `updated_at`           | Last update time                                              |
+| Column                 | Purpose                                                                                   |
+| ---------------------- | ----------------------------------------------------------------------------------------- |
+| `id`                   | Internal inquiry ID                                                                       |
+| `reference`            | Buyer-facing RFQ reference used in page and email follow-up                               |
+| `name`                 | Buyer contact name                                                                        |
+| `company`              | Buyer company                                                                             |
+| `email`                | Buyer business email                                                                      |
+| `whatsapp`             | Optional WhatsApp contact                                                                 |
+| `country`              | Destination or buyer country                                                              |
+| `product_requirements` | Product list, models, drawings or sample notes                                            |
+| `quantity`             | Required quantity or estimated order volume                                               |
+| `message`              | Additional packaging, OEM, delivery or sourcing notes                                     |
+| `attachments`          | JSON list of uploaded file metadata and storage paths                                     |
+| `source_path`          | RFQ source page path, such as `/rfq`, without query parameters                            |
+| `landing_page`         | Path on the initial tracked arrival or latest tracked arrival with a valid UTM label      |
+| `referrer`             | Browser-supplied HTTP(S) origin for that same attribution arrival; empty when unavailable |
+| `utm_source`           | Campaign source, such as Google or newsletter, when provided                              |
+| `utm_medium`           | Campaign medium, such as organic, cpc or email, when provided                             |
+| `utm_campaign`         | Campaign name when provided                                                               |
+| `utm_term`             | Campaign keyword or term when provided                                                    |
+| `utm_content`          | Campaign content or variation when provided                                               |
+| `status`               | Inquiry workflow status                                                                   |
+| `created_at`           | Inquiry creation time                                                                     |
+| `updated_at`           | Last update time                                                                          |
+
+The browser keeps one inquiry-source snapshot per tab. A tracked arrival containing any valid UTM
+label replaces all five campaign fields together with its current path and sanitized referrer.
+Omitted or invalid values are empty; they do not inherit older campaign fields or an older origin.
+Content-only and term-only arrivals use that same rule. With no valid new label, an existing
+snapshot is preserved; without one, the initial arrival supplies path/referrer with empty campaign
+fields. The tracker retains its existing mount-only trigger rather than observing every client
+navigation. These buyer-controlled hints do not prove acquisition, GA4 attribution or sales results.
+No database schema or historical-record migration is implied. See the
+[snapshot decision](../knowledge-base/decisions/2026-11-25-campaign-attribution-snapshot.md).
 
 ## Supported Attachment Types
 

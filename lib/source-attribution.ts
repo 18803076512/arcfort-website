@@ -93,3 +93,36 @@ export function sanitizeSourceAttribution(
     utmContent: sanitizeCampaignValue(attribution?.utmContent),
   };
 }
+
+export function resolveSourceAttributionArrival({
+  search,
+  pathname,
+  referrer,
+  storedAttribution,
+}: {
+  search: string;
+  pathname: string;
+  referrer: string;
+  storedAttribution?: Partial<SourceAttribution> | null;
+}): { attribution: SourceAttribution; shouldPersist: boolean } {
+  const incomingAttribution = emptySourceAttribution();
+  incomingAttribution.landingPage = sanitizeSourcePath(pathname, "/");
+  incomingAttribution.referrer = sanitizeReferrerOrigin(referrer);
+  const searchParams = new URLSearchParams(search);
+  let hasFreshUtm = false;
+
+  for (const [field, param] of Object.entries(utmParamMap)) {
+    const value = sanitizeCampaignValue(searchParams.get(param));
+    incomingAttribution[field as keyof typeof utmParamMap] = value;
+    hasFreshUtm ||= Boolean(value);
+  }
+
+  if (!hasFreshUtm && storedAttribution != null) {
+    return {
+      attribution: sanitizeSourceAttribution(storedAttribution),
+      shouldPersist: false,
+    };
+  }
+
+  return { attribution: incomingAttribution, shouldPersist: true };
+}

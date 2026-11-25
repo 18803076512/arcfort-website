@@ -4,6 +4,33 @@ This append-only log records substantial Codex work so future sessions can under
 why it changed and which risks remain. Add the newest entry at the top, below this introduction. Do
 not include secrets, buyer PII, private prospect data or unconfirmed claims.
 
+## 2026-11-25 - Replace Inquiry Campaign Metadata As One Arrival Snapshot
+
+- **Task:** Prevent new RFQ campaign context from retaining another arrival's optional labels or
+  referrer while preserving the existing any-valid-UTM acceptance rule.
+- **Files Changed:** Source attribution helper/tracker, promotion regression, README, privacy copy,
+  RFQ setup field definitions, dated snapshot decision and this log.
+- **Components Changed:** The tracker delegates pure seven-field selection to the shared helper;
+  mount-only triggering and optional storage guards remain unchanged.
+- **Data Changed:** No product, evidence, company, buyer, hosted RFQ or sales-ledger records. Future
+  accepted arrivals replace all five UTM fields plus their own path/referrer, including empty values.
+  Historical and already-saved snapshots are not repaired.
+- **Visual Changes:** Clarify the existing privacy paragraph without adding controls or styles.
+- **SEO Impact:** No public route, canonical, sitemap, structured-data or indexing-policy change.
+- **Validation:** Complete tuple/summary transitions, invalid and content-only cases, referrer
+  clearing, input immutability and actual mobile/desktop tracker behavior. Require build, lint/types,
+  promotion/RFQ tests, applicable SEO/performance/secret checks and exact PR/main CI, Production and
+  official-domain readback. Use synthetic labels and GET-only browser checks, never a real inquiry.
+- **Known Issues:** Source labels remain buyer-controlled hints; unattributed does not prove direct
+  acquisition. GA4/account evidence, DMARC, current GSC, real product/media evidence and the original
+  private document-refresh cause remain separate. No server or historical-record migration occurs.
+- **Reusable Knowledge Added:** Define tracked-arrival replacement, explicit unknown fields and
+  content-only behavior; reconcile first-page wording with actual accepted-arrival semantics.
+- **Deployment:** Standing authorization covers the existing repository/main and official website;
+  no analytics/provider/DNS/account setting, hosted-data or messaging action is included.
+- **Next Recommended Action:** Refresh the existing technical/original-image intake and current
+  owner-controlled measurement inputs before choosing another acquisition or product batch.
+
 ## 2026-11-25 - Match Existing Public Model References In Product Search
 
 - **Task:** Restore catalog matches for existing public 15AK/MB15 references that title and

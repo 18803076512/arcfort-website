@@ -26,7 +26,7 @@ const privacySections = [
   },
   {
     title: "Inquiry source attribution",
-    body: "To understand which business channels produce relevant inquiries, an RFQ may include the entry page path, the external referring website origin and validated UTM campaign labels. Unrelated query parameters, full referrer paths and invalid campaign values are discarded.",
+    body: "To understand which business channels produce relevant inquiries, an RFQ may include the entry page path, referring website origin and validated UTM campaign labels. When campaign labels are captured, they replace the saved inquiry-source context for that browser tab; missing fields remain unknown. Unrelated query parameters, full referrer paths and invalid campaign values are discarded.",
   },
   {
     title: "Security and abuse prevention",
