@@ -4,6 +4,33 @@ This append-only log records substantial Codex work so future sessions can under
 why it changed and which risks remain. Add the newest entry at the top, below this introduction. Do
 not include secrets, buyer PII, private prospect data or unconfirmed claims.
 
+## 2026-11-26 - Count Distributor Trial Quantities On Their Product Rows
+
+- **Task:** Correct a reproduced spreadsheet false-ready state where an orphan quantity could
+  conceal a named product's missing trial quantity.
+- **Files Changed:** Distributor RFQ XLSX, scoped maintenance/regression scripts, existing
+  distributor test, download-maintenance README, dated decision and this log.
+- **Components Changed:** The existing workbook's B8 counter pairs product names and numeric
+  quantities on the same row; website components and workbook layout are unchanged.
+- **Data Changed:** One workbook formula. Preserve all other cells/formulas, ZIP part payloads,
+  metadata and public downloads, plus canonical technical/media/compatibility/evidence records.
+- **Visual Changes:** Existing `Ready` / `Add quantities` results correctly reflect the entered
+  product rows after spreadsheet recalculation; no new layout or public page design.
+- **SEO Impact:** Existing public URLs, metadata, sitemap and indexing policies remain intact.
+- **Validation:** Require actual native spreadsheet recalculation of synthetic before/after cases,
+  archive/content preservation and safe/idempotent maintenance checks, existing distributor/RFQ
+  upload tests, applicable build/lint/types/SEO/performance/secrets, independent QA and exact
+  PR/main CI, Production and live workbook hash verification before release closure.
+- **Known Issues:** This counter retains the existing numeric policy and verifies no product,
+  unit, quotation or compatibility fact. Native-engine checks do not establish every Excel/WPS
+  client. No RFQ/email is sent; external measurement, original-product and sales inputs remain open.
+- **Reusable Knowledge Added:** The dated decision records same-row association, surgical artifact
+  maintenance and spreadsheet-engine versus real-buyer evidence boundaries.
+- **Deployment:** Existing repository/main and official-site maintenance are covered by standing
+  authorization; no account/provider/DNS/hosted-business-data write is included.
+- **Next Recommended Action:** Obtain the genuine GA4 stream input and CT0004 exact technical and
+  original-image package, and retain actual private sales follow-up evidence.
+
 ## 2026-11-26 - Preserve RFQ Attachment Identity And Download Thread Qualifications
 
 - **Task:** Repair colliding/non-identifiable attachment names and two missing public CSV thread
