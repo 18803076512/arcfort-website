@@ -4,6 +4,38 @@ This append-only log records substantial Codex work so future sessions can under
 why it changed and which risks remain. Add the newest entry at the top, below this introduction. Do
 not include secrets, buyer PII, private prospect data or unconfirmed claims.
 
+## 2026-11-25 - Preserve Product Qualifications And Keep Desktop Menu Links Reachable
+
+- **Task:** Correct missing public catalog/commercial qualifications and a reproduced short-window
+  keyboard-navigation failure in existing product entry points.
+- **Files Changed:** Product card and desktop menu, public commercial adapter/site copy/product
+  projection, affected category/guide/FAQ copy, simple-import/download/PDF generators, two public
+  download artifacts, export/hydration regressions, two dated decisions and this log.
+- **Components Changed:** Cards retain the public note with a displayed specification; the existing
+  desktop menu gains a viewport bound, internal scrolling, overscroll containment and focus padding.
+- **Data Changed:** Public projections qualify only the two recognized legacy generic order defaults
+  from existing approved company policy. Other/custom values remain verbatim. Canonical product,
+  technical, compatibility, media, company-evidence, review/status/date and hosted records remain
+  unchanged; no canonical import occurs. The RFQ download template is preserved.
+- **Visual Changes:** Existing card qualifications are readable alongside values; short desktop
+  windows can reveal every menu link. The distributor PDF wraps its complete policy text in bounds.
+- **SEO Impact:** Existing public URLs, canonical, sitemap inventory, indexing and structured-data
+  rules remain intact. Visible commercial/FAQ text retains selected-product eligibility and the
+  usual post-deposit timing condition; no confirmed SKU or image evidence is created.
+- **Validation:** Bind visible official-domain before observations and native keyboard failure to
+  the source. Require custom/default/source-policy and CSV/PDF checks, actual responsive card/menu
+  and keyboard/scroll/hydration regressions, applicable product/company/technical/SEO gates, build,
+  lint/types, performance and secret scan; then exact PR/main CI, Production and live readback.
+- **Known Issues:** Public options remain references, order timing remains conditional and all
+  source evidence gates remain separate. GA4/GSC account inputs, DMARC, credential rotation, raw
+  product originals, real sales records and the unrelated document-refresh cause remain open.
+- **Reusable Knowledge Added:** Record exact-default commercial projection, public-note retention
+  and short-window menu behavior with explicit source and verification boundaries.
+- **Deployment:** Standing authorization covers existing repository/main and official-site
+  maintenance. No account/provider/DNS setting, hosted-data or messaging write is included.
+- **Next Recommended Action:** Return the exact CT0004 technical/original-image package through the
+  existing intake and record actual mailbox checks and sales follow-up in the private ledger.
+
 ## 2026-11-25 - Align Generated Sales Actions With The Existing Operating Arrangement
 
 - **Task:** Replace obsolete sales-owner/ledger setup instructions in both generated operating

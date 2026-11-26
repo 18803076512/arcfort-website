@@ -15,6 +15,7 @@ import {
   validateProductRows,
 } from "./product-import-utils.ts";
 import { createProductEditorialCopy } from "./product-copy-profiles.ts";
+import { siteConfig } from "../lib/content/site.ts";
 
 type ExistingProduct = {
   sku: string;
@@ -371,8 +372,8 @@ async function convertSimpleRows(simpleRows: SimpleRow[]) {
     row.compatible_model = simpleRow.compatible_model || "Contact us for details";
     row.oem_number = "TBD";
     row.package = "Standard export packing or customized packaging";
-    row.moq = "Small trial orders accepted";
-    row.lead_time = "7-20 working days for regular orders";
+    row.moq = siteConfig.moqPolicy;
+    row.lead_time = siteConfig.regularLeadTime;
     row.application = editorialCopy.application;
     row.custom_available = "Available";
     row.sample_available = "Reference part review available";
@@ -411,8 +412,7 @@ function mergeWithExistingProductRows(
 
     mergedGeneratedKeys.add(generatedRow.sku);
     const existingImageIsReviewed =
-      (existingRow.image_status === "own_photo" ||
-        existingRow.image_status === "supplier_photo") &&
+      (existingRow.image_status === "own_photo" || existingRow.image_status === "supplier_photo") &&
       existsSync(path.join(process.cwd(), "public", existingRow.main_image));
     const sameImage = generatedRow.main_image === existingRow.main_image;
     const mergedRow = {
@@ -427,15 +427,14 @@ function mergeWithExistingProductRows(
       source_reference: existingRow.source_reference || generatedRow.source_reference,
       verified_by: existingRow.verified_by || generatedRow.verified_by,
       verified_date: existingRow.verified_date || generatedRow.verified_date,
-      compatibility_status:
-        existingRow.compatibility_status || generatedRow.compatibility_status,
+      compatibility_status: existingRow.compatibility_status || generatedRow.compatibility_status,
       oem_status: existingRow.oem_status || generatedRow.oem_status,
       notes_internal: existingRow.notes_internal || generatedRow.notes_internal,
       image_status: existingImageIsReviewed
         ? existingRow.image_status
         : sameImage
-        ? existingRow.image_status || generatedRow.image_status
-        : generatedRow.image_status,
+          ? existingRow.image_status || generatedRow.image_status
+          : generatedRow.image_status,
     };
 
     mergedRow.status = getSafePublicationStatus(

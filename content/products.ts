@@ -9,6 +9,7 @@ import { isUnconfirmedValue } from "@/lib/content/display";
 import { getProductBuyingProfile } from "@/lib/content/product-buying-profiles";
 import { isLegacyProductPath } from "@/lib/content/product-redirects";
 import { getProductTechnicalSpecificationProjection } from "@/lib/content/product-technical-facts";
+import { getPublicProductCommercialTerms } from "../lib/content/public-commercial-terms.ts";
 import { siteConfig } from "@/lib/content/site";
 
 const processByCategorySlug: Record<string, WeldingProcess> = {
@@ -38,6 +39,7 @@ function hasMissingProductValue(field: [string, string | undefined]): field is [
 }
 
 function createSpecifications(product: ArcfortProductData): SpecRow[] {
+  const commercialTerms = getPublicProductCommercialTerms(product);
   const technicalProjection = getProductTechnicalSpecificationProjection(product.slug);
   const managedSourceFields = new Set(technicalProjection.managedSourceFields);
   const fallbackTechnicalRows: SpecRow[] = [];
@@ -67,8 +69,8 @@ function createSpecifications(product: ArcfortProductData): SpecRow[] {
     { label: "OEM Number", value: product.oemNumber },
     { label: "Application", value: product.application },
     { label: "Package", value: product.package },
-    { label: "MOQ", value: product.moq },
-    { label: "Lead Time", value: product.leadTime },
+    { label: "MOQ", value: commercialTerms.moq },
+    { label: "Lead Time", value: commercialTerms.leadTime },
     { label: "Custom Available", value: product.customAvailable },
     { label: "Reference Part Review", value: product.sampleAvailable },
   ];
@@ -204,6 +206,7 @@ function getProductModifiedDate(product: ArcfortProductData) {
 }
 
 function toProduct(product: ArcfortProductData): Product {
+  const commercialTerms = getPublicProductCommercialTerms(product);
   const baseProduct = {
     slug: product.slug,
     title: product.name,
@@ -223,8 +226,8 @@ function toProduct(product: ArcfortProductData): Product {
     applications: [product.application],
     features: createFeatures(product),
     packaging: product.package,
-    moq: product.moq,
-    leadTime: product.leadTime,
+    moq: commercialTerms.moq,
+    leadTime: commercialTerms.leadTime,
     faq: createFaq(product),
     relatedProductSlugs: createRelatedProductSlugs(product),
     missingFields: createMissingFields(product),

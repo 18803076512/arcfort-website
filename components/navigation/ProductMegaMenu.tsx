@@ -15,7 +15,7 @@ export function ProductMegaMenu() {
       <div
         role="group"
         aria-label="Product systems"
-        className="absolute inset-x-0 top-full z-50 border-y border-arc-line bg-white shadow-menu"
+        className="absolute inset-x-0 top-full z-50 max-h-[calc(100vh-var(--header-height))] overflow-y-auto overscroll-contain scroll-py-2 border-y border-arc-line bg-white shadow-menu supports-[height:100dvh]:max-h-[calc(100dvh-var(--header-height))]"
       >
         <div className="site-container py-8">
           <div className="flex items-end justify-between gap-8 border-b border-arc-line pb-5">

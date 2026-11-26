@@ -664,13 +664,15 @@ async function verifyProductGalleryHydration(browser: Browser) {
 }
 
 async function verifyNativeNavigationHydration(browser: Browser) {
-  for (const { width, label } of [
-    { width: 390, label: "Menu" },
-    { width: 1440, label: "Products" },
+  for (const { width, height, label } of [
+    { width: 390, height: 900, label: "Menu" },
+    { width: 1440, height: 900, label: "Products" },
+    { width: 1280, height: 400, label: "Products" },
+    { width: 1280, height: 500, label: "Products" },
   ]) {
     const context = await browser.newContext({
       serviceWorkers: "block",
-      viewport: { width, height: 900 },
+      viewport: { width, height },
     });
     try {
       let delayedModules = 0;
@@ -707,7 +709,50 @@ async function verifyNativeNavigationHydration(browser: Browser) {
         true,
         `${label} must remain open when hydration finishes`,
       );
-      await summary.press("Escape");
+      if (label === "Products" && height <= 500) {
+        const panel = details.getByRole("group", { name: "Product systems", exact: true });
+        const panelBox = await panel.boundingBox();
+        assert.ok(panelBox && panelBox.y >= 0 && panelBox.y + panelBox.height <= height + 1);
+        const lowerLink = panel.getByRole("link", { name: "Swan Necks", exact: true });
+        let reached = false;
+        for (let index = 0; index < 40; index++) {
+          await page.keyboard.press("Tab");
+          if (await lowerLink.evaluate((element) => document.activeElement === element)) {
+            reached = true;
+            break;
+          }
+        }
+        assert.ok(reached, `Lower product link must be keyboard reachable at ${width}x${height}`);
+        const focused = await lowerLink.evaluate((element) => {
+          const box = element.getBoundingClientRect();
+          const style = getComputedStyle(element);
+          return {
+            top: box.top,
+            bottom: box.bottom,
+            ring: parseFloat(style.outlineWidth) + parseFloat(style.outlineOffset),
+          };
+        });
+        assert.ok(focused.top - focused.ring >= panelBox.y);
+        assert.ok(focused.bottom + focused.ring <= height);
+        await page.mouse.move(panelBox.x + 20, panelBox.y + panelBox.height - 20);
+        await page.mouse.wheel(0, 1000);
+        await page.waitForFunction(() => {
+          const panel = document.querySelector('[aria-label="Product systems"]');
+          return panel && panel.scrollTop >= panel.scrollHeight - panel.clientHeight - 1;
+        });
+        const bodyScroll = await page.evaluate(() => scrollY);
+        await page.mouse.wheel(0, 1000);
+        await page.evaluate(
+          () =>
+            new Promise((resolve) => requestAnimationFrame(() => requestAnimationFrame(resolve))),
+        );
+        assert.equal(
+          await page.evaluate(() => scrollY),
+          bodyScroll,
+          "Menu overscroll stays contained",
+        );
+      }
+      await page.keyboard.press("Escape");
       assert.equal(
         await details.evaluate((element) => (element as HTMLDetailsElement).open),
         false,
@@ -716,7 +761,7 @@ async function verifyNativeNavigationHydration(browser: Browser) {
       assert.equal(await summary.evaluate((element) => document.activeElement === element), true);
       assert.deepEqual(pageErrors, [], `${label} must not cause browser errors`);
       navigationChecks++;
-      console.log(`Native ${label} navigation retained through hydration at ${width}px.`);
+      console.log(`Native ${label} navigation retained through hydration at ${width}x${height}.`);
     } finally {
       await context.close();
     }
