@@ -17,6 +17,11 @@ import {
 } from "@/lib/rfq-constraints";
 import { validateRfqFileContents } from "@/lib/rfq-file-content";
 import {
+  buildRfqAttachmentMetadata,
+  buildRfqEmailAttachments,
+  type RfqAttachmentRecord,
+} from "@/lib/rfq-attachments";
+import {
   buildBuyerConfirmationEmailHtml,
   buildBuyerConfirmationEmailText,
   buildInquiryEmailHtml,
@@ -51,12 +56,7 @@ type RfqPayload = RfqTextValues & {
   sourceAttribution: SourceAttribution;
 };
 
-type AttachmentRecord = {
-  name: string;
-  size: number;
-  type: string;
-  path?: string;
-};
+type AttachmentRecord = RfqAttachmentRecord;
 
 type EmailNotificationResult = {
   configured: boolean;
@@ -95,10 +95,6 @@ function cleanField(formData: FormData, field: keyof RfqPayload) {
 function cleanFormValue(formData: FormData, field: string) {
   const value = formData.get(field);
   return typeof value === "string" ? value.trim() : "";
-}
-
-function sanitizeFileName(fileName: string) {
-  return fileName.replace(/[^a-zA-Z0-9._-]/g, "-").slice(0, 120) || "attachment";
 }
 
 function getAttachments(formData: FormData) {
@@ -181,9 +177,11 @@ async function uploadAttachments(
   reference: string,
 ) {
   const uploadedAttachments: AttachmentRecord[] = [];
+  const metadata = buildRfqAttachmentMetadata(files);
 
   for (const [index, file] of files.entries()) {
-    const objectPath = `${reference.toLowerCase()}/${index + 1}-${sanitizeFileName(file.name)}`;
+    const attachment = metadata[index];
+    const objectPath = `${reference.toLowerCase()}/${attachment.name}`;
     const response = await fetch(buildRfqStorageObjectUrl(supabaseUrl, bucket, objectPath), {
       method: "POST",
       headers: {
@@ -200,9 +198,7 @@ async function uploadAttachments(
     }
 
     uploadedAttachments.push({
-      name: sanitizeFileName(file.name),
-      size: file.size,
-      type: file.type || "application/octet-stream",
+      ...attachment,
       path: objectPath,
     });
   }
@@ -261,15 +257,6 @@ async function insertSupabaseInquiry(
   return true;
 }
 
-async function buildEmailAttachments(files: File[]) {
-  return Promise.all(
-    files.map(async (file) => ({
-      filename: sanitizeFileName(file.name),
-      content: Buffer.from(await file.arrayBuffer()).toString("base64"),
-    })),
-  );
-}
-
 async function sendEmailNotification(
   payload: RfqPayload,
   attachments: AttachmentRecord[],
@@ -294,7 +281,7 @@ async function sendEmailNotification(
     };
   }
 
-  const emailAttachments = files.length > 0 ? await buildEmailAttachments(files) : [];
+  const emailAttachments = files.length > 0 ? await buildRfqEmailAttachments(files) : [];
 
   const response = await fetchRfqEmailProvider("https://api.resend.com/emails", {
     method: "POST",
@@ -537,11 +524,7 @@ export async function POST(request: Request) {
       isConfigured(process.env.RESEND_API_KEY) &&
       isConfigured(process.env.RFQ_EMAIL_FROM) &&
       isConfigured(emailRecipient);
-    const attachmentMetadata: AttachmentRecord[] = files.map((file) => ({
-      name: sanitizeFileName(file.name),
-      size: file.size,
-      type: file.type || "application/octet-stream",
-    }));
+    const attachmentMetadata = buildRfqAttachmentMetadata(files);
 
     const storageTask = async () => {
       if (!storageConfigured || !supabaseUrl || !serviceRoleKey) {

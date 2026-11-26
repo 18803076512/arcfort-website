@@ -13,6 +13,8 @@ import {
 } from "../lib/content/export-order-terms.ts";
 import { siteConfig } from "../lib/content/site.ts";
 import { getPublicProductCommercialTerms } from "../lib/content/public-commercial-terms.ts";
+import { getPublicDownloadThread } from "../lib/content/public-download-technical-fields.ts";
+import { getProductTechnicalSpecificationProjection } from "../lib/content/product-technical-facts.ts";
 import { validateCompanyEvidence } from "./company-evidence-utils.ts";
 import { parseCsv } from "./product-import-utils.ts";
 
@@ -80,6 +82,7 @@ const activeSourceProducts = readCsvRecords("../data/import/products.csv").filte
 );
 const downloadedProducts = readCsvRecords("../public/downloads/arcfort-public-product-list.csv");
 assert.equal(downloadedProducts.length, activeSourceProducts.length);
+const qualifiedThreadSkus = new Set(["AF-MIG-CT-0004", "AF-MIG-CT-0005"]);
 for (const sourceProduct of activeSourceProducts) {
   const downloadedProduct = downloadedProducts.find((row) => row.sku === sourceProduct.sku);
   assert.ok(downloadedProduct, `Missing public CSV product: ${sourceProduct.sku}`);
@@ -89,6 +92,48 @@ for (const sourceProduct of activeSourceProducts) {
   });
   assert.equal(downloadedProduct.moq, publicTerms.moq, sourceProduct.sku);
   assert.equal(downloadedProduct.lead_time, publicTerms.leadTime, sourceProduct.sku);
+  if (qualifiedThreadSkus.has(sourceProduct.sku)) {
+    const threadReference = getProductTechnicalSpecificationProjection(
+      sourceProduct.slug,
+    ).rows.find((row) => row.label === "Thread reference");
+    assert.equal(threadReference?.value, "M6");
+    assert.match(
+      threadReference?.note ?? "",
+      /Company catalog reference; confirm the mating holder/,
+    );
+    assert.equal(downloadedProduct.thread, `M6; ${threadReference!.note}`, sourceProduct.sku);
+  } else {
+    assert.equal(downloadedProduct.thread, sourceProduct.thread, sourceProduct.sku);
+  }
+  for (const field of [
+    "short_description",
+    "material",
+    "size",
+    "compatible_model",
+    "package",
+    "application",
+  ]) {
+    assert.equal(downloadedProduct[field], sourceProduct[field], `${sourceProduct.sku}: ${field}`);
+  }
+}
+
+for (const sku of ["AF-MIG-CT-0006", "AF-MIG-TH-0007"]) {
+  const sourceProduct = activeSourceProducts.find((row) => row.sku === sku)!;
+  assert.equal(
+    getPublicDownloadThread(sourceProduct.slug, sourceProduct.thread),
+    sourceProduct.thread,
+  );
+}
+for (const alreadyQualifiedOrCustomThread of [
+  "M6 (catalog reference)",
+  "M6 ",
+  "Custom thread",
+  "",
+]) {
+  assert.equal(
+    getPublicDownloadThread("mig-contact-tip-m6-0-8mm", alreadyQualifiedOrCustomThread),
+    alreadyQualifiedOrCustomThread,
+  );
 }
 
 assert.equal(

@@ -10,6 +10,7 @@ import {
   validateRfqTextValues,
 } from "../lib/rfq-constraints.ts";
 import { validateRfqFileContents } from "../lib/rfq-file-content.ts";
+import { buildRfqAttachmentMetadata, buildRfqEmailAttachments } from "../lib/rfq-attachments.ts";
 import {
   getRfqSubmissionFailureMessage,
   isRfqSubmissionAbortError,
@@ -470,4 +471,58 @@ assert.notEqual(
   ),
 );
 
-console.log("RFQ constraint and reference tests passed.");
+const identityFiles = [
+  new File([new Uint8Array([0xff, 0xd8, 0xff, 0x01])], "正面.jpg", { type: "image/jpeg" }),
+  new File([new Uint8Array([0xff, 0xd8, 0xff, 0x02])], "背面.jpg", { type: "image/jpeg" }),
+  new File(["%PDF-1.7\nfirst drawing"], "drawing.pdf", { type: "application/pdf" }),
+  new File(["%PDF-1.7\nsecond drawing"], "drawing.pdf", { type: "application/pdf" }),
+];
+assert.equal(validateRfqFiles(identityFiles), null);
+assert.equal(await validateRfqFileContents(identityFiles), null);
+const identityMetadata = buildRfqAttachmentMetadata(identityFiles);
+const identityEmailAttachments = await buildRfqEmailAttachments(identityFiles);
+assert.equal(new Set(identityMetadata.map((file) => file.name)).size, identityFiles.length);
+assert.deepEqual(
+  identityMetadata.map((file) => file.originalName),
+  identityFiles.map((file) => file.name),
+);
+assert.deepEqual(
+  identityMetadata.map((file) => file.name),
+  ["1-attachment.jpg", "2-attachment.jpg", "3-drawing.pdf", "4-drawing.pdf"],
+);
+for (const [index, attachment] of identityEmailAttachments.entries()) {
+  assert.equal(attachment.filename, identityMetadata[index].name);
+  assert.deepEqual(
+    Buffer.from(attachment.content, "base64"),
+    Buffer.from(await identityFiles[index].arrayBuffer()),
+  );
+}
+assert.deepEqual(buildRfqAttachmentMetadata(identityFiles), identityMetadata);
+
+const longFiles = [
+  new File(["%PDF-1.7\nA"], `${"same-prefix-".repeat(30)}A.pdf`),
+  new File(["%PDF-1.7\nB"], `${"same-prefix-".repeat(30)}B.PDF`),
+];
+assert.equal(validateRfqFiles(longFiles), null);
+assert.equal(await validateRfqFileContents(longFiles), null);
+const longMetadata = buildRfqAttachmentMetadata(longFiles);
+assert.notEqual(longMetadata[0].name, longMetadata[1].name);
+for (const attachment of longMetadata) {
+  assert.ok(attachment.name.length <= 120);
+  assert.match(attachment.name, /^[a-zA-Z0-9._-]+\.pdf$/);
+  assert.ok(Array.from(attachment.originalName ?? "").length <= 255);
+  assert.match(attachment.originalName ?? "", /…/);
+}
+assert.match(longMetadata[0].originalName ?? "", /A\.pdf$/);
+assert.match(longMetadata[1].originalName ?? "", /B\.PDF$/);
+
+const safeDisplayMetadata = buildRfqAttachmentMetadata([
+  { name: "C:\\private\\正面\r\n\u202e\u2028.jpg", size: 4, type: "" },
+  { name: "/private/path/背面.jpg", size: 4, type: "image/jpeg" },
+]);
+assert.equal(safeDisplayMetadata[0].originalName, "正面----.jpg");
+assert.equal(safeDisplayMetadata[1].originalName, "背面.jpg");
+assert.equal(safeDisplayMetadata[0].type, "application/octet-stream");
+assert.doesNotMatch(JSON.stringify(safeDisplayMetadata), /private|\\\\/);
+
+console.log("RFQ constraint, attachment identity and reference tests passed.");

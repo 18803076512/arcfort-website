@@ -4,6 +4,34 @@ This append-only log records substantial Codex work so future sessions can under
 why it changed and which risks remain. Add the newest entry at the top, below this introduction. Do
 not include secrets, buyer PII, private prospect data or unconfirmed claims.
 
+## 2026-11-26 - Preserve RFQ Attachment Identity And Download Thread Qualifications
+
+- **Task:** Repair colliding/non-identifiable attachment names and two missing public CSV thread
+  qualifications in the existing document-to-sales handoff.
+- **Files Changed:** Shared attachment helper, RFQ route/email templates, public download helper
+  and generator, generated product CSV, existing RFQ/export regressions, dated decision and this log.
+- **Components Changed:** Sales and buyer email attachment lists map safe original display names
+  to unique indexed transmission names. No public form layout or interaction changes.
+- **Data Changed:** Existing private attachment JSON gains an optional safe original-name label;
+  no database migration. Only CT0004/CT0005 CSV thread cells append their existing governed public
+  note. Canonical product/evidence/media/compatibility records and other downloads remain unchanged.
+- **Visual Changes:** Email lists expose the filename mapping; no public website design change.
+- **SEO Impact:** Existing URLs, metadata, sitemap, indexing and structured-data rules are preserved.
+  No confirmed specification or compatibility claim is created.
+- **Validation:** Require synthetic collision/long-name/safety/bytes-order and email-format checks,
+  exact CSV/protected-source reconciliation, applicable RFQ/export/domain/SEO checks, build,
+  lint/types, browser regressions, performance and secret scan; verify exact PR/main CI and
+  Production plus read-only official-site/download health before release closure.
+- **Known Issues:** New transmitted names have no fresh provider/inbox observation. Historical
+  matching-reference receipt remains separate; this batch sends no RFQ/email. GA4/GSC account
+  inputs, DMARC, credential rotation, original product evidence and real sales activity remain open.
+- **Reusable Knowledge Added:** The dated attachment-identity decision records naming, mapping,
+  privacy and local-versus-inbox evidence boundaries, plus the narrow download-note projection.
+- **Deployment:** Standing authorization covers existing repository/main and official-site
+  maintenance. No provider, DNS, account, hosted-business-data or messaging write is included.
+- **Next Recommended Action:** Obtain the CT0004 exact technical/original-image package or the
+  real GA4 stream input, and continue actual owner sales follow-up in the existing private ledger.
+
 ## 2026-11-25 - Preserve Product Qualifications And Keep Desktop Menu Links Reachable
 
 - **Task:** Correct missing public catalog/commercial qualifications and a reproduced short-window
