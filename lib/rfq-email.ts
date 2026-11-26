@@ -3,18 +3,14 @@ import type { RfqTextValues } from "./rfq-constraints.ts";
 import { buildRfqLeadSourceSummary } from "./rfq-lead-source.ts";
 import { buildRfqQuotationReadiness } from "./rfq-qualification.ts";
 import type { SourceAttribution } from "./source-attribution.ts";
+import type { RfqAttachmentRecord } from "./rfq-attachments.ts";
 
 export type RfqEmailPayload = RfqTextValues & {
   sourcePath: string;
   sourceAttribution: SourceAttribution;
 };
 
-export type RfqEmailAttachment = {
-  name: string;
-  size: number;
-  type: string;
-  path?: string;
-};
+export type RfqEmailAttachment = RfqAttachmentRecord;
 
 export type RfqEmailRequestMeta = {
   userAgent: string;
@@ -114,8 +110,12 @@ function attachmentList(attachments: RfqEmailAttachment[], includePath: boolean)
   return `<ul style="margin: 0; padding-left: 20px;">${attachments
     .map((attachment) => {
       const sizeMb = (attachment.size / (1024 * 1024)).toFixed(2);
+      const originalName =
+        attachment.originalName && attachment.originalName !== attachment.name
+          ? `Original name: ${safeText(attachment.originalName)} → attached as: `
+          : "";
       const storagePath = includePath && attachment.path ? ` | ${safeText(attachment.path)}` : "";
-      return `<li style="margin: 0 0 6px;">${safeText(attachment.name)} (${sizeMb} MB)${storagePath}</li>`;
+      return `<li style="margin: 0 0 6px;">${originalName}${safeText(attachment.name)} (${sizeMb} MB)${storagePath}</li>`;
     })
     .join("")}</ul>`;
 }
@@ -141,8 +141,12 @@ function attachmentText(attachments: RfqEmailAttachment[], includePath: boolean)
   return attachments
     .map((attachment) => {
       const sizeMb = (attachment.size / (1024 * 1024)).toFixed(2);
+      const originalName =
+        attachment.originalName && attachment.originalName !== attachment.name
+          ? `Original name: ${attachment.originalName} → attached as: `
+          : "";
       const storagePath = includePath && attachment.path ? ` - ${attachment.path}` : "";
-      return `- ${attachment.name} (${sizeMb} MB)${storagePath}`;
+      return `- ${originalName}${attachment.name} (${sizeMb} MB)${storagePath}`;
     })
     .join("\n");
 }

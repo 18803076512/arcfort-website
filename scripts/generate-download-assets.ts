@@ -1,6 +1,7 @@
 import { mkdirSync, writeFileSync } from "node:fs";
 import path from "node:path";
 import { getPublicProductCommercialTerms } from "../lib/content/public-commercial-terms.ts";
+import { getPublicDownloadThread } from "../lib/content/public-download-technical-fields.ts";
 import {
   resolveValidationInputPath,
   validateCsvFile,
@@ -95,6 +96,7 @@ function publicProductRow(row: ProductImportRow) {
 
     if (header === "moq") return commercialTerms.moq;
     if (header === "lead_time") return commercialTerms.leadTime;
+    if (header === "thread") return getPublicDownloadThread(row.slug, row.thread);
 
     return row[header];
   });

@@ -10,6 +10,7 @@ import {
 } from "../lib/rfq-email.ts";
 import { buildRfqLeadSourceSummary } from "../lib/rfq-lead-source.ts";
 import { buildRfqQuotationReadiness } from "../lib/rfq-qualification.ts";
+import { buildRfqAttachmentMetadata } from "../lib/rfq-attachments.ts";
 
 const payload: RfqEmailPayload = {
   name: 'Alex <script>alert("buyer")</script>',
@@ -242,4 +243,33 @@ assert.ok(
   ),
 );
 
-console.log("RFQ email template tests passed.");
+const mappedAttachments = buildRfqAttachmentMetadata([
+  { name: "正面.jpg", size: 4, type: "image/jpeg" },
+  { name: "背面.jpg", size: 4, type: "image/jpeg" },
+  { name: '<img src=x onerror="unsafe">.pdf', size: 16, type: "application/pdf" },
+]);
+const mappedPayload = { ...payload, productRequirements: "Part A: 正面.jpg; Part B: 背面.jpg" };
+const mappedTextEmails = [
+  buildInquiryEmailText(mappedPayload, mappedAttachments, reference, requestMeta),
+  buildBuyerConfirmationEmailText(mappedPayload, mappedAttachments, reference),
+];
+const mappedHtmlEmails = [
+  buildInquiryEmailHtml(mappedPayload, mappedAttachments, reference, requestMeta),
+  buildBuyerConfirmationEmailHtml(mappedPayload, mappedAttachments, reference),
+];
+for (const text of mappedTextEmails) {
+  assert.match(text, /Part A: 正面\.jpg; Part B: 背面\.jpg/);
+  assert.match(text, /Original name: 正面\.jpg → attached as: 1-attachment\.jpg/);
+  assert.match(text, /Original name: 背面\.jpg → attached as: 2-attachment\.jpg/);
+}
+for (const html of mappedHtmlEmails) {
+  assert.match(html, /Original name: 正面\.jpg → attached as: 1-attachment\.jpg/);
+  assert.match(html, /Original name: 背面\.jpg → attached as: 2-attachment\.jpg/);
+  assert.match(html, /&lt;img src=x onerror=&quot;unsafe&quot;&gt;\.pdf/);
+  assert.doesNotMatch(html, /<img src=x/);
+}
+// Existing records without originalName retain their earlier display contract.
+assert.doesNotMatch(inquiryText, /Original name:/);
+assert.doesNotMatch(confirmationText, /Original name:/);
+
+console.log("RFQ email template and attachment mapping tests passed.");
