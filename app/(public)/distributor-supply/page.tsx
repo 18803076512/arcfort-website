@@ -148,7 +148,7 @@ const faq = [
   {
     question: "Are small trial orders accepted?",
     answer:
-      "Small trial orders are accepted for standard products when available. MOQ for OEM products, customized packaging or special models depends on the item and production requirements.",
+      "Small trial orders are accepted for selected standard products when available. MOQ for OEM products, customized packaging or special models depends on the item and production requirements.",
   },
   {
     question: "Can ArcFort Weld prepare private label packaging?",

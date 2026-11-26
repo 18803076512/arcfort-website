@@ -126,7 +126,7 @@ export const exportOrderFaq = [
   {
     question: "Can buyers place a small trial order?",
     answer:
-      "Small trial orders are accepted for standard products. MOQ for OEM products, special models or customized packaging depends on the product and production requirements.",
+      "Small trial orders are accepted for selected standard products. MOQ for OEM products, special models or customized packaging depends on the product and production requirements.",
   },
   {
     question: "Are freight costs or Incoterms fixed on the website?",

@@ -1327,7 +1327,7 @@ export const guides: GuideArticle[] = [
       },
       {
         title: "Review MOQ and lead time by requirement",
-        body: "Standard product, printed product, private label package and custom carton requests can have different production conditions. State the trial quantity and expected repeat quantity for every SKU. ArcFort Weld accepts small trial orders for standard products when available, while OEM MOQ depends on the product and packaging requirement. Final lead time should be confirmed after materials, artwork, quantity and production schedule are reviewed.",
+        body: "Standard product, printed product, private label package and custom carton requests can have different production conditions. State the trial quantity and expected repeat quantity for every SKU. ArcFort Weld accepts small trial orders for selected standard products when available, while OEM MOQ depends on the product and packaging requirement. Final lead time should be confirmed after materials, artwork, quantity and production schedule are reviewed.",
       },
       {
         title: "Approve samples and packing references",

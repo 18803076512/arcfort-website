@@ -89,7 +89,7 @@ const productCenterFaq = [
   {
     question: "Are OEM packaging and small trial orders available?",
     answer:
-      "Small trial orders are accepted for standard products. Logo, private label and customized packaging can be discussed after the product list, artwork, quantities and packing requirements are confirmed.",
+      "Small trial orders are accepted for selected standard products. Logo, private label and customized packaging can be discussed after the product list, artwork, quantities and packing requirements are confirmed.",
   },
 ] as const;
 

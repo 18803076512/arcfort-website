@@ -1,3 +1,5 @@
+const regularLeadTime = "Usually 7-20 working days after deposit confirmation for regular orders";
+
 export const siteConfig = {
   name: "ArcFort Weld",
   shortName: "ArcFort Weld",
@@ -31,9 +33,10 @@ export const siteConfig = {
   mainPort: "Tianjin Xingang Port / Tianjin Port, China",
   alternativePorts: "Qingdao Port or Ningbo Port are available upon request.",
   paymentTerms: "T/T, 30% deposit before production, 70% balance before shipment",
-  moqPolicy: "Small trial orders accepted; OEM MOQ depends on product and packaging requirements",
-  leadTime: "7-20 working days for regular orders",
-  regularLeadTime: "Usually 7-20 working days after deposit confirmation for regular orders",
+  moqPolicy:
+    "Small trial orders are accepted for selected standard products; OEM MOQ depends on product and packaging requirements.",
+  leadTime: regularLeadTime,
+  regularLeadTime,
   sampleLeadTime: "Usually 3-7 working days when materials are available",
   oemLeadTime:
     "Usually 20-35 working days depending on quantity, packaging and production schedule",

@@ -20,6 +20,7 @@ ROOT = Path(__file__).resolve().parents[1]
 OUTPUT_PDF = ROOT / "output" / "pdf" / "arcfort-distributor-sourcing-guide.pdf"
 PUBLIC_PDF = ROOT / "public" / "downloads" / "arcfort-distributor-sourcing-guide.pdf"
 CAMPAIGN_CSV = ROOT / "data" / "promotion" / "campaigns.csv"
+COMPANY_CLAIMS_CSV = ROOT / "data" / "evidence" / "company-claims.csv"
 HERO_IMAGE = ROOT / "public" / "images" / "site" / "arcfort-oem-consumables-workbench.png"
 
 PAGE_WIDTH, PAGE_HEIGHT = A4
@@ -100,6 +101,29 @@ def load_tracking_url(campaign_id: str) -> str:
         ]
     )
     return urlunsplit((split.scheme, split.netloc, split.path, urlencode(query), split.fragment))
+
+
+def load_approved_commercial_claims() -> dict[str, str]:
+    with COMPANY_CLAIMS_CSV.open("r", encoding="utf-8-sig", newline="") as stream:
+        rows = list(csv.DictReader(stream))
+
+    claims = {}
+    for key in ["moq_policy", "regular_lead_time"]:
+        matching = [row for row in rows if row["claim_key"] == key]
+        if len(matching) != 1:
+            raise ValueError(f"Expected one governed commercial claim: {key}")
+        row = matching[0]
+        if not (
+            row["source_level"] == "A"
+            and row["verification_status"] == "CONFIRMED"
+            and row["publication_status"] == "approved"
+            and row["source_reference"]
+            and row["reviewed_by"]
+            and row["reviewed_date"]
+        ):
+            raise ValueError(f"Commercial claim is not approved for public use: {key}")
+        claims[key] = row["public_value"]
+    return claims
 
 
 def wrap_text(text: str, font_name: str, font_size: float, max_width: float):
@@ -371,26 +395,30 @@ def draw_sourcing_process(pdf: canvas.Canvas):
     pdf.setFillColor(SIGNAL)
     pdf.drawString(MARGIN + 20, panel_y + 30, "LOGO  |  PACKAGING  |  PRIVATE LABEL  |  CARTON  |  MODEL CUSTOMIZATION")
 
+    commercial_claims = load_approved_commercial_claims()
     terms = [
         ("Main port", "Tianjin Xingang Port / Tianjin Port, China"),
         ("Payment", "T/T preferred: 30% deposit, 70% balance before shipment"),
-        ("MOQ", "Small trial orders accepted; OEM MOQ depends on product and packaging"),
-        ("Lead time", "Usually 7-20 working days for regular orders"),
+        ("MOQ", commercial_claims["moq_policy"]),
+        ("Lead time", commercial_claims["regular_lead_time"]),
     ]
     pdf.setFont("Helvetica-Bold", 16)
     pdf.setFillColor(MIDNIGHT)
     pdf.drawString(MARGIN, 310, "Commercial reference for RFQ planning")
     y = 282
     for label, value in terms:
+        value_width = PAGE_WIDTH - MARGIN * 2 - 116
+        lines = wrap_text(value, "Helvetica", 8.5, value_width)
+        row_height = max(35, 20 + len(lines) * 11)
         pdf.setFillColor(PAPER)
-        pdf.rect(MARGIN, y - 35, PAGE_WIDTH - MARGIN * 2, 35, stroke=0, fill=1)
+        pdf.rect(MARGIN, y - row_height, PAGE_WIDTH - MARGIN * 2, row_height, stroke=0, fill=1)
         pdf.setFont("Helvetica-Bold", 8.5)
         pdf.setFillColor(BLUE)
         pdf.drawString(MARGIN + 12, y - 21, label.upper())
-        pdf.setFont("Helvetica", 8.5)
-        pdf.setFillColor(SLATE)
-        pdf.drawString(MARGIN + 104, y - 21, value)
-        y -= 42
+        draw_paragraph(
+            pdf, value, MARGIN + 104, y - 21, value_width, font_size=8.5, leading=11
+        )
+        y -= row_height + 7
     pdf.showPage()
 
 

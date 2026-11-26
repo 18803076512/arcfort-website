@@ -1,6 +1,11 @@
 import { mkdirSync, writeFileSync } from "node:fs";
 import path from "node:path";
-import { resolveValidationInputPath, validateCsvFile, type ProductImportRow } from "./product-import-utils.ts";
+import { getPublicProductCommercialTerms } from "../lib/content/public-commercial-terms.ts";
+import {
+  resolveValidationInputPath,
+  validateCsvFile,
+  type ProductImportRow,
+} from "./product-import-utils.ts";
 
 type CsvValue = string | number | null | undefined;
 
@@ -75,6 +80,10 @@ function productUrl(row: ProductImportRow) {
 }
 
 function publicProductRow(row: ProductImportRow) {
+  const commercialTerms = getPublicProductCommercialTerms({
+    moq: row.moq,
+    leadTime: row.lead_time,
+  });
   return productListHeaders.map((header) => {
     if (header === "product_url") {
       return productUrl(row);
@@ -84,11 +93,14 @@ function publicProductRow(row: ProductImportRow) {
       return "Final quotation depends on confirmed model, quantity, packaging and destination.";
     }
 
+    if (header === "moq") return commercialTerms.moq;
+    if (header === "lead_time") return commercialTerms.leadTime;
+
     return row[header];
   });
 }
 
-function generateDownloadAssets(inputPath?: string) {
+function generateDownloadAssets(inputPath?: string, productListOnly = false) {
   const csvPath = resolveValidationInputPath(inputPath);
   const result = validateCsvFile(csvPath);
 
@@ -107,10 +119,12 @@ function generateDownloadAssets(inputPath?: string) {
 
   mkdirSync(outputDir, { recursive: true });
   writeFileSync(productListPath, serializeCsv(productRows), "utf8");
-  writeFileSync(rfqTemplatePath, serializeCsv(rfqTemplateRows), "utf8");
+  if (!productListOnly) {
+    writeFileSync(rfqTemplatePath, serializeCsv(rfqTemplateRows), "utf8");
+  }
 
   console.log(`Generated public product list: ${productListPath}`);
-  console.log(`Generated RFQ template: ${rfqTemplatePath}`);
+  if (!productListOnly) console.log(`Generated RFQ template: ${rfqTemplatePath}`);
   console.log(`Products exported: ${activeRows.length}`);
 
   if (result.warnings.length > 0) {
@@ -123,4 +137,8 @@ function generateDownloadAssets(inputPath?: string) {
   }
 }
 
-generateDownloadAssets(process.argv[2]);
+const args = process.argv.slice(2);
+generateDownloadAssets(
+  args.find((argument) => argument !== "--product-list-only"),
+  args.includes("--product-list-only"),
+);

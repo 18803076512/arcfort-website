@@ -32,7 +32,7 @@ export const productCategories: ProductCategory[] = [
     oemServiceNote:
       "OEM packaging is available for MIG/MAG torch parts, including logo label discussion, private label bag or box packing and carton design after product details, artwork and quantity are confirmed.",
     packagingMoqNote:
-      "Standard export packing or customized packaging can be discussed by product type and order quantity. Small trial orders are accepted for standard products, while OEM packaging MOQ depends on the item and packaging requirement.",
+      "Standard export packing or customized packaging can be discussed by product type and order quantity. Small trial orders are accepted for selected standard products, while OEM packaging MOQ depends on the item and packaging requirement.",
     applications: [
       "Metal fabrication workshops",
       "Automotive repair and body shop welding",
@@ -211,7 +211,7 @@ export const productCategories: ProductCategory[] = [
     oemServiceNote:
       "OEM packaging is available for TIG ceramic cups, collets, collet bodies, gas lenses and related TIG accessories when buyers provide packaging style, label artwork and order quantity.",
     packagingMoqNote:
-      "Small trial orders are accepted for standard TIG torch parts. Customized packing, private labels and mixed item cartons are reviewed according to quantity, product type and export packing requirements.",
+      "Small trial orders are accepted for selected standard TIG torch parts. Customized packing, private labels and mixed item cartons are reviewed according to quantity, product type and export packing requirements.",
     applications: [
       "Precision TIG welding",
       "Pipeline maintenance and repair",
@@ -429,7 +429,7 @@ export const productCategories: ProductCategory[] = [
     oemServiceNote:
       "OEM packaging is available for plasma electrodes, nozzles, swirl rings, shields and consumable kits. Private label packing and kit structure can be reviewed after item list and quantity are confirmed.",
     packagingMoqNote:
-      "Standard export packing or customized kit packing can be discussed for plasma consumables. Small trial orders are accepted for standard products, while customized packaging MOQ depends on item mix and packing style.",
+      "Standard export packing or customized kit packing can be discussed for plasma consumables. Small trial orders are accepted for selected standard products, while customized packaging MOQ depends on item mix and packing style.",
     applications: [
       "Industrial metal cutting",
       "Fabrication and maintenance workshops",
@@ -676,7 +676,7 @@ export const productCategories: ProductCategory[] = [
     oemServiceNote:
       "OEM packaging is available for selected welding consumables and workshop items. Logo labels, private label cartons and distributor packing can be discussed after product type and quantity are confirmed.",
     packagingMoqNote:
-      "Small trial orders are accepted for standard welding consumables. MOQ for OEM packaging or customized product combinations depends on product type, model, carton design and order quantity.",
+      "Small trial orders are accepted for selected standard welding consumables. MOQ for OEM packaging or customized product combinations depends on product type, model, carton design and order quantity.",
     applications: [
       "Industrial welding supply distribution",
       "Repair workshop consumable replenishment",
@@ -917,7 +917,7 @@ export const productCategories: ProductCategory[] = [
     oemServiceNote:
       "OEM packaging is available for selected welding accessories, including label, carton and private label discussion for distributor programs after item list and quantity are confirmed.",
     packagingMoqNote:
-      "Standard export packing is available for common accessories, and small trial orders are accepted for standard products. Customized packing or mixed accessory kits require MOQ confirmation by item type and packaging plan.",
+      "Standard export packing is available for common accessories, and small trial orders are accepted for selected standard products. Customized packing or mixed accessory kits require MOQ confirmation by item type and packaging plan.",
     applications: [
       "Repair workshop supply",
       "Industrial welding accessory replacement",

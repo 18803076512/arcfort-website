@@ -56,10 +56,13 @@ export function ProductCard({ product, category, denseMobile = false }: ProductC
           </div>
           {selectionCue ? (
             <div
-              className={`mt-2 min-w-0 items-center justify-between gap-3 text-xs ${denseMobile ? "hidden sm:flex" : "flex"}`}
+              className={`mt-2 min-w-0 flex-wrap items-center justify-between gap-x-3 gap-y-1 text-xs ${denseMobile ? "hidden sm:flex" : "flex"}`}
             >
               <dt className="shrink-0 font-semibold text-slate-500">{selectionCue.label}</dt>
               <dd className="truncate font-bold text-arc-midnight">{selectionCue.value}</dd>
+              {selectionCue.note ? (
+                <dd className="basis-full leading-5 text-slate-500">{selectionCue.note}</dd>
+              ) : null}
             </div>
           ) : null}
         </dl>
