@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 
 import assert from "node:assert/strict";
+import { spawnSync } from "node:child_process";
 import { readFileSync, statSync } from "node:fs";
 import {
   buildDistributorRfqHref,
@@ -15,10 +16,7 @@ import {
 
 const completeInput = {
   buyerProfile: distributorBuyerProfileOptions[0],
-  productCategories: [
-    distributorProductCategoryOptions[0],
-    distributorProductCategoryOptions[2],
-  ],
+  productCategories: [distributorProductCategoryOptions[0], distributorProductCategoryOptions[2]],
   sourcingStage: distributorSourcingStageOptions[2],
   trialQuantity: "Mixed trial order; line quantities in attached workbook",
   repeatPlan: "Quarterly restocking after sample approval",
@@ -72,10 +70,7 @@ assert.equal(
 );
 
 const pageSource = readFileSync("app/(public)/distributor-supply/page.tsx", "utf8");
-const componentSource = readFileSync(
-  "components/distributor/DistributorRfqBuilder.tsx",
-  "utf8",
-);
+const componentSource = readFileSync("components/distributor/DistributorRfqBuilder.tsx", "utf8");
 const downloadsSource = readFileSync("app/(public)/downloads/page.tsx", "utf8");
 const analyticsSource = readFileSync("components/AnalyticsTracker.tsx", "utf8");
 const sitemapSource = readFileSync("app/sitemap.ts", "utf8");
@@ -101,5 +96,15 @@ assert.ok(statSync(workbookPath).size > 10_000);
 assert.equal(workbook[0], 0x50);
 assert.equal(workbook[1], 0x4b);
 assert.match(workbook.toString("utf8"), /xl\/workbook\.xml/);
+
+const workbookTests = spawnSync("python3", ["scripts/test-distributor-workbook.py"], {
+  encoding: "utf8",
+  timeout: 30_000,
+});
+assert.equal(
+  workbookTests.status,
+  0,
+  workbookTests.error?.message || `${workbookTests.stdout}\n${workbookTests.stderr}`,
+);
 
 console.log("Distributor RFQ builder and workbook tests passed.");

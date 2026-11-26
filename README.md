@@ -902,10 +902,10 @@ See `docs/search-indexing-submission.md` for the full indexing workflow.
 
 ## Buyer Download Files
 
-The `/downloads` page provides buyer-facing CSV files that help distributors and importers prepare
-RFQ information.
+The `/downloads` page provides buyer-facing catalogs, CSV files and RFQ workbooks that help
+distributors and importers prepare RFQ information.
 
-Generated public files:
+Public files:
 
 - `public/downloads/arcfort-distributor-sourcing-guide.pdf` - four-page English distributor guide
   covering product scope, sourcing workflow, confirmed trade terms and an RFQ checklist
@@ -926,11 +926,22 @@ Generated public files:
 - `public/downloads/arcfort-tig-torch-switch-identification.csv` - switch, handle, control-lead and
   connector evidence worksheet for TIG torch switch replacement review
 
-Refresh the files after SKU updates:
+Refresh the CSV files after SKU updates:
 
 ```bash
 npm run downloads:generate
 ```
+
+Check the distributor workbook's same-row quantity counter with:
+
+```bash
+python3 scripts/manage-distributor-workbook.py --check
+npm run test:distributor-rfq
+```
+
+The maintenance tool defaults to a read-only check. Its explicit `--write` option repairs the
+recognized legacy counter formula while preserving other workbook content. Public XLSX files
+remain maintained artifacts; the CSV generator does not regenerate their layouts.
 
 The public product list must not expose internal notes, private supplier references, prices,
 unconfirmed certifications or hidden SKU workflow fields.
