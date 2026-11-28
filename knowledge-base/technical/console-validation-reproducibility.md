@@ -346,3 +346,31 @@ Deterministic no-network regressions cover before/after rejection, equal-time ev
 snapshot detachment, lifecycle/correlation, privacy bounds and cleanup. A separate synthetic local
 HTTP/browser probe can validate real 200-header/abort callbacks; it is not an application failure
 reproduction. Record any fresh isolated application acceptance and its actual exit separately.
+
+## November 27 Reference Refresh Controls And Observation
+
+PR #175's first native database job failed at the second document reference's library refresh:
+the persisted row and local success message existed while the acting table remained stale. The
+same request received 200 headers and then aborted before the unchanged row wait failed. Its
+unchanged failed-job retry and the main acceptance passed; no cancellation cause was established.
+
+Thirty-two separate local synthetic production-fixture cases using the unchanged document form
+and command hook all passed. Across 64 RSC 200 responses, 40 requests aborted and all 64 exact row
+waits succeeded. Controlled complete-byte stream tails also allowed two transport requests to
+overlap while the new row remained visible. Thus the observed network signature and transport
+overlap alone do not identify an unsuccessful UI update. These are bounded controls with a
+persisted-file backend and Chromium 154, not native Auth/RLS/Storage or complete-flow equivalence.
+
+Reference/version diagnostics now use the upload path's synchronous rejection boundary before
+diagnostic awaits. Bounded MIME/header-presence categories, router/console categories and passive
+CDP navigation add evidence without exposing private values or changing the row assertion,
+functional deadline, command sequence or navigation. Same-document history/fragment events remain
+separate from cross-document navigation. CDP setup/cleanup are bounded and late work is inert.
+Successful reference checks also emit a bounded completion snapshot after the original row/action/
+prior-version assertions, enabling comparison with the failure boundary in the complete native flow.
+
+Outgoing pagehide delivery could not be validated through the attempted bridges. Both DOM lifecycle
+capabilities remain unavailable, and no listener/script injection ships. An empty event list does
+not prove lifecycle absence. Preserve these limits and any failed observations when interpreting
+future native evidence; the original refresh cause remains open. The
+[dated decision](../decisions/2026-11-27-document-reference-refresh-evidence.md) owns the contract.
