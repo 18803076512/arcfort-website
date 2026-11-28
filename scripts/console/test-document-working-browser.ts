@@ -184,9 +184,17 @@ export async function runDocumentWorkingBrowser(input: Input) {
     const row = owner.page
       .getByRole("table", { name: "Document references" })
       .getByText(documentTestCopy.title + (next ? " version 2" : ""), { exact: true });
-    const { traffic: refreshTraffic, stop: stopRefresh } = observeRefresh(owner.page, libraryPath);
+    const {
+      elapsedMs: refreshElapsedMs,
+      snapshot: snapshotRefresh,
+      startNavigationObservation,
+      stop: stopRefresh,
+    } = observeRefresh(owner.page, libraryPath);
     let receiptId: string | null = null;
+    let refreshWaitStartedAtMs: number | null = null;
+    let refreshWaitEndedAtMs: number | null = null;
     try {
+      await startNavigationObservation(() => owner.ctx.newCDPSession(owner.page));
       checkpoint(
         next ? "documents: version reference command" : "documents: first reference command",
       );
@@ -199,12 +207,33 @@ export async function runDocumentWorkingBrowser(input: Input) {
           ? "documents: version reference library refresh"
           : "documents: first reference library refresh",
       );
+      refreshWaitStartedAtMs = refreshElapsedMs();
       await row.waitFor();
+      refreshWaitEndedAtMs = refreshElapsedMs();
       assert.equal(sent.request.action, "document_reference");
       if (sent.request.action === "document_reference")
         assert.equal(sent.request.prior_document_id, next ? documentId : null);
+      try {
+        const refreshTrafficAtWaitCompletion = snapshotRefresh();
+        console.log(
+          JSON.stringify({
+            phase: "document reference refresh observation",
+            outcome: "row_visible",
+            step,
+            refreshWait: {
+              startedAtMs: refreshWaitStartedAtMs,
+              endedAtMs: refreshWaitEndedAtMs,
+            },
+            refreshTrafficAtWaitCompletion,
+          }),
+        );
+      } catch {
+        // Diagnostic output cannot replace a successful exact-row assertion.
+      }
       return { id: receipt.document_id, request: sent.request, result: sent.result };
     } catch (failure) {
+      const refreshTrafficAtWaitRejection = snapshotRefresh();
+      const rowWaitRejected = refreshWaitStartedAtMs !== null && refreshWaitEndedAtMs === null;
       let databaseState: {
         state: "ok" | "missing" | "timeout" | "unavailable";
         total: number | null;
@@ -247,7 +276,17 @@ export async function runDocumentWorkingBrowser(input: Input) {
             receiptKnown: receiptId !== null,
             databaseState,
             ui: { successMessage, rowPresent, alertPresent },
-            refreshTraffic,
+            refreshWait: {
+              startedAtMs: refreshWaitStartedAtMs,
+              endedAtMs: rowWaitRejected
+                ? refreshTrafficAtWaitRejection.capturedElapsedMs
+                : refreshWaitEndedAtMs,
+              rejectionObservedAtMs: rowWaitRejected
+                ? refreshTrafficAtWaitRejection.capturedElapsedMs
+                : null,
+            },
+            refreshTrafficAtWaitRejection,
+            refreshTraffic: snapshotRefresh(),
           }),
         );
       } catch {
@@ -255,7 +294,7 @@ export async function runDocumentWorkingBrowser(input: Input) {
       }
       throw failure;
     } finally {
-      stopRefresh();
+      await stopRefresh();
     }
   }
   async function record(kind: "rights" | "scope" | "contradiction") {

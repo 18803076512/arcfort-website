@@ -4,6 +4,32 @@ This append-only log records substantial Codex work so future sessions can under
 why it changed and which risks remain. Add the newest entry at the top, below this introduction. Do
 not include secrets, buyer PII, private prospect data or unconfirmed claims.
 
+## 2026-11-27 - Observe Document Reference Refresh At Its Failure Boundary
+
+- **Task:** Continue the unresolved native document-reference refresh investigation with bounded
+  passive evidence and controlled counterexamples.
+- **Files Changed:** Refresh observer, focused regression and native reference/version diagnostic
+  harness, dated decision, technical reproducibility record and this log.
+- **Components Changed:** Test-side response/category/navigation metadata and synchronous wait
+  snapshots; application components and commands remain unchanged.
+- **Data Changed:** No canonical, hosted, product, technical, image-rights, compatibility or sales
+  record. Temporary synthetic fixture data is isolated from real products and buyers.
+- **Visual Changes:** None to the website or Console UI.
+- **SEO Impact:** Public routes, metadata, sitemap and indexing policy are preserved.
+- **Validation:** Require observer privacy/bounds/correlation/frozen/late-cleanup tests, actual
+  local navigation/MIME probe, source/command non-interference, lint/types/build/performance/secrets,
+  independent review and exact PR/main native CI with production/read-only release verification.
+- **Known Issues:** The historical stale-row/cancellation cause remains unresolved. Thirty-two
+  passing narrow synthetic cases show aborts can coexist with successful rows, without proving
+  full native equivalence. DOM lifecycle delivery remains unavailable. A fresh local database
+  could not start because image extraction exhausted disk; complete native acceptance uses CI.
+- **Reusable Knowledge Added:** Record the network-signature counterexample, frozen reference
+  failure boundary, navigation classification and honest instrumentation capability limits.
+- **Deployment:** Existing repository/main and official-site maintenance are covered by standing
+  authorization. No feature activation, provider/DNS/account change, real RFQ or email occurs.
+- **Next Recommended Action:** Use a complete native failure's new evidence to identify the
+  failing boundary before choosing a runtime repair; continue real product/measurement intake.
+
 ## 2026-11-26 - Count Distributor Trial Quantities On Their Product Rows
 
 - **Task:** Correct a reproduced spreadsheet false-ready state where an orphan quantity could
